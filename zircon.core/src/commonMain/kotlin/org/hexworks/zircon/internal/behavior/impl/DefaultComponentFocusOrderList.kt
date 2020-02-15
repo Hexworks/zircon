@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
 
 class DefaultComponentFocusOrderList(
-        private val rootComponent: InternalContainer
+        private val rootComponent: RootContainer
 ) : ComponentFocusOrderList {
 
     override var focusedComponent: InternalComponent = rootComponent
@@ -17,40 +18,55 @@ class DefaultComponentFocusOrderList(
     private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(rootComponent.id to rootComponent)
     private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
-    override fun findNext() = Maybe.ofNullable(nextsLookup[focusedComponent.id])
+    override fun findNext() = nextsLookup.getValue(focusedComponent.id)
 
-    override fun findPrevious() = Maybe.ofNullable(prevsLookup[focusedComponent.id])
+    override fun findPrevious() = prevsLookup.getValue(focusedComponent.id)
 
     override fun focus(component: InternalComponent) {
+        LOGGER.debug("Trying to focus component: $component.")
         if (canFocus(component)) {
+            LOGGER.debug("Component $component is focusable, focusing.")
             focusedComponent = component
         }
     }
 
     override fun refreshFocusables() {
+        LOGGER.debug {
+            val prevTree = nextsLookup.keys.map { it.abbreviate() }
+            val oldNexts = nextsLookup.map { "${it.key.abbreviate()}->${it.value.id.abbreviate()}" }.joinToString()
+            val oldPrevs = prevsLookup.map { "${it.key.abbreviate()}->${it.value.id.abbreviate()}" }.joinToString()
+            "Refreshing focusables. Prev tree: $prevTree, Old nexts: $oldNexts, Old prevs: $oldPrevs"
+        }
         nextsLookup.clear()
         prevsLookup.clear()
 
+        // this will have at least 1 element because the root container is always focusable
         val tree = rootComponent.descendants.filter { it.acceptsFocus() }
-        if (tree.isNotEmpty()) {
-            val first = tree.first()
-            nextsLookup[rootComponent.id] = first
-            prevsLookup[first.id] = rootComponent
-            var prev = first
+        LOGGER.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${rootComponent.id.abbreviate()}")
 
-            tree.iterator().let { treeIter ->
-                treeIter.next() // first already handled
-                while (treeIter.hasNext()) {
-                    val next = treeIter.next()
-                    nextsLookup[prev.id] = next
-                    prevsLookup[next.id] = prev
-                    prev = next
-                }
-            }
-            nextsLookup[prev.id] = rootComponent
-            prevsLookup[rootComponent.id] = prev
+        var previous: InternalComponent = rootComponent
+
+        tree.forEach { next ->
+            LOGGER.debug("Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
+                    "previous for ${next.id.abbreviate()} is ${previous.id.abbreviate()}")
+            nextsLookup[previous.id] = next
+            prevsLookup[next.id] = previous
+            previous = next
         }
+
+        // root has children
+        if (tree.size > 1) {
+            LOGGER.debug("Root, has children, adding circle between root and last.")
+            // we make a connection between the first (root) and the last to make it circular
+            LOGGER.debug("Next for ${tree.last().id.abbreviate()} is ${rootComponent.id.abbreviate()}, " +
+                    "prev for ${rootComponent.id.abbreviate()} is ${tree.last().id.abbreviate()}")
+            nextsLookup[tree.last().id] = rootComponent
+            prevsLookup[rootComponent.id] = tree.last()
+        }
+
+        // if the previously focused component was removed we reset the focus to the root
         if (tree.contains(focusedComponent).not()) {
+            LOGGER.debug("Tree doesn't contain previously focused component, focusing root.")
             focusedComponent = rootComponent
         }
     }
@@ -61,4 +77,8 @@ class DefaultComponentFocusOrderList(
     private fun isNotAlreadyFocused(focusable: Focusable) =
             focusedComponent.id != focusable.id
 
+    companion object {
+
+        private val LOGGER = LoggerFactory.getLogger(ComponentFocusOrderList::class)
+    }
 }

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.behavior
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.component.InternalComponent
 
 /**
@@ -14,20 +13,23 @@ interface ComponentFocusOrderList {
     fun isFocused(component: InternalComponent) = component == focusedComponent
 
     /**
-     * Returns the next component to focus (if any).
+     * Returns the next component to focus.
      */
-    fun findNext(): Maybe<out InternalComponent>
+    fun findNext(): InternalComponent
 
     /**
-     * Returns the previous component to focus (if any).
+     * Returns the previous component to focus.
      */
-    fun findPrevious(): Maybe<out InternalComponent>
+    fun findPrevious(): InternalComponent
 
     /**
      * Focuses the given component (if it is possible).
      */
     fun focus(component: InternalComponent)
 
+    /**
+     * Rebuilds the focus order list.
+     */
     fun refreshFocusables()
 
     /**

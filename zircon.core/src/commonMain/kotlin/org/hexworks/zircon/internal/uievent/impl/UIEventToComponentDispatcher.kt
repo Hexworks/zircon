@@ -13,7 +13,8 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.event.ZirconEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
+import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
@@ -193,14 +194,10 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
                         activateComponent(focusOrderList.focusedComponent)
                     }
                     FOCUS_NEXT_KEY -> {
-                        focusOrderList.findNext().map {
-                            focusComponent(it)
-                        }.orElse(Pass)
+                        focusComponent(focusOrderList.findNext())
                     }
                     FOCUS_PREVIOUS_KEY -> {
-                        focusOrderList.findPrevious().map {
-                            focusComponent(it)
-                        }.orElse(Pass)
+                        focusComponent(focusOrderList.findPrevious())
                     }
                     else -> Pass
                 }

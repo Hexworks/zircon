@@ -21,8 +21,8 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
+import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
@@ -70,10 +70,16 @@ open class DefaultContainer(
         componentLookup = componentLookup.put(ic.id, attachment)
         children = children.add(ic)
 
-        Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
+        Zircon.eventBus.subscribeTo<ComponentDetached>(ZirconScope) { (_, removedComponent) ->
             if (removedComponent == component) {
                 componentLookup = componentLookup.remove(component.id)
                 children = children.remove(ic)
+                Zircon.eventBus.publish(
+                        event = ComponentRemoved(
+                                parent = this,
+                                component = component,
+                                emitter = this),
+                        eventScope = ZirconScope)
                 DisposeSubscription
             } else KeepSubscription
         }
