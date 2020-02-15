@@ -51,6 +51,8 @@ class ComponentStub(
     override fun calculatePathFromRoot(): List<InternalComponent> = listOf()
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
+    override val hasFocus: ObservableValue<Boolean>
+        get() = false.toProperty()
 
     override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()

@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentProperties
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -60,33 +59,27 @@ abstract class DefaultComponent(
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
-
     final override val isAttached: Boolean
         get() = parent.isPresent
-
-    override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
+    final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
+    override val hasFocus = false.toProperty()
 
     final override val absolutePosition: Position
         get() = position
-
     final override val relativePosition: Position
         @Synchronized
         get() = position - parent.map { it.position }.orElse(Position.zero())
-
     final override val relativeBounds: Rect
         @Synchronized
         get() = rect.withPosition(relativePosition)
-
     final override val contentOffset: Position
         @Synchronized
         get() = renderer.contentPosition
-
     final override val contentSize: Size
         @Synchronized
         get() = renderer.calculateContentSize(size)
 
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
-
     final override var componentStyleSet
         get() = styleOverride.orElse(themeStyle)
         set(value) {
@@ -199,12 +192,14 @@ abstract class DefaultComponent(
         logger.debug("$this was given focus.")
         componentStyleSet.applyFocusedStyle()
         render()
+        hasFocus.value = true
     }
 
     override fun focusTaken() = whenEnabled {
         logger.debug("$this lost focus.")
         componentStyleSet.reset()
         render()
+        hasFocus.value = false
     }
 
     override fun acceptsFocus() = isDisabled.not()
@@ -221,7 +216,11 @@ abstract class DefaultComponent(
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse exited.")
-            componentStyleSet.reset()
+            if (hasFocus.value) {
+                componentStyleSet.applyFocusedStyle()
+            } else {
+                componentStyleSet.reset()
+            }
             render()
             Processed
         } else Pass

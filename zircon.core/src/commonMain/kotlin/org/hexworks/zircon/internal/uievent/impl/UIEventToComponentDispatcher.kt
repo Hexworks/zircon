@@ -226,7 +226,6 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
             val focusTaken = ComponentEvent(FOCUS_TAKEN)
             var takenResult = currentlyFocusedComponent.process(focusTaken, TARGET)
             if (takenResult.allowsDefaults()) {
-
                 LOGGER.debug("Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
                 takenResult = takenResult.pickByPrecedence(currentlyFocusedComponent.focusTaken())
             }

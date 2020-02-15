@@ -24,7 +24,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, ComponentEventAdapter, Focusable,
+interface InternalComponent : Component, ComponentEventAdapter,
         KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
 
     val isAttached: Boolean
