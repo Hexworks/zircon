@@ -14,7 +14,7 @@ class DefaultComponentFocusHandler(
     override var focusedComponent: InternalComponent = rootComponent
         private set
 
-    private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(Pair(rootComponent.id, rootComponent))
+    private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(rootComponent.id to rootComponent)
     private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
     override fun findNext() = Maybe.ofNullable(nextsLookup[focusedComponent.id])

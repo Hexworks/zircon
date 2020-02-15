@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.UIEventSource
-import org.hexworks.zircon.internal.behavior.Identifiable
+import org.hexworks.zircon.internal.behavior.Focusable
 
 /**
  * A [Component] is a graphical object which represents a GUI element and used either to
@@ -23,7 +23,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, ComponentProperties, Identifiable, Movable, UIEventSource {
+interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
     /**
      * The absolute position of this [Component], eg: the [Position] relative the
@@ -72,15 +72,5 @@ interface Component : ComponentEventSource, ComponentProperties, Identifiable, M
      * Clears any custom [componentStyleSet] (if present).
      */
     fun clearCustomStyle()
-
-    /**
-     * Requests that this [Component] be focused.
-     */
-    fun requestFocus()
-
-    /**
-     * Clears focus from this [Component]. Has no effect if this [Component] is not focused.
-     */
-    fun clearFocus()
 
 }
