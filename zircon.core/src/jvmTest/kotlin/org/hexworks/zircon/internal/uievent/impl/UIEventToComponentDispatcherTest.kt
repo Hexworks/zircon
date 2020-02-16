@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.uievent.impl
 
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
@@ -11,6 +13,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations.*
 import kotlin.contracts.ExperimentalContracts
 
+@Suppress("TestFunctionName")
 @ExperimentalContracts
 class UIEventToComponentDispatcherTest {
 
@@ -112,10 +115,35 @@ class UIEventToComponentDispatcherTest {
         assertThat(result).isEqualTo(StopPropagation)
     }
 
+    @Test
+    fun When_a_child_stops_propagation_of_the_tab_key_Then_component_events_shouldnt_be_performed() {
+
+        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child0Mock)
+        Mockito.`when`(child0Mock.calculatePathFromRoot()).thenReturn(listOf(rootMock, child0Mock))
+
+        Mockito.`when`(rootMock.process(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        Mockito.`when`(rootMock.keyPressed(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+
+        Mockito.`when`(child0Mock.process(TAB_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(StopPropagation)
+
+        val result = target.dispatch(TAB_PRESSED_EVENT)
+
+        verify(child0Mock, times(0)).focusGiven()
+
+        assertThat(result).isEqualTo(StopPropagation)
+    }
+
+
+
     companion object {
         val KEY_A_PRESSED_EVENT = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
                 key = "a",
                 code = KeyCode.KEY_A)
+
+        val TAB_PRESSED_EVENT = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                code = KeyCode.TAB,
+                key = "\t")
     }
 }

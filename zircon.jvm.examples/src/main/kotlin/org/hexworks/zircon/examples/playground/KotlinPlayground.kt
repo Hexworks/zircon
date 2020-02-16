@@ -7,9 +7,12 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.extensions.onActivated
+import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.StopPropagation
 
 
 object KotlinPlayground {
@@ -25,26 +28,25 @@ object KotlinPlayground {
                 .withSize(60, 30)
                 .build())
 
-        val screen0 = tileGrid.toScreen()
-        val screen1 = tileGrid.toScreen()
+        val screen = tileGrid.toScreen()
 
-        val btn0 = Components.button().withText("Button 0").build().apply {
-            onActivated {
-                screen1.display()
-            }
+        val textBox = Components.textArea()
+                .withSize(20, 10)
+                .withAlignmentWithin(screen, CENTER)
+                .build()
+
+        screen.addComponent(textBox)
+
+        screen.display()
+
+        textBox.requestFocus()
+        textBox.handleKeyboardEvents(KEY_PRESSED) { event, phase ->
+            if (event.code == KeyCode.TAB) {
+                println("=================== Stopped propagation")
+                StopPropagation
+            } else Pass
         }
-        val btn1 = Components.button().withText("Button 1").build().apply {
-            onActivated {
-                screen0.display()
-            }
-        }
 
-        screen0.addComponent(btn0)
-        screen1.addComponent(btn1)
-
-        screen0.display()
-
-        screen0.theme = theme
-        screen1.theme = ColorThemes.adriftInDreams()
+        screen.theme = theme
     }
 }
