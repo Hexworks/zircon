@@ -126,6 +126,7 @@ abstract class DefaultComponent(
             } else {
                 componentStyleSet.reset()
             }
+            render()
         }
         themeProperty.onChange {
             themeStyle = convertColorTheme(it.newValue)

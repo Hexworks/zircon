@@ -71,4 +71,12 @@ internal data class DefaultTileColor(override val red: Int,
                 blue = (blue * (1f + percentage)).toInt(),
                 alpha = alpha)
     }
+
+    override fun withAlpha(alpha: Int) = copy(alpha = alpha)
+
+    override fun withRed(red: Int) = copy(red = red)
+
+    override fun withGreen(green: Int) = copy(green = green)
+
+    override fun withBlue(blue: Int) = copy(blue = blue)
 }

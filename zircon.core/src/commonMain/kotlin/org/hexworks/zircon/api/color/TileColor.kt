@@ -56,6 +56,14 @@ interface TileColor : Cacheable {
      */
     fun lightenByPercent(percentage: Double): TileColor
 
+    fun withAlpha(alpha: Int): TileColor
+
+    fun withRed(red: Int): TileColor
+
+    fun withGreen(green: Int): TileColor
+
+    fun withBlue(blue: Int): TileColor
+
     companion object {
 
         /**

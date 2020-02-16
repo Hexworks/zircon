@@ -43,16 +43,6 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             this.checkBoxState = if (it.newValue) CHECKED else UNCHECKED
             render()
         }
-        disabledProperty.onChange {
-            if (it.newValue) {
-                LOGGER.debug("Disabling CheckBox (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
-                componentStyleSet.applyDisabledStyle()
-            } else {
-                LOGGER.debug("Enabling CheckBox (id=${id.abbreviate()}, disabled=$isDisabled, text=$text).")
-                componentStyleSet.reset()
-            }
-            render()
-        }
     }
 
     // TODO: test this rudimentary state machine

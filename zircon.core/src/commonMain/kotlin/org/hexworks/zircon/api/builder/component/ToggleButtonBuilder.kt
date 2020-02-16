@@ -14,14 +14,13 @@ import kotlin.math.max
 @Suppress("UNCHECKED_CAST")
 class ToggleButtonBuilder(
         private var text: String = "",
-        private var wrapSides: Boolean = true,
         private var isSelected: Boolean = false)
     : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>(DefaultToggleButtonRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
         contentSize = contentSize
-                .withWidth(max(this.text.length, contentSize.width))
+                .withWidth(max(this.text.length + DefaultToggleButtonRenderer.DECORATION_WIDTH, contentSize.width))
     }
 
     fun withIsSelected(isSelected: Boolean) = also {
