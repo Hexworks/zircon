@@ -34,11 +34,10 @@ class ThreadSafeTileGrid(
         initialSize: Size,
         override var layerable: InternalLayerable = buildLayerable(initialSize),
         override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
-        private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
+        override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 initialCursorSpace = initialSize),
         private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalTileGrid,
-        InternalCursorHandler by cursorHandler,
         ShutdownHook by DefaultShutdownHook(),
         UIEventProcessor by eventProcessor,
         ViewContainer by ViewContainer.create() {
@@ -78,6 +77,7 @@ class ThreadSafeTileGrid(
             return layerable.layers
         }
 
+    private var originalCursorHandler = cursorHandler
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
@@ -96,6 +96,33 @@ class ThreadSafeTileGrid(
         }
     }
 
+    override var isCursorVisible: Boolean
+        get() = cursorHandler.isCursorVisible
+        set(value) {
+            cursorHandler.isCursorVisible = value
+        }
+    override var cursorPosition: Position
+        get() = cursorHandler.cursorPosition
+        set(value) {
+            cursorHandler.cursorPosition = value
+        }
+    override val isCursorAtTheEndOfTheLine: Boolean
+        get() = cursorHandler.isCursorAtTheEndOfTheLine
+    override val isCursorAtTheStartOfTheLine: Boolean
+        get() = cursorHandler.isCursorAtTheStartOfTheLine
+    override val isCursorAtTheFirstRow: Boolean
+        get() = cursorHandler.isCursorAtTheFirstRow
+    override val isCursorAtTheLastRow: Boolean
+        get() = cursorHandler.isCursorAtTheLastRow
+
+    override fun moveCursorForward() {
+        cursorHandler.moveCursorForward()
+    }
+
+    override fun moveCursorBackward() {
+        cursorHandler.moveCursorBackward()
+    }
+
     @Synchronized
     override fun close() {
         animationHandler.close()
@@ -107,6 +134,7 @@ class ThreadSafeTileGrid(
         backend = tileGrid.backend
         layerable = tileGrid.layerable
         animationHandler = tileGrid.animationHandler
+        cursorHandler = tileGrid.cursorHandler
     }
 
     @Synchronized
@@ -114,6 +142,7 @@ class ThreadSafeTileGrid(
         backend = originalBackend
         layerable = originalLayerable
         animationHandler = originalAnimationHandler
+        cursorHandler = originalCursorHandler
     }
 
     @Synchronized
