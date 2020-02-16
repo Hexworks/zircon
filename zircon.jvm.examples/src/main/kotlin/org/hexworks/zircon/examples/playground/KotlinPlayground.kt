@@ -4,19 +4,16 @@ package org.hexworks.zircon.examples.playground
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.toScreen
 
 
 object KotlinPlayground {
 
-    private val theme = ColorThemes.techLight()
     private val tileset = CP437TilesetResources.rexPaint20x20()
 
     @JvmStatic
@@ -24,22 +21,21 @@ object KotlinPlayground {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Size.create(60, 30))
+                .withSize(40, 10)
+                .withDebugMode(true)
                 .build())
 
-        val screen = Screen.create(tileGrid)
+        val text = "This text fades in with a glow"
+        val mainScreen = tileGrid.toScreen()
+        mainScreen.cursorPosition = Position.create(1, 1)
+        mainScreen.display()
+        text.forEach { c ->
+            mainScreen.putTile(Tile.defaultTile()
+                    .withBackgroundColor(TileColor.transparent())
+                    .withForegroundColor(ColorThemes.nord().accentColor)
+                    .withCharacter(c))
+        }
 
-
-        val component = Components.button()
-                .withDecorations(box())
-                .withSize(18, 5)
-                .withComponentRenderer(NoOpComponentRenderer())
-                .withAlignmentWithin(screen, ComponentAlignment.BOTTOM_RIGHT)
-                .build()
-
-        screen.addComponent(component)
-
-        screen.display()
-        screen.theme = theme
+        mainScreen.isCursorVisible = true
     }
 }

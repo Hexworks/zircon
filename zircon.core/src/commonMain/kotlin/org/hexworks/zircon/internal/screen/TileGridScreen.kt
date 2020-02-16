@@ -110,8 +110,6 @@ class TileGridScreen(
             Zircon.eventBus.publish(
                     event = ScreenSwitch(id, this),
                     eventScope = ZirconScope)
-            isCursorVisible = false
-            cursorPosition = Position.defaultPosition()
             activate()
             MouseEventType.values().forEach { eventType ->
                 tileGrid.handleMouseEvents(eventType) { event, phase ->
