@@ -59,8 +59,10 @@ class UIEventToComponentDispatcher(private val root: InternalContainer,
             // to component events and we pick the result which has highest precedence
             // note that the result of the regular propagation can't influence the
             // component event propagation and vica versa
-            performEventPropagation(target, event)
-                    .pickByPrecedence(performComponentEvents(target, event))
+            val result = performEventPropagation(target, event)
+            if (result.shouldStopPropagation()) {
+                result
+            } else result.pickByPrecedence(performComponentEvents(target, event))
         }.orElse(Pass)
     }
 
