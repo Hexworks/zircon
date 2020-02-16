@@ -4,7 +4,6 @@ package org.hexworks.zircon.examples.components
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Position
@@ -12,7 +11,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.extensions.shadow
-import org.hexworks.zircon.api.extensions.side
 import org.hexworks.zircon.api.screen.Screen
 
 object ToggleButtonsExample {
@@ -38,13 +36,11 @@ object ToggleButtonsExample {
         screen.addComponent(panel)
 
         val unselectedToggleButton = Components.toggleButton()
-                .withText("Toggle me")
-                .withDecorations(side())
+                .withText("Toggle Me")
                 .withAlignment(positionalAlignment(Position.create(1, 3)))
         val selectedToggleButton = Components.toggleButton()
-                .withText("Boxed Toggle Button")
+                .withText("Toggle Me")
                 .withIsSelected(true)
-                .withDecorations(box())
                 .withAlignment(positionalAlignment(Position.create(1, 5)))
 
         // we can add them to both because these are just builders, so

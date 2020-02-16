@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.color
 
+import org.hexworks.zircon.internal.color.DefaultTileColor
+
 /**
  * Default ANSI colors.
  */
@@ -47,4 +49,14 @@ enum class ANSITileColor(final override val red: Int,
     override fun lightenByPercent(percentage: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).lightenByPercent(percentage)
     }
+
+    override fun withAlpha(alpha: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
+
+    override fun withRed(red: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
+
+    override fun withGreen(green: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
+
+    override fun withBlue(blue: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
+
+
 }

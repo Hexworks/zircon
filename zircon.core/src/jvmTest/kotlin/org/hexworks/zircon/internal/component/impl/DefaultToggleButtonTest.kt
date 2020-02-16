@@ -64,13 +64,6 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     }
 
     @Test
-    fun shouldProperlyAssignStyleSetForSelectState() {
-        target.selectedProperty.value = true
-        assertThat(target.componentStyleSet.currentState())
-                .isEqualTo(SELECTED_ACTION)
-    }
-
-    @Test
     fun shouldProperlyAssignStyleSetForUnselectedState() {
         target.selectedProperty.value = false
         assertThat(target.componentStyleSet.currentState())
@@ -80,7 +73,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     @Test
     fun shouldProperlyAddButtonText() {
         val surface = target.graphics
-        val offset = target.contentOffset.x
+        val offset = target.contentOffset.x + DefaultToggleButtonRenderer.DECORATION_WIDTH
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()

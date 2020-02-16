@@ -27,13 +27,6 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     }
 
     @Test
-    fun shouldProperlyApplyTheme() {
-        target.theme = DEFAULT_THEME
-
-        assertThat(target.componentStyleSet).isEqualTo(expectedComponentStyles)
-    }
-
-    @Test
     open fun shouldProperlyHandleMousePressed() {
         rendererStub.clear()
 
