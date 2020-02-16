@@ -16,12 +16,15 @@ interface Focusable : Identifiable {
     val hasFocus: ObservableValue<Boolean>
 
     /**
-     * Requests focus for this [Focusable].
+     * Requests focus for this [Focusable]. The success of the request depends on
+     * whether this [Focusable] [acceptsFocus] or not
+     * @return `true` if [hasFocus] `false` if not
      */
-    fun requestFocus()
+    fun requestFocus(): Boolean
 
     /**
      * Clears focus from this [Focusable]. Has no effect if this [Focusable] is not focused.
+     * After this operation [hasFocus] will be `false`
      */
     fun clearFocus()
 
