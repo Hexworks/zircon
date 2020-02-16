@@ -174,7 +174,7 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun requestFocus() {
+    override fun requestFocus(): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

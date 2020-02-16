@@ -177,10 +177,11 @@ abstract class DefaultComponent(
     @Synchronized
     final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
-    final override fun requestFocus() {
+    final override fun requestFocus(): Boolean {
         Zircon.eventBus.publish(
                 event = RequestFocusFor(this, this),
                 eventScope = ZirconScope)
+        return hasFocus.value
     }
 
 
