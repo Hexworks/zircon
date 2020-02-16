@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -58,6 +59,9 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * The bounds of this [Component] relative to its parent.
      */
     val relativeBounds: Rect
+
+    val componentState: ComponentState
+        get() = componentStyleSet.currentState()
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set

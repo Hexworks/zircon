@@ -127,4 +127,17 @@ class DefaultComponentFocusOrderListTest {
 
         assertThat(target.findPrevious()).isEqualTo(button1)
     }
+
+    @Test
+    fun When_the_root_has_only_one_child_Then_focus_order_is_correct() {
+
+        val button0 = Components.button().build() as InternalComponent
+
+        root.addComponent(button0)
+        target.refreshFocusables()
+
+        assertThat(target.findNext()).isEqualTo(button0)
+        target.focus(button0)
+        assertThat(target.findNext()).isEqualTo(root)
+    }
 }

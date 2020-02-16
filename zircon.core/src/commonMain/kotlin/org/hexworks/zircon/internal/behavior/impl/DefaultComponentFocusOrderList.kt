@@ -55,7 +55,7 @@ class DefaultComponentFocusOrderList(
         }
 
         // root has children
-        if (tree.size > 1) {
+        if (tree.isNotEmpty()) {
             logger.debug("Root, has children, adding circle between root and last.")
             // we make a connection between the first (root) and the last to make it circular
             logger.debug("Next for ${tree.last().id.abbreviate()} is ${rootComponent.id.abbreviate()}, " +
