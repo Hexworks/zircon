@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -193,14 +194,18 @@ abstract class DefaultComponent(
 
     override fun focusGiven() = whenEnabled {
         logger.debug("$this was given focus.")
-        componentStyleSet.applyFocusedStyle()
+        if (componentState != ComponentState.ACTIVE) {
+            componentStyleSet.applyFocusedStyle()
+        }
         render()
         hasFocus.value = true
     }
 
     override fun focusTaken() = whenEnabled {
         logger.debug("$this lost focus.")
-        componentStyleSet.reset()
+        if (componentState != ComponentState.ACTIVE) {
+            componentStyleSet.reset()
+        }
         render()
         hasFocus.value = false
     }
