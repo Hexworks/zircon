@@ -72,6 +72,7 @@ class TileGridScreen(
     @Synchronized
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
         return if (isActive.value) {
+            LOGGER.debug("Processing event $event in phase $phase for screen $this.")
             // note that first we process listeners on the Screen itself
             // then component ones. They don't affect each other
             (if (componentContainer.isMainContainerActive()) {

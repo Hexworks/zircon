@@ -39,6 +39,7 @@ kotlin {
         }
 
         with(TestLibs) {
+            jvmTestApi(kotlinTestJunit)
             jvmTestApi(junit)
             jvmTestApi(mockitoAll)
             jvmTestApi(mockitoKotlin)
