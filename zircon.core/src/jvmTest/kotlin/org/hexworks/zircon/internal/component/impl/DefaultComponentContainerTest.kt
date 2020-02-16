@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
@@ -21,6 +22,7 @@ import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.contracts.ExperimentalContracts
 
+@Suppress("TestFunctionName")
 @ExperimentalContracts
 class DefaultComponentContainerTest {
 
@@ -215,6 +217,20 @@ class DefaultComponentContainerTest {
         target.dispatch(SPACE)
 
         assertThat(activated.get()).isTrue()
+    }
+
+    @Test
+    fun When_deactivated_Then_focused_component_stays_the_same() {
+        target.activate()
+
+        val button = createButton() as InternalComponent
+        target.addComponent(button)
+
+        target.focus(button)
+
+        target.deactivate()
+
+        assertThat(target.focusedComponent).isEqualTo(button)
     }
 
     private fun createButton() = ButtonBuilder.newBuilder()

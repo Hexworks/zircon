@@ -2,16 +2,14 @@
 
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.extensions.onActivated
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.uievent.ComponentEventType
 
 
 object KotlinPlayground {
@@ -27,24 +25,26 @@ object KotlinPlayground {
                 .withSize(60, 30)
                 .build())
 
-        val screen = tileGrid.toScreen()
+        val screen0 = tileGrid.toScreen()
+        val screen1 = tileGrid.toScreen()
 
-        val prop = "".toProperty()
+        val btn0 = Components.button().withText("Button 0").build().apply {
+            onActivated {
+                screen1.display()
+            }
+        }
+        val btn1 = Components.button().withText("Button 1").build().apply {
+            onActivated {
+                screen0.display()
+            }
+        }
 
-        val panel = Components.panel()
-                .withSize(18, 5)
-                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Test"))
-                .withAlignmentWithin(screen, CENTER)
-                .build()
+        screen0.addComponent(btn0)
+        screen1.addComponent(btn1)
 
-        panel.titleProperty.bind(prop)
+        screen0.display()
 
-        prop.value = "does not get reflected"
-        screen.addComponent(panel)
-
-
-
-        screen.display()
-        screen.theme = theme
+        screen0.theme = theme
+        screen1.theme = ColorThemes.adriftInDreams()
     }
 }

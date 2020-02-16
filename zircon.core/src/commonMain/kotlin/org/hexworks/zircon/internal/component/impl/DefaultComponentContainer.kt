@@ -63,7 +63,6 @@ class DefaultComponentContainer(
     @Synchronized
     override fun deactivate() {
         isActive.value = false
-        dispatcher.focusComponent(root)
     }
 
 }
