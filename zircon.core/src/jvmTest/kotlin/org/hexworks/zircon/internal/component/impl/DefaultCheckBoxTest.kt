@@ -93,14 +93,14 @@ class DefaultCheckBoxTest : ComponentImplementationTest<DefaultCheckBox>() {
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.componentState).isEqualTo(FOCUSED)
+        assertThat(target.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
     }
 
 
@@ -110,7 +110,7 @@ class DefaultCheckBoxTest : ComponentImplementationTest<DefaultCheckBox>() {
                 event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
     }
 
     companion object {

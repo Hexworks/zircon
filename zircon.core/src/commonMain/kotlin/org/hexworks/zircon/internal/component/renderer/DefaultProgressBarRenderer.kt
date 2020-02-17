@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultProgressBar>) {
-        val currentStyleSet = context.componentStyle.currentStyle()
+        val currentStyleSet = context.currentStyle
         tileGraphics.applyStyle(currentStyleSet)
         val invertedStyleSet = currentStyleSet
                 .withBackgroundColor(currentStyleSet.foregroundColor)

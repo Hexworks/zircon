@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -82,8 +83,12 @@ abstract class DefaultComponent(
         @Synchronized
         get() = renderer.calculateContentSize(size)
 
+
+    final override val componentStateValue = DEFAULT.toProperty()
+    final override var componentState: ComponentState by componentStateValue.asDelegate()
+
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
-    final override var componentStyleSet
+    final override var componentStyleSet: ComponentStyleSet
         get() = styleOverride.orElse(themeStyle)
         set(value) {
             componentStyleSetProperty.value = value
@@ -104,14 +109,13 @@ abstract class DefaultComponent(
     final override val hiddenProperty = false.toProperty()
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
-    final override var theme: ColorTheme by themeProperty.asDelegate()
-
     final override val tilesetProperty = componentMetadata.tileset.toProperty {
         tileset.isCompatibleWith(it)
     }
     final override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
+    final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
+    final override var theme: ColorTheme by themeProperty.asDelegate()
     private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
         null
     } else componentMetadata.componentStyleSet)
@@ -121,10 +125,12 @@ abstract class DefaultComponent(
         contentLayer.hiddenProperty.updateFrom(hiddenProperty)
         contentLayer.tilesetProperty.updateFrom(tilesetProperty)
         disabledProperty.onChange {
-            if (it.newValue) {
-                componentStyleSet.applyDisabledStyle()
+            componentState = if (it.newValue) {
+                logger.debug("Component disabled. Applying disabled style.")
+                DISABLED
             } else {
-                componentStyleSet.reset()
+                logger.debug("Component enabled. Applying enabled style.")
+                DEFAULT
             }
             render()
         }
@@ -195,8 +201,8 @@ abstract class DefaultComponent(
 
     override fun focusGiven() = whenEnabled {
         logger.debug("$this was given focus.")
-        if (componentState != ComponentState.ACTIVE) {
-            componentStyleSet.applyFocusedStyle()
+        if (componentState != ACTIVE) {
+            componentState = FOCUSED
         }
         render()
         hasFocus.value = true
@@ -204,8 +210,8 @@ abstract class DefaultComponent(
 
     override fun focusTaken() = whenEnabled {
         logger.debug("$this lost focus.")
-        if (componentState != ComponentState.ACTIVE) {
-            componentStyleSet.reset()
+        if (componentState != ACTIVE) {
+            componentState = DEFAULT
         }
         render()
         hasFocus.value = false
@@ -216,7 +222,7 @@ abstract class DefaultComponent(
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse entered.")
-            componentStyleSet.applyMouseOverStyle()
+            componentState = HIGHLIGHTED
             render()
             Processed
         } else Pass
@@ -225,10 +231,10 @@ abstract class DefaultComponent(
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse exited.")
-            if (hasFocus.value) {
-                componentStyleSet.applyFocusedStyle()
+            componentState = if (hasFocus.value) {
+                FOCUSED
             } else {
-                componentStyleSet.reset()
+                DEFAULT
             }
             render()
             Processed
@@ -238,7 +244,7 @@ abstract class DefaultComponent(
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse pressed.")
-            componentStyleSet.applyActiveStyle()
+            componentState = ACTIVE
             render()
             Processed
         } else Pass
@@ -247,7 +253,7 @@ abstract class DefaultComponent(
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             logger.debug("$this was mouse released.")
-            componentStyleSet.applyMouseOverStyle()
+            componentState = HIGHLIGHTED
             render()
             Processed
         } else Pass
@@ -274,7 +280,7 @@ abstract class DefaultComponent(
 
     override fun toString(): String {
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
-                "pos=${position.x};${position.y}, size=${size.width};${size.height}, disabled=$isDisabled)"
+                "pos=${position.x};${position.y}, size=${size.width};${size.height}, state=$componentState, disabled=$isDisabled)"
     }
 
     override fun equals(other: Any?): Boolean {

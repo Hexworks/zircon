@@ -170,11 +170,11 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isNotEqualTo(FOCUSED_STYLE)
 
         target.dispatch(TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -193,11 +193,11 @@ class DefaultComponentContainerTest {
         target.dispatch(TAB)
         target.dispatch(TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
+        assertThat(button.currentStyle).isEqualTo(DEFAULT_STYLE)
 
         target.dispatch(REVERSE_TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test

@@ -7,9 +7,10 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
@@ -31,6 +32,11 @@ interface InternalComponent : Component, ComponentEventAdapter,
 
     var parent: Maybe<InternalContainer>
     val parentProperty: Property<Maybe<InternalContainer>>
+
+    override val currentStyle: StyleSet
+        get() = componentStyleSet.fetchStyleFor(componentState)
+
+    override var componentState: ComponentState
 
     val hasParent: ObservableValue<Boolean>
 

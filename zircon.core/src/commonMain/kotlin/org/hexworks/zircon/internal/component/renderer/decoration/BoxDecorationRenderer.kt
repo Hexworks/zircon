@@ -28,7 +28,7 @@ data class BoxDecorationRenderer(
             context.component.title
         } else titleProperty.value
         val size = tileGraphics.size
-        val style = context.component.componentStyleSet.currentStyle()
+        val style = context.currentStyle
         tileGraphics.draw(BoxBuilder.newBuilder()
                 .withBoxType(boxType)
                 .withSize(size)

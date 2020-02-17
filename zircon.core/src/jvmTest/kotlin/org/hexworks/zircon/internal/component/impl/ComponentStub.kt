@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -55,6 +56,9 @@ class ComponentStub(
         get() = false.toProperty()
 
     override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
+    override var componentState: ComponentState
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it.isPresent }
 
@@ -65,6 +69,8 @@ class ComponentStub(
     override val descendants: Iterable<InternalComponent>
         get() = listOf()
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
+    override val componentStateValue: ObservableValue<ComponentState>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     override val hiddenProperty = false.toProperty()
 

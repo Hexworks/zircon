@@ -40,7 +40,7 @@ data class ComponentStyleSetBuilder(
     }
 
     fun withMouseOverStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.MOUSE_OVER] = styleSet
+        styles[ComponentState.HIGHLIGHTED] = styleSet
     }
 
     fun withActiveStyle(styleSet: StyleSet) = also {

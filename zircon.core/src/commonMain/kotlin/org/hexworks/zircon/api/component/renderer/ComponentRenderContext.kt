@@ -10,5 +10,5 @@ class ComponentRenderContext<out T : Component>(val component: T) : RenderContex
         get() = component.componentStyleSet
 
     val currentStyle: StyleSet
-        get() = componentStyle.currentStyle()
+        get() = componentStyle.fetchStyleFor(component.componentState)
 }

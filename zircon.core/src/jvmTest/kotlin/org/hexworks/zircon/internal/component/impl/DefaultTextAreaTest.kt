@@ -187,7 +187,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
 
         target.focusGiven()
 
-        assertThat(target.componentStyleSet.componentState)
+        assertThat(target.componentState)
                 .isEqualTo(FOCUSED)
         assertThat(cursorVisible).isTrue()
     }
@@ -200,7 +200,7 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
         }
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.componentState)
+        assertThat(target.componentState)
                 .isEqualTo(DEFAULT)
         assertThat(cursorHidden).isTrue()
     }
