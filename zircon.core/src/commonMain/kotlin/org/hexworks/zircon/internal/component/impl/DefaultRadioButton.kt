@@ -11,9 +11,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 
 @Suppress("DuplicatedCode")
@@ -60,17 +58,17 @@ class DefaultRadioButton(
         super.mousePressed(event, phase)
     }
 
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             state = SELECTED
             isSelected = true
         }
-        return super.mouseReleased(event, phase)
+        super.mouseReleased(event, phase)
     }
 
     override fun activated() = whenEnabledRespondWith {
         isSelected = true
-        Processed
+        super.activated()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()

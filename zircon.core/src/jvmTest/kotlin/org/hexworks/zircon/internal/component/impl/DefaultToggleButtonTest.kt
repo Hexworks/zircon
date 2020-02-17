@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -21,8 +22,8 @@ import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRender
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("UNCHECKED_CAST")
-class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>() {
+@Suppress("UNCHECKED_CAST", "TestFunctionName")
+class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultToggleButton>() {
 
 
     override lateinit var target: DefaultToggleButton
@@ -109,21 +110,37 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     }
 
     @Test
-    fun shouldProperlyHandleActivation() {
+    override fun When_a_focused_component_is_activated_Then_it_becomes_active() {
+
+        target.focusGiven()
         rendererStub.clear()
         target.activated()
 
-        assertThat(target.componentState).isEqualTo(SELECTED_ACTION)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
+        assertThat(target.componentState).isEqualTo(ComponentState.ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
     }
 
     @Test
-    fun shouldProperlyHandleMouseRelease() {
-        target.mouseReleased(
-                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
+    override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
+        rendererStub.clear()
+        target.activated()
 
-        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
+        assertThat(target.componentState).isEqualTo(ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
+    }
+
+    @Test
+    override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
+        target.focusGiven()
+        rendererStub.clear()
+        target.activated()
+
+        assertThat(target.componentState).isEqualTo(ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
     }
 
     companion object {

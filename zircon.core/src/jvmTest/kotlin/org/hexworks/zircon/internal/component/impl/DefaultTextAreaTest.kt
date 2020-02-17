@@ -27,7 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 @Suppress("UNCHECKED_CAST", "UsePropertyAccessSyntax", "unused")
-class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
+class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
 

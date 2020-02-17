@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
-import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
@@ -73,17 +72,15 @@ class DefaultTextArea constructor(
             .build()
 
     override fun focusGiven() = whenEnabled {
-        componentState = FOCUSED
         refreshCursor()
-        render()
+        super.focusGiven()
     }
 
     override fun focusTaken() = whenEnabled {
-        componentState = DEFAULT
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),
                 eventScope = ZirconScope)
-        render()
+        super.focusTaken()
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

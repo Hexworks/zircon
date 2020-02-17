@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.uievent
 
-import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.uievent.*
 
 /**
@@ -23,9 +22,12 @@ interface ComponentEventAdapter {
     fun focusTaken(): UIEventResponse = Pass
 
     /**
-     * The component was activated (mouse click or spacebar press typically). Note
-     * that if the [Component] was programmatically activated there is no originating
-     * [UIEvent].
+     * The component was activated (mouse click or spacebar press typically).
      */
     fun activated(): UIEventResponse = Pass
+
+    /**
+     * The component was deactivated (mouse release or spacebar release typically).
+     */
+    fun deactivated(): UIEventResponse = Pass
 }

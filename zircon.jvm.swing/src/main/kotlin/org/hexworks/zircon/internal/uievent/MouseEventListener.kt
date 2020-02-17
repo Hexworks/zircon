@@ -3,6 +3,8 @@ package org.hexworks.zircon.internal.uievent
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import java.awt.event.MouseAdapter
@@ -34,7 +36,7 @@ open class MouseEventListener(
     }
 
     override fun mouseMoved(e: MouseEvent) {
-        processMouseEvent(MouseEventType.MOUSE_MOVED, e)
+        processMouseEvent(MOUSE_MOVED, e)
     }
 
     override fun mouseEntered(e: MouseEvent) {
@@ -46,7 +48,7 @@ open class MouseEventListener(
     }
 
     override fun mouseDragged(e: MouseEvent) {
-        processMouseEvent(MouseEventType.MOUSE_DRAGGED, e)
+        processMouseEvent(MOUSE_DRAGGED, e)
     }
 
     override fun mousePressed(e: MouseEvent) {
@@ -86,9 +88,9 @@ open class MouseEventListener(
         }
     }
 
-    private fun isNotMoveEvent(eventType: MouseEventType) = eventType != MouseEventType.MOUSE_MOVED
+    private fun isNotMoveEvent(eventType: MouseEventType) = eventType != MOUSE_MOVED
 
     private fun mouseMovedToNewPosition(eventType: MouseEventType, position: Position) =
-            eventType == MouseEventType.MOUSE_MOVED && position != lastMouseLocation
+            eventType in setOf(MOUSE_MOVED, MOUSE_DRAGGED) && position != lastMouseLocation
 
 }

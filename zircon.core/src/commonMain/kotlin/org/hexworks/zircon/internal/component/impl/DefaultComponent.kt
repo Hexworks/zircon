@@ -23,10 +23,13 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
@@ -87,6 +90,12 @@ abstract class DefaultComponent(
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
 
+    /**
+     * Tells whether the mouse is over this [Component] or not.
+     */
+    protected final var isHovered: Boolean = false
+        private set
+
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
     final override var componentStyleSet: ComponentStyleSet
         get() = styleOverride.orElse(themeStyle)
@@ -130,6 +139,12 @@ abstract class DefaultComponent(
                 DISABLED
             } else {
                 logger.debug("Component enabled. Applying enabled style.")
+                processMouseEvents(MOUSE_ENTERED) { _, _ ->
+                    isHovered = true
+                }.disposeWhen(disabledProperty)
+                processMouseEvents(MOUSE_EXITED) { _, _ ->
+                    isHovered = false
+                }.disposeWhen(disabledProperty)
                 DEFAULT
             }
             render()
@@ -140,6 +155,9 @@ abstract class DefaultComponent(
         }
         componentStyleSetProperty.onChange {
             styleOverride = Maybe.of(it.newValue) // TODO: add regression test for this line!
+            render()
+        }
+        componentStateValue.onChange {
             render()
         }
     }
@@ -200,20 +218,12 @@ abstract class DefaultComponent(
     }
 
     override fun focusGiven() = whenEnabled {
-        logger.debug("$this was given focus.")
-        if (componentState != ACTIVE) {
-            componentState = FOCUSED
-        }
-        render()
+        updateComponentState(FOCUS_GIVEN)
         hasFocus.value = true
     }
 
     override fun focusTaken() = whenEnabled {
-        logger.debug("$this lost focus.")
-        if (componentState != ACTIVE) {
-            componentState = DEFAULT
-        }
-        render()
+        updateComponentState(FOCUS_TAKEN)
         hasFocus.value = false
     }
 
@@ -221,42 +231,33 @@ abstract class DefaultComponent(
 
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            logger.debug("$this was mouse entered.")
-            componentState = HIGHLIGHTED
-            render()
+            updateComponentState(EventType.MOUSE_ENTERED)
             Processed
         } else Pass
     }
 
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            logger.debug("$this was mouse exited.")
-            componentState = if (hasFocus.value) {
-                FOCUSED
-            } else {
-                DEFAULT
-            }
-            render()
-            Processed
-        } else Pass
-    }
-
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            logger.debug("$this was mouse pressed.")
-            componentState = ACTIVE
-            render()
+            updateComponentState(EventType.MOUSE_EXITED)
             Processed
         } else Pass
     }
 
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            logger.debug("$this was mouse released.")
-            componentState = HIGHLIGHTED
-            render()
+            updateComponentState(MOUSE_RELEASED)
             Processed
         } else Pass
+    }
+
+    override fun activated() = whenEnabledRespondWith {
+        updateComponentState(ACTIVATED)
+        Processed
+    }
+
+    override fun deactivated() = whenEnabledRespondWith {
+        updateComponentState(DEACTIVATED)
+        Processed
     }
 
     final override fun render() {
@@ -283,7 +284,7 @@ abstract class DefaultComponent(
                 "pos=${position.x};${position.y}, size=${size.width};${size.height}, state=$componentState, disabled=$isDisabled)"
     }
 
-    override fun equals(other: Any?): Boolean {
+    final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null) return false
         if (this::class != other::class) return false
@@ -292,8 +293,46 @@ abstract class DefaultComponent(
         return true
     }
 
-    override fun hashCode(): Int {
+    final override fun hashCode(): Int {
         return id.hashCode()
     }
 
+    protected fun updateComponentState(eventType: EventType) {
+        logger.debug("Updating component state $componentState with event $eventType (focused: ${hasFocus.value}).")
+        componentStateTransitions[ComponentStateDescriptor(
+                oldState = componentState,
+                isFocused = hasFocus.value,
+                event = eventType)]?.let {
+            logger.debug("Component state was updated from $componentState to $it after event $eventType")
+            componentState = it
+        }
+    }
+
+    enum class EventType {
+        FOCUS_GIVEN, FOCUS_TAKEN, MOUSE_ENTERED, MOUSE_EXITED, MOUSE_PRESSED, MOUSE_RELEASED, ACTIVATED, DEACTIVATED
+    }
+
+
+    data class ComponentStateDescriptor(
+            val oldState: ComponentState,
+            val isFocused: Boolean,
+            val event: EventType)
+
+    companion object {
+
+        protected val componentStateTransitions = mapOf(
+                ComponentStateDescriptor(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
+                ComponentStateDescriptor(DEFAULT, false, EventType.MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateDescriptor(HIGHLIGHTED, true, EventType.MOUSE_EXITED) to FOCUSED,
+                ComponentStateDescriptor(HIGHLIGHTED, true, EventType.ACTIVATED) to ACTIVE,
+                ComponentStateDescriptor(HIGHLIGHTED, false, EventType.MOUSE_EXITED) to DEFAULT,
+                ComponentStateDescriptor(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
+                ComponentStateDescriptor(ACTIVE, true, EventType.MOUSE_EXITED) to FOCUSED,
+                ComponentStateDescriptor(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
+                ComponentStateDescriptor(ACTIVE, true, DEACTIVATED) to FOCUSED,
+                ComponentStateDescriptor(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
+                ComponentStateDescriptor(FOCUSED, true, EventType.MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateDescriptor(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
+                ComponentStateDescriptor(FOCUSED, true, ACTIVATED) to ACTIVE)
+    }
 }

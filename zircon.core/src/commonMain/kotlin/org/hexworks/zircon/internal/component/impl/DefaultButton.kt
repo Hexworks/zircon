@@ -9,11 +9,8 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
-import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.Processed
 
 @Suppress("DuplicatedCode")
 class DefaultButton(
@@ -33,12 +30,6 @@ class DefaultButton(
                     " changed from '${it.oldValue}' to '${it.newValue}'.")
             render()
         }
-    }
-
-    override fun activated() = whenEnabledRespondWith {
-        LOGGER.debug("$this was activated.")
-        componentState = ComponentState.HIGHLIGHTED
-        Processed
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
