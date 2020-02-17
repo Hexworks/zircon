@@ -61,7 +61,7 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     val relativeBounds: Rect
 
     val componentState: ComponentState
-        get() = componentStyleSet.currentState()
+        get() = componentStyleSet.componentState
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set

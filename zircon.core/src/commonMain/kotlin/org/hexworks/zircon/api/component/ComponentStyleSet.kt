@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -13,7 +14,8 @@ interface ComponentStyleSet {
     val isDefault
         get() = this == defaultStyleSet()
 
-    fun currentState(): ComponentState
+    val componentStateValue: ObservableValue<ComponentState>
+    val componentState: ComponentState
 
     /**
      * Returns the style which is currently applied.

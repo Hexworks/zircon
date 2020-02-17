@@ -60,7 +60,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldProperlyApplyStylesOnInit() {
-        assertThat(target.componentStyleSet.currentState())
+        assertThat(target.componentStyleSet.componentState)
                 .isEqualTo(ComponentState.DEFAULT)
     }
 
@@ -120,7 +120,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
                 phase = TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.MOUSE_OVER)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(ComponentState.MOUSE_OVER)
         assertThat(rendererStub.renderings).isNotEmpty
     }
 
@@ -134,7 +134,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
                 phase = TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.DEFAULT)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(ComponentState.DEFAULT)
         assertThat(rendererStub.renderings).isNotEmpty
     }
 
@@ -146,7 +146,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
                 phase = TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ComponentState.FOCUSED)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(ComponentState.FOCUSED)
         assertThat(rendererStub.renderings).isNotEmpty
     }
 

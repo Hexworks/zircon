@@ -84,14 +84,14 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
@@ -109,7 +109,7 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
 
         assertThat(target.isSelected).isFalse()
         assertThat(getButtonChar()).isEqualTo(' ')
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
     }
 
     private fun getButtonChar() = target.graphics.getTileAt(Position.create(1, 0))
