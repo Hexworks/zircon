@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.junit.Test
 
-@Suppress("PropertyName")
+@Suppress("PropertyName", "TestFunctionName")
 abstract class ComponentImplementationTest<T : InternalComponent> : CommonComponentTest<T>() {
 
     @Test
@@ -18,7 +18,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     }
 
     @Test
-    fun shouldRenderComponentWhenRenderIsCalled() {
+    fun When_render_is_called_on_a_component_Then_it_gets_rendered() {
         rendererStub.clear()
 
         target.render()
@@ -27,33 +27,45 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
     }
 
     @Test
-    open fun shouldProperlyHandleMousePressed() {
-        rendererStub.clear()
-
-        target.mousePressed(
-                event = MouseEvent(MOUSE_PRESSED, 1, Position.zero()),
+    open fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
+        target.focusGiven()
+        rendererStub.clear()
+        target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
-    open fun shouldProperlyHandleMouseReleased() {
+    open fun When_a_highlighted_component_without_focus_is_no_longer_hovered_Then_it_becomes_default() {
+        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
         rendererStub.clear()
-
-        target.mouseReleased(
-                event = MouseEvent(MOUSE_RELEASED, 1, Position.zero()),
+        target.mouseExited(event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
-        assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
+        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
-    open fun shouldProperlyHandleMouseEntered() {
+    open fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
         rendererStub.clear()
+        target.activated()
 
+        assertThat(target.componentState).isEqualTo(ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(1)
+    }
+
+    @Test
+    open fun When_a_focused_component_is_hovered_Then_it_becomes_highlighted() {
+
+        target.focusGiven()
+        rendererStub.clear()
         target.mouseEntered(
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
@@ -61,18 +73,5 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
         assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
-
-    @Test
-    open fun shouldProperlyHandleMouseExited() {
-        rendererStub.clear()
-
-        target.mouseExited(
-                event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
-
-        assertThat(target.componentState).isEqualTo(DEFAULT)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
-    }
-
 
 }

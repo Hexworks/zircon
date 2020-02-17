@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import kotlin.jvm.Synchronized
 
@@ -51,46 +51,33 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
     @Synchronized
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse exited.")
             pressing = false
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-            componentState = ComponentState.DEFAULT
-            render()
-            Processed
-        } else Pass
+        }
+        super.mouseExited(event, phase)
     }
 
     @Synchronized
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse pressed.")
             pressing = true
             this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
-            componentState = ComponentState.ACTIVE
-            render()
-            Processed
-        } else Pass
+        }
+        super.mousePressed(event, phase)
     }
 
     @Synchronized
-    override fun activated(): UIEventResponse {
-        return if (isDisabled.not()) {
-            LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was activated.")
-            pressing = false
-            isSelected = isSelected.not()
-            this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-            componentState = ComponentState.HIGHLIGHTED
-            render()
-            Processed
-        } else Pass
+    override fun activated() = whenEnabledRespondWith {
+        pressing = false
+        isSelected = isSelected.not()
+        this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
+        super.activated()
     }
 
     @Synchronized
     override fun focusTaken() = whenEnabled {
-        LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) lost focus.")
         pressing = false
-        componentState = ComponentState.DEFAULT
-        render()
+        super.focusTaken()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()

@@ -16,5 +16,9 @@ enum class ComponentEventType : UIEventType {
     /**
      * The component was activated (eg: mouse click, or spacebar press by default).
      */
-    ACTIVATED
+    ACTIVATED,
+    /**
+     * The component was deactivated (eg: mouse release, or spacebar release by default).
+     */
+    DEACTIVATED
 }

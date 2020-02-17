@@ -27,16 +27,18 @@ object KotlinPlayground {
 
         val btn = Components.button()
                 .withText("Disabled")
-                .withPosition(0, 1)
+                .withPosition(0, 2)
                 .build()
 
 
-        screen.addComponent(Components.button().withText("Enabled"))
+        screen.addComponent(Components.button().withText("Enabled 0"))
+        screen.addComponent(Components.button().withPosition(0, 1).withText("Enabled 1"))
         screen.addComponent(btn)
 
         btn.isDisabled = true
 
         screen.display()
         screen.theme = theme
+
     }
 }
