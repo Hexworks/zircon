@@ -34,7 +34,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 event = MouseEvent(MOUSE_PRESSED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(ACTIVE)
+        assertThat(target.componentState).isEqualTo(ACTIVE)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
@@ -46,7 +46,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 event = MouseEvent(MOUSE_RELEASED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
         assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
     }
 
@@ -58,7 +58,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
@@ -70,7 +70,7 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 

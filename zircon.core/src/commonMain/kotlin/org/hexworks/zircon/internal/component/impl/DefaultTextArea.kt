@@ -7,11 +7,14 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
+import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -70,13 +73,13 @@ class DefaultTextArea constructor(
             .build()
 
     override fun focusGiven() = whenEnabled {
-        componentStyleSet.applyFocusedStyle()
+        componentState = FOCUSED
         refreshCursor()
         render()
     }
 
     override fun focusTaken() = whenEnabled {
-        componentStyleSet.reset()
+        componentState = DEFAULT
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),
                 eventScope = ZirconScope)
@@ -84,7 +87,7 @@ class DefaultTextArea constructor(
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
+        if (phase == TARGET) {
             if (isNavigationKey(event)) {
                 Pass
             } else {

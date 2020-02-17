@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -14,43 +13,10 @@ interface ComponentStyleSet {
     val isDefault
         get() = this == defaultStyleSet()
 
-    val componentStateValue: ObservableValue<ComponentState>
-    val componentState: ComponentState
-
-    /**
-     * Returns the style which is currently applied.
-     */
-    fun currentStyle(): StyleSet
-
     /**
      * Returns the [StyleSet] for the given `state`.
      */
     fun fetchStyleFor(state: ComponentState): StyleSet
-
-    /**
-     * Applies the style for the `MOUSE_OVER` state.
-     */
-    fun applyMouseOverStyle(): StyleSet
-
-    /**
-     * Applies the style for the `ACTIVE` state.
-     */
-    fun applyActiveStyle(): StyleSet
-
-    /**
-     * Applies the style for the `FOCUSED` state.
-     */
-    fun applyFocusedStyle(): StyleSet
-
-    /**
-     * Applies the style for the `DISABLED` state.
-     */
-    fun applyDisabledStyle(): StyleSet
-
-    /**
-     * Resets the style to its initial state.
-     */
-    fun reset(): StyleSet
 
     companion object {
 

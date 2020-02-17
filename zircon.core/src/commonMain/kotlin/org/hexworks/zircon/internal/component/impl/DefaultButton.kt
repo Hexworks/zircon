@@ -4,20 +4,23 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.Processed
 
 @Suppress("DuplicatedCode")
-class DefaultButton(componentMetadata: ComponentMetadata,
-                    initialText: String,
-                    renderingStrategy: ComponentRenderingStrategy<Button>)
-    : Button, DefaultComponent(
+class DefaultButton(
+        componentMetadata: ComponentMetadata,
+        initialText: String,
+        renderingStrategy: ComponentRenderingStrategy<Button>
+) : Button, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TextHolder by TextHolder.create(initialText) {
@@ -34,7 +37,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
 
     override fun activated() = whenEnabledRespondWith {
         LOGGER.debug("$this was activated.")
-        componentStyleSet.applyMouseOverStyle()
+        componentState = ComponentState.HIGHLIGHTED
         Processed
     }
 
@@ -56,7 +59,7 @@ class DefaultButton(componentMetadata: ComponentMetadata,
                     .withBackgroundColor(colorTheme.accentColor)
                     .build())
             .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withForegroundColor(ANSITileColor.GRAY)
                     .withBackgroundColor(TileColor.transparent())
                     .build())
             .build()

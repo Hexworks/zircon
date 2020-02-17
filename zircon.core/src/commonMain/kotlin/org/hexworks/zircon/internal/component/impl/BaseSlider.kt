@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
@@ -47,10 +48,10 @@ abstract class BaseSlider(final override val minValue: Int,
         disabledProperty.onChange {
             if (it.newValue) {
                 LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentStyleSet.applyDisabledStyle()
+                componentState = ComponentState.DISABLED
             } else {
                 LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentStyleSet.reset()
+                componentState = ComponentState.DEFAULT
             }
             render()
         }
@@ -122,7 +123,7 @@ abstract class BaseSlider(final override val minValue: Int,
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
-            componentStyleSet.applyActiveStyle()
+            componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             render()
             Processed
@@ -132,7 +133,7 @@ abstract class BaseSlider(final override val minValue: Int,
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
-            componentStyleSet.applyActiveStyle()
+            componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             render()
             Processed
@@ -147,7 +148,7 @@ abstract class BaseSlider(final override val minValue: Int,
             Pass
         } else {
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
-            componentStyleSet.applyMouseOverStyle()
+            componentState = ComponentState.HIGHLIGHTED
             render()
             Processed
         }

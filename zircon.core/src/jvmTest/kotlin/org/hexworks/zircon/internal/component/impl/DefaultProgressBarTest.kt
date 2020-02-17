@@ -54,7 +54,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         target.progress = PROGRESS_50_PERCENT
         val surface = target.graphics
         val offset = target.contentOffset.x
-        val css = target.componentStyleSet.currentStyle()
+        val css = target.currentStyle
         val invertedStyleSet = css
                 .withBackgroundColor(css.foregroundColor)
                 .withForegroundColor(css.backgroundColor)

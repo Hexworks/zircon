@@ -66,7 +66,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
     @Test
     fun shouldProperlyAssignStyleSetForUnselectedState() {
         target.selectedProperty.value = false
-        assertThat(target.componentStyleSet.componentState)
+        assertThat(target.componentState)
                 .isEqualTo(UNSELECTED_ACTION)
     }
 
@@ -98,14 +98,14 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.componentState).isEqualTo(FOCUSED)
+        assertThat(target.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
@@ -113,7 +113,7 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
         rendererStub.clear()
         target.activated()
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(SELECTED_ACTION)
+        assertThat(target.componentState).isEqualTo(SELECTED_ACTION)
         assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
@@ -123,13 +123,13 @@ class DefaultToggleButtonTest : ComponentImplementationTest<DefaultToggleButton>
                 event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.componentState).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
     }
 
     companion object {
         val SIZE_15X1 = Size.create(15, 1)
         const val TEXT = "Button text"
-        private val SELECTED_ACTION = MOUSE_OVER
+        private val SELECTED_ACTION = HIGHLIGHTED
         private val UNSELECTED_ACTION = DEFAULT
     }
 }

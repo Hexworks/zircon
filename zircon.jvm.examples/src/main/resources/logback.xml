@@ -14,6 +14,6 @@
     <logger name="org.hexworks.zircon" level="warn"/>
     <logger name="org.hexworks.cobalt" level="warn"/>
 
-    <logger name="org.hexworks.zircon.internal.application.SwingApplication" level="info"/>
+    <logger name="org.hexworks.zircon.internal.component.impl.DefaultButton" level="debug"/>
 
 </configuration>

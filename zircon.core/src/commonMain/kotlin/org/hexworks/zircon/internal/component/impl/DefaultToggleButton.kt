@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.Processed
@@ -37,7 +38,7 @@ class DefaultToggleButton(
     override fun activated() = whenEnabledRespondWith {
         DefaultButton.LOGGER.debug("$this was activated.")
         isSelected = isSelected.not()
-        componentStyleSet.applyMouseOverStyle()
+        componentState = ComponentState.HIGHLIGHTED
         Processed
     }
 

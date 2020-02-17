@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabled
@@ -53,7 +54,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse exited.")
             pressing = false
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-            componentStyleSet.reset()
+            componentState = ComponentState.DEFAULT
             render()
             Processed
         } else Pass
@@ -65,7 +66,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) was mouse pressed.")
             pressing = true
             this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
-            componentStyleSet.applyActiveStyle()
+            componentState = ComponentState.ACTIVE
             render()
             Processed
         } else Pass
@@ -78,7 +79,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
             pressing = false
             isSelected = isSelected.not()
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-            componentStyleSet.applyMouseOverStyle()
+            componentState = ComponentState.HIGHLIGHTED
             render()
             Processed
         } else Pass
@@ -88,7 +89,7 @@ class DefaultCheckBox(componentMetadata: ComponentMetadata,
     override fun focusTaken() = whenEnabled {
         LOGGER.debug("CheckBox (id=${id.abbreviate()}, selected=$isSelected) lost focus.")
         pressing = false
-        componentStyleSet.reset()
+        componentState = ComponentState.DEFAULT
         render()
     }
 

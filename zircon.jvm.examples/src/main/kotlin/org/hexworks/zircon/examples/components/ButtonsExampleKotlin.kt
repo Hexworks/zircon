@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
-object ButtonsExample {
+object ButtonsExampleKotlin {
 
     private val theme = ColorThemes.solarizedLightOrange()
     private val tileset = CP437TilesetResources.wanderlust16x16()

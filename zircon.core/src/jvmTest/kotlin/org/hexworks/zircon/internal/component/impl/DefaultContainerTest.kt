@@ -255,7 +255,8 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlyReturnToString() {
-        assertThat(target.toString()).isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)}, pos=2;3, size=4;4, disabled=false)")
+        assertThat(target.toString())
+                .isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)}, pos=2;3, size=4;4, state=DEFAULT, disabled=false)")
     }
 
     companion object {

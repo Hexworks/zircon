@@ -7,8 +7,6 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
-import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.toScreen
 
 
@@ -29,8 +27,11 @@ object KotlinPlayground {
 
         val btn = Components.button()
                 .withText("Disabled")
+                .withPosition(0, 1)
                 .build()
 
+
+        screen.addComponent(Components.button().withText("Enabled"))
         screen.addComponent(btn)
 
         btn.isDisabled = true

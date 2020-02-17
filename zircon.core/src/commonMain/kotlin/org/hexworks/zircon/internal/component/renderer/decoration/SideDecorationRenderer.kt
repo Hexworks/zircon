@@ -20,6 +20,6 @@ data class SideDecorationRenderer(
             tileGraphics.draw(leftSideCharacter.toCharacterTile(), Position.create(0, idx))
             tileGraphics.draw(rightSideCharacter.toCharacterTile(), Position.create(tileGraphics.size.width - 1, idx))
         }
-        tileGraphics.applyStyle(context.component.componentStyleSet.currentStyle())
+        tileGraphics.applyStyle(context.currentStyle)
     }
 }
