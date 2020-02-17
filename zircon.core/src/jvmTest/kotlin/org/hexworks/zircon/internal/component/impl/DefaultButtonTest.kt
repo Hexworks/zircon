@@ -93,14 +93,14 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
@@ -109,7 +109,7 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
                 event = MouseEvent(MOUSE_PRESSED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ACTIVE)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(ACTIVE)
     }
 
     @Test
@@ -118,7 +118,7 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
                 event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentStyleSet.componentState).isEqualTo(MOUSE_OVER)
     }
 
     companion object {

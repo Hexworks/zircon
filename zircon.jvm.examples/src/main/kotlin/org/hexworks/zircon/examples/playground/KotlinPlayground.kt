@@ -8,15 +8,8 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.modifier.Delay
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.StopPropagation
 
 
 object KotlinPlayground {
@@ -34,25 +27,15 @@ object KotlinPlayground {
 
         val screen = tileGrid.toScreen()
 
-        val logArea = Components.logArea()
-                .withDecorations(box())
-                .withAlignmentWithin(screen, CENTER)
-                .withSize(20, 5)
-                .withLogRowHistorySize(100)
+        val btn = Components.button()
+                .withText("Disabled")
                 .build()
 
-        screen.addComponent(logArea)
+        screen.addComponent(btn)
 
-        logArea.addParagraph("Text", false, 500)
-
-        logArea.addParagraph("Very long text", false, 50)
+        btn.isDisabled = true
 
         screen.display()
-
         screen.theme = theme
-
-        Thread.sleep(4000)
-
-        screen.theme = ColorThemes.adriftInDreams()
     }
 }

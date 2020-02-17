@@ -1,13 +1,16 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
 
-data class DefaultComponentStyleSet(private val styles: Map<ComponentState, StyleSet>)
-    : ComponentStyleSet {
+data class DefaultComponentStyleSet(
+        private val styles: Map<ComponentState, StyleSet>
+) : ComponentStyleSet {
 
-    private var currentState = ComponentState.DEFAULT
+    override val componentStateValue = ComponentState.DEFAULT.toProperty()
+    override var componentState: ComponentState by componentStateValue.asDelegate()
 
     init {
         require(styles.size == ComponentState.values().size) {
@@ -15,34 +18,33 @@ data class DefaultComponentStyleSet(private val styles: Map<ComponentState, Styl
         }
     }
 
-    override fun currentState() = currentState
 
     override fun fetchStyleFor(state: ComponentState) = styles[state] ?: error("")
 
-    override fun currentStyle() = styles[currentState] ?: error("")
+    override fun currentStyle() = styles[componentState] ?: error("")
 
     override fun applyMouseOverStyle(): StyleSet {
-        currentState = ComponentState.MOUSE_OVER
-        return styles.getValue(currentState)
+        componentState = ComponentState.MOUSE_OVER
+        return styles.getValue(componentState)
     }
 
     override fun applyActiveStyle(): StyleSet {
-        currentState = ComponentState.ACTIVE
-        return styles.getValue(currentState)
+        componentState = ComponentState.ACTIVE
+        return styles.getValue(componentState)
     }
 
     override fun applyFocusedStyle(): StyleSet {
-        currentState = ComponentState.FOCUSED
-        return styles.getValue(currentState)
+        componentState = ComponentState.FOCUSED
+        return styles.getValue(componentState)
     }
 
     override fun applyDisabledStyle(): StyleSet {
-        currentState = ComponentState.DISABLED
-        return styles.getValue(currentState)
+        componentState = ComponentState.DISABLED
+        return styles.getValue(componentState)
     }
 
     override fun reset(): StyleSet {
-        currentState = ComponentState.DEFAULT
-        return styles.getValue(currentState)
+        componentState = ComponentState.DEFAULT
+        return styles.getValue(componentState)
     }
 }
