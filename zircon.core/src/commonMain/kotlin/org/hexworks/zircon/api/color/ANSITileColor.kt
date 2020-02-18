@@ -30,6 +30,10 @@ enum class ANSITileColor(final override val red: Int,
 
     override val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
+    override fun desaturate(factor: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).desaturate(factor)
+    }
+
     override fun tint(factor: Double): TileColor {
         return TileColor.create(red, green, blue, alpha).tint(factor)
     }

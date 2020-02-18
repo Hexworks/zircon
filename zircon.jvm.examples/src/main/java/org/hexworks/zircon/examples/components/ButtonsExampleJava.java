@@ -2,54 +2,53 @@ package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.VBox;
-import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.uievent.ComponentEventType;
+import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
 
 import static org.hexworks.zircon.api.ComponentDecorations.*;
 import static org.hexworks.zircon.api.Components.button;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
-import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
-public class ButtonsExampleJava extends ComponentExample {
+public class ButtonsExampleJava extends TwoColumnComponentExample {
 
     public static void main(String[] args) {
-        new ButtonsExampleJava().show();
+        new ButtonsExampleJava().show("Buttons Example");
     }
 
     @Override
-    void build(VBox box) {
-        Button invisibleButton = button()
-                .withText("Make me invisible")
+    public void build(VBox box) {
+        Button invisible = button()
+                .withText("Click Me")
                 .withDecorations(side())
                 .build();
-        invisibleButton.processComponentEvents(ACTIVATED, fromConsumer((event) -> {
-            invisibleButton.setHidden(true);
+        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer((event) -> {
+            invisible.setHidden(true);
         }));
 
-        Button disabledButton = button()
-                .withText("Disabled Button")
+        Button disabled = button()
+                .withText("Disabled")
                 .build();
 
         box.addComponents(
                 button()
-                        .withText("Button")
-                        .withDecorations(side())
+                        .withText("Default")
                         .build(),
                 button()
-                        .withText("Boxed Button")
+                        .withText("Boxed")
                         .withDecorations(box())
                         .build(),
                 button()
                         .withText("Too long name for button")
                         .withDecorations(box(), shadow())
-                        .withSize(Size.create(10, 4))
+                        .withSize(10, 4)
                         .build(),
                 button()
-                        .withText("Half block button")
+                        .withText("Half Block")
                         .withDecorations(halfBlock(), shadow())
                         .build(),
-                invisibleButton, disabledButton);
+                invisible, disabled);
 
-        disabledButton.setDisabled(true);
+        disabled.setDisabled(true);
     }
 
 }

@@ -8,10 +8,11 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Tile
 
-class DefaultIcon(componentMetadata: ComponentMetadata,
-                  initialIcon: Tile,
-                  private val renderingStrategy: ComponentRenderingStrategy<Icon>)
-    : Icon, DefaultComponent(
+class DefaultIcon(
+        componentMetadata: ComponentMetadata,
+        initialIcon: Tile,
+        renderingStrategy: ComponentRenderingStrategy<Icon>
+) : Icon, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 

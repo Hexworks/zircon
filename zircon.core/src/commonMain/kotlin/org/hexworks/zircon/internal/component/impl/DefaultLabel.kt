@@ -32,11 +32,6 @@ class DefaultLabel(componentMetadata: ComponentMetadata,
 
     override fun focusTaken(): UIEventResponse = Pass
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toSecondaryContentStyle()
 
 }

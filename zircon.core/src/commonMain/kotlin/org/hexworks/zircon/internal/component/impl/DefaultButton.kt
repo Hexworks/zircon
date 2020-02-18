@@ -2,10 +2,6 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TextHolder
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -32,28 +28,7 @@ class DefaultButton(
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.accentColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withActiveStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(ANSITileColor.GRAY)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
 
     companion object {
         val LOGGER = LoggerFactory.getLogger(Button::class)

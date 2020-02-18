@@ -96,6 +96,18 @@ class ComponentStub(
 
     }
 
+    override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
         TODO("not implemented")
     }

@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
+import kotlin.jvm.JvmStatic
 
 /**
  * This interface represents a collection of [StyleSet]s which
@@ -20,10 +21,27 @@ interface ComponentStyleSet {
 
     companion object {
 
+        /**
+         * Creates a new [ComponentStyleSetBuilder] for creating styles.
+         */
+        @JvmStatic
+        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder()
+
+        /**
+         * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]
+         * for all states.
+         */
+        @JvmStatic
         fun defaultStyleSet() = ComponentStyleSetBuilder.newBuilder().build()
 
+        /**
+         * Returns the empty [ComponentStyleSet] which uses [StyleSet.empty]
+         * for all states.
+         */
+        @JvmStatic
         fun empty() = ComponentStyleSetBuilder.newBuilder()
                 .withDefaultStyle(StyleSet.empty())
                 .build()
+
     }
 }

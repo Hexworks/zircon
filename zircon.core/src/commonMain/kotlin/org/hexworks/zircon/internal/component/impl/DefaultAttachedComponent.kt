@@ -7,8 +7,10 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.platform.util.RuntimeUtils
 import kotlin.jvm.Synchronized
 
 class DefaultAttachedComponent(
@@ -18,19 +20,15 @@ class DefaultAttachedComponent(
 
     init {
         component.parent = Maybe.of(parentContainer)
-        val hasNoCustomTheme = theme == ColorThemes.default()
         component.disabledProperty.updateFrom(
-                observable = parentContainer.disabledProperty,
-                updateWhenBound = hasNoCustomTheme).keepWhile(component.hasParent)
+                observable = parentContainer.disabledProperty).keepWhile(component.hasParent)
         component.hiddenProperty.updateFrom(
-                observable = parentContainer.hiddenProperty,
-                updateWhenBound = hasNoCustomTheme).keepWhile(component.hasParent)
+                observable = parentContainer.hiddenProperty).keepWhile(component.hasParent)
         component.themeProperty.updateFrom(
                 observable = parentContainer.themeProperty,
-                updateWhenBound = hasNoCustomTheme).keepWhile(component.hasParent)
+                updateWhenBound = theme == ColorThemes.default()).keepWhile(component.hasParent)
         component.tilesetProperty.updateFrom(
-                observable = parentContainer.tilesetProperty,
-                updateWhenBound = hasNoCustomTheme).keepWhile(component.hasParent)
+                observable = parentContainer.tilesetProperty).keepWhile(component.hasParent)
     }
 
     // TODO: regression test ComponentDetached -> ComponentRemoved event stream

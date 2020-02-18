@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
-internal enum class BuiltInCP437TilesetResource(
+enum class BuiltInCP437TilesetResource(
         val tilesetName: String,
         override val width: Int,
         override val height: Int,

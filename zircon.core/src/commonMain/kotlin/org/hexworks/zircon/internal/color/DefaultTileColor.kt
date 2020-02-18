@@ -36,6 +36,14 @@ internal data class DefaultTileColor(override val red: Int,
                 alpha)
     }
 
+    override fun desaturate(factor: Double): TileColor {
+        val l = 0.3 * red + 0.6 * green + 0.1 * blue
+        val r = red + factor * (l - red)
+        val g = green + factor * (l - green)
+        val b = blue + factor * (l - blue)
+        return DefaultTileColor(r.toInt(), g.toInt(), b.toInt(), alpha)
+    }
+
     override fun shade(factor: Double): TileColor {
         require(factor in 0.0..1.0) {
             "The given percentage ($factor) is not between the required maxValue (0 - 1)."
