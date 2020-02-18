@@ -15,15 +15,16 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
-class DefaultVBox(componentMetadata: ComponentMetadata,
-                  initialTitle: String,
-                  private val spacing: Int,
-                  private val renderingStrategy: ComponentRenderingStrategy<VBox>)
-    : VBox, DefaultContainer(
+class DefaultVBox(
+        componentMetadata: ComponentMetadata,
+        initialTitle: String,
+        private val spacing: Int,
+        renderingStrategy: ComponentRenderingStrategy<VBox>
+) : VBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TitleHolder by TitleHolder.create(initialTitle) {
@@ -47,12 +48,13 @@ class DefaultVBox(componentMetadata: ComponentMetadata,
         filledUntil = filledUntil.withRelativeY(finalHeight)
         availableSpace = availableSpace.withRelativeHeight(-finalHeight)
 
-        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
+        Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
             if (removedComponent == component) {
                 reorganizeComponents(component)
                 DisposeSubscription
             } else KeepSubscription
         }
+
         return super<DefaultContainer>.addComponent(component)
     }
 
@@ -69,12 +71,7 @@ class DefaultVBox(componentMetadata: ComponentMetadata,
         availableSpace = availableSpace.withRelativeHeight(delta)
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                    .build())
-            .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
             require(availableSpace.withRelativeHeight(-spacing).containsBoundable(component.rect)) {

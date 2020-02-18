@@ -57,10 +57,15 @@ object PanelsExample {
                 .withSize(18, 5)
                 .withAlignment(positionalAlignment(21, 1)))
 
-        screen.addComponent(Components.panel()
-                .withDecorations(box(title = "Qux"))
+        val disabledPanel = Components.panel()
+                .withDecorations(box(title = "Disabled"))
                 .withSize(18, 5)
-                .withAlignment(positionalAlignment(21, 8)))
+                .withAlignment(positionalAlignment(21, 8))
+                .build()
+
+        screen.addComponent(disabledPanel)
+
+        disabledPanel.isDisabled = true
 
         screen.addComponent(Components.panel()
                 .withDecorations(

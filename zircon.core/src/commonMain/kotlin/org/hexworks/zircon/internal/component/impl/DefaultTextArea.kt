@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
@@ -33,8 +32,8 @@ import kotlin.math.min
 class DefaultTextArea constructor(
         initialText: String,
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
-    : TextArea,
+        renderingStrategy: ComponentRenderingStrategy<TextArea>
+) : TextArea,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         DefaultComponent(
                 componentMetadata = componentMetadata,

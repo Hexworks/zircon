@@ -5,6 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -23,8 +24,6 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -90,12 +89,6 @@ abstract class DefaultComponent(
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
 
-    /**
-     * Tells whether the mouse is over this [Component] or not.
-     */
-    protected final var isHovered: Boolean = false
-        private set
-
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
     final override var componentStyleSet: ComponentStyleSet
         get() = styleOverride.orElse(themeStyle)
@@ -139,12 +132,6 @@ abstract class DefaultComponent(
                 DISABLED
             } else {
                 logger.debug("Component enabled. Applying enabled style.")
-                processMouseEvents(MOUSE_ENTERED) { _, _ ->
-                    isHovered = true
-                }.disposeWhen(disabledProperty)
-                processMouseEvents(MOUSE_EXITED) { _, _ ->
-                    isHovered = false
-                }.disposeWhen(disabledProperty)
                 DEFAULT
             }
             render()
@@ -260,11 +247,6 @@ abstract class DefaultComponent(
         Processed
     }
 
-    final override fun render() {
-        logger.trace("$this was rendered.")
-        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
-    }
-
     @Synchronized
     override fun calculatePathFromRoot(): List<InternalComponent> {
         return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
@@ -284,6 +266,23 @@ abstract class DefaultComponent(
                 "pos=${position.x};${position.y}, size=${size.width};${size.height}, state=$componentState, disabled=$isDisabled)"
     }
 
+    final override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
+        return processComponentEvents(ComponentEventType.ACTIVATED, fn)
+    }
+
+    final override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
+        return processComponentEvents(ComponentEventType.FOCUS_GIVEN, fn)
+    }
+
+    final override fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
+        return processComponentEvents(ComponentEventType.FOCUS_TAKEN, fn)
+    }
+
+    final override fun render() {
+        logger.trace("$this was rendered.")
+        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
+    }
+
     final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null) return false
@@ -297,7 +296,7 @@ abstract class DefaultComponent(
         return id.hashCode()
     }
 
-    protected fun updateComponentState(eventType: EventType) {
+    private fun updateComponentState(eventType: EventType) {
         logger.debug("Updating component state $componentState with event $eventType (focused: ${hasFocus.value}).")
         componentStateTransitions[ComponentStateDescriptor(
                 oldState = componentState,
@@ -322,16 +321,16 @@ abstract class DefaultComponent(
 
         protected val componentStateTransitions = mapOf(
                 ComponentStateDescriptor(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
-                ComponentStateDescriptor(DEFAULT, false, EventType.MOUSE_ENTERED) to HIGHLIGHTED,
-                ComponentStateDescriptor(HIGHLIGHTED, true, EventType.MOUSE_EXITED) to FOCUSED,
-                ComponentStateDescriptor(HIGHLIGHTED, true, EventType.ACTIVATED) to ACTIVE,
-                ComponentStateDescriptor(HIGHLIGHTED, false, EventType.MOUSE_EXITED) to DEFAULT,
+                ComponentStateDescriptor(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateDescriptor(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,
+                ComponentStateDescriptor(HIGHLIGHTED, true, ACTIVATED) to ACTIVE,
+                ComponentStateDescriptor(HIGHLIGHTED, false, MOUSE_EXITED) to DEFAULT,
                 ComponentStateDescriptor(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
-                ComponentStateDescriptor(ACTIVE, true, EventType.MOUSE_EXITED) to FOCUSED,
+                ComponentStateDescriptor(ACTIVE, true, MOUSE_EXITED) to FOCUSED,
                 ComponentStateDescriptor(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
                 ComponentStateDescriptor(ACTIVE, true, DEACTIVATED) to FOCUSED,
                 ComponentStateDescriptor(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
-                ComponentStateDescriptor(FOCUSED, true, EventType.MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateDescriptor(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
                 ComponentStateDescriptor(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
                 ComponentStateDescriptor(FOCUSED, true, ACTIVATED) to ACTIVE)
     }

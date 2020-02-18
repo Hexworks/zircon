@@ -16,7 +16,7 @@ class DefaultToggleButton(
         componentMetadata: ComponentMetadata,
         initialText: String,
         initialSelected: Boolean,
-        private val renderingStrategy: ComponentRenderingStrategy<ToggleButton>
+        renderingStrategy: ComponentRenderingStrategy<ToggleButton>
 ) : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
@@ -38,27 +38,6 @@ class DefaultToggleButton(
         super.activated()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.accentColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withActiveStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
 
 }

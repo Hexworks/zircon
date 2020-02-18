@@ -2,13 +2,16 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.internal.behavior.Focusable
 
@@ -84,5 +87,11 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * Clears any custom [componentStyleSet] (if present).
      */
     fun clearCustomStyle()
+
+    fun onActivated(fn: (ComponentEvent) -> Unit): Subscription
+
+    fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription
+
+    fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription
 
 }

@@ -406,7 +406,7 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
         SOLARIZED_LIGHT_BASE(ColorThemeBuilder.newBuilder()
                 .withPrimaryForegroundColor(TileColor.fromString("#002b36"))
-                .withSecondaryForegroundColor(TileColor.fromString("#586e75"))
+                .withSecondaryForegroundColor(TileColor.fromString("#073642"))
                 .withPrimaryBackgroundColor(TileColor.fromString("#fdf6e3"))
                 .withSecondaryBackgroundColor(TileColor.fromString("#eee8d5")))
     }

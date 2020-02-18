@@ -14,12 +14,14 @@ object ColorThemes {
     /**
      * The empty theme has transparent colors for all colors.
      */
+    @JvmStatic
     fun empty() = ColorThemeResource.EMPTY.getTheme()
 
     /**
      * The default theme which is produced from the default
      * [ComponentStyleSets].
      */
+    @JvmStatic
     fun default() = ColorThemeResource.DEFAULT.getTheme()
 
     /**

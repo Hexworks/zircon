@@ -4,11 +4,8 @@ import org.hexworks.cobalt.events.api.DisposeSubscription
 import org.hexworks.cobalt.events.api.KeepSubscription
 import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.zircon.api.behavior.TitleHolder
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -18,12 +15,14 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
+import kotlin.jvm.Synchronized
 
-open class DefaultHBox(componentMetadata: ComponentMetadata,
-                       initialTitle: String,
-                       private val spacing: Int,
-                       private val renderingStrategy: ComponentRenderingStrategy<HBox>)
-    : HBox, DefaultContainer(
+open class DefaultHBox(
+        componentMetadata: ComponentMetadata,
+        initialTitle: String,
+        private val spacing: Int,
+        renderingStrategy: ComponentRenderingStrategy<HBox>
+) : HBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         TitleHolder by TitleHolder.create(initialTitle) {
@@ -35,16 +34,17 @@ open class DefaultHBox(componentMetadata: ComponentMetadata,
         render()
     }
 
+    @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."
         }
         checkAvailableSpace(component)
         val finalSpacing = if (children.isEmpty()) 0 else spacing
-        val finalSize = component.width + finalSpacing
+        val finalWidth = component.width + finalSpacing
         component.moveRightBy(filledUntil.x + finalSpacing)
-        filledUntil = filledUntil.withRelativeX(finalSize)
-        availableSpace = availableSpace.withRelativeWidth(-finalSize)
+        filledUntil = filledUntil.withRelativeX(finalWidth)
+        availableSpace = availableSpace.withRelativeWidth(-finalWidth)
 
         Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
             if (removedComponent == component) {
@@ -54,15 +54,6 @@ open class DefaultHBox(componentMetadata: ComponentMetadata,
         }
 
         return super<DefaultContainer>.addComponent(component)
-    }
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                        .build())
-                .build()
     }
 
     private fun reorganizeComponents(component: Component) {
@@ -77,6 +68,8 @@ open class DefaultHBox(componentMetadata: ComponentMetadata,
         filledUntil = filledUntil.withRelativeX(-delta)
         availableSpace = availableSpace.withRelativeWidth(delta)
     }
+
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
             require(availableSpace.withRelativeWidth(-spacing).containsBoundable(component.rect)) {

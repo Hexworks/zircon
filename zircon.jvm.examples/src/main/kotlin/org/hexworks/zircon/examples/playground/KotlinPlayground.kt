@@ -36,6 +36,7 @@ object KotlinPlayground {
         screen.addComponent(btn)
 
         btn.isDisabled = true
+        btn.tileset = CP437TilesetResources.bisasam20x20()
 
         screen.display()
         screen.theme = theme
