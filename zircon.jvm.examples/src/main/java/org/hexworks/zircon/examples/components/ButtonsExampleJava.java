@@ -1,9 +1,12 @@
 package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.VBox;
+import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.uievent.ComponentEventType;
 import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
+import org.jetbrains.annotations.NotNull;
 
 import static org.hexworks.zircon.api.ComponentDecorations.*;
 import static org.hexworks.zircon.api.Components.button;
@@ -12,7 +15,11 @@ import static org.hexworks.zircon.api.Functions.fromConsumer;
 public class ButtonsExampleJava extends TwoColumnComponentExample {
 
     public static void main(String[] args) {
-        new ButtonsExampleJava().show("Buttons Example");
+        new ButtonsExampleJava(createGrid(), createTheme()).show("Buttons Example");
+    }
+
+    public ButtonsExampleJava(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
+        super(tileGrid, theme);
     }
 
     @Override
