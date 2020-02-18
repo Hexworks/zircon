@@ -2,12 +2,13 @@ package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.component.*;
+import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.examples.components.impl.OneColumnComponentExample;
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -17,17 +18,16 @@ import static org.hexworks.zircon.api.Components.*;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.api.graphics.BoxType.SINGLE;
 
-public class HBoxesExampleJava extends OneColumnComponentExample {
+public class VBoxesExampleJava extends OneColumnComponentExample {
 
     private int count = 0;
     private Random random = new Random();
 
-
     public static void main(String[] args) {
-        new HBoxesExampleJava(createGrid(), createTheme()).show("HBoxes Example");
+        new VBoxesExampleJava(createGrid(), createTheme()).show("HBoxes Example");
     }
 
-    public HBoxesExampleJava(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
+    public VBoxesExampleJava(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
         super(tileGrid, theme);
     }
 
@@ -38,14 +38,22 @@ public class HBoxesExampleJava extends OneColumnComponentExample {
                 .withText("Add New Button")
                 .build();
 
-        HBox defaultBox = hbox().withSize(box.getSize().getWidth(), 3).build();
-        HBox boxedBox = hbox().withSize(box.getWidth(), 5).withDecorations(box(SINGLE, "Boxed HBox")).build();
-        HBox borderedBox = hbox().withSize(box.getWidth(), 5).withDecorations(border(Border.newBuilder().build())).build();
-        HBox shadowedBox = hbox().withSize(box.getWidth(), 5).withDecorations(shadow()).build();
+        HBox container = hbox()
+                .withSize(box.getContentSize().minus(Size.create(1, 3)))
+                .withComponentRenderer(new NoOpComponentRenderer<>())
+                .withSpacing(1)
+                .build();
 
-        List<HBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
+        VBox defaultBox = vbox().withSize(container.getContentSize().withWidth(12)).build();
+        VBox boxedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(box(SINGLE, "Boxed VBox")).build();
+        VBox borderedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(border(Border.newBuilder().build())).build();
+        VBox shadowedBox = vbox().withSize(container.getContentSize().withWidth(13)).withDecorations(shadow()).build();
 
-        box.addComponents(addNew, defaultBox, boxedBox, borderedBox, shadowedBox);
+        List<VBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
+
+        box.addComponent(addNew);
+        container.addComponents(defaultBox, boxedBox, borderedBox, shadowedBox);
+        box.addComponent(container);
 
         addNew.onActivated(fromConsumer((componentEvent -> {
             addButton(buttonContainers.get(random.nextInt(4)));
@@ -54,7 +62,7 @@ public class HBoxesExampleJava extends OneColumnComponentExample {
         buttonContainers.forEach(this::addButton);
     }
 
-    private void addButton(HBox box) {
+    private void addButton(VBox box) {
         AttachedComponent attachment = box.addComponent(Components.button()
                 .withText(String.format("Remove: %d", count))
                 .withSize(12, 1)
