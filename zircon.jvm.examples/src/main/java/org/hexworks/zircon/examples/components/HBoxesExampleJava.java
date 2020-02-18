@@ -8,14 +8,21 @@ import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.examples.components.impl.OneColumnComponentExample;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import static org.hexworks.zircon.api.ComponentDecorations.*;
-import static org.hexworks.zircon.api.Components.*;
+import static org.hexworks.zircon.api.Components.button;
+import static org.hexworks.zircon.api.Components.hbox;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.api.graphics.BoxType.SINGLE;
 
 public class HBoxesExampleJava extends OneColumnComponentExample {
 
     private int count = 0;
+    private Random random = new Random();
+
 
     public static void main(String[] args) {
         new HBoxesExampleJava().show("HBoxes Example");
@@ -28,27 +35,20 @@ public class HBoxesExampleJava extends OneColumnComponentExample {
                 .withText("Add New Button")
                 .build();
 
-        VBox buttonBox = vbox()
-                .withSize(box.getSize().getWidth(), 5)
-                .withSpacing(1)
-                .build();
-
-        HBox buttons = hbox()
-                .withSize(box.getSize().getWidth(), 1)
-                .build();
-
-        buttonBox.addComponents(addNew, buttons);
-
-        addNew.onActivated(fromConsumer((componentEvent -> addButton(buttons))));
-
+        HBox defaultBox = hbox().withSize(box.getSize().getWidth(), 3).build();
         HBox boxedBox = hbox().withSize(box.getWidth(), 5).withDecorations(box(SINGLE, "Boxed HBox")).build();
         HBox borderedBox = hbox().withSize(box.getWidth(), 5).withDecorations(border(Border.newBuilder().build())).build();
         HBox shadowedBox = hbox().withSize(box.getWidth(), 5).withDecorations(shadow()).build();
 
+        List<HBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
 
-        box.addComponents(buttonBox, boxedBox, borderedBox, shadowedBox);
+        box.addComponents(addNew, defaultBox, boxedBox, borderedBox, shadowedBox);
 
-        addButton(buttons);
+        addNew.onActivated(fromConsumer((componentEvent -> {
+            addButton(buttonContainers.get(random.nextInt(4)));
+        })));
+
+        buttonContainers.forEach(this::addButton);
     }
 
     private void addButton(HBox box) {

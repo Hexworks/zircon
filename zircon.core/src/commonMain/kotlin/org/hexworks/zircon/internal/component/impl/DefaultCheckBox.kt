@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 import kotlin.jvm.Synchronized
 
@@ -51,18 +50,18 @@ class DefaultCheckBox(
     }
 
     @Synchronized
-    override fun activated() = whenEnabledRespondWith {
+    override fun activated() = whenEnabled {
         pressing = true
         this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
         render()
         super.activated()
     }
 
-    override fun deactivated(): UIEventResponse {
+    override fun deactivated() = whenEnabled {
         pressing = false
         isSelected = isSelected.not()
         this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-        return super.deactivated()
+        super.deactivated()
     }
 
     @Synchronized
