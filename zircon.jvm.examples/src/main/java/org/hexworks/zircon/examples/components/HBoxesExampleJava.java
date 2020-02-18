@@ -1,19 +1,20 @@
 package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.component.*;
-import org.hexworks.zircon.api.grid.TileGrid;
+import org.hexworks.zircon.api.component.AttachedComponent;
+import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.HBox;
+import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.examples.components.impl.OneColumnComponentExample;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import static org.hexworks.zircon.api.ComponentDecorations.*;
-import static org.hexworks.zircon.api.Components.*;
+import static org.hexworks.zircon.api.Components.button;
+import static org.hexworks.zircon.api.Components.hbox;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.api.graphics.BoxType.SINGLE;
 
@@ -24,11 +25,7 @@ public class HBoxesExampleJava extends OneColumnComponentExample {
 
 
     public static void main(String[] args) {
-        new HBoxesExampleJava(createGrid(), createTheme()).show("HBoxes Example");
-    }
-
-    public HBoxesExampleJava(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
-        super(tileGrid, theme);
+        new HBoxesExampleJava().show("HBoxes Example");
     }
 
     @Override

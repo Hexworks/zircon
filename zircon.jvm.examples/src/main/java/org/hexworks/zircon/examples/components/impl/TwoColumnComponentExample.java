@@ -15,10 +15,6 @@ import static org.hexworks.zircon.api.Components.vbox;
 
 public abstract class TwoColumnComponentExample extends ComponentExample {
 
-    public TwoColumnComponentExample(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
-        super(tileGrid, theme);
-    }
-
     @Override
     public void addDemos(HBox demos) {
         VBox leftBox = vbox()

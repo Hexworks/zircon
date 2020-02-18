@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.examples.AnimationExample
+import org.hexworks.zircon.examples.animations.AnimationExample
 
 object Intro {
 

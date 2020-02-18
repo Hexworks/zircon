@@ -9,6 +9,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
 import org.hexworks.zircon.internal.component.withNewLinesStripped
+import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
@@ -56,6 +57,7 @@ class ParagraphBuilder(
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = ParagraphBuilder()
     }
 }

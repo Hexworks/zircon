@@ -1,36 +1,39 @@
 package org.hexworks.zircon.examples.components.impl;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.Fragments;
+import org.hexworks.zircon.api.Functions;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
-import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.fragment.MultiSelect;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
-import org.hexworks.zircon.api.view.base.BaseView;
+import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public abstract class ComponentExample extends BaseView {
+public abstract class ComponentExample {
 
-    private static ColorThemeResource THEME = ColorThemeResource.SOLARIZED_LIGHT_ORANGE;
-    private static TilesetResource TILESET = CP437TilesetResources.rexPaint20x20();
-    private static Size SIZE = Size.create(60, 40);
+    public static Size SIZE = Size.create(60, 40);
+
+    private static ColorThemeResource THEME = ColorThemeResource.values()[new Random().nextInt(ColorThemeResource.values().length)];
+    private static List<Integer> TILESET_SIZES = Arrays.asList(16, 20);
+    private static int TILESET_SIZE = TILESET_SIZES.get(new Random().nextInt(TILESET_SIZES.size()));
+    private static List<TilesetResource> TILESETS = Arrays.stream(BuiltInCP437TilesetResource.values())
+            .filter(tileset -> tileset.getWidth() == TILESET_SIZE && tileset.getHeight() == TILESET_SIZE)
+            .collect(Collectors.toList());
+    private static TilesetResource TILESET = TILESETS.get(new Random().nextInt(TILESETS.size()));
     private static Size CONTENT_SIZE = SIZE.minus(Size.create(2, 2));
 
-    public ComponentExample(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
-        super(tileGrid, theme);
-    }
+    public final VBox createContent(Screen screen, String title) {
 
-    public final void show(String title) {
         VBox container = Components.vbox()
                 .withSize(CONTENT_SIZE)
                 .withComponentRenderer(new NoOpComponentRenderer<>())
@@ -53,7 +56,7 @@ public abstract class ComponentExample extends BaseView {
         MultiSelect<ColorThemeResource> themeSelector = Fragments.multiSelect(controls.getWidth() - 4, themes)
                 .withDefaultSelected(THEME)
                 .withCallback(Functions.fromBiConsumer((oldTheme, newTheme) -> {
-                    getScreen().setTheme(newTheme.getTheme());
+                    screen.setTheme(newTheme.getTheme());
                 }))
                 .build();
         controls.addFragment(themeSelector);
@@ -61,13 +64,7 @@ public abstract class ComponentExample extends BaseView {
         controls.addComponent(Components.label());
         controls.addComponent(Components.label().withText("Pick a tileset"));
 
-        List<TilesetResource> tilesets = new ArrayList<>();
-        for (TilesetResource tileset : BuiltInCP437TilesetResource.values()) {
-            if (tileset.getWidth() == 20 && tileset.getHeight() == 20) {
-                tilesets.add(tileset);
-            }
-        }
-        MultiSelect<TilesetResource> tilesetSelector = Fragments.multiSelect(controls.getWidth() - 4, tilesets)
+        MultiSelect<TilesetResource> tilesetSelector = Fragments.multiSelect(controls.getWidth() - 4, TILESETS)
                 .withDefaultSelected(TILESET)
                 .withCallback(Functions.fromBiConsumer((oldTileset, newTileset) -> {
                     container.setTileset(newTileset);
@@ -84,27 +81,26 @@ public abstract class ComponentExample extends BaseView {
                 .withSize(CONTENT_SIZE.getWidth(), CONTENT_SIZE.getHeight() - 6)
                 .build();
 
-        container.addComponents(heading, demos);
-
-        getScreen().addComponent(container);
-
         addDemos(demos);
 
-        dock();
+        container.addComponents(heading, demos);
+        return container;
+    }
+
+    public final void show(String title) {
+        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withDefaultTileset(TILESET)
+                .withSize(SIZE)
+                .build());
+
+        Screen screen = Screen.create(tileGrid);
+
+        screen.addComponent(createContent(screen, title));
+        screen.display();
+        screen.setTheme(THEME.getTheme());
     }
 
     public abstract void build(VBox box);
 
     public abstract void addDemos(HBox demos);
-
-    public static TileGrid createGrid() {
-        return SwingApplications.startTileGrid(AppConfig.newBuilder()
-                .withDefaultTileset(TILESET)
-                .withSize(SIZE)
-                .build());
-    }
-
-    public static ColorTheme createTheme() {
-        return THEME.getTheme();
-    }
 }
