@@ -50,27 +50,34 @@ object StaticEffectMarkovChainExample {
                     .withCharacter(characters[random.nextInt(characters.size)])
                     .withModifiers(defaultGlow)
 
-            val initialNode = MarkovChainNode.create(tile)
+            val initialNode = MarkovChainNode.create(tile,
+                    random.nextLong())
 
             val emptyNode = MarkovChainNode.create(tile
-                    .withCharacter(' '))
+                    .withCharacter(' '),
+                    random.nextLong())
 
             val staticNode0 = MarkovChainNode.create(tile
                     .withCharacter(Symbols.SINGLE_LINE_HORIZONTAL)
-                    .withForegroundColor(glow0))
+                    .withForegroundColor(glow0),
+                    random.nextLong())
             val staticNode1 = MarkovChainNode.create(tile
                     .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
-                    .withForegroundColor(glow1))
+                    .withForegroundColor(glow1),
+                    random.nextLong())
 
             val noiseNode0 = MarkovChainNode.create(tile
                     .withCharacter(Symbols.BLOCK_SPARSE)
-                    .withForegroundColor(dark))
+                    .withForegroundColor(dark),
+                    random.nextLong())
             val noiseNode1 = MarkovChainNode.create(tile
                     .withCharacter(Symbols.BLOCK_MIDDLE)
-                    .withForegroundColor(dark))
+                    .withForegroundColor(dark),
+                    random.nextLong())
             val noiseNode2 = MarkovChainNode.create(tile
                     .withCharacter(Symbols.BLOCK_DENSE)
-                    .withForegroundColor(dark))
+                    .withForegroundColor(dark),
+                    random.nextLong())
 
             initialNode.addNext(.0025, emptyNode)
             emptyNode.addNext(.999, initialNode)

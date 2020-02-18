@@ -53,33 +53,40 @@ object GlitchEffectMarkovChainExample {
                     .withCharacter(characters[random.nextInt(characters.size)])
                     .withModifiers(defaultGlow)
 
-            val initialNode = MarkovChainNode.create(tile)
+            val initialNode = MarkovChainNode.create(tile, random.nextLong())
             val glowingNode0 = MarkovChainNode.create(tile
                     .withForegroundColor(glow0)
-                    .withModifiers(Glow(7f)))
+                    .withModifiers(Glow(7f)),
+                    random.nextLong())
             val glowingNode1 = MarkovChainNode.create(tile
                     .withForegroundColor(glow1)
-                    .withModifiers(Glow(9f)))
+                    .withModifiers(Glow(9f)),
+                    random.nextLong())
             val glowingNode2 = MarkovChainNode.create(tile
                     .withForegroundColor(glow2)
-                    .withModifiers(Glow(11f)))
+                    .withModifiers(Glow(11f)),
+                    random.nextLong())
 
             val fadedNode = MarkovChainNode.create(tile
                     .withForegroundColor(dark)
-                    .withModifiers(Glow(9f)))
+                    .withModifiers(Glow(9f)),
+                    random.nextLong())
 
             val deterioratingNode0 = MarkovChainNode.create(tile
                     .withForegroundColor(glow0)
                     .withModifiers(Glow(10f))
-                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]))
+                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]),
+                    random.nextLong())
             val deterioratingNode1 = MarkovChainNode.create(tile
                     .withForegroundColor(glow1)
                     .withModifiers(Glow(15f))
-                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]))
+                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]),
+                    random.nextLong())
             val deterioratingNode2 = MarkovChainNode.create(tile
                     .withForegroundColor(glow2)
                     .withModifiers(Glow(20f))
-                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]))
+                    .withCharacter(deterioratingCharacters[random.nextInt(deterioratingCharacters.size)]),
+                    random.nextLong())
 
             initialNode.addNext(.001, glowingNode0)
             glowingNode0.addNext(.002, glowingNode1)
