@@ -1,13 +1,14 @@
 package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.component.*;
+import org.hexworks.zircon.api.component.AttachedComponent;
+import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.HBox;
+import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.modifier.Border;
 import org.hexworks.zircon.examples.components.impl.OneColumnComponentExample;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,11 +25,7 @@ public class VBoxesExampleJava extends OneColumnComponentExample {
     private Random random = new Random();
 
     public static void main(String[] args) {
-        new VBoxesExampleJava(createGrid(), createTheme()).show("HBoxes Example");
-    }
-
-    public VBoxesExampleJava(@NotNull TileGrid tileGrid, @NotNull ColorTheme theme) {
-        super(tileGrid, theme);
+        new VBoxesExampleJava().show("VBoxes Example");
     }
 
     @Override

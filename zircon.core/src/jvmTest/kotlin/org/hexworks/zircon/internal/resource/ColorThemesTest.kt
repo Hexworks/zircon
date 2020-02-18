@@ -11,7 +11,7 @@ class ColorThemesTest {
     fun shouldContainAllThemes() {
         val themeCount = ColorThemes::class.members
                 .filter { it.isFinal }
-                .filterNot { it.name == "newBuilder" }
+                .filterNot { it.name == "newBuilder" || it.name == "empty" }
                 .map { accessor ->
                     assertThat(accessor.call(ColorThemes))
                             .describedAs("Theme: ${accessor.name}")
