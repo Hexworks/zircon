@@ -11,8 +11,8 @@ import kotlin.jvm.JvmStatic
 data class DebugConfigBuilder(
         var displayGrid: Boolean = false,
         var displayCoordinates: Boolean = false,
-        var displayFps: Boolean = false)
-    : Builder<DebugConfig> {
+        var displayFps: Boolean = false
+) : Builder<DebugConfig> {
 
     override fun build() = DebugConfig(
             displayGrid = displayGrid,

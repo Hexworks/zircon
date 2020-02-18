@@ -1,10 +1,13 @@
 package org.hexworks.zircon.examples.components.impl;
 
 import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.graphics.BoxType;
+import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
+import org.jetbrains.annotations.NotNull;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
