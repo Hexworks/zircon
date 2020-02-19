@@ -11,7 +11,9 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 @Suppress("DuplicatedCode")
 class HorizontalSliderRenderer : ComponentRenderer<Slider> {
+
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<Slider>) {
+
         tileGraphics.applyStyle(context.currentStyle)
 
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)

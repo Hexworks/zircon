@@ -22,8 +22,11 @@ val TILESET = TILESETS[RANDOM.nextInt(TILESETS.size)]
 
 val GRID_SIZE = create(60, 40)
 
-fun createDefaultScreen() = SwingApplications.startTileGrid(AppConfig.newBuilder()
+fun displayDefaultScreen() = SwingApplications.startTileGrid(AppConfig.newBuilder()
         .withDefaultTileset(TILESET)
         .withSize(GRID_SIZE)
         .build())
-        .toScreen()
+        .toScreen().apply {
+            theme = THEME.getTheme()
+            display()
+        }

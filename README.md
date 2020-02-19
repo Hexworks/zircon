@@ -151,6 +151,10 @@ The most basic operation *Zircon* supports is `draw`ing. You can draw individual
 
 If you use REXPaint to design your programs, the good news is that you can import your `.xp` files as well. Read more about it [here](https://hexworks.org/zircon/docs/2018-11-22-resource-handling#rexpaint-files).
 
+You can also use `Modifier`s in your `Tile`s such as `blink`, `verticalFlip` or `glow`. For a full list, check [this](https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/Modifiers.kt) factory object. `Modifier`s can either change the
+texture (like the ones above) or the `Tile` itself:
+
+![Modifiers](images/gifs/modifiers.gif)
 
 ### Input handling
 
@@ -162,7 +166,9 @@ Both the `TileGrid` and the `Screen` interfaces implement `UIEventSource` which 
 
 > Layering is detailed [here][layer-docs]. For a primer on `Screen`s go [here][screen-docs].
 
-Both the `TileGrid` and the `Screen` interfaces implement `Layerable` which means that you can add `Layer`s on top of them. Every `Layerable` can have an arbitrary amount of `Layer`s. `Layer`s are like `TileGraphics` objects and you can also have transparency in them which can be used to create fancy effects. `Component`s are also `Layer`s themselves.
+Both the `TileGrid` and the `Screen` interfaces implement `Layerable` which means that you can add `Layer`s on top of them. Every `Layerable` can have an arbitrary amount of `Layer`s. `Layer`s are like `TileGraphics` objects and you can also have transparency in them which can be used to create fancy effects. `Component`s are also `Layer`s themselves. Take a look:
+
+![Layers](images/layers.png)
 
 ### Text GUI Components
 
@@ -182,12 +188,17 @@ What's more is that you can apply `ColorTheme`s to `Component`s. There are a bun
 
 To see a full list of available `Component`s take a look at the [Components](https://github.com/Hexworks/zircon/blob/master/zircon.core/src/commonMain/kotlin/org/hexworks/zircon/api/Components.kt) factory object or navigate to the [component docs page][component-docs].
 
+This is an example of how components look in action:
+
+![All Components](images/gifs/all_components.gif)
+
 ### Animations:
 
 > Read more about Animations in the [docs][animation-docs].
 
-Animations are supported out of the box. You can either create them programmatically, or statically using *Zircon's* own animation format: `.zap` (Zircon Animation Package). More about that [here][animation-docs].
+Animations are supported out of the box. You can either create them programmatically, or statically using *Zircon's* own animation format: `.zap` (Zircon Animation Package). More about that [here][animation-docs]. This is how an animation looks like:
 
+![Animation Example](images/gifs/hexworks_skull.gif)
 
 ### Shape and box drawing
 
