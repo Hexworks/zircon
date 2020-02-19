@@ -1,24 +1,30 @@
-package org.hexworks.zircon.examples.components.impl;
+package org.hexworks.zircon.examples.base;
 
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
+import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.BoxType;
-import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
-import org.jetbrains.annotations.NotNull;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.Components.vbox;
 
-public abstract class TwoColumnComponentExample extends ComponentExample {
+public abstract class TwoColumnComponentExampleJava extends ComponentExampleJava {
+
+    public TwoColumnComponentExampleJava() {
+        super();
+    }
+
+    public TwoColumnComponentExampleJava(Size size) {
+        super(size);
+    }
 
     @Override
-    public void addDemos(HBox demos) {
+    public final void addExamples(HBox exampleArea) {
         VBox leftBox = vbox()
-                .withSize(demos.getWidth() / 2, demos.getHeight())
+                .withSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .withSpacing(1)
                 .build();
@@ -26,12 +32,12 @@ public abstract class TwoColumnComponentExample extends ComponentExample {
         VBox rightBox = vbox()
                 .withDecorations(box(BoxType.SINGLE, "Buttons on panel"), shadow())
                 .withSpacing(1)
-                .withSize(demos.getWidth() / 2, demos.getHeight())
+                .withSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
                 .build();
         rightBox.addComponent(Components.label().build());
 
-        demos.addComponent(leftBox);
-        demos.addComponent(rightBox);
+        exampleArea.addComponent(leftBox);
+        exampleArea.addComponent(rightBox);
 
         build(leftBox);
         build(rightBox);

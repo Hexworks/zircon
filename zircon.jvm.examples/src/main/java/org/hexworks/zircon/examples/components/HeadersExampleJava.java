@@ -1,15 +1,14 @@
 package org.hexworks.zircon.examples.components;
 
 import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.component.Component;
 import org.hexworks.zircon.api.component.Header;
 import org.hexworks.zircon.api.component.VBox;
-import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
+import org.hexworks.zircon.examples.base.TwoColumnComponentExampleJava;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 
-public class HeadersExampleJava extends TwoColumnComponentExample {
+public class HeadersExampleJava extends TwoColumnComponentExampleJava {
 
     public static void main(String[] args) {
         new HeadersExampleJava().show("Headers Example");

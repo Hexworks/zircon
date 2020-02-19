@@ -3,13 +3,13 @@ package org.hexworks.zircon.examples.components;
 import org.hexworks.zircon.api.component.Button;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.uievent.ComponentEventType;
-import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
+import org.hexworks.zircon.examples.base.TwoColumnComponentExampleJava;
 
 import static org.hexworks.zircon.api.ComponentDecorations.*;
 import static org.hexworks.zircon.api.Components.button;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 
-public class ButtonsExampleJava extends TwoColumnComponentExample {
+public class ButtonsExampleJava extends TwoColumnComponentExampleJava {
 
     public static void main(String[] args) {
         new ButtonsExampleJava().show("Buttons Example");

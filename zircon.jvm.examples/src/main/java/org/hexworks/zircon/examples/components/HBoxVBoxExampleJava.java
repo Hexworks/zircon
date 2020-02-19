@@ -4,13 +4,12 @@ import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.graphics.BoxType;
-import org.hexworks.zircon.examples.components.impl.OneColumnComponentExample;
-import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
+import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin;
 
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.component.ComponentAlignment.CENTER;
 
-public class HBoxVBoxExampleJava extends OneColumnComponentExample {
+public class HBoxVBoxExampleJava extends OneColumnComponentExampleKotlin {
 
     public static void main(String[] args) {
         new HBoxVBoxExampleJava().show("HBox + VBox Example");
