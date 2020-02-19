@@ -247,7 +247,7 @@ Zircon is made available under the [Apache 2.0 License](https://www.apache.org/l
 
 ## Credits
 
-Zircon is created and maintained by Adam Arold, Coldwarrl, Gergely Lukacsy, Milan Boleradszki and Seveen
+Zircon is created and maintained by Addamsson, Coldwarrl, G3ldrin, Milonoir and Seveen
 
 *We're open to suggestions, feel free to message us on [Discord][discord] or open an issue.*
 *Pull requests are also welcome!*
