@@ -2,7 +2,7 @@
 
 <img src="https://cdn.discordapp.com/attachments/205245036084985857/481213000540225550/full_example.gif"  alt="Full Example"/>
 
-Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
+Need info? Check the [Docs][zircon-docs]
  | or [Create an issue](https://github.com/Hexworks/zircon/issues/new)
  | Check [our project Board](https://github.com/Hexworks/zircon/projects/2)
  | [Ask us on Discord][discord] | Support us on [Patreon](https://www.patreon.com/hexworks)
@@ -35,15 +35,15 @@ Need info? Check the [Wiki](https://github.com/Hexworks/zircon/wiki)
 
 ## Getting Started
 
-If you want to start work with Zircon you can either add it to your project as a Maven dependency or you can try out the skeleton projects ([Java](https://github.com/Hexworks/zircon.skeleton.java), [Kotlin](https://github.com/Hexworks/zircon.skeleton.kotlin)) which come with batteries included.
+If you want to start working with Zircon you can either add it to your project as a Maven dependency or you can try out the skeleton projects ([Java](https://github.com/Hexworks/zircon.skeleton.java), [Kotlin](https://github.com/Hexworks/zircon.skeleton.kotlin)) which come with batteries included.
 
-The official [documentation site][zircon-docs] is also a great place to start. The examples are documented on the [Zircon Examples](https://hexworks.org/zircon/examples/) page *(under construction)*
+The official [documentation site][zircon-docs] is also a great place to start. The examples are also documented on the [Zircon Examples](https://hexworks.org/zircon/examples/) page *(under construction)*.
 
 If you like learning by doing check out the source of *Zircon* from [here](https://github.com/Hexworks/zircon) and you can run the examples for yourself. If you are using *Java* start [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples/src/main/java/org/hexworks/zircon/examples). Alternatively if you use *Kotlin* the code can be found [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples/src/main/kotlin/org/hexworks/zircon).
 
 If you just want to peruse the *Zircon* API navigate [here][api]. Everything which is intended to be part of the public API is there.
 
-If you'd like to talk to us, join us on our [Discord Server][discord]
+If you'd like to talk to us, join us on our [Discord Server][discord].
 
 ### Adding Zircon as a Maven Dependency
 
@@ -123,21 +123,21 @@ The output of this example is:
 
 ## Best Practices
 
-These are some guidelines which can help you if you are *stuck*:
+The following are some guidelines which can help you if you get *stuck*:
 
-If you want to build something (a `TileGraphics`, a `Component` or anything which is part of the public API) it is almost sure that there is a `Builder` or a `Factory` for it. The convention is that if you want to create a `Tile` you can use the factory functions defined on said class (`Tile.create` for example). If there are multiple classes of objects which can be created there might also be an utility class (like `Shapes` to create different `Shape` objects. Your IDE will help you with this. 
+If you want to build something (a `TileGraphics`, a `Component` or anything which is part of the public API) it is almost sure that there is a `Builder` or a factory object for it. The convention is that if you want to create a `Tile` you can use the factory functions defined on said class (`Tile.create` for example). If there are multiple classes of objects which can be created there might also be an utility class (like `Shapes` to create different `Shape` objects. Your IDE will help you with this. 
 
 These classes reside in the `org.hexworks.zircon.api` package. There are some classes which are grouped together into a single utility class however. With `Components` for example, you can obtain `Builder`s for all `Component`s like `Components.panel()` or `Components.checkBox()`. Likewise you can use `DrawSurfaces` to obtain builders for `TileGraphics` and `TileImage`.
 
-If you want to work with external files like tilesets or REXPaint files check the same package (`org.hexworks.zircon.api`), and look for classes which end with `*Resources`. There are a bunch of built-in tilesets for example which you can choose from but you can also load your own. The rule of thumb is that if you need something external there is probably a `*Resources` class for it (like the [CP437TilesetResources]).
+If you want to work with external files like tilesets or REXPaint files check the same package (`org.hexworks.zircon.api`), and look for classes which end with `*Resources`. There are a bunch of built-in tilesets for example which you can choose from but you can also load your own. The rule of thumb is that if you need something external there is probably a `*Resources` class for it (like the `CP437TilesetResources`).
 
 You can use *anything* you can find in the [API][api] package, they are part of the public API, and safe to use. The [internal][internal] package however is considered private to *Zircon* so keep in mind that they can change any time.
 
-Some topics are explained in depth on the [documentation][zircon-docs].
+Some topics are explained in depth in the [documentation][zircon-docs].
 
 If you want to see some example code take a look at the examples project [here][examples]. Most examples have identical *Java* and *Kotlin* variants.
 
-If all else fails read the javadoc. API classes are well documented.
+If all else fails read the javadocs. API classes are well documented.
 
 If you have any problems which are not answered here feel free to ask us at the [Hexworks Discord server][discord].
 
@@ -186,7 +186,7 @@ To see a full list of available `Component`s take a look at the [Components](htt
 
 > Read more about Animations in the [docs][animation-docs].
 
-Animations are supported out of the box. You can either create them programmatically, or statically using *Zircon's* own tileset format: `.zap` (Zircon Animation Package). More about that [here][animation-docs].
+Animations are supported out of the box. You can either create them programmatically, or statically using *Zircon's* own animation format: `.zap` (Zircon Animation Package). More about that [here][animation-docs].
 
 
 ### Shape and box drawing
@@ -282,7 +282,7 @@ Thanks to *VileR* for the [Oldschool Font Pack](https://int10h.org/oldschool-pc-
 [crash-course]:https://hexworks.org/zircon/docs/2018-07-18-a-zircon-crash-course
 [design-docs]:https://hexworks.org/zircon/docs/2018-11-20-the-design-philosophy-behind-zircon
 [input-docs]:https://hexworks.org/zircon/docs/2018-11-21-input-handling
-[layers-docs]:https://hexworks.org/zircon/docs/2018-11-21-how-layers-work
+[layer-docs]:https://hexworks.org/zircon/docs/2018-11-21-how-layers-work
 [logging-docs]:https://hexworks.org/zircon/docs/2019-03-27-logging
 [release-docs]:https://hexworks.org/zircon/docs/2019-01-11-release-process-and-versioning-scheme
 [screen-docs]:https://hexworks.org/zircon/docs/2018-08-18-a-primer-on-screens
