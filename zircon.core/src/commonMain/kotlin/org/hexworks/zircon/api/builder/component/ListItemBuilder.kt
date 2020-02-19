@@ -18,7 +18,7 @@ class ListItemBuilder(
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
         contentSize = contentSize
-                .withWidth(max(this.text.length, contentSize.width))
+                .withWidth(max(this.text.length + 2, contentSize.width))
     }
 
     override fun build(): ListItem {

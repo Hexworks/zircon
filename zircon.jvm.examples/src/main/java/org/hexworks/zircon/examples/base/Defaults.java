@@ -28,10 +28,14 @@ public class Defaults {
 
     public static Size GRID_SIZE = Size.create(60, 40);
 
-    public static Screen createDefaultScreen() {
-        return Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
+    public static Screen displayDefaultScreen() {
+        Screen screen = Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
+                .enableBetaFeatures()
                 .withSize(GRID_SIZE)
                 .build()));
+        screen.setTheme(THEME.getTheme());
+        screen.display();
+        return screen;
     }
 }

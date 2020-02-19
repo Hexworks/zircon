@@ -3,14 +3,14 @@ package org.hexworks.zircon.examples.components;
 import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Position;
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin;
+import org.hexworks.zircon.examples.base.OneColumnComponentExampleJava;
 
 import static java.lang.Thread.sleep;
 import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.Components.button;
 import static org.hexworks.zircon.api.Components.panel;
 
-public class ComponentMoveExampleJava extends OneColumnComponentExampleKotlin {
+public class ComponentMoveExampleJava extends OneColumnComponentExampleJava {
 
     public static void main(String[] args) {
         new ComponentMoveExampleJava().show("Moving a Component");

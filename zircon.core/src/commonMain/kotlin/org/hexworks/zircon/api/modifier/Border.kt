@@ -4,10 +4,12 @@ import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 import kotlin.jvm.JvmStatic
 
-data class Border(val borderType: BorderType,
-                  val borderColor: TileColor,
-                  val borderWidth: Int,
-                  val borderPositions: Set<BorderPosition>) : TextureTransformModifier {
+data class Border(
+        val borderType: BorderType,
+        val borderColor: TileColor,
+        val borderWidth: Int,
+        val borderPositions: Set<BorderPosition>
+) : TextureTransformModifier {
 
     override val cacheKey: String
         get() = "Modifier.Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"

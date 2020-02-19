@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.modifier.Border;
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin;
+import org.hexworks.zircon.examples.base.OneColumnComponentExampleJava;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import static org.hexworks.zircon.api.Components.*;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 import static org.hexworks.zircon.api.graphics.BoxType.SINGLE;
 
-public class VBoxesExampleJava extends OneColumnComponentExampleKotlin {
+public class VBoxesExampleJava extends OneColumnComponentExampleJava {
 
     private int count = 0;
     private Random random = new Random();

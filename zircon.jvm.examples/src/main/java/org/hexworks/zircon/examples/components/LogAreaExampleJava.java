@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.LogArea;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.StyleSet;
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin;
+import org.hexworks.zircon.examples.base.OneColumnComponentExampleJava;
 
 import java.util.HashSet;
 
@@ -17,7 +17,7 @@ import static org.hexworks.zircon.api.Components.button;
 import static org.hexworks.zircon.api.Components.logArea;
 import static org.hexworks.zircon.api.color.ANSITileColor.YELLOW;
 
-public class LogAreaExampleJava extends OneColumnComponentExampleKotlin {
+public class LogAreaExampleJava extends OneColumnComponentExampleJava {
 
     public static void main(String[] args) {
         new LogAreaExampleJava().show("Log Area Example");

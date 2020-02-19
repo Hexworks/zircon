@@ -12,17 +12,9 @@ import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultProgressBar>) {
+
         val currentStyleSet = context.currentStyle
-        tileGraphics.applyStyle(currentStyleSet)
-        val invertedStyleSet = currentStyleSet
-                .withBackgroundColor(currentStyleSet.foregroundColor)
-                .withForegroundColor(currentStyleSet.backgroundColor)
         val progressBarState = context.component.getProgressBarState()
-
-        (0 until progressBarState.width).forEach { idx ->
-            tileGraphics.draw(Tile.createCharacterTile(' ', invertedStyleSet), Position.create(idx, 0))
-        }
-
         if (context.component.displayPercentValueOfProgress) {
             val percentValue = progressBarState.currentProgressInPercent.toString().padStart(3)
             val text = "$percentValue%"
@@ -30,7 +22,17 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
                     .newBuilder()
                     .withText(text).withSize(Size.create(text.length, 1))
                     .build(),
-                    Position.create(context.component.width - 6, 0))
+                    Position.create(context.component.contentSize.width - 4, 0))
         }
+
+        tileGraphics.applyStyle(currentStyleSet)
+        val invertedStyleSet = currentStyleSet
+                .withBackgroundColor(currentStyleSet.foregroundColor)
+                .withForegroundColor(currentStyleSet.backgroundColor)
+
+        (0 until progressBarState.width).forEach { idx ->
+            tileGraphics.draw(Tile.createCharacterTile(' ', invertedStyleSet), Position.create(idx, 0))
+        }
+
     }
 }
