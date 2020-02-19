@@ -3,13 +3,13 @@ package org.hexworks.zircon.examples.components;
 import org.hexworks.zircon.api.component.ToggleButton;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.uievent.ComponentEventType;
-import org.hexworks.zircon.examples.components.impl.TwoColumnComponentExample;
+import org.hexworks.zircon.examples.base.TwoColumnComponentExampleJava;
 
 import static org.hexworks.zircon.api.ComponentDecorations.*;
 import static org.hexworks.zircon.api.Components.toggleButton;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
 
-public class ToggleButtonsExampleJava extends TwoColumnComponentExample {
+public class ToggleButtonsExampleJava extends TwoColumnComponentExampleJava {
 
     public static void main(String[] args) {
         new ToggleButtonsExampleJava().show("Toggle Buttons Example");

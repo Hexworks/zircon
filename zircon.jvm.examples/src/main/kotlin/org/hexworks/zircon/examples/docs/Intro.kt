@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.extensions.box
 import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.examples.animations.AnimationExample
+import org.hexworks.zircon.examples.animations.HexworksSkullExampleJava
 
 object Intro {
 
@@ -33,7 +33,7 @@ object Intro {
         val introScreen = Screen.create(grid)
 
         val animBuilder = AnimationResource.loadAnimationFromStream(
-                AnimationExample::class.java.getResourceAsStream("/animations/skull.zap"),
+                HexworksSkullExampleJava::class.java.getResourceAsStream("/animations/skull.zap"),
                 tileset).withLoopCount(0)
         for (i in 0 until animBuilder.totalFrameCount) {
             animBuilder.addPosition(Position.create(2, 5))
