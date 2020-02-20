@@ -76,7 +76,7 @@ dependencies {
 
 ### Basic Usage
 
-Once you have the dependencies set up you can start using *Zircon* by crating a `TileGrid`:
+Once you have the dependencies set up you can start using *Zircon* by creating a `TileGrid`:
 
 ```java
 public class Main {
