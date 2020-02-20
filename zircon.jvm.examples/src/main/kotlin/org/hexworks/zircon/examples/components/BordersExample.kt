@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.integration
+package org.hexworks.zircon.examples.components
 
 
 import org.hexworks.zircon.api.CP437TilesetResources
@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderType
 
-object BordersTest {
+object BordersExample {
 
     private val tileset = CP437TilesetResources.hack64x64()
 

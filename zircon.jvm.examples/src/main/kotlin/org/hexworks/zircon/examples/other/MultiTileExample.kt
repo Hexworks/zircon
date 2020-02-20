@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.hexworks.zircon.internal.integration
+package org.hexworks.zircon.examples.other
 
 
 import org.hexworks.zircon.api.CP437TilesetResources
@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.screen.Screen
 
-object MultiTileTest {
+object MultiTileExample {
 
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rexPaint20x20()

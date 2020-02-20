@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.hexworks.zircon.internal.integration
+package org.hexworks.zircon.examples.dialogs
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 
@@ -26,7 +26,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
-object ModalTest {
+object ModalExample {
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val theme = ColorThemes.arc()

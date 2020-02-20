@@ -1,46 +1,33 @@
 package org.hexworks.zircon.examples.playground;
 
-import org.hexworks.zircon.api.CP437TilesetResources;
-import org.hexworks.zircon.api.color.ANSITileColor;
-import org.hexworks.zircon.api.data.Position;
-import org.hexworks.zircon.api.data.Tile;
-import org.hexworks.zircon.api.tileset.Tileset;
-import org.hexworks.zircon.internal.tileset.SwingTilesetLoader;
+import org.hexworks.zircon.api.ComponentAlignments;
+import org.hexworks.zircon.api.ComponentDecorations;
+import org.hexworks.zircon.api.Functions;
+import org.hexworks.zircon.api.component.AttachedComponent;
+import org.hexworks.zircon.api.component.ComponentAlignment;
+import org.hexworks.zircon.api.graphics.BoxType;
+import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.examples.base.Defaults;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import static org.hexworks.zircon.api.Components.button;
+import static org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode;
 
 public class JavaPlayground {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        // you create an image and the corresponding graphics
-        final BufferedImage image = new BufferedImage(800, 600, BufferedImage.TRANSLUCENT);
-        final Graphics2D graphics = image.createGraphics();
+        Screen screen = Defaults.displayScreen();
 
-        // you load the tileset you want
-        SwingTilesetLoader loader = new SwingTilesetLoader();
-        final Tileset<Graphics2D> tileset = loader.loadTilesetFrom(CP437TilesetResources.rexPaint20x20());
-
-        // you draw tiles on the image using the graphics
-        tileset.drawTile(Tile.newBuilder()
-                .withCharacter('a')
-                .withBackgroundColor(ANSITileColor.RED)
-                .withForegroundColor(ANSITileColor.WHITE)
-                .build(), graphics, Position.create(0, 0));
-
-        tileset.drawTile(Tile.newBuilder()
-                .withCharacter('b')
-                .withBackgroundColor(ANSITileColor.GREEN)
-                .withForegroundColor(ANSITileColor.YELLOW)
-                .build(), graphics, Position.create(1, 0));
-
-        // and you write the result into a file
-        ImageIO.write(image, "png", new File("saved.png"));
-
+        AttachedComponent attachment = screen.addComponent(button()
+                .withText("Click Me!") // 1
+                .withAlignment(ComponentAlignments.alignmentWithin(screen, ComponentAlignment.CENTER)) // 2
+                // 3
+                .withDecorations(ComponentDecorations // 4
+                        .box(BoxType.SINGLE, "", RenderingMode.INTERACTIVE)) // 5
+                .build());
+        attachment.onActivated(Functions.fromConsumer((event) -> { // 6
+            attachment.detach(); // 7
+        }));
     }
 
 }

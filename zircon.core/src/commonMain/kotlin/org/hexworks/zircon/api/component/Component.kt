@@ -62,6 +62,7 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
 
     /**
      * The bounds of this [Component] relative to its parent.
+     * TODO: do we need this here? Can this be moved to `InternalComponent`?
      */
     val relativeBounds: Rect
 
@@ -89,6 +90,8 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     fun clearCustomStyle()
 
     fun onActivated(fn: (ComponentEvent) -> Unit): Subscription
+
+    fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription
 
     fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription
 

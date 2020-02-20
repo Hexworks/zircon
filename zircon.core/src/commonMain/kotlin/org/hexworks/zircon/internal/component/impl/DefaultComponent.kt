@@ -270,6 +270,10 @@ abstract class DefaultComponent(
         return processComponentEvents(ComponentEventType.ACTIVATED, fn)
     }
 
+    final override fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
+        return processComponentEvents(ComponentEventType.DEACTIVATED, fn)
+    }
+
     final override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.FOCUS_GIVEN, fn)
     }
