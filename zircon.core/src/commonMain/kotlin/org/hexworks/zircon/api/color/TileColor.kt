@@ -74,6 +74,8 @@ interface TileColor : Cacheable {
 
     fun withBlue(blue: Int): TileColor
 
+    fun interpolateTo(other: TileColor): ColorInterpolator
+
     companion object {
 
         /**

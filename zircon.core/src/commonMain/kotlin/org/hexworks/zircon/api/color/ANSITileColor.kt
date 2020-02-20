@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.color
 
+import org.hexworks.zircon.internal.color.DefaultColorInterpolator
 import org.hexworks.zircon.internal.color.DefaultTileColor
 
 /**
@@ -62,5 +63,5 @@ enum class ANSITileColor(final override val red: Int,
 
     override fun withBlue(blue: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
 
-
+    override fun interpolateTo(other: TileColor): ColorInterpolator = DefaultColorInterpolator(this, other)
 }
