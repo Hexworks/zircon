@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
 object FocusHandlingExample {
 
-    // TODO: focus handling is buggy, it won't take away highlight from previously focused
     @JvmStatic
     fun main(args: Array<String>) {
 

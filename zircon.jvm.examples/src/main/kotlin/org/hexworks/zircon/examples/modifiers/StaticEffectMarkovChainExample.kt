@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.util.markovchain.MarkovChain
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import java.util.*
 
-// TODO: not working
 object StaticEffectMarkovChainExample {
 
     private val tileset = CP437TilesetResources.rexPaint20x20()

@@ -74,7 +74,7 @@ class DefaultVBox(
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
-            require(availableSpace.withRelativeHeight(-spacing).containsBoundable(component.rect)) {
+            require(availableSpace.containsBoundable(component.rect)) {
                 "There is not enough space ($availableSpace) left for the component: $component."
             }
 

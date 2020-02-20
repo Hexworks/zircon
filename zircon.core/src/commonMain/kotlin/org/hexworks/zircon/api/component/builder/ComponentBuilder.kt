@@ -1,14 +1,14 @@
 package org.hexworks.zircon.api.component.builder
 
+import org.hexworks.zircon.api.ComponentAlignments.alignmentAround
+import org.hexworks.zircon.api.ComponentAlignments.alignmentWithin
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.alignmentAround
-import org.hexworks.zircon.api.extensions.alignmentWithin
-import org.hexworks.zircon.api.extensions.positionalAlignment
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource

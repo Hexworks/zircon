@@ -7,6 +7,8 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
@@ -14,7 +16,8 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class BoxDecorationRenderer(
         val boxType: BoxType = BoxType.SINGLE,
-        private val titleProperty: Property<String> = createPropertyFrom("")
+        private val titleProperty: Property<String> = createPropertyFrom(""),
+        private val renderingMode: RenderingMode = NON_INTERACTIVE
 ) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
@@ -28,7 +31,7 @@ data class BoxDecorationRenderer(
             context.component.title
         } else titleProperty.value
         val size = tileGraphics.size
-        val style = context.currentStyle
+        val style = context.fetchStyleFor(renderingMode)
         tileGraphics.draw(BoxBuilder.newBuilder()
                 .withBoxType(boxType)
                 .withSize(size)

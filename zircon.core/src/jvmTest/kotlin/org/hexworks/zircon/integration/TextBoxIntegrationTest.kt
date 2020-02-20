@@ -2,9 +2,9 @@ package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.screen.Screen
 
 class TextBoxIntegrationTest : ComponentIntegrationTestBase() {

@@ -10,9 +10,9 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType

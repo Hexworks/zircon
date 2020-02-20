@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.renderer
 
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -11,4 +12,7 @@ class ComponentRenderContext<out T : Component>(val component: T) : RenderContex
 
     val currentStyle: StyleSet
         get() = componentStyle.fetchStyleFor(component.componentState)
+
+    val theme: ColorTheme
+        get() = component.theme
 }

@@ -3,18 +3,17 @@ package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.halfBlock
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.decoration.HalfBlockDecorationRenderer
 
 object PanelsExample {
 
@@ -69,7 +68,7 @@ object PanelsExample {
 
         screen.addComponent(Components.panel()
                 .withDecorations(
-                        HalfBlockDecorationRenderer(),
+                        halfBlock(),
                         shadow())
                 .withSize(18, 5)
                 .withAlignment(positionalAlignment(21, 15)))

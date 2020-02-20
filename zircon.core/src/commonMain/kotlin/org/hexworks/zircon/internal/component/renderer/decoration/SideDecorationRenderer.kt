@@ -1,7 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toCharacterTile
@@ -9,7 +13,9 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class SideDecorationRenderer(
         private val leftSideCharacter: Char = '[',
-        private val rightSideCharacter: Char = ']') : ComponentDecorationRenderer {
+        private val rightSideCharacter: Char = ']',
+        private val renderingMode: RenderingMode
+) : ComponentDecorationRenderer {
 
     override val offset = Position.create(1, 0)
 
@@ -20,6 +26,6 @@ data class SideDecorationRenderer(
             tileGraphics.draw(leftSideCharacter.toCharacterTile(), Position.create(0, idx))
             tileGraphics.draw(rightSideCharacter.toCharacterTile(), Position.create(tileGraphics.size.width - 1, idx))
         }
-        tileGraphics.applyStyle(context.currentStyle)
+        tileGraphics.applyStyle(context.fetchStyleFor(renderingMode))
     }
 }

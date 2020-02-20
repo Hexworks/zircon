@@ -6,15 +6,14 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Delay
-import org.hexworks.zircon.examples.base.Defaults
-import org.hexworks.zircon.examples.base.displayDefaultScreen
+import org.hexworks.zircon.examples.base.displayScreen
 
 object DelayedExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = displayDefaultScreen()
+        val screen = displayScreen()
 
         val text = "This text is typed like on a typewriter"
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hexworks.zircon.api.Functions.*;
 import static org.hexworks.zircon.examples.base.Defaults.*;
 
 public abstract class ComponentExampleJava {
@@ -60,7 +61,7 @@ public abstract class ComponentExampleJava {
         Collections.addAll(themes, ColorThemeResource.values());
         MultiSelect<ColorThemeResource> themeSelector = Fragments.multiSelect(controls.getWidth() - 4, themes)
                 .withDefaultSelected(THEME)
-                .withCallback(Functions.fromBiConsumer((oldTheme, newTheme) -> {
+                .withCallback(fromBiConsumer((oldTheme, newTheme) -> {
                     screen.setTheme(newTheme.getTheme());
                 }))
                 .build();
@@ -71,7 +72,10 @@ public abstract class ComponentExampleJava {
 
         MultiSelect<TilesetResource> tilesetSelector = Fragments.multiSelect(controls.getWidth() - 4, TILESETS)
                 .withDefaultSelected(TILESET)
-                .withCallback(Functions.fromBiConsumer((oldTileset, newTileset) -> {
+//                .withToStringMethod(fromConsumer((TilesetResource tileset) -> {
+//                    tileset.
+//                }))
+                .withCallback(fromBiConsumer((oldTileset, newTileset) -> {
                     container.setTileset(newTileset);
                 }))
                 .build();

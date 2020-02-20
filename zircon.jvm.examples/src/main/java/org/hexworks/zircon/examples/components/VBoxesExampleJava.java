@@ -36,7 +36,7 @@ public class VBoxesExampleJava extends OneColumnComponentExampleJava {
                 .build();
 
         HBox container = hbox()
-                .withSize(box.getContentSize().minus(Size.create(1, 3)))
+                .withSize(box.getContentSize().minus(Size.create(1, 2)))
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .withSpacing(1)
                 .build();

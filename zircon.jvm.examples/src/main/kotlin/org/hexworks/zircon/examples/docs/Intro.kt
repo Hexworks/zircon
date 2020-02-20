@@ -10,8 +10,8 @@ import org.hexworks.zircon.api.animation.AnimationResource
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.animations.HexworksSkullExampleJava

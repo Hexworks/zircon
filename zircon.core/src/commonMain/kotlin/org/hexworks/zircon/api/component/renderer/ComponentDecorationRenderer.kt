@@ -1,5 +1,8 @@
 package org.hexworks.zircon.api.component.renderer
 
+import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
@@ -23,4 +26,11 @@ interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRe
      */
     val occupiedSize: Size
 
+    /**
+     * When in [INTERACTIVE] mode the component decorations will react to [ComponentState]s.
+     * In [NON_INTERACTIVE] mode they will use [ComponentState.DEFAULT] only.
+     */
+    enum class RenderingMode {
+        INTERACTIVE, NON_INTERACTIVE
+    }
 }

@@ -297,14 +297,15 @@ abstract class DefaultComponent(
     }
 
     private fun updateComponentState(eventType: EventType) {
-        logger.debug("Updating component state $componentState with event $eventType (focused: ${hasFocus.value}).")
-        componentStateTransitions[ComponentStateDescriptor(
+        val key = ComponentStateKey(
                 oldState = componentState,
                 isFocused = hasFocus.value,
-                event = eventType)]?.let {
-            logger.debug("Component state was updated from $componentState to $it after event $eventType")
+                eventType = eventType)
+        logger.debug("Updating component state with $key.")
+        COMPONENT_STATE_TRANSITIONS[key]?.let {
+            logger.debug("Component state was updated to state $it.")
             componentState = it
-        }
+        } ?: logger.debug("There was no corresponding key, no update happened.")
     }
 
     enum class EventType {
@@ -312,26 +313,34 @@ abstract class DefaultComponent(
     }
 
 
-    data class ComponentStateDescriptor(
+    data class ComponentStateKey(
             val oldState: ComponentState,
             val isFocused: Boolean,
-            val event: EventType)
+            val eventType: EventType)
 
     companion object {
 
-        protected val componentStateTransitions = mapOf(
-                ComponentStateDescriptor(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
-                ComponentStateDescriptor(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
-                ComponentStateDescriptor(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,
-                ComponentStateDescriptor(HIGHLIGHTED, true, ACTIVATED) to ACTIVE,
-                ComponentStateDescriptor(HIGHLIGHTED, false, MOUSE_EXITED) to DEFAULT,
-                ComponentStateDescriptor(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
-                ComponentStateDescriptor(ACTIVE, true, MOUSE_EXITED) to FOCUSED,
-                ComponentStateDescriptor(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
-                ComponentStateDescriptor(ACTIVE, true, DEACTIVATED) to FOCUSED,
-                ComponentStateDescriptor(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
-                ComponentStateDescriptor(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
-                ComponentStateDescriptor(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
-                ComponentStateDescriptor(FOCUSED, true, ACTIVATED) to ACTIVE)
+        protected val COMPONENT_STATE_TRANSITIONS = mapOf(
+                ComponentStateKey(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
+                ComponentStateKey(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateKey(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,
+                ComponentStateKey(HIGHLIGHTED, true, ACTIVATED) to ACTIVE,
+                ComponentStateKey(HIGHLIGHTED, false, MOUSE_EXITED) to DEFAULT,
+                ComponentStateKey(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
+                ComponentStateKey(ACTIVE, true, MOUSE_EXITED) to FOCUSED,
+                ComponentStateKey(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
+                ComponentStateKey(ACTIVE, true, DEACTIVATED) to FOCUSED,
+                ComponentStateKey(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
+                ComponentStateKey(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
+                ComponentStateKey(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
+                ComponentStateKey(FOCUSED, true, ACTIVATED) to ACTIVE,
+                // SPECIAL CASES
+
+                // this particular case can happen when the user is pressing a button which
+                // on its action callback removes the focus from it
+                ComponentStateKey(ACTIVE, false, DEACTIVATED) to HIGHLIGHTED,
+                // this happens when a component is removed when clicked in a HBox and
+                // the next (to its right) component gets realigned
+                ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED)
     }
 }

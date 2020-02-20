@@ -12,8 +12,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent

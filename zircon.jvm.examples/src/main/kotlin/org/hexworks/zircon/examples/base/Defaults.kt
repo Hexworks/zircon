@@ -1,7 +1,8 @@
 package org.hexworks.zircon.examples.base
 
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.SwingApplications.startTileGrid
+import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size.Companion.create
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -22,11 +23,15 @@ val TILESET = TILESETS[RANDOM.nextInt(TILESETS.size)]
 
 val GRID_SIZE = create(60, 40)
 
-fun displayDefaultScreen() = SwingApplications.startTileGrid(AppConfig.newBuilder()
-        .withDefaultTileset(TILESET)
-        .withSize(GRID_SIZE)
+fun displayScreen(
+        theme: ColorTheme = THEME.getTheme(),
+        tileset: TilesetResource = TILESET
+) = startTileGrid(newBuilder()
+        .withDefaultTileset(tileset)
+        .enableBetaFeatures()
+        .withSize(Defaults.GRID_SIZE)
         .build())
         .toScreen().apply {
-            theme = THEME.getTheme()
+            this.theme = theme
             display()
         }

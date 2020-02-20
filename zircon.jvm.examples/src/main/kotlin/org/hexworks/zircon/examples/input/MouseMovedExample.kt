@@ -1,13 +1,12 @@
 package org.hexworks.zircon.examples.input
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentAlignments.alignmentWithin
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.Components
-
-import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.component.ComponentAlignment.CENTER
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.examples.base.displayScreen
 
 object MouseMovedExample {
 
@@ -15,13 +14,12 @@ object MouseMovedExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid()
-
-        val screen = Screen.create(tileGrid)
+        val screen = displayScreen()
 
         val panel = Components.panel()
-                .withSize(Size.create(4, 5))
-                .withDecorations(box())
+                .withSize(Size.create(20, 5))
+                .withAlignment(alignmentWithin(screen, CENTER))
+                .withDecorations(box(title = "Hover me"))
                 .build()
 
         screen.addComponent(panel)
@@ -30,8 +28,6 @@ object MouseMovedExample {
             println(event)
         }
 
-        screen.display()
-        screen.theme = ColorThemes.adriftInDreams()
     }
 
 }

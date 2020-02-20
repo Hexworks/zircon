@@ -33,6 +33,7 @@ class SubTileGraphics(
 
     override val tiles: Map<Position, Tile>
         get() = state.tiles
+
     override val state: TileGraphicsState
         get() {
             val (tiles, tileset) = backend.state
