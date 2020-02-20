@@ -6,11 +6,11 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position.Companion
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.alignment.AroundAlignmentStrategy
 import org.hexworks.zircon.internal.component.alignment.PositionalAlignmentStrategy
 import org.hexworks.zircon.internal.component.alignment.WithinAlignmentStrategy
+import kotlin.jvm.JvmStatic
 
 object ComponentAlignments {
 
@@ -21,6 +21,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of the [tileGrid].
      */
+    @JvmStatic
     fun alignmentWithin(tileGrid: TileGrid,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return WithinAlignmentStrategy(
@@ -35,6 +36,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of the [container].
      */
+    @JvmStatic
     fun alignmentWithin(container: Container,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return WithinAlignmentStrategy(
@@ -49,6 +51,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of [component].
      */
+    @JvmStatic
     fun alignmentAround(component: Component,
                         alignmentType: ComponentAlignment): AlignmentStrategy {
         return AroundAlignmentStrategy(
@@ -61,6 +64,7 @@ object ComponentAlignments {
      * within another one relative to its top left corner
      * using the given [x],[y] coordinates.
      */
+    @JvmStatic
     fun positionalAlignment(x: Int, y: Int): AlignmentStrategy {
         return positionalAlignment(Position.create(x, y))
     }
@@ -70,6 +74,7 @@ object ComponentAlignments {
      * within another one relative to its top left corner
      * using the given [Position].
      */
+    @JvmStatic
     fun positionalAlignment(position: Position): AlignmentStrategy {
         return PositionalAlignmentStrategy(position)
     }

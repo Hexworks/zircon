@@ -20,13 +20,13 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 abstract class ComponentExampleKotlin(
-        private val size: Size = Defaults.GRID_SIZE
+        private val size: Size = GRID_SIZE
 ) {
 
     /**
      * Creates the container for the examples.
      */
-    fun createExampleContainer(screen: Screen, title: String): VBox {
+    private fun createExampleContainer(screen: Screen, title: String): VBox {
 
         val container = vbox()
                 .withSize(size)
@@ -46,7 +46,7 @@ abstract class ComponentExampleKotlin(
 
         val themes = ColorThemeResource.values().toList()
         val themeSelector = multiSelect(controls.width - 4, themes)
-                .withDefaultSelected(Defaults.THEME)
+                .withDefaultSelected(THEME)
                 .withCallback { _, newTheme ->
                     screen.theme = newTheme.getTheme()
                 }.build()
@@ -55,8 +55,8 @@ abstract class ComponentExampleKotlin(
         controls.addComponent(label())
 
         controls.addComponent(label().withText("Pick a tileset"))
-        val tilesetSelector = multiSelect(controls.width - 4, Defaults.TILESETS)
-                .withDefaultSelected(Defaults.TILESET)
+        val tilesetSelector = multiSelect(controls.width - 4, TILESETS)
+                .withDefaultSelected(TILESET)
                 .withCallback { _, newTileset ->
                     container.tileset = newTileset
                 }

@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 abstract class OneColumnComponentExampleKotlin(
-        size: Size = Defaults.GRID_SIZE
+        size: Size = GRID_SIZE
 ) : ComponentExampleKotlin(size) {
 
     override fun addExamples(exampleArea: HBox) {

@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.hexworks.zircon.internal.integration
+package org.hexworks.zircon.examples.components
 
 import org.hexworks.cobalt.databinding.api.binding.Binding
 
@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 
-object DataBindingTest {
+object OldDataBindingExample {
 
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rexPaint20x20()

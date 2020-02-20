@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.integration
+package org.hexworks.zircon.examples.components
 
 
 import org.hexworks.zircon.api.CP437TilesetResources
@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.screen.Screen
 
-object ComponentAlignmentTest {
+object ComponentAlignmentExample {
 
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.rogueYun16x16()

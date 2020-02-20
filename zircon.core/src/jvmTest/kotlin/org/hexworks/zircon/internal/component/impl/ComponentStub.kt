@@ -100,6 +100,10 @@ class ComponentStub(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
