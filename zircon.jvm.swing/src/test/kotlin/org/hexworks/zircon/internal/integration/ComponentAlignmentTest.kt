@@ -17,8 +17,8 @@ import org.hexworks.zircon.api.component.ComponentAlignment.TOP_CENTER
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_LEFT
 import org.hexworks.zircon.api.component.ComponentAlignment.TOP_RIGHT
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.shadow
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.screen.Screen
 
 object ComponentAlignmentTest {

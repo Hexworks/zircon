@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.ComponentDecorations.box
 
 object DelayedTileStringExample {
 

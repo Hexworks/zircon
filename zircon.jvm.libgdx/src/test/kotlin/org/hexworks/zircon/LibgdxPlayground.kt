@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 

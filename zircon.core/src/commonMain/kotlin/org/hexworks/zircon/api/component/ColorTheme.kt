@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.color.TileColor
 
 interface ColorTheme {
     val isDefault: Boolean
-        get() = this == ColorThemes.default()
+        get() = this == ColorThemes.defaultTheme()
     val primaryForegroundColor: TileColor
     val secondaryForegroundColor: TileColor
     val primaryBackgroundColor: TileColor

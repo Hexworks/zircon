@@ -17,7 +17,6 @@ import org.hexworks.zircon.api.data.Tile
  */
 interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
-    // TODO: delete tile when drawing empty tile
     /**
      * Draws the given [Tile] on this [TileGraphics] at the given [drawPosition].
      * Drawing the empty tile ([Tile.empty]) will result in the deletion of the

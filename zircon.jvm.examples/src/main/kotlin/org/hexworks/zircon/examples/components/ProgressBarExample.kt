@@ -3,15 +3,15 @@ package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
-import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.screen.Screen
+import kotlin.concurrent.thread
 
 object ProgressBarExample {
 
@@ -37,16 +37,17 @@ object ProgressBarExample {
 
         val progressBar = Components.progressBar()
                 .withRange(100)
-                .withNumberOfSteps(10)
-                .withAlignment(positionalAlignment(0, 5))
+                .withNumberOfSteps(25)
+                .withPosition(0, 5)
                 .withDecorations(box())
                 .withSize(Size.create(25, 3))
                 .build()
 
         val progressBarWithPercentValue = Components.progressBar()
-                .withNumberOfSteps(20)
-                .withAlignment(positionalAlignment(0, 10))
                 .withRange(100)
+                .withNumberOfSteps(23)
+                .withPosition(0, 10)
+                .withDisplayPercentValueOfProgress(true)
                 .withDecorations(box())
                 .build()
 
@@ -54,11 +55,23 @@ object ProgressBarExample {
         panel.addComponent(progressBar)
         panel.addComponent(progressBarWithPercentValue)
 
-        progressBar.progress = 60.0
-        progressBarWithPercentValue.progress = 90.0
+        progressBar.progress = 1.0
+        progressBarWithPercentValue.progress = 1.0
 
         screen.display()
         screen.theme = theme
+
+        thread {
+            var count = 0
+            while (progressBar.progress < 100) {
+                Thread.sleep(200)
+                if (count % 2 == 0) {
+                    progressBar.increment()
+                }
+                progressBarWithPercentValue.increment()
+                count++
+            }
+        }
     }
 
 }

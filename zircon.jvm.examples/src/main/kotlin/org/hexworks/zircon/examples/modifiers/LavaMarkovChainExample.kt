@@ -72,6 +72,7 @@ object LavaMarkovChainExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
+
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(80, 40))

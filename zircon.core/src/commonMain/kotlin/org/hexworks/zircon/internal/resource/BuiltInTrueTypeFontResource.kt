@@ -1,9 +1,12 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
+
 /**
  * This enum contains the metadata for the built-in True Type fonts.
  */
-internal enum class BuiltInTrueTypeFontResource(private val fileName: String,
+enum class BuiltInTrueTypeFontResource(private val fileName: String,
                                        private val widthFn: (Int) -> Int) {
 
     /**
@@ -31,16 +34,31 @@ internal enum class BuiltInTrueTypeFontResource(private val fileName: String,
     ATT("att", { it }),
     ATT_NARROW("att_2x", { it.div(2) });
 
-
-    fun toTilesetResource(height: Int) = TrueTypeTilesetResource(
+    fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
             path = "$FONTS_DIR/$fileName.$FONTS_EXT",
             width = widthFn.invoke(height),
             height = height,
-            tilesetSourceType = TilesetSourceType.JAR)
-
+            tilesetSourceType = TilesetSourceType.JAR,
+            name = name)
 
     companion object {
+
         const val FONTS_DIR = "/monospace_fonts"
         const val FONTS_EXT = "ttf"
+
+        @JvmStatic
+        fun squareFonts(height: Int): List<TilesetResource> = values()
+                .filter { it.widthFn(1) == 1 }
+                .map { it.toTilesetResource(height) }
+
+        @JvmStatic
+        fun wideFonts(height: Int): List<TilesetResource> = values()
+                .filter { it.widthFn(2) > 2 }
+                .map { it.toTilesetResource(height) }
+
+        @JvmStatic
+        fun narrowFonts(height: Int): List<TilesetResource> = values()
+                .filter { it.widthFn(2) < 2 }
+                .map { it.toTilesetResource(height) }
     }
 }

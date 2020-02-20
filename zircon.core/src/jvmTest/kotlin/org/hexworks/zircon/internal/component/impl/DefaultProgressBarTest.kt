@@ -74,7 +74,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         val state = target.getProgressBarState()
         assertThat(state.currentProgressInPercent)
                 .isEqualTo(EXPECTED_PROGRESS_50_PERCENT)
-        assertThat(state.width)
+        assertThat(state.currentProgression)
                 .isEqualTo(PROGRESS_BAR_SIZE_5)
     }
 

@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.examples.base.displayDefaultScreen
+import org.hexworks.zircon.examples.base.displayScreen
 import kotlin.random.Random
 
 object ModifiersExampleKotlin {
@@ -26,7 +26,7 @@ object ModifiersExampleKotlin {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = displayDefaultScreen()
+        val screen = displayScreen()
 
         screen.cursorPosition = Position.create(5, 5)
 
@@ -49,7 +49,7 @@ object ModifiersExampleKotlin {
         screen.putTile(randomTile().withAddedModifiers(Modifiers.delay(2000L)))
     }
 
-    fun randomTile() = Tile.createCharacterTile('x', StyleSet.create(
+    private fun randomTile() = Tile.createCharacterTile('x', StyleSet.create(
             foregroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)],
             backgroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]))
 }

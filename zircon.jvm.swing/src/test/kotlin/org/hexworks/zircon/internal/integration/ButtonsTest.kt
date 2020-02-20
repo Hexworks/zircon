@@ -3,20 +3,17 @@ package org.hexworks.zircon.internal.integration
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.halfBlock
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
-import org.hexworks.zircon.internal.component.renderer.decoration.HalfBlockDecorationRenderer
-import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
 
 object ButtonsTest {
 
@@ -35,37 +32,37 @@ object ButtonsTest {
 
         val panel = Components.panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
-                .withSize(Size.create(30, 28))
-                .withPosition(Position.create(29, 1))
+                .withSize(30, 28)
+                .withPosition(29, 1)
                 .build()
         screen.addComponent(panel)
 
         val simpleBtn = Components.button()
                 .withText("Button")
                 .withDecorations(side())
-                .withPosition(Position.create(1, 3))
+                .withPosition(1, 3)
         val boxedBtn = Components.button()
                 .withText("Boxed Button")
                 .withDecorations(box())
-                .withPosition(Position.create(1, 5))
+                .withPosition(1, 5)
         val tooLongBtn = Components.button()
                 .withText("Too long name for button")
                 .withDecorations(box(), shadow())
-                .withPosition(Position.create(1, 9))
-                .withSize(Size.create(10, 4))
+                .withPosition(1, 9)
+                .withSize(10, 4)
         val overTheTopBtn = Components.button()
                 .withText("Over the top button")
                 .withDecorations(
-                        HalfBlockDecorationRenderer(),
-                        BoxDecorationRenderer(BoxType.DOUBLE),
-                        ShadowDecorationRenderer())
-                .withPosition(Position.create(1, 14))
+                        halfBlock(),
+                        box(BoxType.DOUBLE),
+                        shadow())
+                .withPosition(1, 14)
         val halfBlockBtn = Components.button()
                 .withText("Half block button")
                 .withDecorations(
-                        HalfBlockDecorationRenderer(),
-                        ShadowDecorationRenderer())
-                .withPosition(Position.create(1, 23))
+                        halfBlock(),
+                        shadow())
+                .withPosition(1, 23)
 
 
         screen.addComponent(simpleBtn)

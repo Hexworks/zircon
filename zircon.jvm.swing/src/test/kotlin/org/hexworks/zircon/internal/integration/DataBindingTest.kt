@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.MouseEventType

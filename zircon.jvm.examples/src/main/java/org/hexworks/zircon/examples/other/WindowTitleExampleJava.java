@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.resource.TilesetResource;
 
-public class WindowTitleExample {
+public class WindowTitleExampleJava {
 
     private static final Size GRID_SIZE = Size.create(20, 10);
     private static final TilesetResource TILESET = CP437TilesetResources.taffer20x20();

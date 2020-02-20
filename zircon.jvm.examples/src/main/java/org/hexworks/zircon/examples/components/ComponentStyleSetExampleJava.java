@@ -19,7 +19,7 @@ import static org.hexworks.zircon.api.color.ANSITileColor.*;
 public class ComponentStyleSetExampleJava extends OneColumnComponentExampleJava {
 
     public static void main(String[] args) {
-        new ComponentStyleSetExampleJava().show("Moving a Component");
+        new ComponentStyleSetExampleJava().show("Component Style Set");
     }
 
     @Override

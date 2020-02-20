@@ -27,7 +27,7 @@ data class AppConfigBuilder(
         private var clipboardAvailable: Boolean = true,
         private var defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
         private var defaultGraphicalTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
-        private var defaultColorTheme: ColorTheme = ColorThemes.default(),
+        private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
