@@ -33,7 +33,7 @@ class VerticalSliderBuilder(
     }
 
     fun withNumberOfSteps(steps: Int) = also {
-        require(steps in 1..maxValue) { "Number of steps must be greater 0 and smaller than the maxValue" }
+        require(steps in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
         this.numberOfSteps = steps
         contentSize = contentSize
                 .withHeight(max(steps + 1, contentSize.height))
