@@ -37,7 +37,7 @@ Need info? Check the [Docs][zircon-docs]
 
 If you want to start working with Zircon you can either add it to your project as a Maven dependency or you can try out the skeleton projects ([Java](https://github.com/Hexworks/zircon.skeleton.java), [Kotlin](https://github.com/Hexworks/zircon.skeleton.kotlin)) which come with batteries included.
 
-The official [documentation site][zircon-docs] is also a great place to start. The examples are also documented on the [Zircon Examples](https://hexworks.org/zircon/examples/) page *(under construction)*.
+The official [documentation site][zircon-docs] contains a lot of information. The examples are also documented on the [Zircon Examples](https://hexworks.org/zircon/examples/) page *(under construction)*, and the best place to start is the [Zircon Crash Course](https://hexworks.org/zircon/docs/2018-07-18-a-zircon-crash-course).
 
 If you like learning by doing check out the source of *Zircon* from [here](https://github.com/Hexworks/zircon) and you can run the examples for yourself. If you are using *Java* start [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples/src/main/java/org/hexworks/zircon/examples). Alternatively if you use *Kotlin* the code can be found [here](https://github.com/Hexworks/zircon/tree/master/zircon.jvm.examples/src/main/kotlin/org/hexworks/zircon).
 
