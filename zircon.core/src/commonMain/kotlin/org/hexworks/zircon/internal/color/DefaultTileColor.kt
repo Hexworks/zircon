@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.color
 
+import org.hexworks.zircon.api.color.ColorInterpolator
 import org.hexworks.zircon.api.color.TileColor
 import kotlin.math.max
 import kotlin.math.min
@@ -34,6 +35,14 @@ internal data class DefaultTileColor(override val red: Int,
                 min((g / factor).toInt(), 255),
                 min((b / factor).toInt(), 255),
                 alpha)
+    }
+
+    override fun desaturate(factor: Double): TileColor {
+        val l = 0.3 * red + 0.6 * green + 0.1 * blue
+        val r = red + factor * (l - red)
+        val g = green + factor * (l - green)
+        val b = blue + factor * (l - blue)
+        return DefaultTileColor(r.toInt(), g.toInt(), b.toInt(), alpha)
     }
 
     override fun shade(factor: Double): TileColor {
@@ -71,4 +80,14 @@ internal data class DefaultTileColor(override val red: Int,
                 blue = (blue * (1f + percentage)).toInt(),
                 alpha = alpha)
     }
+
+    override fun withAlpha(alpha: Int) = copy(alpha = alpha)
+
+    override fun withRed(red: Int) = copy(red = red)
+
+    override fun withGreen(green: Int) = copy(green = green)
+
+    override fun withBlue(blue: Int) = copy(blue = blue)
+
+    override fun interpolateTo(other: TileColor): ColorInterpolator = DefaultColorInterpolator(this, other)
 }

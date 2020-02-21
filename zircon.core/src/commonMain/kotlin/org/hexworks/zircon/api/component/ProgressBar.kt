@@ -32,4 +32,17 @@ interface ProgressBar : Component {
      */
     val progressProperty: Property<Double>
 
+    fun increment() = incrementBy(1)
+
+    fun decrement() = decrementBy(1)
+
+    fun incrementBy(value: Int) {
+        progressProperty.value = progressProperty.value + value
+    }
+
+    fun decrementBy(value: Int) {
+        progressProperty.value = progressProperty.value - value
+    }
+
+
 }

@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.TileGraphicsState
+import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 
 /**
  * Represents a sub-section of a [TileGraphics]. This class can be used to
@@ -25,13 +26,14 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
 @Suppress("OverridingDeprecatedMember")
 class SubTileGraphics(
         private val rect: Rect,
-        private val backend: TileGraphics)
-    : TileGraphics {
+        private val backend: InternalTileGraphics)
+    : InternalTileGraphics {
 
     override val size = rect.size
 
     override val tiles: Map<Position, Tile>
         get() = state.tiles
+
     override val state: TileGraphicsState
         get() {
             val (tiles, tileset) = backend.state
@@ -43,7 +45,7 @@ class SubTileGraphics(
                     }.toMap(), tileset = tileset, size = size)
         }
 
-    override val tilesetProperty = object: Property<TilesetResource> {
+    override val tilesetProperty = object : Property<TilesetResource> {
         override var value: TilesetResource
             get() = backend.tileset
             set(_) {}
@@ -69,6 +71,10 @@ class SubTileGraphics(
         }
 
         override fun <S : Any> bind(other: Property<S>, updateWhenBound: Boolean, converter: IsomorphicConverter<S, TilesetResource>): Binding<TilesetResource> {
+            restrictOperation()
+        }
+
+        override fun transformValue(transformer: (TilesetResource) -> TilesetResource): ValueValidationResult<TilesetResource> {
             restrictOperation()
         }
 
@@ -116,12 +122,6 @@ class SubTileGraphics(
 
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
         draw(tileMap, drawPosition, size)
-    }
-
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        if (size.containsPosition(position)) {
-            backend.transformTileAt(position + offset, tileTransformer)
-        }
     }
 
     override fun fill(filler: Tile) {

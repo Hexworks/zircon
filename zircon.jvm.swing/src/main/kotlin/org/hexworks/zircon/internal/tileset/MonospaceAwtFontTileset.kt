@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
-import org.hexworks.cobalt.core.api.Identifier
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
@@ -18,7 +18,7 @@ import java.io.File
 class MonospaceAwtFontTileset(private val resource: TilesetResource)
     : Tileset<Graphics2D> {
 
-    override val id: Identifier = IdentifierFactory.randomIdentifier()
+    override val id: UUID = UUIDFactory.randomUUID()
     override val targetType = Graphics2D::class
     override val width: Int
         get() = resource.width

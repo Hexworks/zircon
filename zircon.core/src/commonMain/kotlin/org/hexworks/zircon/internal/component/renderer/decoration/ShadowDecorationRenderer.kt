@@ -10,7 +10,9 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.shape.LineFactory
 
-data class ShadowDecorationRenderer(private val shadowChar: Char = DEFAULT_SHADOW_CHAR) : ComponentDecorationRenderer {
+data class ShadowDecorationRenderer(
+        private val shadowChar: Char = DEFAULT_SHADOW_CHAR
+) : ComponentDecorationRenderer {
 
     override val offset = Position.create(0, 0)
 
@@ -39,6 +41,7 @@ data class ShadowDecorationRenderer(private val shadowChar: Char = DEFAULT_SHADO
     }
 
     companion object {
+
         const val DEFAULT_SHADOW_CHAR = Symbols.BLOCK_SPARSE
     }
 }

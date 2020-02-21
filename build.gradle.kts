@@ -4,10 +4,5 @@ allprojects {
         mavenCentral()
         jcenter()
         kotlinx()
-        jitpack()
     }
-}
-
-subprojects {
-    apply<MavenPublishPlugin>()
 }

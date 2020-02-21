@@ -5,7 +5,7 @@
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 class LibgdxImageDictionaryTileset(resource: TilesetResource)
     : Tileset<SpriteBatch> {
 
-    override val id = IdentifierFactory.randomIdentifier()
+    override val id = UUIDFactory.randomUUID()
     override val targetType = SpriteBatch::class
     override val width = 1
     override val height = 1

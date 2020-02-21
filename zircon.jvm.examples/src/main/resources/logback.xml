@@ -7,18 +7,15 @@
         </encoder>
     </appender>
 
-    <!-- Logging is set to info by default -->
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <!-- You can either set logging level for whole packages -->
     <logger name="org.hexworks.zircon" level="warn"/>
     <logger name="org.hexworks.cobalt" level="warn"/>
 
-    <!-- Or individual classes -->
-    <logger name="org.hexworks.zircon.internal.uievent.UIEventDispatcher" level="ERROR"/>
+<!--    <logger name="org.hexworks.zircon.internal.component.impl.DefaultButton" level="debug"/>-->
+<!--    <logger name="org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher" level="debug"/>-->
 
-    <logger name="org.hexworks.zircon.api.component.Component" level="debug" />
 
 </configuration>

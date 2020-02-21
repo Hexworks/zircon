@@ -6,13 +6,11 @@ package org.hexworks.zircon.api.animation
 enum class AnimationState {
 
     /**
-     * The `Animation` is in progress and will finish
-     * at some point in the future.
+     * The [Animation] is in progress and will finish at some point in the future.
      */
     IN_PROGRESS,
     /**
-     * The [Animation] is infinite, it will not
-     * finish on its own.
+     * The [Animation] is infinite, it will not finish unless [AnimationHandle.stop] is called.
      */
     INFINITE,
     /**

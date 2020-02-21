@@ -3,13 +3,16 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
  * Represents an object which can contain multiple [Layer]s which are specialized
- * [TileGraphics]s which can be displayed above each other within the [Layerable] object.
+ * [TileGraphics] objects which can be displayed above each other within the [Layerable] object.
  * Indexing is done from bottom to top, eg: calling [addLayer] with a [Layerable] which
  * has only one [Layer] (at index `0`) will add the new [Layer] at index `1`.
+ * [Layerable] also implements [Clearable]. In this context [clear] can be used to remove
+ * all layers.
  */
 interface Layerable {
 
@@ -22,49 +25,27 @@ interface Layerable {
     val size: Size
 
     /**
-     * Returns the [Layer] at the given [index] (if present).
+     * Returns the [Layer] at the given [level] (if present).
      */
-    fun getLayerAt(index: Int): Maybe<Layer>
+    fun getLayerAt(level: Int): Maybe<LayerHandle>
 
     /**
      * Adds a layer on top of the currently present layers.
      */
-    fun addLayer(layer: Layer)
+    fun addLayer(layer: Layer): LayerHandle
 
     /**
-     * Inserts the given [Layer] into this [Layerable] at the given [index].
+     * Inserts the given [Layer] into this [Layerable] at the given [level].
      */
-    fun insertLayerAt(index: Int, layer: Layer)
+    fun insertLayerAt(level: Int, layer: Layer): LayerHandle
 
     /**
-     * Inserts the given [Layer]s into this [Layerable] at the given [index].
+     * Sets the given [Layer] in this [Layerable] at the given [level].
      */
-    fun insertLayersAt(index: Int, layers: Collection<Layer>)
+    fun setLayerAt(level: Int, layer: Layer): LayerHandle
 
-    /**
-     * Sets the given [Layer] in this [Layerable] at the given [index].
-     */
-    fun setLayerAt(index: Int, layer: Layer)
+    companion object {
 
-    /**
-     * Removes the given [layer] from the current layers. This method has no effect
-     * if this [Layerable] doesn't contain the given [Layer].
-     */
-    fun removeLayer(layer: Layer)
-
-    /**
-     * Removes the [Layer] at the given [index]. This method has no effect if this [Layerable]
-     * doesn't contain a [Layer] at the given [index].
-     */
-    fun removeLayerAt(index: Int)
-
-    /**
-     * Removes the given [layers] from this [Layerable].
-     */
-    fun removeLayers(layers: Collection<Layer>)
-
-    /**
-     * Removes all layers from this [Layerable].
-     */
-    fun removeAllLayers()
+        internal const val WRONG_LAYER_TYPE_MSG = "The supplied Layer does not implement required interface: InternalLayer."
+    }
 }

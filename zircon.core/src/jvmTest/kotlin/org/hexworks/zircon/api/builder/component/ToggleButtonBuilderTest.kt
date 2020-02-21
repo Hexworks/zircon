@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ToggleButton
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.junit.Before
 import org.junit.Test
 

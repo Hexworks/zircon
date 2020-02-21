@@ -1,8 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -15,7 +17,6 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.jvm.Synchronized
 
 /**
@@ -28,8 +29,10 @@ import kotlin.jvm.Synchronized
 class ModalComponentContainer(
         private val metadata: ComponentMetadata,
         private val mainContainer: InternalComponentContainer = buildContainer(
-                metadata = metadata))
-    : InternalComponentContainer {
+                metadata = metadata)
+) : InternalComponentContainer {
+
+    override val isActive = mainContainer.isActive.value.toProperty()
 
     override val layerStates: Iterable<LayerState>
         @Synchronized
@@ -52,7 +55,7 @@ class ModalComponentContainer(
         containerStack.add(mainContainer)
     }
 
-    fun isMainContainerActive() = mainContainer.isActive()
+    fun isMainContainerActive() = mainContainer.isActive.value
 
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
@@ -60,13 +63,9 @@ class ModalComponentContainer(
     }
 
     @Synchronized
-    override fun isActive(): Boolean {
-        return containerStack.any(InternalComponentContainer::isActive)
-    }
-
-    @Synchronized
     override fun activate() {
         mainContainer.activate()
+        updateIsActive()
     }
 
     @Synchronized
@@ -76,16 +75,12 @@ class ModalComponentContainer(
         }
         containerStack.clear()
         containerStack.add(mainContainer)
+        updateIsActive()
     }
 
     @Synchronized
-    override fun addComponent(component: Component) {
-        mainContainer.addComponent(component)
-    }
-
-    @Synchronized
-    override fun removeComponent(component: Component): Boolean {
-        return mainContainer.removeComponent(component)
+    override fun addComponent(component: Component): AttachedComponent {
+        return mainContainer.addComponent(component)
     }
 
     @Synchronized
@@ -99,16 +94,23 @@ class ModalComponentContainer(
             modalContainer.deactivate()
             containerStack.remove(modalContainer)
             containerStack.fetchLast().activate()
+            updateIsActive()
         }
         modalContainer.activate()
         modalContainer.addComponent(modal)
         modal.requestFocus()
+        updateIsActive()
+    }
+
+    private fun updateIsActive() {
+        isActive.value = containerStack.any { it.isActive.value }
     }
 
     private fun List<InternalComponentContainer>.fetchLast(): InternalComponentContainer {
         return lastOrNull() ?: run {
             logger.warn("No containers were present in container stack. Re-adding main container.")
             containerStack.add(mainContainer)
+            isActive.value = mainContainer.isActive.value
             return mainContainer
         }
     }

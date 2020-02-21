@@ -1,13 +1,16 @@
 package org.hexworks.zircon.internal.component
 
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
@@ -22,8 +25,20 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, ComponentEventAdapter, Focusable,
+interface InternalComponent : Component, ComponentEventAdapter,
         KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+
+    val isAttached: Boolean
+
+    var parent: Maybe<InternalContainer>
+    val parentProperty: Property<Maybe<InternalContainer>>
+
+    override val currentStyle: StyleSet
+        get() = componentStyleSet.fetchStyleFor(componentState)
+
+    override var componentState: ComponentState
+
+    val hasParent: ObservableValue<Boolean>
 
     /**
      * The immediate child [Component]s of this [Component].
@@ -36,16 +51,14 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
     val descendants: Iterable<InternalComponent>
 
     /**
-     * Returns the flattened component tree rooted at this
-     * component. Similar to [descendants] with the exception that
-     * this [Component] is also included in the result.
+     * Returns the flattened component tree rooted at this component. Similar to [descendants]
+     * with the exception that **this** [Component] is also included in the result.
      */
     val flattenedTree: Iterable<InternalComponent>
-        get() = listOf(this).plus(descendants)
+        get() = listOf(this) + descendants
 
     /**
-     * The [TileGraphics] through which this [InternalComponent]
-     * can be drawn upon.
+     * The [TileGraphics] through which this [InternalComponent] can be drawn upon.
      */
     val graphics: TileGraphics
 
@@ -56,8 +69,6 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      * are ordered from top to bottom with regards to the Z axis.
      */
     val layerStates: Iterable<LayerState>
-
-    override fun isAttached(): Boolean = fetchParent().isPresent
 
     /**
      * Tells whether this [Component] is attached to a [RootContainer] or not.
@@ -74,13 +85,6 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
     fun moveTo(position: Position, signalComponentChange: Boolean)
 
     /**
-     * Attaches this [Component] to the given parent [Container].
-     * Note that if this component is already attached to a [Container]
-     * it will be removed from that one.
-     */
-    fun attachTo(parent: InternalContainer)
-
-    /**
      * Returns the innermost [InternalComponent] for a given [Position].
      * This means that if you call this method on a [Container] and it
      * contains a [InternalComponent] which intersects with `position` the
@@ -89,11 +93,6 @@ interface InternalComponent : Component, ComponentEventAdapter, Focusable,
      * empty [Maybe] is returned.
      */
     fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
-
-    /**
-     * Returns the parent of this [Component] (if any).
-     */
-    fun fetchParent(): Maybe<InternalContainer>
 
     /**
      * Recursively traverses the parents of this [InternalComponent]

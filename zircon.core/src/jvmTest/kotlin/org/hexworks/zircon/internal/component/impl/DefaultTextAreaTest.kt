@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -26,7 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 @Suppress("UNCHECKED_CAST", "UsePropertyAccessSyntax", "unused")
-class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
+class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
 
@@ -180,13 +181,13 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     fun shouldProperlyGiveFocus() {
         target.convertColorTheme(DEFAULT_THEME)
         var cursorVisible = false
-        Zircon.eventBus.subscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) {
+        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) {
             cursorVisible = true
         }
 
         target.focusGiven()
 
-        assertThat(target.componentStyleSet.currentState())
+        assertThat(target.componentState)
                 .isEqualTo(FOCUSED)
         assertThat(cursorVisible).isTrue()
     }
@@ -194,12 +195,12 @@ class DefaultTextAreaTest : ComponentImplementationTest<DefaultTextArea>() {
     @Test
     fun shouldProperlyTakeFocus() {
         var cursorHidden = false
-        Zircon.eventBus.subscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
+        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
             cursorHidden = true
         }
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.currentState())
+        assertThat(target.componentState)
                 .isEqualTo(DEFAULT)
         assertThat(cursorHidden).isTrue()
     }

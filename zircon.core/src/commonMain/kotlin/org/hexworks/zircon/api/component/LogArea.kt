@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 
 /**
@@ -10,7 +11,7 @@ import org.hexworks.zircon.api.builder.component.ParagraphBuilder
  * Currently the log area scrolls automatically down. When later
  * Zircon provides scrollbars, this behavior will be then configurable
  */
-interface LogArea : Component {
+interface LogArea : Component, Clearable {
 
     /**
      * Adds a header
@@ -52,9 +53,4 @@ interface LogArea : Component {
      * Adds new rows
      */
     fun addNewRows(numberOfRows: Int = 1)
-
-    /**
-     * Clears the complete log.
-     */
-    fun clear()
 }

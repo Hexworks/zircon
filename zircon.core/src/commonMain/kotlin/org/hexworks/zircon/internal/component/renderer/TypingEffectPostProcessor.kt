@@ -10,12 +10,11 @@ data class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: L
 
     override fun render(tileGraphics: TileGraphics, context: ComponentPostProcessorContext<T>) {
         val width = tileGraphics.size.width
-        tileGraphics.size.fetchPositions().forEach { position ->
-            val (x, y) = position
+        tileGraphics.transform { (x, y), tile ->
             val delay = Delay(baseDelayInMs * width * y + baseDelayInMs * x)
-            tileGraphics.getTileAt(position).map {
-                tileGraphics.draw(it.withAddedModifiers(delay), position)
-            }
+            if (tile.modifiers.any { it is Delay }) {
+                tile
+            } else tile.withAddedModifiers(delay)
         }
     }
 }

@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -11,7 +12,9 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Crop
 import org.hexworks.zircon.api.shape.LineFactory
 
-class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
+class HalfBlockDecorationRenderer(
+        private val renderingMode: RenderingMode
+) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
 
@@ -19,7 +22,7 @@ class HalfBlockDecorationRenderer : ComponentDecorationRenderer {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
         val size = tileGraphics.size
-        val style = context.component.componentStyleSet.currentStyle()
+        val style = context.fetchStyleFor(renderingMode)
         val topLeft = Position.defaultPosition()
         val topRight = size.fetchTopRightPosition()
         val bottomLeft = size.fetchBottomLeftPosition()

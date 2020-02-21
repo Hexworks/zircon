@@ -7,16 +7,21 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.junit.Before
 import org.junit.Test
 
-class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>() {
+@Suppress("TestFunctionName")
+class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadioButton>() {
 
     override lateinit var target: DefaultRadioButton
 
@@ -84,14 +89,14 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
+        assertThat(target.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
@@ -109,7 +114,54 @@ class DefaultRadioButtonTest : ComponentImplementationTest<DefaultRadioButton>()
 
         assertThat(target.isSelected).isFalse()
         assertThat(getButtonChar()).isEqualTo(' ')
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
+    }
+
+    @Test
+    override fun When_a_focused_component_is_activated_Then_it_becomes_active() {
+
+        target.focusGiven()
+        rendererStub.clear()
+        target.activated()
+
+        assertThat(target.componentState).isEqualTo(ComponentState.ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
+    }
+
+    @Test
+    override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
+        rendererStub.clear()
+        target.activated()
+
+        assertThat(target.componentState).isEqualTo(ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
+    }
+
+    @Test
+    override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
+        target.focusGiven()
+        rendererStub.clear()
+        target.activated()
+
+        assertThat(target.componentState).isEqualTo(ACTIVE)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
+    }
+
+    @Test
+    override fun When_the_mouse_is_released_on_a_focused_component_Then_it_becomes_highlighted() {
+
+        target.focusGiven()
+        rendererStub.clear()
+        target.mouseReleased(
+                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
+                phase = UIEventPhase.TARGET)
+
+        assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
+        assertThat(rendererStub.renderings.size).isEqualTo(2)
     }
 
     private fun getButtonChar() = target.graphics.getTileAt(Position.create(1, 0))

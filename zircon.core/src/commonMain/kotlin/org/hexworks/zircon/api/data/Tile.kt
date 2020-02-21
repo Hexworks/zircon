@@ -145,7 +145,7 @@ interface Tile : Cacheable, StyleSet {
          */
         fun createGraphicTile(name: String,
                               tags: Set<String>,
-                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicTileset): GraphicalTile {
+                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicalTileset): GraphicalTile {
             return DefaultGraphicalTile(
                     name = name,
                     tags = tags,

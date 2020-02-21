@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
@@ -105,14 +106,14 @@ abstract class BaseNumberInput(
         textBeforeModifications = text
         text = ""
         refreshCursor()
-        componentStyleSet.applyFocusedStyle()
+        componentState = ComponentState.FOCUSED
         render()
     }
 
     override fun focusTaken() = whenEnabled {
         text = textBeforeModifications
         computeNumberValue()
-        componentStyleSet.reset()
+        componentState = ComponentState.DEFAULT
         render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),

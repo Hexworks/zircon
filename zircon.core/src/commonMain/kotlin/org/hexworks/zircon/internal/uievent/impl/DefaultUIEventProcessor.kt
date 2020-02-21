@@ -3,8 +3,9 @@ package org.hexworks.zircon.internal.uievent.impl
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
-import org.hexworks.cobalt.events.api.CancelState
-import org.hexworks.cobalt.events.api.NotCancelled
+import org.hexworks.cobalt.core.behavior.DisposeState
+import org.hexworks.cobalt.core.behavior.NotDisposed
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.*
@@ -14,12 +15,12 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
 
     private val logger = LoggerFactory.getLogger(this::class)
     private var listeners = persistentMapOf<UIEventType, PersistentList<InputEventSubscription>>()
-    private var closed = false
+    override val isClosed = false.toProperty()
 
     override fun close() {
-        closed = true
+        isClosed.value = true
         listeners.flatMap { it.value }.forEach {
-            it.cancel()
+            it.dispose()
         }
         listeners = listeners.clear()
     }
@@ -118,21 +119,21 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     private fun checkClosed() {
-        if (closed) throw IllegalStateException("This UIEventProcessor is closed.")
+        if (isClosed.value) throw IllegalStateException("This UIEventProcessor is closed.")
     }
 
     inner class InputEventSubscription(
             private val eventType: UIEventType,
             val listener: (UIEvent, UIEventPhase) -> UIEventResponse) : Subscription {
 
-        override var cancelState: CancelState = NotCancelled
+        override var disposeState: DisposeState = NotDisposed
 
-        override fun cancel(cancelState: CancelState) {
+        override fun dispose(disposeState: DisposeState) {
             val subscription = this
             listeners[eventType]?.let { subscriptions ->
                 listeners = listeners.put(eventType, subscriptions.remove(subscription))
             }
-            this.cancelState = cancelState
+            this.disposeState = disposeState
         }
     }
 }

@@ -17,8 +17,6 @@ import kotlin.jvm.JvmStatic
  */
 interface Layer : Hideable, Identifiable, Movable, TileGraphics {
 
-    override val state: LayerState
-
     override fun createCopy(): Layer
 
     /**

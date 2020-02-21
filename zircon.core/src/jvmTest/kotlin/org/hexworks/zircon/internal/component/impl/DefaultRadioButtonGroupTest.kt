@@ -28,7 +28,7 @@ class DefaultRadioButtonGroupTest {
                 .withKey("qux")
                 .withText("baz")
                 .build() as (DefaultRadioButton)
-        target.add(btn)
+        target.addComponent(btn)
 
         btn.activated()
 
@@ -49,8 +49,7 @@ class DefaultRadioButtonGroupTest {
                 .build() as (DefaultRadioButton)
         oldBtn.isSelected = true
         newBtn.isSelected = true
-        target.add(oldBtn)
-        target.add(newBtn)
+        target.addComponents(oldBtn, newBtn)
 
 
         assertThat(oldBtn.isSelected).isFalse()

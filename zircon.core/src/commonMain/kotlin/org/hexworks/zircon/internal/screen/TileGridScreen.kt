@@ -1,37 +1,28 @@
 package org.hexworks.zircon.internal.screen
 
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.cobalt.events.api.subscribeTo
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
-import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
@@ -48,8 +39,8 @@ class TileGridScreen(
                         componentContainer = componentContainer,
                         layerable = ThreadSafeLayerable(
                                 initialSize = tileGrid.size))),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
-    : InternalScreen,
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+) : InternalScreen,
         InternalTileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
@@ -60,54 +51,28 @@ class TileGridScreen(
     // we make this random because we don't know which one is the active
     // yet and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
-    private var activeScreenId = IdentifierFactory.randomIdentifier()
+    private var activeScreenId = UUIDFactory.randomUUID()
 
-    private val subscriptions: MutableList<Subscription> = mutableListOf()
-    private val id = IdentifierFactory.randomIdentifier()
+    private val id = UUIDFactory.randomUUID()
 
     init {
-        MouseEventType.values().forEach { eventType ->
-            tileGrid.handleMouseEvents(eventType) { event, phase ->
-                if (isActive()) {
-                    process(event, phase)
-                } else Pass
-            }.also { subscriptions.add(it) }
-        }
-        KeyboardEventType.values().forEach { eventType ->
-            tileGrid.handleKeyboardEvents(eventType) { event, phase ->
-                if (isActive()) {
-                    process(event, phase)
-                } else Pass
-            }.also { subscriptions.add(it) }
-        }
-        Zircon.eventBus.subscribeTo<ZirconEvent.ScreenSwitch>(ZirconScope) { (screenId) ->
+        Zircon.eventBus.simpleSubscribeTo<ScreenSwitch>(ZirconScope) { (screenId) ->
             LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
             activeScreenId = screenId
-            if (id != screenId) {
+            if (id != activeScreenId && isActive.value) {
                 LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
                 deactivate()
             }
-        }.also { subscriptions.add(it) }
-        Zircon.eventBus.subscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) { (position) ->
-            if (isActive()) {
-                tileGrid.isCursorVisible = true
-                tileGrid.cursorPosition = position
-            }
-        }.also { subscriptions.add(it) }
-        Zircon.eventBus.subscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
-            if (isActive()) {
-                tileGrid.isCursorVisible = false
-            }
-        }.also { subscriptions.add(it) }
+        }.disposeWhen(isClosed)
     }
-
 
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
     // have no visible effect)
     @Synchronized
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
-        return if (isActive()) {
+        return if (isActive.value) {
+            LOGGER.debug("Processing event $event in phase $phase for screen $this.")
             // note that first we process listeners on the Screen itself
             // then component ones. They don't affect each other
             (if (componentContainer.isMainContainerActive()) {
@@ -119,7 +84,8 @@ class TileGridScreen(
     @Synchronized
     override fun handleMouseEvents(
             eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         return eventProcessor.handleMouseEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler(event, phase)
@@ -130,7 +96,8 @@ class TileGridScreen(
     @Synchronized
     override fun handleKeyboardEvents(
             eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         return eventProcessor.handleKeyboardEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
                 handler(event, phase)
@@ -142,19 +109,34 @@ class TileGridScreen(
     override fun display() {
         if (activeScreenId != id) {
             Zircon.eventBus.publish(
-                    event = ZirconEvent.ScreenSwitch(id, this),
+                    event = ScreenSwitch(id, this),
                     eventScope = ZirconScope)
-            isCursorVisible = false
-            cursorPosition = Position.defaultPosition()
             activate()
+            MouseEventType.values().forEach { eventType ->
+                tileGrid.handleMouseEvents(eventType) { event, phase ->
+                    process(event, phase)
+                }.keepWhile(isActive)
+            }
+            KeyboardEventType.values().forEach { eventType ->
+                tileGrid.handleKeyboardEvents(eventType) { event, phase ->
+                    process(event, phase)
+                }.keepWhile(isActive)
+            }
+            Zircon.eventBus.simpleSubscribeTo<RequestCursorAt>(ZirconScope) { (position) ->
+                tileGrid.isCursorVisible = true
+                tileGrid.cursorPosition = position
+            }.keepWhile(isActive)
+            Zircon.eventBus.simpleSubscribeTo<HideCursor>(ZirconScope) {
+                tileGrid.isCursorVisible = false
+            }.keepWhile(isActive)
             tileGrid.delegateTo(bufferGrid)
         }
     }
 
     @Synchronized
     override fun close() {
+        bufferGrid.close()
         deactivate()
-        subscriptions.cancelAll()
     }
 
     @Synchronized

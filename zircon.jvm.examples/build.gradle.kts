@@ -1,5 +1,5 @@
 plugins {
-    kotlinJvm
+    kotlin("jvm")
 }
 
 base.archivesBaseName = "zircon.jvm.examples"

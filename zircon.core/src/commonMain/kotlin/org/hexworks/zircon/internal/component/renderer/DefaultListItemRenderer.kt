@@ -8,6 +8,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultListItem
 class DefaultListItemRenderer(private val listItemChar: Char = '-') : ComponentRenderer<DefaultListItem> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultListItem>) {
-        tileGraphics.fillWithText(context.component.text, context.currentStyle)
+        tileGraphics.fillWithText("$listItemChar ${context.component.text}", context.currentStyle)
     }
 }

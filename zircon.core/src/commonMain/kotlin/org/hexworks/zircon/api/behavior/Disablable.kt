@@ -5,13 +5,13 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultDisablable
 import kotlin.jvm.JvmStatic
 
 /**
- * Represents an object which supports the notion of disabling.
- * In the case of a component this means that when it is disabled
- * it can't be interacted with (click, press, etc).
+ * Represents an object which supports the notion of disabling. In the case of a component
+ * this means that when it is disabled it can't be interacted with (click, press, etc).
  */
 interface Disablable {
 
     var isDisabled: Boolean
+
     val disabledProperty: Property<Boolean>
 
     companion object {

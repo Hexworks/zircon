@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
@@ -31,8 +32,8 @@ import kotlin.math.min
 class DefaultTextArea constructor(
         initialText: String,
         componentMetadata: ComponentMetadata,
-        private val renderingStrategy: ComponentRenderingStrategy<TextArea>)
-    : TextArea,
+        renderingStrategy: ComponentRenderingStrategy<TextArea>
+) : TextArea,
         Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
         DefaultComponent(
                 componentMetadata = componentMetadata,
@@ -70,21 +71,19 @@ class DefaultTextArea constructor(
             .build()
 
     override fun focusGiven() = whenEnabled {
-        componentStyleSet.applyFocusedStyle()
         refreshCursor()
-        render()
+        super.focusGiven()
     }
 
     override fun focusTaken() = whenEnabled {
-        componentStyleSet.reset()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),
                 eventScope = ZirconScope)
-        render()
+        super.focusTaken()
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
+        if (phase == TARGET) {
             if (isNavigationKey(event)) {
                 Pass
             } else {

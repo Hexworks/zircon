@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.core.platform.factory.IdentifierFactory
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -19,7 +19,7 @@ import javax.imageio.ImageIO
 class Java2DImageDictionaryTileset(resource: TilesetResource)
     : Tileset<Graphics2D> {
 
-    override val id = IdentifierFactory.randomIdentifier()
+    override val id = UUIDFactory.randomUUID()
     override val targetType = Graphics2D::class
     override val width = 1
     override val height = 1

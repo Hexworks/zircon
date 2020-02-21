@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.extensions.toScreen
 
 object RadioButtonGroupsExample {
@@ -74,8 +74,8 @@ object RadioButtonGroupsExample {
         leftBox.addComponents(btn0, btnA, btn1)
         rightBox.addComponents(btn2, btnB, btnC)
 
-        group0.addAll(btn0, btn1, btn2)
-        group1.addAll(btnA, btnB, btnC)
+        group0.addComponents(btn0, btn1, btn2)
+        group1.addComponents(btnA, btnB, btnC)
 
         screen.addComponents(leftBox, rightBox)
 

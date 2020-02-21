@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -8,7 +9,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
+import org.junit.Test
 
+@Suppress("TestFunctionName")
 class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     override lateinit var target: RootContainer
@@ -35,4 +38,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
                         componentRenderer = rendererStub))
     }
 
+    @Test
+    fun The_root_container_is_attached() {
+        assertThat(target.isAttached).isTrue()
+    }
 }
