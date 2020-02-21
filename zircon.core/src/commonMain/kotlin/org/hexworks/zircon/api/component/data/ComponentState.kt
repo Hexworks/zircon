@@ -9,9 +9,9 @@ enum class ComponentState {
 
     DEFAULT,
     /**
-     * The mouse is over this component.
+     * The component is highlighted (the mouse is over it for example).
      */
-    MOUSE_OVER,
+    HIGHLIGHTED,
     /**
      * This component has focus.
      */

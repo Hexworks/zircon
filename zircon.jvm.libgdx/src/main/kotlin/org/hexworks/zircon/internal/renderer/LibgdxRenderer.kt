@@ -8,18 +8,19 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 
@@ -27,6 +28,8 @@ import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 class LibgdxRenderer(private val grid: InternalTileGrid,
                      private val debug: Boolean = false) : Renderer {
+
+    override val isClosed = false.toProperty()
 
     private val config = RuntimeConfig.config
     private var maybeBatch: Maybe<SpriteBatch> = Maybes.empty()
@@ -66,6 +69,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
     }
 
     override fun close() {
+        isClosed.value = true
         maybeBatch.map(SpriteBatch::dispose)
     }
 

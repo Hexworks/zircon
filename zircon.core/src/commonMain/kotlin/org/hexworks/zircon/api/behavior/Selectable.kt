@@ -10,6 +10,7 @@ import kotlin.jvm.JvmStatic
 interface Selectable {
 
     var isSelected: Boolean
+
     val selectedProperty: Property<Boolean>
 
     companion object {

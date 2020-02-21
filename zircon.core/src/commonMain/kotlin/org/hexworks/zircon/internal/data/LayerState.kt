@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.data
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Layer
 
@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.Layer
  */
 interface LayerState : TileGraphicsState {
 
-    val id: Identifier
+    val id: UUID
     val position: Position
     val isHidden: Boolean
 

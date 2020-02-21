@@ -5,10 +5,12 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Group
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalGroup
 import kotlin.jvm.Synchronized
 
 class DefaultRadioButtonGroup(
@@ -16,24 +18,29 @@ class DefaultRadioButtonGroup(
         initialIsHidden: Boolean,
         initialTheme: ColorTheme,
         initialTileset: TilesetResource,
-        private val groupDelegate: Group<RadioButton> = Components.group<RadioButton>()
+        private val groupDelegate: InternalGroup<RadioButton> = Components.group<RadioButton>()
                 .withIsDisabled(initialIsDisabled)
                 .withIsHidden(initialIsHidden)
                 .withTheme(initialTheme)
                 .withTileset(initialTileset)
-                .build()) : RadioButtonGroup, Group<RadioButton> by groupDelegate {
+                .build() as InternalGroup<RadioButton>
+) : RadioButtonGroup, InternalGroup<RadioButton> by groupDelegate {
 
-    private val buttons = mutableMapOf<String, Pair<RadioButton, Subscription>>()
+    private val buttons = mutableMapOf<String, Pair<GroupAttachedComponent, Subscription>>()
 
     override val selectedButtonProperty = createPropertyFrom(Maybe.empty<RadioButton>())
     override var selectedButton: Maybe<RadioButton> by selectedButtonProperty.asDelegate()
 
     @Synchronized
-    override fun add(component: RadioButton) {
+    override fun addComponent(component: RadioButton): AttachedComponent {
+        require(component is InternalComponent) {
+            "The supplied component does not implement required interface: InternalComponent."
+        }
         require(buttons.containsKey(component.key).not()) {
             "There is already a Radio Button in this Radio Button Group with the key '${component.key}'."
         }
-        buttons[component.key] = component to component.selectedProperty.onChange { (_, newlySelected) ->
+        val handle = GroupAttachedComponent(component, this)
+        buttons[component.key] = handle to component.selectedProperty.onChange { (_, newlySelected) ->
             selectedButton.map { previousSelected ->
                 if (newlySelected && previousSelected !== component) {
                     previousSelected.isSelected = false
@@ -49,18 +56,9 @@ class DefaultRadioButtonGroup(
             }
             selectedButton = Maybe.of(component)
         }
-        groupDelegate.add(component)
+        groupDelegate.addComponent(component)
+        return handle
     }
 
-    @Synchronized
-    override fun addAll(vararg components: RadioButton) = components.forEach(::add)
-
-    @Synchronized
-    override fun remove(component: RadioButton) {
-        buttons.remove(component.key)?.second?.cancel()
-        groupDelegate.remove(component)
-    }
-
-    @Synchronized
-    override fun removeAll(vararg components: RadioButton) = components.forEach(::remove)
+    override fun addComponents(vararg components: RadioButton) = components.map(::addComponent)
 }

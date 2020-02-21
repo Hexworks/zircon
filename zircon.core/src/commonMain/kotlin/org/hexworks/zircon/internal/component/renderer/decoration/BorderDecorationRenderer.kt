@@ -3,25 +3,33 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
+import org.hexworks.zircon.api.modifier.BorderPosition.*
 import org.hexworks.zircon.api.shape.LineFactory
 
-data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRenderer {
+data class BorderDecorationRenderer(
+        val border: Border,
+        val renderingMode: RenderingMode = RenderingMode.NON_INTERACTIVE
+) : ComponentDecorationRenderer {
 
     override val offset = Position.defaultPosition()
 
     override val occupiedSize = Size.create(0, 0)
 
     override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
-        val drawTop = border.borderPositions.contains(BorderPosition.TOP)
-        val drawBottom = border.borderPositions.contains(BorderPosition.BOTTOM)
-        val drawLeft = border.borderPositions.contains(BorderPosition.LEFT)
-        val drawRight = border.borderPositions.contains(BorderPosition.RIGHT)
+
+        val color = context.fetchStyleFor(renderingMode).backgroundColor
+
+        val drawTop = border.borderPositions.contains(TOP)
+        val drawBottom = border.borderPositions.contains(BOTTOM)
+        val drawLeft = border.borderPositions.contains(LEFT)
+        val drawRight = border.borderPositions.contains(RIGHT)
         val size = tileGraphics.size
 
         val topLeftBorders = mutableSetOf<BorderPosition>()
@@ -30,20 +38,20 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
         val bottomRightBorders = mutableSetOf<BorderPosition>()
 
         if (drawTop) {
-            topLeftBorders.add(BorderPosition.TOP)
-            topRightBorders.add(BorderPosition.TOP)
+            topLeftBorders.add(TOP)
+            topRightBorders.add(TOP)
         }
         if (drawBottom) {
-            bottomLeftBorders.add(BorderPosition.BOTTOM)
-            bottomRightBorders.add(BorderPosition.BOTTOM)
+            bottomLeftBorders.add(BOTTOM)
+            bottomRightBorders.add(BOTTOM)
         }
         if (drawLeft) {
-            topLeftBorders.add(BorderPosition.LEFT)
-            bottomLeftBorders.add(BorderPosition.LEFT)
+            topLeftBorders.add(LEFT)
+            bottomLeftBorders.add(LEFT)
         }
         if (drawRight) {
-            topRightBorders.add(BorderPosition.RIGHT)
-            bottomRightBorders.add(BorderPosition.RIGHT)
+            topRightBorders.add(RIGHT)
+            bottomRightBorders.add(RIGHT)
         }
 
         val topLeftPos = size.fetchTopLeftPosition()
@@ -56,6 +64,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                 tileGraphics.draw(char
                         .withModifiers(BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
+                                .withBorderColor(color)
                                 .withBorderPositions(topLeftBorders)
                                 .build()), topLeftPos)
             }
@@ -65,6 +74,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                 tileGraphics.draw(char
                         .withModifiers(BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
+                                .withBorderColor(color)
                                 .withBorderPositions(topRightBorders)
                                 .build()), topRightPos)
             }
@@ -74,6 +84,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                 tileGraphics.draw(char
                         .withModifiers(BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
+                                .withBorderColor(color)
                                 .withBorderPositions(bottomLeftBorders)
                                 .build()), bottomLeftPos)
             }
@@ -83,6 +94,7 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                 tileGraphics.draw(char
                         .withModifiers(BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
+                                .withBorderColor(color)
                                 .withBorderPositions(bottomRightBorders)
                                 .build()), bottomRightPos)
             }
@@ -97,7 +109,8 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                             tileGraphics.draw(char
                                     .withModifiers(BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
-                                            .withBorderPositions(BorderPosition.TOP)
+                                            .withBorderColor(color)
+                                            .withBorderPositions(TOP)
                                             .build()), topOffset)
                         }
                     }
@@ -108,7 +121,8 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                             tileGraphics.draw(char
                                     .withModifiers(BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
-                                            .withBorderPositions(BorderPosition.BOTTOM)
+                                            .withBorderColor(color)
+                                            .withBorderPositions(BOTTOM)
                                             .build()), bottomOffset)
                         }
                     }
@@ -125,7 +139,8 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                             tileGraphics.draw(char
                                     .withModifiers(BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
-                                            .withBorderPositions(BorderPosition.LEFT)
+                                            .withBorderColor(color)
+                                            .withBorderPositions(LEFT)
                                             .build()), leftOffset)
                         }
                     }
@@ -136,7 +151,8 @@ data class BorderDecorationRenderer(val border: Border) : ComponentDecorationRen
                             tileGraphics.draw(char
                                     .withModifiers(BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
-                                            .withBorderPositions(BorderPosition.RIGHT)
+                                            .withBorderColor(color)
+                                            .withBorderPositions(RIGHT)
                                             .build()), rightOffset)
                         }
                     }

@@ -71,7 +71,6 @@ class TileGridScreenTest {
                 .isNotEqualTo(CHAR)
     }
 
-
     companion object {
         val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResources.rogueYun16x16()

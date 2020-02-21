@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.renderer
 
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
@@ -16,15 +17,7 @@ import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
-import java.awt.AWTKeyStroke
-import java.awt.Canvas
-import java.awt.Color
-import java.awt.Dimension
-import java.awt.Frame
-import java.awt.Graphics
-import java.awt.Graphics2D
-import java.awt.KeyboardFocusManager
-import java.awt.RenderingHints
+import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
 import java.awt.image.BufferStrategy
@@ -36,6 +29,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
                           private val tileGrid: InternalTileGrid,
                           private val config: AppConfig) : Renderer {
+
+    override val isClosed = false.toProperty()
 
     private var firstDraw = true
     private val tilesetLoader = SwingTilesetLoader()
@@ -99,6 +94,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     override fun close() {
+        isClosed.value = true
         tileGrid.close()
         frame.dispose()
     }

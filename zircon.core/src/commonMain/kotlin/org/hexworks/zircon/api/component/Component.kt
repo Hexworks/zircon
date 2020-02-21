@@ -1,13 +1,19 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventSource
-import org.hexworks.zircon.internal.behavior.Identifiable
+import org.hexworks.zircon.internal.behavior.Focusable
 
 /**
  * A [Component] is a graphical object which represents a GUI element and used either to
@@ -23,7 +29,7 @@ import org.hexworks.zircon.internal.behavior.Identifiable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, ComponentProperties, Identifiable, Movable, UIEventSource {
+interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
     /**
      * The absolute position of this [Component], eg: the [Position] relative the
@@ -56,8 +62,18 @@ interface Component : ComponentEventSource, ComponentProperties, Identifiable, M
 
     /**
      * The bounds of this [Component] relative to its parent.
+     * TODO: do we need this here? Can this be moved to `InternalComponent`?
      */
     val relativeBounds: Rect
+
+    val componentStateValue: ObservableValue<ComponentState>
+
+    val componentState: ComponentState
+
+    /**
+     * The current style based on [componentStyleSet] according to the current [componentState].
+     */
+    val currentStyle: StyleSet
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
@@ -66,32 +82,19 @@ interface Component : ComponentEventSource, ComponentProperties, Identifiable, M
      */
     var componentStyleSet: ComponentStyleSet
 
-    val componentStyleSetProperty: Property<ComponentStyleSet>
+    val componentStyleSetProperty: Property<out ComponentStyleSet>
 
     /**
      * Clears any custom [componentStyleSet] (if present).
      */
     fun clearCustomStyle()
 
-    /**
-     * Tells whether this [Component] is attached to a parent or not.
-     */
-    fun isAttached(): Boolean
+    fun onActivated(fn: (ComponentEvent) -> Unit): Subscription
 
-    /**
-     * Detaches this [Component] from its parent (if any).
-     */
-    fun detach()
+    fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription
 
-    /**
-     * Requests that this [Component] be focused.
-     */
-    fun requestFocus()
+    fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription
 
-    /**
-     * Clears focus from this [Component]. Has no effect
-     * if this [Component] is not focused.
-     */
-    fun clearFocus()
+    fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription
 
 }

@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultTextArea>) {
-        val style = context.componentStyle.currentStyle()
+        val style = context.currentStyle
         val component = context.component
         tileGraphics.applyStyle(style)
         val tileTemplate = Tile.createCharacterTile(' ', style)

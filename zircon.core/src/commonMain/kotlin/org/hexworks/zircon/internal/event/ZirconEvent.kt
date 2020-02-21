@@ -1,8 +1,9 @@
 package org.hexworks.zircon.internal.event
 
-import org.hexworks.cobalt.core.api.Identifier
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.data.LayerState
 
@@ -18,7 +19,7 @@ sealed class ZirconEvent : Event {
 
     /**
      * Requests focus for the given [Component].
-     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class RequestFocusFor(
             val component: Component,
@@ -27,7 +28,7 @@ sealed class ZirconEvent : Event {
 
     /**
      * Requests to clear focus for the given [Component].
-     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusHandler]
+     * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class ClearFocus(
             val component: Component,
@@ -43,7 +44,7 @@ sealed class ZirconEvent : Event {
      * A [org.hexworks.zircon.api.screen.Screen] has been switched to
      * (eg: the `display` function has been called on a Screen data class).
      */
-    data class ScreenSwitch(val screenId: Identifier,
+    data class ScreenSwitch(val screenId: UUID,
                             override val emitter: Any) : ZirconEvent()
 
     /**
@@ -52,14 +53,33 @@ sealed class ZirconEvent : Event {
     data class ComponentMoved(override val emitter: Any) : ZirconEvent()
 
     /**
-     * A component was added to a component container.
+     * A [component] was added to a [parent] container.
      */
-    data class ComponentAdded(override val emitter: Any) : ZirconEvent()
+    data class ComponentAdded(
+            val parent: Container,
+            val component: Component,
+            override val emitter: Any
+    ) : ZirconEvent()
 
     /**
-     * A component was removed
+     * A [component] was removed to a [parent] container.
+     * This always happens after [ComponentDetached].
      */
-    data class ComponentRemoved(override val emitter: Any) : ZirconEvent()
+    data class ComponentRemoved(
+            val parent: Component,
+            val component: Component,
+            override val emitter: Any
+    ) : ZirconEvent()
+
+    /**
+     * A [component] was detached to a [parent] container.
+     * This always happens before [ComponentRemoved].
+     */
+    data class ComponentDetached(
+            val parent: Component,
+            val component: Component,
+            override val emitter: Any
+    ) : ZirconEvent()
 
     /**
      * A layer was added.

@@ -10,9 +10,10 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.InternalContainer
 import kotlin.jvm.Synchronized
 
-class RootContainer(componentMetadata: ComponentMetadata,
-                    private val renderingStrategy: ComponentRenderingStrategy<RootContainer>)
-    : Container, DefaultContainer(
+class RootContainer(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<RootContainer>
+) : Container, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
@@ -20,10 +21,9 @@ class RootContainer(componentMetadata: ComponentMetadata,
         render()
     }
 
-    // TODO: let's check the other methods as well! attachTo especially
-
-    // a RootContainer is always attached
-    override fun isAttached() = true
+    // the Root Container is always attached
+    override val isAttached: Boolean
+        get() = true
 
     override fun acceptsFocus() = true
 

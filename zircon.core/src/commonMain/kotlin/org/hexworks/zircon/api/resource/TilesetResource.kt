@@ -24,7 +24,7 @@ interface TilesetResource : Identifiable {
 
     /**
      * A [TilesetResource] is compatible with another if they have
-     * the same size. TODO: why did we check for [tileType]?
+     * the same size.
      */
     fun isCompatibleWith(other: TilesetResource): Boolean {
         return other.width == width &&

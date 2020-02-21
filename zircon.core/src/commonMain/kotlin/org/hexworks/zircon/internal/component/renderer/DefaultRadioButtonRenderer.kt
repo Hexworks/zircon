@@ -17,7 +17,7 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         val text = context.component.text
         val maxTextLength = max(0, tileGraphics.size.width - DECORATION_WIDTH)
         val clearedText = if (text.length > maxTextLength) {
-            text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
+            text.substring(0, max(0, maxTextLength - 3)).plus(ELLIPSIS)
         } else {
             text
         }

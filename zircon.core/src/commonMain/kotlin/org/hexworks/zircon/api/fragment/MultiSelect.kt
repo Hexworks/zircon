@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.fragment
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.zircon.api.component.Fragment
 
 /**
@@ -12,6 +13,8 @@ import org.hexworks.zircon.api.component.Fragment
  * Optionally you can specify if the text on the label should be centered, default is true.
  * If the toString method of [T] is not well suited for the label, you can pass a different one.
  */
-interface MultiSelect<T: Any>: Fragment {
+interface MultiSelect<T : Any> : Fragment {
+
+    val valuesProperty: ListProperty<T>
     val values: List<T>
 }

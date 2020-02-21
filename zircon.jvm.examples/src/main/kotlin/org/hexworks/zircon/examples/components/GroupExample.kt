@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment.BOTTOM_CENTER
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
@@ -53,8 +53,7 @@ object GroupExample {
                 .withColorTheme(ColorThemes.cyberpunk())
                 .build().apply {
                     processComponentEvents(ACTIVATED) {
-                        group.add(leftPanel)
-                        group.add(rightPanel)
+                        group.addComponents(leftPanel, rightPanel)
                     }
                 }
 

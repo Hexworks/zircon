@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
@@ -23,7 +24,7 @@ import org.junit.Before
 import org.junit.Test
 
 @Suppress("UNCHECKED_CAST")
-class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
+class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() {
 
     override lateinit var target: DefaultButton
 
@@ -93,32 +94,35 @@ class DefaultButtonTest : ComponentImplementationTest<DefaultButton>() {
         val result = target.focusGiven()
 
         assertThat(result).isEqualTo(Processed)
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(FOCUSED)
+        assertThat(target.componentState).isEqualTo(FOCUSED)
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
         target.focusTaken()
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(DEFAULT)
+        assertThat(target.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
     fun shouldProperlyHandleMousePress() {
-        target.mousePressed(
-                event = MouseEvent(MOUSE_PRESSED, 1, Position.defaultPosition()),
+        target.mouseEntered(
+                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
+        target.activated()
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(ACTIVE)
+        assertThat(target.componentState).isEqualTo(ACTIVE)
     }
 
     @Test
     fun shouldProperlyHandleMouseRelease() {
+        target.focusGiven()
+        target.activated()
         target.mouseReleased(
                 event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
                 phase = UIEventPhase.TARGET)
 
-        assertThat(target.componentStyleSet.currentState()).isEqualTo(MOUSE_OVER)
+        assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
     }
 
     companion object {

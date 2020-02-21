@@ -12,9 +12,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 /**
  * Builder for [AppConfig]s.
@@ -29,7 +27,7 @@ data class AppConfigBuilder(
         private var clipboardAvailable: Boolean = true,
         private var defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
         private var defaultGraphicalTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
-        private var defaultColorTheme: ColorTheme = ColorThemes.default(),
+        private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
         private var debugMode: Boolean = false,
@@ -138,7 +136,7 @@ data class AppConfigBuilder(
             isCursorBlinking = cursorBlinking,
             isClipboardAvailable = clipboardAvailable,
             defaultTileset = defaultTileset,
-            defaultGraphicTileset = defaultGraphicalTileset,
+            defaultGraphicalTileset = defaultGraphicalTileset,
             defaultColorTheme = defaultColorTheme,
             debugMode = debugMode,
             size = defaultSize,

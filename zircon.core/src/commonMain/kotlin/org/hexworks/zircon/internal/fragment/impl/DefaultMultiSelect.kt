@@ -1,15 +1,18 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.fragment.MultiSelect
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
 class DefaultMultiSelect<T : Any>(
-        width: Int,
-        override val values: List<T>,
+        box: HBox,
+        initialValues: List<T>,
+        defaultSelected: T,
         val callback: (oldValue: T, newValue: T) -> Unit,
         private val centeredText: Boolean = true,
         private val toStringMethod: (T) -> String = Any::toString,
@@ -17,16 +20,19 @@ class DefaultMultiSelect<T : Any>(
 ) : MultiSelect<T> {
 
     init {
-        if (values.isEmpty()) {
-            throw IllegalStateException("Values list may not be empty")
+        require(initialValues.isNotEmpty()) {
+            "Values list may not be empty"
         }
         val minWidth = 3
-        if (width < minWidth) {
-            throw IllegalStateException("MultiSelect needs a minimum width of $minWidth, given was $width")
+        require(box.contentSize.width >= minWidth) {
+            "MultiSelect needs a minimum width of $minWidth, given was ${box.contentSize.width}"
         }
     }
 
-    private val indexProperty = createPropertyFrom(0)
+    override val valuesProperty = initialValues.toProperty()
+    override val values: List<T> by valuesProperty.asDelegate()
+
+    private val indexProperty = createPropertyFrom(values.indexOf(defaultSelected))
 
     private val rightButton = Components.button().withText(Symbols.ARROW_RIGHT.toString()).withDecorations().build().apply {
         processComponentEvents(ComponentEventType.ACTIVATED) { nextValue() }
@@ -36,17 +42,17 @@ class DefaultMultiSelect<T : Any>(
         processComponentEvents(ComponentEventType.ACTIVATED) { prevValue() }
     }
 
-    private val label = Components.label().withSize(width - (leftButton.width + rightButton.width), 1).build()
+    private val label = Components.label().withSize(box.contentSize.width - (leftButton.width + rightButton.width), 1).build()
 
     private val buttonLabel = Components.button().withDecorations().withSize(label.size).build()
 
-    override val root = Components.hbox().withSize(width, 1).withSpacing(0).build().apply {
+    override val root = box.apply {
         addComponent(leftButton)
 
         if (clickable) {
             addComponent(buttonLabel.also { it.initLabel() })
             buttonLabel.processComponentEvents(ComponentEventType.ACTIVATED) {
-                setValue(indexProperty.value, indexProperty.value)
+                nextValue()
             }
         } else {
             addComponent(label.also { it.initLabel() })

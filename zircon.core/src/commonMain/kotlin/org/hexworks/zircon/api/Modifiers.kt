@@ -1,8 +1,10 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.modifier.*
 import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.internal.modifier.TileCoordinate
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -33,6 +35,18 @@ object Modifiers {
     @JvmOverloads
     fun glow(radius: Float = 5.0f): Modifier = Glow(radius)
 
+    /**
+     * Shorthand for the default border which is:
+     * - a simple border
+     * - on all sides (top, right, bottom, left)
+     * @see BorderBuilder if you want to create custom borders
+     */
+    @JvmStatic
+    fun border(): Border = BorderBuilder.newBuilder().build()
+
+    @JvmStatic
+    fun crop(x: Int, y: Int, width: Int, height: Int): Modifier = Crop(x, y, width, height)
+
     @JvmStatic
     @JvmOverloads
     fun fadeIn(steps: Int = 20,
@@ -52,15 +66,9 @@ object Modifiers {
                   timeMsBeforeFadingOut: Long = 5000,
                   stepsFadeOut: Int = 20,
                   timeMsFadeOut: Long = 2000): Modifier = FadeInOut(stepsFadeIn, timeMsFadeIn, glowOnFinalFadeInStep, timeMsBeforeFadingOut,
-                                                                    stepsFadeOut, timeMsFadeOut)
+            stepsFadeOut, timeMsFadeOut)
 
-
-    /**
-     * Shorthand for the default border which is:
-     * - a simple border
-     * - on all sides (top, right, bottom, left)
-     * @see BorderBuilder if you want to create custom borders
-     */
     @JvmStatic
-    fun border(): Border = BorderBuilder.newBuilder().build()
+    fun delay(timeMs: Long): Modifier = Delay(timeMs)
+
 }

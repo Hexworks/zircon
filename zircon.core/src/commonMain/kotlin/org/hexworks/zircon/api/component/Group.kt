@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.builder.Builder
+
 /**
  * A [Group] is a logical grouping of [Component]s. It can be used to
  * change their properties together even if the underlying [Component]s
@@ -11,20 +13,28 @@ package org.hexworks.zircon.api.component
 interface Group<T : Component> : ComponentProperties {
 
     /**
-     * Adds the given [component] to this [Group]. After the addition is complete
-     * the [ComponentProperties] of the given [component] will be updated whenever this
-     * [Group]'s properties are updated. Has no effect if the [component] is already in this [Group].
+     * Adds a child [Component] to this [ComponentContainer]. It can either be
+     * a leaf component (like a label) or a [Container] which can itself
+     * contain components within itself.
      */
-    fun add(component: T)
-
-    fun addAll(vararg components: T)
+    fun addComponent(component: T): AttachedComponent
 
     /**
-     * Removes the given [component] from this [Group]. After the removal the given
-     * [component] won't be updated anymore when the properties of this [Group] change.
-     * Note that this function has no effect if the given [component] was not part of this group.
+     * Builds a [Component] using the given component [Builder]
+     * and adds it to this [ComponentContainer].
      */
-    fun remove(component: T)
+    fun addComponent(builder: Builder<T>): AttachedComponent = addComponent(builder.build())
 
-    fun removeAll(vararg components: T)
+    /**
+     * Adds the given [Component]s to this [ComponentContainer].
+     * @see addComponent
+     */
+    fun addComponents(vararg components: T): List<AttachedComponent>
+
+    /**
+     * Adds the given [Component]s to this [ComponentContainer].
+     * @see addComponent
+     */
+    fun addComponents(vararg components: Builder<T>): List<AttachedComponent> = components.map(::addComponent)
+
 }

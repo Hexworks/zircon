@@ -1,17 +1,11 @@
-import Libs.kotlinxCollectionsImmutable
-
 plugins {
-    kotlinMpp
+    kotlin("multiplatform")
+    id("maven-publish")
+    id("signing")
 }
 
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(kotlinxCollectionsImmutable)
-            }
-        }
-    }
+
     jvm {
         jvmTarget(JavaVersion.VERSION_1_8)
         withJava()
@@ -20,11 +14,12 @@ kotlin {
     dependencies {
         with(Libs) {
             commonMainApi(kotlinStdLibCommon)
+
             commonMainApi(kotlinxCoroutinesCommon)
-            commonMainApi(cobaltEvents)
-            commonMainApi(cobaltDatabinding)
-            commonMainApi(cobaltDatatypes)
-            commonMainApi(cobaltLogging)
+            commonMainApi(kotlinxCollectionsImmutable)
+            commonMainApi(kotlinReflect)
+
+            commonMainApi(cobaltCore)
         }
 
         with(TestLibs) {
@@ -35,13 +30,16 @@ kotlin {
         with(Libs) {
             jvmMainApi(kotlinStdLibJdk8)
             jvmMainApi(kotlinReflect)
+
             jvmMainApi(kotlinxCoroutines)
+
             jvmMainApi(caffeine)
             jvmMainApi(snakeYaml)
             jvmMainApi(slf4jApi)
         }
 
         with(TestLibs) {
+            jvmTestApi(kotlinTestJunit)
             jvmTestApi(junit)
             jvmTestApi(mockitoAll)
             jvmTestApi(mockitoKotlin)
@@ -50,4 +48,17 @@ kotlin {
             jvmTestApi(logbackCore)
         }
     }
+}
+
+publishing {
+    publishWith(
+            project = project,
+            module = "cobalt.core",
+            desc = "Core utilities for Cobalt."
+    )
+}
+
+signing {
+    isRequired = false
+    sign(publishing.publications)
 }

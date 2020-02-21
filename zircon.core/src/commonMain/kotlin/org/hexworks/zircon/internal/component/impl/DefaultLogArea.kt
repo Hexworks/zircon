@@ -1,26 +1,24 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 import org.hexworks.zircon.api.builder.component.TextBoxBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.LogArea
-import org.hexworks.zircon.api.component.TextBox
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
+import kotlin.jvm.Synchronized
 
-class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
-                                 private val renderingStrategy: ComponentRenderingStrategy<LogArea>)
-    : LogArea, DefaultContainer(
+class DefaultLogArea constructor(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<LogArea>
+) : LogArea, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
     private var currentInlineBuilder = createTextBoxBuilder()
+    private val logElements = mutableListOf<AttachedComponent>()
 
     init {
         render()
@@ -69,8 +67,7 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         LOGGER.debug("Committing inline elements of LogArea (id=${id.abbreviate()}).")
         val builder = currentInlineBuilder
         currentInlineBuilder = createTextBoxBuilder()
-        addLogElement(builder.commitInlineElements()
-                .build())
+        addLogElement(builder.commitInlineElements().build())
     }
 
     override fun addNewRows(numberOfRows: Int) {
@@ -82,26 +79,15 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
         }
     }
 
+    @Synchronized
     override fun clear() {
-        LOGGER.debug("Clearing to LogArea (id=${id.abbreviate()}).")
-        children.forEach { removeComponent(it) }
+        logElements.forEach { it.detach() }
+        logElements.clear()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.primaryForegroundColor)
-                    .build())
-            .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
+    @Synchronized
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         var currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
@@ -114,18 +100,19 @@ class DefaultLogArea constructor(componentMetadata: ComponentMetadata,
             val linesToFree = elementHeight - remainingHeight
             var currentFreedSpace = 0
             while (currentFreedSpace < linesToFree) {
-                children.firstOrNull()?.let { topChild ->
-                    topChild.detach()
+                logElements.firstOrNull()?.let { topChild ->
                     currentFreedSpace += topChild.height
+                    topChild.detach()
+                    logElements.remove(topChild)
                 }
             }
-            children.forEach { child ->
+            logElements.forEach { child ->
                 child.moveUpBy(currentFreedSpace)
             }
             currentHeight -= currentFreedSpace
         }
         element.moveTo(Position.create(0, currentHeight))
-        addComponent(element)
+        logElements.add(addComponent(element))
         if (applyTheme) {
             element.theme = theme
         }

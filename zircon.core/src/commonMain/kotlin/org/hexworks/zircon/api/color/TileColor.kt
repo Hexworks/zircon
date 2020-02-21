@@ -20,6 +20,16 @@ interface TileColor : Cacheable {
         get() = alpha == 255
 
     /**
+     * Returns a new [TileColor] which is desturated by the [DEFAULT_FACTOR] (.7).
+     */
+    fun desaturate(): TileColor = desaturate(defaultFactor())
+
+    /**
+     * Returns a new [TileColor] which is desaturated by [factor].
+     */
+    fun desaturate(factor: Double): TileColor
+
+    /**
      * Returns a new [TileColor] which is tinted by the [DEFAULT_FACTOR] (.7).
      */
     fun tint(): TileColor = tint(defaultFactor())
@@ -55,6 +65,16 @@ interface TileColor : Cacheable {
      * The number must be between `0` and `1`.
      */
     fun lightenByPercent(percentage: Double): TileColor
+
+    fun withAlpha(alpha: Int): TileColor
+
+    fun withRed(red: Int): TileColor
+
+    fun withGreen(green: Int): TileColor
+
+    fun withBlue(blue: Int): TileColor
+
+    fun interpolateTo(other: TileColor): ColorInterpolator
 
     companion object {
 

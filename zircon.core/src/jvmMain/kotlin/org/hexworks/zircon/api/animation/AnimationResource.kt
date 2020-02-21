@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.AnimationMetadata
-import org.hexworks.zircon.internal.animation.DefaultAnimationFrame
+import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 import org.hexworks.zircon.internal.util.rex.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor

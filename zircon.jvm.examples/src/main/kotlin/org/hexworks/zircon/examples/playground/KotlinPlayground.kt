@@ -7,39 +7,39 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.api.extensions.toScreen
 
 
 object KotlinPlayground {
 
-    private val theme = ColorThemes.techLight()
     private val tileset = CP437TilesetResources.rexPaint20x20()
+    private val theme = ColorThemes.ghostOfAChance()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .withSize(Size.create(60, 30))
+                .withSize(60, 30)
                 .build())
 
-        val screen = Screen.create(tileGrid)
+        val screen = tileGrid.toScreen()
 
-
-        val component = Components.button()
-                .withDecorations(box())
-                .withSize(18, 5)
-                .withComponentRenderer(NoOpComponentRenderer())
-                .withAlignmentWithin(screen, ComponentAlignment.BOTTOM_RIGHT)
+        val btn = Components.button()
+                .withText("Disabled")
+                .withPosition(0, 2)
                 .build()
 
-        screen.addComponent(component)
+
+        screen.addComponent(Components.button().withText("Enabled 0"))
+        screen.addComponent(Components.button().withPosition(0, 1).withText("Enabled 1"))
+        screen.addComponent(btn)
+
+        btn.isDisabled = true
+        btn.tileset = CP437TilesetResources.bisasam20x20()
 
         screen.display()
         screen.theme = theme
+
     }
 }

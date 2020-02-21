@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.animation.Animation
-import org.hexworks.zircon.api.animation.AnimationInfo
+import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
@@ -16,15 +16,15 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.view.ViewContainer
-import org.hexworks.zircon.internal.animation.DefaultAnimationHandler
-import org.hexworks.zircon.internal.animation.InternalAnimationHandler
+import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
+import org.hexworks.zircon.internal.animation.InternalAnimation
+import org.hexworks.zircon.internal.animation.InternalAnimationRunner
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.extensions.cancelAll
 import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
@@ -33,12 +33,11 @@ class ThreadSafeTileGrid(
         initialTileset: TilesetResource,
         initialSize: Size,
         override var layerable: InternalLayerable = buildLayerable(initialSize),
-        override var animationHandler: InternalAnimationHandler = DefaultAnimationHandler(),
-        private val cursorHandler: InternalCursorHandler = DefaultCursorHandler(
+        override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
+        override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
                 initialCursorSpace = initialSize),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault())
-    : InternalTileGrid,
-        InternalCursorHandler by cursorHandler,
+        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+) : InternalTileGrid,
         ShutdownHook by DefaultShutdownHook(),
         UIEventProcessor by eventProcessor,
         ViewContainer by ViewContainer.create() {
@@ -71,22 +70,21 @@ class ThreadSafeTileGrid(
             return layerable.layerStates
         }
 
+    override val isClosed = false.toProperty()
+
     override val layers: Iterable<Layer>
         get() {
             return layerable.layers
         }
 
+    private var originalCursorHandler = cursorHandler
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
 
-    private val subscriptions: MutableList<Subscription> = mutableListOf()
-
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
     }
-
-    override fun getLayerAt(index: Int) = layerable.getLayerAt(index)
 
     @Synchronized
     override fun putTile(tile: Tile) {
@@ -98,10 +96,37 @@ class ThreadSafeTileGrid(
         }
     }
 
+    override var isCursorVisible: Boolean
+        get() = cursorHandler.isCursorVisible
+        set(value) {
+            cursorHandler.isCursorVisible = value
+        }
+    override var cursorPosition: Position
+        get() = cursorHandler.cursorPosition
+        set(value) {
+            cursorHandler.cursorPosition = value
+        }
+    override val isCursorAtTheEndOfTheLine: Boolean
+        get() = cursorHandler.isCursorAtTheEndOfTheLine
+    override val isCursorAtTheStartOfTheLine: Boolean
+        get() = cursorHandler.isCursorAtTheStartOfTheLine
+    override val isCursorAtTheFirstRow: Boolean
+        get() = cursorHandler.isCursorAtTheFirstRow
+    override val isCursorAtTheLastRow: Boolean
+        get() = cursorHandler.isCursorAtTheLastRow
+
+    override fun moveCursorForward() {
+        cursorHandler.moveCursorForward()
+    }
+
+    override fun moveCursorBackward() {
+        cursorHandler.moveCursorBackward()
+    }
+
     @Synchronized
     override fun close() {
         animationHandler.close()
-        subscriptions.cancelAll()
+        isClosed.value = true
     }
 
     @Synchronized
@@ -109,6 +134,7 @@ class ThreadSafeTileGrid(
         backend = tileGrid.backend
         layerable = tileGrid.layerable
         animationHandler = tileGrid.animationHandler
+        cursorHandler = tileGrid.cursorHandler
     }
 
     @Synchronized
@@ -116,6 +142,7 @@ class ThreadSafeTileGrid(
         backend = originalBackend
         layerable = originalLayerable
         animationHandler = originalAnimationHandler
+        cursorHandler = originalCursorHandler
     }
 
     @Synchronized
@@ -128,13 +155,13 @@ class ThreadSafeTileGrid(
     // ANIMATION HANDLER
 
     @Synchronized
-    override fun startAnimation(animation: Animation): AnimationInfo {
-        return animationHandler.startAnimation(animation)
+    override fun start(animation: Animation): AnimationHandle {
+        return animationHandler.start(animation)
     }
 
     @Synchronized
-    override fun stopAnimation(animation: Animation) {
-        animationHandler.stopAnimation(animation)
+    override fun stop(animation: InternalAnimation) {
+        animationHandler.stop(animation)
     }
 
     @Synchronized
@@ -143,11 +170,6 @@ class ThreadSafeTileGrid(
     }
 
     // DRAW SURFACE
-
-    @Synchronized
-    override fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile) {
-        backend.transformTileAt(position, tileTransformer)
-    }
 
     @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
@@ -164,18 +186,22 @@ class ThreadSafeTileGrid(
         backend.draw(tile, drawPosition)
     }
 
+    @Synchronized
     override fun draw(tileComposite: TileComposite) {
         backend.draw(tileComposite)
     }
 
+    @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position) {
         backend.draw(tileComposite, drawPosition)
     }
 
+    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>) {
         backend.draw(tileMap)
     }
 
+    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
         backend.draw(tileMap, drawPosition)
     }
@@ -184,8 +210,6 @@ class ThreadSafeTileGrid(
     override fun fill(filler: Tile) {
         backend.fill(filler)
     }
-
-    override fun toTileImage() = backend.toTileImage()
 
     override fun transform(transformer: (Position, Tile) -> Tile) {
         backend.transform(transformer)
@@ -198,62 +222,19 @@ class ThreadSafeTileGrid(
     // LAYERABLE
 
     @Synchronized
-    override fun addLayer(layer: Layer) {
-        layerable.addLayer(layer)
-    }
+    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
 
     @Synchronized
-    override fun setLayerAt(index: Int, layer: Layer) {
-        require(index != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.setLayerAt(index, layer)
-    }
+    override fun addLayer(layer: Layer) = layerable.addLayer(layer)
 
     @Synchronized
-    override fun insertLayerAt(index: Int, layer: Layer) {
-        require(index != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.insertLayerAt(index, layer)
-    }
+    override fun insertLayerAt(level: Int, layer: Layer) = layerable.insertLayerAt(level, layer)
 
     @Synchronized
-    override fun insertLayersAt(index: Int, layers: Collection<Layer>) {
-        require(index != 0) {
-            "Can't displace the base layer (index 0) of a TileGrid."
-        }
-        layerable.insertLayersAt(index, layers)
-    }
+    override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
 
-    @Synchronized
-    override fun removeLayer(layer: Layer) {
-        require(layer != backend) {
-            "Can't remove the base layer (index 0) of a TileGrid"
-        }
-        layerable.removeLayer(layer)
-    }
-
-    @Synchronized
-    override fun removeLayerAt(index: Int) {
-        require(index != 0) {
-            "Can't remove the base layer (index 0) of a TileGrid."
-        }
-        layerable.removeLayerAt(index)
-    }
-
-    @Synchronized
-    override fun removeLayers(layers: Collection<Layer>) {
-        require(layers.none { it === backend }) {
-            "Can't remove the base layer (index 0) of a TileGrid."
-        }
-        layerable.removeLayers(layers)
-    }
-
-    // TODO: regression test this (drop(0))
-    @Synchronized
-    override fun removeAllLayers() {
-        layers.drop(1).forEach(this::removeLayer)
+    override fun removeLayer(layer: Layer): Layer {
+        return layerable.removeLayer(layer)
     }
 
     private fun moveCursorToNextLine() {

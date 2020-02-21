@@ -5,27 +5,22 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
 class TileGraphicsTest {
 
-    lateinit var target: TileGraphics
+    lateinit var target: InternalTileGraphics
 
     @Before
     fun setUp() {
         target = TileGraphicsBuilder.newBuilder()
                 .withSize(SIZE_OF_3X3)
                 .withTileset(TILESET)
-                .buildThreadSafeTileGraphics()
+                .buildThreadSafeTileGraphics() as ThreadSafeTileGraphics
     }
 
     @Test

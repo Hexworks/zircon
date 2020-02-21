@@ -6,20 +6,17 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
+/**
+ * A [DrawSurface] is a [TileComposite] which implements draw and mutation operations such as:
+ * - [draw]
+ * - [fill]
+ * - [transform]
+ * - [applyStyle] and
+ * - [clear]
+ * A [DrawSurface] also has its own [tileset].
+ */
 interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
-    /**
-     * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] have [Tile]s
-     * which are not contained within the [size] of this [TileGraphics] they will be ignored.
-     * @param drawPosition the starting position of the drawing relative to the top left
-     *                     corner of this [TileGraphics]. the default is [Positions.zero]
-     * @param drawArea the sub-section of the [tileMap] form which the [Tile]s should be drawn
-     */
-    fun draw(tileMap: Map<Position, Tile>,
-             drawPosition: Position,
-             drawArea: Size)
-
-    // TODO: delete tile when drawing empty tile
     /**
      * Draws the given [Tile] on this [TileGraphics] at the given [drawPosition].
      * Drawing the empty tile ([Tile.empty]) will result in the deletion of the
@@ -29,67 +26,49 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
              drawPosition: Position)
 
     /**
-     * Draws a [TileComposite] onto this [TileGraphics]. If the [tileComposite] has [Tile]s
+     * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] has [Tile]s
      * which are not contained within the [size] of this [TileGraphics] they will be ignored.
-     * The [tileComposite] will get drawn to the top left corner of this [TileGraphics].
+     * @param tileMap [Position] -> [Tile] mappings which contains the [Tile]s to draw.
+     *                 the [Positions] will be offset with [drawPosition] when drawing
+     * @param drawPosition the starting position of the drawing relative to the top left
+     *                     corner of this [TileGraphics]. The default is [Positions.zero].
+     * @param drawArea the sub-section of the [tileMap] to which the [Tile]s should be drawn
+     * Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1) and
+     * [drawArea] is (2,2) the following positions will be overwritten: [(1,1), (2,1), (1,2), (2,2)]
      */
-    fun draw(tileComposite: TileComposite)
-
-    /**
-     * Draws a [TileComposite] onto this [TileGraphics]. If the [tileComposite] has [Tile]s
-     * which are not contained within the [size] of this [TileGraphics] they will be ignored.
-     * @param drawPosition the starting position of the drawing relative to this [TileGraphics]'s top left corner.
-     *                 the default is [Positions.zero]
-     */
-    fun draw(tileComposite: TileComposite,
-             drawPosition: Position)
-
-    /**
-     * Draws a [TileComposite] onto this [TileGraphics]. If the [tileComposite] has [Tile]s
-     * which are not contained within the [drawArea] of this [TileGraphics] they will be ignored.
-     * @param drawPosition the starting position of the drawing relative to this [TileGraphics]'s top left corner.
-     *                 the default is [Positions.zero]
-     * @param drawArea the sub-section of the [tileComposite] form which the [Tile]s should be drawn
-     *             the default is the size of this [DrawSurface]
-     */
-    fun draw(tileComposite: TileComposite,
+    fun draw(tileMap: Map<Position, Tile>,
              drawPosition: Position,
              drawArea: Size)
 
     /**
-     * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] have [Tile]s
-     * which are not contained within the [size] of this [TileGraphics] they will be ignored.
+     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`,
+     * and [Position.zero] as `drawPosition`
      */
     fun draw(tileMap: Map<Position, Tile>)
 
     /**
-     * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] have [Tile]s
-     * which are not contained within the [size] of this [TileGraphics] they will be ignored.
-     * @param drawPosition the starting position of the drawing relative to this [TileGraphics]'s top left corner.
-     *                 the default is [Positions.zero]
+     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`.
      */
     fun draw(tileMap: Map<Position, Tile>,
              drawPosition: Position)
 
     /**
-     * Transforms the [Tile] at the given [position] using the given
-     * [tileTransformer].
+     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
      */
-    fun transformTileAt(position: Position, tileTransformer: (Tile) -> Tile)
+    fun draw(tileComposite: TileComposite)
 
     /**
-     * Fills the empty parts of this [TileGraphics] with the given [filler] [Tile].
-     * A [Position] is considered empty if there is no [Tile] in it.
+     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
      */
-    fun fill(filler: Tile)
+    fun draw(tileComposite: TileComposite,
+             drawPosition: Position)
 
     /**
-     * Creates a **new** [TileImage] from the contents of this
-     * [TileGraphics]. The result is detached from the current one
-     * which means that changes to one are not reflected in the
-     * other.
+     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
      */
-    fun toTileImage(): TileImage
+    fun draw(tileComposite: TileComposite,
+             drawPosition: Position,
+             drawArea: Size)
 
     /**
      * Transforms all of the [Tile]s in this [TileGraphics] with the given
@@ -105,4 +84,10 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      * [TileGraphics.toSubTileGraphics].
      */
     fun applyStyle(styleSet: StyleSet)
+
+    /**
+     * Fills the empty parts of this [TileGraphics] with the given [filler] [Tile].
+     * A [Position] is considered empty if there is no [Tile] in it.
+     */
+    fun fill(filler: Tile)
 }

@@ -6,7 +6,8 @@ import kotlin.jvm.JvmStatic
 data class DebugConfig(
         val displayGrid: Boolean,
         val displayCoordinates: Boolean,
-        val displayFps: Boolean) {
+        val displayFps: Boolean
+) {
 
     companion object {
 

@@ -96,13 +96,7 @@ object CP437TilesetResources {
     fun msGothic16x16(): TilesetResource = MS_GOTHIC_16X16
 
     @JvmStatic
-    fun nagidal16x16(): TilesetResource = NAGIDAL_16X16
-
-    @JvmStatic
     fun nagidal24x24(): TilesetResource = NAGIDAL_24X24
-
-    @JvmStatic
-    fun nordic16x16(): TilesetResource = NORDIC_16X16
 
     @JvmStatic
     fun obsidian16x16(): TilesetResource = OBSIDIAN_16X16

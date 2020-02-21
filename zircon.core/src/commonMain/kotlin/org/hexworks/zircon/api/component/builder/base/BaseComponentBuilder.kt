@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import kotlin.jvm.JvmSynthetic
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
@@ -116,6 +117,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
+    @JvmSynthetic
     internal fun withProps(props: CommonComponentProperties<T>): U {
         this.props = props
         return this as U

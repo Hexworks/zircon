@@ -10,6 +10,7 @@ import kotlin.jvm.JvmStatic
 interface TextHolder {
 
     var text: String
+
     val textProperty: Property<String>
 
     companion object {

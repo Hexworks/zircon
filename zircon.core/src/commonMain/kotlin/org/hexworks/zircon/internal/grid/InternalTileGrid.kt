@@ -1,14 +1,16 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.animation.InternalAnimationHandler
+import org.hexworks.zircon.internal.animation.InternalAnimationRunner
+import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 interface InternalTileGrid
-    : TileGrid, InternalAnimationHandler, InternalLayerable, UIEventProcessor {
+    : TileGrid, InternalAnimationRunner, InternalLayerable, UIEventProcessor {
 
     /**
      * The base layer of this [InternalTileGrid] (at index `0`).
@@ -19,9 +21,13 @@ interface InternalTileGrid
      */
     var layerable: InternalLayerable
     /**
-     * The [InternalAnimationHandler] this [InternalTileGrid] currently uses.
+     * The [InternalAnimationRunner] this [InternalTileGrid] currently uses.
      */
-    var animationHandler: InternalAnimationHandler
+    var animationHandler: InternalAnimationRunner
+    /**
+     * The [InternalCursorHandler] this [InternalTileGrid] currently uses.
+     */
+    var cursorHandler: InternalCursorHandler
 
     /**
      * Starts delegating all actions to the given [tileGrid].

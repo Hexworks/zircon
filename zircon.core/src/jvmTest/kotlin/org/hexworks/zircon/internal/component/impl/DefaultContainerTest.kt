@@ -1,8 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.events.api.subscribeTo
-
+import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
@@ -13,10 +12,12 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.box
-import org.hexworks.zircon.api.extensions.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -86,44 +87,44 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withSize(32, 16)
                 .withAlignment(positionalAlignment(1, 1))
-                .build()
+                .build() as InternalContainer
         val panelHeader = HeaderBuilder.newBuilder()
                 .withAlignment(positionalAlignment(Position.create(1, 0)))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header")
-                .build()
+                .build() as InternalComponent
 
         val innerPanelHeader = HeaderBuilder.newBuilder()
                 .withAlignment(positionalAlignment(1, 0))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header2")
-                .build()
+                .build() as InternalComponent
         val innerPanel = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel2"))
                 .withSize(16, 10)
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withAlignment(positionalAlignment(1, 2))
-                .build()
+                .build() as InternalContainer
 
-        assertThat(panel.isAttached()).isFalse()
-        assertThat(panelHeader.isAttached()).isFalse()
-        assertThat(innerPanel.isAttached()).isFalse()
-        assertThat(innerPanelHeader.isAttached()).isFalse()
+        assertThat(panel.isAttached).isFalse()
+        assertThat(panelHeader.isAttached).isFalse()
+        assertThat(innerPanel.isAttached).isFalse()
+        assertThat(innerPanelHeader.isAttached).isFalse()
 
         innerPanel.addComponent(innerPanelHeader)
-        assertThat(innerPanelHeader.isAttached()).isTrue()
+        assertThat(innerPanelHeader.isAttached).isTrue()
 
         panel.addComponent(panelHeader)
-        assertThat(panelHeader.isAttached()).isTrue()
+        assertThat(panelHeader.isAttached).isTrue()
 
         panel.addComponent(innerPanel)
-        assertThat(innerPanel.isAttached()).isTrue()
+        assertThat(innerPanel.isAttached).isTrue()
 
-        assertThat(panel.isAttached()).isFalse()
+        assertThat(panel.isAttached).isFalse()
 
         screen.addComponent(panel)
 
-        assertThat(panel.isAttached()).isTrue()
+        assertThat(panel.isAttached).isTrue()
 
         assertThat(panel.absolutePosition).isEqualTo(Position.create(1, 1))
         assertThat(panelHeader.absolutePosition).isEqualTo(Position.create(3, 2)) // + 1x1 because of the wrapper
@@ -144,31 +145,31 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withSize(32, 16)
                 .withAlignment(positionalAlignment(Position.offset1x1()))
-                .build()
+                .build() as InternalContainer
         val panel1 = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel2"))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withSize(16, 10)
                 .withAlignment(positionalAlignment(1, 1))
-                .build()
+                .build() as InternalContainer
         val header0 = HeaderBuilder.newBuilder()
                 .withAlignment(positionalAlignment(1, 0))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("Header")
-                .build()
+                .build() as InternalComponent
 
         screen.addComponent(panel0)
 
-        assertThat(panel0.isAttached()).isTrue()
+        assertThat(panel0.isAttached).isTrue()
 
         panel0.addComponent(header0)
 
-        assertThat(header0.isAttached()).isTrue()
+        assertThat(header0.isAttached).isTrue()
         assertThat(header0.absolutePosition).isEqualTo(Position.create(3, 2))
 
         panel0.addComponent(panel1)
 
-        assertThat(panel1.isAttached())
+        assertThat(panel1.isAttached)
         assertThat(panel1.absolutePosition).isEqualTo(Position.create(3, 3))
 
     }
@@ -236,39 +237,15 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .withText("x")
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withAlignment(positionalAlignment(Position.defaultPosition()))
-                .build()
-        target.addComponent(comp)
+                .build() as InternalComponent
+        val handle = target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
+        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
             removalHappened.set(true)
         }
 
-        assertThat(target.removeComponent(comp)).isTrue()
+        handle.detach()
         assertThat(removalHappened.get()).isTrue()
-    }
-
-    @Test
-    fun shouldProperlyRemoveAllComponentsFromSelf() {
-        val comp1 = LabelBuilder.newBuilder()
-                .withText("x")
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(Position.defaultPosition()))
-                .build()
-        target.addComponent(comp1)
-        val comp2 = LabelBuilder.newBuilder()
-                .withText("x")
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(Position.create(1, 2)))
-                .build()
-        target.addComponent(comp2)
-        val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
-            removalHappened.set(true)
-        }
-
-        assertThat(target.detachAllComponents()).isTrue()
-        assertThat(removalHappened.get()).isTrue()
-        assertThat(target.children).isEmpty()
     }
 
     @Test
@@ -278,29 +255,8 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlyReturnToString() {
-        assertThat(target.toString()).isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)}, pos=2;3, size=4;4, disabled=false)")
-    }
-
-    @Test
-    fun shouldProperlyRemoveComponentFromChild() {
-        val comp = LabelBuilder.newBuilder()
-                .withText("x")
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(Position.defaultPosition()))
-                .build()
-        val panel = PanelBuilder.newBuilder()
-                .withSize(SIZE_4x4 - Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(Position.defaultPosition())).build()
-        panel.addComponent(comp)
-        target.addComponent(panel)
-        val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.subscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
-            removalHappened.set(true)
-        }
-
-        assertThat(target.removeComponent(comp)).isTrue()
-        assertThat(removalHappened.get()).isTrue()
+        assertThat(target.toString())
+                .isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)}, pos=2;3, size=4;4, state=DEFAULT, disabled=false)")
     }
 
     companion object {

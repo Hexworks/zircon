@@ -47,41 +47,6 @@ class DefaultComponentStyleSetTest {
         assertThat(target.fetchStyleFor(ComponentState.DISABLED)).isEqualTo(DISABLED_STYLE)
     }
 
-    @Test
-    fun shouldBeDefaultByDefault() {
-        assertThat(target.currentStyle()).isEqualTo(DEFAULT_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyGiveFocus() {
-        assertThat(target.applyFocusedStyle()).isEqualTo(FOCUSED_STYLE)
-        assertThat(target.currentStyle()).isEqualTo(FOCUSED_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyActivate() {
-        assertThat(target.applyActiveStyle()).isEqualTo(ACTIVE_STYLE)
-        assertThat(target.currentStyle()).isEqualTo(ACTIVE_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyDisable() {
-        assertThat(target.applyDisabledStyle()).isEqualTo(DISABLED_STYLE)
-        assertThat(target.currentStyle()).isEqualTo(DISABLED_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyMouseOver() {
-        assertThat(target.applyMouseOverStyle()).isEqualTo(MOUSE_OVER_STYLE)
-        assertThat(target.currentStyle()).isEqualTo(MOUSE_OVER_STYLE)
-    }
-
-    @Test
-    fun shouldProperlyReset() {
-        target.applyMouseOverStyle()
-        assertThat(target.reset()).isEqualTo(DEFAULT_STYLE)
-        assertThat(target.currentStyle()).isEqualTo(DEFAULT_STYLE)
-    }
 
     companion object {
         val ACTIVE_STYLE = StyleSetBuilder.newBuilder()

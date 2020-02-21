@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
@@ -8,16 +9,12 @@ import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.MouseEventType.*
-import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.junit.Before
 import org.junit.Ignore
@@ -25,6 +22,7 @@ import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.contracts.ExperimentalContracts
 
+@Suppress("TestFunctionName")
 @ExperimentalContracts
 class DefaultComponentContainerTest {
 
@@ -45,13 +43,12 @@ class DefaultComponentContainerTest {
 
     @Test
     fun shouldProperlyRemoveComponent() {
-        val button = createButton()
-        target.addComponent(button)
+        val button = createButton() as InternalComponent
+        val handle = target.addComponent(button)
         assertThat(target.layerStates).hasSize(2)
 
-        val result = target.removeComponent(button)
+        handle.detach()
 
-        assertThat(result).isTrue()
         assertThat(target.layerStates).hasSize(1) // default container
     }
 
@@ -173,11 +170,11 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
 
-        assertThat(button.componentStyleSet.currentStyle()).isNotEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isNotEqualTo(FOCUSED_STYLE)
 
         target.dispatch(TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -196,11 +193,11 @@ class DefaultComponentContainerTest {
         target.dispatch(TAB)
         target.dispatch(TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(DEFAULT_STYLE)
+        assertThat(button.currentStyle).isEqualTo(DEFAULT_STYLE)
 
         target.dispatch(REVERSE_TAB)
 
-        assertThat(button.componentStyleSet.currentStyle()).isEqualTo(FOCUSED_STYLE)
+        assertThat(button.currentStyle).isEqualTo(FOCUSED_STYLE)
     }
 
     @Test
@@ -220,6 +217,20 @@ class DefaultComponentContainerTest {
         target.dispatch(SPACE)
 
         assertThat(activated.get()).isTrue()
+    }
+
+    @Test
+    fun When_deactivated_Then_focused_component_stays_the_same() {
+        target.activate()
+
+        val button = createButton() as InternalComponent
+        target.addComponent(button)
+
+        target.focus(button)
+
+        target.deactivate()
+
+        assertThat(target.focusedComponent).isEqualTo(button)
     }
 
     private fun createButton() = ButtonBuilder.newBuilder()

@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.component.HBoxBuilder
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.MultiSelect
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultMultiSelect
@@ -10,14 +12,26 @@ import kotlin.jvm.JvmStatic
 /**
  * Builder for a [MultiSelect]
  */
-class MultiSelectBuilder<T : Any>(val width: Int, val values: List<T>) : FragmentBuilder<MultiSelect<T>, MultiSelectBuilder<T>> {
+class MultiSelectBuilder<T : Any>(
+        val width: Int,
+        val values: List<T>,
+        private val boxBuilder: HBoxBuilder = HBoxBuilder().withSize(width, 1)
+) : FragmentBuilder<MultiSelect<T>, MultiSelectBuilder<T>>,
+        Builder<MultiSelect<T>> {
+
+    init {
+        require(values.isNotEmpty()) {
+            "No values supplied."
+        }
+    }
 
     private val log = LoggerFactory.getLogger(this::class)
 
-    private var callback: (oldValue: T, newValue: T) -> Unit = { _, _ -> log.warn("No callback defined for a MultiSelect input!")}
+    private var callback: (oldValue: T, newValue: T) -> Unit = { _, _ -> log.warn("No callback defined for a MultiSelect input!") }
     private var centeredText = true
     private var toStringMethod: (T) -> String = Any::toString
     private var clickable: Boolean = false
+    private var defaultSelected = values.first()
 
     /**
      * The callback to be used when the value changes. It gets the old and the new value as parameters.
@@ -48,21 +62,35 @@ class MultiSelectBuilder<T : Any>(val width: Int, val values: List<T>) : Fragmen
         this.clickable = clickable
     }
 
+    fun withDefaultSelected(item: T) = also {
+        require(values.contains(item)) {
+            "$item is not present in ${values.joinToString()}"
+        }
+        this.defaultSelected = item
+    }
+
+    override fun withPosition(position: Position) = also {
+        boxBuilder.withPosition(position)
+    }
+
+    override fun withPosition(x: Int, y: Int) = withPosition(Position.create(x, y))
+
     override fun build(): MultiSelect<T> =
             DefaultMultiSelect(
-                width = width,
-                values = values,
-                callback = callback,
-                centeredText = centeredText,
-                toStringMethod = toStringMethod,
-                clickable = clickable)
+                    box = boxBuilder.build(),
+                    initialValues = values,
+                    callback = callback,
+                    defaultSelected = defaultSelected,
+                    centeredText = centeredText,
+                    toStringMethod = toStringMethod,
+                    clickable = clickable)
 
     override fun createCopy(): Builder<MultiSelect<T>> {
-        return newBuilder(width, values).
-                withCallback(callback).
-                withCenteredText(centeredText).
-                withToStringMethod(toStringMethod).
-                withClickableLabel(clickable)
+        return newBuilder(width, values)
+                .withCallback(callback)
+                .withCenteredText(centeredText)
+                .withToStringMethod(toStringMethod)
+                .withClickableLabel(clickable)
     }
 
     companion object {
@@ -74,6 +102,7 @@ class MultiSelectBuilder<T : Any>(val width: Int, val values: List<T>) : Fragmen
          * @param N The type of the values
          */
         @JvmStatic
-        fun <N: Any> newBuilder(width: Int, values: List<N>) = MultiSelectBuilder(width, values)
+        fun <N : Any> newBuilder(width: Int, values: List<N>) = MultiSelectBuilder(width, values)
     }
+
 }

@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.*
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 
 /**
  * This base class for [TileGraphics] can be re-used by complex image classes like layers,
@@ -22,7 +23,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 abstract class BaseTileGraphics(
         initialTileset: TilesetResource,
         initialSize: Size)
-    : TileGraphics, TilesetOverride {
+    : InternalTileGraphics, TilesetOverride {
 
     final override val tilesetProperty = initialTileset.toProperty { newValue ->
         tileset.isCompatibleWith(newValue)

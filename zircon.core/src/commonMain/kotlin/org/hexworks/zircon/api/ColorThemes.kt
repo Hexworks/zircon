@@ -3,6 +3,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.jvm.JvmStatic
 
@@ -14,13 +15,21 @@ object ColorThemes {
     /**
      * The empty theme has transparent colors for all colors.
      */
-    fun empty() = ColorThemeResource.EMPTY.getTheme()
+    @JvmStatic
+    fun empty() = ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.transparent())
+            .withPrimaryForegroundColor(TileColor.transparent())
+            .withSecondaryForegroundColor(TileColor.transparent())
+            .withPrimaryBackgroundColor(TileColor.transparent())
+            .withSecondaryBackgroundColor(TileColor.transparent())
+            .build()
 
     /**
      * The default theme which is produced from the default
      * [ComponentStyleSets].
      */
-    fun default() = ColorThemeResource.DEFAULT.getTheme()
+    @JvmStatic
+    fun defaultTheme() = ColorThemeResource.DEFAULT.getTheme()
 
     /**
      * Taken from

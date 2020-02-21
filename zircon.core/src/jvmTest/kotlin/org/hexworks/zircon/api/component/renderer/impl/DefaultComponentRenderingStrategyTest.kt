@@ -2,6 +2,9 @@ package org.hexworks.zircon.api.component.renderer.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
+import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -19,7 +22,6 @@ import org.hexworks.zircon.internal.component.renderer.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 import org.hexworks.zircon.internal.component.renderer.decoration.ShadowDecorationRenderer
-import org.hexworks.zircon.internal.component.renderer.decoration.SideDecorationRenderer
 import org.junit.Before
 import org.junit.Test
 
@@ -47,10 +49,7 @@ class DefaultComponentRenderingStrategyTest {
                 }
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(
-                        ShadowDecorationRenderer(),
-                        BoxDecorationRenderer(),
-                        SideDecorationRenderer()),
+                decorationRenderers = listOf(shadow(), box(), side()),
                 componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
 
         val btn = DefaultButton(
@@ -82,10 +81,7 @@ class DefaultComponentRenderingStrategyTest {
                 .build()
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(
-                        ShadowDecorationRenderer(),
-                        BoxDecorationRenderer(),
-                        SideDecorationRenderer()),
+                decorationRenderers = listOf(shadow(), box(), side()),
                 componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
 
         val btn = DefaultButton(
