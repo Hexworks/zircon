@@ -13,12 +13,12 @@ import org.hexworks.zircon.api.screen.Screen;
 import java.io.InputStream;
 import java.util.List;
 
-public class RexLoaderExample {
+public class RexLoaderExampleJava {
     private static final int TERMINAL_WIDTH = 16;
     private static final int TERMINAL_HEIGHT = 16;
     private static final TilesetResource TILESET = CP437TilesetResources.yobbo20x20();
     private static final Size SIZE = Size.create(TERMINAL_WIDTH, TERMINAL_HEIGHT);
-    private static final InputStream RESOURCE = RexLoaderExample.class.getResourceAsStream("/rex_files/cp437_table.xp");
+    private static final InputStream RESOURCE = RexLoaderExampleJava.class.getResourceAsStream("/rex_files/cp437_table.xp");
 
     public static void main(String[] args) {
         REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
