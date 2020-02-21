@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.examples.other.RexLoaderExample
+import org.hexworks.zircon.examples.other.RexLoaderExampleJava
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 
 object ZirconLogoExample {
@@ -20,7 +20,7 @@ object ZirconLogoExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val rex = REXPaintResource.loadREXFile(RexLoaderExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
+        val rex = REXPaintResource.loadREXFile(RexLoaderExampleJava::class.java.getResourceAsStream("/rex_files/zircon_logo.xp"))
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.rexPaint20x20())
