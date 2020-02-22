@@ -4,6 +4,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetOverride
@@ -85,7 +86,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         }
 
-        frame.defaultCloseOperation = JFrame.DO_NOTHING_ON_CLOSE
+        frame.defaultCloseOperation = when(config.closeBehavior) {
+            CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
+            CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
+        }
+
         frame.addWindowListener(object : WindowAdapter() {
             override fun windowClosing(windowEvent: WindowEvent?) {
                 app.stop()
