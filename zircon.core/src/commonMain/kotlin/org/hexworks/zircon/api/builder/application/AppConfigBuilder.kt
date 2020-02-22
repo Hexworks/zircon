@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.application
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.application.DebugConfig
 import org.hexworks.zircon.api.builder.Builder
@@ -34,7 +35,8 @@ data class AppConfigBuilder(
         private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false,
         private var fpsLimit: Int = 60,
-        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build())
+        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
+        private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE)
     : Builder<AppConfig> {
 
     /**
@@ -121,6 +123,10 @@ data class AppConfigBuilder(
         this.defaultGraphicalTileset = defaultGraphicalTileset
     }
 
+    fun withCloseBehavior(closeBehavior: CloseBehavior) = also {
+        this.closeBehavior = closeBehavior
+    }
+
     fun enableBetaFeatures() = also {
         this.betaEnabled = true
     }
@@ -144,7 +150,8 @@ data class AppConfigBuilder(
             betaEnabled = betaEnabled,
             title = title,
             fpsLimit = fpsLimit,
-            debugConfig = debugConfig).also {
+            debugConfig = debugConfig,
+            closeBehavior = closeBehavior).also {
         RuntimeConfig.config = it
     }
 
