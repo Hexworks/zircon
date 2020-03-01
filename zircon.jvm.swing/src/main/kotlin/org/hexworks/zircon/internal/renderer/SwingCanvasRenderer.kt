@@ -3,6 +3,8 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetOverride
@@ -18,8 +20,7 @@ import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
 import java.awt.*
-import java.awt.event.HierarchyEvent
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
@@ -28,7 +29,8 @@ import javax.swing.JFrame
 class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
                           private val tileGrid: InternalTileGrid,
-                          private val config: AppConfig) : Renderer {
+                          private val config: AppConfig,
+                          private val app: Application) : Renderer {
 
     override val isClosed = false.toProperty()
 
@@ -84,7 +86,16 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         }
 
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        frame.defaultCloseOperation = when(config.closeBehavior) {
+            CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
+            CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
+        }
+
+        frame.addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(windowEvent: WindowEvent?) {
+                app.stop()
+            }
+        })
         frame.pack()
         frame.setLocationRelativeTo(null)
 
@@ -94,9 +105,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     override fun close() {
-        isClosed.value = true
-        tileGrid.close()
-        frame.dispose()
+        if (!isClosed.value) {
+            isClosed.value = true
+            tileGrid.close()
+            frame.dispose()
+        }
     }
 
     override fun render() {

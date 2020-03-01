@@ -27,7 +27,8 @@ data class AppConfig(
         val betaEnabled: Boolean,
         val title: String,
         val fpsLimit: Int,
-        val debugConfig: DebugConfig
+        val debugConfig: DebugConfig,
+        val closeBehavior: CloseBehavior
 ) {
 
     companion object {
