@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.impl
 
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.SwingCanvasRenderer
 import java.awt.Canvas
@@ -8,7 +9,8 @@ import javax.swing.JFrame
 
 class SwingFrame(val tileGrid: InternalTileGrid,
                  config: AppConfig,
-                 canvas: Canvas = Canvas()) : JFrame() {
+                 canvas: Canvas = Canvas(),
+                 app: Application) : JFrame() {
 
     init {
         title = config.title
@@ -19,5 +21,6 @@ class SwingFrame(val tileGrid: InternalTileGrid,
             canvas = canvas,
             frame = this,
             tileGrid = tileGrid,
-            config = config)
+            config = config,
+            app = app)
 }
