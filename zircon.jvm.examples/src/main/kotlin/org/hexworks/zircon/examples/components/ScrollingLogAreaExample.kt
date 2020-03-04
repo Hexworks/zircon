@@ -1,21 +1,22 @@
 package org.hexworks.zircon.examples.components
 
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.extensions.toScreen
+import org.hexworks.zircon.platform.util.SystemUtils
 import java.util.*
 
-// TODO: this can get into a deadlock!
-// TODO: it happens because the renderer tries to fetch the layers while
-// TODO: we try to add a paragraph and they are waiting for each other to
-// TODO: unlock --> https://cdn.discordapp.com/attachments/390913999505719308/663473133826736138/unknown.png
+// TODO: The previous version of this example could get into a deaclock!
+// TODO: It happened because the renderer tried to fetch the layers while
+// TODO: we tried to add a paragraph from another thread and they were waiting for each other. See:
+// TODO: https://cdn.discordapp.com/attachments/390913999505719308/663473133826736138/unknown.png
 object ScrollingLogAreaExample {
 
     private val tileset = CP437TilesetResources.rogueYun16x16()
@@ -46,16 +47,16 @@ object ScrollingLogAreaExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val app = SwingApplications.startApplication(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(70, 30))
                 .build())
 
-        val screen = Screen.create(tileGrid)
+        val screen = app.tileGrid.toScreen()
 
         val logArea = Components.logArea()
                 .withDecorations(box(title = "Log"))
-                .withSize(Size.create(60, 25))
+                .withSize(screen.size)
                 .build()
         screen.addComponent(logArea)
 
@@ -64,10 +65,20 @@ object ScrollingLogAreaExample {
 
         val random = Random()
 
-        (0..40).forEach { _ ->
-            Thread.sleep(random.nextInt(500).toLong())
-            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false, withTypingEffectSpeedInMs = 100)
-        }
+        val interval = 500
+        val maxCount = 50
+        val finished = false.toProperty()
+        var time = SystemUtils.getCurrentTimeMs()
+        var count = 0
+        app.beforeRender {
+            val currentTime = SystemUtils.getCurrentTimeMs()
+            if (time + interval < currentTime && count < maxCount) {
+                logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false, withTypingEffectSpeedInMs = 100)
+                time = currentTime
+                count++
+            }
+            if (count == maxCount) finished.value = true
+        }.disposeWhen(finished)
     }
 
 }

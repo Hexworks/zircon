@@ -5,9 +5,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.renderer.Renderer
@@ -21,6 +23,9 @@ abstract class BaseApplication(
     abstract val renderer: Renderer
 
     override val coroutineContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher() + SupervisorJob()
+
+    private val beforeRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
+    private val afterRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val renderInterval = 1000.div(config.fpsLimit)
@@ -74,7 +79,16 @@ abstract class BaseApplication(
         coroutineContext.cancel()
     }
 
+    override fun beforeRender(listener: (RenderData) -> Unit) = beforeRenderData.onChange {
+        listener(it.newValue)
+    }
+
+    override fun afterRender(listener: (RenderData) -> Unit) = afterRenderData.onChange {
+        listener(it.newValue)
+    }
+
     private fun doRender() {
+        beforeRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
         if (config.debugMode) {
             RunTimeStats.addTimedStatFor("debug.render.time") {
                 renderer.render()
@@ -82,5 +96,6 @@ abstract class BaseApplication(
         } else {
             renderer.render()
         }
+        afterRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
     }
 }

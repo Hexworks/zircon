@@ -1,12 +1,15 @@
 package org.hexworks.zircon.internal.application
 
 import com.badlogic.gdx.utils.Disposable
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
+import org.hexworks.zircon.platform.util.SystemUtils
 
 class LibgdxApplication(appConfig: AppConfig,
                         override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
@@ -18,12 +21,17 @@ class LibgdxApplication(appConfig: AppConfig,
 
     private val renderer = LibgdxRenderer(tileGrid, appConfig.debugMode)
 
+    private val beforeRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
+    private val afterRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
+
     private var started = false
     private var paused = false
 
     fun render() {
         if (paused.not() && started) {
+            beforeRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
             renderer.render()
+            afterRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
         }
     }
 
@@ -54,6 +62,14 @@ class LibgdxApplication(appConfig: AppConfig,
     override fun stop() {
         tileGrid.close()
         renderer.close()
+    }
+
+    override fun beforeRender(listener: (RenderData) -> Unit) = beforeRenderData.onChange {
+        listener(it.newValue)
+    }
+
+    override fun afterRender(listener: (RenderData) -> Unit) = afterRenderData.onChange {
+        listener(it.newValue)
     }
 
     companion object {
