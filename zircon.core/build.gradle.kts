@@ -53,8 +53,8 @@ kotlin {
 publishing {
     publishWith(
             project = project,
-            module = "cobalt.core",
-            desc = "Core utilities for Cobalt."
+            module = "zircon.core",
+            desc = "Core component of Zircon."
     )
 }
 
