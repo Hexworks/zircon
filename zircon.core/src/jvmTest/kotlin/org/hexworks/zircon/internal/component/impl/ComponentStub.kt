@@ -58,7 +58,7 @@ class ComponentStub(
     override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     override var componentState: ComponentState
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+        set(_) {}
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it.isPresent }
 

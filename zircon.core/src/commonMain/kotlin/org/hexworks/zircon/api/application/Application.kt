@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.application
 
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.grid.TileGrid
 
 /**
@@ -31,4 +32,14 @@ interface Application {
      * Once an [Application] is stopped it can't be started again.
      */
     fun stop()
+
+    /**
+     * Adds a callback which will be called **before** every render.
+     */
+    fun beforeRender(listener: (RenderData) -> Unit): Subscription
+
+    /**
+     * Adds a callback which will be called **after** every render.
+     */
+    fun afterRender(listener: (RenderData) -> Unit): Subscription
 }
