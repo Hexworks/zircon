@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.base
 
-import org.hexworks.zircon.api.SwingApplications.startTileGrid
+import org.hexworks.zircon.api.LibgdxApplications
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size.Companion.create
@@ -26,7 +27,7 @@ val GRID_SIZE = create(60, 40)
 fun displayScreen(
         theme: ColorTheme = THEME.getTheme(),
         tileset: TilesetResource = TILESET
-) = startTileGrid(newBuilder()
+) = SwingApplications.startTileGrid(newBuilder()
         .withDefaultTileset(tileset)
         .enableBetaFeatures()
         .withSize(Defaults.GRID_SIZE)
@@ -35,3 +36,12 @@ fun displayScreen(
             this.theme = theme
             display()
         }
+
+fun startTileGrid(
+        theme: ColorTheme = THEME.getTheme(),
+        tileset: TilesetResource = TILESET
+) = SwingApplications.startTileGrid(newBuilder()
+        .withDefaultTileset(tileset)
+        .enableBetaFeatures()
+        .withSize(Defaults.GRID_SIZE)
+        .build())

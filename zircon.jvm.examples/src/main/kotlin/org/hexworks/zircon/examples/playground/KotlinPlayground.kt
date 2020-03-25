@@ -1,67 +1,51 @@
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.builder.data.BlockBuilder
-import org.hexworks.zircon.api.builder.game.GameAreaBuilder
-import org.hexworks.zircon.api.color.ANSITileColor.BLACK
-import org.hexworks.zircon.api.color.ANSITileColor.GRAY
+import org.hexworks.zircon.api.color.ANSITileColor.MAGENTA
+import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.graphics.StyleSet
-
+import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.modifier.TileTransformModifier
 
 object KotlinPlayground {
-
-    private val tileset = CP437TilesetResources.rexPaint20x20()
-    private val theme = ColorThemes.solarizedLightBlue()
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
-                .withDefaultTileset(tileset)
-                .withSize(60, 30)
+        val grid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withSize(1, 1)
                 .build())
 
-        val screen = tileGrid.toScreen()
-        screen.display()
-        screen.theme = theme
+        grid.fill(Tile.defaultTile().withBackgroundColor(YELLOW))
+
+        grid.addLayer(Layer.newBuilder()
+                .withSize(1, 1)
+                .build().apply {
+                    fill(Tile.defaultTile()
+                            .withCharacter('x')
+                            .withBackgroundColor(MAGENTA)
+                            .withModifiers(HideModifier))
+                })
+    }
 
 
-        val gameArea = GameAreaBuilder<Tile, Block<Tile>>()
-                .withActualSize(Size3D.create(10, 10, 1))
-                .withVisibleSize(Size3D.create(10, 10, 1))
-                .withProjectionMode(ProjectionMode.TOP_DOWN)
-                .build()
+    object HideModifier : TileTransformModifier<CharacterTile> {
 
-        val gameComponent = Components.gameComponent<Tile, Block<Tile>>()
-                .withGameArea(gameArea)
-                .withSize(10, 10)
-                .build()
+        override val cacheKey: String
+            get() = "Modifier.HideModifier"
 
-        screen.addComponents(gameComponent)
+        override fun canTransform(tile: Tile) = true
 
-        val block: Block<Tile> = BlockBuilder<Tile>()
-                .withEmptyTile(Tile.empty())
-                .build()
-
-        block.bottom = Tile.createCharacterTile('_', StyleSet.create(
-                foregroundColor = TileColor.create(0, 0, 0, 255),
-                backgroundColor = TileColor.create(178, 140, 0, 255)))
-        block.top = Tile.createCharacterTile('r', StyleSet.create(
-                foregroundColor = TileColor.create(128, 128, 128, 255),
-                backgroundColor = TileColor.create(0, 0, 0, 0)))
-
-        gameArea.setBlockAt(Position3D.create(5, 5, 0), block)
+        override fun transform(tile: CharacterTile) = Tile.newBuilder()
+                .withCharacter('x')
+                .withForegroundColor(TileColor.create(125, 0, 0, 125))
+                .withBackgroundColor(TileColor.create(0, 0, 0, 0))
+                .buildCharacterTile()
 
     }
 }

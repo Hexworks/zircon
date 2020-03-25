@@ -98,7 +98,7 @@ public abstract class ComponentExampleJava {
      * Shows this example with the given title on the screen.
      */
     public final void show(String title) {
-        TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
+        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(size.plus(Size.create(2, 2)))
                 .build());
