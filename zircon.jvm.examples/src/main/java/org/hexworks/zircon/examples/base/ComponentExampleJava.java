@@ -1,9 +1,6 @@
 package org.hexworks.zircon.examples.base;
 
-import org.hexworks.zircon.api.Components;
-import org.hexworks.zircon.api.Fragments;
-import org.hexworks.zircon.api.Functions;
-import org.hexworks.zircon.api.SwingApplications;
+import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.Container;
 import org.hexworks.zircon.api.component.HBox;
@@ -14,6 +11,7 @@ import org.hexworks.zircon.api.fragment.MultiSelect;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.internal.application.LibgdxApplication;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
@@ -100,7 +98,7 @@ public abstract class ComponentExampleJava {
      * Shows this example with the given title on the screen.
      */
     public final void show(String title) {
-        TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(size.plus(Size.create(2, 2)))
                 .build());

@@ -6,9 +6,18 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.uievent.ComponentEventType.*
+import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
+import org.hexworks.zircon.api.uievent.ComponentEventType.DEACTIVATED
+import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_GIVEN
+import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_TAKEN
+import org.hexworks.zircon.api.uievent.KeyCode.SPACE
+import org.hexworks.zircon.api.uievent.KeyCode.TAB
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_RELEASED
 import org.hexworks.zircon.api.uievent.MouseEventType.*
-import org.hexworks.zircon.api.uievent.UIEventPhase.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
+import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -20,7 +29,6 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmSynthetic
-import kotlin.math.log
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
@@ -87,17 +95,17 @@ class UIEventToComponentDispatcher(
                 Pass
             }
             is KeyboardEvent -> {
-                when (event) {
-                    ACTIVATE_FOCUSED_KEY -> {
+                when {
+                    ACTIVATE_FOCUSED_MATCHER.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)
                     }
-                    DEACTIVATE_ACTIVATED_KEY -> {
+                    DEACTIVATE_ACTIVATED_MATCHER.matches(event) -> {
                         deactivateComponent(focusOrderList.focusedComponent)
                     }
-                    FOCUS_NEXT_KEY -> {
+                    FOCUS_NEXT_MATCHER.matches(event) -> {
                         focusComponent(focusOrderList.findNext())
                     }
-                    FOCUS_PREVIOUS_KEY -> {
+                    FOCUS_PREVIOUS_MATCHER.matches(event) -> {
                         focusComponent(focusOrderList.findPrevious())
                     }
                     else -> Pass
@@ -205,7 +213,7 @@ class UIEventToComponentDispatcher(
             }
             is KeyboardEvent -> {
                 when (event.type) {
-                    KeyboardEventType.KEY_PRESSED -> component.keyPressed(event, phase)
+                    KEY_PRESSED -> component.keyPressed(event, phase)
                     KeyboardEventType.KEY_TYPED -> component.keyTyped(event, phase)
                     KeyboardEventType.KEY_RELEASED -> component.keyReleased(event, phase)
                 }
@@ -269,23 +277,23 @@ class UIEventToComponentDispatcher(
         @JvmSynthetic
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
-        val ACTIVATE_FOCUSED_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.SPACE,
-                key = " ")
-        val DEACTIVATE_ACTIVATED_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                code = KeyCode.SPACE,
-                key = " ")
-        val FOCUS_NEXT_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                key = "\t")
-        val FOCUS_PREVIOUS_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                shiftDown = true,
-                key = "\t")
+        val ACTIVATE_FOCUSED_MATCHER = KeyboardEventMatcher(
+                type = KEY_PRESSED,
+                code = SPACE)
+
+        val DEACTIVATE_ACTIVATED_MATCHER = KeyboardEventMatcher(
+                type = KEY_RELEASED,
+                code = SPACE)
+
+        val FOCUS_NEXT_MATCHER = KeyboardEventMatcher(
+                type = KEY_PRESSED,
+                code = TAB,
+                shiftDown = false)
+
+        val FOCUS_PREVIOUS_MATCHER = KeyboardEventMatcher(
+                type = KEY_PRESSED,
+                code = TAB,
+                shiftDown = true)
     }
 }
 

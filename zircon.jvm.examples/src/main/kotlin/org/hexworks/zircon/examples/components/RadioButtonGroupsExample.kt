@@ -1,10 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.ComponentDecorations.box
@@ -18,7 +15,7 @@ object RadioButtonGroupsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val screen = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(Size.create(60, 30))
                 .build()).toScreen().apply {

@@ -159,10 +159,6 @@ class TextBoxBuilder(
             components.forEach {
                 textBox.addComponent(it)
             }
-        }.apply {
-            colorTheme.map {
-                theme = it
-            }
         }
     }
 
