@@ -57,11 +57,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         if (config.fullScreen) {
             frame.extendedState = JFrame.MAXIMIZED_BOTH
             frame.isUndecorated = true
-        } else {
-            frame.setSize(tileGrid.widthInPixels, tileGrid.heightInPixels)
         }
 
-        frame.isVisible = true
         frame.isResizable = false
         frame.addWindowStateListener {
             if (it.newState == Frame.NORMAL) {
@@ -100,6 +97,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         })
         frame.pack()
+        frame.isVisible=true
         frame.setLocationRelativeTo(null)
 
         // buffering
