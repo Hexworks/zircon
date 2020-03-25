@@ -305,7 +305,7 @@ abstract class DefaultComponent(
                 oldState = componentState,
                 isFocused = hasFocus.value,
                 eventType = eventType)
-        logger.debug("Updating component state with $key.")
+        logger.info("Updating component state with $key.")
         COMPONENT_STATE_TRANSITIONS[key]?.let {
             logger.debug("Component state was updated to state $it.")
             componentState = it
@@ -338,11 +338,14 @@ abstract class DefaultComponent(
                 ComponentStateKey(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
                 ComponentStateKey(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
                 ComponentStateKey(FOCUSED, true, ACTIVATED) to ACTIVE,
-                // SPECIAL CASES
+
+                // UNINTUITIVE SPECIAL CASES
 
                 // this particular case can happen when the user is pressing a button which
                 // on its action callback removes the focus from it
                 ComponentStateKey(ACTIVE, false, DEACTIVATED) to HIGHLIGHTED,
+                // This happens when space is pressed on a component then the user presses tab (and focus is lost)
+                ComponentStateKey(ACTIVE, true, FOCUS_TAKEN) to DEFAULT,
                 // this happens when a component is removed when clicked in a HBox and
                 // the next (to its right) component gets realigned
                 ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED)
