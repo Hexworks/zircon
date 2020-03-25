@@ -11,13 +11,14 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.game.ProjectionStrategy
 import org.hexworks.zircon.internal.util.AnyGameAreaState
 import org.hexworks.zircon.internal.util.RenderSequence
+import org.hexworks.zircon.platform.util.SystemUtils
 
 class TopDownProjectionStrategy : ProjectionStrategy {
 
     fun createRenderingSequence(position: Position3D): RenderSequence {
         return sequence {
             var currPos = position
-            while (true) {
+            while (currPos.z >= 0) {
                 SIDES.forEach { type ->
                     yield(currPos to type)
                 }
@@ -31,13 +32,14 @@ class TopDownProjectionStrategy : ProjectionStrategy {
         val size = visibleSize.to2DSize()
         val remainingPositions = size.fetchPositions().toMutableSet()
         val lastZ = visibleOffset.z
-        var currentPos = visibleOffset.withZ(visibleSize.zLength + lastZ)
+        var currentPos = visibleOffset.withZ(visibleSize.zLength - 1 + lastZ)
         val renderSequence = createRenderingSequence(currentPos).iterator()
         return sequence {
-            while (currentPos.z >= lastZ && remainingPositions.isNotEmpty()) {
+            while (currentPos.z >= lastZ && remainingPositions.isNotEmpty() && renderSequence.hasNext()) {
                 val tiles = mutableMapOf<Position, Tile>()
                 val posIter = remainingPositions.iterator()
                 val (topLeftCorner, nextSide) = renderSequence.next()
+                currentPos = topLeftCorner
                 while (posIter.hasNext()) {
                     val pos = posIter.next()
                     val tile = blocks[topLeftCorner.withRelativeX(pos.x).withRelativeY(pos.y)]
@@ -49,7 +51,6 @@ class TopDownProjectionStrategy : ProjectionStrategy {
                         posIter.remove()
                     }
                 }
-                currentPos = topLeftCorner
                 if (tiles.isNotEmpty()) {
                     yield(tiles.toTileComposite(size))
                 }
