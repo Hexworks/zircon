@@ -7,12 +7,12 @@ import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
@@ -20,7 +20,10 @@ import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
 import java.awt.*
-import java.awt.event.*
+import java.awt.event.HierarchyEvent
+import java.awt.event.MouseEvent
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
@@ -86,7 +89,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         }
 
-        frame.defaultCloseOperation = when(config.closeBehavior) {
+        frame.defaultCloseOperation = when (config.closeBehavior) {
             CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
             CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
         }
@@ -141,12 +144,20 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         layerStates.forEach { state ->
             if (state.isHidden.not()) {
                 state.tiles.forEach { (tilePos, tile) ->
+                    var finalTile = tile
+                    finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+                        if (modifier.canTransform(finalTile)) {
+                            (finalTile as? CharacterTile)?.let {
+                                finalTile = modifier.transform(it)
+                            }
+                        }
+                    }
                     val finalPos = tilePos + state.position
                     tilesToRender.getOrPut(finalPos) { mutableListOf() }
-                    if (tile.isOpaque) {
-                        tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
+                    if (finalTile.isOpaque) {
+                        tilesToRender[finalPos] = mutableListOf(finalTile to state.tileset)
                     } else {
-                        tilesToRender[finalPos]?.add(tile to state.tileset)
+                        tilesToRender[finalPos]?.add(finalTile to state.tileset)
                     }
                 }
             }
