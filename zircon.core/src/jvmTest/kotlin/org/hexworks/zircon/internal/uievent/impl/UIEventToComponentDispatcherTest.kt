@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.uievent.impl
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.builder.application.ShortcutsConfigBuilder
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalContainer
