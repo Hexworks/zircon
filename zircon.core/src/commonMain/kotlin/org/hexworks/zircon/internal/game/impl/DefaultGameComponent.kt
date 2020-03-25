@@ -35,7 +35,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
                     size = imageLayer.size,
                     id = UUID.randomUUID(),
                     isHidden = isHidden)
-        }.asIterable() + super.layerStates
+        }.asIterable().reversed() + super.layerStates
 
     init {
         render()
