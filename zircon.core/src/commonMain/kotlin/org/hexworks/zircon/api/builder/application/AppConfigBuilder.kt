@@ -2,10 +2,7 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.CloseBehavior
-import org.hexworks.zircon.api.application.CursorStyle
-import org.hexworks.zircon.api.application.DebugConfig
+import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
@@ -36,7 +33,8 @@ data class AppConfigBuilder(
         private var betaEnabled: Boolean = false,
         private var fpsLimit: Int = 60,
         private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
-        private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE)
+        private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
+        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build())
     : Builder<AppConfig> {
 
     /**
@@ -44,6 +42,13 @@ data class AppConfigBuilder(
      */
     fun withDebugConfig(debugConfig: DebugConfig) = also {
         this.debugConfig = debugConfig
+    }
+
+    /**
+     * Sets the [shortcutsConfig] to use.
+     */
+    fun withShortcutsConfig(shortcutsConfig: ShortcutsConfig) = also {
+        this.shortcutsConfig = shortcutsConfig
     }
 
     /**
@@ -151,7 +156,8 @@ data class AppConfigBuilder(
             title = title,
             fpsLimit = fpsLimit,
             debugConfig = debugConfig,
-            closeBehavior = closeBehavior).also {
+            closeBehavior = closeBehavior,
+            shortcutsConfig = shortcutsConfig).also {
         RuntimeConfig.config = it
     }
 

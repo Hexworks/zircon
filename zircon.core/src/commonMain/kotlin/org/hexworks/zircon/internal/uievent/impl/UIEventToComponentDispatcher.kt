@@ -3,6 +3,8 @@ package org.hexworks.zircon.internal.uievent.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.ShortcutsConfig
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.*
@@ -10,10 +12,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.ComponentEventType.DEACTIVATED
 import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_GIVEN
 import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_TAKEN
-import org.hexworks.zircon.api.uievent.KeyCode.SPACE
-import org.hexworks.zircon.api.uievent.KeyCode.TAB
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
-import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_RELEASED
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
@@ -22,6 +21,7 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -41,6 +41,8 @@ class UIEventToComponentDispatcher(
 
     private var lastMousePosition = Position.unknown()
     private var lastHoveredComponent: InternalComponent = root
+
+    private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig
 
     init {
         Zircon.eventBus.simpleSubscribeTo<RequestFocusFor>(ZirconScope) { (component) ->
@@ -96,16 +98,16 @@ class UIEventToComponentDispatcher(
             }
             is KeyboardEvent -> {
                 when {
-                    ACTIVATE_FOCUSED_MATCHER.matches(event) -> {
+                    shortcutsConfig.activateFocused.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)
                     }
-                    DEACTIVATE_ACTIVATED_MATCHER.matches(event) -> {
+                    shortcutsConfig.deactivateActivated.matches(event) -> {
                         deactivateComponent(focusOrderList.focusedComponent)
                     }
-                    FOCUS_NEXT_MATCHER.matches(event) -> {
+                    shortcutsConfig.focusNext.matches(event) -> {
                         focusComponent(focusOrderList.findNext())
                     }
-                    FOCUS_PREVIOUS_MATCHER.matches(event) -> {
+                    shortcutsConfig.focusPrevious.matches(event) -> {
                         focusComponent(focusOrderList.findPrevious())
                     }
                     else -> Pass
@@ -277,23 +279,6 @@ class UIEventToComponentDispatcher(
         @JvmSynthetic
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
-        val ACTIVATE_FOCUSED_MATCHER = KeyboardEventMatcher(
-                type = KEY_PRESSED,
-                code = SPACE)
-
-        val DEACTIVATE_ACTIVATED_MATCHER = KeyboardEventMatcher(
-                type = KEY_RELEASED,
-                code = SPACE)
-
-        val FOCUS_NEXT_MATCHER = KeyboardEventMatcher(
-                type = KEY_PRESSED,
-                code = TAB,
-                shiftDown = false)
-
-        val FOCUS_PREVIOUS_MATCHER = KeyboardEventMatcher(
-                type = KEY_PRESSED,
-                code = TAB,
-                shiftDown = true)
     }
 }
 
