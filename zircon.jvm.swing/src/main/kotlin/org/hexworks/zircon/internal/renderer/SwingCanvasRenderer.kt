@@ -207,7 +207,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                            position: Position,
                            tile: Tile,
                            tileset: Tileset<Graphics2D>) {
-        if (tile !== Tile.empty()) {
+        if (tile.isNotEmpty) {
             val actualTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
                         .withForegroundColor(tile.backgroundColor)
@@ -221,31 +221,6 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }.drawTile(tile = actualTile,
                     surface = graphics,
                     position = position)
-        }
-    }
-
-    private fun renderTiles(graphics: Graphics2D,
-                            state: LayerState,
-                            tileset: Tileset<Graphics2D>) {
-        state.tiles.forEach { (pos, tile) ->
-            if (tile !== Tile.empty()) {
-                val actualTile = if (tile.isBlinking && blinkOn) {
-                    tile.withBackgroundColor(tile.foregroundColor)
-                            .withForegroundColor(tile.backgroundColor)
-                } else {
-                    tile
-                }
-                val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
-                    tilesetLoader.loadTilesetFrom(actualTile.tileset)
-                } else {
-                    tileset
-                }
-
-                actualTileset.drawTile(
-                        tile = actualTile,
-                        surface = graphics,
-                        position = pos + state.position)
-            }
         }
     }
 

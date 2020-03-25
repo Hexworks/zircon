@@ -19,4 +19,5 @@ data class ComponentEvent(
         /**
          * The type of the [ComponentEvent].
          */
-        override val type: ComponentEventType) : UIEvent
+        override val type: ComponentEventType
+) : UIEvent
