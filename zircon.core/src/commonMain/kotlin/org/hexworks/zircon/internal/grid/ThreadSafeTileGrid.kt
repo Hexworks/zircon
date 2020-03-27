@@ -150,6 +150,7 @@ class ThreadSafeTileGrid(
         backend.clear()
         layerable = buildLayerable(size)
         initializeLayerable(size, tileset)
+        backend = layerable.getLayerAt(0).get()
     }
 
     // ANIMATION HANDLER
