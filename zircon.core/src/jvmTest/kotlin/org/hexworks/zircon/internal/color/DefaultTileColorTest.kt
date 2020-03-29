@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.color
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.fail
 import org.hexworks.zircon.api.color.TileColor
 import org.junit.Test
+import kotlin.test.assertFailsWith
 
 class DefaultTileColorTest {
 
@@ -26,18 +26,8 @@ class DefaultTileColorTest {
 
     @Test
     fun testTinting() {
-        try {
-            DefaultTileColor(RED, GREEN, BLUE).tint(-0.3)
-            fail("IllegalArgumentException expected")
-        } catch (exception: IllegalArgumentException) {
-            // IllegalArgumentException expected
-        }
-        try {
-            DefaultTileColor(RED, GREEN, BLUE).tint(1.3)
-            fail("IllegalArgumentException expected")
-        } catch (exception: IllegalArgumentException) {
-            // IllegalArgumentException expected
-        }
+        assertFailsWith<IllegalArgumentException> { DefaultTileColor(RED, GREEN, BLUE).tint(-0.3) }
+        assertFailsWith<IllegalArgumentException> { DefaultTileColor(RED, GREEN, BLUE).tint(1.3) }
 
         val tintedBlack = TileColor.create(0, 0, 0).tint()
         assertThat(tintedBlack.red).isEqualTo(3)
@@ -62,18 +52,8 @@ class DefaultTileColorTest {
 
     @Test
     fun testShading() {
-        try {
-            DefaultTileColor(RED, GREEN, BLUE).shade(-0.3)
-            fail("IllegalArgumentException expected")
-        } catch (exception: IllegalArgumentException) {
-            // IllegalArgumentException expected
-        }
-        try {
-            DefaultTileColor(RED, GREEN, BLUE).shade(1.3)
-            fail("IllegalArgumentException expected")
-        } catch (exception: IllegalArgumentException) {
-            // IllegalArgumentException expected
-        }
+        assertFailsWith<IllegalArgumentException> { DefaultTileColor(RED, GREEN, BLUE).shade(-0.3) }
+        assertFailsWith<IllegalArgumentException> { DefaultTileColor(RED, GREEN, BLUE).shade(1.3) }
 
         val shadedBlack = TileColor.create(0, 0, 0).shade()
         assertThat(shadedBlack.red).isEqualTo(0)
