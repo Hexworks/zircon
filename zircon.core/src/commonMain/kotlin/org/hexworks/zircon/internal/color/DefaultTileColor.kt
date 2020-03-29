@@ -2,8 +2,6 @@ package org.hexworks.zircon.internal.color
 
 import org.hexworks.zircon.api.color.ColorInterpolator
 import org.hexworks.zircon.api.color.TileColor
-import kotlin.math.max
-import kotlin.math.min
 
 internal data class DefaultTileColor(override val red: Int,
                                      override val green: Int,
@@ -14,27 +12,6 @@ internal data class DefaultTileColor(override val red: Int,
 
     override fun toString() = "TileColor(r=$red, g:$green, b:$blue, a:$alpha)"
 
-    override fun tint(factor: Double): TileColor {
-        requireRange(factor)
-        var r = red
-        var g = green
-        var b = blue
-        val alpha = alpha
-
-        val i = (1.0 / (1.0 - factor)).toInt()
-        if (r == 0 && g == 0 && b == 0) {
-            return DefaultTileColor(i, i, i, alpha)
-        }
-        if (r in 1 until i) r = i
-        if (g in 1 until i) g = i
-        if (b in 1 until i) b = i
-
-        return DefaultTileColor(min((r / factor).toInt(), 255),
-            min((g / factor).toInt(), 255),
-            min((b / factor).toInt(), 255),
-            alpha)
-    }
-
     override fun desaturate(factor: Double): TileColor {
         val l = 0.3 * red + 0.6 * green + 0.1 * blue
         val r = red + factor * (l - red)
@@ -43,17 +20,23 @@ internal data class DefaultTileColor(override val red: Int,
         return DefaultTileColor(r.toInt(), g.toInt(), b.toInt(), alpha)
     }
 
+    override fun tint(factor: Double): TileColor {
+        requireRange(factor)
+        val white = TileColor.create(255, 255, 255)
+        return interpolateTo(white).getColorAtRatio(factor);
+    }
+
     override fun shade(factor: Double): TileColor {
         requireRange(factor)
-        return TileColor.create(max((red * factor).toInt(), 0),
-            max((green * factor).toInt(), 0),
-            max((blue * factor).toInt(), 0),
-            alpha)
+        val black = TileColor.create(0, 0, 0)
+        return interpolateTo(black).getColorAtRatio(factor);
     }
 
     override fun tone(factor: Double): TileColor {
         requireRange(factor)
-        TODO("Not yet implemented")
+        val value = ((red + green + blue) / 3)
+        val gray = TileColor.create(value, value, value)
+        return interpolateTo(gray).getColorAtRatio(factor);
     }
 
     override fun invert(): TileColor {
