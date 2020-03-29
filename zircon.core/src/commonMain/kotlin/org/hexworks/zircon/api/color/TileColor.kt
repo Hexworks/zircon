@@ -50,6 +50,16 @@ interface TileColor : Cacheable {
     fun shade(factor: Double): TileColor
 
     /**
+     * Returns a new [TileColor] which is toned by the [DEFAULT_FACTOR] (.7).
+     */
+    fun tone(): TileColor = tone(defaultFactor())
+
+    /**
+     * Returns a new [TileColor] which is toned by [factor].
+     */
+    fun tone(factor: Double): TileColor
+
+    /**
      * Returns a new [TileColor] which is the inversion of this one.
      */
     fun invert(): TileColor
