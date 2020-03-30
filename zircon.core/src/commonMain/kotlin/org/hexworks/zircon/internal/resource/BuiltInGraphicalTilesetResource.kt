@@ -12,9 +12,9 @@ internal enum class BuiltInGraphicalTilesetResource(
         override val id: UUID = UUIDFactory.randomUUID(),
         override val tileType: TileType = TileType.GRAPHIC_TILE,
         override val tilesetType: TilesetType = TilesetType.GRAPHIC_TILESET,
-        override val path: String = "/graphic_tilesets/$fileName",
-        override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR)
-    : TilesetResource {
+        override val path: String = "/graphical_tilesets/$fileName",
+        override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR
+) : TilesetResource {
 
     NETHACK_16X16("nethack", 16, 16)
 

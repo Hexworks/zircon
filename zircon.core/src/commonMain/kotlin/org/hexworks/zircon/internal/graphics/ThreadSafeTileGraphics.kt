@@ -20,8 +20,8 @@ import kotlin.jvm.Synchronized
 class ThreadSafeTileGraphics(
         initialSize: Size,
         initialTileset: TilesetResource,
-        initialTiles: Map<Position, Tile> = mapOf())
-    : BaseTileGraphics(initialSize = initialSize, initialTileset = initialTileset) {
+        initialTiles: Map<Position, Tile> = mapOf()
+) : BaseTileGraphics(initialSize = initialSize, initialTileset = initialTileset) {
 
     override var tiles = persistentMapOf<Position, Tile>()
             .putAll(initialTiles)

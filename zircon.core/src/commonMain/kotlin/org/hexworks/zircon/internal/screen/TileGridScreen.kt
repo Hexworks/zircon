@@ -45,8 +45,7 @@ class TileGridScreen(
         InternalComponentContainer by componentContainer {
 
     override val layerStates: Iterable<LayerState>
-        @Synchronized
-        get() = componentContainer.layerStates.plus(bufferGrid.layerStates)
+        get() = bufferGrid.layerStates
 
     // we make this random because we don't know which one is the active
     // yet and we only need this to determine whether this Screen is the active
