@@ -76,7 +76,7 @@ class DefaultImageTileTest {
 
     @Test
     fun shouldProperlyCreateCopyWithTileset() {
-        val otherTileset = BuiltInCP437TilesetResource.OBSIDIAN_16X16
+        val otherTileset = BuiltInCP437TilesetResource.BISASAM_16X16
         val target = Tile.createImageTile(NAME, TILESET)
 
         assertThat(target.withTileset(otherTileset))

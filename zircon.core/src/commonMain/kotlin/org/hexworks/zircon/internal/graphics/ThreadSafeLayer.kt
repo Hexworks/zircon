@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Clearable
@@ -30,8 +30,8 @@ open class ThreadSafeLayer(
         initialContents: TileGraphics,
         private val movable: Movable = DefaultMovable(
                 position = initialPosition,
-                size = initialContents.size))
-    : Clearable, TileGraphics, InternalLayer, Boundable by movable {
+                size = initialContents.size)
+) : Clearable, TileGraphics, InternalLayer, Boundable by movable {
 
     final override val size: Size
         get() = currentState.size

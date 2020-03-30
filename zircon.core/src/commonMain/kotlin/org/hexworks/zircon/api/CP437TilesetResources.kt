@@ -21,9 +21,6 @@ object CP437TilesetResources {
     fun aduDhabi16x16(): TilesetResource = ADU_DHABI_16X16
 
     @JvmStatic
-    fun aesomatica16x16(): TilesetResource = AESOMATICA_16X16
-
-    @JvmStatic
     fun anikki16x16(): TilesetResource = ANIKKI_16X16
 
     @JvmStatic
@@ -69,9 +66,6 @@ object CP437TilesetResources {
     fun haowan18x18(): TilesetResource = HAOWAN_18X18
 
     @JvmStatic
-    fun jackard16x16(): TilesetResource = JACKARD_16X16
-
-    @JvmStatic
     fun jolly12x12(): TilesetResource = JOLLY_12X12
 
     @JvmStatic
@@ -99,13 +93,7 @@ object CP437TilesetResources {
     fun nagidal24x24(): TilesetResource = NAGIDAL_24X24
 
     @JvmStatic
-    fun obsidian16x16(): TilesetResource = OBSIDIAN_16X16
-
-    @JvmStatic
     fun oreslam20x20(): TilesetResource = ORESLAM_20X20
-
-    @JvmStatic
-    fun phoebus16x16(): TilesetResource = PHOEBUS_16X16
 
     @JvmStatic
     fun raving16x16(): TilesetResource = RAVING_16X16

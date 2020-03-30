@@ -22,8 +22,8 @@ import org.hexworks.zircon.internal.graphics.InternalTileGraphics
  */
 abstract class BaseTileGraphics(
         initialTileset: TilesetResource,
-        initialSize: Size)
-    : InternalTileGraphics, TilesetOverride {
+        initialSize: Size
+) : InternalTileGraphics, TilesetOverride {
 
     final override val tilesetProperty = initialTileset.toProperty { newValue ->
         tileset.isCompatibleWith(newValue)

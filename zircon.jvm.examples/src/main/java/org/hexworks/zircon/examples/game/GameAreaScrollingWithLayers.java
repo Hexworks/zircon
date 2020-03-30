@@ -95,12 +95,12 @@ public class GameAreaScrollingWithLayers {
 
         ComponentBuilder builder = Components.gameComponent()
                 .withGameArea(gameArea)
-                .withTileset(CP437TilesetResources.phoebus16x16());
+                .withTileset(CP437TilesetResources.bisasam16x16());
 
         final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
                 .withGameArea(gameArea)
                 .withSize(visibleGameAreaSize.to2DSize())
-                .withTileset(CP437TilesetResources.phoebus16x16()))
+                .withTileset(CP437TilesetResources.zaratustra16x16()))
                 .build();
 
         screen.addComponent(gamePanel);

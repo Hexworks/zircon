@@ -20,19 +20,19 @@ enum class BuiltInTrueTypeFontResource(private val fileName: String,
      * See: https://int10h.org/oldschool-pc-fonts/readme/
      */
     AMSTRAD("amstrad", { it }),
-    AMSTRAD_NARROW("amstrad", { it.div(2) }),
+    AMSTRAD_NARROW("amstrad_2y", { it.div(2) }),
+    ATT("att", { it }),
+    ATT_NARROW("att_2y", { it.div(2) }),
     IBM_BIOS("ibm_bios", { it }),
     IBM_BIOS_NARROW("ibm_bios_2y", { it.div(2) }),
     IBM_BIOS_WIDE("ibm_bios_2x", { it.times(2) }),
-    TANDY("tandy", { it }),
-    TANDY_NARROW("tandy_2y", { it.div(2) }),
+    IBM_PS2_NARROW("ibm_ps2_thin", { it.div(2) }),
     KAYPRO("kaypro", { it }),
     KAYPRO_NARROW("kaypro_2y", { it.div(2) }),
+    TANDY("tandy", { it }),
+    TANDY_NARROW("tandy_2y", { it.div(2) }),
     VTECH("vtech", { it }),
-    VTECH_NARROW("vtech", { it.div(2) }),
-    IBM_PS2_NARROW("ibm_ps2_thin", { it.div(2) }),
-    ATT("att", { it }),
-    ATT_NARROW("att_2x", { it.div(2) });
+    VTECH_NARROW("vtech", { it.div(2) });
 
     fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
             path = "$FONTS_DIR/$fileName.$FONTS_EXT",

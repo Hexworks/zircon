@@ -13,7 +13,8 @@ data class DefaultLayerState(
         override val size: Size,
         override val id: UUID,
         override val position: Position,
-        override val isHidden: Boolean) : LayerState {
+        override val isHidden: Boolean
+) : LayerState {
 
     override fun toString(): String {
         return DrawSurfaces.tileGraphicsBuilder()
