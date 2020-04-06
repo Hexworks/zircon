@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.component
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.InternalAware
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -14,6 +15,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.internal.behavior.Focusable
+import org.hexworks.zircon.internal.component.InternalComponent
 
 /**
  * A [Component] is a graphical object which represents a GUI element and used either to
@@ -29,20 +31,20 @@ import org.hexworks.zircon.internal.behavior.Focusable
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
+interface Component : ComponentEventSource,
+        ComponentProperties, Focusable, InternalAware<InternalComponent>, Movable, UIEventSource {
 
     /**
-     * The absolute position of this [Component], eg: the [Position] relative the
+     * The absolute position of this [Component], eg: the [Position] relative to the
      * top left corner of the grid it is displayed on. This value is context
-     * dependent and it is calculated based on what it is attached to.
+     * dependent and it is calculated based on the parent it is attached to.
      */
     val absolutePosition: Position
         get() = position
 
     /**
-     * The relative position is the position of the top left corner
-     * of this [Component] relative to the [contentOffset] of
-     * its parent.
+     * The relative position is the position of the top left corner of this [Component]
+     * relative to the [contentOffset] of its parent.
      */
     val relativePosition: Position
 
@@ -62,19 +64,18 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
 
     /**
      * The bounds of this [Component] relative to its parent.
-     * TODO: do we need this here? Can this be moved to `InternalComponent`?
      */
     val relativeBounds: Rect
-
-    val componentStateValue: ObservableValue<ComponentState>
-
-    val componentState: ComponentState
 
     /**
      * The current style based on [componentStyleSet] according to the current [componentState].
      */
     val currentStyle: StyleSet
+        get() = componentStyleSet.fetchStyleFor(componentState)
 
+    val componentStateValue: ObservableValue<ComponentState>
+
+    val componentState: ComponentState
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
      * it by hand it will take precedence over the [ComponentStyleSet] provided
@@ -97,4 +98,5 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
 
     fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription
 
+    companion object
 }

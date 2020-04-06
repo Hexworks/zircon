@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component
 
+import kotlinx.collections.immutable.PersistentList
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.internal.data.LayerState
@@ -9,8 +12,6 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  * Internal API for a [ComponentContainer].
  */
 interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
-
-    val layerStates: Iterable<LayerState>
 
     val isActive: ObservableValue<Boolean>
 
@@ -26,5 +27,6 @@ interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
      */
     fun deactivate()
 
+    fun fetchLayerStates(): Sequence<LayerState>
 
 }

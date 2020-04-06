@@ -1,17 +1,11 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.zircon.api.data.BlockTileType.BACK
-import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
-import org.hexworks.zircon.api.data.BlockTileType.CONTENT
-import org.hexworks.zircon.api.data.BlockTileType.FRONT
-import org.hexworks.zircon.api.data.BlockTileType.TOP
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.toTileComposite
-import org.hexworks.zircon.api.graphics.TileComposite
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.BlockTileType.*
+import org.hexworks.zircon.api.extensions.toTileImage
+import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.internal.game.ProjectionStrategy
 import org.hexworks.zircon.internal.util.AnyGameAreaState
 import org.hexworks.zircon.internal.util.RenderSequence
@@ -54,10 +48,10 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
     }
 
 
-    override fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileComposite> {
-        val (blocks, _, visibleSize, visibleOffset) = gameAreaState
+    override fun projectGameArea(gameAreaState: AnyGameAreaState): PersistentList<TileImage> {
+        val (blocks, _, visibleSize, visibleOffset, tileset) = gameAreaState
         val sectionSize = Size.create(visibleSize.xLength, max(visibleSize.zLength, visibleSize.yLength))
-        val result = linkedMapOf<Int, MutableMap<Position, Tile>>()
+        val layersMap = linkedMapOf<Int, MutableMap<Position, Tile>>()
 
         sectionSize.fetchPositions().forEach sectionLoop@{ pos ->
             var idx = 0
@@ -70,7 +64,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
                 val tile = blocks[blockPos + visibleOffset]?.getTileByType(blockSide) ?: Tile.empty()
                 val layerPos = Position.create(pos.x, pos.y)
                 if (tile.isNotEmpty) {
-                    result.getOrPut(idx) { mutableMapOf() }[layerPos] = tile
+                    layersMap.getOrPut(idx) { mutableMapOf() }[layerPos] = tile
                     idx++
                 }
                 if (tile.isOpaque) {
@@ -78,13 +72,13 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
                 }
             }
         }
-        return sequence {
-            result.forEach { (_, layer) ->
-                if (layer.isNotEmpty()) {
-                    yield(layer.toTileComposite(sectionSize))
-                }
+        var result = persistentListOf<TileImage>()
+        layersMap.forEach { (_, layer) ->
+            if (layer.isNotEmpty()) {
+                result = result.add(0, layer.toTileImage(sectionSize, tileset))
             }
         }
+        return result
     }
 
     companion object {

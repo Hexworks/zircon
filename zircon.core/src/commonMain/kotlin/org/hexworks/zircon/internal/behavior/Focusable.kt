@@ -13,7 +13,8 @@ interface Focusable : Identifiable {
     /**
      * Tells whether this [Focusable] has focus or not.
      */
-    val hasFocus: ObservableValue<Boolean>
+    val hasFocus: Boolean
+    val hasFocusValue: ObservableValue<Boolean>
 
     /**
      * Requests focus for this [Focusable]. The success of the request depends on
@@ -29,7 +30,7 @@ interface Focusable : Identifiable {
     fun clearFocus()
 
     /**
-     * Tells whether this GUI element accepts focus right now.
+     * Tells whether this [Focusable] accepts focus right now.
      */
     fun acceptsFocus(): Boolean
 

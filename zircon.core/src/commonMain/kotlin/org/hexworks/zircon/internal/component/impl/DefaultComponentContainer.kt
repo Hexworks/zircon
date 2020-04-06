@@ -11,7 +11,6 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponentContainer
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -31,12 +30,11 @@ class DefaultComponentContainer(
         ComponentFocusOrderList by focusOrderList,
         UIEventDispatcher by dispatcher {
 
-    override val layerStates: Iterable<LayerState>
-        @Synchronized
-        get() = root.flattenedTree.flatMap { it.layerStates }
-
     override val isActive = false.toProperty()
+
     private val logger = LoggerFactory.getLogger(this::class)
+
+    override fun fetchLayerStates() = root.fetchLayerStates()
 
     @ExperimentalContracts
     @Synchronized

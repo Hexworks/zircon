@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 interface TilesetOverride : TilesetHolder {
 
     override var tileset: TilesetResource
-
     val tilesetProperty: Property<TilesetResource>
 
 }
