@@ -4,6 +4,11 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.databinding.api.binding.bindPlusWith
+import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.DisposeSubscription
 import org.hexworks.cobalt.events.api.KeepSubscription
@@ -21,9 +26,11 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentDetached
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.extensions.flatMap
 import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
@@ -32,18 +39,22 @@ open class DefaultContainer(
         renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderer) {
+        renderer = renderer
+) {
 
     private var componentLookup = persistentMapOf<UUID, InternalAttachedComponent>()
 
-    final override var children: PersistentList<InternalComponent> = persistentListOf()
-        private set
+    final override val children: ObservableList<InternalComponent> by lazy {
+        persistentListOf<InternalComponent>().toProperty()
+    }
 
-    override val descendants: Iterable<InternalComponent>
-        @Synchronized
-        get() {
-            return children.flatMap { listOf(it).plus(it.descendants) }
+    final override val descendants: ObservableValue<PersistentList<InternalComponent>> by lazy {
+        children.bindTransform { child ->
+            child.flatMap { persistentListOf(it).addAll(it.descendants.value) }
         }
+    }
+
+    final override fun asInternal(): InternalContainer = this
 
     override fun acceptsFocus() = false
 
@@ -61,6 +72,12 @@ open class DefaultContainer(
         }
     }
 
+    /**
+     * Note that this method can be overridden we'd like to advise against it
+     * if it is possible. The logic is complex and you can easily get into a
+     * sorry state where the implementation doesn't make sense.
+     * Also call `super.addComponent` and let Zircon do the heavy lifting for you.
+     */
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
 
@@ -68,16 +85,16 @@ open class DefaultContainer(
         val attachment = DefaultAttachedComponent(ic, this)
 
         componentLookup = componentLookup.put(ic.id, attachment)
-        children = children.add(ic)
+        children.add(ic)
 
         Zircon.eventBus.subscribeTo<ComponentDetached>(ZirconScope) { (_, removedComponent) ->
             if (removedComponent == component) {
                 componentLookup = componentLookup.remove(component.id)
-                children = children.remove(ic)
+                children.remove(ic)
                 Zircon.eventBus.publish(
                         event = ComponentRemoved(
                                 parent = this,
-                                component = component,
+                                component = component.asInternal(),
                                 emitter = this),
                         eventScope = ZirconScope)
                 DisposeSubscription
@@ -87,7 +104,7 @@ open class DefaultContainer(
         Zircon.eventBus.publish(
                 event = ComponentAdded(
                         parent = this,
-                        component = component,
+                        component = component.asInternal(),
                         emitter = this),
                 eventScope = ZirconScope)
 
@@ -111,9 +128,9 @@ open class DefaultContainer(
         }
     }
 
-    @Synchronized
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
 
+    @Synchronized
     override fun clear() {
         componentLookup.values.forEach { it.detach() }
     }
@@ -125,7 +142,7 @@ open class DefaultContainer(
         require(component !== this) {
             "You can't add a component to itself."
         }
-        require(component.descendants.none { it == component }) {
+        require(component.descendants.value.none { it == component }) {
             "A component can't become its own descendant."
         }
         require(component.isAttached.not()) {

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
@@ -24,6 +25,7 @@ interface Scrollable3D {
      * Returns the offset where the visible part of this [Scrollable3D] starts.
      */
     val visibleOffset: Position3D
+    val visibleOffsetValue: ObservableValue<Position3D>
 
     /**
      * Scrolls this [Scrollable3D] with one unit to the right (width axis).

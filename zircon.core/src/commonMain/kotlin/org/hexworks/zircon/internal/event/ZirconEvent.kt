@@ -1,10 +1,12 @@
 package org.hexworks.zircon.internal.event
 
+import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.data.LayerState
 
 sealed class ZirconEvent : Event {
@@ -56,8 +58,8 @@ sealed class ZirconEvent : Event {
      * A [component] was added to a [parent] container.
      */
     data class ComponentAdded(
-            val parent: Container,
-            val component: Component,
+            val parent: InternalContainer,
+            val component: InternalComponent,
             override val emitter: Any
     ) : ZirconEvent()
 
@@ -66,8 +68,8 @@ sealed class ZirconEvent : Event {
      * This always happens after [ComponentDetached].
      */
     data class ComponentRemoved(
-            val parent: Component,
-            val component: Component,
+            val parent: InternalContainer,
+            val component: InternalComponent,
             override val emitter: Any
     ) : ZirconEvent()
 
@@ -81,21 +83,4 @@ sealed class ZirconEvent : Event {
             override val emitter: Any
     ) : ZirconEvent()
 
-    /**
-     * A layer was added.
-     */
-    data class LayerAdded(override val emitter: Any) : ZirconEvent()
-
-    /**
-     * A layer was removed.
-     */
-    data class LayerRemoved(override val emitter: Any) : ZirconEvent()
-
-    /**
-     * This event is fired when the state of a layer changes.
-     */
-    data class LayerChanged(
-            val state: LayerState,
-            override val emitter: Any
-    ) : ZirconEvent()
 }

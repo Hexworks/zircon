@@ -1,18 +1,11 @@
 package org.hexworks.zircon.examples.other
 
 
-
 import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Rect
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.screen.Screen
@@ -75,10 +68,13 @@ object BSPExample {
 
     }
 
-    class CustomGameArea(visibleSize: Size3D,
-                         actualSize: Size3D) : BaseGameArea<Tile, Block<Tile>>(
+    class CustomGameArea(
+            visibleSize: Size3D,
+            actualSize: Size3D
+    ) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
-            initialActualSize = actualSize)
+            initialActualSize = actualSize
+    )
 
 }
 

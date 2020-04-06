@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -20,26 +21,20 @@ import kotlin.jvm.Synchronized
 class ThreadSafeTileGraphics(
         initialSize: Size,
         initialTileset: TilesetResource,
-        initialTiles: Map<Position, Tile> = mapOf()
-) : BaseTileGraphics(initialSize = initialSize, initialTileset = initialTileset) {
+        initialTiles: PersistentMap<Position, Tile> = persistentMapOf()
+) : BaseTileGraphics(
+        initialSize = initialSize,
+        initialTileset = initialTileset
+) {
 
-    override var tiles = persistentMapOf<Position, Tile>()
-            .putAll(initialTiles)
+    override var tiles: PersistentMap<Position, Tile> = initialTiles
         private set
 
     override val state: TileGraphicsState
-        get() = currentState
-
-    private var currentState = DefaultTileGraphicsState(
-            size = initialSize,
-            tileset = initialTileset,
-            tiles = initialTiles)
-
-    init {
-        tilesetProperty.onChange {
-            updateTileset(it.newValue)
-        }
-    }
+        get() = DefaultTileGraphicsState(
+                size = size,
+                tileset = tileset,
+                tiles = tiles)
 
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
@@ -49,60 +44,57 @@ class ThreadSafeTileGraphics(
             } else {
                 tiles.put(drawPosition, tile)
             }
-            currentState = currentState.copy(tiles = tiles)
         }
     }
 
     @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+        var newTiles = tiles
+        val tilesToAdd = mutableMapOf<Position, Tile>()
         tileMap.asSequence()
                 .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
                 .map { (key, value) -> key + drawPosition to value }
                 .forEach { (pos, tile) ->
-                    tiles = if (tile.isEmpty) {
-                        tiles.remove(pos)
+                    if (tile.isEmpty) {
+                        newTiles = newTiles.remove(pos)
                     } else {
-                        tiles.put(pos, tile)
+                        tilesToAdd[pos] = tile
                     }
                 }
-        currentState = currentState.copy(tiles = tiles)
+        newTiles = newTiles.putAll(tilesToAdd)
+        tiles = newTiles
     }
 
     @Synchronized
     override fun clear() {
         tiles = tiles.clear()
-        currentState = currentState.copy(tiles = tiles)
     }
 
     @Synchronized
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
-            val (currentTiles, _, currentSize) = currentState
-            tiles = tiles.putAll(currentSize.fetchPositions()
+            val (currentTiles, _, currentSize) = state
+            tiles = currentTiles.putAll(currentSize.fetchPositions()
                     .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
                     .map { it to filler }.toMap())
-            currentState = currentState.copy(tiles = tiles)
         }
     }
 
     @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
+        var newTiles = tiles
+        val tilesToAdd = mutableMapOf<Position, Tile>()
         size.fetchPositions().forEach { pos ->
-            updateTile(pos, transformer(pos, tiles.getOrElse(pos) { Tile.empty() }))
+            val tile = transformer(pos, newTiles.getOrElse(pos) { Tile.empty() })
+            if (tile.isEmpty) {
+                newTiles = newTiles.remove(pos)
+            } else {
+                tilesToAdd[pos] = tile
+            }
         }
-        currentState = currentState.copy(tiles = tiles)
+        newTiles = newTiles.putAll(tilesToAdd)
+        tiles = newTiles
     }
 
-    @Synchronized
-    fun updateTileset(newTileset: TilesetResource) {
-        currentState = currentState.copy(tileset = newTileset)
-    }
 
-    private fun updateTile(pos: Position, tile: Tile) {
-        tiles = if (tile.isEmpty) {
-            tiles.remove(pos)
-        } else {
-            tiles.put(pos, tile)
-        }
-    }
 }

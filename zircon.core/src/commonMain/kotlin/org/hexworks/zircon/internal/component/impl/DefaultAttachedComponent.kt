@@ -8,6 +8,7 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
@@ -34,7 +35,7 @@ class DefaultAttachedComponent(
     override fun detach(): Component {
         component.parent = Maybe.empty()
         Zircon.eventBus.publish(
-                event = ZirconEvent.ComponentDetached(
+                event = ComponentDetached(
                         parent = parentContainer,
                         component = component,
                         emitter = this),

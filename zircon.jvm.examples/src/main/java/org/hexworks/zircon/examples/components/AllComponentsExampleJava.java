@@ -64,18 +64,6 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
                 .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."));
 
-        rightColumn.addComponent(button()
-                .withText("Click Me!")
-                .build());
-
-        rightColumn.addComponent(toggleButton()
-                .withText("Toggle Me!")
-                .build());
-
-        rightColumn.addComponent(checkBox()
-                .withText("Check Me!")
-                .build());
-
         VBox radioBox = vbox()
                 .withSize(columnWidth, 6)
                 .withDecorations(box(), shadow())

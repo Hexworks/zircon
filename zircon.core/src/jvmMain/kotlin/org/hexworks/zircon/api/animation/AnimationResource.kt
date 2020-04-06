@@ -12,8 +12,6 @@ import java.io.InputStream
 
 class AnimationResource {
 
-
-    // TODO: this needs to be refactored to support multiplatform code at some point
     companion object {
 
         /**

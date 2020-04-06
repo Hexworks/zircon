@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.grid
 
-import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
@@ -9,8 +8,7 @@ import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
-interface InternalTileGrid
-    : TileGrid, InternalAnimationRunner, InternalLayerable, UIEventProcessor {
+interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerable, UIEventProcessor {
 
     /**
      * The base layer of this [InternalTileGrid] (at index `0`).

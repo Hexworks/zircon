@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component
 
+import kotlinx.collections.immutable.PersistentList
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
@@ -9,7 +11,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.data.LayerState
@@ -25,37 +26,24 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent : Component, ComponentEventAdapter,
-        KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+interface InternalComponent :
+        Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
 
-    val isAttached: Boolean
+    // TODO: not nice, rethink this
+    var root: Maybe<RootContainer>
 
     var parent: Maybe<InternalContainer>
     val parentProperty: Property<Maybe<InternalContainer>>
+    val hasParent: ObservableValue<Boolean>
 
-    override val currentStyle: StyleSet
-        get() = componentStyleSet.fetchStyleFor(componentState)
+    val isAttached: Boolean
+        get() = parent.isPresent
+    val isAttachedToRoot: Boolean
+        get() = root.isPresent
 
     override var componentState: ComponentState
 
-    val hasParent: ObservableValue<Boolean>
-
-    /**
-     * The immediate child [Component]s of this [Component].
-     */
-    val children: Iterable<InternalComponent>
-
-    /**
-     * All descendant [Component]s of this [Component].
-     */
-    val descendants: Iterable<InternalComponent>
-
-    /**
-     * Returns the flattened component tree rooted at this component. Similar to [descendants]
-     * with the exception that **this** [Component] is also included in the result.
-     */
-    val flattenedTree: Iterable<InternalComponent>
-        get() = listOf(this) + descendants
+    val layerStates: List<LayerState>
 
     /**
      * The [TileGraphics] through which this [InternalComponent] can be drawn upon.
@@ -63,19 +51,14 @@ interface InternalComponent : Component, ComponentEventAdapter,
     val graphics: TileGraphics
 
     /**
-     * The [LayerState] (s) representing the contents of this
-     * [InternalComponent]. Apart from the [graphics] a component
-     * can have multiple layers representing its content. Layers
-     * are ordered from top to bottom with regards to the Z axis.
+     * The immediate child [Component]s of this [Component].
      */
-    val layerStates: Iterable<LayerState>
+    val children: ObservableList<InternalComponent>
 
     /**
-     * Tells whether this [Component] is attached to a [RootContainer] or not.
+     * All descendant [Component]s of this [Component].
      */
-    fun isAttachedToRoot(): Boolean = calculatePathFromRoot()
-            .filterIsInstance<RootContainer>()
-            .isNotEmpty()
+    val descendants: ObservableValue<PersistentList<InternalComponent>>
 
     /**
      * Moves this [InternalComponent] to the given [position].
