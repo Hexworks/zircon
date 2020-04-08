@@ -98,7 +98,7 @@ class LibgdxTest : ApplicationAdapter() {
                     .build()
             fillGrid(tileGrid, tile)
             layers.forEach {
-                it.moveTo(Position.create(
+                it.asInternal().moveTo(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)))
             }

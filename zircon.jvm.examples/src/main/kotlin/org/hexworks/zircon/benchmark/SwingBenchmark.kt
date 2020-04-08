@@ -75,7 +75,7 @@ object SwingBenchmark {
         while (true) {
             fillGrid(tileGrid, tiles[currIdx])
             layers.forEach {
-                it.moveTo(Position.create(
+                it.asInternal().moveTo(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)))
             }

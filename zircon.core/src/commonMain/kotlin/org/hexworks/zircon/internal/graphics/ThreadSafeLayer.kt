@@ -104,8 +104,8 @@ open class ThreadSafeLayer(
     final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, this)
 
     @Synchronized
-    override fun moveTo(position: Position) {
-        movable.moveTo(position)
+    override fun moveTo(position: Position): Boolean {
+        return movable.moveTo(position)
     }
 
     @Synchronized

@@ -148,9 +148,10 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
+    override fun moveTo(position: Position, signalComponentChange: Boolean): Boolean {
         rect = rect.withPosition(position)
         movedToPositions.add(position)
+        return true
     }
 
     override fun close() {
@@ -169,9 +170,10 @@ class ComponentStub(
         return componentStyleSet
     }
 
-    override fun moveTo(position: Position) {
+    override fun moveTo(position: Position): Boolean {
         moveTo(position, false)
         movedToPositions.add(position)
+        return true
     }
 
     override fun intersects(boundable: Boundable): Boolean {

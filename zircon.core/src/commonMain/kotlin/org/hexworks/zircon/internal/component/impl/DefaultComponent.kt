@@ -155,12 +155,12 @@ abstract class DefaultComponent(
     }
 
     @Synchronized
-    override fun moveTo(position: Position) {
-        moveTo(position, true)
+    override fun moveTo(position: Position): Boolean {
+        return moveTo(position, true)
     }
 
     @Synchronized
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
+    override fun moveTo(position: Position, signalComponentChange: Boolean): Boolean {
         parent.map { parent ->
             val newBounds = contentLayer.rect.withPosition(position)
             require(parent.containsBoundable(newBounds)) {
@@ -173,6 +173,7 @@ abstract class DefaultComponent(
                     event = ComponentMoved(this),
                     eventScope = ZirconScope)
         }
+        return true
     }
 
     @Synchronized

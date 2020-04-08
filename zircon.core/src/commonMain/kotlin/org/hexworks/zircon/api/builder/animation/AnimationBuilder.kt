@@ -100,7 +100,7 @@ data class AnimationBuilder private constructor(
                         DefaultAnimationFrame(
                                 size = frame.size,
                                 layers = frame.layers.asSequence()
-                                        .map { it.createCopy() }
+                                        .map { it.createCopy().asInternal() }
                                         .toList(),
                                 repeatCount = frame.repeatCount)
                     }

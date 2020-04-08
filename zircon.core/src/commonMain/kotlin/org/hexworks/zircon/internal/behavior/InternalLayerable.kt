@@ -8,5 +8,5 @@ interface InternalLayerable : Layerable {
 
     fun fetchLayerStates(): Sequence<LayerState>
 
-    fun removeLayer(layer: Layer): Layer
+    fun removeLayer(layer: Layer): Boolean
 }
