@@ -16,5 +16,5 @@ interface Container : Clearable, Component, ComponentContainer {
      */
     val children: Iterable<Component>
 
-    override fun asInternal(): InternalContainer
+    override fun asInternalComponent(): InternalContainer
 }

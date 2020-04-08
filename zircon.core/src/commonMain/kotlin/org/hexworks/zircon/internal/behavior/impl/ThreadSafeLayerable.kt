@@ -35,14 +35,14 @@ class ThreadSafeLayerable(
 
     @Synchronized
     override fun addLayer(layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternal()
+        val internalLayer = layer.asInternalLayer()
         layers.add(internalLayer)
         return DefaultLayerHandle(internalLayer)
     }
 
     @Synchronized
     override fun setLayerAt(level: Int, layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternal()
+        val internalLayer = layer.asInternalLayer()
         if (level.isValidIndex) {
             listeners[internalLayer.id]?.dispose()
             layers.set(level, internalLayer)
@@ -52,7 +52,7 @@ class ThreadSafeLayerable(
 
     @Synchronized
     override fun insertLayerAt(level: Int, layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternal()
+        val internalLayer = layer.asInternalLayer()
         if (level.isValidIndex) {
             layers.add(level, internalLayer)
         } else error("Can't insert layer $layer at $level")

@@ -51,8 +51,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     fun Given_a_root_container_When_adding_multiple_components_to_it_Then_the_layer_states_are_correct() {
 
         val box = vbox(target.tileset)
-        val foo = label(target.tileset,"foo")
-        val bar = label(target.tileset,"bar")
+        val foo = label(target.tileset, "foo")
+        val bar = label(target.tileset, "bar")
         box.addComponents(foo, bar)
         target.addComponent(box)
 
@@ -66,8 +66,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val box = vbox(target.tileset)
         target.addComponent(box)
 
-        val foo = label(target.tileset,"foo")
-        val bar = label(target.tileset,"bar")
+        val foo = label(target.tileset, "foo")
+        val bar = label(target.tileset, "bar")
         box.addComponents(foo, bar)
 
         assertThat(target.fetchLayerStates().map { it.id }.toList()).isEqualTo(
@@ -79,12 +79,12 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         fun label(tileset: TilesetResource, text: String): InternalComponent = Components.label()
                 .withTileset(tileset)
                 .withText(text)
-                .build().asInternal()
+                .build().asInternalComponent()
 
         fun vbox(tileset: TilesetResource): InternalContainer = Components.vbox()
                 .withTileset(tileset)
                 .withSize(3, 4)
-                .build().asInternal()
+                .build().asInternalComponent()
     }
 }
 

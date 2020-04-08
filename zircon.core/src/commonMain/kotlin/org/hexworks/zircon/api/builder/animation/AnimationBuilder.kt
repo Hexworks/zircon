@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 @Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST")
@@ -100,7 +100,7 @@ data class AnimationBuilder private constructor(
                         DefaultAnimationFrame(
                                 size = frame.size,
                                 layers = frame.layers.asSequence()
-                                        .map { it.createCopy().asInternal() }
+                                        .map { it.createCopy().asInternalLayer() }
                                         .toList(),
                                 repeatCount = frame.repeatCount)
                     }

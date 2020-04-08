@@ -53,7 +53,7 @@ open class DefaultContainer(
         }
     }
 
-    final override fun asInternal(): InternalContainer = this
+    final override fun asInternalComponent(): InternalContainer = this
 
     override fun acceptsFocus() = false
 
@@ -94,7 +94,7 @@ open class DefaultContainer(
                 Zircon.eventBus.publish(
                         event = ComponentRemoved(
                                 parent = this,
-                                component = component.asInternal(),
+                                component = component.asInternalComponent(),
                                 emitter = this),
                         eventScope = ZirconScope)
                 DisposeSubscription
@@ -104,7 +104,7 @@ open class DefaultContainer(
         Zircon.eventBus.publish(
                 event = ComponentAdded(
                         parent = this,
-                        component = component.asInternal(),
+                        component = component.asInternalComponent(),
                         emitter = this),
                 eventScope = ZirconScope)
 
