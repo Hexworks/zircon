@@ -51,7 +51,7 @@ object ZirconLogoExample {
                                                         .withForegroundColor(tc.foregroundColor
                                                                 .darkenByPercent(idx.toDouble().div(20)))
                                             }.toTileGraphics())
-                                    .build()),
+                                    .build().asInternal()),
                             repeatCount = repeat))
         }
 
@@ -67,7 +67,7 @@ object ZirconLogoExample {
                                                 .withForegroundColor(tc.foregroundColor
                                                         .darkenByPercent(idx.toDouble().div(20)))
                                     }.toTileGraphics())
-                                    .build()),
+                                    .build().asInternal()),
                             repeatCount = repeat))
         }
 

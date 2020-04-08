@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.databinding.api.binding.bindPlusWith
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -64,12 +63,13 @@ open class DefaultContainer(
 
     // TODO: test the hell out of this
     @Synchronized
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
+    override fun moveTo(position: Position, signalComponentChange: Boolean): Boolean {
         val diff = position - this.position
         super.moveTo(position, signalComponentChange)
         children.forEach {
             it.moveTo(it.position + diff, false)
         }
+        return true
     }
 
     /**

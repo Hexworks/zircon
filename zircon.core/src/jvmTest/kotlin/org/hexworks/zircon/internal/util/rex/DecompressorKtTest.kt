@@ -10,7 +10,6 @@ class DecompressorKtTest {
         unZipIt(
                 zipSource = this.javaClass.getResourceAsStream("/graphical_tilesets/nethack_16x16.zip"),
                 outputFolder = tempFolder)
-        println()
     }
 
 

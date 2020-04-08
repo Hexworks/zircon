@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.InternalAware
 import org.hexworks.zircon.api.behavior.Movable
@@ -17,7 +18,7 @@ import kotlin.jvm.JvmStatic
  * A [Layer] is a [TileGraphics] which can be positioned and moved over a [TileGrid].
  * With [Layer]s one can create a quasi 3D effect (like top down oblique projections).
  */
-interface Layer : Hideable, Identifiable, InternalAware<InternalLayer>, Movable, TileGraphics {
+interface Layer : Hideable, Identifiable, InternalAware<InternalLayer>, Boundable, TileGraphics {
 
     override fun createCopy(): Layer
 

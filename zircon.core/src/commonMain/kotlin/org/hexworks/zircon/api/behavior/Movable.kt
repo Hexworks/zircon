@@ -12,8 +12,9 @@ interface Movable : Boundable {
 
     /**
      * Sets the position of this [Movable].
+     * @return `true` if the operation was successful, `false` if not
      */
-    fun moveTo(position: Position)
+    fun moveTo(position: Position): Boolean
 
     /**
      * Moves this [Movable] relative to its current position by the given

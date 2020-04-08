@@ -212,7 +212,7 @@ class ThreadSafeTileGrid(
 
     override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
 
-    override fun removeLayer(layer: Layer): Layer {
+    override fun removeLayer(layer: Layer): Boolean {
         return layerable.removeLayer(layer)
     }
 

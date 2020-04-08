@@ -37,8 +37,9 @@ class DefaultMovable(size: Size,
 
     private var currentRect: Rect = Rect.create(position, size)
 
-    override fun moveTo(position: Position) {
+    override fun moveTo(position: Position): Boolean {
         currentRect = currentRect.withPosition(position)
+        return true
     }
 
     override fun intersects(boundable: Boundable): Boolean {

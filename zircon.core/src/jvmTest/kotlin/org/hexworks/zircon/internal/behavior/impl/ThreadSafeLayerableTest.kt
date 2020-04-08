@@ -147,6 +147,95 @@ class ThreadSafeLayerableTest {
         assertThat(target.fetchLayerStates().toList()).containsExactly(newLayer.state)
     }
 
+    @Test
+    fun Given_a_layer_handle_When_moving_up_by_one_level_when_cant_Then_the_new_order_is_correct() {
+
+        val layer0 = buildLayer()
+        val layer1 = buildLayer()
+
+        target.addLayer(layer0)
+        target.addLayer(layer1)
+
+        val newLayer = buildLayer()
+
+        val handle = target.addLayer(newLayer)
+
+        val result = handle.moveOneLevelUp()
+
+        assertThat(result).isFalse()
+        assertThat(target.layers).containsExactly(layer0, layer1, newLayer)
+    }
+
+    @Test
+    fun Given_a_layer_handle_When_moving_down_by_one_level_when_cant_Then_the_new_order_is_correct() {
+
+        val layer0 = buildLayer('0')
+        val layer1 = buildLayer('1')
+        val layer2 = buildLayer('3')
+
+        val handle = target.addLayer(layer0)
+        target.addLayer(layer1)
+        target.addLayer(layer2)
+
+        val result = handle.moveOneLevelDown()
+
+        assertThat(result).isFalse()
+        assertThat(target.layers).containsExactly(layer0, layer1, layer2)
+    }
+
+    @Test
+    fun Given_a_layer_handle_When_moving_down_by_one_level_Then_the_new_order_is_correct() {
+
+        val layer0 = buildLayer()
+        val layer1 = buildLayer()
+
+        target.addLayer(layer0)
+        target.addLayer(layer1)
+
+        val newLayer = buildLayer()
+
+        val handle = target.addLayer(newLayer)
+
+        val result = handle.moveOneLevelDown()
+
+        assertThat(result).isTrue()
+        assertThat(target.layers).containsExactly(layer0, newLayer, layer1)
+    }
+
+    @Test
+    fun Given_a_layer_handle_When_moving_up_by_two_levels_Then_the_new_order_is_correct() {
+
+        val layer0 = buildLayer('0')
+        val layer1 = buildLayer('1')
+        val layer2 = buildLayer('2')
+
+        val handle = target.addLayer(layer0)
+        target.addLayer(layer1)
+        target.addLayer(layer2)
+
+        val result = handle.moveByLevel(2)
+
+        assertThat(result).isTrue()
+        assertThat(target.layers).containsExactly(layer1, layer2, layer0)
+    }
+
+    @Test
+    fun Given_a_layer_handle_When_moving_down_by_two_levels_Then_the_new_order_is_correct() {
+
+        val layer0 = buildLayer('0')
+        val layer1 = buildLayer('1')
+        val layer2 = buildLayer('2')
+
+        target.addLayer(layer0)
+        target.addLayer(layer1)
+        val handle = target.addLayer(layer2)
+
+        val result = handle.moveByLevel(-2)
+
+        assertThat(result).isTrue()
+        assertThat(target.layers).containsExactly(layer2, layer0, layer1)
+    }
+
     private fun buildTile(char: Char): CharacterTile {
         return Tile.defaultTile()
                 .withCharacter(char)
@@ -154,11 +243,13 @@ class ThreadSafeLayerableTest {
                 .withForegroundColor(GREEN)
     }
 
-    private fun buildLayer(): InternalLayer {
+    private fun buildLayer(char: Char = ' '): InternalLayer {
         return LayerBuilder.newBuilder()
                 .withSize(Size.one())
                 .withOffset(Position.zero())
-                .build().asInternal()
+                .build().asInternal().apply {
+                    fill(Tile.defaultTile().withCharacter(char))
+                }
     }
 
     companion object {

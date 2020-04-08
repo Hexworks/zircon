@@ -65,7 +65,7 @@ interface InternalComponent :
      * If [signalComponentChange] is `true` this function will send
      * a [ComponentMoved] event.
      */
-    fun moveTo(position: Position, signalComponentChange: Boolean)
+    fun moveTo(position: Position, signalComponentChange: Boolean): Boolean
 
     /**
      * Returns the innermost [InternalComponent] for a given [Position].

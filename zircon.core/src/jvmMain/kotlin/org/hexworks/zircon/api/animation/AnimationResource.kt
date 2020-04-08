@@ -34,7 +34,7 @@ class AnimationResource {
                     val size = frameImage.toLayerList(tileset).maxBy { it.size }!!.size
                     DefaultAnimationFrame(
                             size = size,
-                            layers = frameImage.toLayerList(tileset),
+                            layers = frameImage.toLayerList(tileset).map { it.asInternal() },
                             repeatCount = frame.repeatCount)
                 }
                 // we need this trick to not load the file (and create a frame out of it) if it has already been loaded
