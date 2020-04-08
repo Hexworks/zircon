@@ -147,7 +147,7 @@ abstract class DefaultComponent(
         }
     }
 
-    override fun asInternal(): InternalComponent = this
+    override fun asInternalComponent(): InternalComponent = this
 
     @Synchronized
     override fun clearCustomStyle() {

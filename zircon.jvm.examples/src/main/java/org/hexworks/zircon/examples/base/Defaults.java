@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class Defaults {
 
     private static Random RANDOM = new Random();

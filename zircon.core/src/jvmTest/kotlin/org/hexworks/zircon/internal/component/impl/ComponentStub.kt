@@ -50,7 +50,7 @@ class ComponentStub(
     override val themeProperty: Property<ColorTheme> = RuntimeConfig.config.defaultColorTheme.toProperty()
     override var theme: ColorTheme by themeProperty.asDelegate()
 
-    override fun asInternal() = this
+    override fun asInternalComponent() = this
 
     override var root: Maybe<RootContainer>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.

@@ -247,7 +247,7 @@ class ThreadSafeLayerableTest {
         return LayerBuilder.newBuilder()
                 .withSize(Size.one())
                 .withOffset(Position.zero())
-                .build().asInternal().apply {
+                .build().asInternalLayer().apply {
                     fill(Tile.defaultTile().withCharacter(char))
                 }
     }

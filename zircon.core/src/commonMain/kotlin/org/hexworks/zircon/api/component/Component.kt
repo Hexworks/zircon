@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.component
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.behavior.InternalAware
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -12,7 +11,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventSource
-import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -31,8 +29,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  */
-interface Component : ComponentEventSource,
-        ComponentProperties, Focusable, InternalAware<InternalComponent>, Movable, UIEventSource {
+interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
     /**
      * The absolute position of this [Component], eg: the [Position] relative to the
@@ -84,6 +81,12 @@ interface Component : ComponentEventSource,
     var componentStyleSet: ComponentStyleSet
 
     val componentStyleSetProperty: Property<out ComponentStyleSet>
+
+    /**
+     * Returns this [Component] as an [InternalComponent] which represents
+     * the internal API of [Component].
+     */
+    fun asInternalComponent(): InternalComponent
 
     /**
      * Clears any custom [componentStyleSet] (if present).

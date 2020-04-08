@@ -70,7 +70,7 @@ object SwingScreenBenchmark {
             val tile = Tile.defaultTile().withCharacter(chars[currIdx])
             fillGrid(screen, tile)
             layers.forEach {
-                it.asInternal().moveTo(Position.create(
+                it.asInternalLayer().moveTo(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)))
             }

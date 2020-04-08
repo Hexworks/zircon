@@ -117,7 +117,7 @@ class RootContainer(
         @Synchronized
         override fun detach(): Component {
             return backend.detach().also { component ->
-                component.asInternal().componentTree.forEach {
+                component.asInternalComponent().componentTree.forEach {
                     it.root = Maybe.empty()
                 }
             }

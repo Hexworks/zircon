@@ -75,7 +75,7 @@ object LibgdxBenchmark {
         while (true) {
             fillGrid(tileGrid, tiles[currIdx])
             layers.forEach {
-                it.asInternal().moveTo(Position.create(
+                it.asInternalLayer().moveTo(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)))
             }

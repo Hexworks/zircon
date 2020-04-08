@@ -34,7 +34,7 @@ open class ThreadSafeLayer(
                 .withTiles(initialContents.tiles)
                 .withTileset(initialContents.tileset)
                 .build() as ThreadSafeTileGraphics
-) : Clearable, TileGraphics by backend, InternalLayer, Boundable by movable {
+) : Boundable by movable, Clearable, InternalLayer, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()
 
@@ -62,7 +62,7 @@ open class ThreadSafeLayer(
     final override val hiddenProperty = createPropertyFrom(false)
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    override fun asInternal() = this
+    override fun asInternalLayer() = this
 
     override fun toString(): String {
         return DrawSurfaces.tileGraphicsBuilder()
