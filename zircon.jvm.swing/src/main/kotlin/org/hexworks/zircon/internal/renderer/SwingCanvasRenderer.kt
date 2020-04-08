@@ -56,6 +56,8 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     override fun create() {
         if (config.fullScreen) {
             frame.extendedState = JFrame.MAXIMIZED_BOTH
+        }
+        if (config.borderless) {
             frame.isUndecorated = true
         }
 

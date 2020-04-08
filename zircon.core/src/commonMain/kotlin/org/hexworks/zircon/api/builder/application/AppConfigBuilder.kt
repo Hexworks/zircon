@@ -28,6 +28,7 @@ data class AppConfigBuilder(
         private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
+        private var borderless: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false,
@@ -68,6 +69,12 @@ data class AppConfigBuilder(
 
     fun fullScreen() = also {
         fullScreen = true
+        borderless = true
+        defaultSize = Size.unknown()
+    }
+
+    fun borderless() = also {
+        borderless = true
     }
 
     /**
@@ -140,7 +147,12 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
-    override fun build() = AppConfig(
+    override fun build(): AppConfig {
+        if (fullScreen && defaultSize == Size.unknown()) {
+            TODO("calculate defaultSize from current screen resolution")
+        }
+
+        return AppConfig(
             blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
             cursorStyle = cursorStyle,
             cursorColor = cursorColor,
@@ -152,13 +164,15 @@ data class AppConfigBuilder(
             debugMode = debugMode,
             size = defaultSize,
             fullScreen = fullScreen,
+            borderless = borderless,
             betaEnabled = betaEnabled,
             title = title,
             fpsLimit = fpsLimit,
             debugConfig = debugConfig,
             closeBehavior = closeBehavior,
             shortcutsConfig = shortcutsConfig).also {
-        RuntimeConfig.config = it
+            RuntimeConfig.config = it
+        }
     }
 
     override fun createCopy() = copy()
