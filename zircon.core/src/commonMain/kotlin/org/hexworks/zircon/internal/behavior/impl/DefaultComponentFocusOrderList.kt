@@ -9,13 +9,13 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
 
 class DefaultComponentFocusOrderList(
-        private val rootComponent: RootContainer
+        private val root: RootContainer
 ) : ComponentFocusOrderList {
 
-    override var focusedComponent: InternalComponent = rootComponent
+    override var focusedComponent: InternalComponent = root
         private set
 
-    private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(rootComponent.id to rootComponent)
+    private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(root.id to root)
     private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
     override fun findNext() = nextsLookup.getValue(focusedComponent.id)
@@ -41,10 +41,10 @@ class DefaultComponentFocusOrderList(
         prevsLookup.clear()
 
         // this will have at least 1 element because the root container is always focusable
-        val tree = rootComponent.descendants.value.filter { it.acceptsFocus() }
-        logger.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${rootComponent.id.abbreviate()}")
+        val tree = root.descendants.filter { it.acceptsFocus() }
+        logger.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${root.id.abbreviate()}")
 
-        var previous: InternalComponent = rootComponent
+        var previous: InternalComponent = root
 
         tree.forEach { next ->
             logger.debug("Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
@@ -58,16 +58,16 @@ class DefaultComponentFocusOrderList(
         if (tree.isNotEmpty()) {
             logger.debug("Root, has children, adding circle between root and last.")
             // we make a connection between the first (root) and the last to make it circular
-            logger.debug("Next for ${tree.last().id.abbreviate()} is ${rootComponent.id.abbreviate()}, " +
-                    "prev for ${rootComponent.id.abbreviate()} is ${tree.last().id.abbreviate()}")
-            nextsLookup[tree.last().id] = rootComponent
-            prevsLookup[rootComponent.id] = tree.last()
+            logger.debug("Next for ${tree.last().id.abbreviate()} is ${root.id.abbreviate()}, " +
+                    "prev for ${root.id.abbreviate()} is ${tree.last().id.abbreviate()}")
+            nextsLookup[tree.last().id] = root
+            prevsLookup[root.id] = tree.last()
         }
 
         // if the previously focused component was removed we reset the focus to the root
         if (tree.contains(focusedComponent).not()) {
             logger.debug("Tree doesn't contain previously focused component, focusing root.")
-            focusedComponent = rootComponent
+            focusedComponent = root
         }
     }
 

@@ -14,14 +14,13 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 /**
- * A [InternalComponent] is a specialization of the [Component] interface which adds
+ * A [InternalComponent] represents the internal API of the [Component] interface which adds
  * functionality which will be used by Zircon internally. This makes it possible to have
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
@@ -56,18 +55,6 @@ interface InternalComponent :
     val children: ObservableList<InternalComponent>
 
     /**
-     * All descendant [Component]s of this [Component].
-     */
-    val descendants: ObservableValue<PersistentList<InternalComponent>>
-
-    /**
-     * Moves this [InternalComponent] to the given [position].
-     * If [signalComponentChange] is `true` this function will send
-     * a [ComponentMoved] event.
-     */
-    fun moveTo(position: Position, signalComponentChange: Boolean): Boolean
-
-    /**
      * Returns the innermost [InternalComponent] for a given [Position].
      * This means that if you call this method on a [Container] and it
      * contains a [InternalComponent] which intersects with `position` the
@@ -81,6 +68,7 @@ interface InternalComponent :
      * Recursively traverses the parents of this [InternalComponent]
      * until the root is reached and returns them.
      */
+    // TODO: make this a val
     fun calculatePathFromRoot(): List<InternalComponent>
 
     /**

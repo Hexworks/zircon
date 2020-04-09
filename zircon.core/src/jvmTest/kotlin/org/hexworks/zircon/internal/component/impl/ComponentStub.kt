@@ -78,8 +78,6 @@ class ComponentStub(
 
     override val children: ObservableList<InternalComponent>
         get() = persistentListOf<InternalComponent>().toProperty()
-    override val descendants: ObservableList<InternalComponent>
-        get() = listOf<InternalComponent>().toProperty()
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
     override val componentStateValue: ObservableValue<ComponentState>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -148,12 +146,6 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override fun moveTo(position: Position, signalComponentChange: Boolean): Boolean {
-        rect = rect.withPosition(position)
-        movedToPositions.add(position)
-        return true
-    }
-
     override fun close() {
         TODO("not implemented")
     }
@@ -171,7 +163,7 @@ class ComponentStub(
     }
 
     override fun moveTo(position: Position): Boolean {
-        moveTo(position, false)
+        rect = rect.withPosition(position)
         movedToPositions.add(position)
         return true
     }

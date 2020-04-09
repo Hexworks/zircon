@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
@@ -36,6 +37,9 @@ class RootContainer(
     // the Root Container is always attached
     override val isAttached: Boolean
         get() = true
+
+    val descendants: PersistentList<InternalComponent>
+        get() = flattenedTree.value
 
     /**
      * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].
@@ -124,8 +128,9 @@ class RootContainer(
         }
     }
 
+    // TODO: use flattenedTree instead of recursion
     private val InternalComponent.componentTree: Collection<InternalComponent>
-        get() = listOf(this) + descendants.value
+        get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.componentTree }
 
     private val InternalComponent.nextSiblingIdx: Int
         get() = children.size

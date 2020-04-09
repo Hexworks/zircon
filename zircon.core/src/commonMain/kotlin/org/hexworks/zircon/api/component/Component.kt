@@ -71,7 +71,6 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
         get() = componentStyleSet.fetchStyleFor(componentState)
 
     val componentStateValue: ObservableValue<ComponentState>
-
     val componentState: ComponentState
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
@@ -79,7 +78,6 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * by [theme].
      */
     var componentStyleSet: ComponentStyleSet
-
     val componentStyleSetProperty: Property<out ComponentStyleSet>
 
     /**

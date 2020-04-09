@@ -36,7 +36,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentMoved
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.InternalLayer
@@ -66,12 +65,14 @@ abstract class DefaultComponent(
     private val logger = LoggerFactory.getLogger(this::class)
 
     final override var root: Maybe<RootContainer> = Maybe.empty()
+
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
 
     final override val hasFocusValue = false.toProperty()
     final override val hasFocus: Boolean by hasFocusValue.asDelegate()
+
     final override val absolutePosition: Position
         get() = position
     final override val relativePosition: Position
@@ -98,11 +99,9 @@ abstract class DefaultComponent(
 
     override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
-    override val descendants: ObservableValue<PersistentList<InternalComponent>>
-        get() = children
-
     override val graphics: TileGraphics by lazy { contentLayer }
 
+    // COMPONENT PROPERTIES
     final override val disabledProperty = false.toProperty()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
 
@@ -116,6 +115,8 @@ abstract class DefaultComponent(
 
     final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
     final override var theme: ColorTheme by themeProperty.asDelegate()
+
+
     private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
         null
     } else componentMetadata.componentStyleSet)
@@ -147,20 +148,9 @@ abstract class DefaultComponent(
         }
     }
 
-    override fun asInternalComponent(): InternalComponent = this
-
-    @Synchronized
-    override fun clearCustomStyle() {
-        componentStyleSet = ComponentStyleSet.defaultStyleSet()
-    }
-
+    // TODO: refactor this so that only one component needs modification when moving
     @Synchronized
     override fun moveTo(position: Position): Boolean {
-        return moveTo(position, true)
-    }
-
-    @Synchronized
-    override fun moveTo(position: Position, signalComponentChange: Boolean): Boolean {
         parent.map { parent ->
             val newBounds = contentLayer.rect.withPosition(position)
             require(parent.containsBoundable(newBounds)) {
@@ -168,11 +158,6 @@ abstract class DefaultComponent(
             }
         }
         contentLayer.moveTo(position)
-        if (signalComponentChange) {
-            Zircon.eventBus.publish(
-                    event = ComponentMoved(this),
-                    eventScope = ZirconScope)
-        }
         return true
     }
 
@@ -190,6 +175,28 @@ abstract class DefaultComponent(
 
     @Synchronized
     final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
+
+    // TODO: un-synchronize this
+    @Synchronized
+    override fun calculatePathFromRoot(): List<InternalComponent> {
+        return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
+    }
+
+    // TODO: un-synchronize this
+    @Synchronized
+    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
+        return if (containsPosition(absolutePosition)) {
+            Maybe.of(this)
+        } else {
+            Maybe.empty()
+        }
+    }
+
+    override fun asInternalComponent(): InternalComponent = this
+
+    override fun clearCustomStyle() {
+        componentStyleSet = ComponentStyleSet.defaultStyleSet()
+    }
 
     final override fun requestFocus(): Boolean {
         Zircon.eventBus.publish(
@@ -247,18 +254,8 @@ abstract class DefaultComponent(
         Processed
     }
 
-    @Synchronized
-    override fun calculatePathFromRoot(): List<InternalComponent> {
-        return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
-    }
-
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
-        return if (containsPosition(absolutePosition)) {
-            Maybe.of(this)
-        } else {
-            Maybe.empty()
-        }
+    final override fun render() {
+        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     final override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
@@ -275,10 +272,6 @@ abstract class DefaultComponent(
 
     final override fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.FOCUS_TAKEN, fn)
-    }
-
-    final override fun render() {
-        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     override fun toString(): String {
