@@ -28,6 +28,7 @@ data class AppConfigBuilder(
         private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
+        private var fullScreenSize: Size = Size.unknown(),
         private var borderless: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
@@ -70,7 +71,13 @@ data class AppConfigBuilder(
     fun fullScreen() = also {
         fullScreen = true
         borderless = true
+    }
+
+    fun fullScreen(screenWidth: Int, screenHeight: Int) = also {
+        fullScreen = true
+        fullScreenSize = Size.create(screenWidth, screenHeight)
         defaultSize = Size.unknown()
+        borderless = true
     }
 
     fun borderless() = also {
@@ -148,8 +155,11 @@ data class AppConfigBuilder(
     }
 
     override fun build(): AppConfig {
-        if (fullScreen && defaultSize == Size.unknown()) {
-            TODO("calculate defaultSize from current screen resolution")
+        if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
+            defaultSize = Size.create(
+                fullScreenSize.width / defaultTileset.width,
+                fullScreenSize.height / defaultTileset.height
+            )
         }
 
         return AppConfig(

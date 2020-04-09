@@ -8,9 +8,13 @@ import java.awt.*;
 public class BorderlessExample {
 
     public static void main(String[] args) {
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         SwingApplications.startTileGrid(
             new AppConfigBuilder()
-                .borderless()
+//                .borderless()
+//                .fullScreen()
+                .fullScreen(screenSize.width, screenSize.height)
                 .build());
     }
 }
