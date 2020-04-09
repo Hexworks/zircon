@@ -18,7 +18,6 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -72,14 +71,16 @@ class DefaultRootContainer(
 
     override fun focusTaken() = Processed
 
-    override fun calculatePathFromRoot() = listOf<InternalContainer>(this)
-
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
             .withDefaultStyle(StyleSetBuilder.newBuilder()
                     .withForegroundColor(colorTheme.secondaryForegroundColor)
                     .withBackgroundColor(colorTheme.secondaryBackgroundColor)
                     .build())
             .build()
+
+    override fun calculatePathTo(component: InternalComponent): List<InternalComponent> {
+        return componentTree.filter { it.containsBoundable(component) }
+    }
 
     override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> =
             if (this.containsPosition(absolutePosition).not()) {
@@ -94,6 +95,7 @@ class DefaultRootContainer(
         }
     }
 
+    @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         return RootAttachment(super<DefaultContainer>.addComponent(component))
     }
