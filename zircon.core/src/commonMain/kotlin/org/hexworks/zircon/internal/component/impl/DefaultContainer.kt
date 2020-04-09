@@ -71,24 +71,6 @@ open class DefaultContainer(
         return attachment
     }
 
-    // TODO: un-synchronize this
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position) = if (this.containsPosition(absolutePosition).not()) {
-        Maybe.empty()
-    } else {
-        children.value.map {
-            it.fetchComponentByPosition(absolutePosition)
-        }.filter {
-            it.isPresent
-        }.let { hits ->
-            if (hits.isEmpty()) {
-                Maybe.of(this)
-            } else {
-                hits.first()
-            }
-        }
-    }
-
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
 
     private fun checkIfCanAdd(component: Component): InternalComponent {

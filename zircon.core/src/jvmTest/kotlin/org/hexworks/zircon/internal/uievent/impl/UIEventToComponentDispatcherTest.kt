@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.builder.application.ShortcutsConfigBuilder
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -21,7 +22,7 @@ class UIEventToComponentDispatcherTest {
     lateinit var target: UIEventToComponentDispatcher
 
     @Mock
-    lateinit var rootMock: InternalContainer
+    lateinit var rootMock: RootContainer
 
     @Mock
     lateinit var child0Mock: InternalContainer

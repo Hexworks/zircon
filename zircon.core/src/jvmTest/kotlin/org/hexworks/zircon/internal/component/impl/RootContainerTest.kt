@@ -32,7 +32,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     override fun setUp() {
         rendererStub = ComponentRendererStub()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
-        target = RootContainer(
+        target = DefaultRootContainer(
                 componentMetadata = ComponentMetadata(
                         relativePosition = POSITION_2_3,
                         size = SIZE_3_4,
@@ -72,6 +72,59 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         assertThat(target.fetchLayerStates().map { it.id }.toList()).isEqualTo(
                 listOf(target.id, box.id, foo.id, bar.id))
+    }
+
+    @Test
+    fun Given_a_root_component_When_trying_to_fetch_child_Then_it_is_present() {
+
+        val pos = Position.create(1, 2)
+
+        val label = Components.label()
+                .withPosition(pos)
+                .withSize(Size.one())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build()
+
+        target.addComponent(label)
+
+        assertThat(target.fetchComponentByPosition(POSITION_2_3 + pos).get()).isEqualTo(label)
+    }
+
+    @Test
+    fun Given_a_root_component_When_trying_to_fetch_out_of_bounds_component_Then_it_is_not_present() {
+        assertThat(target.fetchComponentByPosition(Position.create(Int.MAX_VALUE, Int.MAX_VALUE)).isPresent).isFalse()
+    }
+
+    @Test
+    fun Given_a_root_component_When_trying_to_fetch_child_of_child_Then_it_is_present() {
+
+        val labelPos = Position.create(1, 1)
+        val panelPos = Position.create(1, 1)
+
+
+        val panel = Components.panel()
+                .withSize(Size.create(2, 3))
+                .withPosition(panelPos)
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build()
+
+        val label = Components.label()
+                .withPosition(labelPos)
+                .withSize(Size.one())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build()
+
+        panel.addComponent(label)
+        target.addComponent(panel)
+
+        assertThat(target.fetchComponentByPosition(POSITION_2_3 + labelPos + panelPos).get()).isEqualTo(label)
+    }
+
+    @Test
+    fun Given_an_empty_root_component_When_trying_to_fetch_self_Then_it_is_present() {
+
+        assertThat(target.fetchComponentByPosition(POSITION_2_3).get().id)
+                .isEqualTo(target.id)
     }
 
     companion object {

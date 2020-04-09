@@ -180,12 +180,6 @@ class ComponentStub(
         TODO("This operation is unsupported for a Stub")
     }
 
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
-        return Maybe.ofNullable(if (rect.containsPosition(absolutePosition)) {
-            this
-        } else null)
-    }
-
     override fun render() {
         TODO("This operation is unsupported for a Stub")
     }

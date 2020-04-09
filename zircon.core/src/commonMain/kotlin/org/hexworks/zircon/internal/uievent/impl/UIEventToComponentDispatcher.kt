@@ -3,8 +3,6 @@ package org.hexworks.zircon.internal.uievent.impl
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.ShortcutsConfig
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.*
@@ -21,6 +19,7 @@ import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
@@ -35,7 +34,7 @@ import kotlin.jvm.JvmSynthetic
  * to [Component]s.
  */
 class UIEventToComponentDispatcher(
-        private val root: InternalContainer,
+        private val root: RootContainer,
         private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
 
@@ -287,7 +286,7 @@ private fun mouseExitedComponent(
         event: UIEvent,
         lastMousePosition: Position,
         lastHoveredComponent: Component,
-        root: InternalContainer
+        root: RootContainer
 ): Boolean {
     contract {
         returns(true) implies (event is MouseEvent)

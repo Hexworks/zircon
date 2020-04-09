@@ -123,7 +123,7 @@ class ModalComponentContainer(
                     decorationRenderers = listOf(),
                     componentRenderer = RootContainerRenderer())
             val container = DefaultComponentContainer(
-                    root = RootContainer(
+                    root = DefaultRootContainer(
                             componentMetadata = metadata,
                             renderingStrategy = renderingStrategy))
             container.theme = ColorThemes.empty()
