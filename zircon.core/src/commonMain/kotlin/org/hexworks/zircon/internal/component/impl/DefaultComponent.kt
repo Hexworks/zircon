@@ -67,7 +67,7 @@ abstract class DefaultComponent(
         set(value) {
             field = value
             if (value.isPresent) {
-            
+
             }
         }
 
@@ -163,12 +163,6 @@ abstract class DefaultComponent(
         contentLayer.moveTo(position)
         relativePosition += diff
         return true
-    }
-
-    // TODO: un-synchronize this
-    @Synchronized
-    override fun calculatePathFromRoot(): List<InternalComponent> {
-        return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
     }
 
     @Synchronized

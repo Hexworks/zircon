@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component
 
-import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -8,9 +7,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.data.LayerState
@@ -53,13 +50,6 @@ interface InternalComponent :
      * The immediate child [Component]s of this [Component].
      */
     val children: ObservableList<InternalComponent>
-
-    /**
-     * Recursively traverses the parents of this [InternalComponent]
-     * until the root is reached and returns them.
-     */
-    // TODO: make this a val
-    fun calculatePathFromRoot(): List<InternalComponent>
 
     /**
      * Renders this component to the underlying [TileGraphics].

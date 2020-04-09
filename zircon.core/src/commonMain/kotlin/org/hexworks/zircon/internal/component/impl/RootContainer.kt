@@ -22,6 +22,8 @@ interface RootContainer : InternalContainer {
 
     val componentTree: PersistentList<InternalComponent>
 
+    fun calculatePathTo(component: InternalComponent): List<InternalComponent>
+
     fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
 
     fun fetchLayerStates(): Sequence<LayerState>

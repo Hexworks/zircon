@@ -58,8 +58,6 @@ class ComponentStub(
     override val layerStates: PersistentList<LayerState>
         get() = persistentListOf<LayerState>()
 
-    override fun calculatePathFromRoot(): List<InternalComponent> = listOf()
-
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
     override val hasFocus: Boolean
         get() = false

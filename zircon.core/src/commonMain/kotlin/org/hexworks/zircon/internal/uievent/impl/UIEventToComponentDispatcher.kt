@@ -18,7 +18,6 @@ import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
@@ -160,7 +159,7 @@ class UIEventToComponentDispatcher(
     @ExperimentalContracts
     private fun performEventPropagation(target: InternalComponent, event: UIEvent): UIEventResponse {
         var finalResult: UIEventResponse = Pass
-        val pathToTarget = target.calculatePathFromRoot().toList().dropLast(1)
+        val pathToTarget = root.calculatePathTo(target).dropLast(1)
         pathToTarget.forEach { component ->
             finalResult = executePhase(component, event, CAPTURE, finalResult)
             if (finalResult.shouldStopPropagation()) return finalResult

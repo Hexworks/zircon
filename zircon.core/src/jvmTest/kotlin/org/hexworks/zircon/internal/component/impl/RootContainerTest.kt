@@ -101,7 +101,6 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val labelPos = Position.create(1, 1)
         val panelPos = Position.create(1, 1)
 
-
         val panel = Components.panel()
                 .withSize(Size.create(2, 3))
                 .withPosition(panelPos)
@@ -125,6 +124,28 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         assertThat(target.fetchComponentByPosition(POSITION_2_3).get().id)
                 .isEqualTo(target.id)
+    }
+
+
+    @Test
+    fun shouldProperlyCalculatePathFromRoot() {
+
+        val panel = Components.panel()
+                .withSize(Size.create(2, 3))
+                .withPosition(Position.offset1x1())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build().asInternalComponent()
+
+        val label = Components.label()
+                .withPosition(Position.offset1x1())
+                .withSize(Size.one())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build().asInternalComponent()
+
+        panel.addComponent(label)
+        target.addComponent(panel)
+
+        assertThat(target.calculatePathTo(label)).containsExactly(target, panel, label)
     }
 
     companion object {

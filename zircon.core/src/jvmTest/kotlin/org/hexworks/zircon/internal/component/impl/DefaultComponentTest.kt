@@ -203,27 +203,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         assertThat(target).isEqualTo(target)
     }
 
-    @Test
-    fun shouldProperlyCalculatePathFromRoot() {
-        val root = DefaultRootContainer(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = Position.defaultPosition(),
-                        size = Size.create(100, 100),
-                        tileset = TILESET_REX_PAINT_20X20,
-                        componentStyleSet = ComponentStyleSet.empty()),
-                renderingStrategy = DefaultComponentRenderingStrategy(NoOpGenericRenderer()))
-
-        val parent = Components.panel()
-                .withSize(50, 50)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build() as InternalContainer
-
-        root.addComponent(parent)
-        parent.addComponent(target)
-
-        assertThat(target.calculatePathFromRoot()).containsExactly(root, parent, target)
-    }
-
     companion object {
         val POSITION_2x3 = Position.create(2, 3)
         val NEW_POSITION_6x7 = Position.create(6, 7)
