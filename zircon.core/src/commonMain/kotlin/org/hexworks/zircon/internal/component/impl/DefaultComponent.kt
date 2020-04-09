@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
@@ -75,11 +74,10 @@ abstract class DefaultComponent(
 
     final override val absolutePosition: Position
         get() = position
-    final override val relativePosition: Position
-        // TODO: un-synchronize this
-        @Synchronized
-        get() = position - parent.map { it.position }.orElse(Position.zero())
-    final override val relativeBounds: Rect by lazy { rect.withPosition(relativePosition) }
+    final override var relativePosition: Position = componentMetadata.relativePosition
+        private set
+    final override val relativeBounds: Rect
+        get() = rect.withPosition(relativePosition)
     final override val contentOffset: Position by lazy { renderer.contentPosition }
     final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
 
@@ -148,7 +146,6 @@ abstract class DefaultComponent(
         }
     }
 
-    // TODO: refactor this so that only one component needs modification when moving
     @Synchronized
     override fun moveTo(position: Position): Boolean {
         parent.map { parent ->
@@ -157,24 +154,11 @@ abstract class DefaultComponent(
                 "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds ($parent)."
             }
         }
+        val diff = position - absolutePosition
         contentLayer.moveTo(position)
+        relativePosition += diff
         return true
     }
-
-    @Synchronized
-    final override fun moveBy(position: Position) = moveTo(this.position + position)
-
-    @Synchronized
-    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
-
-    @Synchronized
-    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
-
-    @Synchronized
-    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
-
-    @Synchronized
-    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     // TODO: un-synchronize this
     @Synchronized
@@ -191,6 +175,21 @@ abstract class DefaultComponent(
             Maybe.empty()
         }
     }
+
+    @Synchronized
+    final override fun moveBy(position: Position) = moveTo(this.position + position)
+
+    @Synchronized
+    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
+
+    @Synchronized
+    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
+
+    @Synchronized
+    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
+
+    @Synchronized
+    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     override fun asInternalComponent(): InternalComponent = this
 
