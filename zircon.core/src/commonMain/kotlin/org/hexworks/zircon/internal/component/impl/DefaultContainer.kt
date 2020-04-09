@@ -102,7 +102,7 @@ open class DefaultContainer(
             "This component is already attached to a parent. Please detach it first."
         }
         val originalRect = component.rect
-        component.moveTo(component.position + contentOffset + position)
+        component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
         if (RuntimeConfig.config.debugMode.not()) {
             val contentBounds = contentSize.toRect()
             tileset.checkCompatibilityWith(component.tileset)
