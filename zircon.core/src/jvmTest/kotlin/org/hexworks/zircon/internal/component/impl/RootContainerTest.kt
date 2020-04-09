@@ -98,7 +98,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun Given_a_root_component_When_trying_to_fetch_child_of_child_Then_it_is_present() {
 
-        val labelPos = Position.create(1, 1)
+        val label0Pos = Position.create(1, 1)
+        val label1Pos = Position.create(1, 2)
         val panelPos = Position.create(1, 1)
 
         val panel = Components.panel()
@@ -107,16 +108,23 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .build()
 
-        val label = Components.label()
-                .withPosition(labelPos)
+        val label0 = Components.label()
+                .withPosition(label0Pos)
                 .withSize(Size.one())
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .build()
 
-        panel.addComponent(label)
+        val label1 = Components.label()
+                .withPosition(label1Pos)
+                .withSize(Size.one())
+                .withTileset(TILESET_REX_PAINT_20X20)
+                .build()
+
+        panel.addComponents(label0, label1)
         target.addComponent(panel)
 
-        assertThat(target.fetchComponentByPosition(POSITION_2_3 + labelPos + panelPos).get()).isEqualTo(label)
+        assertThat(target.fetchComponentByPosition(POSITION_2_3 + label0Pos + panelPos).get())
+                .isEqualTo(label0)
     }
 
     @Test
