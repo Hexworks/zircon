@@ -13,13 +13,16 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.shadow
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object ScrollBarExample {
+
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.wanderlust16x16()
+    private val attachments = mutableListOf<AttachedComponent>()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -123,18 +126,20 @@ object ScrollBarExample {
         }
 
         private fun displayListFromIndex() {
-            root.clear()
+            attachments.forEach {
+                it.detach()
+            }
+            attachments.clear()
             val maxIdx = when {
                 topDisplayedItem + size.height < items.size -> topDisplayedItem + size.height
                 else -> items.size
             }
             (topDisplayedItem until maxIdx).forEach { idx ->
-                root.addComponent(
+                attachments.add(root.addComponent(
                         Components.label()
                                 .withText(items[idx])
                                 .withDecorations()
-                                .build()
-                )
+                                .build()))
             }
             root.theme = theme
         }
