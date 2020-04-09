@@ -55,16 +55,6 @@ interface InternalComponent :
     val children: ObservableList<InternalComponent>
 
     /**
-     * Returns the innermost [InternalComponent] for a given [Position].
-     * This means that if you call this method on a [Container] and it
-     * contains a [InternalComponent] which intersects with `position` the
-     * component will be returned instead of the container itself.
-     * If no [InternalComponent] intersects with the given `position` an
-     * empty [Maybe] is returned.
-     */
-    fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
-
-    /**
      * Recursively traverses the parents of this [InternalComponent]
      * until the root is reached and returns them.
      */

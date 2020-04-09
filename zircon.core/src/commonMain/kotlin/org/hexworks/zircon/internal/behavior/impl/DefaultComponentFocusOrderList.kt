@@ -41,7 +41,7 @@ class DefaultComponentFocusOrderList(
         prevsLookup.clear()
 
         // this will have at least 1 element because the root container is always focusable
-        val tree = root.descendants.filter { it.acceptsFocus() }
+        val tree = root.componentTree.filter { it.acceptsFocus() }
         logger.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${root.id.abbreviate()}")
 
         var previous: InternalComponent = root

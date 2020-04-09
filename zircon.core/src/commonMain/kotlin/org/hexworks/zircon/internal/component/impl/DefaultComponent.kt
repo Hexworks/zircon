@@ -64,6 +64,12 @@ abstract class DefaultComponent(
     private val logger = LoggerFactory.getLogger(this::class)
 
     final override var root: Maybe<RootContainer> = Maybe.empty()
+        set(value) {
+            field = value
+            if (value.isPresent) {
+            
+            }
+        }
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
@@ -131,7 +137,6 @@ abstract class DefaultComponent(
                 logger.debug("Component enabled. Applying enabled style.")
                 DEFAULT
             }
-            render()
         }
         themeProperty.onChange {
             themeStyle = convertColorTheme(it.newValue)
@@ -164,16 +169,6 @@ abstract class DefaultComponent(
     @Synchronized
     override fun calculatePathFromRoot(): List<InternalComponent> {
         return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
-    }
-
-    // TODO: un-synchronize this
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
-        return if (containsPosition(absolutePosition)) {
-            Maybe.of(this)
-        } else {
-            Maybe.empty()
-        }
     }
 
     @Synchronized

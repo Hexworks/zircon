@@ -52,28 +52,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     @Test
-    fun shouldReturnEmptyMaybeWhenTryingToFetchComponentWithOutOfBoundsPosition() {
-        assertThat(target.fetchComponentByPosition(Position.create(Int.MAX_VALUE, Int.MAX_VALUE)).isPresent).isFalse()
-    }
-
-    @Test
-    fun shouldProperlyFetchComponentByPositionWhenChildIsFetched() {
-        target.addComponent(componentStub)
-
-        assertThat(target
-                .fetchComponentByPosition(COMPONENT_STUB_POSITION_1x1 + POSITION_2_3).get().id)
-                .isEqualTo(componentStub.id)
-    }
-
-    @Test
-    fun shouldProperlyFetchComponentByPositionWhenSelfShouldBeReturned() {
-        target.addComponent(componentStub)
-
-        assertThat(target.fetchComponentByPosition(Position.zero() + POSITION_2_3).get().id)
-                .isEqualTo(target.id)
-    }
-
-    @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
                 .withSize(40, 25)
