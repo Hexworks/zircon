@@ -86,7 +86,7 @@ class DefaultRootContainer(
             if (this.containsPosition(absolutePosition).not()) {
                 Maybe.empty()
             } else {
-                Maybe.of(componentTree.last { containsPosition(it.absolutePosition) })
+                Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
             }
 
     override fun fetchLayerStates(): Sequence<LayerState> = sequence {

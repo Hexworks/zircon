@@ -64,12 +64,6 @@ abstract class DefaultComponent(
     private val logger = LoggerFactory.getLogger(this::class)
 
     final override var root: Maybe<RootContainer> = Maybe.empty()
-        set(value) {
-            field = value
-            if (value.isPresent) {
-
-            }
-        }
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
@@ -165,19 +159,14 @@ abstract class DefaultComponent(
         return true
     }
 
-    @Synchronized
     final override fun moveBy(position: Position) = moveTo(this.position + position)
 
-    @Synchronized
     final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
 
-    @Synchronized
     final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
 
-    @Synchronized
     final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
 
-    @Synchronized
     final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     override fun asInternalComponent(): InternalComponent = this
