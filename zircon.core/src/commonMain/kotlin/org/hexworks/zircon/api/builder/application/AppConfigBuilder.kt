@@ -28,6 +28,8 @@ data class AppConfigBuilder(
         private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
+        private var fullScreenSize: Size = Size.unknown(),
+        private var borderless: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false,
@@ -68,6 +70,18 @@ data class AppConfigBuilder(
 
     fun fullScreen() = also {
         fullScreen = true
+        borderless = true
+    }
+
+    fun fullScreen(screenWidth: Int, screenHeight: Int) = also {
+        fullScreen = true
+        fullScreenSize = Size.create(screenWidth, screenHeight)
+        defaultSize = Size.unknown()
+        borderless = true
+    }
+
+    fun borderless() = also {
+        borderless = true
     }
 
     /**
@@ -140,7 +154,15 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
-    override fun build() = AppConfig(
+    override fun build(): AppConfig {
+        if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
+            defaultSize = Size.create(
+                fullScreenSize.width / defaultTileset.width,
+                fullScreenSize.height / defaultTileset.height
+            )
+        }
+
+        return AppConfig(
             blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
             cursorStyle = cursorStyle,
             cursorColor = cursorColor,
@@ -152,13 +174,15 @@ data class AppConfigBuilder(
             debugMode = debugMode,
             size = defaultSize,
             fullScreen = fullScreen,
+            borderless = borderless,
             betaEnabled = betaEnabled,
             title = title,
             fpsLimit = fpsLimit,
             debugConfig = debugConfig,
             closeBehavior = closeBehavior,
             shortcutsConfig = shortcutsConfig).also {
-        RuntimeConfig.config = it
+            RuntimeConfig.config = it
+        }
     }
 
     override fun createCopy() = copy()
