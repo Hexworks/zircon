@@ -43,6 +43,10 @@ enum class ANSITileColor(final override val red: Int,
         return TileColor.create(red, green, blue, alpha).shade(factor)
     }
 
+    override fun tone(factor: Double): TileColor {
+        return TileColor.create(red, green, blue, alpha).tone(factor)
+    }
+
     override fun invert(): TileColor {
         return TileColor.create(red, green, blue, alpha).invert()
     }
