@@ -36,7 +36,8 @@ data class AppConfigBuilder(
         private var fpsLimit: Int = 60,
         private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
         private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
-        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build())
+        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build(),
+        private var icon: String? = null)
     : Builder<AppConfig> {
 
     /**
@@ -154,6 +155,10 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
+    fun withIcon(icon: String) = also {
+        this.icon = icon
+    }
+
     override fun build(): AppConfig {
         if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
             defaultSize = Size.create(
@@ -180,7 +185,8 @@ data class AppConfigBuilder(
             fpsLimit = fpsLimit,
             debugConfig = debugConfig,
             closeBehavior = closeBehavior,
-            shortcutsConfig = shortcutsConfig).also {
+            shortcutsConfig = shortcutsConfig,
+            icon = icon).also {
             RuntimeConfig.config = it
         }
     }
