@@ -30,7 +30,8 @@ data class AppConfig(
         val fpsLimit: Int,
         val debugConfig: DebugConfig,
         val closeBehavior: CloseBehavior,
-        val shortcutsConfig: ShortcutsConfig
+        val shortcutsConfig: ShortcutsConfig,
+        val icon: String?
 ) {
 
     companion object {
