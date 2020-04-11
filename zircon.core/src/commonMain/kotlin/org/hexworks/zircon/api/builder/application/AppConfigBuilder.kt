@@ -37,7 +37,7 @@ data class AppConfigBuilder(
         private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
         private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
         private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build(),
-        private var icon: String? = null)
+        private var icon: ByteArray? = null)
     : Builder<AppConfig> {
 
     /**
@@ -155,7 +155,7 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
-    fun withIcon(icon: String) = also {
+    fun withIcon(icon: ByteArray) = also {
         this.icon = icon
     }
 
