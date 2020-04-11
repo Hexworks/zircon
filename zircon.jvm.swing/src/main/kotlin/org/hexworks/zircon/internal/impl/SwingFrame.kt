@@ -5,8 +5,7 @@ import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.SwingCanvasRenderer
 import java.awt.Canvas
-import java.io.IOException
-import java.net.URL
+import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 
@@ -18,11 +17,8 @@ class SwingFrame(val tileGrid: InternalTileGrid,
     init {
         title = config.title
         if (config.icon != null) {
-            try {
-                iconImage = ImageIO.read(URL(config.icon))
-            } catch (exception: IOException) {
-                // unable to load icon image
-            }
+            ByteArrayInputStream(config.icon)
+                .use { inputStream -> iconImage = ImageIO.read(inputStream) }
         }
         add(canvas)
     }
