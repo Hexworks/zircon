@@ -37,7 +37,8 @@ data class AppConfigBuilder(
         private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
         private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
         private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build(),
-        private var icon: ByteArray? = null)
+        private var iconData: ByteArray? = null,
+        private var iconResource: String? = null)
     : Builder<AppConfig> {
 
     /**
@@ -155,8 +156,14 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
-    fun withIcon(icon: ByteArray) = also {
-        this.icon = icon
+    fun withIcon(iconData: ByteArray) = also {
+        this.iconData = iconData
+        this.iconResource = null
+    }
+
+    fun withIcon(iconResource: String?) = also {
+        this.iconResource = iconResource
+        this.iconData = null
     }
 
     override fun build(): AppConfig {
@@ -186,7 +193,8 @@ data class AppConfigBuilder(
             debugConfig = debugConfig,
             closeBehavior = closeBehavior,
             shortcutsConfig = shortcutsConfig,
-            icon = icon).also {
+            iconData = iconData,
+            iconResource = iconResource).also {
             RuntimeConfig.config = it
         }
     }

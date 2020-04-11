@@ -16,8 +16,11 @@ class SwingFrame(val tileGrid: InternalTileGrid,
 
     init {
         title = config.title
-        if (config.icon != null) {
-            ByteArrayInputStream(config.icon)
+        if (config.iconData != null) {
+            ByteArrayInputStream(config.iconData)
+                .use { inputStream -> iconImage = ImageIO.read(inputStream) }
+        } else if (config.iconResource != null) {
+            ClassLoader.getSystemResourceAsStream(config.iconResource)
                 .use { inputStream -> iconImage = ImageIO.read(inputStream) }
         }
         add(canvas)

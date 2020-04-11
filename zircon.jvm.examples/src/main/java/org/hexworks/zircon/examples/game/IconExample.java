@@ -12,7 +12,8 @@ public class IconExample {
     public static void main(String[] args) throws IOException {
         SwingApplications.startTileGrid(
             new AppConfigBuilder()
-                .withIcon(loadIcon("/image_dictionary/hexworks_logo.png"))
+//                .withIcon(loadIcon("/image_dictionary/hexworks_logo.png"))
+                .withIcon("image_dictionary/hexworks_logo.png")
                 .build());
     }
 

@@ -31,7 +31,8 @@ data class AppConfig(
         val debugConfig: DebugConfig,
         val closeBehavior: CloseBehavior,
         val shortcutsConfig: ShortcutsConfig,
-        val icon: ByteArray?
+        val iconData: ByteArray?,
+        val iconResource: String?
 ) {
 
     companion object {
