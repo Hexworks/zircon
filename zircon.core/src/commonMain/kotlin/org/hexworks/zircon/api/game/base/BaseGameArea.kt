@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.TileImage
@@ -47,22 +46,17 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
             visibleOffset = initialVisibleOffset,
             tileset = initialTileset)
 
-    final override var imageLayers: List<TileImage> =
-            recalculateImageLayers()
-
     override val blocks: Map<Position3D, B>
         get() = state.blocks
+
+    override val imageLayers: List<TileImage>
+        get() = projectionStrategy.projectGameArea(state)
 
     init {
         visibleOffsetValue.onChange { (_, newValue) ->
             state = state.copy(visibleOffset = newValue)
-            imageLayers = recalculateImageLayers()
         }
     }
-
-    private fun recalculateImageLayers() = projectionStrategy
-            .projectGameArea(state)
-            .map { it.tiles.toTileImage(visibleSize.to2DSize(), tileset) }
 
     override fun fetchBlocksAt(offset: Position3D, size: Size3D): Sequence<Pair<Position3D, B>> {
         val currentBlocks = blocks
@@ -89,7 +83,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         if (actualSize.containsPosition(position)) {
             state = state.copy(
                     blocks = state.blocks.put(position, block))
-            imageLayers = recalculateImageLayers()
         }
     }
 
