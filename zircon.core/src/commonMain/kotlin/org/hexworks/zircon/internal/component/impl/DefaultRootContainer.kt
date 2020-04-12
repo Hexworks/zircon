@@ -10,18 +10,15 @@ import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
-import kotlin.jvm.Synchronized
 
 class DefaultRootContainer(
         componentMetadata: ComponentMetadata,
@@ -48,8 +45,9 @@ class DefaultRootContainer(
                 val parentIdx = items.indexOf(parent)
                 val result = if (parentIdx > -1) {
                     val itemsIdx = parentIdx + parent.nextSiblingIdx
-                    val tree = component.componentTree
-                    items.addAll(itemsIdx, tree)
+                    items.addAll(itemsIdx, component.componentTree.apply {
+                        root = Maybe.of(this@DefaultRootContainer)
+                    })
                 } else items
                 result
             }
@@ -57,8 +55,9 @@ class DefaultRootContainer(
         Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) { (_, component) ->
             flattenedTree.transformValue { items ->
                 val result = if (items.indexOf(component) > -1) {
-                    val tree = component.componentTree
-                    items.removeAll(tree)
+                    items.removeAll(component.componentTree.apply {
+                        root = Maybe.empty()
+                    })
                 } else items
                 result
             }
@@ -92,31 +91,6 @@ class DefaultRootContainer(
     override fun fetchLayerStates(): Sequence<LayerState> = sequence {
         flattenedTree.value.forEach { component ->
             component.layerStates.forEach { yield(it) }
-        }
-    }
-
-    @Synchronized
-    override fun addComponent(component: Component): InternalAttachedComponent {
-        return RootAttachment(super<DefaultContainer>.addComponent(component))
-    }
-
-    private inner class RootAttachment(
-            val backend: InternalAttachedComponent
-    ) : InternalAttachedComponent by backend {
-
-        init {
-            backend.component.componentTree.forEach {
-                it.root = Maybe.of(this@DefaultRootContainer)
-            }
-        }
-
-        @Synchronized
-        override fun detach(): Component {
-            return backend.detach().also { component ->
-                component.asInternalComponent().componentTree.forEach {
-                    it.root = Maybe.empty()
-                }
-            }
         }
     }
 
