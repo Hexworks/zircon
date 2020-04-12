@@ -5,7 +5,6 @@ import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -34,7 +33,7 @@ open class ThreadSafeLayer(
                 .withTiles(initialContents.tiles)
                 .withTileset(initialContents.tileset)
                 .build() as ThreadSafeTileGraphics
-) : Boundable by movable, Clearable, InternalLayer, TileGraphics by backend {
+) : Movable by movable, Clearable, InternalLayer, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()
 

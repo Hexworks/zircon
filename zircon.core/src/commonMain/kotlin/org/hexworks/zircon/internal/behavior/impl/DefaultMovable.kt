@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
@@ -20,8 +21,8 @@ class DefaultMovable(size: Size,
     override val size: Size
         get() = rect.size
 
-    override val rect: Rect
-        get() = currentRect
+    override val rectValue = Rect.create(position, size).toProperty()
+    override var rect: Rect by rectValue.asDelegate()
 
     override val x: Int
         get() = position.x
@@ -35,10 +36,8 @@ class DefaultMovable(size: Size,
     override val height: Int
         get() = size.height
 
-    private var currentRect: Rect = Rect.create(position, size)
-
     override fun moveTo(position: Position): Boolean {
-        currentRect = currentRect.withPosition(position)
+        rect = rect.withPosition(position)
         return true
     }
 

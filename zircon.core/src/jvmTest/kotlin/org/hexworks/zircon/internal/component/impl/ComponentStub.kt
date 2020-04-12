@@ -73,6 +73,9 @@ class ComponentStub(
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it.isPresent }
 
+    override val rectValue: ObservableValue<Rect>
+        get() = TODO("not implemented")
+
     override val isAttached: Boolean
         get() = parent.isPresent
 
