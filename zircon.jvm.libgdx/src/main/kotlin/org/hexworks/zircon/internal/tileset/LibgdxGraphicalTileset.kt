@@ -21,7 +21,7 @@ import org.yaml.snakeyaml.constructor.Constructor
 import java.io.File
 import java.io.InputStream
 
-class LibgdxGraphicTileset(private val resource: TilesetResource)
+class LibgdxGraphicalTileset(private val resource: TilesetResource)
     : Tileset<SpriteBatch> {
 
     override val id: UUID = resource.id

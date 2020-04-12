@@ -83,7 +83,6 @@ class TileGridScreen(
         } else Pass
     }
 
-    @Synchronized
     override fun handleMouseEvents(
             eventType: MouseEventType,
             handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
@@ -95,7 +94,6 @@ class TileGridScreen(
         }
     }
 
-    @Synchronized
     override fun handleKeyboardEvents(
             eventType: KeyboardEventType,
             handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
@@ -141,7 +139,6 @@ class TileGridScreen(
         deactivate()
     }
 
-    @Synchronized
     override fun <T : ModalResult> openModal(modal: Modal<T>) {
         require(modal is DefaultModal) {
             "This Screen does not accept custom Modals yet."
