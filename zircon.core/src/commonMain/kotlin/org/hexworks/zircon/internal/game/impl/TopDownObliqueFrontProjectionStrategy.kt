@@ -13,7 +13,7 @@ import kotlin.math.max
 
 class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
 
-    fun frontRenderingSequence(size: Size3D, position: Position): RenderSequence {
+    private fun frontRenderingSequence(size: Size3D, position: Position): RenderSequence {
         return sequence {
             var currPos = Position3D.create(x = position.x,
                     y = size.yLength - 1,
@@ -30,7 +30,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
         }
     }
 
-    fun topRenderingSequence(size: Size3D, position: Position): RenderSequence {
+    private fun topRenderingSequence(size: Size3D, position: Position): RenderSequence {
         return sequence {
             var currPos = Position3D.create(x = position.x,
                     y = position.y,
