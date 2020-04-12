@@ -94,7 +94,6 @@ class DefaultRootContainer(
         }
     }
 
-    // TODO: use flattenedTree instead of recursion
     private val InternalComponent.componentTree: Collection<InternalComponent>
         get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.componentTree }
 

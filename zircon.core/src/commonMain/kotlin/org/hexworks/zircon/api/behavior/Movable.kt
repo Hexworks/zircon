@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.JvmStatic
@@ -9,6 +11,8 @@ import kotlin.jvm.JvmStatic
  * A [Movable] is a [Boundable] object which can change its position.
  */
 interface Movable : Boundable {
+
+    val rectValue: ObservableValue<Rect>
 
     /**
      * Sets the position of this [Movable].

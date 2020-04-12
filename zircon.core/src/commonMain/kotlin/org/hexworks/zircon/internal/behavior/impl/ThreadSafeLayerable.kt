@@ -83,7 +83,7 @@ class ThreadSafeLayerable(
 
     private inner class DefaultLayerHandle(
             private val backend: InternalLayer
-    ) : LayerHandle, Layer by backend {
+    ) : LayerHandle, InternalLayer by backend {
 
         private var attached = true
 
