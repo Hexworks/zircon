@@ -55,6 +55,8 @@ class ComponentStub(
     override var root: Maybe<RootContainer>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
         set(value) {}
+    override val rootValue: ObservableValue<Maybe<RootContainer>>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val layerStates: PersistentList<LayerState>
         get() = persistentListOf<LayerState>()
 

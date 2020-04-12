@@ -25,8 +25,8 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 interface InternalComponent :
         Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
 
-    // TODO: not nice, rethink this
     var root: Maybe<RootContainer>
+    val rootValue: ObservableValue<Maybe<RootContainer>>
 
     var parent: Maybe<InternalContainer>
     val parentProperty: Property<Maybe<InternalContainer>>

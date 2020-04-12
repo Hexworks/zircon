@@ -81,28 +81,6 @@ open class ThreadSafeLayer(
         backend.draw(tile, position - this.position)
     }
 
-    final override fun createCopy(): Layer {
-        val (currentTiles, currentTileset, currentSize, _, currentPosition, currentlyHidden) = state
-        return ThreadSafeLayer(
-                initialPosition = currentPosition,
-                initialContents = currentTiles.toTileGraphics(currentSize, currentTileset)).apply {
-            isHidden = currentlyHidden
-        }
-    }
-
-    final override fun toTileImage() = backend.toTileImage()
-
-    final override fun toLayer(offset: Position) = apply {
-        moveTo(offset)
-    }
-
-    final override fun toResized(newSize: Size) = backend.toResized(newSize)
-
-    final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
-
-
-    final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, this)
-
     @Synchronized
     override fun moveTo(position: Position): Boolean {
         return movable.moveTo(position)
@@ -154,6 +132,7 @@ open class ThreadSafeLayer(
         backend.transform(transformer)
     }
 
+    @Synchronized
     final override fun applyStyle(styleSet: StyleSet) {
         backend.applyStyle(styleSet)
     }
@@ -162,4 +141,26 @@ open class ThreadSafeLayer(
     final override fun clear() {
         backend.clear()
     }
+
+    final override fun createCopy(): Layer {
+        val (currentTiles, currentTileset, currentSize, _, currentPosition, currentlyHidden) = state
+        return ThreadSafeLayer(
+                initialPosition = currentPosition,
+                initialContents = currentTiles.toTileGraphics(currentSize, currentTileset)).apply {
+            isHidden = currentlyHidden
+        }
+    }
+
+    final override fun toTileImage() = backend.toTileImage()
+
+    final override fun toLayer(offset: Position) = apply {
+        moveTo(offset)
+    }
+
+    final override fun toResized(newSize: Size) = backend.toResized(newSize)
+
+    final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
+
+    final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, this)
+
 }

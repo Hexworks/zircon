@@ -9,8 +9,10 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -25,7 +27,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
@@ -56,14 +57,17 @@ abstract class DefaultComponent(
                         .build()),
         private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalComponent,
-        UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
+        Hideable by contentLayer,
         Movable by contentLayer,
-        ComponentEventSource by uiEventProcessor {
+        TilesetOverride by contentLayer,
+        ComponentEventSource by uiEventProcessor,
+        UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    final override var root: Maybe<RootContainer> = Maybe.empty()
+    final override val rootValue = Maybe.empty<RootContainer>().toProperty()
+    final override var root: Maybe<RootContainer> by rootValue.asDelegate()
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
@@ -97,23 +101,15 @@ abstract class DefaultComponent(
 
     override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
-    override val graphics: TileGraphics by lazy { contentLayer }
+    override val graphics: TileGraphics
+        get() = contentLayer
 
     // COMPONENT PROPERTIES
     final override val disabledProperty = false.toProperty()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
 
-    final override val hiddenProperty = false.toProperty()
-    final override var isHidden: Boolean by hiddenProperty.asDelegate()
-
-    final override val tilesetProperty = componentMetadata.tileset.toProperty {
-        tileset.isCompatibleWith(it)
-    }
-    final override var tileset: TilesetResource by tilesetProperty.asDelegate()
-
     final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
     final override var theme: ColorTheme by themeProperty.asDelegate()
-
 
     private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
         null
@@ -121,8 +117,6 @@ abstract class DefaultComponent(
     private var themeStyle = componentMetadata.componentStyleSet
 
     init {
-        contentLayer.hiddenProperty.updateFrom(hiddenProperty)
-        contentLayer.tilesetProperty.updateFrom(tilesetProperty)
         disabledProperty.onChange {
             componentState = if (it.newValue) {
                 logger.debug("Component disabled. Applying disabled style.")
