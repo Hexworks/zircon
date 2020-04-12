@@ -162,7 +162,6 @@ public class GameAreaScrollingWithLayers {
                 if (event.getCode().equals(KeyCode.KEY_D)) {
                     gameArea.scrollOneDown();
                 }
-                // TODO: rething coordinates
             }
             return UIEventResponse.processed();
         });

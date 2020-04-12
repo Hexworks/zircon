@@ -91,6 +91,7 @@ abstract class DefaultComponent(
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
     final override var componentStyleSet: ComponentStyleSet
         get() = styleOverride.orElse(themeStyle)
+        @Synchronized
         set(value) {
             componentStyleSetProperty.value = value
             styleOverride = Maybe.of(value)
