@@ -39,7 +39,7 @@ interface InternalComponent :
 
     override var componentState: ComponentState
 
-    val layerStates: List<LayerState>
+    val layerStates: Sequence<LayerState>
 
     /**
      * The [TileGraphics] through which this [InternalComponent] can be drawn upon.

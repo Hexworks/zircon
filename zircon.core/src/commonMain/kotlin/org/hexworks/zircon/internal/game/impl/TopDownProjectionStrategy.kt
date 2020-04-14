@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.game.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
 import org.hexworks.zircon.api.data.BlockTileType.CONTENT
@@ -28,7 +27,7 @@ class TopDownProjectionStrategy : ProjectionStrategy {
         }
     }
 
-    override fun projectGameArea(gameAreaState: AnyGameAreaState): PersistentList<TileImage> {
+    override fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileImage> {
         val (blocks, _, visibleSize, visibleOffset, tileset) = gameAreaState
         val size = visibleSize.to2DSize()
         val remainingPositions = size.fetchPositions().toMutableSet()
@@ -56,7 +55,7 @@ class TopDownProjectionStrategy : ProjectionStrategy {
                 result = result.add(0, tiles.toTileImage(size, tileset))
             }
         }
-        return result
+        return result.asSequence()
     }
 
     companion object {

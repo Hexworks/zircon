@@ -71,7 +71,6 @@ object SwingBenchmark {
 
 
         var currIdx = 0
-
         while (true) {
             fillGrid(tileGrid, tiles[currIdx])
             layers.forEach {

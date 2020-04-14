@@ -52,11 +52,8 @@ class ModalComponentContainer(
 
     fun isMainContainerActive() = mainContainer.isActive.value
 
-    override fun fetchLayerStates(): Sequence<LayerState> = sequence {
-        containerStack.forEach { container ->
-            container.fetchLayerStates().forEach { yield(it) }
-        }
-    }
+    override fun fetchLayerStates(): Sequence<LayerState> =
+            containerStack.map { it.fetchLayerStates() }.reduce { acc, sequence -> acc + sequence }
 
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {

@@ -97,8 +97,8 @@ abstract class DefaultComponent(
             styleOverride = Maybe.of(value)
         }
 
-    override val layerStates: List<LayerState>
-        get() = persistentListOf(contentLayer.state)
+    override val layerStates: Sequence<LayerState>
+        get() = sequenceOf(contentLayer.state)
 
     override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 

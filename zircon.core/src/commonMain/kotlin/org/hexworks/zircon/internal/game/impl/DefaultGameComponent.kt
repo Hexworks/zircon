@@ -26,7 +26,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         renderer = renderingStrategy),
         TitleHolder by TitleHolder.create(initialTitle) {
 
-    override val layerStates: List<LayerState>
+    override val layerStates: Sequence<LayerState>
         get() = gameArea.imageLayers.map {
             DefaultLayerState(
                     tiles = it.tiles,

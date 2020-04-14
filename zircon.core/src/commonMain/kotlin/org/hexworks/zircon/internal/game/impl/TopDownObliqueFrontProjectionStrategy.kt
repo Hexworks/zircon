@@ -48,7 +48,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
     }
 
 
-    override fun projectGameArea(gameAreaState: AnyGameAreaState): PersistentList<TileImage> {
+    override fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileImage> {
         val (blocks, _, visibleSize, visibleOffset, tileset) = gameAreaState
         val sectionSize = Size.create(visibleSize.xLength, max(visibleSize.zLength, visibleSize.yLength))
         val layersMap = linkedMapOf<Int, MutableMap<Position, Tile>>()
@@ -78,7 +78,7 @@ class TopDownObliqueFrontProjectionStrategy : ProjectionStrategy {
                 result = result.add(0, layer.toTileImage(sectionSize, tileset))
             }
         }
-        return result
+        return result.asSequence()
     }
 
     companion object {

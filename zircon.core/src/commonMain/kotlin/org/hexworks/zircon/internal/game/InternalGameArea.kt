@@ -9,6 +9,6 @@ interface InternalGameArea<T : Tile, B : Block<T>> : GameArea<T, B> {
 
     val state: GameAreaState<T, B>
 
-    val imageLayers: List<TileImage>
+    val imageLayers: Sequence<TileImage>
 
 }
