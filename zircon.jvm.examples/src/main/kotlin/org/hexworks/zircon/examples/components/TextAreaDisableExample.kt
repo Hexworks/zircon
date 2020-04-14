@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.application.AppConfig
 
 import org.hexworks.zircon.api.extensions.isEnabled
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.MouseEventType
 
 object TextAreaDisableExample {
@@ -37,7 +38,7 @@ object TextAreaDisableExample {
                 .withPosition(14, 2)
                 .build()
 
-        toggleButton.processMouseEvents(MouseEventType.MOUSE_RELEASED) { _, _ ->
+        toggleButton.processComponentEvents(ComponentEventType.ACTIVATED) {
             if (textArea.isEnabled) {
                 textArea.isDisabled = true
                 textArea.text = "Disabled"

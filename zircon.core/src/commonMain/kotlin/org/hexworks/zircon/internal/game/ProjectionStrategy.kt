@@ -1,7 +1,9 @@
 package org.hexworks.zircon.internal.game
 
+import kotlinx.collections.immutable.PersistentList
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.graphics.TileComposite
+import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.internal.util.AnyGameAreaState
 
 /**
@@ -20,6 +22,5 @@ interface ProjectionStrategy {
      * they are ordered from top to bottom.
      * **Note that** only the visible parts of the [GameArea] will be projected.
      */
-    fun projectGameArea(
-            gameAreaState: AnyGameAreaState): Sequence<TileComposite>
+    fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileImage>
 }

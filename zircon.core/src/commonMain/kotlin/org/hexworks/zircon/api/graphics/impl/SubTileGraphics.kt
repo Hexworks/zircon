@@ -26,8 +26,8 @@ import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 @Suppress("OverridingDeprecatedMember")
 class SubTileGraphics(
         private val rect: Rect,
-        private val backend: InternalTileGraphics)
-    : InternalTileGraphics {
+        private val backend: InternalTileGraphics
+) : InternalTileGraphics {
 
     override val size = rect.size
 
@@ -46,6 +46,7 @@ class SubTileGraphics(
         }
 
     override val tilesetProperty = object : Property<TilesetResource> {
+
         override var value: TilesetResource
             get() = backend.tileset
             set(_) {}

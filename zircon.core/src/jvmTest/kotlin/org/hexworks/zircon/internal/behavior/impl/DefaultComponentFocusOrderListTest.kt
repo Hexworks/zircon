@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.ComponentRendererStub
+import org.hexworks.zircon.internal.component.impl.DefaultRootContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
@@ -25,7 +26,7 @@ class DefaultComponentFocusOrderListTest {
     @Before
     fun setUp() {
         rendererStub = ComponentRendererStub()
-        root = RootContainer(
+        root = DefaultRootContainer(
                 componentMetadata = ComponentMetadata(
                         relativePosition = Position.zero(),
                         size = Size.create(100, 100),

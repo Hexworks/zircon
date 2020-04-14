@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics.base
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
@@ -24,6 +25,8 @@ abstract class BaseTileGraphics(
         initialTileset: TilesetResource,
         initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
+
+    private val logger = LoggerFactory.getLogger(this::class)
 
     final override val tilesetProperty = initialTileset.toProperty { newValue ->
         tileset.isCompatibleWith(newValue)
@@ -87,16 +90,10 @@ abstract class BaseTileGraphics(
     }
 
     override fun toLayer(offset: Position): Layer {
-        return if (this is Layer) {
-            this.apply {
-                moveTo(offset)
-            }
-        } else {
-            LayerBuilder.newBuilder()
-                    .withOffset(offset)
-                    .withTileGraphics(createCopy())
-                    .build()
-        }
+        return if (this is Layer) this else LayerBuilder.newBuilder()
+                .withOffset(offset)
+                .withTileGraphics(createCopy())
+                .build()
     }
 
     override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())

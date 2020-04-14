@@ -12,8 +12,6 @@ import java.io.InputStream
 
 class AnimationResource {
 
-
-    // TODO: this needs to be refactored to support multiplatform code at some point
     companion object {
 
         /**
@@ -36,7 +34,7 @@ class AnimationResource {
                     val size = frameImage.toLayerList(tileset).maxBy { it.size }!!.size
                     DefaultAnimationFrame(
                             size = size,
-                            layers = frameImage.toLayerList(tileset),
+                            layers = frameImage.toLayerList(tileset).map { it.asInternalLayer() },
                             repeatCount = frame.repeatCount)
                 }
                 // we need this trick to not load the file (and create a frame out of it) if it has already been loaded

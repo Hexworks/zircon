@@ -30,6 +30,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
      * Creates a **new** [Layer] from the contents of this [TileGraphics].
      * The result is not connected to the original object, which means that changes
      * to one are not reflected in the other.
+     * **Note that** if this object is already a [Layer] this function has no effect.
      * @param offset the offset for the new [Layer], `(0, 0)` by default
      */
     fun toLayer(offset: Position = Position.zero()): Layer

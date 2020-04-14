@@ -17,10 +17,13 @@ import org.hexworks.zircon.api.screen.Screen
 
 object CustomGameAreaExample {
 
-    class CustomGameArea(visibleSize: Size3D,
-                         actualSize: Size3D) : BaseGameArea<Tile, Block<Tile>>(
+    class CustomGameArea(
+            visibleSize: Size3D,
+            actualSize: Size3D
+    ) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
-            initialActualSize = actualSize)
+            initialActualSize = actualSize
+    )
 
     @JvmStatic
     fun main(args: Array<String>) {

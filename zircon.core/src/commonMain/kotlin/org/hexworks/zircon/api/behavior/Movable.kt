@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.JvmStatic
@@ -10,10 +12,13 @@ import kotlin.jvm.JvmStatic
  */
 interface Movable : Boundable {
 
+    val rectValue: ObservableValue<Rect>
+
     /**
      * Sets the position of this [Movable].
+     * @return `true` if the operation was successful, `false` if not
      */
-    fun moveTo(position: Position)
+    fun moveTo(position: Position): Boolean
 
     /**
      * Moves this [Movable] relative to its current position by the given

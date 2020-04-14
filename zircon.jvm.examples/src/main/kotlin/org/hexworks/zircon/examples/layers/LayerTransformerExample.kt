@@ -15,7 +15,6 @@ import org.hexworks.zircon.examples.base.displayScreen
 
 object LayerTransformerExample {
 
-    // TODO: transform hide not working
     @JvmStatic
     fun main(args: Array<String>) {
 
