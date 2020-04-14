@@ -1,8 +1,5 @@
 package org.hexworks.zircon.internal.component
 
-import kotlinx.collections.immutable.PersistentList
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.internal.data.LayerState

@@ -57,8 +57,8 @@ class ComponentStub(
         set(value) {}
     override val rootValue: ObservableValue<Maybe<RootContainer>>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val layerStates: PersistentList<LayerState>
-        get() = persistentListOf<LayerState>()
+    override val layerStates: Sequence<LayerState>
+        get() = sequenceOf()
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
     override val hasFocus: Boolean

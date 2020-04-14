@@ -49,7 +49,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override val blocks: Map<Position3D, B>
         get() = state.blocks
 
-    override val imageLayers: List<TileImage>
+    override val imageLayers: Sequence<TileImage>
         get() = projectionStrategy.projectGameArea(state)
 
     init {

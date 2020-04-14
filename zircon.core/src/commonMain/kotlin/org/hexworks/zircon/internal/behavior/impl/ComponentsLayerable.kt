@@ -9,8 +9,5 @@ class ComponentsLayerable(
         private val layerable: InternalLayerable
 ) : InternalLayerable by layerable {
 
-    override fun fetchLayerStates() = sequence {
-        componentContainer.fetchLayerStates().forEach { yield(it) }
-        layerable.fetchLayerStates().forEach { yield(it) }
-    }
+    override fun fetchLayerStates() = componentContainer.fetchLayerStates() + layerable.fetchLayerStates()
 }

@@ -22,5 +22,5 @@ interface ProjectionStrategy {
      * they are ordered from top to bottom.
      * **Note that** only the visible parts of the [GameArea] will be projected.
      */
-    fun projectGameArea(gameAreaState: AnyGameAreaState): PersistentList<TileImage>
+    fun projectGameArea(gameAreaState: AnyGameAreaState): Sequence<TileImage>
 }
