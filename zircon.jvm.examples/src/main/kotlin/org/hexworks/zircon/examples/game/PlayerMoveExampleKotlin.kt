@@ -23,10 +23,10 @@ object PlayerMoveExampleKotlin {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        val player = Layer.newBuilder()
+        val player = tileGrid.addLayer(Layer.newBuilder()
                 .withSize(Size.one())
                 .withOffset(Position.create(tileGrid.width / 2, tileGrid.height / 2))
-                .build().apply { fill(PLAYER_TILE) }
+                .build().apply { fill(PLAYER_TILE) })
 
         tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {
@@ -37,7 +37,5 @@ object PlayerMoveExampleKotlin {
                 else -> Pass
             }
         }
-
-        tileGrid.addLayer(player)
     }
 }

@@ -1,13 +1,18 @@
 package org.hexworks.zircon.internal.component.impl
 
+import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -22,7 +27,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.Identifiable
@@ -31,12 +35,11 @@ import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.graphics.ComponentLayer
 import org.hexworks.zircon.internal.graphics.InternalLayer
+import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 import kotlin.jvm.Synchronized
@@ -45,46 +48,42 @@ import kotlin.jvm.Synchronized
 abstract class DefaultComponent(
         componentMetadata: ComponentMetadata,
         private val renderer: ComponentRenderingStrategy<out Component>,
-        private val contentLayer: InternalLayer = ComponentLayer(
+        private val contentLayer: InternalLayer = ThreadSafeLayer(
                 initialPosition = componentMetadata.relativePosition,
                 initialContents = TileGraphicsBuilder
                         .newBuilder()
                         .withTileset(componentMetadata.tileset)
                         .withSize(componentMetadata.size)
-                        .buildThreadSafeTileGraphics()),
+                        .build()),
         private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalComponent,
-        UIEventProcessor by uiEventProcessor,
         Identifiable by contentLayer,
+        Hideable by contentLayer,
         Movable by contentLayer,
-        ComponentEventSource by uiEventProcessor {
+        TilesetOverride by contentLayer,
+        ComponentEventSource by uiEventProcessor,
+        UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
+
+    final override val rootValue = Maybe.empty<RootContainer>().toProperty()
+    final override var root: Maybe<RootContainer> by rootValue.asDelegate()
 
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
 
-    override val isAttached: Boolean
-        get() = parent.isPresent
-
-    final override val hasFocus = false.toProperty()
+    final override val hasFocusValue = false.toProperty()
+    final override val hasFocus: Boolean by hasFocusValue.asDelegate()
 
     final override val absolutePosition: Position
         get() = position
-    final override val relativePosition: Position
-        @Synchronized
-        get() = position - parent.map { it.position }.orElse(Position.zero())
+    final override var relativePosition: Position = componentMetadata.relativePosition
+        private set
     final override val relativeBounds: Rect
-        @Synchronized
         get() = rect.withPosition(relativePosition)
-    final override val contentOffset: Position
-        @Synchronized
-        get() = renderer.contentPosition
-    final override val contentSize: Size
-        @Synchronized
-        get() = renderer.calculateContentSize(size)
-
+    final override val contentOffset: Position by lazy { renderer.contentPosition }
+    final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
 
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
@@ -92,40 +91,33 @@ abstract class DefaultComponent(
     final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
     final override var componentStyleSet: ComponentStyleSet
         get() = styleOverride.orElse(themeStyle)
+        @Synchronized
         set(value) {
             componentStyleSetProperty.value = value
             styleOverride = Maybe.of(value)
         }
 
-    override val children: Iterable<InternalComponent> = listOf()
-    override val descendants: Iterable<InternalComponent> = listOf()
-    override val layerStates: Iterable<LayerState>
-        @Synchronized
-        get() = listOf(contentLayer.state)
+    override val layerStates: Sequence<LayerState>
+        get() = sequenceOf(contentLayer.state)
+
+    override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
+
     override val graphics: TileGraphics
         get() = contentLayer
 
+    // COMPONENT PROPERTIES
     final override val disabledProperty = false.toProperty()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
 
-    final override val hiddenProperty = false.toProperty()
-    final override var isHidden: Boolean by hiddenProperty.asDelegate()
-
-    final override val tilesetProperty = componentMetadata.tileset.toProperty {
-        tileset.isCompatibleWith(it)
-    }
-    final override var tileset: TilesetResource by tilesetProperty.asDelegate()
-
     final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
     final override var theme: ColorTheme by themeProperty.asDelegate()
+
     private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
         null
     } else componentMetadata.componentStyleSet)
     private var themeStyle = componentMetadata.componentStyleSet
 
     init {
-        contentLayer.hiddenProperty.updateFrom(hiddenProperty)
-        contentLayer.tilesetProperty.updateFrom(tilesetProperty)
         disabledProperty.onChange {
             componentState = if (it.newValue) {
                 logger.debug("Component disabled. Applying disabled style.")
@@ -134,7 +126,6 @@ abstract class DefaultComponent(
                 logger.debug("Component enabled. Applying enabled style.")
                 DEFAULT
             }
-            render()
         }
         themeProperty.onChange {
             themeStyle = convertColorTheme(it.newValue)
@@ -150,53 +141,41 @@ abstract class DefaultComponent(
     }
 
     @Synchronized
+    override fun moveTo(position: Position): Boolean {
+        parent.map { parent ->
+            val newBounds = contentLayer.rect.withPosition(position)
+            require(parent.containsBoundable(newBounds)) {
+                "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds ($parent)."
+            }
+        }
+        val diff = position - absolutePosition
+        contentLayer.moveTo(position)
+        relativePosition += diff
+        return true
+    }
+
+    final override fun moveBy(position: Position) = moveTo(this.position + position)
+
+    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
+
+    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
+
+    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
+
+    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
+
+    override fun asInternalComponent(): InternalComponent = this
+
     override fun clearCustomStyle() {
         componentStyleSet = ComponentStyleSet.defaultStyleSet()
     }
-
-    @Synchronized
-    override fun moveTo(position: Position) {
-        moveTo(position, true)
-    }
-
-    @Synchronized
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
-        parent.map {
-            val newBounds = contentLayer.rect.withPosition(position)
-            require(it.containsBoundable(newBounds)) {
-                "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds (${it})."
-            }
-        }
-        contentLayer.moveTo(position)
-        if (signalComponentChange) {
-            Zircon.eventBus.publish(
-                    event = ZirconEvent.ComponentMoved(this),
-                    eventScope = ZirconScope)
-        }
-    }
-
-    @Synchronized
-    final override fun moveBy(position: Position) = moveTo(this.position + position)
-
-    @Synchronized
-    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
-
-    @Synchronized
-    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
-
-    @Synchronized
-    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
-
-    @Synchronized
-    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     final override fun requestFocus(): Boolean {
         Zircon.eventBus.publish(
                 event = RequestFocusFor(this, this),
                 eventScope = ZirconScope)
-        return hasFocus.value
+        return hasFocusValue.value
     }
-
 
     final override fun clearFocus() {
         Zircon.eventBus.publish(
@@ -206,26 +185,26 @@ abstract class DefaultComponent(
 
     override fun focusGiven() = whenEnabled {
         updateComponentState(FOCUS_GIVEN)
-        hasFocus.value = true
+        hasFocusValue.value = true
     }
 
     override fun focusTaken() = whenEnabled {
         updateComponentState(FOCUS_TAKEN)
-        hasFocus.value = false
+        hasFocusValue.value = false
     }
 
     override fun acceptsFocus() = isDisabled.not()
 
     override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            updateComponentState(EventType.MOUSE_ENTERED)
+            updateComponentState(MOUSE_ENTERED)
             Processed
         } else Pass
     }
 
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            updateComponentState(EventType.MOUSE_EXITED)
+            updateComponentState(MOUSE_EXITED)
             Processed
         } else Pass
     }
@@ -247,23 +226,8 @@ abstract class DefaultComponent(
         Processed
     }
 
-    @Synchronized
-    override fun calculatePathFromRoot(): List<InternalComponent> {
-        return parent.map { it.calculatePathFromRoot() }.orElse(listOf()).plus(this)
-    }
-
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
-        return if (containsPosition(absolutePosition)) {
-            Maybe.of(this)
-        } else {
-            Maybe.empty()
-        }
-    }
-
-    override fun toString(): String {
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
-                "pos=${position.x};${position.y}, size=${size.width};${size.height}, state=$componentState, disabled=$isDisabled)"
+    final override fun render() {
+        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     final override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
@@ -282,9 +246,11 @@ abstract class DefaultComponent(
         return processComponentEvents(ComponentEventType.FOCUS_TAKEN, fn)
     }
 
-    final override fun render() {
-        logger.trace("$this was rendered.")
-        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
+    override fun toString(): String {
+        val text = if (this is TextHolder) ", text=${textProperty.value}" else ""
+        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
+                "pos=${position.x};${position.y}, size=${size.width};${size.height}, " +
+                "state=$componentState, disabled=$isDisabled$text)"
     }
 
     final override fun equals(other: Any?): Boolean {
@@ -303,9 +269,9 @@ abstract class DefaultComponent(
     private fun updateComponentState(eventType: EventType) {
         val key = ComponentStateKey(
                 oldState = componentState,
-                isFocused = hasFocus.value,
+                isFocused = hasFocusValue.value,
                 eventType = eventType)
-        logger.info("Updating component state with $key.")
+        logger.debug("Updating component state with $key.")
         COMPONENT_STATE_TRANSITIONS[key]?.let {
             logger.debug("Component state was updated to state $it.")
             componentState = it
@@ -315,7 +281,6 @@ abstract class DefaultComponent(
     enum class EventType {
         FOCUS_GIVEN, FOCUS_TAKEN, MOUSE_ENTERED, MOUSE_EXITED, MOUSE_PRESSED, MOUSE_RELEASED, ACTIVATED, DEACTIVATED
     }
-
 
     data class ComponentStateKey(
             val oldState: ComponentState,

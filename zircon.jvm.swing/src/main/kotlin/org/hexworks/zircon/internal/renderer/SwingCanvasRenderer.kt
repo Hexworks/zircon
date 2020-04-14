@@ -136,12 +136,9 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
 
-
-        val layerStates = tileGrid.layerStates
-
         val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
 
-        layerStates.forEach { state ->
+        tileGrid.fetchLayerStates().forEach { state ->
             if (state.isHidden.not()) {
                 state.tiles.forEach { (tilePos, tile) ->
                     var finalTile = tile

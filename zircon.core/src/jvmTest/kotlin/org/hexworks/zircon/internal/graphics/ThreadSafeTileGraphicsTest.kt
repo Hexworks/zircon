@@ -11,16 +11,16 @@ import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
-class TileGraphicsTest {
+class ThreadSafeTileGraphicsTest {
 
-    lateinit var target: InternalTileGraphics
+    lateinit var target: ThreadSafeTileGraphics
 
     @Before
     fun setUp() {
         target = TileGraphicsBuilder.newBuilder()
                 .withSize(SIZE_OF_3X3)
                 .withTileset(TILESET)
-                .buildThreadSafeTileGraphics() as ThreadSafeTileGraphics
+                .build() as ThreadSafeTileGraphics
     }
 
     @Test
@@ -84,16 +84,6 @@ class TileGraphicsTest {
         target.draw(FILLER, FILLED_POS)
 
         assertThat(target.state.tiles.toMap()).isEqualTo(mapOf(FILLED_POS to FILLER))
-    }
-
-    @Test
-    fun shouldNotChangeSnapshotAfterCreation() {
-
-        val result = target.state
-
-        target.draw(FILLER, FILLED_POS)
-
-        assertThat(result.tiles).isEmpty()
     }
 
     @Test

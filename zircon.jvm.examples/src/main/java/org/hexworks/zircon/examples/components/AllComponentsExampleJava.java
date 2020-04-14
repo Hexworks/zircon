@@ -43,8 +43,6 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
 
         int columnWidth = rightColumn.getContentSize().getWidth();
 
-        columns.addComponents(leftColumn, rightColumn);
-
         leftColumn.addComponent(header().withText("This is a header"));
         leftColumn.addComponent(label().withText("This is a label"));
         leftColumn.addComponent(listItem().withText("A list item to read"));
@@ -63,18 +61,6 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
                 .addHeader("Text Box!")
                 .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."));
-
-        rightColumn.addComponent(button()
-                .withText("Click Me!")
-                .build());
-
-        rightColumn.addComponent(toggleButton()
-                .withText("Toggle Me!")
-                .build());
-
-        rightColumn.addComponent(checkBox()
-                .withText("Check Me!")
-                .build());
 
         VBox radioBox = vbox()
                 .withSize(columnWidth, 6)
@@ -137,6 +123,8 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
                 .withMaxValue(100)
                 .withNumberOfSteps(100)
                 .withSize(columnWidth, 3));
+
+        columns.addComponents(leftColumn, rightColumn);
 
     }
 

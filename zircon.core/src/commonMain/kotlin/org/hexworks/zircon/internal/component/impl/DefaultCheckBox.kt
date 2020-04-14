@@ -57,6 +57,7 @@ class DefaultCheckBox(
         super.activated()
     }
 
+    @Synchronized
     override fun deactivated() = whenEnabled {
         pressing = false
         isSelected = isSelected.not()

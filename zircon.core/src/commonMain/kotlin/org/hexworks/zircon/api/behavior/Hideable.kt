@@ -10,7 +10,6 @@ import kotlin.jvm.JvmStatic
 interface Hideable {
 
     var isHidden: Boolean
-
     val hiddenProperty: Property<Boolean>
 
     companion object {

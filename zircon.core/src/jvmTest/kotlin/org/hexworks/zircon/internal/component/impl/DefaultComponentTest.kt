@@ -12,7 +12,10 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
@@ -181,16 +184,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldProperlyFetchByPositionWhenContainsPosition() {
-        assertThat(target.fetchComponentByPosition(POSITION_2x3).get()).isEqualTo(target)
-    }
-
-    @Test
-    fun shouldNotFetchByPositionWhenDoesNotContainPosition() {
-        assertThat(target.fetchComponentByPosition(Position.create(100, 100)).isPresent).isFalse()
-    }
-
-    @Test
     fun shouldProperlyListenToMousePress() {
         val pressed = AtomicBoolean(false)
         target.handleMouseEvents(MOUSE_PRESSED) { _, _ ->
@@ -208,27 +201,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldBeEqualToItself() {
         assertThat(target).isEqualTo(target)
-    }
-
-    @Test
-    fun shouldProperlyCalculatePathFromRoot() {
-        val root = RootContainer(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = Position.defaultPosition(),
-                        size = Size.create(100, 100),
-                        tileset = TILESET_REX_PAINT_20X20,
-                        componentStyleSet = ComponentStyleSet.empty()),
-                renderingStrategy = DefaultComponentRenderingStrategy(NoOpGenericRenderer()))
-
-        val parent = Components.panel()
-                .withSize(50, 50)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build() as InternalContainer
-
-        root.addComponent(parent)
-        parent.addComponent(target)
-
-        assertThat(target.calculatePathFromRoot()).containsExactly(root, parent, target)
     }
 
     companion object {

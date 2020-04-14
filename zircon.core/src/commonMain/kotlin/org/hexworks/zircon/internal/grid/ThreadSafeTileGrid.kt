@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
@@ -24,7 +25,6 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
@@ -56,7 +56,6 @@ class ThreadSafeTileGrid(
 
     override var tileset: TilesetResource
         get() = backend.tileset
-        @Synchronized
         set(value) {
             backend.tileset = value
         }
@@ -64,23 +63,17 @@ class ThreadSafeTileGrid(
     override val tilesetProperty: Property<TilesetResource>
         get() = backend.tilesetProperty
 
-    override val layerStates: Iterable<LayerState>
-        @Synchronized
-        get() {
-            return layerable.layerStates
-        }
-
     override val isClosed = false.toProperty()
 
-    override val layers: Iterable<Layer>
-        get() {
-            return layerable.layers
-        }
+    override val layers: ObservableList<out Layer>
+        get() = layerable.layers
 
     private var originalCursorHandler = cursorHandler
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
+
+    override fun fetchLayerStates() = layerable.fetchLayerStates()
 
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
@@ -155,59 +148,48 @@ class ThreadSafeTileGrid(
 
     // ANIMATION HANDLER
 
-    @Synchronized
     override fun start(animation: Animation): AnimationHandle {
         return animationHandler.start(animation)
     }
 
-    @Synchronized
     override fun stop(animation: InternalAnimation) {
         animationHandler.stop(animation)
     }
 
-    @Synchronized
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         animationHandler.updateAnimations(currentTimeMs, layerable)
     }
 
     // DRAW SURFACE
 
-    @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
         backend.draw(tileComposite, drawPosition, drawArea)
     }
 
-    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition, drawArea)
     }
 
-    @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
         backend.draw(tile, drawPosition)
     }
 
-    @Synchronized
     override fun draw(tileComposite: TileComposite) {
         backend.draw(tileComposite)
     }
 
-    @Synchronized
     override fun draw(tileComposite: TileComposite, drawPosition: Position) {
         backend.draw(tileComposite, drawPosition)
     }
 
-    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>) {
         backend.draw(tileMap)
     }
 
-    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
         backend.draw(tileMap, drawPosition)
     }
 
-    @Synchronized
     override fun fill(filler: Tile) {
         backend.fill(filler)
     }
@@ -222,19 +204,15 @@ class ThreadSafeTileGrid(
 
     // LAYERABLE
 
-    @Synchronized
     override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
 
-    @Synchronized
     override fun addLayer(layer: Layer) = layerable.addLayer(layer)
 
-    @Synchronized
     override fun insertLayerAt(level: Int, layer: Layer) = layerable.insertLayerAt(level, layer)
 
-    @Synchronized
     override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
 
-    override fun removeLayer(layer: Layer): Layer {
+    override fun removeLayer(layer: Layer): Boolean {
         return layerable.removeLayer(layer)
     }
 

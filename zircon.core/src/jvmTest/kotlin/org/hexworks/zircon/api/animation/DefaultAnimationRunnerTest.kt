@@ -82,7 +82,6 @@ class DefaultAnimationRunnerTest {
         val uuid = UUIDFactory.randomUUID()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
-        // TODO
 //        Mockito.`when`(animationMock.id).thenReturn(uuid)
 //        Mockito.`when`(animationMock.isLoopedIndefinitely).thenReturn(false)
 //        Mockito.`when`(animationMock.fetchNextFrame()).thenReturn(Maybe.empty())

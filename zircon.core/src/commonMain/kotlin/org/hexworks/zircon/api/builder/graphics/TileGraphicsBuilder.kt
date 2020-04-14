@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
+import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -8,7 +9,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
 
 /**
@@ -23,7 +23,8 @@ data class TileGraphicsBuilder(
         private var size: Size = Size.one(),
         private var style: StyleSet = StyleSet.defaultStyle(),
         private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
-        private var filler: Tile = Tile.empty()) : Builder<TileGraphics> {
+        private var filler: Tile = Tile.empty()
+) : Builder<TileGraphics> {
 
     override fun createCopy() = copy(
             tiles = tiles.toMutableMap())
@@ -77,20 +78,10 @@ data class TileGraphicsBuilder(
      * safe and offers no consistent snapshots. Use this implementation
      * if you're not reading nor writing from multiple threads.
      */
-    override fun build(): TileGraphics = FastTileGraphics(
+    override fun build(): TileGraphics = ThreadSafeTileGraphics(
             initialSize = size,
             initialTileset = tileset,
-            initialTiles = tiles.toMap()).apply {
-        if (hasToFill()) fill(filler)
-    }
-
-    /**
-     * Builds a thread-safe [TileGraphics] implementation.
-     */
-    fun buildThreadSafeTileGraphics(): TileGraphics = ThreadSafeTileGraphics(
-            initialSize = size,
-            initialTileset = tileset,
-            initialTiles = tiles.toMap()).apply {
+            initialTiles = tiles.toPersistentMap()).apply {
         if (hasToFill()) fill(filler)
     }
 

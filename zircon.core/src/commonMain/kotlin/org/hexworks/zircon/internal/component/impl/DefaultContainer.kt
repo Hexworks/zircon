@@ -1,13 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
-import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.DisposeSubscription
-import org.hexworks.cobalt.events.api.KeepSubscription
-import org.hexworks.cobalt.events.api.subscribeTo
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -21,8 +18,8 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
@@ -32,107 +29,62 @@ open class DefaultContainer(
         renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderer) {
+        renderer = renderer
+) {
 
-    private var componentLookup = persistentMapOf<UUID, InternalAttachedComponent>()
-
-    final override var children: PersistentList<InternalComponent> = persistentListOf()
-        private set
-
-    override val descendants: Iterable<InternalComponent>
-        @Synchronized
-        get() {
-            return children.flatMap { listOf(it).plus(it.descendants) }
-        }
-
-    override fun acceptsFocus() = false
-
-    override fun focusGiven(): UIEventResponse = Pass
-
-    override fun focusTaken(): UIEventResponse = Pass
-
-    // TODO: test the hell out of this
-    @Synchronized
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
-        val diff = position - this.position
-        super.moveTo(position, signalComponentChange)
-        children.forEach {
-            it.moveTo(it.position + diff, false)
-        }
+    final override val children: ObservableList<InternalComponent> by lazy {
+        persistentListOf<InternalComponent>().toProperty()
     }
 
+    // TODO: refactor this so that recursive changes are not necessary
+    @Synchronized
+    final override fun moveTo(position: Position): Boolean {
+        val diff = position - this.position
+        super.moveTo(position)
+        children.forEach {
+            it.moveTo(it.position + diff)
+        }
+        return true
+    }
+
+    /**
+     * Note that this method can be overridden we'd like to advise against if it is possible.
+     * The logic is complex and you can easily get into a sorry state where the implementation
+     * doesn't make sense. If you really need to override this please call `super.addComponent`
+     * and let Zircon do the heavy lifting for you.
+     */
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
 
-        val ic = performChecks(component)
+        val ic = checkIfCanAdd(component)
         val attachment = DefaultAttachedComponent(ic, this)
 
-        componentLookup = componentLookup.put(ic.id, attachment)
-        children = children.add(ic)
-
-        Zircon.eventBus.subscribeTo<ComponentDetached>(ZirconScope) { (_, removedComponent) ->
-            if (removedComponent == component) {
-                componentLookup = componentLookup.remove(component.id)
-                children = children.remove(ic)
-                Zircon.eventBus.publish(
-                        event = ComponentRemoved(
-                                parent = this,
-                                component = component,
-                                emitter = this),
-                        eventScope = ZirconScope)
-                DisposeSubscription
-            } else KeepSubscription
-        }
+        children.add(ic)
 
         Zircon.eventBus.publish(
                 event = ComponentAdded(
                         parent = this,
-                        component = component,
+                        component = component.asInternalComponent(),
                         emitter = this),
                 eventScope = ZirconScope)
 
         return attachment
     }
 
-    @Synchronized
-    override fun fetchComponentByPosition(absolutePosition: Position) = if (this.containsPosition(absolutePosition).not()) {
-        Maybe.empty()
-    } else {
-        componentLookup.values.map {
-            it.fetchComponentByPosition(absolutePosition)
-        }.filter {
-            it.isPresent
-        }.let { hits ->
-            if (hits.isEmpty()) {
-                Maybe.of(this)
-            } else {
-                hits.first()
-            }
-        }
-    }
-
-    @Synchronized
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
 
-    override fun clear() {
-        componentLookup.values.forEach { it.detach() }
-    }
-
-    private fun performChecks(component: Component): InternalComponent {
+    private fun checkIfCanAdd(component: Component): InternalComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."
         }
         require(component !== this) {
             "You can't add a component to itself."
         }
-        require(component.descendants.none { it == component }) {
-            "A component can't become its own descendant."
-        }
         require(component.isAttached.not()) {
             "This component is already attached to a parent. Please detach it first."
         }
         val originalRect = component.rect
-        component.moveTo(component.position + contentOffset + position)
+        component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
         if (RuntimeConfig.config.debugMode.not()) {
             val contentBounds = contentSize.toRect()
             tileset.checkCompatibilityWith(component.tileset)
@@ -150,4 +102,42 @@ open class DefaultContainer(
         return component
     }
 
+    final override fun asInternalComponent(): InternalContainer = this
+
+    override fun acceptsFocus() = false
+
+    override fun focusGiven(): UIEventResponse = Pass
+
+    override fun focusTaken(): UIEventResponse = Pass
+
+    private inner class DefaultAttachedComponent(
+            override val component: InternalComponent,
+            override val parentContainer: InternalContainer
+    ) : InternalAttachedComponent, InternalComponent by component {
+
+        init {
+            component.parent = Maybe.of(parentContainer)
+            component.disabledProperty.updateFrom(parentContainer.disabledProperty)
+                    .keepWhile(component.hasParent)
+            component.hiddenProperty.updateFrom(parentContainer.hiddenProperty)
+                    .keepWhile(component.hasParent)
+            component.themeProperty.updateFrom(
+                    observable = parentContainer.themeProperty,
+                    updateWhenBound = theme == ColorThemes.defaultTheme()).keepWhile(component.hasParent)
+            component.tilesetProperty.updateFrom(parentContainer.tilesetProperty).keepWhile(component.hasParent)
+        }
+
+        @Synchronized
+        override fun detach(): Component {
+            component.parent = Maybe.empty()
+            this@DefaultContainer.children.remove(component)
+            Zircon.eventBus.publish(
+                    event = ComponentRemoved(
+                            parent = parentContainer,
+                            component = component,
+                            emitter = this),
+                    eventScope = ZirconScope)
+            return component
+        }
+    }
 }
