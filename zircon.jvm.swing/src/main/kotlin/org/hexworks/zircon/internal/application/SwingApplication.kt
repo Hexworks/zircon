@@ -14,7 +14,8 @@ class SwingApplication(private val config: AppConfig,
 
     override val renderer = SwingFrame(
             tileGrid = tileGrid,
-            config = config).renderer
+            config = config,
+            app = this).renderer
 
     companion object {
 

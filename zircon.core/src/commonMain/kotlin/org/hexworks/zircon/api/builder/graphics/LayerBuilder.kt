@@ -89,7 +89,7 @@ data class LayerBuilder(
                 initialContents = TileGraphicsBuilder.newBuilder()
                         .withSize(size)
                         .withTileset(tileset)
-                        .buildThreadSafeTileGraphics())
+                        .build())
     }.apply {
         if (filler != Tile.empty()) fill(filler)
     }

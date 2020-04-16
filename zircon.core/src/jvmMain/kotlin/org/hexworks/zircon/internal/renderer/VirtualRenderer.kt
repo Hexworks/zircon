@@ -31,7 +31,7 @@ class VirtualRenderer(
 
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
-        tileGrid.layerStates.forEach {
+        tileGrid.fetchLayerStates().forEach {
             renderTiles(it)
         }
         tileGrid.updateAnimations(now, tileGrid)

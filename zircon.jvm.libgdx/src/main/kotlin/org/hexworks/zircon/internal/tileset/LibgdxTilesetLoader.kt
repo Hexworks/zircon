@@ -41,7 +41,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
                             height = resource.height)
                 },
                 "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
-                    LibgdxGraphicTileset(
+                    LibgdxGraphicalTileset(
                             resource = resource)
                 },
                 "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->

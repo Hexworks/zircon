@@ -31,7 +31,7 @@ object PanelsExample {
         val screen = Screen.create(tileGrid)
 
         screen.addComponent(Components.panel()
-                .withDecorations(box())
+                .withDecorations(box(title = "No Render"))
                 .withSize(18, 5)
                 .withComponentRenderer(NoOpComponentRenderer())
                 .withAlignment(positionalAlignment(1, 1)))

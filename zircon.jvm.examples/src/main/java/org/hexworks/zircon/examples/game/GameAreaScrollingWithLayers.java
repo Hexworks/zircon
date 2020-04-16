@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Panel;
 import org.hexworks.zircon.api.component.builder.ComponentBuilder;
 import org.hexworks.zircon.api.data.*;
 import org.hexworks.zircon.api.game.GameArea;
+import org.hexworks.zircon.api.game.GameComponent;
 import org.hexworks.zircon.api.graphics.BoxType;
 import org.hexworks.zircon.api.graphics.Symbols;
 import org.hexworks.zircon.api.graphics.TileGraphics;
@@ -93,14 +94,10 @@ public class GameAreaScrollingWithLayers {
                 .withVisibleSize(visibleGameAreaSize)
                 .build();
 
-        ComponentBuilder builder = Components.gameComponent()
-                .withGameArea(gameArea)
-                .withTileset(CP437TilesetResources.phoebus16x16());
-
-        final DefaultGameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
+        final GameComponent gameComponent = ((GameComponentBuilder<Tile, Block<Tile>>) Components.gameComponent()
                 .withGameArea(gameArea)
                 .withSize(visibleGameAreaSize.to2DSize())
-                .withTileset(CP437TilesetResources.phoebus16x16()))
+                .withTileset(CP437TilesetResources.zaratustra16x16()))
                 .build();
 
         screen.addComponent(gamePanel);
@@ -165,7 +162,6 @@ public class GameAreaScrollingWithLayers {
                 if (event.getCode().equals(KeyCode.KEY_D)) {
                     gameArea.scrollOneDown();
                 }
-                // TODO: rething coordinates
             }
             return UIEventResponse.processed();
         });

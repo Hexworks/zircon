@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.screen
 
+import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -21,7 +23,9 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.data.LayerState
-import org.hexworks.zircon.internal.event.ZirconEvent.*
+import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
+import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
+import org.hexworks.zircon.internal.event.ZirconEvent.ScreenSwitch
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
@@ -44,10 +48,6 @@ class TileGridScreen(
         InternalTileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
-    override val layerStates: Iterable<LayerState>
-        @Synchronized
-        get() = componentContainer.layerStates.plus(bufferGrid.layerStates)
-
     // we make this random because we don't know which one is the active
     // yet and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
@@ -66,6 +66,8 @@ class TileGridScreen(
         }.disposeWhen(isClosed)
     }
 
+    override fun fetchLayerStates() = bufferGrid.fetchLayerStates()
+
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
     // have no visible effect)
@@ -81,7 +83,6 @@ class TileGridScreen(
         } else Pass
     }
 
-    @Synchronized
     override fun handleMouseEvents(
             eventType: MouseEventType,
             handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
@@ -93,7 +94,6 @@ class TileGridScreen(
         }
     }
 
-    @Synchronized
     override fun handleKeyboardEvents(
             eventType: KeyboardEventType,
             handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
@@ -139,7 +139,6 @@ class TileGridScreen(
         deactivate()
     }
 
-    @Synchronized
     override fun <T : ModalResult> openModal(modal: Modal<T>) {
         require(modal is DefaultModal) {
             "This Screen does not accept custom Modals yet."

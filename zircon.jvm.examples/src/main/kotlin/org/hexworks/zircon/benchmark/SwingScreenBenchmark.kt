@@ -14,72 +14,76 @@ import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.data.GridPosition
 import java.util.*
 
-fun main(args: Array<String>) {
+object SwingScreenBenchmark {
 
-    val size = Size.create(80, 40)
+    @JvmStatic
+    fun main(args: Array<String>) {
 
-    val tileset = CP437TilesetResources.wanderlust16x16()
+        val size = Size.create(80, 40)
 
-    val screen = Screen.create(SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
-            .withSize(size)
-            .withDefaultTileset(tileset)
-            .withDebugMode(true)
-            .build()))
+        val tileset = CP437TilesetResources.wanderlust16x16()
 
-    screen.display()
+        val screen = Screen.create(SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
+                .withSize(size)
+                .withDefaultTileset(tileset)
+                .withDebugMode(true)
+                .build()))
 
-    val random = Random()
-    val terminalWidth = size.width
-    val terminalHeight = size.height
-    val layerCount = 20
-    val layerWidth = 20
-    val layerHeight = 10
-    val layerSize = Size.create(layerWidth, layerHeight)
-    val filler = Tile.defaultTile().withCharacter('x')
+        screen.display()
 
-    val layers = (0..layerCount).map {
+        val random = Random()
+        val terminalWidth = size.width
+        val terminalHeight = size.height
+        val layerCount = 20
+        val layerWidth = 20
+        val layerHeight = 10
+        val layerSize = Size.create(layerWidth, layerHeight)
+        val filler = Tile.defaultTile().withCharacter('x')
 
-        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .withSize(layerSize)
-                .withTileset(tileset)
-                .build()
-        layerSize.fetchPositions().forEach {
-            imageLayer.draw(filler, it)
+        val layers = (0..layerCount).map {
+
+            val imageLayer = DrawSurfaces.tileGraphicsBuilder()
+                    .withSize(layerSize)
+                    .withTileset(tileset)
+                    .build()
+            layerSize.fetchPositions().forEach {
+                imageLayer.draw(filler, it)
+            }
+
+            val layer = LayerBuilder.newBuilder()
+                    .withOffset(Position.create(
+                            x = random.nextInt(terminalWidth - layerWidth),
+                            y = random.nextInt(terminalHeight - layerHeight)))
+                    .withTileGraphics(imageLayer)
+                    .build()
+
+            screen.addLayer(layer)
+            layer
         }
 
-        val layer = LayerBuilder.newBuilder()
-                .withOffset(Position.create(
+        val chars = listOf('a', 'b')
+
+        var currIdx = 0
+
+
+        while (true) {
+            val tile = Tile.defaultTile().withCharacter(chars[currIdx])
+            fillGrid(screen, tile)
+            layers.forEach {
+                it.asInternalLayer().moveTo(Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
                         y = random.nextInt(terminalHeight - layerHeight)))
-                .withTileGraphics(imageLayer)
-                .build()
-
-        screen.addLayer(layer)
-        layer
-    }
-
-    val chars = listOf('a', 'b')
-
-    var currIdx = 0
-
-
-    while (true) {
-        val tile = Tile.defaultTile().withCharacter(chars[currIdx])
-        fillGrid(screen, tile)
-        layers.forEach {
-            it.moveTo(Position.create(
-                    x = random.nextInt(terminalWidth - layerWidth),
-                    y = random.nextInt(terminalHeight - layerHeight)))
+            }
+            currIdx = if (currIdx == 0) 1 else 0
         }
-        currIdx = if (currIdx == 0) 1 else 0
     }
-}
 
 
-private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
-    (0..tileGrid.size.height).forEach { y ->
-        (0..tileGrid.size.width).forEach { x ->
-            tileGrid.draw(tile, GridPosition(x, y))
+    private fun fillGrid(tileGrid: TileGrid, tile: Tile) {
+        (0..tileGrid.size.height).forEach { y ->
+            (0..tileGrid.size.width).forEach { x ->
+                tileGrid.draw(tile, GridPosition(x, y))
+            }
         }
     }
 }

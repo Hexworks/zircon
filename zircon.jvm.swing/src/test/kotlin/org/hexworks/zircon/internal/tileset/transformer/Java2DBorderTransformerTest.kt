@@ -4,9 +4,11 @@ import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.image.BufferedImage
 
+@Ignore
 class Java2DBorderTransformerTest {
 
     lateinit var target: Java2DBorderTransformer

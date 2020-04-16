@@ -36,135 +36,6 @@ import kotlin.random.Random
 
 object TopDownObliqueWorldExample {
 
-    private val WORLD_SIZE = Size3D.create(100, 100, 100)
-    private const val VISIBLE_Z_LEVELS = 5
-    private val random = Random(5643218)
-
-    private val BLACK = TileColor.fromString("#140c1c")
-    private val DARK_BROWN = TileColor.fromString("#442434")
-    private val PURPLE = TileColor.fromString("#30346d")
-    private val DARK_GREY = TileColor.fromString("#4e4a4e")
-    private val BROWN = TileColor.fromString("#854c30")
-    private val DARK_GREEN = TileColor.fromString("#346524")
-    private val RED = TileColor.fromString("#d04648")
-    private val GREY = TileColor.fromString("#757161")
-    private val BLUE = TileColor.fromString("#597dce")
-    private val ORANGE = TileColor.fromString("#d27d2c")
-    private val LIGHT_GREY = TileColor.fromString("#8595a1")
-    private val LIGHT_GREEN = TileColor.fromString("#6daa2c")
-    private val CREAM = TileColor.fromString("#d2aa99")
-    private val TEAL = TileColor.fromString("#6dc2ca")
-    private val YELLOW = TileColor.fromString("#dad45e")
-    private val BRIGHT_GREEN = TileColor.fromString("#deeed6")
-    private val TRANSPARENT = TileColor.transparent()
-
-
-    private val EMPTY = Tile.empty()
-    private val FLOOR = Tile.defaultTile()
-            .withCharacter(Symbols.BLOCK_SPARSE)
-            .withBackgroundColor(BROWN)
-            .withForegroundColor(CREAM)
-
-    private val WALL_TOP = Tile.defaultTile()
-            .withCharacter(Symbols.BLOCK_SOLID)
-            .withForegroundColor(DARK_GREY)
-
-    private val GLASS = Tile.defaultTile()
-            .withCharacter(' ')
-            .withBackgroundColor(TileColor.create(red = BLUE.red,
-                    green = BLUE.green,
-                    blue = BLUE.blue,
-                    alpha = 125))
-
-    private val ROOF_TOP = Tile.defaultTile()
-            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
-            .withModifiers(Border.newBuilder().withBorderColor(BROWN).build())
-            .withBackgroundColor(BROWN)
-            .withForegroundColor(RED)
-
-    private val ROOF_FRONT = Tile.defaultTile()
-            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
-            .withBackgroundColor(DARK_BROWN)
-            .withForegroundColor(BROWN)
-
-    private val BLOCK_BASE = Block.newBuilder<Tile>()
-            .withContent(EMPTY)
-            .withEmptyTile(EMPTY)
-            .build()
-
-    private fun roof() = Block.newBuilder<Tile>()
-            .withContent(EMPTY)
-            .withTop(ROOF_TOP)
-            .withFront(ROOF_FRONT)
-            .withEmptyTile(EMPTY)
-            .build()
-
-    private val GRASS_TILES = listOf(
-            Tile.defaultTile()
-                    .withCharacter(',')
-                    .withBackgroundColor(DARK_GREEN)
-                    .withForegroundColor(LIGHT_GREEN),
-            Tile.defaultTile()
-                    .withCharacter('.')
-                    .withBackgroundColor(DARK_GREEN)
-                    .withForegroundColor(BRIGHT_GREEN),
-            Tile.defaultTile()
-                    .withCharacter('"')
-                    .withBackgroundColor(DARK_GREEN)
-                    .withForegroundColor(LIGHT_GREEN))
-
-    private fun grass() = Block.newBuilder<Tile>()
-            .withEmptyTile(Tile.empty())
-            .withContent(Tile.empty())
-            .withBottom(GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
-                it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
-                        .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
-            })
-            .build()
-
-    private val EMPTY_BLOCK = Block.newBuilder<Tile>()
-            .withEmptyTile(EMPTY)
-            .withContent(EMPTY)
-            .build()
-
-    private val FLOOR_BLOCK = Block.newBuilder<Tile>()
-            .withEmptyTile(Tile.empty())
-            .withContent(EMPTY)
-            .withBottom(FLOOR)
-            .build()
-
-    private val GLASS_BLOCK_FRONT = Block.newBuilder<Tile>()
-            .withContent(EMPTY)
-            .withFront(GLASS)
-            .withEmptyTile(EMPTY)
-            .build()
-
-    private val GLASS_BLOCK_BACK = Block.newBuilder<Tile>()
-            .withContent(EMPTY)
-            .withBack(GLASS)
-            .withEmptyTile(EMPTY)
-            .build()
-
-    private fun wallOutside() = Tile.defaultTile()
-            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL_SINGLE_LINE_CROSS)
-            .withBackgroundColor(BROWN.darkenByPercent(random.nextDouble(.15)))
-            .withForegroundColor(CREAM.lightenByPercent(random.nextDouble(.15)))
-
-    private fun wallInside() = Tile.defaultTile()
-            .withCharacter(Symbols.DOUBLE_LINE_VERTICAL_SINGLE_LINE_CROSS)
-            .withBackgroundColor(DARK_GREY.darkenByPercent(random.nextDouble(.25)))
-            .withForegroundColor(GREY.lightenByPercent(random.nextDouble(.25)))
-
-    private fun wallFront() = Block.newBuilder<Tile>()
-            .withContent(EMPTY)
-            .withTop(WALL_TOP)
-            .withFront(wallOutside())
-            .withBack(wallInside())
-            .withEmptyTile(EMPTY)
-            .build()
-
-    private fun wallBack() = wallFront().withFlippedAroundY()
-
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -315,4 +186,132 @@ object TopDownObliqueWorldExample {
         }
     }
 
+    private val WORLD_SIZE = Size3D.create(100, 100, 100)
+    private const val VISIBLE_Z_LEVELS = 5
+    private val random = Random(5643218)
+
+    private val BLACK = TileColor.fromString("#140c1c")
+    private val DARK_BROWN = TileColor.fromString("#442434")
+    private val PURPLE = TileColor.fromString("#30346d")
+    private val DARK_GREY = TileColor.fromString("#4e4a4e")
+    private val BROWN = TileColor.fromString("#854c30")
+    private val DARK_GREEN = TileColor.fromString("#346524")
+    private val RED = TileColor.fromString("#d04648")
+    private val GREY = TileColor.fromString("#757161")
+    private val BLUE = TileColor.fromString("#597dce")
+    private val ORANGE = TileColor.fromString("#d27d2c")
+    private val LIGHT_GREY = TileColor.fromString("#8595a1")
+    private val LIGHT_GREEN = TileColor.fromString("#6daa2c")
+    private val CREAM = TileColor.fromString("#d2aa99")
+    private val TEAL = TileColor.fromString("#6dc2ca")
+    private val YELLOW = TileColor.fromString("#dad45e")
+    private val BRIGHT_GREEN = TileColor.fromString("#deeed6")
+    private val TRANSPARENT = TileColor.transparent()
+
+
+    private val EMPTY = Tile.empty()
+    private val FLOOR = Tile.defaultTile()
+            .withCharacter(Symbols.BLOCK_SPARSE)
+            .withBackgroundColor(BROWN)
+            .withForegroundColor(CREAM)
+
+    private val WALL_TOP = Tile.defaultTile()
+            .withCharacter(Symbols.BLOCK_SOLID)
+            .withForegroundColor(DARK_GREY)
+
+    private val GLASS = Tile.defaultTile()
+            .withCharacter(' ')
+            .withBackgroundColor(TileColor.create(red = BLUE.red,
+                    green = BLUE.green,
+                    blue = BLUE.blue,
+                    alpha = 125))
+
+    private val ROOF_TOP = Tile.defaultTile()
+            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
+            .withModifiers(Border.newBuilder().withBorderColor(BROWN).build())
+            .withBackgroundColor(BROWN)
+            .withForegroundColor(RED)
+
+    private val ROOF_FRONT = Tile.defaultTile()
+            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
+            .withBackgroundColor(DARK_BROWN)
+            .withForegroundColor(BROWN)
+
+    private val BLOCK_BASE = Block.newBuilder<Tile>()
+            .withContent(EMPTY)
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private fun roof() = Block.newBuilder<Tile>()
+            .withContent(EMPTY)
+            .withTop(ROOF_TOP)
+            .withFront(ROOF_FRONT)
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private val GRASS_TILES = listOf(
+            Tile.defaultTile()
+                    .withCharacter(',')
+                    .withBackgroundColor(DARK_GREEN)
+                    .withForegroundColor(LIGHT_GREEN),
+            Tile.defaultTile()
+                    .withCharacter('.')
+                    .withBackgroundColor(DARK_GREEN)
+                    .withForegroundColor(BRIGHT_GREEN),
+            Tile.defaultTile()
+                    .withCharacter('"')
+                    .withBackgroundColor(DARK_GREEN)
+                    .withForegroundColor(LIGHT_GREEN))
+
+    private fun grass() = Block.newBuilder<Tile>()
+            .withEmptyTile(Tile.empty())
+            .withContent(Tile.empty())
+            .withBottom(GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
+                it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
+                        .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
+            })
+            .build()
+
+    private val EMPTY_BLOCK = Block.newBuilder<Tile>()
+            .withEmptyTile(EMPTY)
+            .withContent(EMPTY)
+            .build()
+
+    private val FLOOR_BLOCK = Block.newBuilder<Tile>()
+            .withEmptyTile(Tile.empty())
+            .withContent(EMPTY)
+            .withBottom(FLOOR)
+            .build()
+
+    private val GLASS_BLOCK_FRONT = Block.newBuilder<Tile>()
+            .withContent(EMPTY)
+            .withFront(GLASS)
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private val GLASS_BLOCK_BACK = Block.newBuilder<Tile>()
+            .withContent(EMPTY)
+            .withBack(GLASS)
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private fun wallOutside() = Tile.defaultTile()
+            .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL_SINGLE_LINE_CROSS)
+            .withBackgroundColor(BROWN.darkenByPercent(random.nextDouble(.15)))
+            .withForegroundColor(CREAM.lightenByPercent(random.nextDouble(.15)))
+
+    private fun wallInside() = Tile.defaultTile()
+            .withCharacter(Symbols.DOUBLE_LINE_VERTICAL_SINGLE_LINE_CROSS)
+            .withBackgroundColor(DARK_GREY.darkenByPercent(random.nextDouble(.25)))
+            .withForegroundColor(GREY.lightenByPercent(random.nextDouble(.25)))
+
+    private fun wallFront() = Block.newBuilder<Tile>()
+            .withContent(EMPTY)
+            .withTop(WALL_TOP)
+            .withFront(wallOutside())
+            .withBack(wallInside())
+            .withEmptyTile(EMPTY)
+            .build()
+
+    private fun wallBack() = wallFront().withFlippedAroundY()
 }

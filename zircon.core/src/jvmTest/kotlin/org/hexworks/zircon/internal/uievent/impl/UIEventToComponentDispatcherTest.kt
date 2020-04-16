@@ -1,16 +1,18 @@
 package org.hexworks.zircon.internal.uievent.impl
 
+import com.nhaarman.mockito_kotlin.anyOrNull
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations.*
+import org.mockito.MockitoAnnotations.initMocks
 import kotlin.contracts.ExperimentalContracts
 
 @Suppress("TestFunctionName")
@@ -20,7 +22,7 @@ class UIEventToComponentDispatcherTest {
     lateinit var target: UIEventToComponentDispatcher
 
     @Mock
-    lateinit var rootMock: InternalContainer
+    lateinit var rootMock: RootContainer
 
     @Mock
     lateinit var child0Mock: InternalContainer
@@ -34,7 +36,7 @@ class UIEventToComponentDispatcherTest {
     @Before
     fun setUp() {
         initMocks(this)
-        Mockito.`when`(rootMock.calculatePathFromRoot()).thenReturn(listOf(rootMock))
+        Mockito.`when`(rootMock.calculatePathTo(anyOrNull())).thenReturn(listOf(rootMock))
         target = UIEventToComponentDispatcher(rootMock, focusOrderListMock)
     }
 
@@ -67,7 +69,7 @@ class UIEventToComponentDispatcherTest {
 
         Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
 
-        Mockito.`when`(child1Mock.calculatePathFromRoot()).thenReturn(listOf(rootMock, child0Mock, child1Mock))
+        Mockito.`when`(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
 
         Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
         Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
@@ -95,7 +97,7 @@ class UIEventToComponentDispatcherTest {
     fun dispatchShouldReturnStopPropagationWhenFirstChildStoppedPropagation() {
 
         Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
-        Mockito.`when`(child1Mock.calculatePathFromRoot()).thenReturn(listOf(rootMock, child0Mock, child1Mock))
+        Mockito.`when`(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
 
         Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
         Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
@@ -119,7 +121,7 @@ class UIEventToComponentDispatcherTest {
     fun When_a_child_stops_propagation_of_the_tab_key_Then_component_events_shouldnt_be_performed() {
 
         Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child0Mock)
-        Mockito.`when`(child0Mock.calculatePathFromRoot()).thenReturn(listOf(rootMock, child0Mock))
+        Mockito.`when`(rootMock.calculatePathTo(child0Mock)).thenReturn(listOf(rootMock, child0Mock))
 
         Mockito.`when`(rootMock.process(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
         Mockito.`when`(rootMock.keyPressed(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
@@ -132,7 +134,6 @@ class UIEventToComponentDispatcherTest {
 
         assertThat(result).isEqualTo(StopPropagation)
     }
-
 
 
     companion object {

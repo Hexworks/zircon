@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 
-object ViewsExample {
+object ViewsExampleKotlin {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 

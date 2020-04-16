@@ -11,7 +11,6 @@ import kotlin.jvm.JvmStatic
 interface Disablable {
 
     var isDisabled: Boolean
-
     val disabledProperty: Property<Boolean>
 
     companion object {

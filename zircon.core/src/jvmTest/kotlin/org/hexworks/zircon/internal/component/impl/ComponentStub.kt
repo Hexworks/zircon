@@ -1,8 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -38,7 +41,8 @@ class ComponentStub(
         override val graphics: TileGraphics = TileGraphicsBuilder.newBuilder()
                 .withSize(size)
                 .withTileset(tileset)
-                .build()) : InternalComponent {
+                .build()
+) : InternalComponent {
 
     override val disabledProperty: Property<Boolean> = false.toProperty()
     override var isDisabled: Boolean by disabledProperty.asDelegate()
@@ -46,28 +50,37 @@ class ComponentStub(
     override val themeProperty: Property<ColorTheme> = RuntimeConfig.config.defaultColorTheme.toProperty()
     override var theme: ColorTheme by themeProperty.asDelegate()
 
-    override val layerStates: Iterable<LayerState>
-        get() = listOf()
+    override fun asInternalComponent() = this
 
-    override fun calculatePathFromRoot(): List<InternalComponent> = listOf()
+    override var root: Maybe<RootContainer>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
+    override val rootValue: ObservableValue<Maybe<RootContainer>>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val layerStates: Sequence<LayerState>
+        get() = sequenceOf()
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
-    override val hasFocus: ObservableValue<Boolean>
+    override val hasFocus: Boolean
+        get() = false
+    override val hasFocusValue: ObservableValue<Boolean>
         get() = false.toProperty()
 
     override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     override var componentState: ComponentState
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+        set(_) {}
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it.isPresent }
+
+    override val rectValue: ObservableValue<Rect>
+        get() = TODO("not implemented")
 
     override val isAttached: Boolean
         get() = parent.isPresent
 
-    override val children: Iterable<InternalComponent> = listOf()
-    override val descendants: Iterable<InternalComponent>
-        get() = listOf()
+    override val children: ObservableList<InternalComponent>
+        get() = persistentListOf<InternalComponent>().toProperty()
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
     override val componentStateValue: ObservableValue<ComponentState>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -136,11 +149,6 @@ class ComponentStub(
         TODO("not implemented")
     }
 
-    override fun moveTo(position: Position, signalComponentChange: Boolean) {
-        rect = rect.withPosition(position)
-        movedToPositions.add(position)
-    }
-
     override fun close() {
         TODO("not implemented")
     }
@@ -157,9 +165,10 @@ class ComponentStub(
         return componentStyleSet
     }
 
-    override fun moveTo(position: Position) {
-        moveTo(position, false)
+    override fun moveTo(position: Position): Boolean {
+        rect = rect.withPosition(position)
         movedToPositions.add(position)
+        return true
     }
 
     override fun intersects(boundable: Boundable): Boolean {
@@ -172,12 +181,6 @@ class ComponentStub(
 
     override fun containsBoundable(boundable: Boundable): Boolean {
         TODO("This operation is unsupported for a Stub")
-    }
-
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> {
-        return Maybe.ofNullable(if (rect.containsPosition(absolutePosition)) {
-            this
-        } else null)
     }
 
     override fun render() {

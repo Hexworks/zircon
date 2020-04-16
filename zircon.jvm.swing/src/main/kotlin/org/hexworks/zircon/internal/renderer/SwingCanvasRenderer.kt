@@ -3,14 +3,16 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
@@ -20,6 +22,8 @@ import org.hexworks.zircon.platform.util.SystemUtils
 import java.awt.*
 import java.awt.event.HierarchyEvent
 import java.awt.event.MouseEvent
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import javax.swing.JFrame
@@ -28,7 +32,8 @@ import javax.swing.JFrame
 class SwingCanvasRenderer(private val canvas: Canvas,
                           private val frame: JFrame,
                           private val tileGrid: InternalTileGrid,
-                          private val config: AppConfig) : Renderer {
+                          private val config: AppConfig,
+                          private val app: Application) : Renderer {
 
     override val isClosed = false.toProperty()
 
@@ -51,12 +56,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     override fun create() {
         if (config.fullScreen) {
             frame.extendedState = JFrame.MAXIMIZED_BOTH
+        }
+        if (config.borderless) {
             frame.isUndecorated = true
-        } else {
-            frame.setSize(tileGrid.widthInPixels, tileGrid.heightInPixels)
         }
 
-        frame.isVisible = true
         frame.isResizable = false
         frame.addWindowStateListener {
             if (it.newState == Frame.NORMAL) {
@@ -84,8 +88,18 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         }
 
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        frame.defaultCloseOperation = when (config.closeBehavior) {
+            CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
+            CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
+        }
+
+        frame.addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(windowEvent: WindowEvent?) {
+                app.stop()
+            }
+        })
         frame.pack()
+        frame.isVisible=true
         frame.setLocationRelativeTo(null)
 
         // buffering
@@ -94,9 +108,11 @@ class SwingCanvasRenderer(private val canvas: Canvas,
     }
 
     override fun close() {
-        isClosed.value = true
-        tileGrid.close()
-        frame.dispose()
+        if (!isClosed.value) {
+            isClosed.value = true
+            tileGrid.close()
+            frame.dispose()
+        }
     }
 
     override fun render() {
@@ -120,20 +136,25 @@ class SwingCanvasRenderer(private val canvas: Canvas,
         val gc = configureGraphics(img.graphics)
         gc.fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
 
-
-        val layerStates = tileGrid.layerStates
-
         val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
 
-        layerStates.forEach { state ->
+        tileGrid.fetchLayerStates().forEach { state ->
             if (state.isHidden.not()) {
                 state.tiles.forEach { (tilePos, tile) ->
+                    var finalTile = tile
+                    finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+                        if (modifier.canTransform(finalTile)) {
+                            (finalTile as? CharacterTile)?.let {
+                                finalTile = modifier.transform(it)
+                            }
+                        }
+                    }
                     val finalPos = tilePos + state.position
                     tilesToRender.getOrPut(finalPos) { mutableListOf() }
-                    if (tile.isOpaque) {
-                        tilesToRender[finalPos] = mutableListOf(tile to state.tileset)
+                    if (finalTile.isOpaque) {
+                        tilesToRender[finalPos] = mutableListOf(finalTile to state.tileset)
                     } else {
-                        tilesToRender[finalPos]?.add(tile to state.tileset)
+                        tilesToRender[finalPos]?.add(finalTile to state.tileset)
                     }
                 }
             }
@@ -194,7 +215,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
                            position: Position,
                            tile: Tile,
                            tileset: Tileset<Graphics2D>) {
-        if (tile !== Tile.empty()) {
+        if (tile.isNotEmpty) {
             val actualTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
                         .withForegroundColor(tile.backgroundColor)
@@ -208,31 +229,6 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }.drawTile(tile = actualTile,
                     surface = graphics,
                     position = position)
-        }
-    }
-
-    private fun renderTiles(graphics: Graphics2D,
-                            state: LayerState,
-                            tileset: Tileset<Graphics2D>) {
-        state.tiles.forEach { (pos, tile) ->
-            if (tile !== Tile.empty()) {
-                val actualTile = if (tile.isBlinking && blinkOn) {
-                    tile.withBackgroundColor(tile.foregroundColor)
-                            .withForegroundColor(tile.backgroundColor)
-                } else {
-                    tile
-                }
-                val actualTileset: Tileset<Graphics2D> = if (actualTile is TilesetOverride) {
-                    tilesetLoader.loadTilesetFrom(actualTile.tileset)
-                } else {
-                    tileset
-                }
-
-                actualTileset.drawTile(
-                        tile = actualTile,
-                        surface = graphics,
-                        position = pos + state.position)
-            }
         }
     }
 

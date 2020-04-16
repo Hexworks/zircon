@@ -6,7 +6,7 @@ import org.hexworks.zircon.internal.data.LayerState
 
 interface InternalLayerable : Layerable {
 
-    val layerStates: Iterable<LayerState>
+    fun fetchLayerStates(): Sequence<LayerState>
 
-    fun removeLayer(layer: Layer): Layer
+    fun removeLayer(layer: Layer): Boolean
 }

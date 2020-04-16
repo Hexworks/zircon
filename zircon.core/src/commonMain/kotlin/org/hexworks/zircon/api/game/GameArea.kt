@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Scrollable3D
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Position3D
@@ -12,7 +13,7 @@ import org.hexworks.zircon.api.data.Size3D
  * The space is composed of [Block]s which are just voxels (like in Minecraft) which
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
  */
-interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
+interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
 
     /**
      * Contains **all** the currently present [Block]s in this [GameArea].

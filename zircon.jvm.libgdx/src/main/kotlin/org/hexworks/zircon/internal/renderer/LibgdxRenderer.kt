@@ -78,7 +78,7 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
 
         maybeBatch.map { batch ->
             batch.begin()
-            grid.layerStates.forEach { state ->
+            grid.fetchLayerStates().forEach { state ->
                 renderTiles(
                         batch = batch,
                         state = state,

@@ -1,9 +1,10 @@
 package org.hexworks.zircon.api.resource;
 
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.component.Component;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Position3D;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.internal.component.impl.ComponentStub;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,11 +16,14 @@ public class PositionsTest {
     private static Position3D POSITION3D_4X3X2 = Position3D.create(4, 3, 2);
     private static Size SIZE_3X4 = Size.create(3, 4);
 
-    private ComponentStub componentStub;
+    private Component componentStub;
 
     @Before
     public void setUp() {
-        componentStub = ComponentStub.create(POSITION_2X3, SIZE_3X4);
+        componentStub = Components.label()
+                .withPosition(POSITION_2X3)
+                .withSize(SIZE_3X4)
+                .build();
     }
 
     @Test
