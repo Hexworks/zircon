@@ -48,7 +48,7 @@ abstract class BaseTile : Tile {
         get() = this === Tile.empty()
 
     override val isNotEmpty: Boolean
-        get() = this !== Tile.empty()
+        get() = this != Tile.empty()
 
     override fun fetchBorderData(): Set<Border> = modifiers
             .asSequence()

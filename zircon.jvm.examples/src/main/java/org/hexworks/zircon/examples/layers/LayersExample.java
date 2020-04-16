@@ -42,7 +42,7 @@ public class LayersExample {
         addOverlayAt(tileGrid,
                 Position.create(1, 2),
                 Size.create(secondRow.length(), 1),
-                TileColor.create(50, 50, 200, 127));
+                TileColor.create(50, 50, 200, 125));
 
     }
 

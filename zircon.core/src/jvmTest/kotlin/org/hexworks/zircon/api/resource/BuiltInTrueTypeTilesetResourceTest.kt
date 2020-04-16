@@ -3,10 +3,12 @@ package org.hexworks.zircon.api.resource
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
 import org.hexworks.zircon.internal.util.AwtFontUtils
+import org.junit.Ignore
 import org.junit.Test
 import java.awt.Font
 import java.awt.GraphicsEnvironment
 
+@Ignore
 class BuiltInTrueTypeTilesetResourceTest {
 
     @Test

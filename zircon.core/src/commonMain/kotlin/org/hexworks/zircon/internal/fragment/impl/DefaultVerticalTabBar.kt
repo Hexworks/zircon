@@ -39,14 +39,10 @@ class DefaultVerticalTabBar(
         val bar = Components.vbox()
                 .withComponentRenderer(NoOpComponentRenderer())
                 .withSize(barSize)
-                .build()
-        val contentArea = Components.panel()
-                .withRendererFunction { tileGraphics, ctx ->
-                    val bg = ctx.component.theme.primaryBackgroundColor.withAlpha(25)
-                    tileGraphics.fill(Tile.empty().withBackgroundColor(bg))
-                }
-                .withSize(contentSize)
-                .build()
+                .build().apply { root.addComponent(this) }
+
+        var contentArea = createContentArea(contentSize)
+        var contentAttachment = root.addComponent(contentArea)
 
         tabs.forEach { (tab, content) ->
             val btn = Components.button()
@@ -54,7 +50,8 @@ class DefaultVerticalTabBar(
                     .withDecorations()
                     .build()
             bar.addComponent(btn).onActivated {
-                contentArea.clear()
+                contentAttachment.detach()
+                contentAttachment = root.addComponent(createContentArea(contentSize))
                 content.moveTo(Position.zero())
                 contentArea.addComponent(content)
                 currentTab.isDisabled = false
@@ -67,7 +64,13 @@ class DefaultVerticalTabBar(
                 currentTab = btn
             }
         }
-
-        root.addComponents(bar, contentArea)
     }
+
+    private fun createContentArea(size: Size) = Components.panel()
+            .withRendererFunction { tileGraphics, ctx ->
+                val bg = ctx.component.theme.primaryBackgroundColor.withAlpha(25)
+                tileGraphics.fill(Tile.empty().withBackgroundColor(bg))
+            }
+            .withSize(size)
+            .build()
 }

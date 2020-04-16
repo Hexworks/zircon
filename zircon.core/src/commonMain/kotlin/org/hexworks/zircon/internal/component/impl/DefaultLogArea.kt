@@ -85,8 +85,6 @@ class DefaultLogArea constructor(
         logElements.clear()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
-
     @Synchronized
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         var currentHeight = children.map { it.height }.fold(0, Int::plus)
@@ -118,6 +116,8 @@ class DefaultLogArea constructor(
         }
         render()
     }
+
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder

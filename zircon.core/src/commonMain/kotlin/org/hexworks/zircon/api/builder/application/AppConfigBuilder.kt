@@ -2,9 +2,7 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.CursorStyle
-import org.hexworks.zircon.api.application.DebugConfig
+import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
@@ -30,11 +28,17 @@ data class AppConfigBuilder(
         private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
         private var title: String = "Zircon Application",
         private var fullScreen: Boolean = false,
+        private var fullScreenSize: Size = Size.unknown(),
+        private var borderless: Boolean = false,
         private var debugMode: Boolean = false,
         private var defaultSize: Size = Size.defaultGridSize(),
         private var betaEnabled: Boolean = false,
         private var fpsLimit: Int = 60,
-        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build())
+        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
+        private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
+        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build(),
+        private var iconData: ByteArray? = null,
+        private var iconResource: String? = null)
     : Builder<AppConfig> {
 
     /**
@@ -42,6 +46,13 @@ data class AppConfigBuilder(
      */
     fun withDebugConfig(debugConfig: DebugConfig) = also {
         this.debugConfig = debugConfig
+    }
+
+    /**
+     * Sets the [shortcutsConfig] to use.
+     */
+    fun withShortcutsConfig(shortcutsConfig: ShortcutsConfig) = also {
+        this.shortcutsConfig = shortcutsConfig
     }
 
     /**
@@ -61,6 +72,18 @@ data class AppConfigBuilder(
 
     fun fullScreen() = also {
         fullScreen = true
+        borderless = true
+    }
+
+    fun fullScreen(screenWidth: Int, screenHeight: Int) = also {
+        fullScreen = true
+        fullScreenSize = Size.create(screenWidth, screenHeight)
+        defaultSize = Size.unknown()
+        borderless = true
+    }
+
+    fun borderless() = also {
+        borderless = true
     }
 
     /**
@@ -121,6 +144,10 @@ data class AppConfigBuilder(
         this.defaultGraphicalTileset = defaultGraphicalTileset
     }
 
+    fun withCloseBehavior(closeBehavior: CloseBehavior) = also {
+        this.closeBehavior = closeBehavior
+    }
+
     fun enableBetaFeatures() = also {
         this.betaEnabled = true
     }
@@ -129,7 +156,25 @@ data class AppConfigBuilder(
         this.betaEnabled = false
     }
 
-    override fun build() = AppConfig(
+    fun withIcon(iconData: ByteArray) = also {
+        this.iconData = iconData
+        this.iconResource = null
+    }
+
+    fun withIcon(iconResource: String?) = also {
+        this.iconResource = iconResource
+        this.iconData = null
+    }
+
+    override fun build(): AppConfig {
+        if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
+            defaultSize = Size.create(
+                fullScreenSize.width / defaultTileset.width,
+                fullScreenSize.height / defaultTileset.height
+            )
+        }
+
+        return AppConfig(
             blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
             cursorStyle = cursorStyle,
             cursorColor = cursorColor,
@@ -141,11 +186,17 @@ data class AppConfigBuilder(
             debugMode = debugMode,
             size = defaultSize,
             fullScreen = fullScreen,
+            borderless = borderless,
             betaEnabled = betaEnabled,
             title = title,
             fpsLimit = fpsLimit,
-            debugConfig = debugConfig).also {
-        RuntimeConfig.config = it
+            debugConfig = debugConfig,
+            closeBehavior = closeBehavior,
+            shortcutsConfig = shortcutsConfig,
+            iconData = iconData,
+            iconResource = iconResource).also {
+            RuntimeConfig.config = it
+        }
     }
 
     override fun createCopy() = copy()

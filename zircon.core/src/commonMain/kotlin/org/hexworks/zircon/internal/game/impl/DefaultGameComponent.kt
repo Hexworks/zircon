@@ -26,16 +26,16 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         renderer = renderingStrategy),
         TitleHolder by TitleHolder.create(initialTitle) {
 
-    override val layerStates: Iterable<LayerState>
-        get() = gameArea.fetchImageLayers(tileset).map { imageLayer ->
+    override val layerStates: Sequence<LayerState>
+        get() = gameArea.imageLayers.map {
             DefaultLayerState(
-                    tiles = imageLayer.tiles,
+                    tiles = it.tiles,
                     tileset = tileset,
                     position = absolutePosition,
-                    size = imageLayer.size,
+                    size = it.size,
                     id = UUID.randomUUID(),
                     isHidden = isHidden)
-        }.asIterable() + super.layerStates
+        } + super.layerStates
 
     init {
         render()

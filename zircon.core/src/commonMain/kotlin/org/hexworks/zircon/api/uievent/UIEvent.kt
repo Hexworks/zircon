@@ -5,5 +5,7 @@ package org.hexworks.zircon.api.uievent
  * event propagation (see [UIEventPhase]).
  */
 interface UIEvent {
+
     val type: UIEventType
+
 }

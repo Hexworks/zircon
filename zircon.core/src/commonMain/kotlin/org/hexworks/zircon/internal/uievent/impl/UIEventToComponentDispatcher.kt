@@ -6,13 +6,20 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.uievent.ComponentEventType.*
+import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
+import org.hexworks.zircon.api.uievent.ComponentEventType.DEACTIVATED
+import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_GIVEN
+import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_TAKEN
+import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.MouseEventType.*
-import org.hexworks.zircon.api.uievent.UIEventPhase.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
+import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
+import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -20,19 +27,20 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmSynthetic
-import kotlin.math.log
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
  * to [Component]s.
  */
 class UIEventToComponentDispatcher(
-        private val root: InternalContainer,
+        private val root: RootContainer,
         private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
 
     private var lastMousePosition = Position.unknown()
     private var lastHoveredComponent: InternalComponent = root
+
+    private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig
 
     init {
         Zircon.eventBus.simpleSubscribeTo<RequestFocusFor>(ZirconScope) { (component) ->
@@ -87,17 +95,17 @@ class UIEventToComponentDispatcher(
                 Pass
             }
             is KeyboardEvent -> {
-                when (event) {
-                    ACTIVATE_FOCUSED_KEY -> {
+                when {
+                    shortcutsConfig.activateFocused.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)
                     }
-                    DEACTIVATE_ACTIVATED_KEY -> {
+                    shortcutsConfig.deactivateActivated.matches(event) -> {
                         deactivateComponent(focusOrderList.focusedComponent)
                     }
-                    FOCUS_NEXT_KEY -> {
+                    shortcutsConfig.focusNext.matches(event) -> {
                         focusComponent(focusOrderList.findNext())
                     }
-                    FOCUS_PREVIOUS_KEY -> {
+                    shortcutsConfig.focusPrevious.matches(event) -> {
                         focusComponent(focusOrderList.findPrevious())
                     }
                     else -> Pass
@@ -151,7 +159,7 @@ class UIEventToComponentDispatcher(
     @ExperimentalContracts
     private fun performEventPropagation(target: InternalComponent, event: UIEvent): UIEventResponse {
         var finalResult: UIEventResponse = Pass
-        val pathToTarget = target.calculatePathFromRoot().toList().dropLast(1)
+        val pathToTarget = root.calculatePathTo(target).dropLast(1)
         pathToTarget.forEach { component ->
             finalResult = executePhase(component, event, CAPTURE, finalResult)
             if (finalResult.shouldStopPropagation()) return finalResult
@@ -205,7 +213,7 @@ class UIEventToComponentDispatcher(
             }
             is KeyboardEvent -> {
                 when (event.type) {
-                    KeyboardEventType.KEY_PRESSED -> component.keyPressed(event, phase)
+                    KEY_PRESSED -> component.keyPressed(event, phase)
                     KeyboardEventType.KEY_TYPED -> component.keyTyped(event, phase)
                     KeyboardEventType.KEY_RELEASED -> component.keyReleased(event, phase)
                 }
@@ -269,23 +277,6 @@ class UIEventToComponentDispatcher(
         @JvmSynthetic
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
-        val ACTIVATE_FOCUSED_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.SPACE,
-                key = " ")
-        val DEACTIVATE_ACTIVATED_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                code = KeyCode.SPACE,
-                key = " ")
-        val FOCUS_NEXT_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                key = "\t")
-        val FOCUS_PREVIOUS_KEY = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                shiftDown = true,
-                key = "\t")
     }
 }
 
@@ -294,7 +285,7 @@ private fun mouseExitedComponent(
         event: UIEvent,
         lastMousePosition: Position,
         lastHoveredComponent: Component,
-        root: InternalContainer
+        root: RootContainer
 ): Boolean {
     contract {
         returns(true) implies (event is MouseEvent)

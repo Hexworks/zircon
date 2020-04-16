@@ -62,7 +62,7 @@ object TrueTypeFontResources {
     fun att(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT.toTilesetResource(height)
 
     @JvmStatic
-    fun attNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
+    fun attWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
 
     /**
      * Use this function if you want to load a [TilesetResource]

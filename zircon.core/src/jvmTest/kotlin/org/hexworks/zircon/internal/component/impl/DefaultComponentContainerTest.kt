@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
@@ -12,7 +11,10 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
@@ -30,7 +32,7 @@ class DefaultComponentContainerTest {
 
     @Before
     fun setUp() {
-        target = DefaultComponentContainer(RootContainer(
+        target = DefaultComponentContainer(DefaultRootContainer(
                 componentMetadata = ComponentMetadata(
                         relativePosition = Position.defaultPosition(),
                         size = SIZE,
@@ -45,11 +47,11 @@ class DefaultComponentContainerTest {
     fun shouldProperlyRemoveComponent() {
         val button = createButton() as InternalComponent
         val handle = target.addComponent(button)
-        assertThat(target.layerStates).hasSize(2)
+        assertThat(target.fetchLayerStates().toList()).hasSize(2)
 
         handle.detach()
 
-        assertThat(target.layerStates).hasSize(1) // default container
+        assertThat(target.fetchLayerStates().toList()).hasSize(1) // root is always there
     }
 
     // TODO: wtf is the problem with this?

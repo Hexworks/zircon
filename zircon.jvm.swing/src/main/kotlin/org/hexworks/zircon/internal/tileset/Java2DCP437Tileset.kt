@@ -80,13 +80,8 @@ class Java2DCP437Tileset(private val resource: TilesetResource,
     }
 
     private fun fetchTextureForTile(tile: Tile, position: Position): TileTexture<BufferedImage> {
-        var fixedTile = tile as? CharacterTile ?: kotlin.run {
-            throw IllegalArgumentException("Wrong tile type")
-        }
-        fixedTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
-            if (modifier.canTransform(fixedTile)) {
-                fixedTile = modifier.transform(fixedTile)
-            }
+        val fixedTile = tile as? CharacterTile ?: kotlin.run {
+            throw IllegalArgumentException("A CP437 renderer can only render CharacterTiles. Offending tile: $tile.")
         }
         val key = fixedTile.cacheKey
         val meta = lookup.fetchMetaForTile(fixedTile)

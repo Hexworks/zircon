@@ -40,7 +40,7 @@ class TileGridScreenTest {
 
     @Test
     fun shouldProperlyOverrideGridTilesetWhenHasOverrideFontAndDisplayIsCalled() {
-        val expectedFont = BuiltInCP437TilesetResource.AESOMATICA_16X16
+        val expectedFont = BuiltInCP437TilesetResource.ANIKKI_16X16
         target.tileset = expectedFont
         target.display()
         assertThat(target.tileset.id).isEqualTo(expectedFont.id)

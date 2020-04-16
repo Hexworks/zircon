@@ -35,7 +35,6 @@ class DefaultComponentRenderingStrategy<T : Component>(
             }.fold(Position.defaultPosition(), Position::plus)
 
     override fun render(component: T, graphics: TileGraphics) {
-
         if (component.isHidden.not()) {
             var currentOffset = Position.defaultPosition()
             var currentSize = graphics.size

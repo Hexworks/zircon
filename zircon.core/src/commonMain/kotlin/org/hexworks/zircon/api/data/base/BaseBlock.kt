@@ -3,13 +3,7 @@ package org.hexworks.zircon.api.data.base
 import kotlinx.collections.immutable.PersistentMap
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
-import org.hexworks.zircon.api.data.BlockTileType.BACK
-import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
-import org.hexworks.zircon.api.data.BlockTileType.CONTENT
-import org.hexworks.zircon.api.data.BlockTileType.FRONT
-import org.hexworks.zircon.api.data.BlockTileType.LEFT
-import org.hexworks.zircon.api.data.BlockTileType.RIGHT
-import org.hexworks.zircon.api.data.BlockTileType.TOP
+import org.hexworks.zircon.api.data.BlockTileType.*
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.platform.extension.getOrDefault
 
@@ -20,7 +14,8 @@ import org.hexworks.zircon.platform.extension.getOrDefault
  */
 abstract class BaseBlock<T : Tile>(
         override val emptyTile: T,
-        override var tiles: PersistentMap<BlockTileType, T>) : Block<T> {
+        override var tiles: PersistentMap<BlockTileType, T>
+) : Block<T> {
 
     override var top: T
         get() = tiles.getOrDefault(TOP, emptyTile)

@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class Defaults {
 
     private static Random RANDOM = new Random();
@@ -35,6 +37,22 @@ public class Defaults {
 
     public static Size GRID_SIZE = Size.create(60, 40);
 
+    public static TileGrid startTileGrid() {
+        return SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withDefaultTileset(TILESET)
+                .enableBetaFeatures()
+                .withSize(GRID_SIZE)
+                .build());
+    }
+
+    public static TileGrid startTileGrid(TilesetResource tileset) {
+        return SwingApplications.startTileGrid(AppConfig.newBuilder()
+                .withDefaultTileset(tileset)
+                .enableBetaFeatures()
+                .withSize(GRID_SIZE)
+                .build());
+    }
+
     public static Screen displayScreen() {
         return displayScreen(THEME.getTheme(), TILESET);
     }
@@ -44,11 +62,7 @@ public class Defaults {
     }
 
     public static Screen displayScreen(ColorTheme theme, TilesetResource tileset) {
-        Screen screen = Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
-                .withDefaultTileset(tileset)
-                .enableBetaFeatures()
-                .withSize(GRID_SIZE)
-                .build()));
+        Screen screen = Screen.create(startTileGrid(tileset));
         screen.setTheme(theme);
         screen.display();
         return screen;

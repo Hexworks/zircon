@@ -10,8 +10,6 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  */
 interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
 
-    val layerStates: Iterable<LayerState>
-
     val isActive: ObservableValue<Boolean>
 
     /**
@@ -26,5 +24,6 @@ interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
      */
     fun deactivate()
 
+    fun fetchLayerStates(): Sequence<LayerState>
 
 }
