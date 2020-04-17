@@ -93,13 +93,6 @@ class ThreadSafeLayerable(
             return removeLayer(backend)
         }
 
-        @Synchronized
-        override fun moveTo(position: Position): Boolean {
-            return if (attached && containsBoundable(backend.rect.withPosition(position))) {
-                backend.moveTo(position)
-            } else false
-        }
-
         override fun moveByLevel(level: Int): Boolean {
             return if (attached) {
                 if (level == 0) return true
