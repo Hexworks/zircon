@@ -1,33 +1,33 @@
 package org.hexworks.zircon.examples.other
 
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-
-import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import java.util.*
 
 object InCP437WeTrust {
 
     private val theme = ColorThemes.solarizedLightCyan()
 
+    // Pick a tileset here, it may be of any size
+    private val startingTileset = CP437TilesetResources.acorn8X16()
+
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
-                .withSize(Size.create(23, 24))
-                .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
+                .withSize(Size.create(23, 25))
+                .withDefaultTileset(startingTileset)
                 .build())
 
         val screen = Screen.create(tileGrid)
@@ -36,7 +36,6 @@ object InCP437WeTrust {
 
         val cp437panel = Components.panel()
                 .withSize(Size.create(19, 19))
-                .withPosition(Position.create(2, 2))
                 .withDecorations(box(BoxType.SINGLE), shadow())
                 .withRendererFunction { tileGraphics, _ ->
                     loader.fetchMetadata().forEach { (char, meta) ->
@@ -49,11 +48,37 @@ object InCP437WeTrust {
                     }
                 }.build()
 
-        screen.addComponent(cp437panel)
+
+        val mainPanel = Components.vbox()
+                .withSize(19, 20)
+                .withPosition(2, 1)
+                .build()
+                .apply {
+                    val tilesets: List<BuiltInCP437TilesetResource> = BuiltInCP437TilesetResource.values().filter {
+                        it.width == screen.tileset.width && it.height == screen.tileset.height
+                    }
+
+                    addComponent(Components.panel()
+                            .withSize(19, 1)
+                            .build()
+                            .apply {
+                                addFragment(
+                                        Fragments
+                                                .multiSelect(contentSize.width, tilesets)
+                                                .withDefaultSelected(tilesets.first { it.id == screen.tileset.id })
+                                                .withCallback { _, newTileset -> cp437panel.tilesetProperty.updateValue(newTileset); println("Setting tileset $newTileset") }
+                                                .withToStringMethod { it.tilesetName }
+                                                .build())
+                            })
+
+                    addComponent(cp437panel)
+                }
+
+        screen.addComponent(mainPanel)
 
         val btn = Components.checkBox()
                 .withText("In CP437 we trust!")
-                .withPosition(Position.create(1, 22))
+                .withPosition(Position.create(1, 23))
 
         screen.addComponent(btn.build())
 
