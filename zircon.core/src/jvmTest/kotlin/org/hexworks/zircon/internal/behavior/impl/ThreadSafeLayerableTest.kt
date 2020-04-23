@@ -236,6 +236,22 @@ class ThreadSafeLayerableTest {
         assertThat(target.layers).containsExactly(layer2, layer0, layer1)
     }
 
+    @Test
+    fun Given_a_layer_handle_When_moving_it_right_Then_the_state_is_updated() {
+
+        val layer0 = buildLayer('0')
+
+        val handle = target.addLayer(layer0)
+
+        val pos = Position.create(3, 4)
+
+        handle.moveBy(pos)
+
+        assertThat(handle.position).isEqualTo(pos)
+
+        assertThat(target.fetchLayerStates().first().position).isEqualTo(pos)
+    }
+
     private fun buildTile(char: Char): CharacterTile {
         return Tile.defaultTile()
                 .withCharacter(char)
