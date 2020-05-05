@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.fragment.MultiSelectBuilder
 import org.hexworks.zircon.api.builder.fragment.TilesetSelectorBuilder
 import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.resource.TilesetResource
 import kotlin.jvm.JvmStatic
 
 /**
@@ -18,6 +18,6 @@ object Fragments {
     fun <M : Any> multiSelect(width: Int, values: List<M>) = MultiSelectBuilder.newBuilder(width, values)
 
     @JvmStatic
-    fun tilesetSelector(width: Int, initialTileset: TilesetResource): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, initialTileset)
+    fun tilesetSelector(width: Int, componentToUpdate: TilesetOverride): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, componentToUpdate)
 
 }
