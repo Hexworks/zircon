@@ -20,7 +20,7 @@ object InCP437WeTrust {
     private val theme = ColorThemes.solarizedLightCyan()
 
     // Pick a tileset here, it may be of any size
-    private val startingTileset = CP437TilesetResources.acorn8X16()
+    private val startingTileset = CP437TilesetResources.aduDhabi16x16()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -64,11 +64,13 @@ object InCP437WeTrust {
                             .apply {
                                 addFragment(
                                         Fragments
-                                                .multiSelect(contentSize.width, tilesets)
-                                                .withDefaultSelected(tilesets.first { it.id == screen.tileset.id })
-                                                .withCallback { _, newTileset -> cp437panel.tilesetProperty.updateValue(newTileset); println("Setting tileset $newTileset") }
-                                                .withToStringMethod { it.tilesetName }
-                                                .build())
+                                                .tilesetSelector(contentSize.width, cp437panel).build())
+//                                        Fragments
+//                                                .multiSelect(contentSize.width, tilesets)
+//                                                .withDefaultSelected(tilesets.first { it.id == screen.tileset.id })
+//                                                .withCallback { _, newTileset -> cp437panel.tilesetProperty.updateValue(newTileset) }
+//                                                .withToStringMethod { it.tilesetName }
+//                                                .build())
                             })
 
                     addComponent(cp437panel)
