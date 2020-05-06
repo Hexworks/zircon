@@ -41,6 +41,7 @@ class TilesetSelectorBuilder private constructor(
         val initialTileset: TilesetResource = componentsToUpdate.first().tileset
         val tilesets: List<TilesetResource> = BuiltInCP437TilesetResource.values()
                 .filter { it.width == initialTileset.width && it.height == initialTileset.height }
+                .sortedBy { it.name }
         multiSelectBuilder = Fragments
                 .multiSelect(width, tilesets)
                 .withCallback { _, newTileset -> componentsToUpdate.forEach { it.tilesetProperty.updateValue(newTileset) } }
@@ -61,6 +62,7 @@ class TilesetSelectorBuilder private constructor(
     override fun build(): MultiSelect<TilesetResource> = multiSelectBuilder.build()
 
     override fun createCopy(): Builder<MultiSelect<TilesetResource>> =
+            //TODO: FIX THIS
             multiSelectBuilder.createCopy()
 
 }
