@@ -15,7 +15,7 @@ class TilesetSelectorBuilderTest {
                 CP437TilesetResources.anikki16x16(),
                 CP437TilesetResources.bisasam24x24(),
                 CP437TilesetResources.rexPaint8x8())
-                    .forEach{checkTileset(it)}
+                .forEach { checkTileset(it) }
     }
 
     private fun checkTileset(tileset: TilesetResource) {
@@ -25,13 +25,9 @@ class TilesetSelectorBuilderTest {
 
         val tilesetSelector = Fragments.tilesetSelector(testComponent.size.width, testComponent).build()
 
-        tilesetSelector.values.forEach { actualTileset ->
-            assertThat(actualTileset.width)
-                    .withFailMessage("Tileset %s does not have expected width %d, actual: %d", actualTileset, expectedWidth, actualTileset.width)
-                    .isEqualTo(expectedWidth)
-            assertThat(actualTileset.height)
-                    .withFailMessage("Tileset %s does not have expected height %d, actual: %d", actualTileset, expectedHeight, actualTileset.height)
-                    .isEqualTo(expectedHeight)
-        }
+        assertThat(tilesetSelector.values)
+            .allMatch {
+                it.width == expectedWidth && it.height == expectedHeight
+            }
     }
 }
