@@ -1,6 +1,8 @@
 package org.hexworks.zircon.examples.base;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.Fragments;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.Container;
 import org.hexworks.zircon.api.component.HBox;
@@ -11,15 +13,9 @@ import org.hexworks.zircon.api.fragment.MultiSelect;
 import org.hexworks.zircon.api.grid.TileGrid;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
-import org.hexworks.zircon.internal.application.LibgdxApplication;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
-import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static org.hexworks.zircon.api.Functions.*;
+import static org.hexworks.zircon.api.Functions.fromBiConsumer;
 import static org.hexworks.zircon.examples.base.Defaults.*;
 
 public abstract class ComponentExampleJava {
@@ -55,15 +51,7 @@ public abstract class ComponentExampleJava {
 
         controls.addComponent(Components.label().withText("Pick a theme"));
 
-        List<ColorThemeResource> themes = new ArrayList<>();
-        Collections.addAll(themes, ColorThemeResource.values());
-        MultiSelect<ColorThemeResource> themeSelector = Fragments.multiSelect(controls.getWidth() - 4, themes)
-                .withDefaultSelected(THEME)
-                .withCallback(fromBiConsumer((oldTheme, newTheme) -> {
-                    screen.setTheme(newTheme.getTheme());
-                }))
-                .build();
-        controls.addFragment(themeSelector);
+        controls.addFragment(Fragments.colorThemeSelector(controls.getWidth(), screen).build());
 
         controls.addComponent(Components.label());
         controls.addComponent(Components.label().withText("Pick a tileset"));
