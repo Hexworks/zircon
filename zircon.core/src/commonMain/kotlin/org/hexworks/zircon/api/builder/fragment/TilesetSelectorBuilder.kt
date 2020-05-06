@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 /**
- * A [MultiSelect] change the tileset of multiple components at runtime.
+ * A [MultiSelect] to change the tileset of multiple components at runtime.
  *
  * @see newBuilder
  */
@@ -35,6 +35,9 @@ class TilesetSelectorBuilder private constructor(
     private val multiSelectBuilder: MultiSelectBuilder<TilesetResource>
 
     init {
+        require(componentsToUpdate.isNotEmpty()) {
+            "TilesetSelector needs a list of components it can update. Supplied list was empty."
+        }
         val initialTileset: TilesetResource = componentsToUpdate.first().tileset
         val tilesets: List<TilesetResource> = BuiltInCP437TilesetResource.values()
                 .filter { it.width == initialTileset.width && it.height == initialTileset.height }
