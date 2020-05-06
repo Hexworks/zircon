@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.builder.fragment.ColorThemeSelectorBuilder
 import org.hexworks.zircon.api.builder.fragment.MultiSelectBuilder
 import org.hexworks.zircon.api.builder.fragment.TilesetSelectorBuilder
 import org.hexworks.zircon.api.component.Fragment
@@ -22,5 +24,11 @@ object Fragments {
      */
     @JvmStatic
     fun tilesetSelector(width: Int, vararg componentsToUpdate: TilesetOverride): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, *componentsToUpdate)
+
+    /**
+     * @see ColorThemeSelectorBuilder.newBuilder
+     */
+    @JvmStatic
+    fun colorThemeSelector(width: Int, vararg componentsToUpdate: Themeable): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, *componentsToUpdate)
 
 }
