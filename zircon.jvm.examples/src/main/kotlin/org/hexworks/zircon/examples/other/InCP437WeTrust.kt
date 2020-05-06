@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import java.util.*
 
 object InCP437WeTrust {
@@ -48,29 +47,22 @@ object InCP437WeTrust {
                     }
                 }.build()
 
+        val btn = Components.checkBox()
+                .withText("In CP437 we trust!")
+                .withPosition(Position.create(1, 23))
+                .build()
 
         val mainPanel = Components.vbox()
                 .withSize(19, 20)
                 .withPosition(2, 1)
                 .build()
                 .apply {
-                    val tilesets: List<BuiltInCP437TilesetResource> = BuiltInCP437TilesetResource.values().filter {
-                        it.width == screen.tileset.width && it.height == screen.tileset.height
-                    }
-
                     addComponent(Components.panel()
                             .withSize(19, 1)
                             .build()
                             .apply {
                                 addFragment(
-                                        Fragments
-                                                .tilesetSelector(contentSize.width, cp437panel).build())
-//                                        Fragments
-//                                                .multiSelect(contentSize.width, tilesets)
-//                                                .withDefaultSelected(tilesets.first { it.id == screen.tileset.id })
-//                                                .withCallback { _, newTileset -> cp437panel.tilesetProperty.updateValue(newTileset) }
-//                                                .withToStringMethod { it.tilesetName }
-//                                                .build())
+                                        Fragments.tilesetSelector(contentSize.width, cp437panel, btn).build())
                             })
 
                     addComponent(cp437panel)
@@ -78,11 +70,7 @@ object InCP437WeTrust {
 
         screen.addComponent(mainPanel)
 
-        val btn = Components.checkBox()
-                .withText("In CP437 we trust!")
-                .withPosition(Position.create(1, 23))
-
-        screen.addComponent(btn.build())
+        screen.addComponent(btn)
 
         screen.theme = theme
 
