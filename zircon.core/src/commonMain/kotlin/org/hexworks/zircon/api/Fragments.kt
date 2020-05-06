@@ -17,6 +17,9 @@ object Fragments {
     @JvmStatic
     fun <M : Any> multiSelect(width: Int, values: List<M>) = MultiSelectBuilder.newBuilder(width, values)
 
+    /**
+     * @see TilesetSelectorBuilder.newBuilder
+     */
     @JvmStatic
     fun tilesetSelector(width: Int, vararg componentsToUpdate: TilesetOverride): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, *componentsToUpdate)
 
