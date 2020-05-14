@@ -13,8 +13,7 @@ import kotlin.random.asKotlinRandom
 
 private val RANDOM = Random()
 
-private val TILESET_SIZES = listOf(16, 20)
-private val TILESET_SIZE = TILESET_SIZES[RANDOM.nextInt(TILESET_SIZES.size)]
+private val TILESET_SIZE = listOf(16, 20).random(RANDOM.asKotlinRandom())
 
 val THEME = ColorThemeResource.values().random(RANDOM.asKotlinRandom())
 val TILESETS: List<TilesetResource> = BuiltInCP437TilesetResource.values().filter {
