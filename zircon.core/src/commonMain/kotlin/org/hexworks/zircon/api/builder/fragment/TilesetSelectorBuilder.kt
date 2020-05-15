@@ -62,7 +62,6 @@ class TilesetSelectorBuilder private constructor(
     override fun build(): MultiSelect<TilesetResource> = multiSelectBuilder.build()
 
     override fun createCopy(): Builder<MultiSelect<TilesetResource>> =
-            //TODO: FIX THIS
             multiSelectBuilder.createCopy()
 
 }

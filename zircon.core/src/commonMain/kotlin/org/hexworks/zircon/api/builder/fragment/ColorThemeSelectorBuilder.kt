@@ -48,6 +48,5 @@ class ColorThemeSelectorBuilder(
     override fun build(): MultiSelect<ColorThemeResource> = multiSelectBuilder.build()
 
     override fun createCopy(): Builder<MultiSelect<ColorThemeResource>> =
-            //TODO: FIX THIS
             multiSelectBuilder.createCopy()
 }
