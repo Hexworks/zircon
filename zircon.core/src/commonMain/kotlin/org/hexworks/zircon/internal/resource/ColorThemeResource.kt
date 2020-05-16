@@ -6,10 +6,306 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
 
+@Suppress("SpellCheckingInspection")
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     DEFAULT(ColorThemeBuilder.newBuilder().build()),
 
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/stale-sunset
+     */
+    STALE_SUNSET(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#ffe377"))
+            .withPrimaryForegroundColor(TileColor.fromString("#cdba76"))
+            .withSecondaryForegroundColor(TileColor.fromString("#bda576"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#52484e"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#292442"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/afternoon-haze
+     */
+    AFTERNOON_HAZE(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#b0523f"))
+            .withPrimaryForegroundColor(TileColor.fromString("#2f6f87"))
+            .withSecondaryForegroundColor(TileColor.fromString("#243a56"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#cbbfb2"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#0d1221"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/winter-wonderland
+     */
+    WINTER_WONDERLAND(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#8bcadd"))
+            .withPrimaryForegroundColor(TileColor.fromString("#d6e1e9"))
+            .withSecondaryForegroundColor(TileColor.fromString("#a7bcc9"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#2c4a78"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#20284e"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/petite-8
+     */
+    PETITE(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#f8f4e4"))
+            .withPrimaryForegroundColor(TileColor.fromString("#efd98d"))
+            .withSecondaryForegroundColor(TileColor.fromString("#c5af63"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#272f3b"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#181b22"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/waverator
+     */
+    WAVERATOR(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#cbffd8"))
+            .withPrimaryForegroundColor(TileColor.fromString("#70d38b"))
+            .withSecondaryForegroundColor(TileColor.fromString("#53a788"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#23313d"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#0c0d14"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/justparchment8
+     */
+    JUSTPARCHMENT(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#524839"))
+            .withPrimaryForegroundColor(TileColor.fromString("#73654a"))
+            .withSecondaryForegroundColor(TileColor.fromString("#8b7d62"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#e6ceac"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#292418"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/ammo-8
+     */
+    AMMO(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#eeffcc"))
+            .withPrimaryForegroundColor(TileColor.fromString("#bedc7f"))
+            .withSecondaryForegroundColor(TileColor.fromString("#4d8061"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#112318"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#040c06"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/nyx8
+     */
+    NYX(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#f6d6bd"))
+            .withPrimaryForegroundColor(TileColor.fromString("#c3a38a"))
+            .withSecondaryForegroundColor(TileColor.fromString("#997577"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#20394f"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#0f2a3f"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/slso8
+     */
+    SLSO(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#ffaa5e"))
+            .withPrimaryForegroundColor(TileColor.fromString("#ffecd6"))
+            .withSecondaryForegroundColor(TileColor.fromString("#ffd4a3"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#203c56"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#0d2b45"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/beyond-the-sea-7
+     */
+    BEYOND_THE_SEA(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#f4fff7"))
+            .withPrimaryForegroundColor(TileColor.fromString("#aceed1"))
+            .withSecondaryForegroundColor(TileColor.fromString("#6bd0b5"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#313b55"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#1e1a2a"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/forest-glow
+     */
+    FOREST_GLOW(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#deca54"))
+            .withPrimaryForegroundColor(TileColor.fromString("#97933a"))
+            .withSecondaryForegroundColor(TileColor.fromString("#5f6d43"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#1f2c3d"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#00070d"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/cherry-bear
+     */
+    CHERRY_BEAR(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#fbb396"))
+            .withPrimaryForegroundColor(TileColor.fromString("#bc6a6a"))
+            .withSecondaryForegroundColor(TileColor.fromString("#a35454"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#472a36"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#0d0c11"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/supernova-7
+     */
+    SUPERNOVA(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#ffce9c"))
+            .withPrimaryForegroundColor(TileColor.fromString("#cf7862"))
+            .withSecondaryForegroundColor(TileColor.fromString("#a75252"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#3d203b"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#1a080e"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/cp_rust-5
+     */
+    RUST(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#ffe2c6"))
+            .withPrimaryForegroundColor(TileColor.fromString("#f0bb9c"))
+            .withSecondaryForegroundColor(TileColor.fromString("#e18866"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#712f30"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#230000"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/cursed-turkey
+     */
+    CURSED_TURKEY(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#d7ac64"))
+            .withPrimaryForegroundColor(TileColor.fromString("#df8c00"))
+            .withSecondaryForegroundColor(TileColor.fromString("#db7209"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#b32a12"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#1e110c"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/molten
+     */
+    MOLTEN(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#fd724e"))
+            .withPrimaryForegroundColor(TileColor.fromString("#a02f40"))
+            .withSecondaryForegroundColor(TileColor.fromString("#5f2f45"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#261b2e"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#201727"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/stormy-6
+     */
+    STORMY_RED(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#a95a3f"))
+            .withPrimaryForegroundColor(TileColor.fromString("#f8eebf"))
+            .withSecondaryForegroundColor(TileColor.fromString("#edbb70"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#3a5043"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#242828"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/stormy-6
+     */
+    STORMY_GREEN(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#7f9860"))
+            .withPrimaryForegroundColor(TileColor.fromString("#f8eebf"))
+            .withSecondaryForegroundColor(TileColor.fromString("#edbb70"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#3a5043"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#242828"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/natures-atmosphere
+     */
+    OIL(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#c69fa5"))
+            .withPrimaryForegroundColor(TileColor.fromString("#fbf5ef"))
+            .withSecondaryForegroundColor(TileColor.fromString("#f2d3ab"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#494d7e"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#272744"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/natures-atmosphere
+     */
+    NATURES_ATMOSPHERE(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#a6a220"))
+            .withPrimaryForegroundColor(TileColor.fromString("#efbe8e"))
+            .withSecondaryForegroundColor(TileColor.fromString("#a6d3ff"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#45619e"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#040404"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/infinite-ikea
+     */
+    INFINITE_IKEA(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#f6d76b"))
+            .withPrimaryForegroundColor(TileColor.fromString("#f6f0f7"))
+            .withSecondaryForegroundColor(TileColor.fromString("#45a9ff"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#104a7d"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#12223c"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/fire-weeds
+     */
+    FIRE_WEEDS(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#e2d6fe"))
+            .withPrimaryForegroundColor(TileColor.fromString("#fea631"))
+            .withSecondaryForegroundColor(TileColor.fromString("#e5371b"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#630f19"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#060013"))
+            .build()),
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/pola5
+     */
+    POLA(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#ebf9ff"))
+            .withPrimaryForegroundColor(TileColor.fromString("#acd6f6"))
+            .withSecondaryForegroundColor(TileColor.fromString("#52a5de"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#18284a"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#070810"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/spanish-sunset
+     */
+    SPANISH_SUNSET(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#fd724e"))
+            .withPrimaryForegroundColor(TileColor.fromString("#f5ddbc"))
+            .withSecondaryForegroundColor(TileColor.fromString("#fabb64"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#a02f40"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#5f2f45"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/discord
+     */
+    DISCORD(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#7289da"))
+            .withPrimaryForegroundColor(TileColor.fromString("#ffffff"))
+            .withSecondaryForegroundColor(TileColor.fromString("#99aab5"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#2c2f33"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#23272a"))
+            .build()),
+
+    /**
+     * Taken from
+     * https://lospec.com/palette-list/petite-8-afterdark
+     */
+    AFTER_DARK(ColorThemeBuilder.newBuilder()
+            .withAccentColor(TileColor.fromString("#bb9a67"))
+            .withPrimaryForegroundColor(TileColor.fromString("#a07c43"))
+            .withSecondaryForegroundColor(TileColor.fromString("#776131"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#272b29"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#161c20"))
+            .build()),
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
@@ -392,13 +688,15 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     enum class SolarizedBase(val colorThemeBuilder: ColorThemeBuilder) {
         SOLARIZED_DARK_BASE(ColorThemeBuilder.newBuilder()
                 .withPrimaryForegroundColor(TileColor.fromString("#fdf6e3"))
-                .withSecondaryForegroundColor(TileColor.fromString("#eee8d5"))
+                // note that this was made darker because there was not enough contrast
+                .withSecondaryForegroundColor(TileColor.fromString("#cec8b5"))
                 .withPrimaryBackgroundColor(TileColor.fromString("#073642"))
                 .withSecondaryBackgroundColor(TileColor.fromString("#002b36"))),
 
         SOLARIZED_LIGHT_BASE(ColorThemeBuilder.newBuilder()
                 .withPrimaryForegroundColor(TileColor.fromString("#002b36"))
-                .withSecondaryForegroundColor(TileColor.fromString("#073642"))
+                // note that this was made lighter because there was not enough contrast
+                .withSecondaryForegroundColor(TileColor.fromString("#275662"))
                 .withPrimaryBackgroundColor(TileColor.fromString("#fdf6e3"))
                 .withSecondaryBackgroundColor(TileColor.fromString("#eee8d5")))
     }
