@@ -91,6 +91,7 @@ class MultiSelectBuilder<T : Any>(
                 .withCenteredText(centeredText)
                 .withToStringMethod(toStringMethod)
                 .withClickableLabel(clickable)
+                .withPosition(boxBuilder.position)
     }
 
     companion object {

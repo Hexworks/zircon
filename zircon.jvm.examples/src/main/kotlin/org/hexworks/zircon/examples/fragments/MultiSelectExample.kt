@@ -9,15 +9,6 @@ import org.hexworks.zircon.api.screen.Screen
 
 object MultiSelectExample {
 
-    val themes = listOf(
-            Pair("amigaOs", ColorThemes.amigaOs()),
-            Pair("headache", ColorThemes.headache()),
-            Pair("cyberpunk", ColorThemes.cyberpunk()),
-            Pair("pabloNeruda", ColorThemes.pabloNeruda()),
-            Pair("solarizedDarkCyan", ColorThemes.solarizedDarkCyan()),
-            Pair("solarizedLightMagenta", ColorThemes.solarizedLightMagenta())
-    )
-
     @JvmStatic
     fun main(args: Array<String>) {
         val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
@@ -26,6 +17,7 @@ object MultiSelectExample {
                 .build())
 
         val screen = Screen.create(tileGrid)
+        screen.theme = ColorThemes.letThemEatCake()
 
         val leftPanel = Components.panel().withSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER).withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
             screen.addComponent(it)
@@ -58,7 +50,8 @@ object MultiSelectExample {
         )
 
         fragmentsList.addFragment(
-                Fragments.multiSelect(width, themes).withCallback { _, newTheme -> screen.theme = newTheme.second }.withToStringMethod { it.first }.build()
+                // This is a special form of MultiSelect
+                Fragments.colorThemeSelector(width, screen).build()
         )
 
         fragmentsList.addFragment(
@@ -76,7 +69,6 @@ object MultiSelectExample {
                 }.withClickableLabel(true).build()
         )
 
-        screen.theme = themes.first().second
         screen.display()
     }
 }

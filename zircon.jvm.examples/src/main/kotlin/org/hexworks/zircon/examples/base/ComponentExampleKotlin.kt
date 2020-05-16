@@ -5,7 +5,8 @@ import org.hexworks.zircon.api.Components.header
 import org.hexworks.zircon.api.Components.label
 import org.hexworks.zircon.api.Components.panel
 import org.hexworks.zircon.api.Components.vbox
-import org.hexworks.zircon.api.Fragments.multiSelect
+import org.hexworks.zircon.api.Fragments
+import org.hexworks.zircon.api.Fragments.tilesetSelector
 import org.hexworks.zircon.api.SwingApplications.startTileGrid
 import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
 import org.hexworks.zircon.api.component.Container
@@ -17,7 +18,6 @@ import org.hexworks.zircon.api.data.Size.Companion.create
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.screen.Screen.Companion.create
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 abstract class ComponentExampleKotlin(
         private val size: Size = GRID_SIZE
@@ -32,6 +32,7 @@ abstract class ComponentExampleKotlin(
                 .withSize(size)
                 .withSpacing(1)
                 .withComponentRenderer(NoOpComponentRenderer())
+                .withTileset(TILESET)
                 .build()
 
         val heading = hbox()
@@ -44,23 +45,12 @@ abstract class ComponentExampleKotlin(
 
         controls.addComponent(label().withText("Pick a theme"))
 
-        val themes = ColorThemeResource.values().toList()
-        val themeSelector = multiSelect(controls.width - 4, themes)
-                .withDefaultSelected(THEME)
-                .withCallback { _, newTheme ->
-                    screen.theme = newTheme.getTheme()
-                }.build()
-        controls.addFragment(themeSelector)
+        controls.addFragment(Fragments.colorThemeSelector(controls.width -4, screen).build())
 
         controls.addComponent(label())
 
         controls.addComponent(label().withText("Pick a tileset"))
-        val tilesetSelector = multiSelect(controls.width - 4, TILESETS)
-                .withDefaultSelected(TILESET)
-                .withCallback { _, newTileset ->
-                    container.tileset = newTileset
-                }
-                .build()
+        val tilesetSelector = tilesetSelector(controls.width, container).build()
         controls.addFragment(tilesetSelector)
         heading.addComponents(
                 header().withText(title).withSize(size.width / 2, 1).build(),

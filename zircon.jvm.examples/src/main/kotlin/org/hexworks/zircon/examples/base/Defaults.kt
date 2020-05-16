@@ -1,6 +1,5 @@
 package org.hexworks.zircon.examples.base
 
-import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -10,13 +9,13 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 import java.util.*
+import kotlin.random.asKotlinRandom
 
 private val RANDOM = Random()
 
-private val TILESET_SIZES = listOf(16, 20)
-private val TILESET_SIZE = TILESET_SIZES[RANDOM.nextInt(TILESET_SIZES.size)]
+private val TILESET_SIZE = listOf(16, 20).random(RANDOM.asKotlinRandom())
 
-val THEME = ColorThemeResource.values()[RANDOM.nextInt(ColorThemeResource.values().size)]
+val THEME = ColorThemeResource.values().random(RANDOM.asKotlinRandom())
 val TILESETS: List<TilesetResource> = BuiltInCP437TilesetResource.values().filter {
     it.width == TILESET_SIZE && it.height == TILESET_SIZE
 }
