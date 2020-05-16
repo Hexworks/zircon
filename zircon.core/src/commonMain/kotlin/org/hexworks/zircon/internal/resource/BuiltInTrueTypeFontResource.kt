@@ -6,8 +6,10 @@ import kotlin.jvm.JvmStatic
 /**
  * This enum contains the metadata for the built-in True Type fonts.
  */
-enum class BuiltInTrueTypeFontResource(private val fileName: String,
-                                       private val widthFn: (Int) -> Int) {
+enum class BuiltInTrueTypeFontResource(
+        private val fileName: String,
+        private val ratioFn: (Int) -> Int
+) {
 
     /**
      * These fonts are taken from Google Fonts.
@@ -36,7 +38,7 @@ enum class BuiltInTrueTypeFontResource(private val fileName: String,
 
     fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
             path = "$FONTS_DIR/$fileName.$FONTS_EXT",
-            width = widthFn.invoke(height),
+            width = ratioFn.invoke(height),
             height = height,
             tilesetSourceType = TilesetSourceType.JAR,
             name = name)
@@ -48,17 +50,17 @@ enum class BuiltInTrueTypeFontResource(private val fileName: String,
 
         @JvmStatic
         fun squareFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.widthFn(1) == 1 }
+                .filter { it.ratioFn(1) == 1 }
                 .map { it.toTilesetResource(height) }
 
         @JvmStatic
         fun wideFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.widthFn(2) > 2 }
+                .filter { it.ratioFn(2) > 2 }
                 .map { it.toTilesetResource(height) }
 
         @JvmStatic
         fun narrowFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.widthFn(2) < 2 }
+                .filter { it.ratioFn(2) < 2 }
                 .map { it.toTilesetResource(height) }
     }
 }

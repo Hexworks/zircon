@@ -9,25 +9,22 @@ import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
-import org.hexworks.zircon.api.fragment.MultiSelect;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 
-import static org.hexworks.zircon.api.Functions.fromBiConsumer;
 import static org.hexworks.zircon.examples.base.Defaults.*;
 
 public abstract class ComponentExampleJava {
 
-    private Size size;
+    private Size gridSize;
 
     public ComponentExampleJava() {
         this(GRID_SIZE);
     }
 
-    public ComponentExampleJava(Size size) {
-        this.size = size;
+    public ComponentExampleJava(Size gridSize) {
+        this.gridSize = gridSize;
     }
 
     /**
@@ -36,44 +33,39 @@ public abstract class ComponentExampleJava {
     public final VBox createExampleContainer(Screen screen, String title) {
 
         VBox container = Components.vbox()
-                .withSize(size)
+                .withSize(gridSize)
                 .withSpacing(1)
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();
 
         HBox heading = Components.hbox()
-                .withSize(size.getWidth(), 5)
+                .withSize(gridSize.getWidth(), 5)
                 .build();
 
         VBox controls = Components.vbox()
-                .withSize(size.getWidth() / 2, 5)
+                .withSize(gridSize.getWidth() / 2, 5)
                 .build();
 
         controls.addComponent(Components.label().withText("Pick a theme"));
 
-        controls.addFragment(Fragments.colorThemeSelector(controls.getWidth(), screen).build());
+        controls.addFragment(Fragments.colorThemeSelector(controls.getWidth(), THEME.getTheme())
+                .withThemeables(screen)
+                .build());
 
         controls.addComponent(Components.label());
-        controls.addComponent(Components.label().withText("Pick a tileset"));
 
-        MultiSelect<TilesetResource> tilesetSelector = Fragments.multiSelect(controls.getWidth() - 4, TILESETS)
-                .withDefaultSelected(TILESET)
-//                .withToStringMethod(fromConsumer((TilesetResource tileset) -> {
-//                    tileset.
-//                }))
-                .withCallback(fromBiConsumer((oldTileset, newTileset) -> {
-                    container.setTileset(newTileset);
-                }))
-                .build();
-        controls.addFragment(tilesetSelector);
+        controls.addComponent(Components.label().withText("Pick a tileset"));
+        controls.addFragment(Fragments.tilesetSelector(controls.getWidth(), TILESET)
+                .withTilesetOverrides(container)
+                .build());
 
         heading.addComponents(
-                Components.header().withText(title).withSize(size.getWidth() / 2, 1).build(),
+                Components.header().withText(title).withSize(gridSize.getWidth() / 2, 1).build(),
                 controls);
 
         HBox exampleArea = Components.hbox()
                 .withComponentRenderer(new NoOpComponentRenderer<>())
-                .withSize(size.getWidth(), size.getHeight() - 6)
+                .withSize(gridSize.getWidth(), gridSize.getHeight() - 6)
                 .build();
 
         addExamples(exampleArea);
@@ -88,13 +80,13 @@ public abstract class ComponentExampleJava {
     public final void show(String title) {
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
-                .withSize(size.plus(Size.create(2, 2)))
+                .withSize(gridSize.plus(Size.create(2, 2)))
                 .build());
 
         Screen screen = Screen.create(tileGrid);
 
         Container container = Components.panel()
-                .withSize(size)
+                .withSize(gridSize)
                 .withPosition(Position.offset1x1())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();

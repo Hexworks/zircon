@@ -1,52 +1,65 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.Fragments
 import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.fragment.MultiSelect
-import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Group
+import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.internal.resource.ColorThemeResource
-import kotlin.jvm.JvmStatic
 
-// constructor could be private but java can not handle private vararg constructors
+/**
+ * Builder for a [Selector] to change the theme of multiple [Themeable]s or [Group]s at runtime.
+ */
 class ColorThemeSelectorBuilder(
         width: Int,
-        vararg componentsToUpdate: Themeable
-) : FragmentBuilder<MultiSelect<ColorThemeResource>, ColorThemeSelectorBuilder> {
+        theme: ColorTheme
+) : SelectorBuilder<ColorTheme>(width, ColorThemeResource.values()
+        .sortedBy { it.name }
+        .map { it.getTheme() }) {
 
-    companion object {
-        @JvmStatic
-        fun newBuilder(width: Int, vararg componentsToUpdate: Themeable) = ColorThemeSelectorBuilder(width, *componentsToUpdate)
-    }
-
-    private val multiSelectBuilder: MultiSelectBuilder<ColorThemeResource>
+    private var themeables = listOf<Themeable>()
+    private var groups = listOf<Group<out Component>>()
 
     init {
-        require(componentsToUpdate.isNotEmpty()) {
-            "ColorThemeSelector needs a list of components it can update. Supplied list was empty."
+        withDefaultSelected(theme)
+    }
+
+    /**
+     * Sets the given [themeables] to be updated whenever the underlying [Selector]'s
+     * [Selector.selectedValue] changes.
+     */
+    fun withThemeables(vararg themeables: Themeable) = also {
+        this.themeables = themeables.toList()
+    }
+
+    /**
+     * Sets the given [groups] to be updated whenever the underlying [Selector]'s
+     * [Selector.selectedValue] changes.
+     */
+    fun withGroups(vararg groups: Group<out Component>) = also {
+        this.groups = groups.toList()
+    }
+
+    override fun build(): Selector<ColorTheme> = super.build().apply {
+        themeables.forEach {
+            it.themeProperty.updateFrom(selectedValue)
         }
-        val allColorThemes: List<ColorThemeResource> = ColorThemeResource
-                .values()
-                .sortedBy { it.name }
-        multiSelectBuilder = Fragments
-                .multiSelect(width, allColorThemes)
-                .withCallback { _, newThemeResource -> componentsToUpdate.forEach { it.themeProperty.updateValue(newThemeResource.getTheme()) } }
-
-        // If the fist component has a default theme, we preselect it
-        allColorThemes
-                .firstOrNull { it.getTheme() == componentsToUpdate.first().theme }
-                ?.let { multiSelectBuilder.withDefaultSelected(it) }
+        groups.forEach {
+            it.themeProperty.updateFrom(selectedValue)
+        }
     }
 
-    override fun withPosition(position: Position): ColorThemeSelectorBuilder = also {
-        multiSelectBuilder.withPosition(position)
+    override fun createCopy(): Builder<Selector<ColorTheme>> = super.createCopy().apply {
+        withThemeables(*themeables.toTypedArray())
+        withGroups(*groups.toTypedArray())
     }
 
-    override fun withPosition(x: Int, y: Int): ColorThemeSelectorBuilder = withPosition(Position.create(x, y))
+    companion object {
 
-    override fun build(): MultiSelect<ColorThemeResource> = multiSelectBuilder.build()
-
-    override fun createCopy(): Builder<MultiSelect<ColorThemeResource>> =
-            multiSelectBuilder.createCopy()
+        /**
+         * Creates a new [ColorThemeSelectorBuilder] to build [Selector]s for [ColorTheme]s.
+         */
+        fun newBuilder(width: Int, theme: ColorTheme) = ColorThemeSelectorBuilder(width, theme)
+    }
 }

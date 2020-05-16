@@ -1,11 +1,12 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.behavior.Themeable
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.fragment.ColorThemeSelectorBuilder
-import org.hexworks.zircon.api.builder.fragment.MultiSelectBuilder
+import org.hexworks.zircon.api.builder.fragment.SelectorBuilder
 import org.hexworks.zircon.api.builder.fragment.TilesetSelectorBuilder
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Fragment
+import org.hexworks.zircon.api.fragment.Selector
+import org.hexworks.zircon.api.resource.TilesetResource
 import kotlin.jvm.JvmStatic
 
 /**
@@ -14,21 +15,27 @@ import kotlin.jvm.JvmStatic
 object Fragments {
 
     /**
-     * @see org.hexworks.zircon.api.fragment.MultiSelect
+     * Creates a [SelectorBuilder] to create [Selector]s.
      */
     @JvmStatic
-    fun <M : Any> multiSelect(width: Int, values: List<M>) = MultiSelectBuilder.newBuilder(width, values)
+    fun <M : Any> selector(width: Int, values: List<M>) = SelectorBuilder.newBuilder(width, values)
 
     /**
-     * @see TilesetSelectorBuilder.newBuilder
+     * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [TilesetResource]s.
      */
     @JvmStatic
-    fun tilesetSelector(width: Int, vararg componentsToUpdate: TilesetOverride): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, *componentsToUpdate)
+    fun tilesetSelector(
+            width: Int,
+            tileset: TilesetResource
+    ): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, tileset)
 
     /**
-     * @see ColorThemeSelectorBuilder.newBuilder
+     * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [ColorTheme]s.
      */
     @JvmStatic
-    fun colorThemeSelector(width: Int, vararg componentsToUpdate: Themeable): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, *componentsToUpdate)
+    fun colorThemeSelector(
+            width: Int,
+            theme: ColorTheme
+    ): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, theme)
 
 }

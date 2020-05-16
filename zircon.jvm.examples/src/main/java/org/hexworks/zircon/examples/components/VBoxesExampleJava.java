@@ -41,10 +41,10 @@ public class VBoxesExampleJava extends OneColumnComponentExampleJava {
                 .withSpacing(1)
                 .build();
 
-        VBox defaultBox = vbox().withSize(container.getContentSize().withWidth(12)).build();
+        VBox defaultBox = vbox().withSize(container.getContentSize().withWidth(14)).build();
         VBox boxedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(box(SINGLE, "Boxed VBox")).build();
         VBox borderedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(border(Border.newBuilder().build())).build();
-        VBox shadowedBox = vbox().withSize(container.getContentSize().withWidth(13)).withDecorations(shadow()).build();
+        VBox shadowedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(shadow()).build();
 
         List<VBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
 

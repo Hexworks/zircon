@@ -1,6 +1,5 @@
 package org.hexworks.zircon.examples.components;
 
-import org.hexworks.cobalt.databinding.api.property.Property;
 import org.hexworks.zircon.api.component.CheckBox;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;

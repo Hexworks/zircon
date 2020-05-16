@@ -10,10 +10,10 @@ public class BorderlessExample {
     public static void main(String[] args) {
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+        // TODO: this has something weird at the bottom
         SwingApplications.startTileGrid(
             new AppConfigBuilder()
-//                .borderless()
-//                .fullScreen()
+                .borderless()
                 .fullScreen(screenSize.width, screenSize.height)
                 .build());
     }

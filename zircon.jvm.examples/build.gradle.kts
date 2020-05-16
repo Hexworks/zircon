@@ -11,9 +11,9 @@ kotlin {
 
     dependencies {
         with(Projects) {
-            implementation(zirconCore)
-            implementation(zirconJvmSwing)
-            implementation(zirconJvmLibgdx)
+            api(zirconCore)
+            api(zirconJvmSwing)
+            api(zirconJvmLibgdx)
         }
 
         with (Libs) {

@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.junit.Test
 
 class TilesetSelectorBuilderTest {
+
     @Test
     fun `all tilesets need to have the correct size`() {
         listOf(
@@ -23,11 +24,12 @@ class TilesetSelectorBuilderTest {
         val expectedHeight = tileset.height
         val testComponent = Components.label().withText("Hello World").withTileset(tileset).build()
 
-        val tilesetSelector = Fragments.tilesetSelector(testComponent.size.width, testComponent).build()
+        val tilesetSelector = Fragments.tilesetSelector(testComponent.size.width, tileset)
+                .withTilesetOverrides(testComponent)
+                .build()
 
-        assertThat(tilesetSelector.values)
-            .allMatch {
-                it.width == expectedWidth && it.height == expectedHeight
-            }
+        assertThat(tilesetSelector.values).allMatch {
+            it.width == expectedWidth && it.height == expectedHeight
+        }
     }
 }
