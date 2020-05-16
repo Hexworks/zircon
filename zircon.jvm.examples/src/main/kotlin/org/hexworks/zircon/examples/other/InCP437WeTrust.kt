@@ -77,7 +77,9 @@ object InCP437WeTrust {
                             .build()
                             .apply {
                                 addFragment(
-                                        Fragments.tilesetSelector(contentSize.width, cp437panel).build())
+                                        Fragments.tilesetSelector(contentSize.width, tileset)
+                                                .withTilesetOverrides(cp437panel)
+                                                .build())
                             })
 
                     addComponent(cp437panel)

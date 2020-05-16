@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 
 interface ColorTheme {
-    val isDefault: Boolean
-        get() = this == ColorThemes.defaultTheme()
+
+    val name: String
+
     val primaryForegroundColor: TileColor
     val secondaryForegroundColor: TileColor
     val primaryBackgroundColor: TileColor

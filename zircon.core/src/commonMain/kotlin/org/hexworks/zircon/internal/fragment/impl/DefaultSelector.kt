@@ -1,77 +1,79 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.behavior.TextHolder
 import org.hexworks.zircon.api.component.HBox
-import org.hexworks.zircon.api.fragment.MultiSelect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
-class DefaultMultiSelect<T : Any>(
-        box: HBox,
-        initialValues: List<T>,
+class DefaultSelector<T : Any>(
+        parent: HBox,
         defaultSelected: T,
-        val callback: (oldValue: T, newValue: T) -> Unit,
+        initialValues: Iterable<T>,
         private val centeredText: Boolean = true,
         private val toStringMethod: (T) -> String = Any::toString,
         clickable: Boolean = false
-) : MultiSelect<T> {
-
-    init {
-        require(initialValues.isNotEmpty()) {
-            "Values list may not be empty"
-        }
-        val minWidth = 3
-        require(box.contentSize.width >= minWidth) {
-            "MultiSelect needs a minimum width of $minWidth, given was ${box.contentSize.width}"
-        }
-    }
+) : Selector<T> {
 
     override val valuesProperty = initialValues.toProperty()
     override val values: List<T> by valuesProperty.asDelegate()
 
     private val indexProperty = createPropertyFrom(values.indexOf(defaultSelected))
 
+    override val selectedValue: ObservableValue<T> = indexProperty.bindTransform {
+        values[it]
+    }
+    override val selected: T
+        get() = selectedValue.value
+
     private val rightButton = Components.button().withText(Symbols.ARROW_RIGHT.toString()).withDecorations().build().apply {
-        processComponentEvents(ComponentEventType.ACTIVATED) { nextValue() }
+        processComponentEvents(ComponentEventType.ACTIVATED) { showNextValue() }
     }
 
     private val leftButton = Components.button().withText(Symbols.ARROW_LEFT.toString()).withDecorations().build().apply {
-        processComponentEvents(ComponentEventType.ACTIVATED) { prevValue() }
+        processComponentEvents(ComponentEventType.ACTIVATED) { showPrevValue() }
     }
 
-    private val label = Components.label().withSize(box.contentSize.width - (leftButton.width + rightButton.width), 1).build()
+    private val labelSize = Size.create(parent.contentSize.width - (leftButton.width + rightButton.width), 1)
 
-    private val buttonLabel = Components.button().withDecorations().withSize(label.size).build()
-
-    override val root = box.apply {
+    override val root = parent.apply {
         addComponent(leftButton)
 
         if (clickable) {
-            addComponent(buttonLabel.also { it.initLabel() })
-            buttonLabel.processComponentEvents(ComponentEventType.ACTIVATED) {
-                nextValue()
-            }
+            addComponent(Components.button().withDecorations().withSize(labelSize).build().apply {
+                initLabel()
+                processComponentEvents(ComponentEventType.ACTIVATED) {
+                    showNextValue()
+                }
+            })
         } else {
-            addComponent(label.also { it.initLabel() })
+            addComponent(Components.label()
+                    .withSize(labelSize)
+                    .build().apply {
+                        initLabel()
+                    })
         }
 
         addComponent(rightButton)
     }
 
     private fun TextHolder.initLabel() {
-        text = getStringValue(0)
-        textProperty.updateFrom(indexProperty) { i -> getStringValue(i) }
+        text = fetchLabelBy(0)
+        textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
     }
 
     private fun setValue(from: Int, to: Int) {
         indexProperty.value = to
-        callback.invoke(values[from], values[indexProperty.value])
     }
 
-    private fun nextValue() {
+    private fun showNextValue() {
         val oldIndex = indexProperty.value
         var nextIndex = oldIndex + 1
         if (nextIndex >= values.size) {
@@ -80,7 +82,7 @@ class DefaultMultiSelect<T : Any>(
         setValue(oldIndex, nextIndex)
     }
 
-    private fun prevValue() {
+    private fun showPrevValue() {
         val oldIndex = indexProperty.value
         var prevIndex = oldIndex - 1
         if (prevIndex < 0) {
@@ -89,10 +91,10 @@ class DefaultMultiSelect<T : Any>(
         setValue(oldIndex, prevIndex)
     }
 
-    private fun getStringValue(index: Int) = toStringMethod.invoke(values[index]).centered()
+    private fun fetchLabelBy(index: Int) = toStringMethod.invoke(values[index]).centered()
 
     private fun String.centered(): String {
-        val maxWidth = label.contentSize.width
+        val maxWidth = labelSize.width
         return if (centeredText && length < maxWidth) {
             val spacesCount = (maxWidth - length) / 2
             this.padStart(spacesCount + length).padEnd(maxWidth)
@@ -100,4 +102,5 @@ class DefaultMultiSelect<T : Any>(
             this.substring(0, kotlin.math.min(length, maxWidth))
         }
     }
+
 }

@@ -7,7 +7,9 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 
-object MultiSelectExample {
+object SelectorExample {
+
+    private val theme = ColorThemes.letThemEatCake()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -17,7 +19,7 @@ object MultiSelectExample {
                 .build())
 
         val screen = Screen.create(tileGrid)
-        screen.theme = ColorThemes.letThemEatCake()
+        screen.theme = theme
 
         val leftPanel = Components.panel().withSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER).withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
             screen.addComponent(it)
@@ -38,35 +40,41 @@ object MultiSelectExample {
         val width = fragmentsList.contentSize.width
 
         fragmentsList.addFragment(
-                Fragments.multiSelect(width, listOf("Centered", "strings", "as", "values")).build()
+                Fragments.selector(width, listOf("Centered", "strings", "as", "values")).build()
         )
 
         fragmentsList.addFragment(
-                Fragments.multiSelect(width, listOf("Strings", "left", "aligned")).withCenteredText(false).build()
+                Fragments.selector(width, listOf("Strings", "left", "aligned")).withCenteredText(false).build()
         )
 
         fragmentsList.addFragment(
-                Fragments.multiSelect(width, listOf("Long", "values", "get", "truncated and that's it")).build()
+                Fragments.selector(width, listOf("Long", "values", "get", "truncated and that's it")).build()
+        )
+
+        // This is a special form of MultiSelect
+        fragmentsList.addFragment(
+                Fragments.colorThemeSelector(width, theme).withThemeables(screen).build()
         )
 
         fragmentsList.addFragment(
-                // This is a special form of MultiSelect
-                Fragments.colorThemeSelector(width, screen).build()
-        )
-
-        fragmentsList.addFragment(
-                Fragments.multiSelect(width, listOf(2, 4, 8, 16, 32)).withCallback { oldValue, newValue -> logArea.addParagraph("Changed value from $oldValue to $newValue", true) }.build()
-        )
-
-        fragmentsList.addFragment(
-                Fragments.multiSelect(width, listOf("Click", "me!")).withCallback { oldValue, newValue ->
-                    val text = if (oldValue == newValue) {
-                        "You clicked the label!"
-                    } else {
-                        "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
+                Fragments.selector(width, listOf(2, 4, 8, 16, 32)).build().apply {
+                    selectedValue.onChange { (oldValue, newValue) ->
+                        logArea.addParagraph("Changed value from $oldValue to $newValue", true)
                     }
-                    logArea.addParagraph(text, true)
-                }.withClickableLabel(true).build()
+                }
+        )
+
+        fragmentsList.addFragment(
+                Fragments.selector(width, listOf("Click", "me!")).withClickableLabel(true).build().apply {
+                    selectedValue.onChange { (oldValue, newValue) ->
+                        val text = if (oldValue == newValue) {
+                            "You clicked the label!"
+                        } else {
+                            "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
+                        }
+                        logArea.addParagraph(text, true)
+                    }
+                }
         )
 
         screen.display()
