@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.base;
 
+import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.ColorTheme;
@@ -12,6 +13,7 @@ import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource;
 import org.hexworks.zircon.internal.resource.ColorThemeResource;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -19,12 +21,14 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class Defaults {
 
+    public static TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
+    public static ColorThemeResource THEME = ColorThemeResource.TECH_LIGHT;
+
     private static Random RANDOM = new Random();
 
-    private static List<Integer> TILESET_SIZES = Arrays.asList(16, 20);
+    private static List<Integer> TILESET_SIZES = Collections.singletonList(16);
     private static int TILESET_SIZE = TILESET_SIZES.get(RANDOM.nextInt(TILESET_SIZES.size()));
 
-    public static ColorThemeResource THEME = ColorThemeResource.values()[RANDOM.nextInt(ColorThemeResource.values().length)];
     public static List<TilesetResource> TILESETS = Arrays.stream(BuiltInCP437TilesetResource.values())
             .filter(tileset -> tileset.getWidth() == TILESET_SIZE && tileset.getHeight() == TILESET_SIZE)
             .collect(Collectors.toList());
@@ -32,8 +36,6 @@ public class Defaults {
     static {
         TILESETS.addAll(BuiltInTrueTypeFontResource.squareFonts(TILESET_SIZE));
     }
-
-    public static TilesetResource TILESET = TILESETS.get(RANDOM.nextInt(TILESETS.size()));
 
     public static Size GRID_SIZE = Size.create(60, 40);
 

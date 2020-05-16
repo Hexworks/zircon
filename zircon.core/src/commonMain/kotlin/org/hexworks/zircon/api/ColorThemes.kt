@@ -239,4 +239,82 @@ object ColorThemes {
     @JvmStatic
     fun solarizedLightGreen() = ColorThemeResource.SOLARIZED_LIGHT_GREEN.getTheme()
 
+    @JvmStatic
+    fun staleSunset() = ColorThemeResource.STALE_SUNSET.getTheme()
+
+    @JvmStatic
+    fun afternoonHaze() = ColorThemeResource.AFTERNOON_HAZE.getTheme()
+
+    @JvmStatic
+    fun winterWonderland() = ColorThemeResource.WINTER_WONDERLAND.getTheme()
+
+    @JvmStatic
+    fun petite() = ColorThemeResource.PETITE.getTheme()
+
+    @JvmStatic
+    fun waverator() = ColorThemeResource.WAVERATOR.getTheme()
+
+    @JvmStatic
+    fun justparchment() = ColorThemeResource.JUSTPARCHMENT.getTheme()
+
+    @JvmStatic
+    fun ammo() = ColorThemeResource.AMMO.getTheme()
+
+    @JvmStatic
+    fun nyx() = ColorThemeResource.NYX.getTheme()
+
+    @JvmStatic
+    fun slso() = ColorThemeResource.SLSO.getTheme()
+
+    @JvmStatic
+    fun beyondTheSea() = ColorThemeResource.BEYOND_THE_SEA.getTheme()
+
+    @JvmStatic
+    fun forestGlow() = ColorThemeResource.FOREST_GLOW.getTheme()
+
+    @JvmStatic
+    fun cherryBear() = ColorThemeResource.CHERRY_BEAR.getTheme()
+
+    @JvmStatic
+    fun supernova() = ColorThemeResource.SUPERNOVA.getTheme()
+
+    @JvmStatic
+    fun rust() = ColorThemeResource.RUST.getTheme()
+
+    @JvmStatic
+    fun cursedTurkey() = ColorThemeResource.CURSED_TURKEY.getTheme()
+
+    @JvmStatic
+    fun molten() = ColorThemeResource.MOLTEN.getTheme()
+
+    @JvmStatic
+    fun stormyRed() = ColorThemeResource.STORMY_RED.getTheme()
+
+    @JvmStatic
+    fun stormyGreen() = ColorThemeResource.STORMY_GREEN.getTheme()
+
+    @JvmStatic
+    fun oil() = ColorThemeResource.OIL.getTheme()
+
+    @JvmStatic
+    fun naturesAtmosphere() = ColorThemeResource.NATURES_ATMOSPHERE.getTheme()
+
+    @JvmStatic
+    fun infiniteIkea() = ColorThemeResource.INFINITE_IKEA.getTheme()
+
+    @JvmStatic
+    fun fireWeeds() = ColorThemeResource.FIRE_WEEDS.getTheme()
+
+    @JvmStatic
+    fun pola() = ColorThemeResource.POLA.getTheme()
+
+    @JvmStatic
+    fun spanishSunset() = ColorThemeResource.SPANISH_SUNSET.getTheme()
+
+    @JvmStatic
+    fun discord() = ColorThemeResource.DISCORD.getTheme()
+
+    @JvmStatic
+    fun afterDark() = ColorThemeResource.AFTER_DARK.getTheme()
+
 }

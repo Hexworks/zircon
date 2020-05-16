@@ -17,7 +17,10 @@ object Shapes {
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
-    fun buildFilledRectangle(topLeft: Position, size: Size) = FilledRectangleFactory.createShape(RectangleParameters(topLeft, size))
+    fun buildFilledRectangle(
+            topLeft: Position,
+            size: Size
+    ) = FilledRectangleFactory.createShape(RectangleParameters(topLeft, size))
 
     /**
      * Creates the points for the outline of a triangle. The outline will go through positions
@@ -27,9 +30,11 @@ object Shapes {
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
-    fun buildTriangle(p1: Position,
-                      p2: Position,
-                      p3: Position) = TriangleFactory.createShape(TriangleParameters(p1, p2, p3))
+    fun buildTriangle(
+            p1: Position,
+            p2: Position,
+            p3: Position
+    ) = TriangleFactory.createShape(TriangleParameters(p1, p2, p3))
 
     /**
      * Creates the points for the outline of a rectangle.
@@ -41,7 +46,10 @@ object Shapes {
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
-    fun buildRectangle(topLeft: Position, size: Size) = RectangleFactory.createShape(RectangleParameters(topLeft, size))
+    fun buildRectangle(
+            topLeft: Position,
+            size: Size
+    ) = RectangleFactory.createShape(RectangleParameters(topLeft, size))
 
     @JvmStatic
     fun buildLine(fromPoint: Position, toPoint: Position) = LineFactory.createShape(LineParameters(fromPoint, toPoint))
@@ -54,7 +62,9 @@ object Shapes {
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
     @JvmStatic
-    fun buildFilledTriangle(p1: Position,
-                            p2: Position,
-                            p3: Position) = FilledTriangleFactory.createShape(TriangleParameters(p1, p2, p3))
+    fun buildFilledTriangle(
+            p1: Position,
+            p2: Position,
+            p3: Position
+    ) = FilledTriangleFactory.createShape(TriangleParameters(p1, p2, p3))
 }
