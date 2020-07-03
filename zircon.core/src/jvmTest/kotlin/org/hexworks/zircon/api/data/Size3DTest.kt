@@ -77,4 +77,18 @@ class Size3DTest {
         assertThat(result.zLength).isEqualTo(4)
     }
 
+    @Test
+    fun shouldProperlyCheckContainsPosition() {
+        val size = Size3D.create(2, 2, 2)
+        val posContained = Position3D.create(1,1,1)
+        val posZero = Position3D.create(0,0,0)
+        val posTooBig = Position3D.create(3,3,3)
+        val posTooSmall = Position3D.create(-1,-1,-1)
+
+        assertThat(size.containsPosition(posContained)).isTrue()
+        assertThat(size.containsPosition(posZero)).isTrue()
+        assertThat(size.containsPosition(posTooBig)).isFalse()
+        assertThat(size.containsPosition(posTooSmall)).isFalse()
+    }
+
 }
