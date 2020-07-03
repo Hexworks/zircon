@@ -60,7 +60,7 @@ data class Size3D private constructor(val xLength: Int,
      */
     fun containsPosition(position: Position3D): Boolean {
         val (x, y, z) = position
-        return x in 0 until xLength && y in 0 until yLength && z in 0 until zLength
+        return xLength > x && x >= 0 && yLength > y && y >= 0 && zLength > z && z >= 0
     }
 
     /**
