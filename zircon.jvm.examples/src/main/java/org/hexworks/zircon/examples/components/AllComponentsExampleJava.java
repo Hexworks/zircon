@@ -16,7 +16,7 @@ import static org.hexworks.zircon.api.graphics.BoxType.TOP_BOTTOM_DOUBLE;
 public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
 
     public static void main(String[] args) {
-        new AllComponentsExampleJava().show("All Components Example");
+        new AllComponentsExampleKotlin().show("All Components Example");
     }
 
     @Override

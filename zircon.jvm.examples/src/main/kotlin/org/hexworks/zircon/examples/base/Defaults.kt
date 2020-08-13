@@ -13,19 +13,19 @@ import kotlin.random.asKotlinRandom
 
 private val RANDOM = Random()
 
-private val TILESET_SIZE = listOf(16, 20).random(RANDOM.asKotlinRandom())
+private val DEFAULT_TILESET_SIZE = listOf(16, 20).random(RANDOM.asKotlinRandom())
 
-val THEME = ColorThemeResource.values().random(RANDOM.asKotlinRandom())
+val DEFAULT_THEME = ColorThemeResource.values().random(RANDOM.asKotlinRandom())
 val TILESETS: List<TilesetResource> = BuiltInCP437TilesetResource.values().filter {
-    it.width == TILESET_SIZE && it.height == TILESET_SIZE
+    it.width == DEFAULT_TILESET_SIZE && it.height == DEFAULT_TILESET_SIZE
 }
-val TILESET = TILESETS[RANDOM.nextInt(TILESETS.size)]
+val DEFAULT_TILESET = TILESETS[RANDOM.nextInt(TILESETS.size)]
 
 val GRID_SIZE = create(60, 40)
 
 fun displayScreen(
-        theme: ColorTheme = THEME.getTheme(),
-        tileset: TilesetResource = TILESET
+        theme: ColorTheme = DEFAULT_THEME.getTheme(),
+        tileset: TilesetResource = DEFAULT_TILESET
 ) = SwingApplications.startTileGrid(newBuilder()
         .withDefaultTileset(tileset)
         .enableBetaFeatures()
@@ -37,8 +37,8 @@ fun displayScreen(
         }
 
 fun startTileGrid(
-        theme: ColorTheme = THEME.getTheme(),
-        tileset: TilesetResource = TILESET
+        theme: ColorTheme = DEFAULT_THEME.getTheme(),
+        tileset: TilesetResource = DEFAULT_TILESET
 ) = SwingApplications.startTileGrid(newBuilder()
         .withDefaultTileset(tileset)
         .enableBetaFeatures()
