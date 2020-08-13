@@ -32,7 +32,7 @@ abstract class ComponentExampleKotlin(
                 .withSize(size)
                 .withSpacing(1)
                 .withComponentRenderer(NoOpComponentRenderer())
-                .withTileset(TILESET)
+                .withTileset(DEFAULT_TILESET)
                 .build()
 
         val heading = hbox()
@@ -45,14 +45,14 @@ abstract class ComponentExampleKotlin(
 
         controls.addComponent(label().withText("Pick a theme"))
 
-        controls.addFragment(Fragments.colorThemeSelector(controls.width -4, THEME.getTheme())
+        controls.addFragment(Fragments.colorThemeSelector(controls.width -4, DEFAULT_THEME.getTheme())
                 .withThemeables(screen)
                 .build())
 
         controls.addComponent(label())
 
         controls.addComponent(label().withText("Pick a tileset"))
-        val tilesetSelector = tilesetSelector(controls.width, TILESET)
+        val tilesetSelector = tilesetSelector(controls.width, DEFAULT_TILESET)
                 .withTilesetOverrides(container)
                 .build()
         controls.addFragment(tilesetSelector)
@@ -73,7 +73,7 @@ abstract class ComponentExampleKotlin(
      */
     fun show(title: String) {
         val tileGrid = startTileGrid(newBuilder()
-                .withDefaultTileset(TILESET)
+                .withDefaultTileset(DEFAULT_TILESET)
                 .withSize(size.plus(create(2, 2)))
                 .build())
         val screen = create(tileGrid)
@@ -85,7 +85,7 @@ abstract class ComponentExampleKotlin(
         container.addComponent(createExampleContainer(screen, title))
         screen.addComponent(container)
         screen.display()
-        screen.theme = THEME.getTheme()
+        screen.theme = DEFAULT_THEME.getTheme()
     }
 
     /**
