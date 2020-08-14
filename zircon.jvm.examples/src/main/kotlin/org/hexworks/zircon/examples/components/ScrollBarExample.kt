@@ -17,6 +17,8 @@ import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 object ScrollBarExample {
 
@@ -82,6 +84,25 @@ object ScrollBarExample {
         compositeScrollBarPanel.addComponent(scrollbar1)
         compositeScrollBarPanel.addComponent(incrementButton)
         panel.addComponent(compositeScrollBarPanel)
+
+        // register scrollbar1 for handling mouse events
+        scrollbar1.handleMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_DOWN) { _, _ ->
+            scrollbar1.incrementValues()
+            Processed
+        }
+
+        scrollbar1.handleMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_UP) { _, _ ->
+            scrollbar1.decrementValues()
+            Processed
+        }
+
+        /*scrollbar1.processMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_DOWN) { _, _ ->
+            scrollbar1.incrementValues()
+        }
+
+        scrollbar1.processMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_UP) { _, _ ->
+            scrollbar1.decrementValues()
+        }*/
 
         val scrollbar2 = Components.horizontalScrollbar()
                 .withSize(20, 1)
