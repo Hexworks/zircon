@@ -1,8 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
-import kotlinx.collections.immutable.PersistentList
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -22,7 +20,6 @@ import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 import org.hexworks.zircon.internal.event.ZirconEvent.ScreenSwitch
