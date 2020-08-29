@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
+import kotlin.math.abs
 
 open class MouseEventListener(
         private val fontWidth: Int,
@@ -61,7 +62,7 @@ open class MouseEventListener(
         } else {
             MouseEventType.MOUSE_WHEEL_ROTATED_UP
         }
-        (0..e.preciseWheelRotation.toInt()).forEach {
+        (0..abs(e.preciseWheelRotation.toInt())).forEach {
             processMouseEvent(actionType, e)
         }
     }
