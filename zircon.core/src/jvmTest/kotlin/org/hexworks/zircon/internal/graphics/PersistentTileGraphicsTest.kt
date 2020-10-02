@@ -11,16 +11,16 @@ import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
-class ThreadSafeTileGraphicsTest {
+class PersistentTileGraphicsTest {
 
-    lateinit var target: ThreadSafeTileGraphics
+    lateinit var target: PersistentTileGraphics
 
     @Before
     fun setUp() {
         target = TileGraphicsBuilder.newBuilder()
                 .withSize(SIZE_OF_3X3)
                 .withTileset(TILESET)
-                .build() as ThreadSafeTileGraphics
+                .build() as PersistentTileGraphics
     }
 
     @Test

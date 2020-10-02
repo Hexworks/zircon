@@ -28,11 +28,11 @@ open class ThreadSafeLayer(
         private val movable: Movable = DefaultMovable(
                 position = initialPosition,
                 size = initialContents.size),
-        private val backend: ThreadSafeTileGraphics = TileGraphicsBuilder.newBuilder()
+        private val backend: PersistentTileGraphics = TileGraphicsBuilder.newBuilder()
                 .withSize(initialContents.size)
                 .withTiles(initialContents.tiles)
                 .withTileset(initialContents.tileset)
-                .build() as ThreadSafeTileGraphics
+                .build() as PersistentTileGraphics
 ) : Movable by movable, Clearable, InternalLayer, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()

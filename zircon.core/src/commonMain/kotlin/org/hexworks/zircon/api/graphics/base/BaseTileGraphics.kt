@@ -26,8 +26,6 @@ abstract class BaseTileGraphics(
         initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
 
-    private val logger = LoggerFactory.getLogger(this::class)
-
     final override val tilesetProperty = initialTileset.toProperty { newValue ->
         tileset.isCompatibleWith(newValue)
     }

@@ -14,6 +14,7 @@ kotlin {
             api(zirconCore)
             api(zirconJvmSwing)
             api(zirconJvmLibgdx)
+            api("org.openjdk.jol:jol-core:0.13")
         }
 
         with (Libs) {

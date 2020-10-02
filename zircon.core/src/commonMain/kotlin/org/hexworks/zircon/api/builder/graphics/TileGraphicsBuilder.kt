@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
+import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
@@ -78,7 +78,7 @@ data class TileGraphicsBuilder(
      * safe and offers no consistent snapshots. Use this implementation
      * if you're not reading nor writing from multiple threads.
      */
-    override fun build(): TileGraphics = ThreadSafeTileGraphics(
+    override fun build(): TileGraphics = PersistentTileGraphics(
             initialSize = size,
             initialTileset = tileset,
             initialTiles = tiles.toPersistentMap()).apply {

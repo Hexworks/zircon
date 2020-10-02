@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -13,88 +12,84 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
 import kotlin.jvm.Synchronized
 
 /**
- * This is a thread-safe [TileGraphics] All read / write operations
- * ([getTileAt], [state], etc) are consistent even if concurrent write
- * operations are being performed. Use this implementation if you want
- * to read / write from multiple threads.
+ * This is a fast implementation of [TileGraphics] that sacrifices memory footprint
+ * and consistent snapshots for speed and uses an array behind the scenes.
  */
-class ThreadSafeTileGraphics(
+class FastTileGraphics(
         initialSize: Size,
         initialTileset: TilesetResource,
-        initialTiles: PersistentMap<Position, Tile> = persistentMapOf()
+        initialTiles: Map<Position, Tile> = mapOf()
 ) : BaseTileGraphics(
         initialSize = initialSize,
         initialTileset = initialTileset
 ) {
 
-    override var tiles: PersistentMap<Position, Tile> = initialTiles
-        private set
+    private var arr = arrayOfNulls<Tile>(initialSize.width * initialSize.height)
 
+    init {
+        for (e in initialTiles.entries) {
+            arr[e.key.index] = e.value
+        }
+    }
+
+    override val tiles = ArrayBackedTileMap(initialSize, arr)
     override val state: TileGraphicsState
         get() = DefaultTileGraphicsState(
                 size = size,
                 tileset = tileset,
-                tiles = tiles)
+                tiles = tiles.toPersistentMap())
 
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {
-            tiles = if (tile.isEmpty) {
-                tiles.remove(drawPosition)
-            } else {
-                tiles.put(drawPosition, tile)
-            }
+            arr[drawPosition.index] = tile
         }
     }
 
     @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
-        var newTiles = tiles
-        val tilesToAdd = mutableMapOf<Position, Tile>()
         tileMap.asSequence()
                 .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
                 .map { (key, value) -> key + drawPosition to value }
                 .forEach { (pos, tile) ->
                     if (tile.isEmpty) {
-                        newTiles = newTiles.remove(pos)
+                        arr[pos.index] = null
                     } else {
-                        tilesToAdd[pos] = tile
+                        arr[pos.index] = tile
                     }
                 }
-        newTiles = newTiles.putAll(tilesToAdd)
-        tiles = newTiles
     }
 
     @Synchronized
     override fun clear() {
-        tiles = tiles.clear()
+        arr = arrayOfNulls(size.width * size.height)
     }
 
     @Synchronized
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
-            val (currentTiles, _, currentSize) = state
-            tiles = currentTiles.putAll(currentSize.fetchPositions()
-                    .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
-                    .map { it to filler }.toMap())
+            for (i in arr.indices) {
+                if (arr[i] == null) {
+                    arr[i] = filler
+                }
+            }
         }
     }
 
     @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
-        var newTiles = tiles
-        val tilesToAdd = mutableMapOf<Position, Tile>()
         size.fetchPositions().forEach { pos ->
-            val tile = transformer(pos, newTiles.getOrElse(pos) { Tile.empty() })
+            val tile = transformer(pos, arr[pos.index] ?: Tile.empty())
             if (tile.isEmpty) {
-                newTiles = newTiles.remove(pos)
+                arr[pos.index] = null
             } else {
-                tilesToAdd[pos] = tile
+                arr[pos.index] = tile
             }
         }
-        newTiles = newTiles.putAll(tilesToAdd)
-        tiles = newTiles
     }
+
+    private val Position.index: Int
+        get() = size.width * y + x
 
 
 }

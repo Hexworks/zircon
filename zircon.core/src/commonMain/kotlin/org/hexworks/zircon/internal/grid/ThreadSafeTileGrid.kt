@@ -25,7 +25,7 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
-import org.hexworks.zircon.internal.graphics.ThreadSafeTileGraphics
+import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
 
@@ -222,7 +222,7 @@ class ThreadSafeTileGrid(
 
     private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {
         layerable.addLayer(Layer.newBuilder()
-                .withTileGraphics(ThreadSafeTileGraphics(
+                .withTileGraphics(PersistentTileGraphics(
                         initialSize = initialSize,
                         initialTileset = initialTileset))
                 .build())
