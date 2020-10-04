@@ -34,30 +34,30 @@ abstract class BaseTileGraphics(
 
     final override val size = initialSize
 
-    final override fun draw(tileComposite: TileComposite) = draw(
+    override fun draw(tileComposite: TileComposite) = draw(
             tileComposite = tileComposite,
             drawPosition = Position.zero(),
             drawArea = tileComposite.size)
 
-    final override fun draw(tileComposite: TileComposite,
+    override fun draw(tileComposite: TileComposite,
                             drawPosition: Position) = draw(
             tileComposite = tileComposite,
             drawPosition = drawPosition,
             drawArea = tileComposite.size)
 
-    final override fun draw(tileComposite: TileComposite,
+    override fun draw(tileComposite: TileComposite,
                             drawPosition: Position,
                             drawArea: Size) = draw(
             tileMap = tileComposite.tiles,
             drawPosition = drawPosition,
             drawArea = drawArea)
 
-    final override fun draw(tileMap: Map<Position, Tile>) = draw(
+    override fun draw(tileMap: Map<Position, Tile>) = draw(
             tileMap = tileMap,
             drawPosition = Position.zero(),
             drawArea = this.size)
 
-    final override fun draw(tileMap: Map<Position, Tile>,
+    override fun draw(tileMap: Map<Position, Tile>,
                             drawPosition: Position) = draw(
             tileMap = tileMap,
             drawPosition = drawPosition,
