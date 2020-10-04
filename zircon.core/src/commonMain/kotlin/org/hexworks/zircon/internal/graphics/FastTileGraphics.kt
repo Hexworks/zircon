@@ -61,6 +61,7 @@ class FastTileGraphics(
                 }
     }
 
+    @Synchronized
     override fun draw(tileComposite: TileComposite) {
         if(tileComposite is FastTileGraphics) {
             tileComposite.arr.copyInto(arr)
