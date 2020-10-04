@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -58,6 +59,12 @@ class FastTileGraphics(
                         arr[pos.index] = tile
                     }
                 }
+    }
+
+    override fun draw(tileComposite: TileComposite) {
+        if(tileComposite is FastTileGraphics) {
+            tileComposite.arr.copyInto(arr)
+        } else super.draw(tileComposite)
     }
 
     @Synchronized
