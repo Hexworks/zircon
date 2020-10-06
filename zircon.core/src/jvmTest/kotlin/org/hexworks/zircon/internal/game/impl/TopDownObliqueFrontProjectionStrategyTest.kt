@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.game.impl
 
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentHashMapOf
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.data.Block
@@ -25,7 +25,7 @@ class TopDownObliqueFrontProjectionStrategyTest {
     @Test
     fun shouldOnlyCreateOneLevelWithOpaqueTiles() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 0, 1) to block(
                         top = OPAQUE_TILE_A,
                         back = OPAQUE_TILE_B,
@@ -47,7 +47,7 @@ class TopDownObliqueFrontProjectionStrategyTest {
 
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
-        assertThat(result).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_A,
                 Position.create(1, 0) to OPAQUE_TILE_A,
                 Position.create(0, 1) to OPAQUE_TILE_D,
@@ -58,7 +58,7 @@ class TopDownObliqueFrontProjectionStrategyTest {
     fun shouldCreateTwoLevelsWithTransparentFrontTile() {
 
         val state = DEFAULT_STATE.copy(
-                blocks = persistentMapOf(
+                blocks = persistentHashMapOf(
                         pos(1, 0, 1) to block(
                                 top = OPAQUE_TILE_A,
                                 back = OPAQUE_TILE_B,
@@ -79,11 +79,11 @@ class TopDownObliqueFrontProjectionStrategyTest {
                                 bottom = OPAQUE_TILE_E)))
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
-        assertThat(result).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_A,
                 Position.create(1, 0) to OPAQUE_TILE_A,
                 Position.create(0, 1) to TRANSPARENT_TILE_B,
-                Position.create(1, 1) to OPAQUE_TILE_D), persistentMapOf(
+                Position.create(1, 1) to OPAQUE_TILE_D), persistentHashMapOf(
                 Position.create(0, 1) to OPAQUE_TILE_C))
     }
 
@@ -91,7 +91,7 @@ class TopDownObliqueFrontProjectionStrategyTest {
     @Test
     fun shouldCreateThreeLevelsWithTransparentFrontAndContentTile() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 0, 1) to block(
                         top = OPAQUE_TILE_A,
                         back = OPAQUE_TILE_B,
@@ -107,12 +107,12 @@ class TopDownObliqueFrontProjectionStrategyTest {
 
         val result = target.projectGameArea(state).map { it.tiles }.toList()
 
-        assertThat(result).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_A,
                 Position.create(1, 0) to OPAQUE_TILE_A,
                 Position.create(0, 1) to TRANSPARENT_TILE_B,
-                Position.create(1, 1) to OPAQUE_TILE_D), persistentMapOf(
-                Position.create(0, 1) to TRANSPARENT_TILE_A), persistentMapOf(
+                Position.create(1, 1) to OPAQUE_TILE_D), persistentHashMapOf(
+                Position.create(0, 1) to TRANSPARENT_TILE_A), persistentHashMapOf(
                 Position.create(0, 1) to OPAQUE_TILE_E))
     }
 
@@ -126,7 +126,7 @@ class TopDownObliqueFrontProjectionStrategyTest {
                 actualSize = ACTUAL_SIZE_4X4X4,
                 visibleSize = VISIBLE_SIZE_2X2X2,
                 visibleOffset = VISIBLE_OFFSET_1X1X1,
-                blocks = persistentMapOf(),
+                blocks = persistentHashMapOf(),
                 tileset = CP437TilesetResources.bisasam20x20())
 
         val TRANSPARENT_TILE_A = Tile.empty().withCharacter('a')

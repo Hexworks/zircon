@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.game.impl
 
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentHashMapOf
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.data.Block
@@ -38,14 +38,14 @@ class TopDownProjectionStrategyTest {
     @Test
     fun shouldOnlyCreateOneLevelWithOpaqueTiles() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 1, 2) to OPAQUE_BLOCK_A_B_C,
                 pos(2, 1, 2) to OPAQUE_BLOCK_A_B_C,
                 pos(1, 1, 1) to OPAQUE_BLOCK_A_B_C))
 
         val result = target.projectGameArea(state).toList()
 
-        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_A,
                 Position.create(1, 0) to OPAQUE_TILE_A))
     }
@@ -53,49 +53,49 @@ class TopDownProjectionStrategyTest {
     @Test
     fun shouldCreateTwoLevelsWithEmptyLayerBetweenTransparentTiles() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 1, 2) to OPAQUE_BLOCK_A_B_C,
                 pos(2, 1, 2) to TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C,
                 pos(1, 1, 1) to OPAQUE_BLOCK_A_B_C))
 
         val result = target.projectGameArea(state).toList()
 
-        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_A,
-                Position.create(1, 0) to TRANSPARENT_TILE_A), persistentMapOf(
+                Position.create(1, 0) to TRANSPARENT_TILE_A), persistentHashMapOf(
                 Position.create(1, 0) to OPAQUE_TILE_C))
     }
 
     @Test
     fun shouldCreateFourLevelsWithTransparentWholeBlockOverOpaqueBlock() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 1, 2) to TRANSPARENT_WHOLE_BLOCK,
                 pos(2, 1, 2) to OPAQUE_BLOCK_A_B_C,
                 pos(1, 1, 1) to OPAQUE_BLOCK_D_E_F))
 
         val result = target.projectGameArea(state).toList()
 
-        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentMapOf(
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentHashMapOf(
                 Position.create(0, 0) to TRANSPARENT_TILE_A,
-                Position.create(1, 0) to OPAQUE_TILE_A), persistentMapOf(
-                Position.create(0, 0) to TRANSPARENT_TILE_B), persistentMapOf(
-                Position.create(0, 0) to TRANSPARENT_TILE_C), persistentMapOf(
+                Position.create(1, 0) to OPAQUE_TILE_A), persistentHashMapOf(
+                Position.create(0, 0) to TRANSPARENT_TILE_B), persistentHashMapOf(
+                Position.create(0, 0) to TRANSPARENT_TILE_C), persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_D))
     }
 
     @Test
     fun shouldCreateThreeLevelsWithVaryingEmptiness() {
 
-        val state = DEFAULT_STATE.copy(blocks = persistentMapOf(
+        val state = DEFAULT_STATE.copy(blocks = persistentHashMapOf(
                 pos(1, 1, 2) to TRANSPARENT_TOP_EMPTY_CONTENT_BLOCK_A_C,
                 pos(2, 1, 2) to EMPTY_TOP_TRANSPARENT_CONTENT_BLOCK_B_D))
 
         val result = target.projectGameArea(state).toList()
 
-        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentMapOf(
-                Position.create(0, 0) to TRANSPARENT_TILE_A), persistentMapOf(
-                Position.create(1, 0) to TRANSPARENT_TILE_B), persistentMapOf(
+        assertThat(result.map { it.tiles }).containsExactlyInAnyOrder(persistentHashMapOf(
+                Position.create(0, 0) to TRANSPARENT_TILE_A), persistentHashMapOf(
+                Position.create(1, 0) to TRANSPARENT_TILE_B), persistentHashMapOf(
                 Position.create(0, 0) to OPAQUE_TILE_C,
                 Position.create(1, 0) to OPAQUE_TILE_D))
     }
@@ -107,7 +107,7 @@ class TopDownProjectionStrategyTest {
         private val VISIBLE_OFFSET_1_1_1 = Position3D.create(1, 1, 1)
 
         val DEFAULT_STATE = GameAreaState<Tile, Block<Tile>>(
-                blocks = persistentMapOf(),
+                blocks = persistentHashMapOf(),
                 actualSize = ACTUAL_SIZE_4X4X4,
                 visibleSize = VISIBLE_SIZE_3X2X2,
                 visibleOffset = VISIBLE_OFFSET_1_1_1,

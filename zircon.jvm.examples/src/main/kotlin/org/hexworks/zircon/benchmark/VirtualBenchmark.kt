@@ -19,7 +19,7 @@ object VirtualBenchmark {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val size = Size.create(80, 40)
+        val size = Size.create(120, 68)
 
         val tileset = TrueTypeFontResources.ibmBios(20)
 
@@ -33,8 +33,8 @@ object VirtualBenchmark {
         val terminalWidth = size.width
         val terminalHeight = size.height
         val layerCount = 20
-        val layerWidth = 20
-        val layerHeight = 10
+        val layerWidth = 60
+        val layerHeight = 34
         val layerSize = Size.create(layerWidth, layerHeight)
         val filler = Tile.defaultTile().withCharacter('x')
 

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
 import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -21,7 +21,7 @@ import kotlin.jvm.Synchronized
 class PersistentTileGraphics(
         initialSize: Size,
         initialTileset: TilesetResource,
-        initialTiles: PersistentMap<Position, Tile> = persistentMapOf()
+        initialTiles: PersistentMap<Position, Tile> = persistentHashMapOf()
 ) : BaseTileGraphics(
         initialSize = initialSize,
         initialTileset = initialTileset

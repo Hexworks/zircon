@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.uievent.impl
 
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.cobalt.core.behavior.DisposeState
 import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -14,7 +14,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private var listeners = persistentMapOf<UIEventType, PersistentList<InputEventSubscription>>()
+    private var listeners = persistentHashMapOf<UIEventType, PersistentList<InputEventSubscription>>()
     override val isClosed = false.toProperty()
 
     override fun close() {

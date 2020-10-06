@@ -14,6 +14,7 @@ class REXPaintResource private constructor(private val rexFile: REXFile) {
     /**
      * Converts this [REXPaintResource] to a list of [Layer]s.
      */
+    @JvmOverloads
     fun toLayerList(tileset: TilesetResource = RuntimeConfig.config.defaultTileset): List<Layer> {
         return this.rexFile.getLayers().map { it.toLayer(tileset) }.toList()
     }
