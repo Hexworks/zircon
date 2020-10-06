@@ -26,7 +26,7 @@ abstract class ComponentExampleKotlin(
     /**
      * Creates the container for the examples.
      */
-    private fun createExampleContainer(screen: Screen, title: String): VBox {
+    fun createExampleContainer(screen: Screen, title: String): VBox {
 
         val container = vbox()
                 .withSize(size)

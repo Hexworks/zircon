@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.examples.base.Defaults
-import org.hexworks.zircon.examples.components.ButtonsExampleJava
+import org.hexworks.zircon.examples.components.ButtonsExampleKotlin
 import org.hexworks.zircon.examples.components.CheckBoxesExampleJava
 import org.hexworks.zircon.examples.components.ToggleButtonsExampleJava
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
@@ -42,7 +42,7 @@ object VerticalTabBarExample {
                 barSize = contentSize.withWidth(10),
                 defaultSelected = "Buttons",
                 tabs = mapOf(
-                        "Buttons" to ButtonsExampleJava().createExampleContainer(screen, "Buttons"),
+                        "Buttons" to ButtonsExampleKotlin().createExampleContainer(screen, "Buttons"),
                         "CheckBoxes" to CheckBoxesExampleJava().createExampleContainer(screen, "CheckBoxes"),
                         "ToggleBtns" to ToggleButtonsExampleJava().createExampleContainer(screen, "ToggleBtns")
                 )))

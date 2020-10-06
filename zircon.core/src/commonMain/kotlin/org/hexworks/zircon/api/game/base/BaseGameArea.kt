@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.game.base
 
 import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
@@ -25,7 +25,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         initialActualSize: Size3D,
         initialTileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         initialVisibleOffset: Position3D = Position3D.defaultPosition(),
-        initialContents: PersistentMap<Position3D, B> = persistentMapOf(),
+        initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
         private val projectionStrategy: ProjectionStrategy = ProjectionMode.TOP_DOWN.projectionStrategy,
         private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
                 initialVisibleSize = initialVisibleSize,
