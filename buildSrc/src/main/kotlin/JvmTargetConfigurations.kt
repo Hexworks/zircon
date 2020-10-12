@@ -18,8 +18,3 @@ fun KotlinWithJavaTarget<KotlinJvmOptions>.jvmTarget(javaVersion: JavaVersion) =
 fun NamedDomainObjectContainer<out AbstractKotlinCompilationToRunnableFiles<KotlinJvmOptions>>.applyVersion(javaVersion: JavaVersion) {
     forEach { it.kotlinOptions.jvmTarget = "$javaVersion" }
 }
-fun DependencyHandler.jvmMainApi(dependencyNotation: Any): Dependency? =
-        add("jvmMainApi", dependencyNotation)
-
-fun DependencyHandler.jvmTestApi(dependencyNotation: Any): Dependency? =
-        add("jvmTestApi", dependencyNotation)
