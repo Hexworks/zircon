@@ -1,3 +1,20 @@
+import Libs.caffeine
+import Libs.cobaltCore
+import Libs.kotlinReflect
+import Libs.kotlinStdLibCommon
+import Libs.kotlinxCollectionsImmutable
+import Libs.kotlinxCoroutines
+import Libs.kotlinxCoroutinesTest
+import Libs.logbackClassic
+import Libs.slf4jApi
+import Libs.snakeYaml
+import TestLibs.assertJCore
+import TestLibs.kotlinTestAnnotationsCommon
+import TestLibs.kotlinTestCommon
+import TestLibs.logbackCore
+import TestLibs.mockitoAll
+import TestLibs.mockitoKotlin
+
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
@@ -11,43 +28,48 @@ kotlin {
         withJava()
     }
 
-    dependencies {
-        with(Libs) {
-            commonMainApi(kotlinStdLibCommon)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(kotlinStdLibCommon)
 
-            commonMainApi(kotlinxCoroutinesCommon)
-            commonMainApi(kotlinxCollectionsImmutable)
-            commonMainApi(kotlinReflect)
+                api(kotlinxCoroutines)
+                api(kotlinxCollectionsImmutable)
+                api(kotlinReflect)
 
-            commonMainApi(cobaltCore)
+                api(cobaltCore)
+            }
         }
-
-        with(TestLibs) {
-            commonTestImplementation(kotlinTestCommon)
-            commonTestImplementation(kotlinTestAnnotationsCommon)
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlinTestCommon)
+                implementation(kotlinTestAnnotationsCommon)
+                implementation(kotlinxCoroutinesTest)
+            }
         }
+        val jvmMain by getting {
+            dependencies {
+                api(kotlin("stdlib-jdk8"))
+                api(kotlin("reflect"))
 
-        with(Libs) {
-            jvmMainApi(kotlinStdLibJdk8)
-            jvmMainApi(kotlinReflect)
-
-            jvmMainApi(kotlinxCoroutines)
-
-            jvmMainApi(caffeine)
-            jvmMainApi(snakeYaml)
-            jvmMainApi(slf4jApi)
+                api(caffeine)
+                api(snakeYaml)
+                api(slf4jApi)
+            }
         }
-
-        with(TestLibs) {
-            jvmTestApi(kotlinTestJunit)
-            jvmTestApi(junit)
-            jvmTestApi(mockitoAll)
-            jvmTestApi(mockitoKotlin)
-            jvmTestApi(assertJCore)
-            jvmTestApi(logbackClassic)
-            jvmTestApi(logbackCore)
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-junit"))
+                implementation(mockitoAll)
+                implementation(mockitoKotlin)
+                implementation(assertJCore)
+                implementation(logbackClassic)
+                implementation(logbackCore)
+            }
         }
     }
+
 }
 
 publishing {
