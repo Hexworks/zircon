@@ -29,11 +29,13 @@ import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
-class SwingCanvasRenderer(private val canvas: Canvas,
-                          private val frame: JFrame,
-                          private val tileGrid: InternalTileGrid,
-                          private val config: AppConfig,
-                          private val app: Application) : Renderer {
+class SwingCanvasRenderer(
+        private val canvas: Canvas,
+        private val frame: JFrame,
+        private val tileGrid: InternalTileGrid,
+        private val config: AppConfig,
+        private val app: Application
+) : Renderer {
 
     override val isClosed = false.toProperty()
 
@@ -99,7 +101,7 @@ class SwingCanvasRenderer(private val canvas: Canvas,
             }
         })
         frame.pack()
-        frame.isVisible=true
+        frame.isVisible = true
         frame.setLocationRelativeTo(null)
 
         // buffering
