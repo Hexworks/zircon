@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.data.GridPosition
+import java.awt.Toolkit
 import java.util.*
 
 object VirtualBenchmark {
@@ -19,9 +20,9 @@ object VirtualBenchmark {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val size = Size.create(120, 68)
-
+        val dimensions = Toolkit.getDefaultToolkit().screenSize
         val tileset = TrueTypeFontResources.ibmBios(20)
+        val size = Size.create(dimensions.width / tileset.width, dimensions.height / tileset.width)
 
         val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
                 .withSize(size)
@@ -33,8 +34,8 @@ object VirtualBenchmark {
         val terminalWidth = size.width
         val terminalHeight = size.height
         val layerCount = 20
-        val layerWidth = 60
-        val layerHeight = 34
+        val layerWidth = size.width / 2
+        val layerHeight = size.height / 2
         val layerSize = Size.create(layerWidth, layerHeight)
         val filler = Tile.defaultTile().withCharacter('x')
 
