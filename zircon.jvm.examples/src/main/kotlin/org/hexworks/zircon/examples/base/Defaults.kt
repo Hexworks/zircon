@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package org.hexworks.zircon.examples.base
 
 import org.hexworks.zircon.api.SwingApplications

@@ -152,7 +152,7 @@ class DefaultComponentRenderingStrategyTest {
         assertThat(graphics.tiles.values.map { it.asCharacterTile().get().character }).containsExactly(
                 '┌', '─', '─', '┐', '_',
                 '│', 'f', 'o', '│', '░',
-                '│', 'o', '│', '░',
+                '│', 'o', ' ', '│', '░',
                 '└', '─', '─', '┘', '░',
                 '_', '░', '░', '░', '░')
     }

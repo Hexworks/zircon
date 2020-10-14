@@ -1,7 +1,6 @@
 import Libs.caffeine
 import Libs.cobaltCore
 import Libs.kotlinReflect
-import Libs.kotlinStdLibCommon
 import Libs.kotlinxCollectionsImmutable
 import Libs.kotlinxCoroutines
 import Libs.kotlinxCoroutinesTest
@@ -32,11 +31,11 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlinStdLibCommon)
+                api(kotlin("stdlib-common"))
+                api(kotlin("reflect"))
 
                 api(kotlinxCoroutines)
                 api(kotlinxCollectionsImmutable)
-                api(kotlinReflect)
 
                 api(cobaltCore)
             }
@@ -45,8 +44,8 @@ kotlin {
             dependencies {
                 implementation(kotlinTestCommon)
                 implementation(kotlinTestAnnotationsCommon)
+
                 implementation(kotlinxCoroutinesTest)
-                implementation(assertk)
             }
         }
         val jvmMain by getting {
@@ -63,6 +62,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
+
                 implementation(mockitoAll)
                 implementation(mockitoKotlin)
                 implementation(assertjCore)

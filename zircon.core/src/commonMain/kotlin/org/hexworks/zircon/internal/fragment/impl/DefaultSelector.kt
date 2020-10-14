@@ -22,7 +22,7 @@ class DefaultSelector<T : Any>(
         clickable: Boolean = false
 ) : Selector<T> {
 
-    override val valuesProperty = initialValues.toProperty()
+    override val valuesProperty: ListProperty<T> = initialValues.toProperty()
     override val values: List<T> by valuesProperty.asDelegate()
 
     private val indexProperty = createPropertyFrom(values.indexOf(defaultSelected))
@@ -69,7 +69,7 @@ class DefaultSelector<T : Any>(
         textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
     }
 
-    private fun setValue(from: Int, to: Int) {
+    private fun setValue(to: Int) {
         indexProperty.value = to
     }
 
@@ -79,7 +79,7 @@ class DefaultSelector<T : Any>(
         if (nextIndex >= values.size) {
             nextIndex = 0
         }
-        setValue(oldIndex, nextIndex)
+        setValue(nextIndex)
     }
 
     private fun showPrevValue() {
@@ -88,7 +88,7 @@ class DefaultSelector<T : Any>(
         if (prevIndex < 0) {
             prevIndex = values.size - 1
         }
-        setValue(oldIndex, prevIndex)
+        setValue(prevIndex)
     }
 
     private fun fetchLabelBy(index: Int) = toStringMethod.invoke(values[index]).centered()
