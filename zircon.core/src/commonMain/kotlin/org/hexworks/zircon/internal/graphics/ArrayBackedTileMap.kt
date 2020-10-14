@@ -18,12 +18,16 @@ class ArrayBackedTileMap(
         get() = arr.mapIndexed { index, _ ->
             arr[index]?.let { index.pos }
         }.filterNotNull().toSet()
+
     override val size: Int
         get() = dimensions.width * dimensions.height
+
     override val values: Collection<Tile>
         get() = arr.filterNotNull()
 
-    override fun containsKey(key: Position) = arr[key.index] != null
+    override fun containsKey(key: Position) = key.index.let { idx ->
+        if (idx > arr.lastIndex) false else arr[key.index] != null
+    }
 
     override fun containsValue(value: Tile) = arr.contains(value)
 
@@ -41,8 +45,9 @@ class ArrayBackedTileMap(
 
     private val Int.pos: Position
         get() {
-            val y = this / dimensions.height
-            return Position.create(this - y, y)
+            val y = this / dimensions.width
+            val x = this - (y * dimensions.width)
+            return Position.create(x, y)
         }
 
     class Entry(

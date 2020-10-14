@@ -3,6 +3,7 @@ import Versions.junitVersion
 import Versions.logbackVersion
 import Versions.mockitoKotlinVersion
 import Versions.mockitoVersion
+import Versions.assertkVersion
 
 object TestLibs {
 
@@ -15,5 +16,6 @@ object TestLibs {
     const val junit = "junit:junit:$junitVersion"
     const val mockitoAll = "org.mockito:mockito-all:$mockitoVersion"
     const val mockitoKotlin = "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
-    const val assertJCore = "org.assertj:assertj-core:$assertjVersion"
+    const val assertjCore = "org.assertj:assertj-core:$assertjVersion"
+    const val assertk = "com.willowtreeapps.assertk:assertk-jvm:$assertkVersion"
 }
