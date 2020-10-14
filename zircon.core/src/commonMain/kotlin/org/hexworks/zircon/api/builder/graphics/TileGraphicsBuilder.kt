@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
 
 /**
@@ -74,14 +75,24 @@ data class TileGraphicsBuilder(
     }
 
     /**
-     * Builds a fast [TileGraphics] implementation which is not thread
-     * safe and offers no consistent snapshots. Use this implementation
-     * if you're not reading nor writing from multiple threads.
+     * Builds a [FastTileGraphics] implementation.
      */
-    override fun build(): TileGraphics = PersistentTileGraphics(
+    override fun build(): TileGraphics = FastTileGraphics(
             initialSize = size,
             initialTileset = tileset,
-            initialTiles = tiles.toPersistentMap()).apply {
+            initialTiles = tiles
+    ).apply {
+        if (hasToFill()) fill(filler)
+    }
+
+    /**
+     * Builds a [PersistentTileGraphics] implementation.
+     */
+    fun buildPersistent(): PersistentTileGraphics = PersistentTileGraphics(
+            initialSize = size,
+            initialTileset = tileset,
+            initialTiles = tiles.toPersistentMap()
+    ).apply {
         if (hasToFill()) fill(filler)
     }
 

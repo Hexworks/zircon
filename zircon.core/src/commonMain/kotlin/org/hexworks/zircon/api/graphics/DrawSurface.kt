@@ -22,8 +22,10 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      * Drawing the empty tile ([Tile.empty]) will result in the deletion of the
      * [Tile] at [drawPosition].
      */
-    fun draw(tile: Tile,
-             drawPosition: Position)
+    fun draw(
+            tile: Tile,
+            drawPosition: Position
+    )
 
     /**
      * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] has [Tile]s

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.data
 
-import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -13,7 +12,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 interface TileGraphicsState {
 
-    val tiles: PersistentMap<Position, Tile>
+    val tiles: Map<Position, Tile>
     val tileset: TilesetResource
     val size: Size
 
