@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.Components.button
 import org.hexworks.zircon.api.Functions.fromConsumer
 import org.hexworks.zircon.api.component.VBox
-import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
 import java.util.function.Consumer
@@ -19,7 +18,7 @@ class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
                 .withText("Click Me")
                 .withDecorations(side())
                 .build()
-        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer(Consumer<ComponentEvent> { event: ComponentEvent? -> invisible.isHidden = true }))
+        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer(Consumer { invisible.isHidden = true }))
         val disabled = button()
                 .withText("Disabled")
                 .build()

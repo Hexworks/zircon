@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.platform.util.SystemUtils
 import kotlin.math.min
 
+@Suppress("unused")
 class TextBuffer(text: String) {
 
     private val currentText = mutableListOf<StringBuilder>()
