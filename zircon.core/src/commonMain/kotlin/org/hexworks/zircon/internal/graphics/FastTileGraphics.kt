@@ -27,8 +27,8 @@ class FastTileGraphics(
     private var arr = arrayOfNulls<Tile>(initialSize.width * initialSize.height)
 
     init {
-        for (pos in initialSize.fetchPositions()) {
-            arr[pos.index] = initialTiles[pos]
+        for ((pos, tile) in initialTiles.entries) {
+            arr[pos.index] = tile
         }
     }
 
@@ -72,6 +72,7 @@ class FastTileGraphics(
     @Synchronized
     override fun clear() {
         arr = arrayOfNulls(size.width * size.height)
+        tiles = ArrayBackedTileMap(size, arr)
     }
 
     @Synchronized

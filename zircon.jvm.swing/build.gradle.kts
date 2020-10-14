@@ -26,7 +26,7 @@ kotlin {
         with(TestLibs) {
             testImplementation(junit)
             testImplementation(mockitoAll)
-            testImplementation(assertJCore)
+            testImplementation(assertjCore)
         }
     }
 }

@@ -8,7 +8,8 @@ import Libs.kotlinxCoroutinesTest
 import Libs.logbackClassic
 import Libs.slf4jApi
 import Libs.snakeYaml
-import TestLibs.assertJCore
+import TestLibs.assertjCore
+import TestLibs.assertk
 import TestLibs.kotlinTestAnnotationsCommon
 import TestLibs.kotlinTestCommon
 import TestLibs.logbackCore
@@ -45,6 +46,7 @@ kotlin {
                 implementation(kotlinTestCommon)
                 implementation(kotlinTestAnnotationsCommon)
                 implementation(kotlinxCoroutinesTest)
+                implementation(assertk)
             }
         }
         val jvmMain by getting {
@@ -63,7 +65,7 @@ kotlin {
                 implementation(kotlin("test-junit"))
                 implementation(mockitoAll)
                 implementation(mockitoKotlin)
-                implementation(assertJCore)
+                implementation(assertjCore)
                 implementation(logbackClassic)
                 implementation(logbackCore)
             }

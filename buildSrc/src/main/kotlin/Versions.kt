@@ -1,10 +1,10 @@
 object Versions {
 
-    const val kotlinVersion = "1.3.61"
-    const val kotlinxCoroutinesVersion = "1.3.2"
+    const val kotlinVersion = "1.4.10"
+    const val kotlinxCoroutinesVersion = "1.3.9"
     const val kotlinxCollectionsImmutableVersion = "0.3"
 
-    const val cobaltVersion = "2020.0.17-PREVIEW"
+    const val cobaltVersion = "2020.0.18-PREVIEW"
 
     const val caffeineVersion = "2.5.4"
     const val snakeyamlVersion = "1.18"
@@ -17,4 +17,5 @@ object Versions {
     const val mockitoVersion = "1.10.19"
     const val mockitoKotlinVersion = "1.6.0"
     const val assertjVersion = "3.6.2"
+    const val assertkVersion = "0.23"
 }
