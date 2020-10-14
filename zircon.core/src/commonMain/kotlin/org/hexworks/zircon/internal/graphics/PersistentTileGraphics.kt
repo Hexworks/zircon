@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
+import org.hexworks.zircon.internal.data.PersistentTileGraphicsState
 import org.hexworks.zircon.internal.data.TileGraphicsState
 import kotlin.jvm.Synchronized
 
@@ -30,8 +31,8 @@ class PersistentTileGraphics(
     override var tiles: PersistentMap<Position, Tile> = initialTiles
         private set
 
-    override val state: TileGraphicsState
-        get() = DefaultTileGraphicsState(
+    override val state: PersistentTileGraphicsState
+        get() = PersistentTileGraphicsState(
                 size = size,
                 tileset = tileset,
                 tiles = tiles)

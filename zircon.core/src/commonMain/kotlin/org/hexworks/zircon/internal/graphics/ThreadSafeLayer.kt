@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
@@ -28,11 +29,11 @@ open class ThreadSafeLayer(
         private val movable: Movable = DefaultMovable(
                 position = initialPosition,
                 size = initialContents.size),
-        private val backend: PersistentTileGraphics = TileGraphicsBuilder.newBuilder()
-                .withSize(initialContents.size)
-                .withTiles(initialContents.tiles)
-                .withTileset(initialContents.tileset)
-                .build() as PersistentTileGraphics
+        private val backend: InternalTileGraphics = PersistentTileGraphics(
+                initialSize = initialContents.size,
+                initialTileset = initialContents.tileset,
+                initialTiles = initialContents.tiles.toPersistentMap()
+        )
 ) : Movable by movable, Clearable, InternalLayer, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()

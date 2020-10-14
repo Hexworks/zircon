@@ -31,6 +31,11 @@ class ArrayBackedTileMap(
 
     override fun isEmpty() = arr.isEmpty()
 
+    fun createCopy() = ArrayBackedTileMap(
+            dimensions = dimensions,
+            arr = arr.copyOf()
+    )
+
     private val Position.index: Int
         get() = dimensions.width * y + x
 

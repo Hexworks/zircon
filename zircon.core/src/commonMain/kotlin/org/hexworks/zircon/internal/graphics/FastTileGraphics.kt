@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.graphics
 
-import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -14,7 +13,7 @@ import kotlin.jvm.Synchronized
 
 /**
  * This is a fast implementation of [TileGraphics] that sacrifices memory footprint
- * and consistent snapshots for speed and uses an array behind the scenes.
+ * for speed and uses an array behind the scenes.
  */
 class FastTileGraphics(
         initialSize: Size,
@@ -28,17 +27,19 @@ class FastTileGraphics(
     private var arr = arrayOfNulls<Tile>(initialSize.width * initialSize.height)
 
     init {
-        for (e in initialTiles.entries) {
-            arr[e.key.index] = e.value
+        for (pos in initialSize.fetchPositions()) {
+            arr[pos.index] = initialTiles[pos]
         }
     }
 
-    override val tiles = ArrayBackedTileMap(initialSize, arr)
+    override var tiles = ArrayBackedTileMap(initialSize, arr)
     override val state: TileGraphicsState
+        @Synchronized
         get() = DefaultTileGraphicsState(
                 size = size,
                 tileset = tileset,
-                tiles = tiles.toPersistentMap())
+                tiles = tiles.createCopy()
+        )
 
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
@@ -63,7 +64,7 @@ class FastTileGraphics(
 
     @Synchronized
     override fun draw(tileComposite: TileComposite) {
-        if(tileComposite is FastTileGraphics) {
+        if (tileComposite is FastTileGraphics) {
             tileComposite.arr.copyInto(arr)
         } else super.draw(tileComposite)
     }
@@ -98,6 +99,5 @@ class FastTileGraphics(
 
     private val Position.index: Int
         get() = size.width * y + x
-
 
 }
