@@ -8,13 +8,15 @@ internal data class AnimationMetadata(var type: String,
             animationData = AnimationData())
 
 
-    data class AnimationData(var frameCount: Int,
-                             var frameRate: Int,
-                             var length: Int,
-                             var loopCount: Int,
-                             var baseName: String,
-                             var extension: String,
-                             var frameMap: List<Frame>) {
+    data class AnimationData(
+            var frameCount: Int,
+            var frameRate: Int,
+            var length: Int,
+            var loopCount: Int,
+            var baseName: String,
+            var extension: String,
+            var frameMap: List<Frame>
+    ) {
         constructor() : this(
                 frameCount = -1,
                 frameRate = -1,

@@ -34,7 +34,7 @@ class ThreadSafeLayerTest {
                 .withForegroundColor(BLUE)
         target.draw(tile, Position.offset1x1())
 
-        assertThat(target.state.tiles).isEqualTo(mapOf(Position.offset1x1() to tile))
+        assertThat(target.state.tiles.toMap()).isEqualTo(mapOf(Position.offset1x1() to tile))
     }
 
     @Test

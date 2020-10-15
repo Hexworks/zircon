@@ -90,7 +90,7 @@ class ThreadSafeLayerableTest {
 
         val layerState = layer.state
 
-        assertThat(layerState.tiles).isEqualTo(mapOf(Position.defaultPosition() to tile))
+        assertThat(layerState.tiles.toMap()).isEqualTo(mapOf(Position.defaultPosition() to tile))
         assertThat(target.fetchLayerStates().first()).isEqualTo(layerState)
     }
 

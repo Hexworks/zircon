@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import kotlinx.coroutines.channels.Channel
 import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.modifier.*

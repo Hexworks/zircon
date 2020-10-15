@@ -31,7 +31,7 @@ class AnimationResource {
                 val fileName = "${animationData.baseName}${frame.frame}.xp"
                 frameMap.computeIfAbsent(frame.frame) {
                     val frameImage = REXPaintResource.loadREXFile(files.first { it.name == fileName }.inputStream())
-                    val size = frameImage.toLayerList(tileset).maxBy { it.size }!!.size
+                    val size = frameImage.toLayerList(tileset).maxByOrNull { it.size }!!.size
                     DefaultAnimationFrame(
                             size = size,
                             layers = frameImage.toLayerList(tileset).map { it.asInternalLayer() },

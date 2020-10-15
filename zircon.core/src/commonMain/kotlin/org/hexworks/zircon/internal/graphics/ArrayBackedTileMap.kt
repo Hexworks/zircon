@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Tile
 class ArrayBackedTileMap(
         private val dimensions: Size,
         private val arr: Array<Tile?>
-) : Map<Position, Tile> {
+) : AbstractMap<Position, Tile>() {
 
     override val entries: Set<Map.Entry<Position, Tile>>
         get() = arr.mapIndexed { index, _ ->
@@ -27,6 +27,7 @@ class ArrayBackedTileMap(
 
     override fun containsKey(key: Position) = key.index.let { idx ->
         if (idx > arr.lastIndex) false else arr[key.index] != null
+
     }
 
     override fun containsValue(value: Tile) = arr.contains(value)

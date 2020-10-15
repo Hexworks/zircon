@@ -18,7 +18,7 @@ object RunTimeStats {
 
     @JvmStatic
     fun <T> addTimedStatFor(key: String, fn: () -> T): T {
-        var optResult = Optional.empty<T>()
+        var optResult: Optional<T>
         val time = measureNanoTime {
             optResult = Optional.of(fn())
         }
