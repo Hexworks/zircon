@@ -2,12 +2,14 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
@@ -19,6 +21,7 @@ import org.junit.Test
 class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     override lateinit var target: RootContainer
+    override lateinit var graphics: TileGraphics
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -31,6 +34,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub()
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
                 componentMetadata = ComponentMetadata(
@@ -56,7 +60,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         box.addComponents(foo, bar)
         target.addComponent(box)
 
-        assertThat(target.fetchLayerStates().map { it.id }.toList()).isEqualTo(
+        assertThat(target.componentTree.map { it.id }).isEqualTo(
                 listOf(target.id, box.id, foo.id, bar.id))
     }
 
@@ -70,7 +74,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val bar = label(target.tileset, "bar")
         box.addComponents(foo, bar)
 
-        assertThat(target.fetchLayerStates().map { it.id }.toList()).isEqualTo(
+        assertThat(target.componentTree.map { it.id }).isEqualTo(
                 listOf(target.id, box.id, foo.id, bar.id))
     }
 

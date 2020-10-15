@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.core.extensions.abbreviate
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.events.api.Subscription
@@ -12,7 +13,6 @@ import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.ceil
@@ -20,15 +20,17 @@ import kotlin.math.roundToInt
 import kotlin.math.truncate
 
 @Suppress("LeakingThis")
-abstract class BaseScrollBar(final override val minValue: Int,
-                             final override var maxValue: Int,
-                             final override val numberOfSteps: Int,
-                             final override var itemsShownAtOnce: Int,
-                             componentMetadata: ComponentMetadata,
-                             private val renderingStrategy: ComponentRenderingStrategy<ScrollBar>) :
-        ScrollBar, DefaultComponent(
+abstract class BaseScrollBar(
+        final override val minValue: Int,
+        final override var maxValue: Int,
+        final override val numberOfSteps: Int,
+        final override var itemsShownAtOnce: Int,
+        componentMetadata: ComponentMetadata,
+        renderer: ComponentRenderingStrategy<ScrollBar>
+) : ScrollBar, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+        renderer = renderer
+) {
 
     private var range: Int = maxValue - minValue
     protected var valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
@@ -42,13 +44,8 @@ abstract class BaseScrollBar(final override val minValue: Int,
     override var barSizeInSteps = (itemsShownAtOnce / valuePerStep).roundToInt()
 
     init {
-        render()
         currentValueProperty.onChange {
             computeCurrentStep(it.newValue)
-            render()
-        }
-        currentStepProperty.onChange {
-            render()
         }
         disabledProperty.onChange {
             if (it.newValue) {
@@ -58,7 +55,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
                 LOGGER.debug("Enabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
                 componentState = ComponentState.DEFAULT
             }
-            render()
         }
     }
 
@@ -105,7 +101,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
 
             barSizeInSteps = ceil(itemsShownAtOnce / valuePerStep).toInt()
             addToCurrentValues(0)
-            render()
         }
     }
 
@@ -157,7 +152,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
                 }
             }
 
-            render()
             Processed
         } else Pass
     }
@@ -170,7 +164,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
             val mousePosition = getMousePosition(event)
             computeValueToClosestOfStep(mousePosition - (barSizeInSteps / 2))
 
-            render()
             Processed
         } else Pass
     }
@@ -184,7 +177,6 @@ abstract class BaseScrollBar(final override val minValue: Int,
         } else {
             LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
             componentState = ComponentState.HIGHLIGHTED
-            render()
             Processed
         }
     }

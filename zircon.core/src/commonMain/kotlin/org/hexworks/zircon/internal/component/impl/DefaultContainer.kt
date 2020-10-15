@@ -65,13 +65,23 @@ open class DefaultContainer(
                 event = ComponentAdded(
                         parent = this,
                         component = component.asInternalComponent(),
-                        emitter = this),
-                eventScope = ZirconScope)
+                        emitter = this
+                ),
+                eventScope = ZirconScope
+        )
 
         return attachment
     }
 
+    final override fun asInternalComponent(): InternalContainer = this
+
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
+
+    override fun acceptsFocus() = false
+
+    override fun focusGiven(): UIEventResponse = Pass
+
+    override fun focusTaken(): UIEventResponse = Pass
 
     private fun checkIfCanAdd(component: Component): InternalComponent {
         require(component is InternalComponent) {
@@ -101,14 +111,6 @@ open class DefaultContainer(
         }
         return component
     }
-
-    final override fun asInternalComponent(): InternalContainer = this
-
-    override fun acceptsFocus() = false
-
-    override fun focusGiven(): UIEventResponse = Pass
-
-    override fun focusTaken(): UIEventResponse = Pass
 
     private inner class DefaultAttachedComponent(
             override val component: InternalComponent,

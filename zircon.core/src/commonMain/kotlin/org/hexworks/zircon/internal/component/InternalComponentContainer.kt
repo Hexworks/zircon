@@ -1,16 +1,23 @@
 package org.hexworks.zircon.internal.component
 
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentContainer
-import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.behavior.RenderableContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**
  * Internal API for a [ComponentContainer].
  */
-interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
+interface InternalComponentContainer : ComponentContainer, RenderableContainer, UIEventDispatcher {
 
     val isActive: ObservableValue<Boolean>
+
+    /**
+     * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].
+     */
+    val flattenedTree: ObservableList<InternalComponent>
 
     /**
      * Activates this [InternalComponentContainer]. It will (re) start listening to
@@ -23,7 +30,4 @@ interface InternalComponentContainer : ComponentContainer, UIEventDispatcher {
      * container-related events.
      */
     fun deactivate()
-
-    fun fetchLayerStates(): Sequence<LayerState>
-
 }

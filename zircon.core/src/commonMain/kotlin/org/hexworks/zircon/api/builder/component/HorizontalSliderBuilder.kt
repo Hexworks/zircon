@@ -46,7 +46,7 @@ class HorizontalSliderBuilder(
             minValue = minValue,
             maxValue = maxValue,
             numberOfSteps = numberOfSteps,
-            renderingStrategy = DefaultComponentRenderingStrategy(
+            renderer = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
                     componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).apply {
         colorTheme.map {

@@ -10,7 +10,10 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKED
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
+import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
 import kotlin.jvm.Synchronized
 
 @Suppress("DuplicatedCode")
@@ -30,13 +33,8 @@ class DefaultCheckBox(
     private var pressing = false
 
     init {
-        render()
-        textProperty.onChange {
-            render()
-        }
         selectedProperty.onChange {
             this.checkBoxState = if (it.newValue) CHECKED else UNCHECKED
-            render()
         }
     }
 
@@ -53,7 +51,6 @@ class DefaultCheckBox(
     override fun activated() = whenEnabled {
         pressing = true
         this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
-        render()
         super.activated()
     }
 

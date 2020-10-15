@@ -18,14 +18,16 @@ import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
-abstract class BaseSlider(final override val minValue: Int,
-                          final override val maxValue: Int,
-                          final override val numberOfSteps: Int,
-                          componentMetadata: ComponentMetadata,
-                          private val renderingStrategy: ComponentRenderingStrategy<Slider>) :
-        Slider, DefaultComponent(
+abstract class BaseSlider(
+        final override val minValue: Int,
+        final override val maxValue: Int,
+        final override val numberOfSteps: Int,
+        componentMetadata: ComponentMetadata,
+        renderer: ComponentRenderingStrategy<Slider>
+) : Slider, DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+        renderer = renderer
+) {
 
     private val range: Int = maxValue - minValue
     protected val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
@@ -37,23 +39,17 @@ abstract class BaseSlider(final override val minValue: Int,
     override var currentStep: Int by currentStepProperty.asDelegate()
 
     init {
-        render()
         currentValueProperty.onChange {
             computeCurrentStep(it.newValue)
-            render()
-        }
-        currentStepProperty.onChange {
-            render()
         }
         disabledProperty.onChange {
-            if (it.newValue) {
+            componentState = if (it.newValue) {
                 LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentState = ComponentState.DISABLED
+                ComponentState.DISABLED
             } else {
                 LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentState = ComponentState.DEFAULT
+                ComponentState.DEFAULT
             }
-            render()
         }
     }
 
@@ -125,7 +121,6 @@ abstract class BaseSlider(final override val minValue: Int,
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
-            render()
             Processed
         } else Pass
     }
@@ -135,7 +130,6 @@ abstract class BaseSlider(final override val minValue: Int,
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
-            render()
             Processed
         } else Pass
     }
@@ -149,7 +143,6 @@ abstract class BaseSlider(final override val minValue: Int,
         } else {
             LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
             componentState = ComponentState.HIGHLIGHTED
-            render()
             Processed
         }
     }

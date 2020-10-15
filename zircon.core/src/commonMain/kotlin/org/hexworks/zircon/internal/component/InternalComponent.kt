@@ -8,9 +8,8 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.RootContainer
-import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
@@ -23,7 +22,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * to interact with them in a more meaningful manner.
  */
 interface InternalComponent :
-        Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, UIEventProcessor {
+        Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
     var root: Maybe<RootContainer>
     val rootValue: ObservableValue<Maybe<RootContainer>>
@@ -39,22 +38,10 @@ interface InternalComponent :
 
     override var componentState: ComponentState
 
-    val layerStates: Sequence<LayerState>
-
-    /**
-     * The [TileGraphics] through which this [InternalComponent] can be drawn upon.
-     */
-    val graphics: TileGraphics
-
     /**
      * The immediate child [Component]s of this [Component].
      */
     val children: ObservableList<InternalComponent>
-
-    /**
-     * Renders this component to the underlying [TileGraphics].
-     */
-    fun render()
 
     /**
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.

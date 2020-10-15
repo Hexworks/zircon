@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
@@ -9,11 +10,8 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextHolder
-import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -27,19 +25,17 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
-import org.hexworks.zircon.internal.behavior.Identifiable
+import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.graphics.InternalLayer
-import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 import kotlin.jvm.Synchronized
@@ -48,24 +44,31 @@ import kotlin.jvm.Synchronized
 abstract class DefaultComponent(
         componentMetadata: ComponentMetadata,
         private val renderer: ComponentRenderingStrategy<out Component>,
-        private val contentLayer: InternalLayer = ThreadSafeLayer(
-                initialPosition = componentMetadata.relativePosition,
-                initialContents = TileGraphicsBuilder
-                        .newBuilder()
-                        .withTileset(componentMetadata.tileset)
-                        .withSize(componentMetadata.size)
-                        .build()),
-        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault()
+        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
+        private val movable: Movable = DefaultMovable(
+                position = componentMetadata.relativePosition,
+                size = componentMetadata.size)
 ) : InternalComponent,
-        Identifiable by contentLayer,
-        Hideable by contentLayer,
-        Movable by contentLayer,
-        TilesetOverride by contentLayer,
         ComponentEventSource by uiEventProcessor,
+        Movable by movable,
         UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
+    // Identifiable
+    final override val id: UUID = UUID.randomUUID()
+
+    // Hideable
+    final override val hiddenProperty = createPropertyFrom(false)
+    final override var isHidden: Boolean by hiddenProperty.asDelegate()
+
+    // TilesetOverride
+    final override val tilesetProperty = componentMetadata.tileset.toProperty { newValue ->
+        tileset.isCompatibleWith(newValue)
+    }
+    override var tileset: TilesetResource by tilesetProperty.asDelegate()
+
+    // Component
     final override val rootValue = Maybe.empty<RootContainer>().toProperty()
     final override var root: Maybe<RootContainer> by rootValue.asDelegate()
 
@@ -97,15 +100,9 @@ abstract class DefaultComponent(
             styleOverride = Maybe.of(value)
         }
 
-    override val layerStates: Sequence<LayerState>
-        get() = sequenceOf(contentLayer.state)
-
     override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
-    override val graphics: TileGraphics
-        get() = contentLayer
-
-    // COMPONENT PROPERTIES
+    // ComponentProperties
     final override val disabledProperty = false.toProperty()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
 
@@ -129,40 +126,30 @@ abstract class DefaultComponent(
         }
         themeProperty.onChange {
             themeStyle = convertColorTheme(it.newValue)
-            render()
         }
         componentStyleSetProperty.onChange {
             styleOverride = Maybe.of(it.newValue) // TODO: add regression test for this line!
-            render()
         }
-        componentStateValue.onChange {
-            render()
-        }
+    }
+
+    @Synchronized
+    override fun render(graphics: TileGraphics) {
+        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     @Synchronized
     override fun moveTo(position: Position): Boolean {
         parent.map { parent ->
-            val newBounds = contentLayer.rect.withPosition(position)
+            val newBounds = movable.rect.withPosition(position)
             require(parent.containsBoundable(newBounds)) {
                 "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds ($parent)."
             }
         }
         val diff = position - absolutePosition
-        contentLayer.moveTo(position)
+        movable.moveTo(position)
         relativePosition += diff
         return true
     }
-
-    final override fun moveBy(position: Position) = moveTo(this.position + position)
-
-    final override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
-
-    final override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
-
-    final override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
-
-    final override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     override fun asInternalComponent(): InternalComponent = this
 
@@ -180,7 +167,8 @@ abstract class DefaultComponent(
     final override fun clearFocus() {
         Zircon.eventBus.publish(
                 event = ClearFocus(this, this),
-                eventScope = ZirconScope)
+                eventScope = ZirconScope
+        )
     }
 
     override fun focusGiven() = whenEnabled {
@@ -224,10 +212,6 @@ abstract class DefaultComponent(
     override fun deactivated() = whenEnabledRespondWith {
         updateComponentState(DEACTIVATED)
         Processed
-    }
-
-    final override fun render() {
-        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     final override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {

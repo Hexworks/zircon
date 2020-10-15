@@ -12,17 +12,10 @@ class DefaultParagraph(
         componentMetadata: ComponentMetadata,
         initialText: String,
         renderingStrategy: ComponentRenderingStrategy<Paragraph>
-) : Paragraph, DefaultComponent(
+) : Paragraph, TextHolder by TextHolder.create(initialText), DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TextHolder by TextHolder.create(initialText) {
-
-    init {
-        render()
-        textProperty.onChange {
-            render()
-        }
-    }
+        renderer = renderingStrategy
+) {
 
     override fun acceptsFocus() = false
 

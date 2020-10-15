@@ -14,10 +14,11 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import kotlin.jvm.Synchronized
 
-open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
-                                         override val darkenPercent: Double,
-                                         private val renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>)
-    : Modal<T>, DefaultContainer(
+open class DefaultModal<T : ModalResult>(
+        componentMetadata: ComponentMetadata,
+        override val darkenPercent: Double,
+        renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
+) : Modal<T>, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         Observable<T> by DefaultObservable() {
@@ -34,10 +35,6 @@ open class DefaultModal<T : ModalResult>(componentMetadata: ComponentMetadata,
 
     override fun onClosed(fn: (T) -> Unit) {
         addObserver(fn)
-    }
-
-    init {
-        render()
     }
 
     override fun acceptsFocus() = true

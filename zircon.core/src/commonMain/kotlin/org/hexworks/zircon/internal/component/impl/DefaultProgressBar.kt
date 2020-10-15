@@ -24,13 +24,6 @@ class DefaultProgressBar(
     override val progressProperty = 0.0.toProperty()
     override var progress: Double by progressProperty.asDelegate()
 
-    init {
-        render()
-        progressProperty.onChange {
-            render()
-        }
-    }
-
     override fun acceptsFocus() = false
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()

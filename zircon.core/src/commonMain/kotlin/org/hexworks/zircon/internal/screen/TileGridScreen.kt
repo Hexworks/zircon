@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -24,6 +25,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 import org.hexworks.zircon.internal.event.ZirconEvent.ScreenSwitch
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
@@ -39,11 +41,17 @@ class TileGridScreen(
                 layerable = ComponentsLayerable(
                         componentContainer = componentContainer,
                         layerable = ThreadSafeLayerable(
-                                initialSize = tileGrid.size))),
+                                initialSize = tileGrid.size
+                        )
+                )
+        ),
         private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalScreen,
         InternalTileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
+
+    override val renderables: ObservableList<out Renderable>
+        get() = bufferGrid.renderables
 
     // we make this random because we don't know which one is the active
     // yet and we only need this to determine whether this Screen is the active
@@ -62,8 +70,6 @@ class TileGridScreen(
             }
         }.disposeWhen(isClosed)
     }
-
-    override fun fetchLayerStates() = bufferGrid.fetchLayerStates()
 
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
@@ -154,9 +160,11 @@ class TileGridScreen(
                     size = initialSize,
                     relativePosition = Position.defaultPosition(),
                     tileset = initialTileset,
-                    componentStyleSet = ComponentStyleSet.defaultStyleSet())
+                    componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            )
             return ModalComponentContainer(
-                    metadata = metadata)
+                    metadata = metadata
+            )
         }
     }
 }

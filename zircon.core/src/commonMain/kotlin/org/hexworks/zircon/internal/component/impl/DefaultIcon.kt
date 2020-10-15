@@ -19,13 +19,6 @@ class DefaultIcon(
     override val iconProperty = createPropertyFrom(initialIcon)
     override var icon: Tile by iconProperty.asDelegate()
 
-    init {
-        render()
-        iconProperty.onChange {
-            render()
-        }
-    }
-
     override fun acceptsFocus() = false
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSets.empty()

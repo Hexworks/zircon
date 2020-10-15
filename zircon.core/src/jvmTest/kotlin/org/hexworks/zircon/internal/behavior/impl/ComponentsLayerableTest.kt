@@ -1,58 +1,71 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.component.ComponentContainer
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
-import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
+import org.hexworks.zircon.internal.component.impl.DefaultRootContainer
+import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import kotlin.test.assertEquals
 
 
 @Suppress("TestFunctionName")
 class ComponentsLayerableTest {
 
+    lateinit var componentContainer: InternalComponentContainer
+    lateinit var layerable: InternalLayerable
+    lateinit var rootContainer: RootContainer
     lateinit var target: ComponentsLayerable
-
-    @Mock
-    lateinit var componentContainerMock: InternalComponentContainer
-
-    @Mock
-    lateinit var layerableMock: InternalLayerable
-
-    @Mock
-    lateinit var componentLayerStateMock0: LayerState
-
-    @Mock
-    lateinit var componentLayerStateMock1: LayerState
-
-    @Mock
-    lateinit var layerableLayerStateMock0: LayerState
-
-    @Mock
-    lateinit var layerableLayerStateMock1: LayerState
-
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        rootContainer = DefaultRootContainer(
+                componentMetadata = ComponentMetadata(
+                        relativePosition = Position.zero(),
+                        size = SIZE_4X2,
+                        tileset = CP437TilesetResources.bisasam16x16(),
+                        ComponentStyleSet.defaultStyleSet(),
+                        theme = ColorThemes.adriftInDreams()
+                ),
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = listOf(),
+                        componentRenderer = RootContainerRenderer()
+                )
+        )
+        componentContainer = DefaultComponentContainer(rootContainer)
+        layerable = ThreadSafeLayerable(SIZE_4X2)
         target = ComponentsLayerable(
-                componentContainer = componentContainerMock,
-                layerable = layerableMock)
+                componentContainer = componentContainer,
+                layerable = layerable
+        )
     }
 
     @Test
     fun Given_a_components_layerable_When_fetching_its_layers_Then_they_are_returned_in_the_proper_order() {
+        val layer = LayerBuilder.newBuilder().withSize(Size.create(1, 1)).build().asInternalLayer()
+        layerable.addLayer(layer)
 
-        val componentLayers = listOf(componentLayerStateMock0, componentLayerStateMock1)
-        val layerableLayers = listOf(layerableLayerStateMock0, layerableLayerStateMock1)
+        assertEquals(
+                expected = listOf<Renderable>(rootContainer, layer),
+                actual = target.renderables.value
+        )
+    }
 
-        Mockito.`when`(componentContainerMock.fetchLayerStates()).thenReturn(componentLayers.asSequence())
-        Mockito.`when`(layerableMock.fetchLayerStates()).thenReturn(layerableLayers.asSequence())
-
-        assertThat(target.fetchLayerStates().toList()).containsExactlyElementsOf(componentLayers + layerableLayers)
+    companion object {
+        val SIZE_4X2 = Size.create(4, 3)
     }
 
 }

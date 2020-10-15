@@ -31,9 +31,10 @@ class VirtualRenderer(
 
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
-        tileGrid.fetchLayerStates().forEach {
-            renderTiles(it)
-        }
+        // TODO: use render on Renderable instead of layer states (push vs pull)
+//        tileGrid.fetchLayerStates().forEach {
+//            renderTiles(it)
+//        }
         tileGrid.updateAnimations(now, tileGrid)
         lastRender = now
     }

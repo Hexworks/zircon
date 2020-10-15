@@ -7,17 +7,19 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
-class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
-                            renderingStrategy: ComponentRenderingStrategy<Slider>,
-                            minValue: Int,
-                            maxValue: Int,
-                            numberOfSteps: Int) : BaseSlider(
-
+class DefaultVerticalSlider(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<Slider>,
+        minValue: Int,
+        maxValue: Int,
+        numberOfSteps: Int
+) : BaseSlider(
         componentMetadata = componentMetadata,
-        renderingStrategy = renderingStrategy,
+        renderer = renderingStrategy,
         minValue = minValue,
         maxValue = maxValue,
-        numberOfSteps = numberOfSteps) {
+        numberOfSteps = numberOfSteps
+) {
 
     override fun getMousePosition(event: MouseEvent): Int {
         return event.position.minus(absolutePosition + contentOffset).y
@@ -43,8 +45,6 @@ class DefaultVerticalSlider(componentMetadata: ComponentMetadata,
                     Processed
                 }
                 else -> Pass
-            }.apply {
-                render()
             }
         } else Pass
     }

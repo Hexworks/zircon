@@ -14,10 +14,6 @@ class DefaultTextBox(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy) {
 
-    init {
-        render()
-    }
-
     override fun acceptsFocus() = false
 
     override fun focusGiven(): UIEventResponse = Pass

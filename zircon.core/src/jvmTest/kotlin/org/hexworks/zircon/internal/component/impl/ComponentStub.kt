@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
@@ -13,10 +12,8 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -27,7 +24,6 @@ import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
@@ -38,10 +34,6 @@ class ComponentStub(
         override val contentOffset: Position = position,
         override val contentSize: Size = size,
         override val id: UUID = UUIDFactory.randomUUID(),
-        override val graphics: TileGraphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .withTileset(tileset)
-                .build()
 ) : InternalComponent {
 
     override val disabledProperty: Property<Boolean> = false.toProperty()
@@ -53,12 +45,10 @@ class ComponentStub(
     override fun asInternalComponent() = this
 
     override var root: Maybe<RootContainer>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = error("not implemented")
         set(_) {}
     override val rootValue: ObservableValue<Maybe<RootContainer>>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val layerStates: Sequence<LayerState>
-        get() = sequenceOf()
+        get() = error("not implemented")
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
     override val hasFocus: Boolean
@@ -68,13 +58,13 @@ class ComponentStub(
 
     override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     override var componentState: ComponentState
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = error("not implemented")
         set(_) {}
     override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it.isPresent }
 
     override val rectValue: ObservableValue<Rect>
-        get() = TODO("not implemented")
+        get() = error("not implemented")
 
     override val isAttached: Boolean
         get() = parent.isPresent
@@ -83,7 +73,7 @@ class ComponentStub(
         get() = persistentListOf<InternalComponent>().toProperty()
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
     override val componentStateValue: ObservableValue<ComponentState>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = error("not implemented")
 
     override val hiddenProperty = false.toProperty()
 
@@ -103,62 +93,61 @@ class ComponentStub(
         get() = position.y
 
     private val movedToPositions = mutableListOf<Position>()
-    private val attachedToContainers = mutableListOf<Container>()
 
     override fun clearCustomStyle() {
 
     }
 
     override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun processMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun processKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun handleComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun processComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> Unit): Subscription {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun close() {
-        TODO("not implemented")
+        error("not implemented")
     }
 
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override val isClosed: ObservableValue<Boolean>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = error("not implemented")
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.theme = colorTheme
@@ -172,39 +161,39 @@ class ComponentStub(
     }
 
     override fun intersects(boundable: Boundable): Boolean {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
     }
 
     override fun containsPosition(position: Position): Boolean {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
     }
 
     override fun containsBoundable(boundable: Boundable): Boolean {
-        TODO("This operation is unsupported for a Stub")
-    }
-
-    override fun render() {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
     }
 
     override fun acceptsFocus(): Boolean {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
     }
 
     override fun focusGiven(): UIEventResponse {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
     }
 
     override fun focusTaken(): UIEventResponse {
-        TODO("This operation is unsupported for a Stub")
+        error("not implemented")
+    }
+
+    override fun render(graphics: TileGraphics) {
+        error("not implemented")
     }
 
     override fun requestFocus(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented")
     }
 
     override fun clearFocus() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        error("not implemented")
     }
 
     companion object {

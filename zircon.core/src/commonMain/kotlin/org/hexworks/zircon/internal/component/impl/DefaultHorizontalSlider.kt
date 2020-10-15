@@ -9,17 +9,17 @@ import kotlin.math.roundToInt
 
 class DefaultHorizontalSlider(
         componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<Slider>,
+        renderer: ComponentRenderingStrategy<Slider>,
         minValue: Int,
         maxValue: Int,
         numberOfSteps: Int
 ) : BaseSlider(
-
         componentMetadata = componentMetadata,
-        renderingStrategy = renderingStrategy,
+        renderer = renderer,
         minValue = minValue,
         maxValue = maxValue,
-        numberOfSteps = numberOfSteps) {
+        numberOfSteps = numberOfSteps
+) {
 
     override fun getMousePosition(event: MouseEvent): Int {
         return event.position.minus(absolutePosition + contentOffset).x
@@ -45,8 +45,6 @@ class DefaultHorizontalSlider(
                     Processed
                 }
                 else -> Pass
-            }.apply {
-                render()
             }
         } else Pass
     }

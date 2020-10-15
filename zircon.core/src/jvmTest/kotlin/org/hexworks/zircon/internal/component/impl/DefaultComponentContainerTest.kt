@@ -47,11 +47,11 @@ class DefaultComponentContainerTest {
     fun shouldProperlyRemoveComponent() {
         val button = createButton() as InternalComponent
         val handle = target.addComponent(button)
-        assertThat(target.fetchLayerStates().toList()).hasSize(2)
+        assertThat(target.flattenedTree).hasSize(2)
 
         handle.detach()
 
-        assertThat(target.fetchLayerStates().toList()).hasSize(1) // root is always there
+        assertThat(target.flattenedTree).hasSize(1) // root is always there
     }
 
     // TODO: wtf is the problem with this?

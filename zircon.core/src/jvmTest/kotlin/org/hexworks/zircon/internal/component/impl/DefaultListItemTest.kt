@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -8,8 +9,9 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
 import org.junit.Before
 import org.junit.Test
@@ -18,6 +20,7 @@ import org.junit.Test
 class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
 
     override lateinit var target: DefaultListItem
+    override lateinit var graphics: TileGraphics
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -30,6 +33,7 @@ class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultListItemRenderer())
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         target = DefaultListItem(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_3_4,

@@ -95,13 +95,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun shouldRenderWhenComponentStyleSetIsSet() {
-        target.componentStyleSet = ComponentStyleSet.empty()
-
-        assertThat(rendererStub.renderings).isNotEmpty
-    }
-
-    @Test
     fun shouldNotifyObserversWhenInputIsEmitted() {
         var notified = false
 
@@ -118,17 +111,16 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
-    fun When_a_component_is_hovered_Then_it_has_mouse_over_style_and_is_rendered() {
+    fun When_a_component_is_hovered_Then_it_has_mouse_over_style() {
         target.mouseEntered(
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
                 phase = TARGET)
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
-        assertThat(rendererStub.renderings).isNotEmpty
     }
 
     @Test
-    fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset_and_it_is_rendered() {
+    fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset() {
         target.mouseEntered(
                 event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
                 phase = TARGET)
@@ -138,11 +130,10 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 phase = TARGET)
 
         assertThat(target.componentState).isEqualTo(ComponentState.DEFAULT)
-        assertThat(rendererStub.renderings).isNotEmpty
     }
 
     @Test
-    fun When_a_component_is_no_longer_hovered_and_has_focus_Then_style_is_reset_and_it_is_rendered() {
+    fun When_a_component_is_no_longer_hovered_and_has_focus_Then_style_is_reset() {
         target.focusGiven()
 
         target.mouseExited(
@@ -150,7 +141,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 phase = TARGET)
 
         assertThat(target.componentState).isEqualTo(ComponentState.FOCUSED)
-        assertThat(rendererStub.renderings).isNotEmpty
     }
 
 

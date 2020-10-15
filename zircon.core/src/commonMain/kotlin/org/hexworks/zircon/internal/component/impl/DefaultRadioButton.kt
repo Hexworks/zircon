@@ -9,7 +9,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 
 @Suppress("DuplicatedCode")
 class DefaultRadioButton(
@@ -27,17 +29,12 @@ class DefaultRadioButton(
     override var state = NOT_SELECTED
 
     init {
-        render()
-        textProperty.onChange {
-            render()
-        }
         selectedProperty.onChange { (_, newValue) ->
             state = if (newValue) {
                 SELECTED
             } else {
                 NOT_SELECTED
             }
-            render()
         }
     }
 

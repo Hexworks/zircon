@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -10,8 +11,9 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.junit.Before
 import org.junit.Test
@@ -20,6 +22,7 @@ import org.junit.Test
 class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
 
     override lateinit var target: DefaultParagraph
+    override lateinit var graphics: TileGraphics
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -32,6 +35,7 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultParagraphRenderer())
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE).build()
         target = DefaultParagraph(
                 componentMetadata = ComponentMetadata(
                         size = SIZE,

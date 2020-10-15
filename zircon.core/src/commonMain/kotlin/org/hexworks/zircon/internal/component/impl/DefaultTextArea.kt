@@ -17,7 +17,10 @@ import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.DOWN
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.UP
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
@@ -43,7 +46,6 @@ class DefaultTextArea constructor(
         get() = textBuffer.getText()
         set(value) {
             textBuffer = EditableTextBuffer.create(value)
-            render()
         }
 
     private var textBuffer = EditableTextBuffer.create(initialText)
@@ -112,7 +114,6 @@ class DefaultTextArea constructor(
                 refreshVirtualSpaceSize()
                 scrollToCursor()
                 refreshCursor()
-                render()
                 Processed
             }
         } else Pass
@@ -141,7 +142,6 @@ class DefaultTextArea constructor(
                 scrollDownBy(delta + 1)
             }
         }
-        render()
     }
 
     private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =

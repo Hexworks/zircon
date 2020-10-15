@@ -1,6 +1,5 @@
 import Libs.caffeine
 import Libs.cobaltCore
-import Libs.kotlinReflect
 import Libs.kotlinxCollectionsImmutable
 import Libs.kotlinxCoroutines
 import Libs.kotlinxCoroutinesTest
@@ -8,7 +7,6 @@ import Libs.logbackClassic
 import Libs.slf4jApi
 import Libs.snakeYaml
 import TestLibs.assertjCore
-import TestLibs.assertk
 import TestLibs.kotlinTestAnnotationsCommon
 import TestLibs.kotlinTestCommon
 import TestLibs.logbackCore
@@ -24,8 +22,8 @@ plugins {
 kotlin {
 
     jvm {
-        jvmTarget(JavaVersion.VERSION_1_8)
         withJava()
+        jvmTarget(JavaVersion.VERSION_1_8)
     }
 
     sourceSets {

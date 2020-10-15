@@ -1,6 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
+import org.hexworks.cobalt.databinding.api.binding.bindFlatten
+import org.hexworks.cobalt.databinding.api.binding.bindMap
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -14,10 +17,12 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.data.LayerState
+import org.hexworks.zircon.internal.graphics.Renderable
 import kotlin.jvm.Synchronized
 
 /**
@@ -29,11 +34,18 @@ import kotlin.jvm.Synchronized
 class ModalComponentContainer(
         private val metadata: ComponentMetadata,
         private val mainContainer: InternalComponentContainer = buildContainer(
-                metadata = metadata)
+                metadata = metadata
+        )
 ) : InternalComponentContainer {
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val containerStack = persistentListOf<InternalComponentContainer>().toProperty()
+    private val trees = containerStack.bindMap { it.flattenedTree }
+
+    override val flattenedTree = trees.bindFlatten()
+
+    override val renderables: ObservableList<out Renderable>
+        get() = flattenedTree
 
     override val isActive = mainContainer.isActive.value.toProperty()
 
@@ -51,9 +63,6 @@ class ModalComponentContainer(
     }
 
     fun isMainContainerActive() = mainContainer.isActive.value
-
-    override fun fetchLayerStates(): Sequence<LayerState> =
-            containerStack.map { it.fetchLayerStates() }.reduce { acc, sequence -> acc + sequence }
 
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
@@ -118,11 +127,13 @@ class ModalComponentContainer(
         private fun buildContainer(metadata: ComponentMetadata): InternalComponentContainer {
             val renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = listOf(),
-                    componentRenderer = RootContainerRenderer())
+                    componentRenderer = RootContainerRenderer()
+            )
             val container = DefaultComponentContainer(
                     root = DefaultRootContainer(
                             componentMetadata = metadata,
-                            renderingStrategy = renderingStrategy))
+                            renderingStrategy = renderingStrategy)
+            )
             container.theme = ColorThemes.empty()
             return container
         }
