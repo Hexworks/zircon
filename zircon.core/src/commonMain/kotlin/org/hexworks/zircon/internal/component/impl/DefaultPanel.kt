@@ -14,10 +14,6 @@ open class DefaultPanel(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy), TitleHolder by TitleHolder.create(initialTitle) {
 
-    init {
-        render()
-    }
-
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
 }

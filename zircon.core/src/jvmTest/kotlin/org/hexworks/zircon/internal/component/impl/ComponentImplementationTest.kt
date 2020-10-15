@@ -1,8 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.UIEventPhase
@@ -12,18 +15,15 @@ import org.junit.Test
 @Suppress("PropertyName", "TestFunctionName")
 abstract class ComponentImplementationTest<T : InternalComponent> : CommonComponentTest<T>() {
 
-    @Test
-    fun shouldRenderOnInit() {
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
-    }
+    abstract val graphics: TileGraphics
 
     @Test
     fun When_render_is_called_on_a_component_Then_it_gets_rendered() {
         rendererStub.clear()
 
-        target.render()
+        rendererStub.render(graphics, ComponentRenderContext(target))
 
-        assertThat(rendererStub.renderedOnce()).isTrue()
+        assertThat(rendererStub.renderedOnce()).isTrue
     }
 
     @Test
@@ -35,7 +35,6 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -47,7 +46,6 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(DEFAULT)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -58,7 +56,6 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -71,7 +68,6 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
 }

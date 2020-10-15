@@ -32,7 +32,6 @@ class ThreadSafeLayerableTest {
 
         target.addLayer(layer)
 
-        assertThat(target.fetchLayerStates().toList()).containsExactly(layer.state)
         assertThat(target.layers).containsExactly(layer)
     }
 
@@ -46,7 +45,6 @@ class ThreadSafeLayerableTest {
         target.addLayer(layer)
         target.removeLayer(layer)
 
-        assertThat(target.fetchLayerStates().toList()).isEmpty()
         assertThat(target.layers).isEmpty()
     }
 
@@ -59,7 +57,6 @@ class ThreadSafeLayerableTest {
 
         target.addLayer(layer).removeLayer()
 
-        assertThat(target.fetchLayerStates().toList()).isEmpty()
         assertThat(target.layers).isEmpty()
     }
 
@@ -73,8 +70,7 @@ class ThreadSafeLayerableTest {
 
         layer.draw(tile, Position.defaultPosition())
 
-        assertThat(layer.state.tiles).isEqualTo(mapOf(Position.defaultPosition() to tile))
-        assertThat(target.fetchLayerStates().first()).isEqualTo(layer.state)
+        assertThat(layer.tiles).isEqualTo(mapOf(Position.defaultPosition() to tile))
     }
 
     @Test
@@ -88,10 +84,7 @@ class ThreadSafeLayerableTest {
 
         layer.draw(tile, Position.defaultPosition())
 
-        val layerState = layer.state
-
-        assertThat(layerState.tiles.toMap()).isEqualTo(mapOf(Position.defaultPosition() to tile))
-        assertThat(target.fetchLayerStates().first()).isEqualTo(layerState)
+        assertThat(layer.tiles.toMap()).isEqualTo(mapOf(Position.defaultPosition() to tile))
     }
 
     @Test
@@ -107,7 +100,7 @@ class ThreadSafeLayerableTest {
         target.addLayer(oldLayer)
         target.setLayerAt(0, newLayer)
 
-        assertThat(target.fetchLayerStates().toList()).containsExactly(newLayer.state)
+        assertThat(target.layers).containsExactly(newLayer)
     }
 
     @Test
@@ -126,7 +119,7 @@ class ThreadSafeLayerableTest {
 
         oldLayer.draw(oldTile, Position.defaultPosition())
 
-        assertThat(target.fetchLayerStates().toList()).containsExactly(newLayer.state)
+        assertThat(target.layers).containsExactly(newLayer)
     }
 
     @Test
@@ -144,7 +137,7 @@ class ThreadSafeLayerableTest {
 
         oldLayer.draw(buildTile('z'), Position.defaultPosition())
 
-        assertThat(target.fetchLayerStates().toList()).containsExactly(newLayer.state)
+        assertThat(target.layers).containsExactly(newLayer)
     }
 
     @Test
@@ -249,7 +242,7 @@ class ThreadSafeLayerableTest {
 
         assertThat(handle.position).isEqualTo(pos)
 
-        assertThat(target.fetchLayerStates().first().position).isEqualTo(pos)
+        assertThat(target.layers.first().position).isEqualTo(pos)
     }
 
     private fun buildTile(char: Char): CharacterTile {

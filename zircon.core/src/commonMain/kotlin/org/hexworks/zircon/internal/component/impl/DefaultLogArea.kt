@@ -20,10 +20,6 @@ class DefaultLogArea constructor(
     private var currentInlineBuilder = createTextBoxBuilder()
     private val logElements = mutableListOf<AttachedComponent>()
 
-    init {
-        render()
-    }
-
     override fun addHeader(text: String, withNewLine: Boolean) {
         LOGGER.debug("Adding header text ($text) to LogArea (id=${id.abbreviate()}).")
         addLogElement(createTextBoxBuilder()
@@ -114,7 +110,6 @@ class DefaultLogArea constructor(
         if (applyTheme) {
             element.theme = theme
         }
-        render()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()

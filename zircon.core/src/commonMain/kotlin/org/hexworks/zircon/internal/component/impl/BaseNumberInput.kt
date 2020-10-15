@@ -39,20 +39,19 @@ abstract class BaseNumberInput(
         renderer = renderingStrategy) {
 
     final override var text: String
-        get() = textBuffer.getText()
+        get() = _textBuffer.getText()
         set(value) {
             if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
-                textBuffer = when {
+                _textBuffer = when {
                     clean == "" -> EditableTextBuffer.create("")
-                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, textBuffer.cursor)
-                    else -> textBuffer
+                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, _textBuffer.cursor)
+                    else -> _textBuffer
                 }
-                render()
             }
         }
 
-    protected var textBuffer = EditableTextBuffer.create("$initialValue")
+    protected var _textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
@@ -85,7 +84,7 @@ abstract class BaseNumberInput(
         }
     }
 
-    override fun textBuffer() = textBuffer
+    override fun textBuffer() = _textBuffer
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
             .withDefaultStyle(StyleSetBuilder.newBuilder()
@@ -107,14 +106,12 @@ abstract class BaseNumberInput(
         text = ""
         refreshCursor()
         componentState = ComponentState.FOCUSED
-        render()
     }
 
     override fun focusTaken() = whenEnabled {
         text = textBeforeModifications
         computeNumberValue()
         componentState = ComponentState.DEFAULT
-        render()
         Zircon.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),
                 eventScope = ZirconScope)
@@ -131,10 +128,10 @@ abstract class BaseNumberInput(
                         clearFocus()
                     }
                     KeyCode.ESCAPE -> clearFocus()
-                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
-                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
-                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
-                    KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                    KeyCode.RIGHT -> _textBuffer.applyTransformation(MoveCursor(RIGHT))
+                    KeyCode.LEFT -> _textBuffer.applyTransformation(MoveCursor(LEFT))
+                    KeyCode.DELETE -> _textBuffer.applyTransformation(DeleteCharacter(DEL))
+                    KeyCode.BACKSPACE -> _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
                     else -> {
                         event.key.forEach { char ->
                             if (TextUtils.isDigitCharacter(char)) {
@@ -144,7 +141,6 @@ abstract class BaseNumberInput(
                     }
                 }
                 refreshCursor()
-                render()
                 Processed
             }
         } else Pass
@@ -154,18 +150,18 @@ abstract class BaseNumberInput(
             event == TAB || event == REVERSE_TAB
 
     private fun checkAndAddChar(char: Char) {
-        val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
+        val virtualTextBuffer = EditableTextBuffer.create(text, _textBuffer.cursor)
         virtualTextBuffer.applyTransformation(InsertCharacter(char))
         if (virtualTextBuffer.getText().toInt() <= maxValue) {
             if (text.length == maxNumberLength) {
-                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
             }
-            textBuffer.applyTransformation(InsertCharacter(char))
+            _textBuffer.applyTransformation(InsertCharacter(char))
         } else {
-            if (textBuffer.getCharAt(textBuffer.cursor.position).isPresent) {
-                textBuffer.applyTransformation(DeleteCharacter(DEL))
+            if (_textBuffer.getCharAt(_textBuffer.cursor.position).isPresent) {
+                _textBuffer.applyTransformation(DeleteCharacter(DEL))
             } else {
-                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
             }
             checkAndAddChar(char)
         }

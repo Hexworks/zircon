@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -10,10 +11,12 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusOrderList
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
 import kotlin.contracts.ExperimentalContracts
@@ -31,10 +34,12 @@ class DefaultComponentContainer(
         UIEventDispatcher by dispatcher {
 
     override val isActive = false.toProperty()
+    override val flattenedTree: ObservableList<InternalComponent>
+        get() = root.componentTree
+    override val renderables: ObservableList<out Renderable>
+        get() = flattenedTree
 
     private val logger = LoggerFactory.getLogger(this::class)
-
-    override fun fetchLayerStates() = root.fetchLayerStates()
 
     @ExperimentalContracts
     @Synchronized

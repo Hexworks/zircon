@@ -23,7 +23,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         target.deactivated()
 
         assertThat(target.componentState).isEqualTo(FOCUSED)
-        assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
     }
 
     @Test
@@ -36,7 +35,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(FOCUSED)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -47,7 +45,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         target.focusTaken()
 
         assertThat(target.componentState).isEqualTo(ComponentState.DEFAULT)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -62,7 +59,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(FOCUSED)
-        assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
     }
 
 
@@ -74,7 +70,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ComponentState.ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -87,7 +82,6 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
-        assertThat(rendererStub.renderings.size).isEqualTo(1)
     }
 
     @Test
@@ -102,6 +96,5 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
                 phase = UIEventPhase.TARGET)
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
-        assertThat(rendererStub.renderings.size).isGreaterThanOrEqualTo(1)
     }
 }

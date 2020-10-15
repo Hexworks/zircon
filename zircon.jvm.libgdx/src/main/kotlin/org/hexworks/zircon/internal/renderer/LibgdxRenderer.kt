@@ -26,8 +26,10 @@ import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
-class LibgdxRenderer(private val grid: InternalTileGrid,
-                     private val debug: Boolean = false) : Renderer {
+class LibgdxRenderer(
+        private val grid: InternalTileGrid,
+        private val debug: Boolean = false
+) : Renderer {
 
     override val isClosed = false.toProperty()
 
@@ -78,18 +80,19 @@ class LibgdxRenderer(private val grid: InternalTileGrid,
 
         maybeBatch.map { batch ->
             batch.begin()
-            grid.fetchLayerStates().forEach { state ->
-                renderTiles(
-                        batch = batch,
-                        state = state,
-                        tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
-                        offset = state.position.toPixelPosition(grid.tileset)
-                )
-            }
+            // TODO: use render on Renderable instead of layer states (push vs pull)
+//            grid.fetchLayerStates().forEach { state ->
+//                renderTiles(
+//                        batch = batch,
+//                        state = state,
+//                        tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
+//                        offset = state.position.toPixelPosition(grid.tileset)
+//                )
+//            }
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
             if (shouldDrawCursor()) {
-                grid.getTileAt(grid.cursorPosition).map {
+                grid.getTileAt(grid.cursorPosition).map { it ->
                     drawCursor(cursorRenderer, it, grid.cursorPosition)
                 }
             }

@@ -25,7 +25,8 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
-import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
+import org.hexworks.zircon.internal.graphics.InternalLayer
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
 
@@ -65,15 +66,16 @@ class ThreadSafeTileGrid(
 
     override val isClosed = false.toProperty()
 
-    override val layers: ObservableList<out Layer>
+    override val layers: ObservableList<out InternalLayer>
         get() = layerable.layers
+
+    override val renderables: ObservableList<out Renderable>
+        get() = layers
 
     private var originalCursorHandler = cursorHandler
     private var originalBackend = backend
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
-
-    override fun fetchLayerStates() = layerable.fetchLayerStates()
 
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
@@ -222,9 +224,8 @@ class ThreadSafeTileGrid(
 
     private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {
         layerable.addLayer(Layer.newBuilder()
-                .withTileGraphics(PersistentTileGraphics(
-                        initialSize = initialSize,
-                        initialTileset = initialTileset))
+                .withSize(initialSize)
+                .withTileset(initialTileset)
                 .build())
     }
 
@@ -232,5 +233,6 @@ class ThreadSafeTileGrid(
 
 private fun buildLayerable(initialSize: Size): ThreadSafeLayerable {
     return ThreadSafeLayerable(
-            initialSize = initialSize)
+            initialSize = initialSize
+    )
 }

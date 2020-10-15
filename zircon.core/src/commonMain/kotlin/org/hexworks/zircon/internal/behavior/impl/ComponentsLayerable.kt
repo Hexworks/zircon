@@ -1,13 +1,18 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.databinding.api.binding.bindPlusWith
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 
-// TODO: refactor this to take layerables in any order
+/**
+ * Extends a [InternalLayerable] with additional [renderables] taken form an [InternalComponentContainer]
+ * to enable smooth rendering of both.
+ */
 class ComponentsLayerable(
-        private val componentContainer: InternalComponentContainer,
+        componentContainer: InternalComponentContainer,
         private val layerable: InternalLayerable
 ) : InternalLayerable by layerable {
 
-    override fun fetchLayerStates() = componentContainer.fetchLayerStates() + layerable.fetchLayerStates()
+    override val renderables = componentContainer.renderables.bindPlusWith(layerable.renderables)
+
 }

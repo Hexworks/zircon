@@ -3,16 +3,16 @@ package org.hexworks.zircon.internal.behavior.impl
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.graphics.InternalLayer
+import org.hexworks.zircon.internal.graphics.Renderable
 import kotlin.jvm.Synchronized
 
 class ThreadSafeLayerable(
@@ -20,14 +20,11 @@ class ThreadSafeLayerable(
 ) : InternalLayerable {
 
     override val size: Size = initialSize
-
     override val layers: ListProperty<InternalLayer> = persistentListOf<InternalLayer>().toProperty()
+    override val renderables: ObservableList<out Renderable>
+        get() = layers
 
     private val listeners = mutableMapOf<UUID, Subscription>()
-
-    override fun fetchLayerStates(): Sequence<LayerState> = sequence {
-        layers.value.forEach { yield(it.state) }
-    }
 
     override fun getLayerAt(level: Int): Maybe<LayerHandle> {
         return Maybe.ofNullable(DefaultLayerHandle(layers[level]))
@@ -58,8 +55,6 @@ class ThreadSafeLayerable(
         } else error("Can't insert layer $layer at $level")
         return DefaultLayerHandle(internalLayer)
     }
-
-    // DERIVED FUNCTIONS
 
     @Synchronized
     override fun removeLayer(layer: Layer): Boolean {

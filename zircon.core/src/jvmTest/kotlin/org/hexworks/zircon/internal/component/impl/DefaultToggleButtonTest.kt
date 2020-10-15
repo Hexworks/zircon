@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -9,15 +10,20 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
+import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 import org.junit.Before
 import org.junit.Test
@@ -27,6 +33,8 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
 
 
     override lateinit var target: DefaultToggleButton
+
+    override lateinit var graphics: TileGraphics
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -51,6 +59,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultToggleButtonRenderer())
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
         target = DefaultToggleButton(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_15X1,
@@ -62,6 +71,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
                         componentRenderer = rendererStub as ComponentRenderer<ToggleButton>),
                 initialText = TEXT,
                 initialSelected = false)
+        rendererStub.render(graphics, ComponentRenderContext(target))
     }
 
     @Test
@@ -73,10 +83,9 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
 
     @Test
     fun shouldProperlyAddButtonText() {
-        val surface = target.graphics
         val offset = target.contentOffset.x + DefaultToggleButtonRenderer.DECORATION_WIDTH
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
+            assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .withCharacter(char)
                             .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
@@ -116,8 +125,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         rendererStub.clear()
         target.activated()
 
-        assertThat(target.componentState).isEqualTo(ComponentState.ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(2)
+        assertThat(target.componentState).isEqualTo(ACTIVE)
     }
 
     @Test
@@ -128,7 +136,6 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(2)
     }
 
     @Test
@@ -140,7 +147,6 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
-        assertThat(rendererStub.renderings.size).isEqualTo(2)
     }
 
     companion object {

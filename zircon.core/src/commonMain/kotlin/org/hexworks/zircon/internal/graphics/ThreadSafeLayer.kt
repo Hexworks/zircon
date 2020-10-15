@@ -18,7 +18,6 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
-import org.hexworks.zircon.internal.data.DefaultLayerState
 import kotlin.jvm.Synchronized
 
 open class ThreadSafeLayer(
@@ -32,21 +31,9 @@ open class ThreadSafeLayer(
                 initialTileset = initialContents.tileset,
                 initialTiles = initialContents.tiles
         )
-) : Movable by movable, Clearable, InternalLayer, TileGraphics by backend {
+) : Clearable, InternalLayer, Movable by movable, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()
-
-    final override val state: DefaultLayerState
-        get() {
-            val backendState = backend.state
-            return DefaultLayerState(
-                    tiles = backendState.tiles,
-                    tileset = backendState.tileset,
-                    size = backendState.size,
-                    position = position,
-                    isHidden = isHidden,
-                    id = id)
-        }
 
     final override val size: Size
         get() = backend.size
@@ -62,14 +49,7 @@ open class ThreadSafeLayer(
 
     override fun asInternalLayer() = this
 
-    override fun toString(): String {
-        return DrawSurfaces.tileGraphicsBuilder()
-                .withSize(size)
-                .withTiles(tiles)
-                .build()
-                .toString()
-    }
-
+    @Synchronized
     final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position - this.position)
     }
@@ -140,18 +120,23 @@ open class ThreadSafeLayer(
         backend.clear()
     }
 
+    @Synchronized
     final override fun createCopy(): Layer {
-        val (currentTiles, currentTileset, currentSize, _, currentPosition, currentlyHidden) = state
         return ThreadSafeLayer(
-                initialPosition = currentPosition,
-                initialContents = currentTiles.toTileGraphics(currentSize, currentTileset)).apply {
-            isHidden = currentlyHidden
+                initialPosition = position,
+                initialContents = tiles.toTileGraphics(size, tileset)).apply {
+            isHidden = isHidden
         }
+    }
+
+    @Synchronized
+    override fun render(graphics: TileGraphics) {
+        graphics.draw(backend)
     }
 
     final override fun toTileImage() = backend.toTileImage()
 
-    final override fun toLayer(offset: Position) = apply {
+    final override fun toLayer(offset: Position) = createCopy().apply {
         moveTo(offset)
     }
 
@@ -159,6 +144,14 @@ open class ThreadSafeLayer(
 
     final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
 
-    final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, this)
+    final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, backend)
+
+    override fun toString(): String {
+        return DrawSurfaces.tileGraphicsBuilder()
+                .withSize(size)
+                .withTiles(tiles)
+                .build()
+                .toString()
+    }
 
 }

@@ -42,7 +42,7 @@ class GameComponentBuilder<T : Tile, B : Block<T>>(
                         componentStyleSet = componentStyleSet,
                         tileset = tileset),
                 initialTitle = title,
-                renderingStrategy = DefaultComponentRenderingStrategy(
+                renderer = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
                         componentRenderer = componentRenderer as ComponentRenderer<GameComponent<T, B>>),
                 gameArea = gameArea.get()).apply {

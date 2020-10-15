@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -9,10 +10,12 @@ import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
@@ -27,6 +30,7 @@ import org.junit.Test
 class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() {
 
     override lateinit var target: DefaultButton
+    override lateinit var graphics: TileGraphics
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -55,6 +59,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultButtonRenderer())
+        graphics =  DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
         target = DefaultButton(
                 componentMetadata = ComponentMetadata(
                         size = SIZE_15X1,
@@ -65,13 +70,14 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
                         decorationRenderers = listOf(),
                         componentRenderer = rendererStub as ComponentRenderer<Button>),
                 initialText = TEXT)
+        rendererStub.render(graphics, ComponentRenderContext(target))
     }
 
     @Test
     fun shouldProperlyAddButtonText() {
-        val surface = target.graphics
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getTileAt(Position.create(i, 0)).get())
+            println("idx: $i")
+            assertThat(graphics.getTileAt(Position.create(i, 0)).get())
                     .isEqualTo(TileBuilder.newBuilder()
                             .withCharacter(char)
                             .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))

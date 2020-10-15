@@ -140,27 +140,28 @@ class SwingCanvasRenderer(
 
         val tilesToRender = linkedMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
 
-        tileGrid.fetchLayerStates().forEach { state ->
-            if (state.isHidden.not()) {
-                state.tiles.forEach { (tilePos, tile) ->
-                    var finalTile = tile
-                    finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
-                        if (modifier.canTransform(finalTile)) {
-                            (finalTile as? CharacterTile)?.let {
-                                finalTile = modifier.transform(it)
-                            }
-                        }
-                    }
-                    val finalPos = tilePos + state.position
-                    tilesToRender.getOrPut(finalPos) { mutableListOf() }
-                    if (finalTile.isOpaque) {
-                        tilesToRender[finalPos] = mutableListOf(finalTile to state.tileset)
-                    } else {
-                        tilesToRender[finalPos]?.add(finalTile to state.tileset)
-                    }
-                }
-            }
-        }
+        // TODO: use render on Renderable instead of layer states (push vs pull)
+//        tileGrid.fetchLayerStates().forEach { state ->
+//            if (state.isHidden.not()) {
+//                state.tiles.forEach { (tilePos, tile) ->
+//                    var finalTile = tile
+//                    finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+//                        if (modifier.canTransform(finalTile)) {
+//                            (finalTile as? CharacterTile)?.let {
+//                                finalTile = modifier.transform(it)
+//                            }
+//                        }
+//                    }
+//                    val finalPos = tilePos + state.position
+//                    tilesToRender.getOrPut(finalPos) { mutableListOf() }
+//                    if (finalTile.isOpaque) {
+//                        tilesToRender[finalPos] = mutableListOf(finalTile to state.tileset)
+//                    } else {
+//                        tilesToRender[finalPos]?.add(finalTile to state.tileset)
+//                    }
+//                }
+//            }
+//        }
 
         tilesToRender.map { (pos, tiles) ->
             tiles.forEach { (tile, tileset) ->
@@ -170,7 +171,7 @@ class SwingCanvasRenderer(
 
 
         if (shouldDrawCursor()) {
-            tileGrid.getTileAt(tileGrid.cursorPosition).map {
+            tileGrid.getTileAt(tileGrid.cursorPosition).map { it ->
                 drawCursor(gc, it, tileGrid.cursorPosition)
             }
         }

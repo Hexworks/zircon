@@ -17,13 +17,6 @@ class DefaultHeader(
         renderer = renderingStrategy),
         TextHolder by TextHolder.create(initialText) {
 
-    init {
-        render()
-        textProperty.onChange {
-            render()
-        }
-    }
-
     override fun acceptsFocus() = false
 
     override fun focusGiven(): UIEventResponse = Pass

@@ -7,19 +7,21 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
-class DefaultHorizontalScrollBar(componentMetadata: ComponentMetadata,
-                                 renderingStrategy: ComponentRenderingStrategy<ScrollBar>,
-                                 minValue: Int,
-                                 maxValue: Int,
-                                 itemsShownAtOnce: Int,
-                                 numberOfSteps: Int) : BaseScrollBar(
-
+class DefaultHorizontalScrollBar(
+        componentMetadata: ComponentMetadata,
+        renderingStrategy: ComponentRenderingStrategy<ScrollBar>,
+        minValue: Int,
+        maxValue: Int,
+        itemsShownAtOnce: Int,
+        numberOfSteps: Int
+) : BaseScrollBar(
         componentMetadata = componentMetadata,
-        renderingStrategy = renderingStrategy,
+        renderer = renderingStrategy,
         minValue = minValue,
         maxValue = maxValue,
         itemsShownAtOnce = itemsShownAtOnce,
-        numberOfSteps = numberOfSteps) {
+        numberOfSteps = numberOfSteps
+) {
 
     override fun getMousePosition(event: MouseEvent): Int {
         return event.position.minus(absolutePosition + contentOffset).x
@@ -45,8 +47,6 @@ class DefaultHorizontalScrollBar(componentMetadata: ComponentMetadata,
                     Processed
                 }
                 else -> Pass
-            }.apply {
-                render()
             }
         } else Pass
     }

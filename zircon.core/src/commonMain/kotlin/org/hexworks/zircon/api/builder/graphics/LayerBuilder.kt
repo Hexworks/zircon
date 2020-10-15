@@ -24,7 +24,8 @@ data class LayerBuilder(
         private var size: Size = Size.defaultGridSize(),
         private var offset: Position = Position.defaultPosition(),
         private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
-        private var filler: Tile = Tile.empty()) : Builder<Layer> {
+        private var filler: Tile = Tile.empty()
+) : Builder<Layer> {
 
     /**
      * Sets the [Tileset] to use with the resulting [Layer].
@@ -89,7 +90,8 @@ data class LayerBuilder(
                 initialContents = TileGraphicsBuilder.newBuilder()
                         .withSize(size)
                         .withTileset(tileset)
-                        .build())
+                        .build()
+        )
     }.apply {
         if (filler != Tile.empty()) fill(filler)
     }

@@ -1,9 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
@@ -16,7 +14,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 
@@ -25,23 +22,16 @@ class DefaultRootContainer(
         renderingStrategy: ComponentRenderingStrategy<RootContainer>
 ) : RootContainer, DefaultContainer(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+        renderer = renderingStrategy
+) {
 
-    override val componentTree: PersistentList<InternalComponent>
-        get() = flattenedTree.value
-
-    /**
-     * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].
-     * Note that [flattenedTree] also contains `this` (the root) as the first element.
-     */
-    private val flattenedTree: ListProperty<InternalComponent> by lazy {
+    override val componentTree: ListProperty<InternalComponent> by lazy {
         persistentListOf(this as InternalComponent).toProperty()
     }
 
     init {
-        render()
         Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentAdded>(ZirconScope) { (parent, component) ->
-            flattenedTree.transformValue { items ->
+            componentTree.transformValue { items ->
                 val parentIdx = items.indexOf(parent)
                 val result = if (parentIdx > -1) {
                     val itemsIdx = parentIdx + parent.nextSiblingIdx
@@ -53,7 +43,7 @@ class DefaultRootContainer(
             }
         }
         Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) { (_, component) ->
-            flattenedTree.transformValue { items ->
+            componentTree.transformValue { items ->
                 val result = if (items.indexOf(component) > -1) {
                     items.removeAll(component.componentTree.apply {
                         root = Maybe.empty()
@@ -87,12 +77,6 @@ class DefaultRootContainer(
             } else {
                 Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
             }
-
-    override fun fetchLayerStates(): Sequence<LayerState> = sequence {
-        flattenedTree.value.forEach { component ->
-            component.layerStates.forEach { yield(it) }
-        }
-    }
 
     private val InternalComponent.componentTree: Collection<InternalComponent>
         get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.componentTree }
