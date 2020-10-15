@@ -29,9 +29,8 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
-                api(kotlin("stdlib-common"))
                 api(kotlin("reflect"))
 
                 api(kotlinxCoroutines)
@@ -50,7 +49,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                api(kotlin("stdlib-jdk8"))
                 api(kotlin("reflect"))
 
                 api(caffeine)

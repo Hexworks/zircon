@@ -27,7 +27,7 @@ interface EditableTextBuffer {
     fun getBoundingBoxSize(): Size = Size.create(
             width = textBuffer.asSequence()
                     .map { it.size }
-                    .max() ?: 0,
+                    .maxOrNull() ?: 0,
             height = textBuffer.size)
 
     fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.joinToString("") }
