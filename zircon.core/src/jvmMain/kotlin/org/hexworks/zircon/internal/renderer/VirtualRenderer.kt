@@ -1,9 +1,10 @@
 package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.zircon.api.behavior.Closeable
+import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.impl.VirtualTileset
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -31,16 +32,19 @@ class VirtualRenderer(
 
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
-        // TODO: use render on Renderable instead of layer states (push vs pull)
-//        tileGrid.fetchLayerStates().forEach {
-//            renderTiles(it)
-//        }
+        tileGrid.renderables.forEach {
+            val tg = TileGraphicsBuilder.newBuilder().withSize(it.size).build()
+            it.render(tg)
+            val x = 1
+//            renderTiles(tg)
+        }
         tileGrid.updateAnimations(now, tileGrid)
         lastRender = now
     }
 
-    private fun renderTiles(state: TileGraphicsState) {
-        state.tiles.forEach { (pos, tile) ->
+    private fun renderTiles(graphics: TileGraphics) {
+        // TODO: optimize iteration!
+        graphics.tiles.forEach { (pos, tile) ->
             if (tile !== Tile.empty()) {
                 tileset.drawTile(tile, 'x', pos)
             }
