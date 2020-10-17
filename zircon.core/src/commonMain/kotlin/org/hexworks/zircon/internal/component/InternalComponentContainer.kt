@@ -17,7 +17,7 @@ interface InternalComponentContainer : ComponentContainer, RenderableContainer, 
     /**
      * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].
      */
-    val flattenedTree: ObservableList<InternalComponent>
+    val flattenedTree: Iterable<InternalComponent>
 
     /**
      * Activates this [InternalComponentContainer]. It will (re) start listening to

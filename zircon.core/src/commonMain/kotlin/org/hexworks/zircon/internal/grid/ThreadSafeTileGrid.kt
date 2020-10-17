@@ -69,8 +69,8 @@ class ThreadSafeTileGrid(
     override val layers: ObservableList<out InternalLayer>
         get() = layerable.layers
 
-    override val renderables: ObservableList<out Renderable>
-        get() = layers
+    override val renderables: List<Renderable>
+        get() = layerable.renderables
 
     private var originalCursorHandler = cursorHandler
     private var originalBackend = backend

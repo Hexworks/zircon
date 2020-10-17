@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.behavior.impl
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
@@ -21,7 +20,7 @@ class ThreadSafeLayerable(
 
     override val size: Size = initialSize
     override val layers: ListProperty<InternalLayer> = persistentListOf<InternalLayer>().toProperty()
-    override val renderables: ObservableList<out Renderable>
+    override val renderables: List<Renderable>
         get() = layers
 
     private val listeners = mutableMapOf<UUID, Subscription>()

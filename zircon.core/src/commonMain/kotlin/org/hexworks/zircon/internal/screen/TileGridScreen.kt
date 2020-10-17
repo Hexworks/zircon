@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -50,7 +49,7 @@ class TileGridScreen(
         InternalTileGrid by bufferGrid,
         InternalComponentContainer by componentContainer {
 
-    override val renderables: ObservableList<out Renderable>
+    override val renderables: List<Renderable>
         get() = bufferGrid.renderables
 
     // we make this random because we don't know which one is the active
@@ -59,6 +58,8 @@ class TileGridScreen(
     private var activeScreenId = UUIDFactory.randomUUID()
 
     private val id = UUIDFactory.randomUUID()
+
+    val root = componentContainer.flattenedTree.first()
 
     init {
         Zircon.eventBus.simpleSubscribeTo<ScreenSwitch>(ZirconScope) { (screenId) ->

@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
 import kotlin.test.*
 
 @Suppress("TestFunctionName")
@@ -13,13 +14,13 @@ class ArrayBackedTileMapTest {
 
     @BeforeTest
     fun setUp() {
-        val arr = arrayOfNulls<Tile>(SIZE_2X3.width * SIZE_2X3.height)
+        val arr = arrayOfNulls<Map.Entry<Position, Tile>>(SIZE_2X3.width * SIZE_2X3.height)
         target = ArrayBackedTileMap(
                 dimensions = SIZE_2X3,
                 arr = arr
         )
-        arr[3] = FILLER
-        arr[5] = FILLER
+        arr[3] = Entry(FILLED_POSITION_1_1, FILLER)
+        arr[5] = Entry(FILLED_POSITION_1_2, FILLER)
     }
 
     @Test
@@ -97,13 +98,13 @@ class ArrayBackedTileMapTest {
 
     @Test
     fun When_trying_to_create_copy_Then_a_proper_copy_should_be_created() {
-        val arr = arrayOfNulls<Tile>(SIZE_2X3.width * SIZE_2X3.height)
+        val arr = arrayOfNulls<Map.Entry<Position, Tile>>(SIZE_2X3.width * SIZE_2X3.height)
         target = ArrayBackedTileMap(
                 dimensions = SIZE_2X3,
                 arr = arr
         )
         val copy = target.createCopy()
-        arr[0] = FILLER
+        arr[0] = Entry(Position.zero(), FILLER)
 
         assertTrue(copy[Position.zero()] === null)
     }
