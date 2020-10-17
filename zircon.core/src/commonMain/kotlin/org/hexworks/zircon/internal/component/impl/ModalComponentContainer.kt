@@ -1,9 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
-import org.hexworks.cobalt.databinding.api.binding.bindFlatten
-import org.hexworks.cobalt.databinding.api.binding.bindMap
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -21,7 +18,6 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.graphics.Renderable
 import kotlin.jvm.Synchronized
 
@@ -40,12 +36,12 @@ class ModalComponentContainer(
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val containerStack = persistentListOf<InternalComponentContainer>().toProperty()
-    private val trees = containerStack.bindMap { it.flattenedTree }
 
-    override val flattenedTree = trees.bindFlatten()
+    override val flattenedTree: Iterable<InternalComponent>
+        get() = containerStack.flatMap { it.flattenedTree }
 
-    override val renderables: ObservableList<out Renderable>
-        get() = flattenedTree
+    override val renderables: List<Renderable>
+        get() = containerStack.flatMap { it.renderables }
 
     override val isActive = mainContainer.isActive.value.toProperty()
 
@@ -132,7 +128,8 @@ class ModalComponentContainer(
             val container = DefaultComponentContainer(
                     root = DefaultRootContainer(
                             componentMetadata = metadata,
-                            renderingStrategy = renderingStrategy)
+                            renderingStrategy = renderingStrategy
+                    )
             )
             container.theme = ColorThemes.empty()
             return container

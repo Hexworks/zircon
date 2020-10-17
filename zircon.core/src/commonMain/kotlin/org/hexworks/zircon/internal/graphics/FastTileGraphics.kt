@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
 import org.hexworks.zircon.internal.data.TileGraphicsState
+import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
 import kotlin.jvm.Synchronized
 
 /**
@@ -24,15 +25,16 @@ class FastTileGraphics(
         initialTileset = initialTileset
 ) {
 
-    private var arr = arrayOfNulls<Tile>(initialSize.width * initialSize.height)
+    private var arr = arrayOfNulls<Map.Entry<Position, Tile>>(initialSize.width * initialSize.height)
 
     init {
         for ((pos, tile) in initialTiles.entries) {
-            arr[pos.index] = tile
+            arr[pos.index] = Entry(pos, tile)
         }
     }
 
-    override var tiles = ArrayBackedTileMap(initialSize, arr)
+    override var tiles: ArrayBackedTileMap = ArrayBackedTileMap(initialSize, arr)
+        private set
     override val state: TileGraphicsState
         @Synchronized
         get() = DefaultTileGraphicsState(
@@ -41,10 +43,12 @@ class FastTileGraphics(
                 tiles = tiles.createCopy()
         )
 
+    fun contents() = tiles.contents()
+
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {
-            arr[drawPosition.index] = tile
+            arr[drawPosition.index] = Entry(drawPosition, tile)
         }
     }
 
@@ -57,14 +61,14 @@ class FastTileGraphics(
                     if (tile.isEmpty) {
                         arr[pos.index] = null
                     } else {
-                        arr[pos.index] = tile
+                        arr[pos.index] = Entry(pos, tile)
                     }
                 }
     }
 
     @Synchronized
     override fun draw(tileComposite: TileComposite) {
-        if (tileComposite is FastTileGraphics) {
+        if (tileComposite is FastTileGraphics && tileComposite.size == size) {
             tileComposite.arr.copyInto(arr)
         } else super.draw(tileComposite)
     }
@@ -80,7 +84,7 @@ class FastTileGraphics(
         if (filler.isNotEmpty) {
             for (i in arr.indices) {
                 if (arr[i] == null) {
-                    arr[i] = filler
+                    arr[i] = Entry(i.pos, filler)
                 }
             }
         }
@@ -89,16 +93,23 @@ class FastTileGraphics(
     @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
         size.fetchPositions().forEach { pos ->
-            val tile = transformer(pos, arr[pos.index] ?: Tile.empty())
+            val tile = transformer(pos, arr[pos.index]?.value ?: Tile.empty())
             if (tile.isEmpty) {
                 arr[pos.index] = null
             } else {
-                arr[pos.index] = tile
+                arr[pos.index] = Entry(pos, tile)
             }
         }
     }
 
     private val Position.index: Int
         get() = size.width * y + x
+
+    private val Int.pos: Position
+        get() {
+            val y = this / size.width
+            val x = this - (y * size.width)
+            return Position.create(x, y)
+        }
 
 }

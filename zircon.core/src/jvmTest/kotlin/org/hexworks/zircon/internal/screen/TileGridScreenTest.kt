@@ -4,17 +4,22 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
-import org.mockito.MockitoAnnotations
+import kotlin.test.assertEquals
 
+@Suppress("TestFunctionName", "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
@@ -28,12 +33,11 @@ class TileGridScreenTest {
         grid = ThreadSafeTileGrid(
                 initialTileset = tileset,
                 initialSize = SIZE)
-        MockitoAnnotations.initMocks(this)
         target = TileGridScreen(grid)
     }
 
     @Test
-    fun shouldUseTerminalsFontWhenCreating() {
+    fun shouldUseGridsTilesetWhenCreating() {
         assertThat(target.tileset.id)
                 .isEqualTo(grid.tileset.id)
     }
@@ -69,6 +73,35 @@ class TileGridScreenTest {
 
         assertThat(target.getTileAt(Position.offset1x1()))
                 .isNotEqualTo(CHAR)
+    }
+
+    @Test
+    fun When_a_layer_and_a_component_is_added_Then_renderables_should_be_returned_in_proper_order() {
+        val layer = LayerBuilder.newBuilder()
+                .withSize(Size.create(3, 4))
+                .build().apply {
+                    draw(Tile.defaultTile().withCharacter('x'), Position.offset1x1())
+                }.asInternalLayer()
+
+        val button = Components.button().withText("y").withPosition(Position.create(2, 3)).build()
+
+        val surfaceLayer = LayerBuilder.newBuilder()
+                .withSize(Size.create(5, 6))
+                .build().apply {
+                    draw(Tile.defaultTile().withCharacter('z'), Position.create(2, 3))
+                }.asInternalLayer()
+
+        target.draw(surfaceLayer)
+        target.addLayer(layer)
+        target.addComponent(button)
+
+        target.display()
+
+        Thread.sleep(500)
+        val renderables: List<Renderable> = target.renderables.toList()
+
+        assertThat(renderables.joinToString())
+                .isEqualTo(listOf(target.root, button, surfaceLayer, layer).joinToString())
     }
 
     companion object {

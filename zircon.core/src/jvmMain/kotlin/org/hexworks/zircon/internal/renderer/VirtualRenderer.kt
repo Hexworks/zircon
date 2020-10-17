@@ -1,10 +1,8 @@
 package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.impl.VirtualTileset
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -33,21 +31,21 @@ class VirtualRenderer(
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
         tileGrid.renderables.forEach {
-            val tg = TileGraphicsBuilder.newBuilder().withSize(it.size).build()
+            val tg = FastTileGraphics(
+                    initialSize = it.size,
+                    initialTileset = it.tileset,
+                    initialTiles = mapOf()
+            )
             it.render(tg)
-            val x = 1
-//            renderTiles(tg)
+            renderTiles(tg)
         }
         tileGrid.updateAnimations(now, tileGrid)
         lastRender = now
     }
 
-    private fun renderTiles(graphics: TileGraphics) {
-        // TODO: optimize iteration!
-        graphics.tiles.forEach { (pos, tile) ->
-            if (tile !== Tile.empty()) {
-                tileset.drawTile(tile, 'x', pos)
-            }
+    private fun renderTiles(graphics: FastTileGraphics) {
+        graphics.contents().forEach { (pos, tile) ->
+            tileset.drawTile(tile, 'x', pos)
         }
     }
 

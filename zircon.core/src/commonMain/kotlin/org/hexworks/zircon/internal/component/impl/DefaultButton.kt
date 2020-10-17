@@ -6,15 +6,14 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
-@Suppress("DuplicatedCode")
 class DefaultButton(
         componentMetadata: ComponentMetadata,
         initialText: String,
         renderingStrategy: ComponentRenderingStrategy<Button>
-) : Button, DefaultComponent(
+) : Button, TextHolder by TextHolder.create(initialText), DefaultComponent(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TextHolder by TextHolder.create(initialText) {
+        renderer = renderingStrategy
+) {
 
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
 

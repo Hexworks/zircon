@@ -55,7 +55,6 @@ open class DefaultContainer(
      */
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
-
         val ic = checkIfCanAdd(component)
         val attachment = DefaultAttachedComponent(ic, this)
 

@@ -60,7 +60,7 @@ class ComponentsLayerableTest {
 
         assertEquals(
                 expected = listOf<Renderable>(rootContainer, layer),
-                actual = target.renderables.value
+                actual = target.renderables.toList()
         )
     }
 

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -34,9 +33,9 @@ class DefaultComponentContainer(
         UIEventDispatcher by dispatcher {
 
     override val isActive = false.toProperty()
-    override val flattenedTree: ObservableList<InternalComponent>
+    override val flattenedTree: List<InternalComponent>
         get() = root.componentTree
-    override val renderables: ObservableList<out Renderable>
+    override val renderables: List<Renderable>
         get() = flattenedTree
 
     private val logger = LoggerFactory.getLogger(this::class)

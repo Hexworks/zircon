@@ -1,5 +1,6 @@
 package org.hexworks.zircon.benchmark
 
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.TrueTypeFontResources
@@ -21,7 +22,7 @@ object SwingBenchmark {
     fun main(args: Array<String>) {
 
         val dimensions = Toolkit.getDefaultToolkit().screenSize
-        val tileset = TrueTypeFontResources.ibmBios(dimensions.width / 100)
+        val tileset = CP437TilesetResources.zaratustra16x16()
         val size = Size.create(dimensions.width / tileset.width, dimensions.height / tileset.width)
 
         val tileGrid = SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()

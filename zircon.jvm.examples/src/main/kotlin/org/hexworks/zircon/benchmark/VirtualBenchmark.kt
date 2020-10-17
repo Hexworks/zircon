@@ -21,7 +21,7 @@ object VirtualBenchmark {
     fun main(args: Array<String>) {
 
         val dimensions = Toolkit.getDefaultToolkit().screenSize
-        val tileset = TrueTypeFontResources.ibmBios(20)
+        val tileset = TrueTypeFontResources.ibmBios(8)
         val size = Size.create(dimensions.width / tileset.width, dimensions.height / tileset.width)
 
         val tileGrid = VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()

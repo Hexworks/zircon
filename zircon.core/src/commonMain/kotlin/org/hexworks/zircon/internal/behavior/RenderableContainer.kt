@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.behavior
 
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.internal.graphics.Renderable
 
 /**
@@ -9,5 +8,5 @@ import org.hexworks.zircon.internal.graphics.Renderable
  */
 interface RenderableContainer {
 
-    val renderables: ObservableList<out Renderable>
+    val renderables: List<Renderable>
 }

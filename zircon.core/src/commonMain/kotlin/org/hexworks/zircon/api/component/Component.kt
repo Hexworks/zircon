@@ -37,13 +37,15 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * dependent and it is calculated based on the parent it is attached to.
      */
     val absolutePosition: Position
-        get() = position
+//    val absolutePositionValue: ObservableValue<Position>
 
     /**
      * The relative position is the position of the top left corner of this [Component]
      * relative to the [contentOffset] of its parent.
      */
     val relativePosition: Position
+//    val relativePositionValue: ObservableValue<Position>
+
 
     /**
      * The position of the top left corner of the **content area** (where the component

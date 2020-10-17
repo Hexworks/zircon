@@ -6,35 +6,39 @@ import org.hexworks.zircon.api.data.Tile
 
 class ArrayBackedTileMap(
         private val dimensions: Size,
-        private val arr: Array<Tile?>
+        private val arr: Array<Map.Entry<Position, Tile>?>
 ) : AbstractMap<Position, Tile>() {
 
     override val entries: Set<Map.Entry<Position, Tile>>
-        get() = arr.mapIndexed { index, _ ->
-            arr[index]?.let { Entry(index.pos, it) }
-        }.filterNotNull().toSet()
-
-    override val keys: Set<Position>
-        get() = arr.mapIndexed { index, _ ->
-            arr[index]?.let { index.pos }
-        }.filterNotNull().toSet()
+        get() = arr.asSequence().filterNotNull().toSet()
 
     override val size: Int
         get() = dimensions.width * dimensions.height
 
+    override val keys: Set<Position>
+        get() = arr.asSequence().filterNotNull().map { it.key }.toSet()
+
     override val values: Collection<Tile>
-        get() = arr.filterNotNull()
+        get() = arr.asSequence().filterNotNull().map { it.value }.toSet()
 
     override fun containsKey(key: Position) = key.index.let { idx ->
         if (idx > arr.lastIndex) false else arr[key.index] != null
 
     }
 
-    override fun containsValue(value: Tile) = arr.contains(value)
+    override fun containsValue(value: Tile) = arr.any { it?.value == value }
 
-    override fun get(key: Position) = arr[key.index]
+    override fun get(key: Position) = arr[key.index]?.value
 
     override fun isEmpty() = arr.isEmpty()
+
+    fun contents(): Sequence<Map.Entry<Position, Tile>> = sequence {
+        for (i in arr.indices) {
+            arr[i]?.let { entry ->
+                yield(entry)
+            }
+        }
+    }
 
     fun createCopy() = ArrayBackedTileMap(
             dimensions = dimensions,
@@ -43,13 +47,6 @@ class ArrayBackedTileMap(
 
     private val Position.index: Int
         get() = dimensions.width * y + x
-
-    private val Int.pos: Position
-        get() {
-            val y = this / dimensions.width
-            val x = this - (y * dimensions.width)
-            return Position.create(x, y)
-        }
 
     class Entry(
             override val key: Position,
