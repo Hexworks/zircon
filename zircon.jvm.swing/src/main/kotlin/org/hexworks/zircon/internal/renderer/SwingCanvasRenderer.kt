@@ -27,6 +27,7 @@ import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CyclicBarrier
 import javax.swing.JFrame
 
 
@@ -55,6 +56,13 @@ class SwingCanvasRenderer(
             super.mouseClicked(e)
             canvas.requestFocusInWindow()
         }
+    }
+
+    private val tilesToRender = mutableListOf<MutableMap<Position, MutableList<Pair<Tile, TilesetResource>>>>()
+    private val parallelism = 8
+    private val interval = tileGrid.width / (parallelism - 1)
+    private val cb = CyclicBarrier(parallelism + 1) {
+        tilesToRender.clear()
     }
 
     override fun create() {
@@ -132,13 +140,6 @@ class SwingCanvasRenderer(
 
         val bs: BufferStrategy = canvas.bufferStrategy // this is a regular Swing Canvas object
         handleBlink(now)
-
-        val parallelism = 3
-        val interval = tileGrid.width / (parallelism - 1)
-        val tilesToRender = mutableListOf<MutableMap<Position, MutableList<Pair<Tile, TilesetResource>>>>()
-        0.until(parallelism).forEach { _ ->
-            tilesToRender.add(mutableMapOf())
-        }
 
         val renderables = tileGrid.renderables
         for (i in renderables.indices) {
