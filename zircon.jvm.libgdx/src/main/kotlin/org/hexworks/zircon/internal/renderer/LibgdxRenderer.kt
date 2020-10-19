@@ -12,15 +12,18 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
-import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.TileTransformModifier
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.data.LayerState
 import org.hexworks.zircon.internal.data.PixelPosition
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 
@@ -55,10 +58,8 @@ class LibgdxRenderer(
         whitePixmap.setColor(Color.WHITE)
         whitePixmap.fill()
         backgroundTexture = Texture(whitePixmap)
-
         backgroundWidth = whitePixmap.width / grid.width
         backgroundHeight = whitePixmap.height / grid.height
-
         whitePixmap.dispose()
     }
 
@@ -80,15 +81,38 @@ class LibgdxRenderer(
 
         maybeBatch.map { batch ->
             batch.begin()
-            // TODO: use render on Renderable instead of layer states (push vs pull)
-//            grid.fetchLayerStates().forEach { state ->
-//                renderTiles(
-//                        batch = batch,
-//                        state = state,
-//                        tileset = tilesetLoader.loadTilesetFrom(grid.tileset),
-//                        offset = state.position.toPixelPosition(grid.tileset)
-//                )
-//            }
+            val tilesToRender = mutableMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
+            val renderables = grid.renderables
+            for (i in renderables.indices) {
+                val renderable = renderables[i]
+                if (!renderable.isHidden) {
+                    val graphics = FastTileGraphics(
+                            initialSize = renderable.size,
+                            initialTileset = renderable.tileset,
+                            initialTiles = emptyMap()
+                    )
+                    renderable.render(graphics)
+                    graphics.contents().forEach { (tilePos, tile) ->
+                        val finalPos = tilePos + renderable.position
+                        tilesToRender.getOrPut(finalPos) { mutableListOf() }
+                        if (tile.isOpaque) {
+                            tilesToRender[finalPos] = mutableListOf(tile to renderable.tileset)
+                        } else {
+                            tilesToRender[finalPos]?.add(tile to renderable.tileset)
+                        }
+                    }
+                }
+            }
+            for ((pos, tiles) in tilesToRender) {
+                for ((tile, tileset) in tiles) {
+                    renderTile(
+                            batch = batch,
+                            position = pos.toPixelPosition(tileset),
+                            tile = tile,
+                            tileset = tilesetLoader.loadTilesetFrom(tileset)
+                    )
+                }
+            }
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
             if (shouldDrawCursor()) {
@@ -99,80 +123,47 @@ class LibgdxRenderer(
         }
     }
 
-    private fun renderTiles(batch: SpriteBatch,
-                            state: LayerState,
-                            tileset: Tileset<SpriteBatch>,
-                            offset: PixelPosition = PixelPosition(0, 0)) {
-        /*
-         * I can already see you reaching for that ctrl-x ctrl-v to move that single
-         * drawBack() method call into the next loop. Why would two identical loops
-         * be required for two methods? Just but both into one loop, right? Wrong.
-         * This runs a beautiful 60fps in the test. Now try moving both into the same
-         * loop. I dare you. Have fun with the 14 fps, freak. I can't explain it, I
-         * can only hope to save those that think they can optimize this. Leave it,
-         * for your own sanity
-         *
-         * I think the problem resolved itself, magically. If this turns out to be not
-         * the case uncomment the commented block of code and delete the first
-         * actualTileset.drawTile()
-         */
-        state.tiles.forEach { (pos, tile) ->
-            val actualPos = pos + state.position
-            if (tile !== Tile.empty()) {
-                val actualTile =
-                        if (tile.isBlinking /*&& blinkOn*/) {
-                            tile.withBackgroundColor(tile.foregroundColor)
-                                    .withForegroundColor(tile.backgroundColor)
-                        } else {
-                            tile
-                        }
-                val actualTileset: Tileset<SpriteBatch> =
-                        if (actualTile is TilesetOverride) {
-                            tilesetLoader.loadTilesetFrom(actualTile.tileset)
-                        } else {
-                            tileset
-                        }
-
-                val pixelPos = Position.create(actualPos.x * actualTileset.width, actualPos.y * actualTileset.height)
-                drawBack(
-                        tile = actualTile,
-                        surface = batch,
-                        position = pixelPos
-                )
-                actualTileset.drawTile(
-                        tile = actualTile,
-                        surface = batch,
-                        position = pixelPos
-                )
+    private fun renderTile(
+            batch: SpriteBatch,
+            tile: Tile,
+            tileset: Tileset<SpriteBatch>,
+            position: PixelPosition
+    ) {
+        if (tile.isNotEmpty) {
+            var finalTile = tile
+            finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+                if (modifier.canTransform(finalTile)) {
+                    (finalTile as? CharacterTile)?.let {
+                        finalTile = modifier.transform(it)
+                    }
+                }
             }
+            finalTile = if (tile.isBlinking && blinkOn) {
+                tile.withBackgroundColor(tile.foregroundColor)
+                        .withForegroundColor(tile.backgroundColor)
+            } else {
+                tile
+            }
+            drawBack(
+                    tile = finalTile,
+                    surface = batch,
+                    position = position
+            )
+            ((finalTile as? TilesetHolder)?.let {
+                tilesetLoader.loadTilesetFrom(it.tileset)
+            } ?: tileset).drawTile(
+                    tile = finalTile,
+                    surface = batch,
+                    position = position
+            )
         }
-        /*state.tiles.forEach { (pos, tile) ->
-            val actualPos = pos + state.position
-            if (tile !== Tile.empty()) {
-                val actualTile =
-                        if (tile.isBlinking /*&& blinkOn*/) {
-                            tile.withBackgroundColor(tile.foregroundColor)
-                                    .withForegroundColor(tile.backgroundColor)
-                        } else {
-                            tile
-                        }
-                val actualTileset: Tileset<SpriteBatch> =
-                        if (actualTile is TilesetOverride) {
-                            tilesetLoader.loadTilesetFrom(actualTile.tileset)
-                        } else {
-                            tileset
-                        }
-                val pixelPos = Position.create(actualPos.x * actualTileset.width, actualPos.y * actualTileset.height)
-                actualTileset.drawTile(
-                        tile = actualTile,
-                        surface = batch,
-                        position = pixelPos
-                )
-            }
-        }*/
     }
 
-    private fun drawBack(tile: Tile, surface: SpriteBatch, position: Position) {
+    private fun drawBack(
+            tile: Tile,
+            surface: SpriteBatch,
+            position: Position
+    ) {
         val x = position.x.toFloat()
         val y = position.y.toFloat()
         val backSprite = Sprite(backgroundTexture)

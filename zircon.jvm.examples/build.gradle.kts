@@ -1,8 +1,13 @@
 plugins {
     kotlin("jvm")
+    application
 }
 
 base.archivesBaseName = "zircon.jvm.examples"
+
+application {
+    mainClassName = "org.hexworks.zircon.benchmark.SwingBenchmark"
+}
 
 kotlin {
     target {

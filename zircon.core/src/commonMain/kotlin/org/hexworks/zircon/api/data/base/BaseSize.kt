@@ -27,6 +27,10 @@ abstract class BaseSize : Size {
     override val isNotUnknown: Boolean
         get() = this !== Size.unknown()
 
+    private val rect: Rect by lazy {
+        Rect.create(Position.defaultPosition(), this)
+    }
+
     override fun fetchPositions(): Iterable<Position> = Iterable {
         var currY = 0
         var currX = 0
@@ -114,11 +118,11 @@ abstract class BaseSize : Size {
         return size
     }
 
-    override fun containsPosition(position: Position) = toRect().containsPosition(position)
+    override fun containsPosition(position: Position) = rect.containsPosition(position)
 
     override fun toPosition() = Position.create(width, height)
 
-    override fun toRect(): Rect = toRect(Position.defaultPosition())
+    override fun toRect(): Rect = rect
 
     override fun toRect(position: Position): Rect = Rect.create(position, this)
 }
