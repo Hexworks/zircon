@@ -25,13 +25,8 @@ object TestPlayground {
         for (i in 0..8) {
             fp.submit {
                 while (running) {
-                    try {
-                        shared[i] = 1
-                    } finally {
-                        println("Awaiting barrier ($i)")
-                        cb.await()
-                        println("Barrier released, going on...($i)")
-                    }
+                    cb.await()
+                    println("Doing work...$i")
                 }
             }
         }
