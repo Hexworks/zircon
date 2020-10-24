@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.CheckBox
-import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
