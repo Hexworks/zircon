@@ -18,6 +18,10 @@ class CheckBoxBuilder(
         private var labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT)
     : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(DefaultCheckBoxRenderer()) {
 
+    init {
+        contentSize = Size.create(DefaultCheckBoxRenderer.BUTTON_WIDTH,1)
+    }
+
     fun withText(text: String) = also {
         this.text = text
         val totalSize =
@@ -57,6 +61,6 @@ class CheckBoxBuilder(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = CheckBoxBuilder().apply { contentSize = Size.create(DefaultCheckBoxRenderer.BUTTON_WIDTH,1) }
+        fun newBuilder() = CheckBoxBuilder()
     }
 }
