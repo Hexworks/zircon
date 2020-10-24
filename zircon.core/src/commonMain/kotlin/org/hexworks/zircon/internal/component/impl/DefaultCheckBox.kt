@@ -20,7 +20,7 @@ import kotlin.jvm.Synchronized
 class DefaultCheckBox(
         componentMetadata: ComponentMetadata,
         initialText: String,
-        override val labelAlignment: CheckBoxAlignment,
+        override val labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT,
         renderingStrategy: ComponentRenderingStrategy<CheckBox>
 ) : CheckBox, DefaultComponent(
         componentMetadata = componentMetadata,
