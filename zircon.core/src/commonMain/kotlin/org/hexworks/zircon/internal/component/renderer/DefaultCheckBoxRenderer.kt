@@ -15,14 +15,27 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultCheckBox>) {
         val state = context.component.checkBoxState
         val text = context.component.text
-        val maxTextLength = tileGraphics.size.width - DECORATION_WIDTH
-        val clearedText = if (text.length > maxTextLength) {
-            text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
-        } else {
-            text
-        }
+        val labelAlignment = context.component.labelAlignment
+
+        val checkBox = STATES.getValue(state)
+        val checkBoxWithLabel =
+                if (text == "") checkBox
+                else {
+                    val maxTextLength = tileGraphics.size.width - DECORATION_WIDTH
+                    val clearedText =
+                            if (text.length > maxTextLength) {
+                                text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
+                            } else {
+                                text
+                            }
+                    when (labelAlignment) {
+                        DefaultCheckBox.CheckBoxAlignment.LEFT -> "$clearedText $checkBox"
+                        DefaultCheckBox.CheckBoxAlignment.RIGHT -> "$checkBox $clearedText"
+                    }
+                }
+
         tileGraphics.fillWithText(
-                text = "${STATES.getValue(state)} $clearedText",
+                text = checkBoxWithLabel,
                 style = context.currentStyle)
     }
 
@@ -32,8 +45,8 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
         private const val UNCHECKING_BUTTON = "[-]"
         private const val CHECKED_BUTTON = "[*]"
         private const val UNCHECKED_BUTTON = "[ ]"
-        private const val BUTTON_WIDTH = CHECKING_BUTTON.length
 
+        const val BUTTON_WIDTH = CHECKING_BUTTON.length
         const val DECORATION_WIDTH = BUTTON_WIDTH + 1
 
         private val STATES = mapOf(
