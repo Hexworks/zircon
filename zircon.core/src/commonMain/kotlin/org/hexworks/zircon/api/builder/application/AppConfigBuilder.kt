@@ -169,32 +169,33 @@ data class AppConfigBuilder(
     override fun build(): AppConfig {
         if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
             defaultSize = Size.create(
-                fullScreenSize.width / defaultTileset.width,
-                fullScreenSize.height / defaultTileset.height
+                    fullScreenSize.width / defaultTileset.width,
+                    fullScreenSize.height / defaultTileset.height
             )
         }
 
         return AppConfig(
-            blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-            cursorStyle = cursorStyle,
-            cursorColor = cursorColor,
-            isCursorBlinking = cursorBlinking,
-            isClipboardAvailable = clipboardAvailable,
-            defaultTileset = defaultTileset,
-            defaultGraphicalTileset = defaultGraphicalTileset,
-            defaultColorTheme = defaultColorTheme,
-            debugMode = debugMode,
-            size = defaultSize,
-            fullScreen = fullScreen,
-            borderless = borderless,
-            betaEnabled = betaEnabled,
-            title = title,
-            fpsLimit = fpsLimit,
-            debugConfig = debugConfig,
-            closeBehavior = closeBehavior,
-            shortcutsConfig = shortcutsConfig,
-            iconData = iconData,
-            iconResource = iconResource).also {
+                blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
+                cursorStyle = cursorStyle,
+                cursorColor = cursorColor,
+                isCursorBlinking = cursorBlinking,
+                isClipboardAvailable = clipboardAvailable,
+                defaultTileset = defaultTileset,
+                defaultGraphicalTileset = defaultGraphicalTileset,
+                defaultColorTheme = defaultColorTheme,
+                debugMode = debugMode,
+                size = defaultSize,
+                fullScreen = fullScreen,
+                borderless = borderless,
+                betaEnabled = betaEnabled,
+                title = title,
+                fpsLimit = fpsLimit,
+                debugConfig = debugConfig,
+                closeBehavior = closeBehavior,
+                shortcutsConfig = shortcutsConfig,
+                iconData = iconData,
+                iconResource = iconResource
+        ).also {
             RuntimeConfig.config = it
         }
     }

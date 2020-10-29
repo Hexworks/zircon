@@ -1,7 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ComponentDecorations
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder

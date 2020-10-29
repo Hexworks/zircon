@@ -10,8 +10,12 @@ import org.hexworks.zircon.api.data.base.BasePosition
  * a [org.hexworks.zircon.api.resource.TilesetResource] which
  * will be used for drawing on the screen.
  */
-data class GridPosition(override val x: Int,
-                        override val y: Int) : BasePosition() {
+data class GridPosition(
+        override val x: Int,
+        override val y: Int
+) : BasePosition() {
+
+    override fun toString() = "($x,$y)"
 
     companion object {
 

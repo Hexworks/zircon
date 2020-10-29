@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.channels.Channel
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
@@ -48,7 +47,8 @@ abstract class DefaultComponent(
         private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
         private val movable: Movable = DefaultMovable(
                 position = componentMetadata.relativePosition,
-                size = componentMetadata.size)
+                size = componentMetadata.size
+        )
 ) : InternalComponent,
         ComponentEventSource by uiEventProcessor,
         Movable by movable,
@@ -142,9 +142,9 @@ abstract class DefaultComponent(
     override fun moveTo(position: Position): Boolean {
         parent.map { parent ->
             val newBounds = movable.rect.withPosition(position)
-            require(parent.containsBoundable(newBounds)) {
-                "Can't move Component ($this) with new bounds ($newBounds) out of its parent's bounds ($parent)."
-            }
+//            require(parent.containsBoundable(newBounds)) {
+//                "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."
+//            }
         }
         val diff = position - absolutePosition
         movable.moveTo(position)
@@ -234,7 +234,7 @@ abstract class DefaultComponent(
     override fun toString(): String {
         val text = if (this is TextHolder) ", text=${textProperty.value}" else ""
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
-                "pos=${position.x};${position.y}, size=${size.width};${size.height}, " +
+                "absolutePosition=$absolutePosition, relativePosition=$relativePosition, size=$size, " +
                 "state=$componentState, disabled=$isDisabled$text)"
     }
 
