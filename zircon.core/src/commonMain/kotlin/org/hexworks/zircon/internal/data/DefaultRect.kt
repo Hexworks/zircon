@@ -5,8 +5,10 @@ import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.base.BaseRect
 
-class DefaultRect(override val position: Position,
-                  override val size: Size) : BaseRect() {
+class DefaultRect(
+        override val position: Position,
+        override val size: Size
+) : BaseRect() {
 
     override val rect: Rect = this
 

@@ -94,13 +94,13 @@ open class DefaultContainer(
         }
         val originalRect = component.rect
         component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
-        if (RuntimeConfig.config.debugMode.not()) {
+        if (RuntimeConfig.config.shouldCheckBounds()) {
             val contentBounds = contentSize.toRect()
             tileset.checkCompatibilityWith(component.tileset)
             require(contentBounds.containsBoundable(originalRect)) {
-                "Adding out of bounds component (${component::class.simpleName}) " +
-                        "with bounds ($originalRect) to the container (${this::class.simpleName}) " +
-                        "with content bounds ($contentBounds) is not allowed."
+                "Adding out of bounds component $component " +
+                        "with bounds $originalRect to the container $this " +
+                        "with content bounds $contentBounds is not allowed."
             }
             children.firstOrNull { it.intersects(component) }?.let {
                 throw IllegalArgumentException(

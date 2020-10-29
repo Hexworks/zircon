@@ -11,15 +11,22 @@ import kotlin.jvm.JvmStatic
 data class DebugConfigBuilder(
         var displayGrid: Boolean = false,
         var displayCoordinates: Boolean = false,
-        var displayFps: Boolean = false
+        var displayFps: Boolean = false,
+        var relaxBoundsCheck: Boolean = false
 ) : Builder<DebugConfig> {
 
     override fun build() = DebugConfig(
             displayGrid = displayGrid,
             displayCoordinates = displayCoordinates,
-            displayFps = displayFps)
+            displayFps = displayFps,
+            relaxBoundsCheck = relaxBoundsCheck
+    )
 
     override fun createCopy() = copy()
+
+    fun withRelaxBoundsCheck(relaxBoundsCheck: Boolean) = also {
+        this.relaxBoundsCheck = relaxBoundsCheck
+    }
 
     fun withDisplayGrid(displayGrid: Boolean) = also {
         this.displayGrid = displayGrid

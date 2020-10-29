@@ -35,6 +35,8 @@ data class AppConfig(
         val iconResource: String?
 ) {
 
+    fun shouldCheckBounds() = debugMode.not() || (debugMode && debugConfig.relaxBoundsCheck.not())
+
     companion object {
 
         @JvmStatic

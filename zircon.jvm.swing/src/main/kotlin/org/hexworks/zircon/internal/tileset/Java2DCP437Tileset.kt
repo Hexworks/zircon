@@ -129,7 +129,8 @@ class Java2DCP437Tileset(
                 Border::class to Java2DBorderTransformer(),
                 Crop::class to Java2DCropTransformer(),
                 RayShade::class to Java2DRayShaderTransformer(),
-                TileCoordinate::class to Java2DTileCoordinateTransformer()).toMap()
+                TileCoordinate::class to Java2DTileCoordinateTransformer()
+        ).toMap()
 
     }
 }
