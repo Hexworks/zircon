@@ -2,41 +2,49 @@
 
 package org.hexworks.zircon.examples.playground
 
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.CyclicBarrier
-import java.util.concurrent.Executors
+import kotlinx.coroutines.*
 
 object TestPlayground {
 
 
     @JvmStatic
     fun main(args: Array<String>): Unit = runBlocking {
+    }
 
-        val running = true
-        val parallelism = 8
-        var shared = IntArray(parallelism) { 0 }
-        val sp = Executors.newSingleThreadExecutor()
-        val fp = Executors.newFixedThreadPool(parallelism)
-        val cb = CyclicBarrier(parallelism + 1) {
-            println("Result is: ${shared.reduce(Int::plus)}")
-            shared = IntArray(parallelism) { 0 }
-        }
+    class ReusableCoroutines(
+            private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    ) : CoroutineScope by scope {
 
-        for (i in 0..8) {
-            fp.submit {
-                while (running) {
-                    cb.await()
-                    println("Doing work...$i")
+        private lateinit var job: Job
+        private var stopped: Boolean = false
+        private var started: Boolean = false
+
+        @Synchronized
+        fun start() {
+            require(stopped.not()) {
+                "Already stopped!"
+            }
+            require(started.not()) {
+                "Already started!"
+            }
+            job = launch {
+                println("Started and running!")
+                while (true) {
+
                 }
             }
         }
-        sp.submit {
-            while (running) {
-                println("Awaiting tasks...")
-                cb.await()
-                println("Synchronization complete, performing next action...")
+
+        @Synchronized
+        fun stop() {
+            require(stopped.not()) {
+                "Already stopped!"
             }
+            stopped = true
+            cancel()
+            println("Stopped")
         }
+
     }
 
 }

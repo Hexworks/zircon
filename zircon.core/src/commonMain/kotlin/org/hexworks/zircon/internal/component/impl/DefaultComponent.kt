@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.channels.Channel
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList

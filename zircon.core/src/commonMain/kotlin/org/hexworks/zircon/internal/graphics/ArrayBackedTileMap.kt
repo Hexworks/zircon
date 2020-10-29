@@ -19,7 +19,7 @@ class ArrayBackedTileMap(
         get() = arr.asSequence().filterNotNull().map { it.key }.toSet()
 
     override val values: Collection<Tile>
-        get() = arr.asSequence().filterNotNull().map { it.value }.toSet()
+        get() = arr.asSequence().filterNotNull().map { it.value }.toList()
 
     override fun containsKey(key: Position) = key.index.let { idx ->
         if (idx > arr.lastIndex) false else arr[key.index] != null
