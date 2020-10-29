@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
@@ -26,10 +27,7 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
 import java.awt.image.BufferedImage
-import java.util.concurrent.CyclicBarrier
-import java.util.concurrent.Executors
 import javax.swing.JFrame
-
 
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer(
@@ -42,11 +40,11 @@ class SwingCanvasRenderer(
 
     override val isClosed = false.toProperty()
 
-    private val tilesetLoader = SwingTilesetLoader()
     private var blinkOn = true
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
     private var lastBlink: Long = lastRender
 
+    private val tilesetLoader = SwingTilesetLoader()
     private val keyboardEventListener = KeyboardEventListener()
     private val mouseEventListener = object : MouseEventListener(
             fontWidth = tileGrid.tileset.width,
@@ -57,62 +55,7 @@ class SwingCanvasRenderer(
         }
     }
 
-    private val parallelism = 4
-    private val tilesToRender = mutableListOf<MutableMap<Position, MutableList<Pair<Tile, TilesetResource>>>>().apply {
-        (0..parallelism).forEach { _ -> add(mutableMapOf()) }
-    }
-    private val interval = tileGrid.width / (parallelism - 1)
-    private val startBarrier = CyclicBarrier(parallelism + 1) {
-        val renderables = tileGrid.renderables
-        for (i in renderables.indices) {
-            val renderable = renderables[i]
-            if (!renderable.isHidden) {
-                val graphics = FastTileGraphics(
-                        initialSize = renderable.size,
-                        initialTileset = renderable.tileset,
-                        initialTiles = emptyMap()
-                )
-                renderable.render(graphics)
-                graphics.contents().forEach { (tilePos, tile) ->
-                    val finalPos = tilePos + renderable.position
-                    val idx = finalPos.x / interval
-                    tilesToRender[idx].getOrPut(finalPos) { mutableListOf() }
-                    if (tile.isOpaque) {
-                        tilesToRender[idx][finalPos] = mutableListOf(tile to renderable.tileset)
-                    } else {
-                        tilesToRender[idx][finalPos]?.add(tile to renderable.tileset)
-                    }
-                }
-            }
-        }
-    }
-    private val finishBarrier = CyclicBarrier(parallelism + 1) {
-        tilesToRender.forEach { it.clear() }
-    }
-    private val workers = Executors.newFixedThreadPool(parallelism).apply {
-        for (i in 0..parallelism) {
-            submit {
-                while (isClosed.value.not()) {
-                    try {
-                        startBarrier.await()
-                        canvas.bufferStrategy.drawGraphics.configure().apply {
-                            if (shouldDrawCursor()) {
-                                tileGrid.getTileAt(tileGrid.cursorPosition).map {
-                                    drawCursor(this, it, tileGrid.cursorPosition)
-                                }
-                            }
-                            color = Color.BLACK
-                            fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
-                            renderPart(this, tilesToRender[i])
-                            dispose()
-                        }
-                    } finally {
-                        finishBarrier.await()
-                    }
-                }
-            }
-        }
-    }
+    private val gridPositions = tileGrid.size.fetchPositions().toList()
 
     override fun create() {
         if (config.fullScreen) {
@@ -179,59 +122,76 @@ class SwingCanvasRenderer(
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
 
-        keyboardEventListener.drainEvents().forEach { (event, phase) ->
-            tileGrid.process(event, phase)
-        }
-        mouseEventListener.drainEvents().forEach { (event, phase) ->
-            tileGrid.process(event, phase)
-        }
+        processInputEvents()
         tileGrid.updateAnimations(now, tileGrid)
 
         val bs: BufferStrategy = canvas.bufferStrategy // this is a regular Swing Canvas object
         handleBlink(now)
 
-        // we start the rendering by releasing waiting workers
-        startBarrier.await()
-        // then await their completion
-        finishBarrier.await()
+        canvas.bufferStrategy.drawGraphics.configure().apply {
+            color = Color.BLACK
+            fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
+            drawTiles(this)
+            if (shouldDrawCursor()) {
+                tileGrid.getTileAt(tileGrid.cursorPosition).map { it ->
+                    drawCursor(this, it, tileGrid.cursorPosition)
+                }
+            }
+            dispose()
+        }
 
         bs.show()
         lastRender = now
     }
 
-    private fun renderPart(
-            graphics: Graphics2D,
-            tilesToRender: MutableMap<Position, MutableList<Pair<Tile, TilesetResource>>>
-    ) {
-        val img = BufferedImage(
-                tileGrid.widthInPixels,
-                tileGrid.heightInPixels,
-                BufferedImage.TRANSLUCENT
-        )
-        val gc = img.graphics.configure()
-        for ((pos, tiles) in tilesToRender) {
+    private fun drawTiles(graphics: Graphics2D) {
+        val layers = fetchLayers()
+        val tiles = mutableListOf<Pair<Tile, TilesetResource>>()
+        gridPositions.forEach { pos ->
+            tiles@ for (i in layers.size - 1 downTo 0) {
+                val (layerPos, layer) = layers[i]
+                val tile = layer.getTileAtOrNull(pos - layerPos)?.also {
+                    tiles.add(0, it to it.finalTileset(layer))
+                }
+                if (tile?.isOpaque == true) {
+                    break@tiles
+                }
+            }
             for ((tile, tileset) in tiles) {
                 renderTile(
-                        graphics = gc,
+                        graphics = graphics,
                         position = pos,
                         tile = tile,
                         tileset = tilesetLoader.loadTilesetFrom(tileset)
                 )
             }
+            tiles.clear()
         }
-        graphics.drawImage(img, 0, 0, null)
+    }
+
+    private fun fetchLayers(): List<Pair<Position, TileGraphics>> {
+        return tileGrid.renderables.map { renderable ->
+            val tg = FastTileGraphics(
+                    initialSize = renderable.size,
+                    initialTileset = renderable.tileset,
+                    initialTiles = emptyMap()
+            )
+            if (!renderable.isHidden) {
+                renderable.render(tg)
+            }
+            renderable.position to tg
+        }
     }
 
     private fun Graphics.configure(): Graphics2D {
-        this.color = Color.BLACK
         val gc = this as Graphics2D
-//        gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
-//        gc.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
-//        gc.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
-//        gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
-//        gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
-//        gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
-//        gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
+        gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
+        gc.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
+        gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
+        gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
         return gc
     }
 
@@ -263,6 +223,15 @@ class SwingCanvasRenderer(
                     surface = graphics,
                     position = position
             )
+        }
+    }
+
+    private fun processInputEvents() {
+        keyboardEventListener.drainEvents().forEach { (event, phase) ->
+            tileGrid.process(event, phase)
+        }
+        mouseEventListener.drainEvents().forEach { (event, phase) ->
+            tileGrid.process(event, phase)
         }
     }
 
@@ -298,10 +267,6 @@ class SwingCanvasRenderer(
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 
-    private fun getWidth() = tileGrid.widthInPixels
-
-    private fun getHeight() = tileGrid.heightInPixels
-
     private tailrec fun initializeBufferStrategy() {
         val bs = canvas.bufferStrategy
         var failed = false
@@ -315,4 +280,10 @@ class SwingCanvasRenderer(
         }
     }
 
+}
+
+private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource {
+    return if (this is TilesetHolder) {
+        tileset
+    } else graphics.tileset
 }

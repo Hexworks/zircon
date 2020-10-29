@@ -16,6 +16,10 @@ interface TileComposite : Sizeable {
      */
     val tiles: Map<Position, Tile>
 
+    fun getTileAtOrNull(position: Position): Tile? {
+        return if (size.containsPosition(position)) tiles[position] else null
+    }
+
     /**
      * Returns the [Tile] stored at a particular position in this [TileComposite].
      * Returns an empty [Maybe] if [position] is outside of this [TileComposite]'s

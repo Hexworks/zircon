@@ -14,11 +14,8 @@ class VirtualRenderer(
 
     val config = RuntimeConfig.config
 
-    private var firstDraw = true
     private val tileset = VirtualTileset()
-    private var blinkOn = true
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
-    private var lastBlink: Long = lastRender
 
     override fun create() {
 
@@ -30,21 +27,23 @@ class VirtualRenderer(
 
     override fun render() {
         val now = SystemUtils.getCurrentTimeMs()
-        tileGrid.renderables.forEach {
-            val tg = FastTileGraphics(
-                    initialSize = it.size,
-                    initialTileset = it.tileset,
-                    initialTiles = mapOf()
-            )
-            it.render(tg)
-            renderTiles(tg)
-        }
         tileGrid.updateAnimations(now, tileGrid)
+        tileGrid.renderables.forEach { renderable ->
+            if (!renderable.isHidden) {
+                val tg = FastTileGraphics(
+                        initialSize = renderable.size,
+                        initialTileset = renderable.tileset,
+                        initialTiles = mapOf()
+                )
+                renderable.render(tg)
+                renderTiles(tg)
+            }
+        }
         lastRender = now
     }
 
     private fun renderTiles(graphics: FastTileGraphics) {
-        graphics.contents().forEach { (pos, tile) ->
+        for ((pos, tile) in graphics.contents()) {
             tileset.drawTile(tile, 'x', pos)
         }
     }

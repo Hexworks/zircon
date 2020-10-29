@@ -8,5 +8,8 @@ import org.hexworks.zircon.internal.graphics.Renderable
  */
 interface RenderableContainer {
 
+    /**
+     * Contains the [Renderable] objects ordered from bottom to top.
+     */
     val renderables: List<Renderable>
 }

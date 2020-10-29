@@ -50,7 +50,8 @@ class DefaultComponentRenderingStrategyTest {
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(shadow(), box(), side()),
-                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
+                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>
+        )
 
         val btn = DefaultButton(
                 componentMetadata = ComponentMetadata(
@@ -59,7 +60,8 @@ class DefaultComponentRenderingStrategyTest {
                         relativePosition = Position.defaultPosition(),
                         componentStyleSet = ComponentStyleSet.defaultStyleSet()),
                 initialText = "qux",
-                renderingStrategy = target)
+                renderingStrategy = target
+        )
 
         target.render(btn, graphics)
 

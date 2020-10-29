@@ -44,6 +44,9 @@ class ComponentStub(
 
     override fun asInternalComponent() = this
 
+    override val absolutePosition: Position
+        get() = position
+
     override var root: Maybe<RootContainer>
         get() = error("not implemented")
         set(_) {}

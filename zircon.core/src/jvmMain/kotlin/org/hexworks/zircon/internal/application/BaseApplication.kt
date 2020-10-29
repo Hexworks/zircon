@@ -111,7 +111,7 @@ abstract class BaseApplication(
     private fun doRender() {
         beforeRenderData.value = RenderData(SystemUtils.getCurrentTimeMs())
         if (config.debugMode) {
-            RunTimeStats.addTimedStatFor("debug.render.time") {
+            RunTimeStats.addTimedStatFor("Rendering time") {
                 renderer.render()
             }
         } else {
