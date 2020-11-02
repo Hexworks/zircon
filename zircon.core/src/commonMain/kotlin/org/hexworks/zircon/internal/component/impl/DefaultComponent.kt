@@ -51,6 +51,7 @@ abstract class DefaultComponent(
         )
 ) : InternalComponent,
         ComponentEventSource by uiEventProcessor,
+        Movable by movable,
         UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
@@ -136,6 +137,8 @@ abstract class DefaultComponent(
     override fun render(graphics: TileGraphics) {
         (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
+
+    // MOVABLE
 
     @Synchronized
     override fun moveTo(position: Position): Boolean {
