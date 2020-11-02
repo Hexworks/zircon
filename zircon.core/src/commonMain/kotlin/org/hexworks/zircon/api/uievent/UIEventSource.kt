@@ -14,7 +14,8 @@ interface UIEventSource {
      */
     fun handleMouseEvents(
             eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription
+            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription
 
     /**
      * Adds the given [handler] for [MouseEvent]s. Differs from a [handleMouseEvents]
