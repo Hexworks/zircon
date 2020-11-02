@@ -35,7 +35,7 @@ object KotlinPlayground {
 
         controls.addComponent(Components.label().withText("Pick a tileset"))
 
-        heading.addComponent(Components.header().withText("title").withSize(30, 1).build())
+        heading.addComponent(Components.header().withText("title").withSize(5, 1).build())
         heading.addComponent(controls)
 
         screen.addComponent(heading)
