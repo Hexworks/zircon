@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -19,7 +18,6 @@ import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
-import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
 import org.junit.Test
@@ -62,6 +60,41 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     @Test
+    fun shouldMoveRightByProperly() {
+        target.moveRightBy(2)
+
+        assertThat(target.relativePosition).isEqualTo(POSITION_2_3.withRelativeX(2))
+    }
+
+    @Test
+    fun shouldMoveLeftByProperly() {
+        target.moveLeftBy(2)
+
+        assertThat(target.relativePosition).isEqualTo(POSITION_2_3.withRelativeX(-2))
+    }
+
+    @Test
+    fun shouldMoveUpByProperly() {
+        target.moveUpBy(1)
+
+        assertThat(target.relativePosition).isEqualTo(POSITION_2_3.withRelativeY(-1))
+    }
+
+    @Test
+    fun shouldMoveDownByProperly() {
+        target.moveDownBy(1)
+
+        assertThat(target.relativePosition).isEqualTo(POSITION_2_3.withRelativeY(1))
+    }
+
+    @Test
+    fun shouldMoveByProperly() {
+        target.moveBy(Position.offset1x1())
+
+        assertThat(target.relativePosition).isEqualTo(POSITION_2_3.withRelative(Position.offset1x1()))
+    }
+
+    @Test
     fun shouldProperlyApplyStylesOnInit() {
         assertThat(target.componentState)
                 .isEqualTo(ComponentState.DEFAULT)
@@ -76,22 +109,22 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(Rect.create(POSITION_2x3, SIZE_4x4 - Size.one()))).isTrue()
+        assertThat(target.containsBoundable(Rect.create(POSITION_2_3, SIZE_4x4 - Size.one()))).isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        assertThat(target.containsBoundable(Rect.create(POSITION_2x3, SIZE_4x4 + Size.one()))).isFalse()
+        assertThat(target.containsBoundable(Rect.create(POSITION_2_3, SIZE_4x4 + Size.one()))).isFalse()
     }
 
     @Test
     fun shouldContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION_2x3)).isTrue()
+        assertThat(target.containsPosition(POSITION_2_3)).isTrue()
     }
 
     @Test
     fun shouldNotContainPositionWhichIsContained() {
-        assertThat(target.containsPosition(POSITION_2x3 - Position.offset1x1())).isFalse()
+        assertThat(target.containsPosition(POSITION_2_3 - Position.offset1x1())).isFalse()
     }
 
     @Test
@@ -182,7 +215,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         }
 
         target.process(
-                event = MouseEvent(MOUSE_PRESSED, 1, POSITION_2x3),
+                event = MouseEvent(MOUSE_PRESSED, 1, POSITION_2_3),
                 phase = BUBBLE)
 
         assertThat(pressed.get()).isTrue()
@@ -194,7 +227,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     companion object {
-        val POSITION_2x3 = Position.create(2, 3)
+        val POSITION_2_3 = Position.create(2, 3)
         val NEW_POSITION_6x7 = Position.create(6, 7)
         val SIZE_4x4 = Size.create(4, 4)
     }

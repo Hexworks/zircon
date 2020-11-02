@@ -51,7 +51,6 @@ abstract class DefaultComponent(
         )
 ) : InternalComponent,
         ComponentEventSource by uiEventProcessor,
-        Movable by movable,
         UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
@@ -142,15 +141,25 @@ abstract class DefaultComponent(
     override fun moveTo(position: Position): Boolean {
         parent.map { parent ->
             val newBounds = movable.rect.withPosition(position)
-//            require(parent.containsBoundable(newBounds)) {
-//                "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."
-//            }
+            require(parent.containsBoundable(newBounds)) {
+                "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."
+            }
         }
         val diff = position - absolutePosition
         movable.moveTo(position)
         relativePosition += diff
         return true
     }
+
+    override fun moveBy(position: Position) = moveTo(this.position + position)
+
+    override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
+
+    override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
+
+    override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
+
+    override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     override fun asInternalComponent(): InternalComponent = this
 
