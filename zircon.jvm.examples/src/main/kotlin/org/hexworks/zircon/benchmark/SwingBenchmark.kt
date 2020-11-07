@@ -16,6 +16,4 @@ object SwingBenchmark {
                 .build()))
 
     }
-
-
 }
