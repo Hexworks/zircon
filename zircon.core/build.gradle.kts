@@ -15,6 +15,7 @@ import TestLibs.mockitoKotlin
 
 plugins {
     kotlin("multiplatform")
+    id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
 }
