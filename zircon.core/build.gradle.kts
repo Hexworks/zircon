@@ -81,7 +81,6 @@ tasks.withType<DokkaTask>().configureEach {
         configureEach {
             includeNonPublic.set(false)
             skipDeprecated.set(false)
-            reportUndocumented.set(true)
             skipEmptyPackages.set(true)
             includes.from("module.md", "packages.md")
 
