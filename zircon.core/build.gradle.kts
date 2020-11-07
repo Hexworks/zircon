@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import Libs.caffeine
 import Libs.cobaltCore
 import Libs.kotlinxCollectionsImmutable
@@ -12,6 +14,9 @@ import TestLibs.kotlinTestCommon
 import TestLibs.logbackCore
 import TestLibs.mockitoAll
 import TestLibs.mockitoKotlin
+
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 plugins {
     kotlin("multiplatform")
@@ -69,6 +74,36 @@ kotlin {
         }
     }
 
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            includeNonPublic.set(false)
+            skipDeprecated.set(false)
+            reportUndocumented.set(true)
+            skipEmptyPackages.set(true)
+            includes.from("module.md", "packages.md")
+
+            // List of files or directories containing sample code (referenced with @sample tags)
+//            samples.from("samples/basic.kt", "samples/advanced.kt")
+
+            sourceLink {
+                localDirectory.set(file("src/commonMain/kotlin"))
+                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+            sourceLink {
+                localDirectory.set(file("src/jvmMain/kotlin"))
+                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/jvmMain/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+            jdkVersion.set(8)
+            noStdlibLink.set(false)
+            noJdkLink.set(false)
+            noAndroidSdkLink.set(false)
+        }
+    }
 }
 
 publishing {

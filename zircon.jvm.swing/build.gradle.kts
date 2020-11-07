@@ -1,3 +1,7 @@
+@file:Suppress("UnstableApiUsage")
+
+import java.net.URL
+
 plugins {
     kotlin("jvm")
     id("org.jetbrains.dokka")
@@ -28,6 +32,27 @@ kotlin {
             testImplementation(junit)
             testImplementation(mockitoAll)
             testImplementation(assertjCore)
+        }
+    }
+}
+
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            includeNonPublic.set(false)
+            skipDeprecated.set(false)
+            reportUndocumented.set(true)
+            skipEmptyPackages.set(true)
+            includes.from("module.md", "packages.md")
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.jvm.swing/src/main/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+            jdkVersion.set(8)
+            noStdlibLink.set(false)
+            noJdkLink.set(false)
+            noAndroidSdkLink.set(false)
         }
     }
 }
