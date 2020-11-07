@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("org.jetbrains.dokka") version "1.4.10.2"
 }
@@ -12,5 +14,5 @@ allprojects {
 }
 
 tasks.dokkaHtmlMultiModule.configure {
-    outputDirectory.set(buildDir.resolve("dokkaCustomMultiModuleOutput"))
+    outputDirectory.set(projectDir.resolve("docs").resolve(project.version.toString()))
 }

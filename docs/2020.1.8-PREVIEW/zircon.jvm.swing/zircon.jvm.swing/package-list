@@ -1,0 +1,11 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+org.hexworks.zircon.api
+org.hexworks.zircon.internal.application
+org.hexworks.zircon.internal.impl
+org.hexworks.zircon.internal.renderer
+org.hexworks.zircon.internal.tileset
+org.hexworks.zircon.internal.tileset.transformer
+org.hexworks.zircon.internal.uievent
+
