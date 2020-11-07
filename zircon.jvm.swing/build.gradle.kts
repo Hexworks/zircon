@@ -121,17 +121,3 @@ artifacts {
     archives(emptyJavadocJar)
     archives(sourcesJar)
 }
-
-tasks.dokkaHtml.configure {
-    outputDirectory.set(buildDir.resolve("dokka"))
-
-    dokkaSourceSets {
-        configureEach {
-            // Suppress a package
-            perPackageOption {
-                prefix.set("org.hexworks.zircon.internal")
-                suppress.set(true)
-            }
-        }
-    }
-}
