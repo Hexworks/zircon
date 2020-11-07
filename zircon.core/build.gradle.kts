@@ -83,3 +83,21 @@ signing {
     isRequired = false
     sign(publishing.publications)
 }
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(buildDir.resolve("dokka"))
+
+    dokkaSourceSets {
+        configureEach {
+            // Suppress a package
+            perPackageOption {
+                prefix.set("org.hexworks.zircon.internal")
+                suppress.set(true)
+            }
+            perPackageOption {
+                prefix.set("org.hexworks.zircon.platform")
+                suppress.set(true)
+            }
+        }
+    }
+}
