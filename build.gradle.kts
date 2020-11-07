@@ -24,7 +24,8 @@ tasks.dokkaHtmlMultiModule {
         println("---=== Generating index.html for docs ===---")
         val docs = File("docs")
         val html = StringBuilder()
-        html.append("<html><head><title>Choose a Version</title></head><body><ul>")
+        html.append("<html><head><title>Choose a Version</title></head><body>")
+        html.append("<h1>Pick a Version</h1><ul>")
         docs.listFiles()
                 ?.filter { it.name.contains("index.html").not() }
                 ?.filter { it.isDirectory }
