@@ -16,7 +16,7 @@ import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
 
 /**
- * A [Component] is a graphical object which represents a GUI element and used either to
+ * A [Component] is a graphical text GUI element and can be used either to
  * display information to the user or to enable the user to interact with the program.
  *
  * Components are organized into a tree structure of [Component] elements nested in each other.
@@ -26,8 +26,17 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * like a label or a check box is a [Container] while a label which is only intended to
  * display information is just a [Component].
  *
+ * [Component]s also support UI event handling through [UIEventSource] and [ComponentEventSource]
+ * and can handle focus.
+ *
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
+ *
+ * @see Container
+ * @see ComponentContainer
+ * @see UIEventSource
+ * @see ComponentEventSource
+ * @see Focusable
  */
 interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
@@ -37,15 +46,12 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * dependent and it is calculated based on the parent it is attached to.
      */
     val absolutePosition: Position
-//    val absolutePositionValue: ObservableValue<Position>
 
     /**
      * The relative position is the position of the top left corner of this [Component]
      * relative to the [contentOffset] of its parent.
      */
     val relativePosition: Position
-//    val relativePositionValue: ObservableValue<Position>
-
 
     /**
      * The position of the top left corner of the **content area** (where the component

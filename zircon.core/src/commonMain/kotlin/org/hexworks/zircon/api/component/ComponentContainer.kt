@@ -4,8 +4,10 @@ import org.hexworks.zircon.api.behavior.Themeable
 import org.hexworks.zircon.api.builder.Builder
 
 /**
- * Represents an object which can hold gui [Component]s.
- * @see Component for more info
+ * Represents an object which can hold gui [Component]s and also maintains
+ * a [theme] property that's synchronized for its child [Component]s.
+ * @see Component
+ * @see Themeable
  */
 interface ComponentContainer : Themeable {
 
@@ -33,7 +35,6 @@ interface ComponentContainer : Themeable {
      * @see addComponent
      */
     fun addComponents(vararg components: Builder<Component>): List<AttachedComponent> = components.map(::addComponent)
-
 
     /**
      * Adds the [Fragment.root] of the given [Fragment] to this [ComponentContainer].
