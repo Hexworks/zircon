@@ -1,6 +1,8 @@
 # Package org.hexworks.zircon.api
 
-This package contains the public *API* of Zircon.
+This package contains the public *API* of Zircon. You can use anything you find here, but note that
+classes and methods annotated with `@Beta` are considered a preliminary implementation, and their
+API might change in the future.
 
 # Package org.hexworks.zircon.api.animation
 
@@ -18,11 +20,23 @@ You can also find all the related configuration classes.
 
 # Package org.hexworks.zircon.api.builder
 
-This package contains *builder*s for almost all Zircon objects, like [Component]s, [TileGraphics] or [Tile] objects.
+This package and its subpackages are containing *builder*s for almost all Zircon objects,
+like [Component]s, [TileGraphics] or [Tile] objects.
+
+# Package org.hexworks.zircon.api.color
+
+Contains color-related types that can be used for coloring [Tile]s.
+
+# Package org.hexworks.zircon.api.component
+
+This package contains the public API of the [Component] abstraction. [Component]s are
+text GUI elements that you can use on [Screen]s and [View]s.
+
 
 # Package org.hexworks.zircon.internal
 
-Contains Zircon internals. You *can* use classes from this package, but they are subject to change in future
-releases, and you shouldn't rely on them.
+This package (and all its subpackages) contain types internal to *Zircon*.
+
+You *can* use classes from this package, but they are subject to change in future releases, and you shouldn't rely on them.
 
 

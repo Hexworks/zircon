@@ -24,7 +24,7 @@ object Components {
     fun textArea() = TextAreaBuilder.newBuilder()
 
     /**
-     * Creates a new [HorizontalNumberInputBuilder] for building horizontal [NumberInput] [Component]s.
+     * Creates a new [HorizontalNumberInputBuilder] for building horizontal [NumberInput] components.
      * @see NumberInput
      */
     @JvmStatic
@@ -32,140 +32,140 @@ object Components {
 
 
     /**
-     * Creates a new [VerticalNumberInputBuilder] for building vertical [NumberInput] [Component]s.
+     * Creates a new [VerticalNumberInputBuilder] for building vertical [NumberInput] components.
      * @see NumberInput
      */
     @JvmStatic
     fun verticalNumberInput(height: Int) = VerticalNumberInputBuilder.newBuilder(height)
 
     /**
-     * Creates a new [LogAreaBuilder] for building [LogArea] [Component]s.
+     * Creates a new [LogAreaBuilder] for building [LogArea] components.
      * @see LogArea
      */
     @JvmStatic
     fun logArea() = LogAreaBuilder.newBuilder()
 
     /**
-     * Creates a new [TextBoxBuilder] for building [TextBox] [Component]s.
+     * Creates a new [TextBoxBuilder] for building [TextBox] components.
      * @see TextBox
      */
     @JvmStatic
     fun textBox(contentWidth: Int) = TextBoxBuilder.newBuilder(contentWidth)
 
     /**
-     * Creates a new [PanelBuilder] for building [Panel] [Component]s.
+     * Creates a new [PanelBuilder] for building [Panel] components.
      * @see Panel
      */
     @JvmStatic
     fun panel() = PanelBuilder.newBuilder()
 
     /**
-     * Creates a new [LabelBuilder] for building [Label] [Component]s.
+     * Creates a new [LabelBuilder] for building [Label] components.
      * @see Label
      */
     @JvmStatic
     fun label() = LabelBuilder.newBuilder()
 
     /**
-     * Creates a new [ButtonBuilder] for building [Button] [Component]s.
+     * Creates a new [ButtonBuilder] for building [Button] components.
      * @see Button
      */
     @JvmStatic
     fun button() = ButtonBuilder.newBuilder()
 
     /**
-     * Creates a new [ToggleButtonBuilder] for building [ToggleButton] [Component]s.
+     * Creates a new [ToggleButtonBuilder] for building [ToggleButton] components.
      * @see ToggleButton
      */
     @JvmStatic
     fun toggleButton() = ToggleButtonBuilder.newBuilder()
 
     /**
-     * Creates a new [CheckBoxBuilder] for building [CheckBox] [Component]s.
+     * Creates a new [CheckBoxBuilder] for building [CheckBox] components.
      * @see CheckBox
      */
     @JvmStatic
     fun checkBox() = CheckBoxBuilder.newBuilder()
 
     /**
-     * Creates a new [ProgressBarBuilder] for building [ProgressBar] [Component]s.
+     * Creates a new [ProgressBarBuilder] for building [ProgressBar] components.
      * @see ProgressBar
      */
     @JvmStatic
     fun progressBar() = ProgressBarBuilder.newBuilder()
 
     /**
-     * Creates a new [HeaderBuilder] for building [Header] [Component]s.
+     * Creates a new [HeaderBuilder] for building [Header] components.
      * @see Header
      */
     @JvmStatic
     fun header() = HeaderBuilder.newBuilder()
 
     /**
-     * Creates a new [ParagraphBuilder] for building [Paragraph] [Component]s.
+     * Creates a new [ParagraphBuilder] for building [Paragraph] components.
      * @see Paragraph
      */
     @JvmStatic
     fun paragraph() = ParagraphBuilder.newBuilder()
 
     /**
-     * Creates a new [ListItemBuilder] for building [ListItem] [Component]s.
+     * Creates a new [ListItemBuilder] for building [ListItem] components.
      * @see ListItem
      */
     @JvmStatic
     fun listItem() = ListItemBuilder.newBuilder()
 
     /**
-     * Creates a new [IconBuilder] for building [Icon] [Component]s.
+     * Creates a new [IconBuilder] for building [Icon] components.
      * @see Icon
      */
     @JvmStatic
     fun icon() = IconBuilder.newBuilder()
 
     /**
-     * Creates a new [HBoxBuilder] for building [HBox] [Component]s.
+     * Creates a new [HBoxBuilder] for building [HBox] components.
      * @see HBox
      */
     @JvmStatic
     fun hbox() = HBoxBuilder.newBuilder()
 
     /**
-     * Creates a new [VBoxBuilder] for building [VBox] [Component]s.
+     * Creates a new [VBoxBuilder] for building [VBox] components.
      * @see VBox
      */
     @JvmStatic
     fun vbox() = VBoxBuilder.newBuilder()
 
     /**
-     * Creates a new [HorizontalSliderBuilder] for building [Slider] [Component]s.
+     * Creates a new [HorizontalSliderBuilder] for building [Slider] components.
      * @see Slider
      */
     @JvmStatic
     fun horizontalSlider() = HorizontalSliderBuilder.newBuilder()
 
     /**
-     * Creates a new [VerticalSliderBuilder] for building [Slider] [Component]s.
+     * Creates a new [VerticalSliderBuilder] for building [Slider] components.
      * @see Slider
      */
     @JvmStatic
     fun verticalSlider() = VerticalSliderBuilder.newBuilder()
 
     /**
-     * Creates a new [HorizontalScrollBarBuilder] for building horizontal [ScrollBar] [Component]s.
+     * Creates a new [HorizontalScrollBarBuilder] for building horizontal [ScrollBar] components.
      * @see ScrollBar
      */
     @JvmStatic
     fun horizontalScrollbar() = HorizontalScrollBarBuilder.newBuilder()
 
     /**
-     * Creates a new [VerticalScrollBarBuilder] for building vertical [ScrollBar] [Component]s.
+     * Creates a new [VerticalScrollBarBuilder] for building vertical [ScrollBar] components.
      * @see ScrollBar
      */
     @JvmStatic
     fun verticalScrollbar() = VerticalScrollBarBuilder.newBuilder()
 
     /**
-     * Creates a new [RadioButtonBuilder] for building [RadioButton] [Component]s.
+     * Creates a new [RadioButtonBuilder] for building [RadioButton] components.
      * @see RadioButton
      */
     @JvmStatic
@@ -188,7 +188,7 @@ object Components {
     fun <T : Component> group() = GroupBuilder.newBuilder<T>()
 
     /**
-     * Creates a new [GameComponentBuilder] for building [GameComponent] [Component]s.
+     * Creates a new [GameComponentBuilder] for building [GameComponent] components.
      * @see GameComponent
      * **Note that** [GameComponent] is in **Beta**.
      */
