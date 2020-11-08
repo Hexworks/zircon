@@ -21,8 +21,8 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
         componentMetadata: ComponentMetadata,
         initialTitle: String,
         private val renderer: ComponentRenderingStrategy<GameComponent<T, B>>,
-        private val gameArea: InternalGameArea<T, B>)
-    : GameComponent<T, B>, DefaultContainer(
+        private val gameArea: InternalGameArea<T, B>
+) : GameComponent<T, B>, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderer),
         TitleHolder by TitleHolder.create(initialTitle) {

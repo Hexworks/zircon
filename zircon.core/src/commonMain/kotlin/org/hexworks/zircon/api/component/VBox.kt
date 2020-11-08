@@ -3,7 +3,8 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.behavior.TitleHolder
 
 /**
- * A [VBox] is a [Container] which automatically aligns
- * elements added to it vertically (from top to bottom).
+ * A [VBox] is a [Container] that automatically aligns its child elements
+ * vertically (from top to bottom).
+ * @see Container
  */
 interface VBox : Container, TitleHolder

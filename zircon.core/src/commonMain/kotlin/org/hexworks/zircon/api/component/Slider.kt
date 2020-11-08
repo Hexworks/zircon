@@ -4,6 +4,10 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 
+/**
+ * A [Slider] is a [Component] that can be used to select
+ * values from a range of numbers with a visual sliding mechanism.
+ */
 interface Slider : Component {
 
     /**

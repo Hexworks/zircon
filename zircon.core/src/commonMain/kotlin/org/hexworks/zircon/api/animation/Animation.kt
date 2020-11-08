@@ -1,5 +1,8 @@
+@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+
 package org.hexworks.zircon.api.animation
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.jvm.JvmStatic
@@ -8,6 +11,7 @@ import kotlin.jvm.JvmStatic
  * Represents a series of [AnimationFrame]s which if drawn on the screen
  * after each other become an animation.
  */
+@Beta
 interface Animation : Identifiable {
 
     /**

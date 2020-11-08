@@ -3,10 +3,16 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.behavior.Boundable
 
+/**
+ * Contains the possible alignment options for a [Boundable] object
+ * relative to other [Boundable] objects.
+ */
 enum class ComponentAlignment(
         private val withinFn: (other: Rect, target: Size) -> Position,
-        private val aroundFn: (other: Rect, target: Size) -> Position) {
+        private val aroundFn: (other: Rect, target: Size) -> Position
+) {
 
     TOP_LEFT(withinFn = { _, _ ->
         Position.zero()
