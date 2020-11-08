@@ -87,4 +87,5 @@ org.hexworks.zircon.internal.util.rex
 org.hexworks.zircon.platform.extension
 org.hexworks.zircon.platform.factory
 org.hexworks.zircon.platform.util
+org.hexworks.zircon.samples
 

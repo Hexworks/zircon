@@ -84,8 +84,7 @@ tasks.withType<DokkaTask>().configureEach {
             skipEmptyPackages.set(true)
             includes.from("module.md", "packages.md")
 
-            // List of files or directories containing sample code (referenced with @sample tags)
-//            samples.from("samples/basic.kt", "samples/advanced.kt")
+            samples.from("src/commonMain/kotlin/org/hexworks/zircon/samples")
 
             sourceLink {
                 localDirectory.set(file("src/commonMain/kotlin"))

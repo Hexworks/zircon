@@ -1,19 +1,17 @@
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.*
+import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.DebugConfig
 import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.examples.base.DEFAULT_THEME
-import org.hexworks.zircon.examples.base.DEFAULT_TILESET
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.api.uievent.ComponentEventType
 import java.awt.Dimension
-import java.awt.Toolkit
 
 
 object KotlinPlayground {
@@ -40,6 +38,19 @@ object KotlinPlayground {
 
         screen.display()
         screen.theme = ColorThemes.amigaOs()
+    }
+
+    class ConfirmButton : Fragment {
+
+        override val root = Components.button()
+                .withText("Confirm")
+                .build()
+
+        fun onConfirm(fn: () -> Unit): Subscription {
+            return root.processComponentEvents(ComponentEventType.ACTIVATED) {
+                fn()
+            }
+        }
     }
 
 }

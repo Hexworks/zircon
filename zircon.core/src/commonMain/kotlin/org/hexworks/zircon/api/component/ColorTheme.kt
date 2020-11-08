@@ -3,9 +3,27 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.data.ComponentState
 
+/**
+ * A [ColorTheme] can be used to give a [Component] context-dependent styles.
+ * The current style depends on the [ComponentState] of the [Component].
+ * For each [ComponentState] there is a corresponding [ComponentStyleSet]
+ * that gets applied whenever the state of the [Component] changes.
+ * These states include:
+ * - [ComponentState.ACTIVE]
+ * - [ComponentState.DEFAULT]
+ * - [ComponentState.DISABLED]
+ * - [ComponentState.FOCUSED]
+ * - [ComponentState.HIGHLIGHTED]
+ * @see ComponentState and
+ * @see ComponentStyleSet for more info
+ */
 interface ColorTheme {
 
+    /**
+     * A unique name for this [ColorTheme].
+     */
     val name: String
 
     val primaryForegroundColor: TileColor
