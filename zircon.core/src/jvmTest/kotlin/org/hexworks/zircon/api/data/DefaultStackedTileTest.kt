@@ -76,6 +76,14 @@ class DefaultStackedTileTest {
         assertStackedTiles(stack.withRemovedTile(t1), t2, t3)
     }
 
+    @Test(IllegalStateException::class)
+    fun withRemovedLastTile() {
+        val stack = StackedTile.create(t1)
+        assertStackedTiles(stack, t1)
+        assertStackedTiles(stack.withRemovedTile(t3), t1)
+        stack.withRemovedTile(t1)
+    }
+
     private fun assertStackedTiles(simpleStack: StackedTile, vararg expectedTiles: Tile) {
         val expectedSize = expectedTiles.size
         assertEquals(expectedSize, simpleStack.tiles.size, "StackedTile should contain $expectedSize tiles")

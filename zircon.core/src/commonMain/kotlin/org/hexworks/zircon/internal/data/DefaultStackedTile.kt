@@ -22,13 +22,22 @@ class DefaultStackedTile(
 
     override fun withBaseTile(tile: Tile): StackedTile = DefaultStackedTile(
             baseTile = tile,
-            rest = rest.add(tile)
+            rest = rest
     )
 
-    override fun withRemovedTile(tile: Tile): StackedTile = DefaultStackedTile(
-            baseTile = tile,
-            rest = rest.remove(tile)
-    )
+    override fun withRemovedTile(tile: Tile): StackedTile {
+        val newRest = rest.remove(tile)
+        val newBaseTile = (if (tile == baseTile) {
+                    newRest.firstOrNull()
+                } else {
+                    baseTile
+                })
+                ?: throw IllegalStateException("Can not remove the last tile from a StackedTile")
+        return DefaultStackedTile(
+                baseTile = newBaseTile,
+                rest = newRest.remove(newBaseTile)
+        )
+    }
 
     override fun createCopy() = this
 
