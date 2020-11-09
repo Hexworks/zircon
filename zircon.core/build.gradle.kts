@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import Libs.caffeine
 import Libs.cobaltCore
 import Libs.kotlinxCollectionsImmutable
@@ -13,8 +15,12 @@ import TestLibs.logbackCore
 import TestLibs.mockitoAll
 import TestLibs.mockitoKotlin
 
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
+
 plugins {
     kotlin("multiplatform")
+    id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
 }
@@ -68,6 +74,34 @@ kotlin {
         }
     }
 
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            includeNonPublic.set(false)
+            skipDeprecated.set(false)
+            skipEmptyPackages.set(true)
+            includes.from("module.md", "packages.md")
+
+            samples.from("src/commonMain/kotlin/org/hexworks/zircon/samples")
+
+            sourceLink {
+                localDirectory.set(file("src/commonMain/kotlin"))
+                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+            sourceLink {
+                localDirectory.set(file("src/jvmMain/kotlin"))
+                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/jvmMain/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+            jdkVersion.set(8)
+            noStdlibLink.set(false)
+            noJdkLink.set(false)
+            noAndroidSdkLink.set(false)
+        }
+    }
 }
 
 publishing {

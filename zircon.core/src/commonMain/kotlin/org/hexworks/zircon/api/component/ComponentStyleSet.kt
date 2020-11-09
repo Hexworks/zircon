@@ -8,6 +8,7 @@ import kotlin.jvm.JvmStatic
 /**
  * This interface represents a collection of [StyleSet]s which
  * will be used when a [Component]'s [ComponentState] changes.
+ * @see ComponentState
  */
 interface ComponentStyleSet {
 

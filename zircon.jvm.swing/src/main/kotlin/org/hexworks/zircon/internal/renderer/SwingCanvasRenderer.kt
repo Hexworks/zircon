@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.TileTransformModifier
@@ -26,7 +27,6 @@ import java.awt.event.MouseEvent
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
-import java.awt.image.BufferedImage
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
@@ -150,12 +150,15 @@ class SwingCanvasRenderer(
         gridPositions.forEach { pos ->
             tiles@ for (i in layers.size - 1 downTo 0) {
                 val (layerPos, layer) = layers[i]
-                val tile = layer.getTileAtOrNull(pos - layerPos)?.also {
-                    tiles.add(0, it to it.finalTileset(layer))
+                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
+                for (j in toRender.size - 1 downTo 0) {
+                    val tile = toRender[j]
+                    tiles.add(0, tile to tile.finalTileset(layer))
+                    if (tile.isOpaque) {
+                        break@tiles
+                    }
                 }
-                if (tile?.isOpaque == true) {
-                    break@tiles
-                }
+
             }
             for ((tile, tileset) in tiles) {
                 renderTile(
@@ -168,6 +171,10 @@ class SwingCanvasRenderer(
             tiles.clear()
         }
     }
+
+    private fun Tile.tiles(): List<Tile> = if (this is StackedTile) {
+        tiles
+    } else listOf(this)
 
     private fun fetchLayers(): List<Pair<Position, TileGraphics>> {
         return tileGrid.renderables.map { renderable ->

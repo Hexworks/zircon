@@ -1,10 +1,18 @@
 package org.hexworks.zircon.api.component
 
 /**
- * A fragment represents a [Component] or a tree of
- * [Component]s grouped together with view logic.
+ * A [Fragment] is a reusable container for a [Component]. This [Component]
+ * can be accessed by [root].
+ *
+ * A [Fragment] usually contains view logic that works with the controls that are
+ * present in [root].
+ *
+ * @sample org.hexworks.zircon.samples.ComponentSamples.fragment
  */
 interface Fragment {
 
+    /**
+     * The [Component] this [Fragment] contains.
+     */
     val root: Component
 }
