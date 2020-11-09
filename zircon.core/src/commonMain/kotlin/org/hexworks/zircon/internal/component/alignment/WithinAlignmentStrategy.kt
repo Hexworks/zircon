@@ -6,9 +6,16 @@ import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
+/**
+ * Can be used to align objects **within** an [other] [Boundable]
+ * object. This means that [calculatePosition] will return a [Position]
+ * for which [Boundable.containsPosition] will return `true` when
+ * called on [other].
+ */
 data class WithinAlignmentStrategy(
         private val other: Boundable,
-        private val alignmentType: ComponentAlignment) : AlignmentStrategy {
+        private val alignmentType: ComponentAlignment
+) : AlignmentStrategy {
 
     override fun calculatePosition(size: Size): Position {
         return alignmentType.alignWithin(other.rect, size)

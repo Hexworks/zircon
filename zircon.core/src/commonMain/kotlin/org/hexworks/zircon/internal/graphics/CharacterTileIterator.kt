@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.CharacterTile
 
 /**
- * Responsible for iterating over a [<] and returning a list
+ * Responsible for iterating over a `[<]` and returning a list
  * of [CharacterTile]s that represents a word
  */
 class CharacterTileIterator(private val tileIterator: Iterator<CharacterTile>) : Iterator<List<CharacterTile>> {

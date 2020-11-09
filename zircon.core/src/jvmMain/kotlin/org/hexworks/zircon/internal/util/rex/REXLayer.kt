@@ -12,9 +12,11 @@ import java.nio.ByteBuffer
 /**
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
  */
-data class REXLayer(private val width: Int,
-                    private val height: Int,
-                    private val cells: List<REXCell>) {
+data class REXLayer(
+        private val width: Int,
+        private val height: Int,
+        private val cells: List<REXCell>
+) {
 
     fun getWidth() = width
 

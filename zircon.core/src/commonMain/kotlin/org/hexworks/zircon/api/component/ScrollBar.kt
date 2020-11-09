@@ -4,6 +4,10 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 
+/**
+ * A [ScrollBar] is a [Component] that can be used
+ * @see Slider
+ */
 interface ScrollBar : Component {
 
     /**
