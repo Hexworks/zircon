@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.data
 
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
@@ -26,16 +27,17 @@ class DefaultStackedTile(
     )
 
     override fun withRemovedTile(tile: Tile): StackedTile {
-        val newRest = rest.remove(tile)
-        val newBaseTile = (if (tile == baseTile) {
-                    newRest.firstOrNull()
+        if(tiles.size == 1 && tile == baseTile) {
+            throw IllegalStateException("Can not remove the last tile from a StackedTile")
+        }
+        val newBaseTile = if (tile == baseTile) {
+                    rest.first()
                 } else {
                     baseTile
-                })
-                ?: throw IllegalStateException("Can not remove the last tile from a StackedTile")
+                }
         return DefaultStackedTile(
                 baseTile = newBaseTile,
-                rest = newRest.remove(newBaseTile)
+                rest = tiles.toPersistentList().removeAll(listOf(newBaseTile, tile))
         )
     }
 
