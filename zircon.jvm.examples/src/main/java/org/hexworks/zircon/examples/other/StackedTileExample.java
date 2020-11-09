@@ -73,8 +73,8 @@ public class StackedTileExample {
 
     private static void letsGoApeshit(TileGrid app, Position gridPosition) {
         StackedTile stackGraphical = StackedTile.create(
-                graphicalTile("Fire ant"),
-                graphicalTile("Gremlin")
+                graphicalTile("Gremlin"),
+                graphicalTile("Fire ant")
         );
 
         StackedTile stackCharacter = stackXAndPlus();
