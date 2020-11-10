@@ -39,6 +39,11 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
     fun fetchBlockAt(position: Position3D): Maybe<B>
 
     /**
+     * Returns the [Block] at the given `position` or `null` if no [Block] is present.
+     */
+    fun fetchBlockAtOrNull(position: Position3D): B?
+
+    /**
      * Returns a part of this [GameArea] as a sequence of [Block]s. Note that
      * this operation creates a consistent snapshot, eg: modifying the underlying
      * [GameArea] has no effect on the generated [Sequence].
