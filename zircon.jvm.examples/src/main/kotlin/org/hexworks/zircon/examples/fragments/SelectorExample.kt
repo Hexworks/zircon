@@ -53,7 +53,7 @@ object SelectorExample {
 
         // This is a special form of MultiSelect
         fragmentsList.addFragment(
-                Fragments.colorThemeSelector(width, theme).withThemeables(screen).build()
+                Fragments.colorThemeSelector(width, theme).withThemeOverrides(screen).build()
         )
 
         fragmentsList.addFragment(

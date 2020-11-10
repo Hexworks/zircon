@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.color
 
+// TODO: document this
 interface ColorInterpolator {
 
     val lowColor: TileColor

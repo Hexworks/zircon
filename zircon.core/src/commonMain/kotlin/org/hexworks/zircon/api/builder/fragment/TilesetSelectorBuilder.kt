@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Group
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.TilesetResources
+import kotlin.jvm.JvmStatic
 
 /**
  * Builder for a [Selector] to change the tileset of multiple [TilesetOverride]s or [Group]s at runtime.
@@ -58,6 +59,7 @@ class TilesetSelectorBuilder private constructor(
         /**
          * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [TilesetResource]s.
          */
+        @JvmStatic
         fun newBuilder(width: Int, tileset: TilesetResource) = TilesetSelectorBuilder(width, tileset)
     }
 }

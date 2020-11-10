@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Selectable
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -17,7 +17,7 @@ class DefaultToggleButton(
 ) : ToggleButton, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        TextHolder by TextHolder.create(initialText),
+        TextOverride by TextOverride.create(initialText),
         Selectable by Selectable.create(initialSelected) {
 
     override fun activated() = whenEnabledRespondWith {

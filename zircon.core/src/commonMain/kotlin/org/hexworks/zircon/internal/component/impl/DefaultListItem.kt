@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -15,7 +15,7 @@ class DefaultListItem(
 ) : ListItem, DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        TextHolder by TextHolder.create(initialText) {
+        TextOverride by TextOverride.create(initialText) {
 
     override fun acceptsFocus() = false
 

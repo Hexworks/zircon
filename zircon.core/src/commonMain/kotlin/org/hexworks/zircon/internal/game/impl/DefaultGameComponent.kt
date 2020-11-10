@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.game.impl
 
-import org.hexworks.zircon.api.behavior.TitleHolder
+import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -25,7 +25,7 @@ class DefaultGameComponent<T : Tile, B : Block<T>>(
 ) : GameComponent<T, B>, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderer),
-        TitleHolder by TitleHolder.create(initialTitle) {
+        TitleOverride by TitleOverride.create(initialTitle) {
 
     // TODO: render game area
     @Synchronized

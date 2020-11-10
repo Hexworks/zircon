@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -12,7 +12,7 @@ class DefaultParagraph(
         componentMetadata: ComponentMetadata,
         initialText: String,
         renderingStrategy: ComponentRenderingStrategy<Paragraph>
-) : Paragraph, TextHolder by TextHolder.create(initialText), DefaultComponent(
+) : Paragraph, TextOverride by TextOverride.create(initialText), DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy
 ) {

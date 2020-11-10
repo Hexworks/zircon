@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderType
+import kotlin.jvm.JvmStatic
 
 /**
  * Builds [Border]s.
@@ -16,16 +17,8 @@ data class BorderBuilder(
         private var borderType: BorderType = BorderType.SOLID,
         private var borderColor: TileColor = TileColor.defaultForegroundColor(),
         private var borderWidth: Int = 2,
-        private var borderPositions: Set<BorderPosition> = BorderPosition.values().toSet())
-    : Builder<Border> {
-
-    override fun build(): Border = Border(
-            borderType = borderType,
-            borderColor = borderColor,
-            borderWidth = borderWidth,
-            borderPositions = borderPositions)
-
-    override fun createCopy() = copy(borderPositions = borderPositions.toSet())
+        private var borderPositions: Set<BorderPosition> = BorderPosition.values().toSet()
+) : Builder<Border> {
 
     fun withBorderType(borderType: BorderType) = also {
         this.borderType = borderType
@@ -47,7 +40,18 @@ data class BorderBuilder(
         this.borderPositions = borderPositions
     }
 
+    override fun build(): Border = Border(
+            borderType = borderType,
+            borderColor = borderColor,
+            borderWidth = borderWidth,
+            borderPositions = borderPositions)
+
+    override fun createCopy() = copy(borderPositions = borderPositions.toSet())
+
+
     companion object {
+
+        @JvmStatic
         fun newBuilder() = BorderBuilder()
     }
 }

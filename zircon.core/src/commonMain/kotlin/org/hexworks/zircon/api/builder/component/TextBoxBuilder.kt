@@ -19,8 +19,8 @@ import kotlin.jvm.JvmStatic
 class TextBoxBuilder(
         private val initialContentWidth: Int,
         private var nextPosition: Position = Position.defaultPosition(),
-        private val components: MutableList<Component> = mutableListOf())
-    : BaseComponentBuilder<TextBox, TextBoxBuilder>(DefaultTextBoxRenderer()) {
+        private val components: MutableList<Component> = mutableListOf()
+) : BaseComponentBuilder<TextBox, TextBoxBuilder>(DefaultTextBoxRenderer()) {
 
     private val inlineElements = mutableListOf<Component>()
     private val contentWidth: Int
@@ -146,22 +146,6 @@ class TextBoxBuilder(
         updateSizeAndPosition(1)
     }
 
-    override fun build(): TextBox {
-        return DefaultTextBox(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>)).also { textBox ->
-            components.forEach {
-                textBox.addComponent(it)
-            }
-        }
-    }
-
     private fun updateSizeAndPosition(lastComponentHeight: Int) {
         fixHeight(lastComponentHeight)
         nextPosition = nextPosition.withRelativeY(lastComponentHeight)
@@ -181,11 +165,31 @@ class TextBoxBuilder(
                 .fold(0, Int::plus)
     }
 
+    override fun build(): TextBox {
+        return DefaultTextBox(
+                componentMetadata = ComponentMetadata(
+                        size = size,
+                        relativePosition = position,
+                        componentStyleSet = componentStyleSet,
+                        tileset = tileset
+                ),
+                renderingStrategy = DefaultComponentRenderingStrategy(
+                        decorationRenderers = decorationRenderers,
+                        componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>
+                )
+        ).also { textBox ->
+            components.forEach {
+                textBox.addComponent(it)
+            }
+        }
+    }
+
     override fun createCopy() = TextBoxBuilder(
             initialContentWidth = contentWidth,
             nextPosition = nextPosition,
-            components = components.toMutableList())
-            .withProps(props.copy())
+            components = components.toMutableList()
+    ).withProps(props.copy())
+
 
     companion object {
 

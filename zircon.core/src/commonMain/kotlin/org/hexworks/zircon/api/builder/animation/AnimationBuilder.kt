@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.animation
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
@@ -9,7 +10,8 @@ import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
-@Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST")
+@Beta
+@Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 data class AnimationBuilder private constructor(
         private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
         private val positions: MutableList<Position> = mutableListOf(),

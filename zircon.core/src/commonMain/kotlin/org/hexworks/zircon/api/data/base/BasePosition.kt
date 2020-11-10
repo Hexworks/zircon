@@ -136,7 +136,7 @@ abstract class BasePosition : Position {
      */
     override fun toSize(): Size = Size.create(x, y)
 
-    override fun toPosition3D(z: Int): Position3D = this.to3DPosition(z)
+    override fun toPosition3D(z: Int): Position3D = this.toPosition3D(z)
 
     /**
      * Creates a [Position] which is relative to the top of the given [Component].

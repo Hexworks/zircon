@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.behavior.TitleHolder
+import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
@@ -27,7 +27,7 @@ data class BoxDecorationRenderer(
     val title: String by titleProperty.asDelegate()
 
     override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
-        val finalTitle = if (context.component is TitleHolder) {
+        val finalTitle = if (context.component is TitleOverride) {
             context.component.title
         } else titleProperty.value
         val size = tileGraphics.size

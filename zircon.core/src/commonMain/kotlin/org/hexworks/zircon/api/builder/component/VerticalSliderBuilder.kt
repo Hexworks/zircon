@@ -12,14 +12,16 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the slider. By default, it creates a slider with a maxValue of 100 and 10 steps.
+ * Builder for a vertical [Slider]. By default, it creates a slider with
+ * - [minValue]: `0`
+ * - [maxValue]: `100`
+ * - [numberOfSteps]: `10`
  */
 class VerticalSliderBuilder(
         private var minValue: Int = 0,
         private var maxValue: Int = 100,
         private var numberOfSteps: Int = 10,
-        private var additionalHeightNeeded: Int = 5)
-    : BaseComponentBuilder<Slider, VerticalSliderBuilder>(VerticalSliderRenderer()) {
+) : BaseComponentBuilder<Slider, VerticalSliderBuilder>(VerticalSliderRenderer()) {
 
     fun withMaxValue(max: Int) = also {
         require(max > minValue) { "Max value must be greater than min value" }
@@ -44,13 +46,15 @@ class VerticalSliderBuilder(
                     size = size,
                     relativePosition = position,
                     componentStyleSet = componentStyleSet,
-                    tileset = tileset),
+                    tileset = tileset
+            ),
             minValue = minValue,
             maxValue = maxValue,
             numberOfSteps = numberOfSteps,
             renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)).apply {
+                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)
+    ).apply {
         colorTheme.map {
             theme = it
         }

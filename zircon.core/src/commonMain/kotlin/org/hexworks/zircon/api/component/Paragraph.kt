@@ -1,5 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 
-interface Paragraph : Component, TextHolder
+interface Paragraph : Component, TextOverride

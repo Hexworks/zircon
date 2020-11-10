@@ -6,7 +6,7 @@ import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Selector
@@ -64,7 +64,7 @@ class DefaultSelector<T : Any>(
         addComponent(rightButton)
     }
 
-    private fun TextHolder.initLabel() {
+    private fun TextOverride.initLabel() {
         text = fetchLabelBy(0)
         textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
     }

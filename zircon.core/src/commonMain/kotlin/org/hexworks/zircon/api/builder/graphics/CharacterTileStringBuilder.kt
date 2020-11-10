@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
+import kotlin.jvm.JvmStatic
 
 /**
  * Creates [CharacterTileString]s.
@@ -24,10 +25,8 @@ data class CharacterTileStringBuilder(
         private var size: Size = Size.unknown(),
         private val modifiers: MutableSet<Modifier> = mutableSetOf(),
         private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
-        private var backgroundColor: TileColor = TileColor.defaultBackgroundColor())
-    : Builder<CharacterTileString> {
-
-    override fun createCopy() = copy()
+        private var backgroundColor: TileColor = TileColor.defaultBackgroundColor()
+) : Builder<CharacterTileString> {
 
     fun withText(text: String) = also {
         this.text = text
@@ -85,14 +84,18 @@ data class CharacterTileStringBuilder(
                 textWrap = textWrap)
     }
 
+    override fun createCopy() = copy()
+
+
     companion object {
+
+        private val NO_VALUE = UUIDFactory.randomUUID().toString()
 
         /**
          * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.CharacterTileString]s.
          */
+        @JvmStatic
         fun newBuilder() = CharacterTileStringBuilder()
-
-        private val NO_VALUE = UUIDFactory.randomUUID().toString()
 
     }
 }

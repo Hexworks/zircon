@@ -11,7 +11,8 @@ import kotlin.jvm.JvmStatic
  * can provide useful information about its geometry relating to other [Boundable]s
  * (like intersection).
  */
-interface Boundable : Sizeable {
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
+interface Boundable : HasSize {
 
     val rect: Rect
 

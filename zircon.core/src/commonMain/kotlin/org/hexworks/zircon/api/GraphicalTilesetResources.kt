@@ -23,12 +23,14 @@ object GraphicalTilesetResources {
     fun loadTilesetFromFilesystem(
             width: Int,
             height: Int,
-            path: String): TilesetResource {
+            path: String
+    ): TilesetResource {
         return GraphicalTilesetResource(
                 width = width,
                 height = height,
                 path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM)
+                tilesetSourceType = TilesetSourceType.FILESYSTEM
+        )
     }
 
     /**
@@ -40,11 +42,13 @@ object GraphicalTilesetResources {
     fun loadTilesetFromJar(
             width: Int,
             height: Int,
-            path: String): TilesetResource {
+            path: String
+    ): TilesetResource {
         return GraphicalTilesetResource(
                 width = width,
                 height = height,
                 path = path,
-                tilesetSourceType = TilesetSourceType.JAR)
+                tilesetSourceType = TilesetSourceType.JAR
+        )
     }
 }

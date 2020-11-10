@@ -16,7 +16,7 @@ class ColorThemeSelectorBuilderTest {
         val testComponent = Components.label().withText("Hello World").withColorTheme(theme).build()
 
         val actualThemesInSelector: List<ColorTheme> = Fragments.colorThemeSelector(testComponent.size.width, theme)
-                .withThemeables(testComponent)
+                .withThemeOverrides(testComponent)
                 .build().values
         assertThat(actualThemesInSelector)
                 .hasSize(ColorThemeResource.values().size)

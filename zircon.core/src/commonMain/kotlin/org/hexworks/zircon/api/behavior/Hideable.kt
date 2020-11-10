@@ -1,12 +1,14 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.internal.behavior.impl.DefaultHideable
+import org.hexworks.zircon.internal.behavior.impl.DefaultCanBeHidden
 import kotlin.jvm.JvmStatic
 
 /**
  * Represents an object which can be visually hidden (invisible).
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
+@Deprecated("This interface was renamed to CanBeHidden, please use that instead. Hideable will be removed in the next release")
 interface Hideable {
 
     var isHidden: Boolean
@@ -15,6 +17,6 @@ interface Hideable {
     companion object {
 
         @JvmStatic
-        fun create(initialIsHidden: Boolean = false): Hideable = DefaultHideable(initialIsHidden)
+        fun create(initialIsHidden: Boolean = false): CanBeHidden = DefaultCanBeHidden(initialIsHidden)
     }
 }

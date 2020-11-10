@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.modifier
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.modifier.RayShade
+import kotlin.jvm.JvmStatic
 
 /**
  * Builds [RayShade]s.
@@ -11,11 +12,12 @@ import org.hexworks.zircon.api.modifier.RayShade
  * - strength: 0.5
  * - rays only: false
  */
-data class RayShadeBuilder(var opacity: Float = 1.0f,
-                           var threshold: Float = 0.0f,
-                           var strength: Float = 0.5f,
-                           var raysOnly: Boolean = false)
-    : Builder<RayShade> {
+data class RayShadeBuilder(
+        var opacity: Float = 1.0f,
+        var threshold: Float = 0.0f,
+        var strength: Float = 0.5f,
+        var raysOnly: Boolean = false
+) : Builder<RayShade> {
 
     override fun build(): RayShade = RayShade(
             opacity = opacity,
@@ -46,6 +48,7 @@ data class RayShadeBuilder(var opacity: Float = 1.0f,
         /**
          * Creates a new [RayShadeBuilder] for creating [RayShade]s.
          */
+        @JvmStatic
         fun newBuilder() = RayShadeBuilder()
 
         /**

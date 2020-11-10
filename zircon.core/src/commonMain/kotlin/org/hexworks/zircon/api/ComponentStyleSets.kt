@@ -4,6 +4,9 @@ import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import kotlin.jvm.JvmStatic
 
+/**
+ * This *facade* contains factory functions for creating builders for [ComponentStyleSet]s.
+ */
 object ComponentStyleSets {
 
     /**

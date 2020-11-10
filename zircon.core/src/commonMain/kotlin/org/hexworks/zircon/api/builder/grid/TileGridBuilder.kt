@@ -21,16 +21,6 @@ open class TileGridBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
 ) : Builder<TileGrid> {
 
-    override fun build(): TileGrid {
-        return ThreadSafeTileGrid(
-                initialTileset = tileset,
-                initialSize = size)
-    }
-
-    override fun createCopy(): TileGridBuilder = TileGridBuilder(
-            size = size,
-            tileset = tileset)
-
     /**
      * Sets the initial grid [Size].
      * Default is 80x24.
@@ -56,6 +46,18 @@ open class TileGridBuilder(
      * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
      */
     fun buildScreen(): Screen = TileGridScreen(build() as InternalTileGrid)
+
+    override fun build(): TileGrid {
+        return ThreadSafeTileGrid(
+                initialTileset = tileset,
+                initialSize = size
+        )
+    }
+
+    override fun createCopy(): TileGridBuilder = TileGridBuilder(
+            size = size,
+            tileset = tileset
+    )
 
     companion object {
 

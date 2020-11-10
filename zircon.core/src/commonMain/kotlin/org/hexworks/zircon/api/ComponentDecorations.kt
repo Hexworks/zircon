@@ -11,6 +11,9 @@ import org.hexworks.zircon.internal.component.renderer.decoration.*
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
+/**
+ * This object contains functions for creating component decorations.
+ */
 object ComponentDecorations {
 
     /**
@@ -23,7 +26,8 @@ object ComponentDecorations {
             renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = BorderDecorationRenderer(
             border = border,
-            renderingMode = renderingMode)
+            renderingMode = renderingMode
+    )
 
     /**
      * Can be used to draw a box (using box drawing characters) around a [Component].
@@ -39,7 +43,8 @@ object ComponentDecorations {
     ): ComponentDecorationRenderer = BoxDecorationRenderer(
             boxType = boxType,
             titleProperty = createPropertyFrom(title),
-            renderingMode = renderingMode)
+            renderingMode = renderingMode
+    )
 
     /**
      * Wraps a [Component] on the left and the right sides with the given
@@ -48,17 +53,21 @@ object ComponentDecorations {
      */
     @JvmOverloads
     @JvmStatic
-    fun side(leftSideCharacter: Char = '[',
-             rightSideCharacter: Char = ']',
-             renderingMode: RenderingMode = RenderingMode.INTERACTIVE
+    fun side(
+            leftSideCharacter: Char = '[',
+            rightSideCharacter: Char = ']',
+            renderingMode: RenderingMode = RenderingMode.INTERACTIVE
     ): ComponentDecorationRenderer = SideDecorationRenderer(
             leftSideCharacter = leftSideCharacter,
             rightSideCharacter = rightSideCharacter,
-            renderingMode = renderingMode)
+            renderingMode = renderingMode
+    )
 
     @JvmOverloads
     @JvmStatic
-    fun halfBlock(renderingMode: RenderingMode = NON_INTERACTIVE): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
+    fun halfBlock(
+            renderingMode: RenderingMode = NON_INTERACTIVE
+    ): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
 
     /**
      * Can be used to draw a shadow around a [Component]. The shadow is drawn

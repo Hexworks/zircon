@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
+import kotlin.jvm.JvmStatic
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
@@ -20,19 +21,28 @@ data class TileImageBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var filler: Tile = Tile.empty(),
         private var size: Size = Size.one(),
-        private val tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileImage> {
+        private val tiles: MutableMap<Position, Tile> = mutableMapOf()
+) : Builder<TileImage> {
 
+    /**
+     * Sets the [tileset] to be used when building this [TileImage].
+     * The default comes from [RuntimeConfig.config].
+     */
     fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
     }
 
+    /**
+     * Sets the [filler] to be used when the [TileImage] is built.
+     * Default is [Tile.empty]
+     */
     fun withFiller(filler: Tile) = also {
         this.filler = filler
     }
 
     /**
-     * Sets the size for the new [TileGraphics].
-     * Default is 1x1.
+     * Sets the size for the new [TileImage].
+     * Default is [Size.one].
      */
     fun withSize(size: Size) = also {
         this.size = size
@@ -49,7 +59,7 @@ data class TileImageBuilder(
     }
 
     /**
-     * Sets the given [tiles] to be used for the new [TileGraphics].
+     * Sets the given [tiles] to be used for the new [TileImage].
      */
     fun withTiles(tiles: Map<Position, Tile>) = also {
         this.tiles.clear()
@@ -60,8 +70,8 @@ data class TileImageBuilder(
         return DefaultTileImage(
                 size = size,
                 tileset = tileset,
-                initialTiles = tiles.filter { size.containsPosition(it.key) })
-                .withFiller(filler)
+                initialTiles = tiles.filter { size.containsPosition(it.key) }
+        ).withFiller(filler)
     }
 
     override fun createCopy() = copy()
@@ -69,8 +79,9 @@ data class TileImageBuilder(
     companion object {
 
         /**
-         * Creates a new [TileImageBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
+         * Creates a new [TileImageBuilder] to build [TileImage] objects.
          */
+        @JvmStatic
         fun newBuilder() = TileImageBuilder()
     }
 }

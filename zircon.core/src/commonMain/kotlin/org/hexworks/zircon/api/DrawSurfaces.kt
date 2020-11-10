@@ -3,8 +3,12 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.builder.graphics.TileCompositeBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
+import org.hexworks.zircon.api.graphics.DrawSurface
 import kotlin.jvm.JvmStatic
 
+/**
+ * This *facade* object can be used to create builders for [DrawSurface] implementations.
+ */
 object DrawSurfaces {
 
     /**

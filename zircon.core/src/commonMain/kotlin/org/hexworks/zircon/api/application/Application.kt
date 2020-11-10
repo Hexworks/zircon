@@ -35,11 +35,15 @@ interface Application {
 
     /**
      * Adds a callback which will be called **before** every render.
+     * **Note that** this operation should be **very fast** otherwise it will
+     * block the rendering. Very fast is `<1ms`.
      */
     fun beforeRender(listener: (RenderData) -> Unit): Subscription
 
     /**
      * Adds a callback which will be called **after** every render.
+     * **Note that** this operation should be **very fast** otherwise it will
+     * block the rendering. Very fast is `<1ms`.
      */
     fun afterRender(listener: (RenderData) -> Unit): Subscription
 }

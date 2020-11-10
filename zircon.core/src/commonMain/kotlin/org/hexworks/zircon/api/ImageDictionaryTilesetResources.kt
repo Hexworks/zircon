@@ -17,10 +17,12 @@ object ImageDictionaryTilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromFilesystem(
-            path: String): TilesetResource {
+            path: String
+    ): TilesetResource {
         return ImageDictionaryTilesetResource(
                 path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM)
+                tilesetSourceType = TilesetSourceType.FILESYSTEM
+        )
     }
 
 }

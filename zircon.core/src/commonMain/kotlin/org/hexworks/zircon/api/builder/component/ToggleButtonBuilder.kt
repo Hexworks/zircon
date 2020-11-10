@@ -15,7 +15,8 @@ import kotlin.math.max
 class ToggleButtonBuilder(
         private var text: String = "",
         private var isSelected: Boolean = false)
-    : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>(DefaultToggleButtonRenderer()) {
+    : BaseComponentBuilder<ToggleButton, ToggleButtonBuilder>(DefaultToggleButtonRenderer()
+) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
@@ -30,16 +31,19 @@ class ToggleButtonBuilder(
     override fun build(): ToggleButton {
         val componentRenderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<ToggleButton>)
+                componentRenderer = componentRenderer as ComponentRenderer<ToggleButton>
+        )
         return DefaultToggleButton(
                 componentMetadata = ComponentMetadata(
                         relativePosition = position,
                         size = size,
                         componentStyleSet = componentStyleSet,
-                        tileset = tileset),
+                        tileset = tileset
+                ),
                 initialText = text,
                 initialSelected = isSelected,
-                renderingStrategy = componentRenderer).apply {
+                renderingStrategy = componentRenderer
+        ).apply {
             colorTheme.map {
                 theme = it
             }

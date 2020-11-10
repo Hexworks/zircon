@@ -2,18 +2,23 @@
 
 package org.hexworks.zircon.api.color
 
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.internal.color.DefaultTileColor
 import kotlin.jvm.JvmStatic
 
+/**
+ * A [TileColor] represents the colors of a [Tile]. [TileColor]s support transparency
+ * through [alpha]. You can choose to create your own colors using the various factory
+ * functions in [TileColor.Companion] or use [ANSITileColor] instead that comes with
+ * the default ANSI colors.
+ */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface TileColor : Cacheable {
 
     val alpha: Int
-
     val red: Int
-
     val green: Int
-
     val blue: Int
 
     val isOpaque: Boolean
@@ -145,6 +150,7 @@ interface TileColor : Cacheable {
         }
 
         private val TRANSPARENT = create(0, 0, 0, 0)
+
         const val DEFAULT_ALPHA = 255
         const val DEFAULT_FACTOR = 0.7
     }

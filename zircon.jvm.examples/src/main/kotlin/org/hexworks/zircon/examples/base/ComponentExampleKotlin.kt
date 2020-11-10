@@ -46,7 +46,7 @@ abstract class ComponentExampleKotlin(
         controls.addComponent(label().withText("Pick a theme"))
 
         controls.addFragment(Fragments.colorThemeSelector(controls.width -4, DEFAULT_THEME.getTheme())
-                .withThemeables(screen)
+                .withThemeOverrides(screen)
                 .build())
 
         controls.addComponent(label())
