@@ -173,7 +173,7 @@ class SwingCanvasRenderer(
     }
 
     private fun Tile.tiles(): List<Tile> = if (this is StackedTile) {
-        tiles
+        tiles.flatMap { it.tiles() }
     } else listOf(this)
 
     private fun fetchLayers(): List<Pair<Position, TileGraphics>> {

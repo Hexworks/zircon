@@ -8,12 +8,14 @@ import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-class DefaultStackedTile(
+data class DefaultStackedTile(
         override val baseTile: Tile,
         private val rest: PersistentList<Tile> = persistentListOf()
 ) : StackedTile, Tile by baseTile {
 
     override val tiles: List<Tile> = persistentListOf(baseTile) + rest
+
+    override val top: Tile = rest.lastOrNull() ?: baseTile
 
     override fun withPushedTile(tile: Tile): StackedTile = DefaultStackedTile(
             baseTile = baseTile,
@@ -22,11 +24,11 @@ class DefaultStackedTile(
 
     override fun withBaseTile(tile: Tile): StackedTile = DefaultStackedTile(
             baseTile = tile,
-            rest = rest.add(tile)
+            rest = rest
     )
 
     override fun withRemovedTile(tile: Tile): StackedTile = DefaultStackedTile(
-            baseTile = tile,
+            baseTile = baseTile,
             rest = rest.remove(tile)
     )
 
@@ -62,9 +64,9 @@ class DefaultStackedTile(
     override fun withStyle(style: StyleSet) =
             withBaseTile(baseTile.withStyle(style))
 
-    override fun asCharacterTile(): Maybe<CharacterTile> = Maybe.empty()
+    override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
 
-    override fun asImageTile(): Maybe<ImageTile> = Maybe.empty()
+    override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
 
-    override fun asGraphicTile(): Maybe<GraphicalTile> = Maybe.empty()
+    override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
 }
