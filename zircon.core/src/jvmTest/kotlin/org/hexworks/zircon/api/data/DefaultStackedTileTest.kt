@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class DefaultStackedTileTest {
 
@@ -91,13 +92,44 @@ class DefaultStackedTileTest {
         withRemovedTile.shouldBeComposedOf(t1)
     }
 
+    @Test
+    fun asOtherTileFromTop() {
+        val stack = StackedTile.create(t1, t2)
+
+        stack.assertAsOtherTile(t2)
+    }
+
+    @Test
+    fun asOtherTileFromTopWithBaseTile() {
+        val stack = StackedTile.create(t3)
+
+        stack.assertAsOtherTile(t3)
+    }
+
     private fun StackedTile.shouldBeComposedOf(vararg expectedTiles: Tile) {
         val expectedSize = expectedTiles.size
-        assertEquals(expectedSize, this.tiles.size, "$this should contain $expectedSize tiles")
+        assertTrue(expectedSize > 0, "Can not assert a StackedTile without expected tiles!")
+
         val expectedBaseTile = expectedTiles.first()
+        val expectedTopTile = expectedTiles.last()
+
+        assertEquals(expectedSize, this.tiles.size, "$this should contain $expectedSize tiles")
         assertEquals(expectedBaseTile, this.baseTile, "Base tile not equal to $expectedBaseTile")
+        assertEquals(expectedTopTile, this.top, "Top tile should be $expectedTopTile")
         expectedTiles.forEachIndexed { index, expectedTile ->
             assertEquals(expectedTile, this.tiles[index])
         }
+    }
+
+    private fun StackedTile.assertAsOtherTile(expectedCharTile: Tile) {
+        val charTile = asCharacterTile()
+        val imageTile = asImageTile()
+        val graphicTile = asGraphicTile()
+        assertTrue(imageTile.isEmpty(), "The stack should not be convertible to ${ImageTile::class}")
+        assertTrue(graphicTile.isEmpty(), "The stack should not be convertible to ${GraphicalTile::class}")
+        assertTrue(charTile.isPresent, "Stack should be convertible to ${CharacterTile::class}")
+        val actualCharTile = charTile.get()
+        assertEquals(expectedCharTile, actualCharTile, "Conversion to character tile should result in the top tile")
+        assertEquals(top, actualCharTile, "Conversion to character tile should result in the top tile")
     }
 }
