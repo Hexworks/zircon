@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-class DefaultStackedTile(
+data class DefaultStackedTile(
         override val baseTile: Tile,
         private val rest: PersistentList<Tile> = persistentListOf()
 ) : StackedTile, Tile by baseTile {
@@ -67,24 +67,4 @@ class DefaultStackedTile(
     override fun asImageTile(): Maybe<ImageTile> = Maybe.empty()
 
     override fun asGraphicTile(): Maybe<GraphicalTile> = Maybe.empty()
-
-    override fun toString(): String {
-        return "DefaultStackedTile(baseTile=$baseTile, rest=$rest)"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is DefaultStackedTile) return false
-
-        if (baseTile != other.baseTile) return false
-        if (rest != other.rest) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = baseTile.hashCode()
-        result = 31 * result + rest.hashCode()
-        return result
-    }
 }
