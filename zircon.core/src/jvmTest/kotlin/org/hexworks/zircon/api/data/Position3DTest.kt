@@ -7,6 +7,7 @@ class Position3DTest {
 
     @Test
     fun shouldBeGreaterThanWhenZIsGreaterThanOther() {
+
         assertThat(POS.compareTo(POS_WITH_LESSER_Z))
                 .isEqualTo(GREATER)
     }

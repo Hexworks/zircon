@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.game
 
 import kotlinx.collections.immutable.toPersistentMap
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
@@ -16,7 +17,8 @@ import org.hexworks.zircon.internal.game.impl.DefaultGameArea
  * Note that this class is in **BETA**!
  * It's API is subject to change!
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Beta
+@Suppress("unused", "MemberVisibilityCanBePrivate", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 data class GameAreaBuilder<T : Tile, B : Block<T>>(
         private var actualSize: Size3D = Size3D.one(),
         private var visibleSize: Size3D = Size3D.one(),

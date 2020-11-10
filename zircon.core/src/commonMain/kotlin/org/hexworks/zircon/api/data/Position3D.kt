@@ -23,9 +23,11 @@ import kotlin.jvm.JvmStatic
  *</pre>
  */
 @Suppress("DataClassPrivateConstructor")
-data class Position3D private constructor(val x: Int,
-                                          val y: Int,
-                                          val z: Int) : Comparable<Position3D> {
+data class Position3D private constructor(
+        val x: Int,
+        val y: Int,
+        val z: Int
+) : Comparable<Position3D> {
 
     val isUnknown: Boolean
         get() = this == UNKNOWN

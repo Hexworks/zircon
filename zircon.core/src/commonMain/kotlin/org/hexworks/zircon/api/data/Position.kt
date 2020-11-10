@@ -1,7 +1,8 @@
-@file:Suppress("unused", "ReplaceSingleLineLet", "SpellCheckingInspection")
+@file:Suppress("unused", "ReplaceSingleLineLet", "SpellCheckingInspection", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 
 package org.hexworks.zircon.api.data
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.GridPosition
@@ -12,6 +13,7 @@ import kotlin.jvm.JvmStatic
  * Represents a coordinate on a 2D plane. [Position]
  * destructures into [x] and [y].
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Position : Comparable<Position> {
 
     val x: Int
@@ -51,12 +53,6 @@ interface Position : Comparable<Position> {
     operator fun minus(other: Position): Position
 
     /**
-     * Turns this [Position] to a [PixelPosition]. Has no effect if
-     * `this` object is a [PixelPosition].
-     */
-    fun toPixelPosition(tileset: TilesetResource): PixelPosition
-
-    /**
      * Creates a new [Position] object representing a position with the same y index as this but with a
      * supplied x index.
      */
@@ -91,15 +87,6 @@ interface Position : Comparable<Position> {
     fun withRelative(translate: Position): Position
 
     /**
-     * Transforms this [Position] to a [Size] so if
-     * this position is Position(x=2, y=3) it will become
-     * Size(x=2, y=3).
-     */
-    fun toSize(): Size
-
-    fun toPosition3D(z: Int): Position3D
-
-    /**
      * Creates a [Position] which is relative to the top of the given [Component].
      * The x coordinate is used to shift right
      * The y coordinate is used to shift up
@@ -127,6 +114,27 @@ interface Position : Comparable<Position> {
      */
     fun relativeToLeftOf(component: Component): Position
 
+    /**
+     * Transforms this [Position] to a [Size] so if
+     * this position is Position(x=2, y=3) it will become
+     * Size(x=2, y=3).
+     */
+    fun toSize(): Size
+
+    /**
+     * Turns this [Position] to a [PixelPosition]. Has no effect if
+     * `this` object is a [PixelPosition].
+     */
+    @Beta
+    fun toPixelPosition(tileset: TilesetResource): PixelPosition
+
+    /**
+     * Creates a new [Position3D] from the [x] and [y] components of this [Position]
+     * and the given [z] value.
+     */
+    fun toPosition3D(z: Int): Position3D
+
+    @Deprecated("This is a redundant function", ReplaceWith("this.toPosition3D(z)"))
     fun to3DPosition(z: Int) = Position3D.from2DPosition(this, z)
 
     companion object {

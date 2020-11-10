@@ -17,6 +17,7 @@ import kotlin.jvm.JvmStatic
  * A [StackedTile] must have at least **one** [Tile] in its stack ([tiles])
  * therefore any implementation of this interface must ensure this property.
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 @Beta
 interface StackedTile : Tile {
 

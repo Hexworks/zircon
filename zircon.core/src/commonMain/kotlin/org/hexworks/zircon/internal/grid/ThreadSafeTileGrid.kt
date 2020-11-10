@@ -77,20 +77,6 @@ class ThreadSafeTileGrid(
     private var originalLayerable = layerable
     private var originalAnimationHandler = animationHandler
 
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position)
-    }
-
-    @Synchronized
-    override fun putTile(tile: Tile) {
-        if (tile is CharacterTile && tile.character == '\n') {
-            moveCursorToNextLine()
-        } else {
-            backend.draw(tile, cursorPosition)
-            moveCursorForward()
-        }
-    }
-
     override var isCursorVisible: Boolean
         get() = cursorHandler.isCursorVisible
         set(value) {
@@ -109,6 +95,20 @@ class ThreadSafeTileGrid(
         get() = cursorHandler.isCursorAtTheFirstRow
     override val isCursorAtTheLastRow: Boolean
         get() = cursorHandler.isCursorAtTheLastRow
+
+    override fun getTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position)
+    }
+
+    @Synchronized
+    override fun putTile(tile: Tile) {
+        if (tile is CharacterTile && tile.character == '\n') {
+            moveCursorToNextLine()
+        } else {
+            backend.draw(tile, cursorPosition)
+            moveCursorForward()
+        }
+    }
 
     override fun moveCursorForward() {
         cursorHandler.moveCursorForward()

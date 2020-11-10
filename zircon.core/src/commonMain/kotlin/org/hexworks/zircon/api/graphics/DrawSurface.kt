@@ -38,9 +38,11 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      * Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1) and
      * [drawArea] is (2,2) the following positions will be overwritten: [(1,1), (2,1), (1,2), (2,2)]
      */
-    fun draw(tileMap: Map<Position, Tile>,
-             drawPosition: Position,
-             drawArea: Size)
+    fun draw(
+            tileMap: Map<Position, Tile>,
+            drawPosition: Position,
+            drawArea: Size
+    )
 
     /**
      * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`,
@@ -62,15 +64,19 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
     /**
      * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
      */
-    fun draw(tileComposite: TileComposite,
-             drawPosition: Position)
+    fun draw(
+            tileComposite: TileComposite,
+            drawPosition: Position
+    )
 
     /**
      * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
      */
-    fun draw(tileComposite: TileComposite,
-             drawPosition: Position,
-             drawArea: Size)
+    fun draw(
+            tileComposite: TileComposite,
+            drawPosition: Position,
+            drawArea: Size
+    )
 
     /**
      * Transforms all of the [Tile]s in this [TileGraphics] with the given

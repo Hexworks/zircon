@@ -21,7 +21,7 @@ public class ViewsExampleJava {
 
         class InitialView extends BaseView {
 
-            public Button dockOther = Components.button()
+            public final Button dockOther = Components.button()
                     .withText("Dock other")
                     .withPosition(0, 2)
                     .build();
@@ -45,7 +45,7 @@ public class ViewsExampleJava {
 
         class OtherView extends BaseView {
 
-            public Button dockInitial = Components.button()
+            public final Button dockInitial = Components.button()
                     .withText("Dock initial")
                     .withPosition(12, 2)
                     .build();

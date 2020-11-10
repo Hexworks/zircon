@@ -1,9 +1,14 @@
+@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+
 package org.hexworks.zircon.api.animation
+
+import org.hexworks.zircon.api.Beta
 
 /**
  * The [AnimationRunner] can be used to [start] running [Animation]s.
  * When an [Animation] is started it will be displayed on the screen.
  */
+@Beta
 interface AnimationRunner {
 
     /**

@@ -6,6 +6,10 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 
+/**
+ * A [GraphicalTile] is a [Tile] that represents a graphical object that's a part of
+ * a graphical [TilesetResource].
+ */
 interface GraphicalTile : Tile, TilesetHolder {
 
     val name: String

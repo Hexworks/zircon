@@ -5,7 +5,11 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.ImageDictionaryTilesetResources
 
+/**
+ * An [ImageTile] is a singular image that can be loaded using [ImageDictionaryTilesetResources].
+ */
 interface ImageTile : Tile, TilesetHolder {
 
     val name: String

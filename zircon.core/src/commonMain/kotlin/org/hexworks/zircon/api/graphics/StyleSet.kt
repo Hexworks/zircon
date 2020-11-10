@@ -15,6 +15,7 @@ import kotlin.jvm.JvmStatic
  * - modifiers
  * and a set of useful operations on them.
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface StyleSet : Cacheable, Copiable<StyleSet> {
 
     val foregroundColor: TileColor
