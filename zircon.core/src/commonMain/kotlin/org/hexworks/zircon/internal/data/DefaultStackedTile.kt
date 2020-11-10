@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.data
 
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
@@ -26,20 +25,10 @@ class DefaultStackedTile(
             rest = rest
     )
 
-    override fun withRemovedTile(tile: Tile): StackedTile {
-        if(tiles.size == 1 && tile == baseTile) {
-            throw IllegalStateException("Can not remove the last tile from a StackedTile")
-        }
-        val newBaseTile = if (tile == baseTile) {
-                    rest.first()
-                } else {
-                    baseTile
-                }
-        return DefaultStackedTile(
-                baseTile = newBaseTile,
-                rest = tiles.toPersistentList().removeAll(listOf(newBaseTile, tile))
-        )
-    }
+    override fun withRemovedTile(tile: Tile): StackedTile = DefaultStackedTile(
+            baseTile = baseTile,
+            rest = rest.remove(tile)
+    )
 
     override fun createCopy() = this
 
@@ -78,4 +67,24 @@ class DefaultStackedTile(
     override fun asImageTile(): Maybe<ImageTile> = Maybe.empty()
 
     override fun asGraphicTile(): Maybe<GraphicalTile> = Maybe.empty()
+
+    override fun toString(): String {
+        return "DefaultStackedTile(baseTile=$baseTile, rest=$rest)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DefaultStackedTile) return false
+
+        if (baseTile != other.baseTile) return false
+        if (rest != other.rest) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = baseTile.hashCode()
+        result = 31 * result + rest.hashCode()
+        return result
+    }
 }
