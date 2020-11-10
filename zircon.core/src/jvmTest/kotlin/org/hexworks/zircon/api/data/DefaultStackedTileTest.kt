@@ -27,7 +27,7 @@ class DefaultStackedTileTest {
     fun simpleStack() {
         val simpleStack = StackedTile.create(t1, t2, t3)
 
-        assertStackedTiles(simpleStack, t1, t2, t3)
+        simpleStack.shouldBeComposedOf(t1, t2, t3)
     }
 
     @Test
@@ -36,61 +36,68 @@ class DefaultStackedTileTest {
         val stack2 = StackedTile.create(t2, t3)
 
         val stackedStack = StackedTile.create(stack1, stack2)
-        assertStackedTiles(stackedStack, stack1, stack2)
-        assertStackedTiles(stackedStack.tiles[0] as StackedTile, t1, t2)
-        assertStackedTiles(stackedStack.tiles[1] as StackedTile, t2, t3)
+        stackedStack.shouldBeComposedOf(stack1, stack2)
+        (stackedStack.tiles[0] as StackedTile).shouldBeComposedOf(t1, t2)
+        (stackedStack.tiles[1] as StackedTile).shouldBeComposedOf(t2, t3)
     }
 
     @Test
     fun withBaseTileOnly() {
         val baseOnly = StackedTile.create(t1)
-        assertStackedTiles(baseOnly, t1)
-        assertStackedTiles(baseOnly.withBaseTile(t2), t2)
+        baseOnly.shouldBeComposedOf(t1)
+        baseOnly.withBaseTile(t2).shouldBeComposedOf(t2)
     }
 
     @Test
     fun withBaseTile() {
         val stack = StackedTile.create(t1, t2)
-        assertStackedTiles(stack, t1, t2)
-        assertStackedTiles(stack.withBaseTile(t3), t3, t2)
+        stack.shouldBeComposedOf(t1, t2)
+        stack.withBaseTile(t3).shouldBeComposedOf(t3, t2)
     }
 
     @Test
     fun withPushedTile() {
         val stack = StackedTile.create(t1, t2)
-        assertStackedTiles(stack, t1, t2)
-        assertStackedTiles(stack.withPushedTile(t3), t1, t2, t3)
+        stack.shouldBeComposedOf(t1, t2)
+        stack.withPushedTile(t3).shouldBeComposedOf(t1, t2, t3)
     }
 
     @Test
     fun withRemovedTile() {
         val stack = StackedTile.create(t1, t2, t3)
-        assertStackedTiles(stack, t1, t2, t3)
-        assertStackedTiles(stack.withRemovedTile(t2), t1, t3)
+        stack.shouldBeComposedOf(t1, t2, t3)
+
+        val removedOne = stack.withRemovedTile(t2)
+        removedOne.shouldBeComposedOf(t1, t3)
+
+        val removedBoth = removedOne.withRemovedTile(t3)
+        removedBoth.shouldBeComposedOf(t1)
     }
 
     @Test
     fun withRemovedBaseTile() {
         val stack = StackedTile.create(t1, t2, t3)
-        assertStackedTiles(stack, t1, t2, t3)
-        assertStackedTiles(stack.withRemovedTile(t1), t2, t3)
+        stack.shouldBeComposedOf(t1, t2, t3)
+        stack.withRemovedTile(t1).shouldBeComposedOf(t1, t2, t3)
     }
 
-    @Test(IllegalStateException::class)
+    @Test
     fun withRemovedLastTile() {
         val stack = StackedTile.create(t1)
-        assertStackedTiles(stack, t1)
-        assertStackedTiles(stack.withRemovedTile(t3), t1)
-        stack.withRemovedTile(t1)
+        stack.shouldBeComposedOf(t1)
+        stack.withRemovedTile(t3).shouldBeComposedOf(t1)
+        val withRemovedTile = stack.withRemovedTile(t1)
+        assertEquals(stack, withRemovedTile, "After trying to remove the base tile, the StackedTile should still be the same")
+        withRemovedTile.shouldBeComposedOf(t1)
     }
 
-    private fun assertStackedTiles(simpleStack: StackedTile, vararg expectedTiles: Tile) {
+    private fun StackedTile.shouldBeComposedOf(vararg expectedTiles: Tile) {
         val expectedSize = expectedTiles.size
-        assertEquals(expectedSize, simpleStack.tiles.size, "StackedTile should contain $expectedSize tiles")
+        assertEquals(expectedSize, this.tiles.size, "$this should contain $expectedSize tiles")
         val expectedBaseTile = expectedTiles.first()
-        assertEquals(expectedBaseTile, simpleStack.baseTile, "Base tile not equal to $expectedBaseTile")
+        assertEquals(expectedBaseTile, this.baseTile, "Base tile not equal to $expectedBaseTile")
         expectedTiles.forEachIndexed { index, expectedTile ->
-            assertEquals(expectedTile, simpleStack.tiles[index])
+            assertEquals(expectedTile, this.tiles[index])
         }
     }
 }
