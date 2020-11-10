@@ -117,7 +117,7 @@ class DefaultStackedTileTest {
         assertEquals(expectedBaseTile, this.baseTile, "Base tile not equal to $expectedBaseTile")
         assertEquals(expectedTopTile, this.top, "Top tile should be $expectedTopTile")
         expectedTiles.forEachIndexed { index, expectedTile ->
-            assertEquals(expectedTile, this.tiles[index])
+            assertEquals(expectedTile, this.tiles[index], "Tile at stack index $index not equal to the expected tile.")
         }
     }
 
