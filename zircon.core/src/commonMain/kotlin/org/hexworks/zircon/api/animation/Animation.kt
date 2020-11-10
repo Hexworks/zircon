@@ -11,6 +11,7 @@ import kotlin.jvm.JvmStatic
  * Represents a series of [AnimationFrame]s which if drawn on the screen
  * after each other become an animation.
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 @Beta
 interface Animation : Identifiable {
 

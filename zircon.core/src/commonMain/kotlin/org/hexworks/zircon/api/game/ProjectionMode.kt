@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.game
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.internal.game.ProjectionStrategy
 import org.hexworks.zircon.internal.game.impl.TopDownObliqueFrontProjectionStrategy
 import org.hexworks.zircon.internal.game.impl.TopDownProjectionStrategy
@@ -9,6 +10,8 @@ import org.hexworks.zircon.internal.game.impl.TopDownProjectionStrategy
  * See: [here](https://docs.google.com/spreadsheets/d/1mvFKwToAHLErmBCZkD0Pylwiptle_rAij-B0DzoCOhI/edit?usp=sharing)
  * for more info.
  */
+@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+@Beta
 enum class ProjectionMode(
         internal val projectionStrategy: ProjectionStrategy) {
     /**

@@ -8,8 +8,9 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
- * An immutable image built from [Tile]s. It is completely in memory but it can be drawn onto
- * [TileGraphics]s and its derivatives.
+ * An immutable [TileComposite]. It is completely in memory but it can be drawn onto
+ * [TileGraphics]s and its derivatives. Also supports operations for combining with
+ * other [TileImage]s and converting to [TileGraphics].
  */
 // TODO: test implementors thoroughly
 interface TileImage : TileComposite, TilesetHolder {

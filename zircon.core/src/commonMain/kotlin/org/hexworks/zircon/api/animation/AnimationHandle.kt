@@ -1,9 +1,14 @@
+@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+
 package org.hexworks.zircon.api.animation
+
+import org.hexworks.zircon.api.Beta
 
 /**
  * Represents an [Animation] which is currently running and adds
  * additional functionality to it.
  */
+@Beta
 interface AnimationHandle : Animation {
 
     /**

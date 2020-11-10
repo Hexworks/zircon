@@ -16,13 +16,13 @@ import kotlin.jvm.JvmStatic
  * [Screen.display] is called on a non-active [Screen] it will become active and the previous one
  * will be deactivated.
  *
- * Use [Screen]s to have multiple views for your app, which can be displayed when within your app.
+ * Use [Screen]s to have multiple views for your app, which can be displayed one at a time.
  *
  * [Screen]s also implement the [ComponentContainer] interface which means that if you want to use
  * [Component]s you'll have to use [Screen]s.
  */
-interface Screen
-    : ComponentContainer, Themeable, TileGrid {
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
+interface Screen : ComponentContainer, Themeable, TileGrid {
 
     /**
      * Moves the contents of this [Screen] to the underlying [TileGrid],

@@ -8,6 +8,7 @@ import kotlin.jvm.JvmStatic
  * This class is immutable and cannot change its internal state after creation.
  * [Size] supports destructuring to [width] and [height].
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Size : Comparable<Size> {
 
     val width: Int
@@ -130,7 +131,13 @@ interface Size : Comparable<Size> {
     /**
      * Creates a new [Size3D] from this [Size] and the given [zLength].
      */
+    @Deprecated("improper naming convention", ReplaceWith("this.toSize3D(zLength)"))
     fun to3DSize(zLength: Int = 0) = Size3D.from2DSize(this, zLength)
+
+    /**
+     * Creates a new [Size3D] from this [Size] and the given [zLength].
+     */
+    fun toSize3D(zLength: Int = 0) = Size3D.from2DSize(this, zLength)
 
     companion object {
 
