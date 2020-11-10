@@ -7,34 +7,27 @@ import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import kotlin.jvm.JvmStatic
 
+/**
+ * [Builder] for creating [ShortcutsConfig]s.
+ */
 @Suppress("KDocUnresolvedReference")
 data class ShortcutsConfigBuilder(
         /**
-         * Default is `[Space]` press.
+         * Default is `<Space>` press.
          */
-        var activateFocused: KeyboardEventMatcher = KeyboardEventMatcher(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.SPACE),
+        var activateFocused: KeyboardEventMatcher = prototype.activateFocused,
         /**
-         * Default is `[Space]` release.
+         * Default is `<Space>` release.
          */
-        var deactivateActivated: KeyboardEventMatcher = KeyboardEventMatcher(
-                type = KeyboardEventType.KEY_RELEASED,
-                code = KeyCode.SPACE),
+        var deactivateActivated: KeyboardEventMatcher = prototype.deactivateActivated,
         /**
-         * Default is `[Tab]` press.
+         * Default is `<Tab>` press.
          */
-        var focusNext: KeyboardEventMatcher = KeyboardEventMatcher(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                shiftDown = false),
+        var focusNext: KeyboardEventMatcher = prototype.focusNext,
         /**
-         * Default is `[Shift]+[Tab]` press.
+         * Default is `<Shift>`+`<Tab>` press.
          */
-        var focusPrevious: KeyboardEventMatcher = KeyboardEventMatcher(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                shiftDown = true)
+        var focusPrevious: KeyboardEventMatcher = prototype.focusPrevious
 ) : Builder<ShortcutsConfig> {
 
     override fun build() = ShortcutsConfig(
@@ -62,6 +55,8 @@ data class ShortcutsConfigBuilder(
     }
 
     companion object {
+
+        private val prototype = ShortcutsConfig()
 
         @JvmStatic
         fun newBuilder() = ShortcutsConfigBuilder()

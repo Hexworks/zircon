@@ -3,6 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.cobalt.datatypes.Maybe
 import kotlin.jvm.JvmStatic
 
+// TODO: deprecate this once Arrow becomes multiplatform and use it instead of Maybes
 object Maybes {
 
     /**

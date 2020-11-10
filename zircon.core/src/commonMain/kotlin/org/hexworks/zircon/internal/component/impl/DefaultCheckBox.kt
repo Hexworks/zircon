@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Selectable
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -26,7 +26,7 @@ class DefaultCheckBox(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
         Selectable by Selectable.create(),
-        TextHolder by TextHolder.create(initialText) {
+        TextOverride by TextOverride.create(initialText) {
 
     override var checkBoxState = UNCHECKED
         private set

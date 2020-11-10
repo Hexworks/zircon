@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.screen
 
-import org.hexworks.zircon.api.behavior.Themeable
+import org.hexworks.zircon.api.behavior.ThemeOverride
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
@@ -22,7 +22,7 @@ import kotlin.jvm.JvmStatic
  * [Component]s you'll have to use [Screen]s.
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface Screen : ComponentContainer, Themeable, TileGrid {
+interface Screen : ComponentContainer, ThemeOverride, TileGrid {
 
     /**
      * Moves the contents of this [Screen] to the underlying [TileGrid],

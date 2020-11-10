@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
+import kotlin.jvm.JvmStatic
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
@@ -26,9 +27,6 @@ data class TileGraphicsBuilder(
         private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
         private var filler: Tile = Tile.empty()
 ) : Builder<TileGraphics> {
-
-    override fun createCopy() = copy(
-            tiles = tiles.toMutableMap())
 
     fun withTileset(tileset: TilesetResource) = also {
         this.tileset = tileset
@@ -85,6 +83,9 @@ data class TileGraphicsBuilder(
         if (hasToFill()) fill(filler)
     }
 
+    override fun createCopy() = copy(
+            tiles = tiles.toMutableMap())
+
     /**
      * Builds a [PersistentTileGraphics] implementation.
      */
@@ -101,8 +102,9 @@ data class TileGraphicsBuilder(
     companion object {
 
         /**
-         * Creates a new [TileGraphicsBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
+         * Creates a new [TileGraphicsBuilder] to build [TileGraphics] objects.
          */
+        @JvmStatic
         fun newBuilder() = TileGraphicsBuilder()
     }
 }

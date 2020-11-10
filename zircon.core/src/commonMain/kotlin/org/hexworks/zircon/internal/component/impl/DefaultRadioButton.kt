@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Selectable
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -20,7 +20,7 @@ class DefaultRadioButton(
         override val key: String,
         renderingStrategy: ComponentRenderingStrategy<DefaultRadioButton>
 ) : RadioButton,
-        TextHolder by TextHolder.create(initialText),
+        TextOverride by TextOverride.create(initialText),
         Selectable by Selectable.create(),
         DefaultComponent(
                 componentMetadata = componentMetadata,

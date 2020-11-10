@@ -14,7 +14,8 @@ import kotlin.math.max
 @Suppress("UNCHECKED_CAST")
 class TextAreaBuilder(
         private var text: String = "")
-    : BaseComponentBuilder<TextArea, TextAreaBuilder>(DefaultTextAreaRenderer()) {
+    : BaseComponentBuilder<TextArea, TextAreaBuilder>(DefaultTextAreaRenderer()
+) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
@@ -32,7 +33,8 @@ class TextAreaBuilder(
                 initialText = text,
                 renderingStrategy = DefaultComponentRenderingStrategy(
                         decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>)).apply {
+                        componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>)
+        ).apply {
             colorTheme.map {
                 theme = it
             }

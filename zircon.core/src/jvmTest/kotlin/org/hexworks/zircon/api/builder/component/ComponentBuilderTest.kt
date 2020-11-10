@@ -26,6 +26,11 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     abstract fun setUp()
 
     @Test
+    open fun test() {
+        target.withAlignment(positionalAlignment(POSITION_4X5))
+    }
+
+    @Test
     open fun shouldProperlySetPosition() {
         target.withAlignment(positionalAlignment(POSITION_4X5))
 

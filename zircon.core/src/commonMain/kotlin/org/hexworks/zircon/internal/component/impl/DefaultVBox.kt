@@ -3,9 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.events.api.DisposeSubscription
 import org.hexworks.cobalt.events.api.KeepSubscription
 import org.hexworks.cobalt.events.api.subscribeTo
-import org.hexworks.zircon.api.behavior.TitleHolder
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.VBox
@@ -27,7 +25,7 @@ class DefaultVBox(
 ) : VBox, DefaultContainer(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy),
-        TitleHolder by TitleHolder.create(initialTitle) {
+        TitleOverride by TitleOverride.create(initialTitle) {
 
     private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()

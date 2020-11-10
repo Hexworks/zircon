@@ -16,9 +16,10 @@ class VerticalNumberInputBuilder(
         val height: Int,
         private var initialValue: Int = 0,
         private var minValue: Int = 0,
-        private var maxValue: Int = Int.MAX_VALUE)
-    : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>(
-        DefaultVerticalNumberInputRenderer() as ComponentRenderer<NumberInput>) {
+        private var maxValue: Int = Int.MAX_VALUE
+) : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>(
+        DefaultVerticalNumberInputRenderer() as ComponentRenderer<NumberInput>
+) {
 
     fun withInitialValue(value: Int) = also {
         initialValue = when {
@@ -50,13 +51,16 @@ class VerticalNumberInputBuilder(
                     size = size,
                     relativePosition = position,
                     componentStyleSet = componentStyleSet,
-                    tileset = tileset),
+                    tileset = tileset
+            ),
             initialValue = initialValue,
             minValue = minValue,
             maxValue = maxValue,
             renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>)).apply {
+                    componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>
+            )
+    ).apply {
         colorTheme.map {
             theme = it
         }

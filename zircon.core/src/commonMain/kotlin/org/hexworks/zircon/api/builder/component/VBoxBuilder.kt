@@ -12,7 +12,8 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 class VBoxBuilder(
         private var spacing: Int = 0)
-    : BaseComponentBuilder<VBox, VBoxBuilder>(DefaultVBoxRenderer()) {
+    : BaseComponentBuilder<VBox, VBoxBuilder>(DefaultVBoxRenderer()
+) {
 
     fun withSpacing(spacing: Int) = also {
         require(spacing >= 0) {

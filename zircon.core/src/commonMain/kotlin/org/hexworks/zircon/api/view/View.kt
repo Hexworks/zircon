@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.view
 
-import org.hexworks.zircon.api.behavior.Themeable
+import org.hexworks.zircon.api.behavior.ThemeOverride
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.screen.Screen
@@ -34,7 +34,7 @@ import org.hexworks.zircon.api.component.ColorTheme
  *
  * @sample org.hexworks.zircon.samples.WelcomeView
  */
-interface View : Themeable {
+interface View : ThemeOverride {
 
     /**
      * The [Screen] that's used to display the contents of this [View].

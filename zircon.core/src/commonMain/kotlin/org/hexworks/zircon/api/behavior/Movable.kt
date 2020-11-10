@@ -37,6 +37,7 @@ interface Movable : Boundable {
 
     companion object {
 
+        @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
         @JvmStatic
         fun create(size: Size, position: Position = Position.zero()): Movable =
                 DefaultMovable(size, position)

@@ -5,6 +5,9 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.shape.*
 import kotlin.jvm.JvmStatic
 
+/**
+ * This object is a facade for the various [ShapeFactory] implementations.
+ */
 object Shapes {
 
     /**

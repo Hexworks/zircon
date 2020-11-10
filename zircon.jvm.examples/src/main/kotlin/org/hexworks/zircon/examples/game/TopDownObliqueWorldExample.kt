@@ -132,20 +132,20 @@ object TopDownObliqueWorldExample {
 
         val houseHeight = 4
         Shapes.buildFilledRectangle(topLeft, size).positions.forEach {
-            ga.setBlockAt(it.to3DPosition(0), FLOOR_BLOCK)
+            ga.setBlockAt(it.toPosition3D(0), FLOOR_BLOCK)
         }
         repeat(houseHeight) { lvl ->
             Shapes.buildLine(bottomLeft, bottomRight).positions.forEach { pos ->
-                ga.setBlockAt(pos.to3DPosition(lvl), wallFront())
+                ga.setBlockAt(pos.toPosition3D(lvl), wallFront())
             }
             Shapes.buildLine(topLeft, topRight).positions.forEach { pos ->
-                ga.setBlockAt(pos.to3DPosition(lvl), wallBack())
+                ga.setBlockAt(pos.toPosition3D(lvl), wallBack())
             }
             Shapes.buildLine(topLeft.withRelativeY(1), bottomLeft.withRelativeY(-1)).positions.forEach { pos ->
-                ga.setBlockAt(pos.to3DPosition(lvl), wallBack())
+                ga.setBlockAt(pos.toPosition3D(lvl), wallBack())
             }
             Shapes.buildLine(topRight.withRelativeY(1), bottomRight.withRelativeY(-1)).positions.forEach { pos ->
-                ga.setBlockAt(pos.to3DPosition(lvl), wallBack())
+                ga.setBlockAt(pos.toPosition3D(lvl), wallBack())
             }
         }
         val doorPos = topLeft.withRelativeY(size.height - 1).withRelativeX((size.width - 1) / 2)
@@ -182,7 +182,7 @@ object TopDownObliqueWorldExample {
 
     private fun addGrass(ga: GameArea<Tile, Block<Tile>>) {
         ga.actualSize.to2DSize().fetchPositions().forEach { pos ->
-            ga.setBlockAt(pos.to3DPosition(0), grass())
+            ga.setBlockAt(pos.toPosition3D(0), grass())
         }
     }
 

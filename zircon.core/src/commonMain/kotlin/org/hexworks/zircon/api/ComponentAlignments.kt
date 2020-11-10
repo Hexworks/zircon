@@ -12,6 +12,9 @@ import org.hexworks.zircon.internal.component.alignment.PositionalAlignmentStrat
 import org.hexworks.zircon.internal.component.alignment.WithinAlignmentStrategy
 import kotlin.jvm.JvmStatic
 
+/**
+ * This object contains factory functions for creating [AlignmentStrategy] objects.
+ */
 object ComponentAlignments {
 
     /**
@@ -22,8 +25,10 @@ object ComponentAlignments {
      * corner of the [tileGrid].
      */
     @JvmStatic
-    fun alignmentWithin(tileGrid: TileGrid,
-                        alignmentType: ComponentAlignment): AlignmentStrategy {
+    fun alignmentWithin(
+            tileGrid: TileGrid,
+            alignmentType: ComponentAlignment
+    ): AlignmentStrategy {
         return WithinAlignmentStrategy(
                 other = Boundable.create(size = tileGrid.size),
                 alignmentType = alignmentType)
@@ -37,8 +42,10 @@ object ComponentAlignments {
      * corner of the [container].
      */
     @JvmStatic
-    fun alignmentWithin(container: Container,
-                        alignmentType: ComponentAlignment): AlignmentStrategy {
+    fun alignmentWithin(
+            container: Container,
+            alignmentType: ComponentAlignment
+    ): AlignmentStrategy {
         return WithinAlignmentStrategy(
                 other = Boundable.create(size = container.contentSize),
                 alignmentType = alignmentType)
@@ -52,8 +59,10 @@ object ComponentAlignments {
      * corner of [component].
      */
     @JvmStatic
-    fun alignmentAround(component: Component,
-                        alignmentType: ComponentAlignment): AlignmentStrategy {
+    fun alignmentAround(
+            component: Component,
+            alignmentType: ComponentAlignment
+    ): AlignmentStrategy {
         return AroundAlignmentStrategy(
                 other = component.relativeBounds,
                 alignmentType = alignmentType)

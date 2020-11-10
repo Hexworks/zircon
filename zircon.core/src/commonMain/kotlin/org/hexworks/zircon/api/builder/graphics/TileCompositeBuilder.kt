@@ -6,9 +6,10 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.internal.graphics.DefaultTileComposite
+import kotlin.jvm.JvmStatic
 
 /**
- * Creates [org.hexworks.zircon.api.graphics.TileComposite]s.
+ * Creates [TileComposite]s.
  * Defaults:
  * - Default [Size] is `ONE` (1x1).
  */
@@ -63,8 +64,9 @@ data class TileCompositeBuilder(
     companion object {
 
         /**
-         * Creates a new [TileCompositeBuilder] to build [org.hexworks.zircon.api.graphics.TileGraphics]s.
+         * Creates a new [TileCompositeBuilder] to build [TileComposite]s.
          */
+        @JvmStatic
         fun newBuilder() = TileCompositeBuilder()
     }
 }

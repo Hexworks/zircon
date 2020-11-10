@@ -8,12 +8,14 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultBox
+import kotlin.jvm.JvmStatic
 
 data class BoxBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var size: Size = Size.create(3, 3),
         private var style: StyleSet = StyleSet.defaultStyle(),
-        private var boxType: BoxType = BoxType.BASIC) : Builder<Box> {
+        private var boxType: BoxType = BoxType.BASIC
+) : Builder<Box> {
 
     /**
      * Sets the size for the new [org.hexworks.zircon.api.graphics.Box].
@@ -54,6 +56,7 @@ data class BoxBuilder(
         /**
          * Creates a new [BoxBuilder] to build [org.hexworks.zircon.api.graphics.Box]es.
          */
+        @JvmStatic
         fun newBuilder() = BoxBuilder()
 
     }

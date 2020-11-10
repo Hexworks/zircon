@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.CanBeHidden
 import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
@@ -17,7 +18,7 @@ import kotlin.jvm.JvmStatic
  * With [Layer]s one can create a quasi 3D effect (like top down oblique projections).
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface Layer : Boundable, Hideable, Identifiable, TileGraphics, TilesetOverride {
+interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
 
     override fun createCopy(): Layer
 

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.view.base
 
-import org.hexworks.zircon.api.behavior.Themeable
+import org.hexworks.zircon.api.behavior.ThemeOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.view.View
@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 abstract class BaseView(
         private val tileGrid: TileGrid,
         final override var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme)
-    : View, Themeable by Themeable.create(theme) {
+    : View, ThemeOverride by ThemeOverride.create(theme) {
 
     final override val screen = Screen.create(tileGrid)
 

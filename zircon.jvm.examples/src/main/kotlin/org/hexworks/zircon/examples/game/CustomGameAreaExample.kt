@@ -80,8 +80,8 @@ object CustomGameAreaExample {
             }
             tiles = newTiles
         }
-        tiles.forEach { pos, tile ->
-            val pos3D = pos.to3DPosition(0)
+        tiles.forEach { (pos, tile) ->
+            val pos3D = pos.toPosition3D(0)
             gameArea.setBlockAt(pos3D, Block.newBuilder<Tile>()
                     .withContent(tile)
                     .withEmptyTile(Tile.empty())

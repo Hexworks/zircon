@@ -10,7 +10,8 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import kotlin.jvm.JvmStatic
 
 /**
- * Provides builders for [Fragment]s (more complex Components that come with their own logic).
+ * This *facade* object provides builders for the built-in [Fragment]s
+ * (more complex Components that come with their own logic).
  */
 object Fragments {
 

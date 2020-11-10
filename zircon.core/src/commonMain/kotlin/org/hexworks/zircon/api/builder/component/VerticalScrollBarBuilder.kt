@@ -11,12 +11,14 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 /**
- * Builder for the scrollbar. By default, it creates a scrollbar with a number of items of 100.
+ * Builder for a vertical [ScrollBar]. By default, it creates a [ScrollBar] with
+ * - [minValue]: `0`
+ * - [maxValue]: `100`
  */
 class VerticalScrollBarBuilder(
         private var minValue: Int = 0,
-        private var maxValue: Int = 100)
-    : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
+        private var maxValue: Int = 100
+) : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
 
     fun withNumberOfScrollableItems(items: Int) = also {
         require(items > 0) { "Number of items must be greater than 0." }
@@ -28,14 +30,17 @@ class VerticalScrollBarBuilder(
                     size = size,
                     relativePosition = position,
                     componentStyleSet = componentStyleSet,
-                    tileset = tileset),
+                    tileset = tileset
+            ),
             minValue = minValue,
             maxValue = maxValue,
             itemsShownAtOnce = size.height,
             numberOfSteps = size.height,
             renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>)).apply {
+                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>
+            )
+    ).apply {
         colorTheme.map {
             theme = it
         }

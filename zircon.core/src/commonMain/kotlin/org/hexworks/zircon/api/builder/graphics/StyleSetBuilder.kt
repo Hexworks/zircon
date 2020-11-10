@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
+import kotlin.jvm.JvmStatic
 
 /**
  * Builder used to create [StyleSet]s. Uses the default colors from
@@ -12,16 +13,8 @@ import org.hexworks.zircon.api.modifier.Modifier
 data class StyleSetBuilder(
         private var foregroundColor: TileColor = StyleSet.defaultStyle().foregroundColor,
         private var backgroundColor: TileColor = StyleSet.defaultStyle().backgroundColor,
-        private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers) : Builder<StyleSet> {
-
-    override fun build(): StyleSet = StyleSet.create(
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers.toMutableSet())
-
-    override fun createCopy() = copy(
-            modifiers = modifiers.toSet())
-
+        private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers
+) : Builder<StyleSet> {
 
     fun withForegroundColor(foregroundColor: TileColor) = also {
         this.foregroundColor = foregroundColor
@@ -39,11 +32,20 @@ data class StyleSetBuilder(
         this.modifiers = modifiers.toSet()
     }
 
+    override fun build(): StyleSet = StyleSet.create(
+            foregroundColor = foregroundColor,
+            backgroundColor = backgroundColor,
+            modifiers = modifiers.toMutableSet())
+
+    override fun createCopy() = copy(
+            modifiers = modifiers.toSet())
+
     companion object {
 
         /**
          * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.
          */
+        @JvmStatic
         fun newBuilder() = StyleSetBuilder()
     }
 }

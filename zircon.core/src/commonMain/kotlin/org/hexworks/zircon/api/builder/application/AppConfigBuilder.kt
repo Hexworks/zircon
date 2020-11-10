@@ -17,6 +17,7 @@ import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
  * Defaults are:
  * - default `title` is "Zircon Application"
  */
+// TODO: use a prototype AppConfig instead of hard-coded defaults
 data class AppConfigBuilder(
         private var blinkLengthInMilliSeconds: Long = 500,
         private var cursorStyle: CursorStyle = CursorStyle.FIXED_BACKGROUND,
@@ -193,6 +194,7 @@ data class AppConfigBuilder(
                 debugConfig = debugConfig,
                 closeBehavior = closeBehavior,
                 shortcutsConfig = shortcutsConfig,
+                // TODO: this should be clarified / refactored to a strategy
                 iconData = iconData,
                 iconResource = iconResource
         ).also {

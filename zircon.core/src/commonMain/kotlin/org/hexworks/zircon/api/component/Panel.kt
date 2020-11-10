@@ -1,5 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.TitleHolder
+import org.hexworks.zircon.api.behavior.TitleOverride
 
-interface Panel : Container, TitleHolder
+interface Panel : Container, TitleOverride

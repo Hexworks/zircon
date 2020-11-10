@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
+import kotlin.jvm.JvmStatic
 
 /**
  * Use this to build [Layer]s. Defaults are:
@@ -100,6 +101,10 @@ data class LayerBuilder(
 
     companion object {
 
+        /**
+         * Creates a new [LayerBuilder] for building [Layer] objects.
+         */
+        @JvmStatic
         fun newBuilder() = LayerBuilder()
     }
 }

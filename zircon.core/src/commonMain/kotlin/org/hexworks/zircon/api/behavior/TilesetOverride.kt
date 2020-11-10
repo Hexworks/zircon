@@ -9,7 +9,17 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 interface TilesetOverride : TilesetHolder {
 
+    /**
+     * The (mutable) tileset value.
+     */
     override var tileset: TilesetResource
+
+    /**
+     * A [Property] that wraps the [tileset] and offers data binding and
+     * observability features.
+     *
+     * @see Property
+     */
     val tilesetProperty: Property<TilesetResource>
 
 }

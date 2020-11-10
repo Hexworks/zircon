@@ -16,9 +16,12 @@ import kotlin.jvm.JvmStatic
  *
  * A [StackedTile] must have at least **one** [Tile] in its stack ([tiles])
  * therefore any implementation of this interface must ensure this property.
+ *
+ * @since 2020.2.0-RELEASE
+ * @see Tile
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 @Beta
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface StackedTile : Tile {
 
     /**
@@ -62,7 +65,6 @@ interface StackedTile : Tile {
          * [rest] is ordered from bottom to top (vertically)
          */
         @JvmStatic
-        @JvmOverloads
         fun create(
                 baseTile: Tile,
                 vararg rest: Tile

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -10,7 +10,7 @@ class DefaultButton(
         componentMetadata: ComponentMetadata,
         initialText: String,
         renderingStrategy: ComponentRenderingStrategy<Button>
-) : Button, TextHolder by TextHolder.create(initialText), DefaultComponent(
+) : Button, TextOverride by TextOverride.create(initialText), DefaultComponent(
         componentMetadata = componentMetadata,
         renderer = renderingStrategy
 ) {

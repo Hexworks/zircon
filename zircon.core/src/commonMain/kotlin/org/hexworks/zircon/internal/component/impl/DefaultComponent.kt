@@ -11,7 +11,7 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.TextHolder
+import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -244,7 +244,7 @@ abstract class DefaultComponent(
     }
 
     override fun toString(): String {
-        val text = if (this is TextHolder) ", text=${textProperty.value}" else ""
+        val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
         return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
                 "absolutePosition=$absolutePosition, relativePosition=$relativePosition, size=$size, " +
                 "state=$componentState, disabled=$isDisabled$text)"

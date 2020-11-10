@@ -6,13 +6,26 @@ import kotlin.jvm.JvmStatic
 
 /**
  * Builder for [DebugConfig]s.
+ *
  * All values default to `false`.
  */
 data class DebugConfigBuilder(
-        var displayGrid: Boolean = false,
-        var displayCoordinates: Boolean = false,
-        var displayFps: Boolean = false,
-        var relaxBoundsCheck: Boolean = false
+        /**
+         * If `true` a grid will be displayed around the tiles.
+         */
+        var displayGrid: Boolean = prototype.displayGrid,
+        /**
+         * If `true` it will draw the positions of the individual tiles on the tiles
+         */
+        var displayCoordinates: Boolean = prototype.displayCoordinates,
+        /**
+         * If `true` log messages will appear detailing the FPS characteristics
+         */
+        var displayFps: Boolean = prototype.displayFps,
+        /**
+         * if `true` no bounds check will be performed when adding/moving components
+         */
+        var relaxBoundsCheck: Boolean = prototype.relaxBoundsCheck
 ) : Builder<DebugConfig> {
 
     override fun build() = DebugConfig(
@@ -41,6 +54,8 @@ data class DebugConfigBuilder(
     }
 
     companion object {
+
+        private val prototype = DebugConfig()
 
         @JvmStatic
         fun newBuilder() = DebugConfigBuilder()
