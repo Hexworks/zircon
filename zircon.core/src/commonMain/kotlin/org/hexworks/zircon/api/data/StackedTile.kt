@@ -26,6 +26,11 @@ interface StackedTile : Tile {
     val baseTile: Tile
 
     /**
+     * The [Tile] on top of this stack. This tile is always visible.
+     */
+    val top: Tile
+
+    /**
      * Contains all the tiles in this [StackedTile] from top to bottom.
      */
     val tiles: List<Tile>
