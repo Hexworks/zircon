@@ -17,14 +17,14 @@ interface TileComposite : HasSize {
      */
     val tiles: Map<Position, Tile>
 
-    fun getTileAtOrNull(position: Position): Tile? {
-        return if (size.containsPosition(position)) tiles[position] else null
-    }
+    /**
+     * Returns the [Tile] stored at a particular position or `null`
+     * if there is no such [Tile].
+     */
+    fun getTileAtOrNull(position: Position): Tile? = tiles[position]
 
     /**
-     * Returns the [Tile] stored at a particular position in this [TileComposite].
-     * Returns an empty [Maybe] if [position] is outside of this [TileComposite]'s
-     * [size].
+     * Returns the [Tile] stored at a particular position (if any).
      */
     fun getTileAt(position: Position): Maybe<Tile> {
         return if (size.containsPosition(position)) {

@@ -82,6 +82,10 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
 
     override fun fetchBlockAt(position: Position3D) = Maybe.ofNullable(blocks[position])
 
+    override fun fetchBlockAtOrNull(position: Position3D): B? {
+        TODO("not implemented")
+    }
+
     override fun setBlockAt(position: Position3D, block: B) {
         if (actualSize.containsPosition(position)) {
             state = state.copy(
