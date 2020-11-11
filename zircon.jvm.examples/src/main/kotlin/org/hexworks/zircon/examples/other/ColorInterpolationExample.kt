@@ -135,6 +135,7 @@ object ColorInterpolationExample {
                 .withPosition(7, 9)
                 .build().apply {
                     onActivated {
+                        // The interpolator is created here
                         interpolator = lowColorProperty.value.interpolateTo(highColorProperty.value)
                     }
                 }
@@ -162,6 +163,7 @@ object ColorInterpolationExample {
                     .build().also { icon ->
                         icon.iconProperty.updateFrom(slider.currentValueProperty) { sliderValue ->
                             val ratio = sliderValue / 1000.0
+                            // Interpolated value is used here
                             icon.iconProperty.value.withBackgroundColor(interpolator.getColorAtRatio(ratio))
                         }
                     })
