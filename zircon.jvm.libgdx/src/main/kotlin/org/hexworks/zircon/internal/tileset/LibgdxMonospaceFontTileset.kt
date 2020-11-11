@@ -46,7 +46,8 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
         }
         Assets.MANAGER.load("font.ttf", BitmapFont::class.java, fontParams)
 
-        while(!Assets.MANAGER.update()) {}
+        while (!Assets.MANAGER.update()) {
+        }
 
         font = Assets.MANAGER.get("font.ttf")
     }
@@ -77,12 +78,15 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
                 height = height,
                 xOffset = glyph.xoffset,
                 yOffset = glyph.yoffset,
-                texture = tr)
+                texture = tr
+        )
     }
 
-    class OffsetTileTexture<T>(override val width: Int,
-                                   override val height: Int,
-                                   val xOffset: Int,
-                                   val yOffset: Int,
-                                   override val texture: T) : TileTexture<T>
+    class OffsetTileTexture<T>(
+            override val width: Int,
+            override val height: Int,
+            val xOffset: Int,
+            val yOffset: Int,
+            override val texture: T
+    ) : TileTexture<T>
 }

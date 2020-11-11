@@ -24,10 +24,13 @@ kotlin {
 
         with (Libs) {
             api(gdx)
+            api(gdxFreetype)
+            api(gdxFreetypePlatform)
+            api(gdxFreetypePlatformNatives)
+            api(gdxPlatformNativesDesktop)
             api(gdxBox2D)
-            api(gdxBackendLwjgl)
-            api(gdxPlatform)
             api(gdxBox2DPlatform)
+            api(gdxBackendLwjgl)
         }
     }
 }
