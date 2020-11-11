@@ -17,13 +17,16 @@ object Libs {
     const val caffeine = "com.github.ben-manes.caffeine:caffeine:${Versions.caffeineVersion}"
     const val snakeYaml = "org.yaml:snakeyaml:${Versions.snakeyamlVersion}"
     const val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4jVersion}"
+
     const val gdx = "com.badlogicgames.gdx:gdx:$gdxVersion"
     const val gdxFreetype = "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     const val gdxFreetypePlatform = "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion"
+    const val gdxFreetypePlatformNatives = "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    const val gdxPlatformNativesDesktop = "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     const val gdxBox2D = "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    const val gdxBackendLwjgl = "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    const val gdxPlatform = "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     const val gdxBox2DPlatform = "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    const val gdxBackendLwjgl = "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+
     const val logbackClassic = "ch.qos.logback:logback-classic:$logbackVersion"
     const val filters = "com.jhlabs:filters:$filtersVersion"
 }
