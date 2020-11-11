@@ -89,6 +89,9 @@ interface TileColor : Cacheable {
 
     fun withBlue(blue: Int): TileColor
 
+    /**
+     * Creates a new [ColorInterpolator] with the receiver color as low color and the other color as high color.
+     */
     fun interpolateTo(other: TileColor): ColorInterpolator
 
     companion object {
