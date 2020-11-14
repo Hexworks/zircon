@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.game.impl
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.BlockTileType.*
