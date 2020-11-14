@@ -47,7 +47,8 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
             actualSize = initialActualSize,
             visibleSize = initialVisibleSize,
             visibleOffset = initialVisibleOffset,
-            tileset = initialTileset)
+            tileset = initialTileset
+    )
 
     override val blocks: Map<Position3D, B>
         get() = state.blocks
