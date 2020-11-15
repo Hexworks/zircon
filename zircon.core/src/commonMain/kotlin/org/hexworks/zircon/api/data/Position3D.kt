@@ -32,6 +32,12 @@ data class Position3D private constructor(
     val isUnknown: Boolean
         get() = this == UNKNOWN
 
+    /**
+     * Tells whether this [Position3D] has a negative component (x, y or z) or not.
+     */
+    val hasNegativeComponent: Boolean
+        get() = x < 0 || y < 0 || z < 0
+
     override fun compareTo(other: Position3D): Int {
         return when {
             other.z > z -> -1

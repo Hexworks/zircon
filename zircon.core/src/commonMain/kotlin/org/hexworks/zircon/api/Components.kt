@@ -187,13 +187,5 @@ object Components {
     @JvmStatic
     fun <T : Component> group() = GroupBuilder.newBuilder<T>()
 
-    /**
-     * Creates a new [GameComponentBuilder] for building [GameComponent] components.
-     * @see GameComponent
-     * **Note that** [GameComponent] is in **Beta**.
-     */
-    @Beta
-    @JvmStatic
-    fun <T : Tile, B : Block<T>> gameComponent() = GameComponentBuilder.newBuilder<T, B>()
 
 }

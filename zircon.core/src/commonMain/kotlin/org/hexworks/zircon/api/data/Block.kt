@@ -1,5 +1,8 @@
+@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+
 package org.hexworks.zircon.api.data
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import kotlin.jvm.JvmStatic
@@ -10,6 +13,8 @@ import kotlin.jvm.JvmStatic
  * sides of the [Block] are optional. If any of them are missing
  * the [emptyTile] will be used when the sides are dereferenced.
  */
+@Beta
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Block<T : Tile> : Copiable<Block<T>> {
 
     var content: T

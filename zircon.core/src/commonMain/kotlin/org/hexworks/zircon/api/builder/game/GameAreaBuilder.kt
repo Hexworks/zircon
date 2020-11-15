@@ -54,8 +54,8 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
                 initialActualSize = actualSize,
                 initialContents = blocks.toPersistentMap(),
                 initialTileset = tileset,
-                initialVisibleOffset = visibleOffset,
-                projectionStrategy = projectionMode.projectionStrategy)
+                initialVisibleOffset = visibleOffset
+        )
     }
 
     override fun createCopy() = copy(

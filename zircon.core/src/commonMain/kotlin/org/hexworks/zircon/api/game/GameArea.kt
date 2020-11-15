@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.internal.game.InternalGameArea
 
 /**
  * A [GameArea] represents the 3D space in which the entities of a game take place.
@@ -81,6 +82,8 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
      * if [position] is outside of the [actualSize] of this [GameArea].
      */
     fun setBlockAt(position: Position3D, block: B)
+
+    fun asInternalGameArea(): InternalGameArea<T, B>
 
     companion object {
 

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.game
 
 
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
@@ -39,9 +40,9 @@ object CustomGameAreaExample {
 
         val screen = Screen.create(tileGrid)
 
-        screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
+        screen.addComponent(Components.label()
                 .withSize(VISIBLE_SIZE.to2DSize())
-                .withGameArea(gameArea)
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
                 .build())
 
         screen.display()
