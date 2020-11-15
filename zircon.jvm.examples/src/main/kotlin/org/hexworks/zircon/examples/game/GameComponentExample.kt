@@ -125,10 +125,9 @@ object GameComponentExample {
                 .withDecorations(box(title = "Game Component"))
                 .build()
 
-        val gameComponent = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withGameArea(gameArea)
-                .withDecorations(box(BoxType.DOUBLE))
-                .withAlignmentWithin(panel, ComponentAlignment.CENTER)
+        val gameComponent = Components.label()
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
+                .withSize(panel.contentSize)
                 .build()
 
         panel.addComponent(gameComponent)

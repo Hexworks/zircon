@@ -50,12 +50,6 @@ public class ComponentsTest {
     }
 
     @Test
-    public void shouldProperlyCreateGameComponentBuilder() {
-        AppConfig.newBuilder().enableBetaFeatures().build();
-        assertThat(Components.gameComponent()).isInstanceOf(GameComponentBuilder.class);
-    }
-
-    @Test
     public void shouldProperlyCreateHeaderBuilder() {
         assertThat(Components.header()).isInstanceOf(HeaderBuilder.class);
     }

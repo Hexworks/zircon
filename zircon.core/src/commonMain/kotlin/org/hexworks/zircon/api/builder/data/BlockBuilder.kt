@@ -51,6 +51,13 @@ data class BlockBuilder<T : Tile>(
         tiles[CONTENT] = content
     }
 
+    // TODO: document addition of this method
+    fun withTileOnAllSides(tile: T) = also {
+        BlockTileType.values().forEach {
+            tiles[it] = tile
+        }
+    }
+
     /**
      * Overwrites the [Tile]s in this [BlockBuilder] with the
      * given [BlockTileType] -> [Tile] mapping.

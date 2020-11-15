@@ -57,8 +57,8 @@ object TopDownObliqueWorldExample {
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
                 .build()
 
-        val gc = GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
-                .withGameArea(ga)
+        val gc = Components.label()
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(ga))
                 .withSize(panel.contentSize)
                 .build()
 

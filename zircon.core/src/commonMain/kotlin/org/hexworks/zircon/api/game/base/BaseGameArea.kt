@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.TileImage
@@ -19,7 +20,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.internal.game.InternalGameArea
-import org.hexworks.zircon.internal.game.ProjectionStrategy
 
 @Beta
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
@@ -29,7 +29,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         initialTileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         initialVisibleOffset: Position3D = Position3D.defaultPosition(),
         initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
-        private val projectionStrategy: ProjectionStrategy = ProjectionMode.TOP_DOWN.projectionStrategy,
         private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
                 initialVisibleSize = initialVisibleSize,
                 initialActualSize = initialActualSize
@@ -42,7 +41,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val visibleOffsetValue: ObservableValue<Position3D>
         get() = scrollable3D.visibleOffsetValue
 
-    final override var state = GameAreaState(
+    override var state = GameAreaState(
             blocks = initialContents,
             actualSize = initialActualSize,
             visibleSize = initialVisibleSize,
@@ -52,9 +51,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
 
     override val blocks: Map<Position3D, B>
         get() = state.blocks
-
-    override val imageLayers: Sequence<TileImage>
-        get() = projectionStrategy.projectGameArea(state)
 
     init {
         visibleOffsetValue.onChange { (_, newValue) ->
@@ -76,16 +72,15 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override fun fetchBlocksAtLevel(z: Int): Sequence<Pair<Position3D, B>> {
         return fetchBlocksAt(
                 offset = Position3D.create(0, 0, z),
-                size = actualSize)
+                size = actualSize
+        )
     }
 
     override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)
 
     override fun fetchBlockAt(position: Position3D) = Maybe.ofNullable(blocks[position])
 
-    override fun fetchBlockAtOrNull(position: Position3D): B? {
-        TODO("not implemented")
-    }
+    override fun fetchBlockAtOrNull(position: Position3D) = blocks[position]
 
     override fun setBlockAt(position: Position3D, block: B) {
         if (actualSize.containsPosition(position)) {
@@ -93,5 +88,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
                     blocks = state.blocks.put(position, block))
         }
     }
+
+    override fun asInternalGameArea() = this
 
 }

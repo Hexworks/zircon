@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.other
 
 
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
@@ -30,9 +31,9 @@ object BSPExample {
 
         val screen = Screen.create(tileGrid)
 
-        screen.addComponent(GameComponents.newGameComponentBuilder<Tile, Block<Tile>>()
+        screen.addComponent(Components.label()
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
                 .withSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
-                .withGameArea(gameArea)
                 .build())
 
         screen.display()

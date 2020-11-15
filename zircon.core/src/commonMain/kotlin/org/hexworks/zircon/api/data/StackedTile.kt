@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.toPersistentList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.data.DefaultStackedTile
-import kotlin.jvm.JvmOverloads
+import org.hexworks.zircon.internal.data.FastStackedTile
 import kotlin.jvm.JvmStatic
 
 /**
