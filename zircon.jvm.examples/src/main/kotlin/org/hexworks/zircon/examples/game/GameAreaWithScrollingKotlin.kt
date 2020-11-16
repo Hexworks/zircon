@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.Components.radioButton
 import org.hexworks.zircon.api.Components.radioButtonGroup
 import org.hexworks.zircon.api.Components.vbox
 import org.hexworks.zircon.api.DrawSurfaces.tileGraphicsBuilder
-import org.hexworks.zircon.api.Functions.fromConsumer
 import org.hexworks.zircon.api.GameComponents.newGameAreaBuilder
 import org.hexworks.zircon.api.GameComponents.newGameAreaComponentRenderer
 import org.hexworks.zircon.api.SwingApplications.startTileGrid
@@ -30,7 +29,6 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.screen.Screen.Companion.create
-import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase
@@ -38,7 +36,6 @@ import org.hexworks.zircon.api.uievent.UIEventResponse.Companion.processed
 import java.awt.Toolkit
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.function.Consumer
 import kotlin.system.exitProcess
 
 class GameAreaWithScrollingKotlin {
@@ -61,7 +58,6 @@ class GameAreaWithScrollingKotlin {
                     .withDefaultTileset(TILESET)
                     .withSize(GRID_SIZE)
                     .withDebugMode(true)
-                    .enableBetaFeatures()
                     .build()))
             val actions = panel()
                     .withSize(24, 5)
