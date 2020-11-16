@@ -45,14 +45,14 @@ abstract class ComponentExampleKotlin(
 
         controls.addComponent(label().withText("Pick a theme"))
 
-        controls.addFragment(Fragments.colorThemeSelector(controls.width -4, DEFAULT_THEME.getTheme())
+        controls.addFragment(Fragments.colorThemeSelector(controls.width - 4, DEFAULT_THEME.getTheme())
                 .withThemeOverrides(screen)
                 .build())
 
         controls.addComponent(label())
 
         controls.addComponent(label().withText("Pick a tileset"))
-        val tilesetSelector = tilesetSelector(controls.width, DEFAULT_TILESET)
+        val tilesetSelector = tilesetSelector(controls.width - 4, DEFAULT_TILESET)
                 .withTilesetOverrides(container)
                 .build()
         controls.addFragment(tilesetSelector)
