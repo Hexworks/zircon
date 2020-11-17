@@ -26,7 +26,6 @@ import org.hexworks.zircon.internal.game.InternalGameArea
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
         initialVisibleSize: Size3D,
         initialActualSize: Size3D,
-        initialTileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         initialVisibleOffset: Position3D = Position3D.defaultPosition(),
         initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
         private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
@@ -34,9 +33,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
                 initialActualSize = initialActualSize
         )
 ) : InternalGameArea<T, B>, Scrollable3D by scrollable3D {
-
-    final override val tilesetProperty = initialTileset.toProperty()
-    final override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
     final override val visibleOffsetValue: ObservableValue<Position3D>
         get() = scrollable3D.visibleOffsetValue
@@ -46,7 +42,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
             actualSize = initialActualSize,
             visibleSize = initialVisibleSize,
             visibleOffset = initialVisibleOffset,
-            tileset = initialTileset
     )
 
     override val blocks: Map<Position3D, B>
@@ -56,24 +51,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         visibleOffsetValue.onChange { (_, newValue) ->
             state = state.copy(visibleOffset = newValue)
         }
-    }
-
-    override fun fetchBlocksAt(offset: Position3D, size: Size3D): Sequence<Pair<Position3D, B>> {
-        val currentBlocks = blocks
-        return sequence {
-            fetchPositionsWithOffset(offset, size).forEach { pos ->
-                currentBlocks[pos]?.let { block ->
-                    yield(pos to block)
-                }
-            }
-        }
-    }
-
-    override fun fetchBlocksAtLevel(z: Int): Sequence<Pair<Position3D, B>> {
-        return fetchBlocksAt(
-                offset = Position3D.create(0, 0, z),
-                size = actualSize
-        )
     }
 
     override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)
