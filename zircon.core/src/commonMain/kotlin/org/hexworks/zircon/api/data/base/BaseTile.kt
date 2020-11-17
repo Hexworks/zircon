@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.ImageTile
@@ -16,12 +17,6 @@ import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
  * Base class for all [Tile] implementations.
  */
 abstract class BaseTile : Tile {
-
-    override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
-
-    override fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
-
-    override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicalTile)
 
     override val isOpaque: Boolean
         get() = backgroundColor.isOpaque
@@ -55,5 +50,11 @@ abstract class BaseTile : Tile {
             .filter { it is Border }
             .map { it as Border }
             .toSet()
+
+    override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
+
+    override fun asImageTile() = Maybe.ofNullable(this as? ImageTile)
+
+    override fun asGraphicTile() = Maybe.ofNullable(this as? GraphicalTile)
 
 }

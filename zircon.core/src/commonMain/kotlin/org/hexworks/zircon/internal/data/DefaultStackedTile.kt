@@ -3,11 +3,15 @@ package org.hexworks.zircon.internal.data
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Beta
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
+@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+@Beta
 data class DefaultStackedTile(
         override val baseTile: Tile,
         private val rest: PersistentList<Tile> = persistentListOf()
@@ -69,4 +73,8 @@ data class DefaultStackedTile(
     override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
 
     override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
+
+    override fun toBuilder(): TileBuilder {
+        throw UnsupportedOperationException("This operation is not implemented yet")
+    }
 }

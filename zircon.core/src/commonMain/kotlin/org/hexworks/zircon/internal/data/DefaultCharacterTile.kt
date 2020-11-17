@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.data
 
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.base.BaseCharacterTile
 import org.hexworks.zircon.api.graphics.StyleSet
 

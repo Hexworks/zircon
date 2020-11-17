@@ -58,4 +58,8 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override fun withNoModifiers() = this
 
+    override fun toBuilder() = Tile.newBuilder()
+            .withName(name)
+            .withTags(tags)
+            .withTileset(tileset)
 }

@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.data
 
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.Beta
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -11,6 +13,8 @@ import org.hexworks.zircon.internal.resource.TileType
  * This **fast** [StackedTile] implementation foregoes validation and it allows mutation of its state.
  * Only use it if you need the speed and you can be really cautious.
  */
+@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
+@Beta
 class FastStackedTile(
         initialTiles: List<Tile> = listOf(),
         initialCapacity: Int = initialTiles.size
@@ -123,4 +127,8 @@ class FastStackedTile(
     override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
 
     override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
+
+    override fun toBuilder(): TileBuilder {
+        throw UnsupportedOperationException("This operation is not implemented yet")
+    }
 }

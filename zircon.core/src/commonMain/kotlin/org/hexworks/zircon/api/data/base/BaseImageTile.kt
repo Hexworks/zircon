@@ -52,4 +52,8 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
     override fun withRemovedModifiers(vararg modifiers: Modifier) = this
 
     override fun withNoModifiers() = this
+
+    override fun toBuilder() = Tile.newBuilder()
+            .withName(name)
+            .withTileset(tileset)
 }
