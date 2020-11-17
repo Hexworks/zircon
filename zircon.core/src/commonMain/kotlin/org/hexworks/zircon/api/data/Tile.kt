@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -25,13 +26,26 @@ import kotlin.jvm.JvmStatic
 interface Tile : Cacheable, StyleSet {
 
     /**
-     * The type of this [Tile].
+     * The type of this [Tile]:
+     * - [TileType.CHARACTER_TILE]
+     * - [TileType.GRAPHIC_TILE]
+     * - [TileType.IMAGE_TILE]
      * @see TileType
      */
     val tileType: TileType
 
+    /**
+     * The style information of this [Tile]:
+     * - [StyleSet.foregroundColor]
+     * - [StyleSet.backgroundColor]
+     * - [StyleSet.modifiers]
+     * @see StyleSet
+     */
     val styleSet: StyleSet
 
+    /**
+     * An opaque tile's transparency is zero (you can't see through it).
+     */
     val isOpaque: Boolean
 
     val isUnderlined: Boolean
@@ -99,6 +113,12 @@ interface Tile : Cacheable, StyleSet {
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
     fun asGraphicTile(): Maybe<GraphicalTile>
+
+    /**
+     * Creates a new [TileBuilder] preconfigured with the contents of
+     * this [Tile].
+     */
+    fun toBuilder(): TileBuilder
 
     companion object {
 

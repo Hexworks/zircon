@@ -56,7 +56,6 @@ interface StackedTile : Tile {
      */
     fun withRemovedTile(tile: Tile): StackedTile
 
-
     companion object {
 
         /**

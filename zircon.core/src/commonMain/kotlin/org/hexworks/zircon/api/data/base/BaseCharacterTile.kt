@@ -93,4 +93,8 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
             Tile.createCharacterTile(character, styleSet)
         }
     }
+
+    override fun toBuilder() = Tile.newBuilder()
+            .withCharacter(character)
+            .withStyleSet(styleSet)
 }
