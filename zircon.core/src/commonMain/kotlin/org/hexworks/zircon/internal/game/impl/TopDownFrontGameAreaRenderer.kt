@@ -15,7 +15,7 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
             graphics: TileGraphics,
             fillerTile: Tile
     ) {
-        val (blocks, _, visibleSize, visibleOffset) = gameArea.state
+        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
         for (x in 0 until graphics.width) {
             val projectionSequence = generateProjectionSequence(
@@ -31,7 +31,12 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
                 stacking@ for ((pos, side) in vector) {
                     val tile = blocks[pos]?.getTileByType(side)
                     if (tile != null) {
-                        stack.addFirst(tile)
+                        stack.addFirst(filter.transform(
+                                visibleSize = visibleSize,
+                                blockPosition = pos,
+                                blockTileType = side,
+                                tile.toBuilder()
+                        ).build())
                         if (tile.isOpaque) {
                             break@stacking
                         }

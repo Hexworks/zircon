@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
@@ -24,7 +25,8 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
         private var visibleSize: Size3D = Size3D.one(),
         private var visibleOffset: Position3D = Position3D.defaultPosition(),
         private var blocks: MutableMap<Position3D, B> = mutableMapOf(),
-        private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN
+        private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
+        private val filters: MutableList<GameAreaTileFilter> = mutableListOf()
 ) : Builder<GameArea<T, B>> {
 
     fun withActualSize(size: Size3D) = also {
@@ -47,12 +49,17 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
         this.projectionMode = projectionMode
     }
 
+    fun withFilter(filter: GameAreaTileFilter) = also {
+        filters.add(filter)
+    }
+
     override fun build(): GameArea<T, B> {
         return DefaultGameArea(
                 initialVisibleSize = visibleSize,
                 initialActualSize = actualSize,
                 initialContents = blocks.toPersistentMap(),
-                initialVisibleOffset = visibleOffset
+                initialVisibleOffset = visibleOffset,
+                initialFilters = filters.toList()
         )
     }
 

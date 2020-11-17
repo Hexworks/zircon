@@ -74,7 +74,8 @@ object BSPExample {
             actualSize: Size3D
     ) : BaseGameArea<Tile, Block<Tile>>(
             initialVisibleSize = visibleSize,
-            initialActualSize = actualSize
+            initialActualSize = actualSize,
+            initialFilters = listOf()
     )
 
 }

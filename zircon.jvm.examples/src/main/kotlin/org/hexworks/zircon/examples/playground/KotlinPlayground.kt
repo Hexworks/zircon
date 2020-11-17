@@ -1,7 +1,9 @@
 package org.hexworks.zircon.examples.playground
 
-import org.hexworks.zircon.api.builder.data.BlockBuilder
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.data.BlockTileType
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size3D
 
 object KotlinPlayground {
 
@@ -10,13 +12,14 @@ object KotlinPlayground {
 
     }
 
-    interface BlockFilter<T: Tile> {
+    interface GameAreaTileFilter {
 
         fun transform(
                 visibleSize: Size3D,
                 blockPosition: Position3D,
-                block: BlockBuilder<T>,
-        ): BlockBuilder<T>
+                blockTileType: BlockTileType,
+                tile: TileBuilder,
+        ): TileBuilder
     }
 }
 
