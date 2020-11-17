@@ -13,7 +13,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
                 .plus(LineFactory.buildLine(topRight, bottomRight))
                 .plus(LineFactory.buildLine(bottomRight, bottomLeft))
                 .plus(LineFactory.buildLine(bottomLeft, topLeft))
-                .offsetToDefaultPosition()
+        // TODO: document that offsetToDefaultPositionWasRemoved
     }
 
     /**

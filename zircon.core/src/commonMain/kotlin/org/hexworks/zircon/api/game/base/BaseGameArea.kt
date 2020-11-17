@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
+import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -28,6 +29,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         initialActualSize: Size3D,
         initialVisibleOffset: Position3D = Position3D.defaultPosition(),
         initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
+        initialFilters: Iterable<GameAreaTileFilter>,
         private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
                 initialVisibleSize = initialVisibleSize,
                 initialActualSize = initialActualSize
@@ -37,11 +39,14 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val visibleOffsetValue: ObservableValue<Position3D>
         get() = scrollable3D.visibleOffsetValue
 
+    final override val filter = initialFilters.fold(GameAreaTileFilter.identity, GameAreaTileFilter::plus)
+
     override var state = GameAreaState(
             blocks = initialContents,
             actualSize = initialActualSize,
             visibleSize = initialVisibleSize,
             visibleOffset = initialVisibleOffset,
+            filter = filter
     )
 
     override val blocks: Map<Position3D, B>

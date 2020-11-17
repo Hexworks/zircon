@@ -20,7 +20,7 @@ class TopDownGameAreaRenderer : GameAreaRenderer {
             graphics: TileGraphics,
             fillerTile: Tile
     ) {
-        val (blocks, _, visibleSize, visibleOffset) = gameArea.state
+        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
         for (x in 0 until visibleSize.xLength) {
             for (y in 0 until visibleSize.yLength) {
@@ -36,7 +36,12 @@ class TopDownGameAreaRenderer : GameAreaRenderer {
                         for (order in blockOrder) {
                             val tile = block.tiles[order]
                             if (tile != null) {
-                                stack.addFirst(tile)
+                                stack.addFirst(filter.transform(
+                                        visibleSize = visibleSize,
+                                        blockPosition = pos,
+                                        blockTileType = order,
+                                        tile.toBuilder()
+                                ).build())
                                 if (tile.isOpaque) {
                                     break@stacking
                                 }

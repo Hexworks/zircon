@@ -73,7 +73,8 @@ data class BlockBuilder<T : Tile>(
         }
         return DefaultBlock(
                 emptyTile = emptyTile.get(),
-                initialTiles = tiles.toPersistentMap())
+                initialTiles = tiles.toPersistentMap()
+        )
     }
 
     override fun createCopy() = copy(
