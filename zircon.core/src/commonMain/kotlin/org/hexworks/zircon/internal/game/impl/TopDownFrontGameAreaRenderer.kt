@@ -33,7 +33,7 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
                     if (tile != null) {
                         stack.addFirst(filter.transform(
                                 visibleSize = visibleSize,
-                                blockPosition = pos,
+                                offsetPosition = pos - visibleOffset,
                                 blockTileType = side,
                                 tile.toBuilder()
                         ).build())

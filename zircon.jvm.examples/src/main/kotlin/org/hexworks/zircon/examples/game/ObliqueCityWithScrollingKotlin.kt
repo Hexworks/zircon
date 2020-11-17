@@ -45,8 +45,8 @@ class ObliqueCityWithScrollingKotlin {
         private val THEME = ammo()
         private val TILESET = rexPaint20x20()
         private val DIMENSIONS = Toolkit.getDefaultToolkit().screenSize
-        private val GRID_WIDTH = DIMENSIONS.width / TILESET.width
-        private val GRID_HEIGHT = DIMENSIONS.height / TILESET.height
+        private val GRID_WIDTH = DIMENSIONS.width / TILESET.width - 1
+        private val GRID_HEIGHT = DIMENSIONS.height / TILESET.height - 1
         private val GRID_SIZE = create(GRID_WIDTH, GRID_HEIGHT)
 
         private val GRASS_TILE = Tile.newBuilder()
@@ -78,7 +78,6 @@ class ObliqueCityWithScrollingKotlin {
             val screen = create(startTileGrid(AppConfig.newBuilder()
                     .withDefaultTileset(TILESET)
                     .withSize(GRID_SIZE)
-                    .fullScreen()
                     .withDebugMode(true)
                     .build()))
             val actions = panel()

@@ -14,15 +14,14 @@ import org.hexworks.zircon.api.GameComponents.newGameAreaBuilder
 import org.hexworks.zircon.api.GameComponents.newGameAreaComponentRenderer
 import org.hexworks.zircon.api.SwingApplications.startTileGrid
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor.Companion.fromString
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.Position3D.Companion.create
 import org.hexworks.zircon.api.data.Size.Companion.create
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Tile.Companion.empty
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
@@ -38,6 +37,7 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
 
+@Suppress("DuplicatedCode")
 class GameAreaWithScrollingKotlin {
     companion object {
         private val THEME = stormyGreen()
@@ -49,8 +49,7 @@ class GameAreaWithScrollingKotlin {
 
         private val LEVEL_COUNT = 10
         private val FILLER: Tile = empty().withBackgroundColor(fromString("#e7b751"))
-        private val PYRAMID_TOP_COLOR = fromString("#ecc987")
-        private val PYRAMID_BOTTOM_COLOR = fromString("#a36431")
+        private val PYRAMID_COLOR = fromString("#ecc987")
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -98,6 +97,25 @@ class GameAreaWithScrollingKotlin {
             val gameArea: GameArea<Tile, Block<Tile>> = newGameAreaBuilder<Tile, Block<Tile>>()
                     .withActualSize(actualGameAreaSize.toSize3D(LEVEL_COUNT))
                     .withVisibleSize(visibleGameAreaSize)
+                    .withFilter(object : GameAreaTileFilter {
+                        override fun transform(
+                                visibleSize: Size3D,
+                                offsetPosition: Position3D,
+                                blockTileType: BlockTileType,
+                                tileBuilder: TileBuilder
+                        ): TileBuilder {
+                            val step = when(blockTileType) {
+                                BlockTileType.TOP -> 1 / (visibleSize.zLength.toDouble() * 5)
+                                BlockTileType.FRONT -> 1 / (visibleSize.zLength.toDouble() * 3)
+                                else -> 1.0
+                            }
+                            val style = tileBuilder.styleSet()
+                            return tileBuilder.withStyleSet(
+                                    style.withForegroundColor(style.foregroundColor
+                                            .darkenByPercent(step * (visibleSize.zLength - offsetPosition.z).toDouble()))
+                            )
+                        }
+                    })
                     .build()
             val gamePanel = panel()
                     .withSize(screen.size)
@@ -125,27 +143,24 @@ class GameAreaWithScrollingKotlin {
         }
 
         private fun generatePyramid(height: Int, startPos: Position3D, gameArea: GameArea<Tile, Block<Tile>>) {
-            val percent = 1.0 / (height + 1)
             val wall = Tile.newBuilder()
                     .withCharacter(Symbols.BLOCK_SOLID)
+                    .withForegroundColor(PYRAMID_COLOR)
                     .build()
             val currLevel = AtomicInteger(startPos.z)
-            val interpolator = PYRAMID_TOP_COLOR.interpolateTo(PYRAMID_BOTTOM_COLOR)
             for (currSize in 0 until height) {
-                val currPercent = (currSize + 1) * percent
                 val levelOffset = startPos.to2DPosition()
                         .withRelativeX(-currSize)
                         .withRelativeY(-currSize)
                 val levelSize = create(1 + currSize * 2, 1 + currSize * 2)
                 levelSize.fetchPositions().forEach { position ->
                     val pos = position.plus(levelOffset).toPosition3D(currLevel.get())
-                    val top = wall.withForegroundColor(interpolator.getColorAtRatio(currPercent))
-                    val front = top.withForegroundColor(top.foregroundColor.darkenByPercent(.1))
+                    val top = wall.withForegroundColor(PYRAMID_COLOR)
                     gameArea.setBlockAt(
                             position = pos,
                             block = Block.newBuilder<Tile>()
                                     .withTop(top)
-                                    .withFront(front)
+                                    .withFront(wall)
                                     .withEmptyTile(empty())
                                     .build())
 

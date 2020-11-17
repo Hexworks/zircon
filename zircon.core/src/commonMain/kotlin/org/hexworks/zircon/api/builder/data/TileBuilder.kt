@@ -31,6 +31,12 @@ data class TileBuilder(
         private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
     : Builder<Tile> {
 
+    fun character() = character
+    fun name() = name
+    fun tags() = tags
+    fun styleSet() = styleSet
+    fun tileset() = tileset
+
     fun withCharacter(character: Char) = also {
         this.character = character
     }

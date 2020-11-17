@@ -9,7 +9,7 @@ interface GameAreaTileFilter {
 
     fun transform(
             visibleSize: Size3D,
-            blockPosition: Position3D,
+            offsetPosition: Position3D,
             blockTileType: BlockTileType,
             tileBuilder: TileBuilder,
     ): TileBuilder
@@ -24,19 +24,19 @@ interface GameAreaTileFilter {
     ) : GameAreaTileFilter {
         override fun transform(
                 visibleSize: Size3D,
-                blockPosition: Position3D,
+                offsetPosition: Position3D,
                 blockTileType: BlockTileType,
                 tileBuilder: TileBuilder
         ): TileBuilder {
             val prev = first.transform(
                     visibleSize = visibleSize,
-                    blockPosition = blockPosition,
+                    offsetPosition = offsetPosition,
                     blockTileType = blockTileType,
                     tileBuilder = tileBuilder
             )
             return next.transform(
                     visibleSize = visibleSize,
-                    blockPosition = blockPosition,
+                    offsetPosition = offsetPosition,
                     blockTileType = blockTileType,
                     tileBuilder = prev
             )
@@ -47,7 +47,7 @@ interface GameAreaTileFilter {
         val identity: GameAreaTileFilter = object : GameAreaTileFilter {
             override fun transform(
                     visibleSize: Size3D,
-                    blockPosition: Position3D,
+                    offsetPosition: Position3D,
                     blockTileType: BlockTileType,
                     tileBuilder: TileBuilder
             ): TileBuilder {
