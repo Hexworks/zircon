@@ -18,7 +18,9 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
  */
 @Beta
-interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
+// TODO: document that `fetchBlocksAt` and `fetchBlocksAtLevel` were removed.
+// TODO: document that GameArea no longer implements TilesetOverride
+interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
 
     /**
      * Contains **all** the currently present [Block]s in this [GameArea].
@@ -28,7 +30,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
     val blocks: Map<Position3D, B>
 
     /**
-     * Tells whether there is an actual [Block] at the given `position`.
+     * Tells whether there is an actual [Block] at the given [position].
      * This means that the block in the given position is not a `filler`
      * block.
      */
@@ -40,42 +42,9 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, TilesetOverride {
     fun fetchBlockAt(position: Position3D): Maybe<B>
 
     /**
-     * Returns the [Block] at the given `position` or `null` if no [Block] is present.
+     * Returns the [Block] at the given [position] or `null` if no [Block] is present.
      */
     fun fetchBlockAtOrNull(position: Position3D): B?
-
-    /**
-     * Returns a part of this [GameArea] as a sequence of [Block]s. Note that
-     * this operation creates a consistent snapshot, eg: modifying the underlying
-     * [GameArea] has no effect on the generated [Sequence].
-     *
-     * The returned [Sequence]
-     *
-     * @param offset the position where the collection of Blocks will start.
-     * @param size the size of the area which you need the blocks from.
-     *
-     * Example: offset=(x=2, y=4, z=8), size=(xLength=9,yLength=3,zLength=4)
-     *<pre>
-     *          ^ (2,4,12) (z)
-     *          \
-     *          \
-     *          \
-     *          \
-     *  (2,4,8) O---------> (11,4,8) (x)
-     *         /
-     *       /
-     *     /
-     *   L (2,7,8) (y)
-     *</pre>
-     */
-    fun fetchBlocksAt(offset: Position3D, size: Size3D): Sequence<Pair<Position3D, B>>
-
-    /**
-     * Returns a [Sequence] of the currently present [Block]s at the given [z] level.
-     * Note that this operation creates a consistent snapshot, eg: modifying the underlying
-     * [GameArea] has no effect on the generated [Sequence].
-     */
-    fun fetchBlocksAtLevel(z: Int): Sequence<Pair<Position3D, B>>
 
     /**
      * Sets the [Block] at the given [position]. Has no effect

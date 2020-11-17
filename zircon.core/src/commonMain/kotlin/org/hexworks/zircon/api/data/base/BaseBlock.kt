@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data.base
 
 import kotlinx.collections.immutable.PersistentMap
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
@@ -93,5 +94,9 @@ abstract class BaseBlock<T : Tile>(
         throw UnsupportedOperationException(
                 "This implementation of Block doesn't support creating a copy. Consider extending BlockBase and implementing it.")
     }
+
+    override fun toBuilder() = Block.newBuilder<T>()
+            .withEmptyTile(emptyTile)
+            .withTiles(tiles)
 
 }

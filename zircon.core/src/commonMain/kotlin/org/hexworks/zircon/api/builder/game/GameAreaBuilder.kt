@@ -23,7 +23,6 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
         private var actualSize: Size3D = Size3D.one(),
         private var visibleSize: Size3D = Size3D.one(),
         private var visibleOffset: Position3D = Position3D.defaultPosition(),
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         private var blocks: MutableMap<Position3D, B> = mutableMapOf(),
         private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN
 ) : Builder<GameArea<T, B>> {
@@ -53,7 +52,6 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
                 initialVisibleSize = visibleSize,
                 initialActualSize = actualSize,
                 initialContents = blocks.toPersistentMap(),
-                initialTileset = tileset,
                 initialVisibleOffset = visibleOffset
         )
     }

@@ -13,12 +13,10 @@ class DefaultGameArea<T : Tile, B : Block<T>>(
         initialVisibleSize: Size3D,
         initialActualSize: Size3D,
         initialVisibleOffset: Position3D,
-        initialTileset: TilesetResource,
         initialContents: PersistentMap<Position3D, B>,
 ) : BaseGameArea<T, B>(
         initialVisibleSize = initialVisibleSize,
         initialActualSize = initialActualSize,
         initialVisibleOffset = initialVisibleOffset,
         initialContents = initialContents,
-        initialTileset = initialTileset,
 )
