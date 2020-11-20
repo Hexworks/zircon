@@ -8,6 +8,15 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
  */
 interface Closeable {
 
+    val closed: Boolean
+        get() = closedValue.value
+    val closedValue: ObservableValue<Boolean>
+        get() = isClosed
+
+    @Deprecated(
+            message = "This will be replaced by closedValue in the next release",
+            replaceWith = ReplaceWith("closedValue")
+    )
     val isClosed: ObservableValue<Boolean>
 
     /**

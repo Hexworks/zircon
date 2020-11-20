@@ -1,127 +1,136 @@
 package org.hexworks.zircon.api.builder.application
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
+import kotlin.jvm.JvmOverloads
 
 /**
- * Builder for [AppConfig]s.
- * Defaults are:
- * - default `title` is "Zircon Application"
+ * This *builder* class can be used to build [AppConfig] instances. This builder
+ * has sensible default values so
+ * @see AppConfig for all the default values.
  */
-// TODO: use a prototype AppConfig instead of hard-coded defaults
 data class AppConfigBuilder(
-        private var blinkLengthInMilliSeconds: Long = 500,
-        private var cursorStyle: CursorStyle = CursorStyle.FIXED_BACKGROUND,
-        private var cursorColor: TileColor = TileColor.defaultForegroundColor(),
-        private var cursorBlinking: Boolean = false,
-        private var clipboardAvailable: Boolean = true,
-        private var defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
-        private var defaultGraphicalTileset: TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16,
-        private var defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
-        private var title: String = "Zircon Application",
-        private var fullScreen: Boolean = false,
-        private var fullScreenSize: Size = Size.unknown(),
-        private var borderless: Boolean = false,
-        private var debugMode: Boolean = false,
-        private var defaultSize: Size = Size.defaultGridSize(),
-        private var betaEnabled: Boolean = false,
-        private var fpsLimit: Int = 60,
-        private var debugConfig: DebugConfig = DebugConfigBuilder.newBuilder().build(),
-        private var closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
-        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfigBuilder.newBuilder().build(),
-        private var iconData: ByteArray? = null,
-        private var iconResource: String? = null)
-    : Builder<AppConfig> {
+        private var config: AppConfig = appConfigPrototype
+) : Builder<AppConfig> {
 
     /**
-     * Sets the [debugConfig] to use.
+     * Sets the [debugConfig] to be used when [debugMode] is `true`.
+     * @see DebugConfigBuilder
+     * @see DebugConfig
+     * @see AppConfig.debugMode
+     * @see AppConfig.debugConfig
      */
     fun withDebugConfig(debugConfig: DebugConfig) = also {
-        this.debugConfig = debugConfig
+        config = config.copy(debugConfig = debugConfig)
+    }
+
+    /**
+     * Toggles debug mode on or off.
+     * @see DebugConfigBuilder
+     * @see DebugConfig
+     * @see AppConfig.debugMode
+     * @see AppConfig.debugConfig
+     */
+    fun withDebugMode(debugMode: Boolean) = also {
+        config = config.copy(debugMode = debugMode)
     }
 
     /**
      * Sets the [shortcutsConfig] to use.
+     * @see AppConfig.shortcutsConfig
+     * @see ShortcutsConfig
+     * @see ShortcutsConfigBuilder
      */
     fun withShortcutsConfig(shortcutsConfig: ShortcutsConfig) = also {
-        this.shortcutsConfig = shortcutsConfig
+        config = config.copy(shortcutsConfig = shortcutsConfig)
     }
 
     /**
      * Sets the length of a blink. All blinking characters will use this setting.
+     * @see AppConfig.blinkLengthInMilliSeconds
      */
     fun withBlinkLengthInMilliSeconds(blinkLengthInMilliSeconds: Long) = also {
-        this.blinkLengthInMilliSeconds = blinkLengthInMilliSeconds
+        config = config.copy(blinkLengthInMilliSeconds = blinkLengthInMilliSeconds)
     }
 
     /**
-     * Sets the title to use on created [TileGrid]s created by this shape.
-     * Default is "Zircon TileGrid"
+     * Sets the application window's title.
+     * @see AppConfig.title
      */
     fun withTitle(title: String) = also {
-        this.title = title
-    }
-
-    fun fullScreen() = also {
-        fullScreen = true
-        borderless = true
-    }
-
-    fun fullScreen(screenWidth: Int, screenHeight: Int) = also {
-        fullScreen = true
-        fullScreenSize = Size.create(screenWidth, screenHeight)
-        defaultSize = Size.unknown()
-        borderless = true
-    }
-
-    fun borderless() = also {
-        borderless = true
+        config = config.copy(title = title)
     }
 
     /**
-     * Sets the cursor style. See: [CursorStyle].
+     * Toggles whether the resulting application is full screen or not.
+     * @see AppConfig.fullScreen
+     */
+    @JvmOverloads
+    fun withFullScreen(fullScreen: Boolean = true) = also {
+        config = config.copy(
+                fullScreen = fullScreen,
+                borderless = fullScreen
+        )
+    }
+
+    /**
+     * Toggles whether the resulting application will be borderless or not.
+     * @see AppConfig.borderless
+     */
+    @JvmOverloads
+    fun withBorderless(borderless: Boolean = true) = also {
+        config = config.copy(borderless = borderless)
+    }
+
+    /**
+     * Sets the [CursorStyle] to be used when there is a cursor displayed.
+     * @see AppConfig.cursorStyle
      */
     fun withCursorStyle(cursorStyle: CursorStyle) = also {
-        this.cursorStyle = cursorStyle
+        config = config.copy(cursorStyle = cursorStyle)
     }
 
     /**
      * Sets the color of the cursor.
+     * @see AppConfig.cursorColor
      */
     fun withCursorColor(cursorColor: TileColor) = also {
-        this.cursorColor = cursorColor
+        config = config.copy(cursorColor = cursorColor)
     }
 
     /**
      * Sets whether the cursor blinks or not.
+     * @see AppConfig.isCursorBlinking
      */
-    fun withCursorBlinking(cursorBlinking: Boolean) = also {
-        this.cursorBlinking = cursorBlinking
+    fun withCursorBlinking(isCursorBlinking: Boolean) = also {
+        config = config.copy(isCursorBlinking = isCursorBlinking)
     }
 
     /**
      * Enables or disables clipboard. <code>Shift + Insert</code> will paste text
      * at the cursor location if clipboard is available.
+     * @see AppConfig.isClipboardAvailable
      */
-    fun withClipboardAvailable(clipboardAvailable: Boolean) = also {
-        this.clipboardAvailable = clipboardAvailable
+    fun withClipboardAvailable(isClipboardAvailable: Boolean) = also {
+        config = config.copy(isClipboardAvailable = isClipboardAvailable)
     }
 
-    fun withDebugMode(debugMode: Boolean) = also {
-        this.debugMode = debugMode
-    }
+    /**
+     * Sets the size the [Application.tileGrid] will have.
+     * @see AppConfig.size
+     */
+    fun withSize(width: Int, height: Int) = withSize(Size.create(width, height))
 
+    /**
+     * Sets the size the [Application.tileGrid] will have.
+     * @see AppConfig.size
+     */
     fun withSize(size: Size) = also {
-        this.defaultSize = size
+        config = config.copy(size = size)
     }
 
     /**
@@ -132,72 +141,84 @@ data class AppConfigBuilder(
         require(fpsLimit > 0) {
             "Can't set an fps limit which is less than zero"
         }
-        this.fpsLimit = fpsLimit
+        config = config.copy(fpsLimit = fpsLimit)
     }
 
-    fun withSize(width: Int, height: Int) = withSize(Size.create(width, height))
-
+    /**
+     * Sets the default tileset to be used.
+     * @see AppConfig.defaultTileset
+     */
     fun withDefaultTileset(defaultTileset: TilesetResource) = also {
-        this.defaultTileset = defaultTileset
+        config = config.copy(defaultTileset = defaultTileset)
     }
 
+    /**
+     * Sets the default graphical tileset to be used.
+     * @see AppConfig.defaultGraphicalTileset
+     */
     fun withDefaultGraphicalTileset(defaultGraphicalTileset: TilesetResource) = also {
-        this.defaultGraphicalTileset = defaultGraphicalTileset
+        config = config.copy(defaultGraphicalTileset = defaultGraphicalTileset)
     }
 
+    /**
+     * Sets the close behavior to be used.
+     * @see AppConfig.closeBehavior
+     */
     fun withCloseBehavior(closeBehavior: CloseBehavior) = also {
-        this.closeBehavior = closeBehavior
+        config = config.copy(closeBehavior = closeBehavior)
     }
 
-    fun enableBetaFeatures() = also {
-        this.betaEnabled = true
-    }
-
-    fun disableBetaFeatures() = also {
-        this.betaEnabled = false
-    }
-
+    /**
+     * Sets the image that should be used as an application icon as a [ByteArray].
+     * If set [iconPath] will be set to `null`.
+     */
     fun withIcon(iconData: ByteArray) = also {
-        this.iconData = iconData
-        this.iconResource = null
+        config = config.copy(
+                iconData = iconData,
+                iconPath = null
+        )
     }
 
-    fun withIcon(iconResource: String?) = also {
-        this.iconResource = iconResource
-        this.iconData = null
+    /**
+     * Sets the image's *resource path* that should be used as an application icon.
+     * If set, [iconData] will be set to `null`.
+     */
+    fun withIcon(iconPath: String) = also {
+        config = config.copy(
+                iconPath = iconPath,
+                iconData = null
+        )
     }
+
+    @Deprecated("This will be removed in the next version, as the behavior is inconsistent.")
+    fun withFullScreen(screenWidth: Int, screenHeight: Int) = also {
+        throw UnsupportedOperationException("Unstable api, use withFullScreen(true) instead")
+    }
+
+    @Deprecated(
+            message = "Use withBorderless instead",
+            replaceWith = ReplaceWith("this.withBorderless(true)")
+    )
+    fun borderless() = withBorderless(true)
+
+    @Deprecated("This feature will be removed in the next release, look at the debug features instead.")
+    fun enableBetaFeatures() = this
+
+    @Deprecated("This feature will be removed in the next release, look at the debug features instead.")
+    fun disableBetaFeatures() = this
+
+    @Deprecated(message = "use withFullScreen instead", ReplaceWith("this.withFullScreen(true)"))
+    fun fullScreen() = withFullScreen(true)
+
+    @Deprecated(
+            message = "use withFullScreen instead",
+            replaceWith = ReplaceWith("this.withFullScreen(screenWidth, screenHeight)")
+    )
+    fun fullScreen(screenWidth: Int, screenHeight: Int) = withFullScreen(screenWidth, screenHeight)
+
 
     override fun build(): AppConfig {
-        if (fullScreen && fullScreenSize != Size.unknown() && defaultSize == Size.unknown()) {
-            defaultSize = Size.create(
-                    fullScreenSize.width / defaultTileset.width,
-                    fullScreenSize.height / defaultTileset.height
-            )
-        }
-
-        return AppConfig(
-                blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-                cursorStyle = cursorStyle,
-                cursorColor = cursorColor,
-                isCursorBlinking = cursorBlinking,
-                isClipboardAvailable = clipboardAvailable,
-                defaultTileset = defaultTileset,
-                defaultGraphicalTileset = defaultGraphicalTileset,
-                defaultColorTheme = defaultColorTheme,
-                debugMode = debugMode,
-                size = defaultSize,
-                fullScreen = fullScreen,
-                borderless = borderless,
-                betaEnabled = betaEnabled,
-                title = title,
-                fpsLimit = fpsLimit,
-                debugConfig = debugConfig,
-                closeBehavior = closeBehavior,
-                shortcutsConfig = shortcutsConfig,
-                // TODO: this should be clarified / refactored to a strategy
-                iconData = iconData,
-                iconResource = iconResource
-        ).also {
+        return config.also {
             RuntimeConfig.config = it
         }
     }
@@ -205,6 +226,8 @@ data class AppConfigBuilder(
     override fun createCopy() = copy()
 
     companion object {
+
+        private val appConfigPrototype = AppConfig.defaultConfiguration()
 
         fun newBuilder() = AppConfigBuilder()
 

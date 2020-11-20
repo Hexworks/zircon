@@ -29,7 +29,7 @@ object ColorThemes {
      * [ComponentStyleSets].
      */
     @JvmStatic
-    fun defaultTheme() = ColorThemeResource.DEFAULT.getTheme()
+    fun defaultTheme() = ColorThemeResource.HEXWORKS.getTheme()
 
     /**
      * Taken from
