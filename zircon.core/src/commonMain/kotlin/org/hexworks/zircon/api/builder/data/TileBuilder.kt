@@ -28,8 +28,8 @@ data class TileBuilder(
         private var name: String = " ",
         private var tags: Set<String> = setOf(),
         private var styleSet: StyleSet = StyleSet.defaultStyle(),
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
-    : Builder<Tile> {
+        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+) : Builder<Tile> {
 
     fun character() = character
     fun name() = name

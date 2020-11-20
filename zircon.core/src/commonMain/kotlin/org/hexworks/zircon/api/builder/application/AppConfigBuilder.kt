@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 /**
  * This *builder* class can be used to build [AppConfig] instances. This builder
@@ -14,7 +15,7 @@ import kotlin.jvm.JvmOverloads
  * @see AppConfig for all the default values.
  */
 data class AppConfigBuilder(
-        private var config: AppConfig = appConfigPrototype
+        private var config: AppConfig = AppConfig.defaultConfiguration()
 ) : Builder<AppConfig> {
 
     /**
@@ -227,8 +228,7 @@ data class AppConfigBuilder(
 
     companion object {
 
-        private val appConfigPrototype = AppConfig.defaultConfiguration()
-
+        @JvmStatic
         fun newBuilder() = AppConfigBuilder()
 
     }

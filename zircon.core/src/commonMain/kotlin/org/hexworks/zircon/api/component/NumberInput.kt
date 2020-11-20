@@ -3,8 +3,10 @@ package org.hexworks.zircon.api.component
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 
+@Beta
 interface NumberInput : Component {
 
     var text: String

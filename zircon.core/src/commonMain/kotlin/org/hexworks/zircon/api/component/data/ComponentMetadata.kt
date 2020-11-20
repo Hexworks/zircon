@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 /**
- * Contains metadata which is common to **all** [Component]s
+ * Contains metadata that is common to **all** [Component]s.
  */
 data class ComponentMetadata(
         val relativePosition: Position,

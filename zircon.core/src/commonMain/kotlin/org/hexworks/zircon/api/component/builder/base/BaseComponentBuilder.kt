@@ -21,8 +21,8 @@ import kotlin.jvm.JvmSynthetic
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        initialRenderer: ComponentRenderer<out T>)
-    : ComponentBuilder<T, U>, Builder<T> {
+        initialRenderer: ComponentRenderer<out T>
+) : ComponentBuilder<T, U>, Builder<T> {
 
     private val logger = LoggerFactory.getLogger(this::class)
 

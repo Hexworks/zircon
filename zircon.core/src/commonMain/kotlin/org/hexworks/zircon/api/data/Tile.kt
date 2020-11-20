@@ -43,9 +43,6 @@ interface Tile : Cacheable, StyleSet {
      */
     val styleSet: StyleSet
 
-    /**
-     * An opaque tile's transparency is zero (you can't see through it).
-     */
     val isOpaque: Boolean
 
     val isUnderlined: Boolean

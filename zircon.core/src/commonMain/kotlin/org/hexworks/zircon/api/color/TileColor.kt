@@ -81,12 +81,24 @@ interface TileColor : Cacheable {
      */
     fun lightenByPercent(percentage: Double): TileColor
 
+    /**
+     * Creates a copy of this [TileColor] with the given [alpha].
+     */
     fun withAlpha(alpha: Int): TileColor
 
+    /**
+     * Creates a copy of this [TileColor] with the given [red].
+     */
     fun withRed(red: Int): TileColor
 
+    /**
+     * Creates a copy of this [TileColor] with the given [green].
+     */
     fun withGreen(green: Int): TileColor
 
+    /**
+     * Creates a copy of this [TileColor] with the given [blue].
+     */
     fun withBlue(blue: Int): TileColor
 
     /**

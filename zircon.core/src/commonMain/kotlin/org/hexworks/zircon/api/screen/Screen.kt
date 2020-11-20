@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 import kotlin.jvm.JvmStatic
 
 /**
@@ -32,18 +33,19 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
     // TODO: move this to a ModalHandler interface
     /**
-     * Opens a new [Modal] window on top of the [Screen]. A modal
-     * window blocks access to all [Component]s on this [Screen] and
-     * also stops component events until the modal window is closed.
-     * A [Modal] returns a [ModalResult] which represents the result
-     * of opening the [Modal] itself.
+     * Opens a new [Modal] window on top of the [Screen]. A modal window blocks access
+     * to all [Component]s on this [Screen] and also stops component events until
+     * the modal window is closed. A [Modal] returns an arbitrary [ModalResult].
+     * If you don't want to return anything from a [Modal] use [EmptyModalResult].
      */
     fun <T : ModalResult> openModal(modal: Modal<T>)
 
     /**
      * Opens a new [Modal] window on top of the [Screen] using the given
      * [ModalFragment].
-     * @see [Screen.openModal]
+     * @see Modal
+     * @see ModalFragment
+     * @see Screen.openModal
      */
     fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) = openModal(modalFragment.root)
 

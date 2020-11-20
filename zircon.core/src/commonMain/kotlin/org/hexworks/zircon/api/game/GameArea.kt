@@ -17,9 +17,9 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * The space is composed of [Block]s which are just voxels (like in Minecraft) which
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
  */
-@Beta
 // TODO: document that `fetchBlocksAt` and `fetchBlocksAtLevel` were removed.
 // TODO: document that GameArea no longer implements TilesetOverride
+@Beta
 interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
 
     /**

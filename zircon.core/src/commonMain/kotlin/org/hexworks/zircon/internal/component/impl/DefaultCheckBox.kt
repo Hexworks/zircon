@@ -14,6 +14,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
+import org.hexworks.zircon.api.component.data.ComponentState
 import kotlin.jvm.Synchronized
 
 @Suppress("DuplicatedCode")
@@ -69,15 +70,40 @@ class DefaultCheckBox(
         super.focusTaken()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
 
+    /**
+     * Represents the possible states of a [CheckBox].
+     */
     enum class CheckBoxState {
+        /**
+         * Used when an [UNCHECKED] checkbox is active (being pressed/clicked).
+         * [CHECKING] is followed by the [CHECKED] state
+         * @see ComponentState
+         */
         CHECKING,
+        /**
+         * Used when a [CheckBox] is not being interacted with and it [isSelected]
+         * [CHECKED] is followed by the [UNCHECKING] state.
+         */
         CHECKED,
+        /**
+         * Used when a [CHECKED] [CheckBox] is active (being pressed/clicked).
+         * [UNCHECKING] is followed by the [UNCHECKED] state.
+         * @see ComponentState
+         */
         UNCHECKING,
+        /**
+         * Used when a [CheckBox] is not selected and it is not being interacted
+         * with.
+         */
         UNCHECKED
     }
 
+    /**
+     * Contains the possible options where the check in a [CheckBox]
+     * can be placed.
+     */
     enum class CheckBoxAlignment {
         LEFT,
         RIGHT

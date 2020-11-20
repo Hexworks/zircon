@@ -5,9 +5,11 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils
 
-data class FadeIn(private val steps: Int = 20,
-                  private val timeMs: Long = 2000,
-                  private val glowOnFinalStep: Boolean = true) : TileTransformModifier<CharacterTile>, Fade {
+data class FadeIn(
+        private val steps: Int = 20,
+        private val timeMs: Long = 2000,
+        private val glowOnFinalStep: Boolean = true
+) : TileTransformModifier<CharacterTile>, Fade {
 
     override val cacheKey: String
         get() = "Modifier.FadeIn.$currentStep"

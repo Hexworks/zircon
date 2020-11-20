@@ -6,5 +6,4 @@ import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
 
 @Beta
-interface VerticalTabBar : Fragment {
-}
+interface VerticalTabBar : Fragment

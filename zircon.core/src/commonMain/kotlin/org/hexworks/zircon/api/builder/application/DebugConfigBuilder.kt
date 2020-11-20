@@ -6,56 +6,33 @@ import kotlin.jvm.JvmStatic
 
 /**
  * Builder for [DebugConfig]s.
- *
- * All values default to `false`.
+ * @see DebugConfig for defaults
  */
 data class DebugConfigBuilder(
-        /**
-         * If `true` a grid will be displayed around the tiles.
-         */
-        var displayGrid: Boolean = prototype.displayGrid,
-        /**
-         * If `true` it will draw the positions of the individual tiles on the tiles
-         */
-        var displayCoordinates: Boolean = prototype.displayCoordinates,
-        /**
-         * If `true` log messages will appear detailing the FPS characteristics
-         */
-        var displayFps: Boolean = prototype.displayFps,
-        /**
-         * if `true` no bounds check will be performed when adding/moving components
-         */
-        var relaxBoundsCheck: Boolean = prototype.relaxBoundsCheck
+        var debugConfig: DebugConfig = DebugConfig.defaultConfig()
 ) : Builder<DebugConfig> {
 
-    override fun build() = DebugConfig(
-            displayGrid = displayGrid,
-            displayCoordinates = displayCoordinates,
-            displayFps = displayFps,
-            relaxBoundsCheck = relaxBoundsCheck
-    )
-
-    override fun createCopy() = copy()
-
     fun withRelaxBoundsCheck(relaxBoundsCheck: Boolean) = also {
-        this.relaxBoundsCheck = relaxBoundsCheck
+        debugConfig = debugConfig.copy(relaxBoundsCheck = relaxBoundsCheck)
     }
 
     fun withDisplayGrid(displayGrid: Boolean) = also {
-        this.displayGrid = displayGrid
+        debugConfig.copy(displayGrid = displayGrid)
     }
 
     fun withDisplayCoordinates(displayCoordinates: Boolean) = also {
-        this.displayCoordinates = displayCoordinates
+        debugConfig.copy(displayCoordinates = displayCoordinates)
     }
 
     fun withDisplayFps(displayFps: Boolean) = also {
-        this.displayFps = displayFps
+        debugConfig.copy(displayFps = displayFps)
     }
 
-    companion object {
+    override fun build() = debugConfig
 
-        private val prototype = DebugConfig()
+    override fun createCopy() = copy()
+
+    companion object {
 
         @JvmStatic
         fun newBuilder() = DebugConfigBuilder()

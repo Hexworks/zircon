@@ -10,7 +10,15 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxAlign
  * state with a check box.
  */
 interface CheckBox : Component, Selectable, TextOverride {
-
+    /**
+     * Contains the current state of the [CheckBox]
+     * @see CheckBoxState
+     */
     val checkBoxState: CheckBoxState
+
+    /**
+     * Contains the [CheckBoxAlignment].
+     * @see CheckBoxAlignment
+     */
     val labelAlignment: CheckBoxAlignment
 }

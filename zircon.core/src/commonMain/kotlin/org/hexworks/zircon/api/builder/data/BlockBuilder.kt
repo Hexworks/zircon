@@ -17,7 +17,8 @@ import org.hexworks.zircon.internal.data.DefaultBlock
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 data class BlockBuilder<T : Tile>(
         private var emptyTile: Maybe<T> = Maybe.empty(),
-        private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()) : Builder<Block<T>> {
+        private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
+) : Builder<Block<T>> {
 
     fun withEmptyTile(tile: T) = also {
         this.emptyTile = Maybe.of(tile)

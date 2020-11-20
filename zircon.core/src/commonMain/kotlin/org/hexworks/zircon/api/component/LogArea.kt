@@ -4,12 +4,12 @@ import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.builder.component.ParagraphBuilder
 
 /**
- * A [LogArea] provides the possibility to display messages. The messages are composed of log
- * elements, which can be for instance text or other Zircon components. New rows have to be
+ * A [LogArea] provides the possibility to display a stream of messages. The messages are composed
+ * of log elements, that can be for instance text or other Zircon components. New rows have to be
  * explicitly created by calling [LogArea.addNewRows].
  *
  * Currently the log area scrolls automatically down. When later
- * Zircon provides scrollbars, this behavior will be then configurable
+ * Zircon provides scrollbars, this behavior will be configurable
  */
 interface LogArea : Component, Clearable {
 
@@ -45,7 +45,7 @@ interface LogArea : Component, Clearable {
     fun addInlineComponent(component: Component)
 
     /**
-     * Commits all inline elements, added with addInline...
+     * Commits (adds to the underlying container) all inline elements.
      */
     fun commitInlineElements()
 

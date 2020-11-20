@@ -32,6 +32,6 @@ data class DebugConfig(
         fun newBuilder() = DebugConfigBuilder()
 
         @JvmStatic
-        fun defaultConfig() = DebugConfigBuilder.newBuilder().build()
+        fun defaultConfig() = DebugConfig()
     }
 }

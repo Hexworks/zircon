@@ -25,6 +25,6 @@ class DefaultToggleButton(
         super.activated()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
 
 }

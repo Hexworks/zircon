@@ -7,9 +7,8 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 /**
- * This object is a *facade* that can be used to create the built-in modifiers supported by Zircon.
+ * This object contains factory methods for the [Modifier]s supported by Zircon.
  */
-// TODO: add more docs
 object Modifiers {
 
     @JvmStatic
@@ -30,6 +29,10 @@ object Modifiers {
     @JvmStatic
     fun hidden(): Modifier = Hidden
 
+    /**
+     * Adds a glow effect to a tile.
+     * @param radius the radius in pixels for the effect.
+     */
     @JvmStatic
     @JvmOverloads
     fun glow(radius: Float = 5.0f): Modifier = Glow(radius)
@@ -43,9 +46,23 @@ object Modifiers {
     @JvmStatic
     fun border(): Border = BorderBuilder.newBuilder().build()
 
+    /**
+     * Crops the tile that contains this modifier. [Crop] takes
+     * an [x],[y] position pair and the [width]+[height] that delimits
+     * the are that will be **kept** from the source tile. Everything
+     * else will be cropped.
+     */
     @JvmStatic
     fun crop(x: Int, y: Int, width: Int, height: Int): Modifier = Crop(x, y, width, height)
 
+    /**
+     * Provides a fade in effect for the tile that has this modifier.
+     * The effect will start when the tile is added to a tile grid.
+     * @param steps the number of frames for the fade effect
+     * @param timeMs the time (in milliseconds) the effect takes
+     * @param glowOnFinalStep tells whether the tile will be given the [Glow] modifier
+     * when the effect finishes.
+     */
     @JvmStatic
     @JvmOverloads
     fun fadeIn(
@@ -54,6 +71,12 @@ object Modifiers {
             glowOnFinalStep: Boolean = true
     ): Modifier = FadeIn(steps, timeMs, glowOnFinalStep)
 
+    /**
+     * Provides a fade out effect for the tile that has this modifier.
+     * The effect will start when the tile is added to a tile grid.
+     * @param steps the number of frames for the fade effect
+     * @param timeMs the time (in milliseconds) the effect takes
+     */
     @JvmStatic
     @JvmOverloads
     fun fadeOut(
@@ -61,6 +84,7 @@ object Modifiers {
             timeMs: Long = 2000
     ): Modifier = FadeOut(steps, timeMs)
 
+    // TODO: move all of this into a builder
     @JvmStatic
     @JvmOverloads
     fun fadeInOut(
@@ -73,6 +97,10 @@ object Modifiers {
     ): Modifier = FadeInOut(stepsFadeIn, timeMsFadeIn, glowOnFinalFadeInStep, timeMsBeforeFadingOut,
             stepsFadeOut, timeMsFadeOut)
 
+    /**
+     * Keeps the tile that has this modifier hidden until [timeMs] milliseconds pass
+     * after adding the tile to a grid.
+     */
     @JvmStatic
     fun delay(timeMs: Long): Modifier = Delay(timeMs)
 

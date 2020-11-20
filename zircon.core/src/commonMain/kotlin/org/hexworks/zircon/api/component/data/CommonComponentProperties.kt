@@ -18,4 +18,5 @@ data class CommonComponentProperties<T : Component>(
         var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
         var alignmentStrategy: AlignmentStrategy = ComponentAlignments.positionalAlignment(0, 0),
         var decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
-        var componentRenderer: ComponentRenderer<out T> = NoOpComponentRenderer())
+        var componentRenderer: ComponentRenderer<out T> = NoOpComponentRenderer()
+)

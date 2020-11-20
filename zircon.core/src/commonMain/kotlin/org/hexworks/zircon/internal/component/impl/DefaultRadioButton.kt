@@ -65,7 +65,7 @@ class DefaultRadioButton(
         super.activated()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
 
     enum class RadioButtonState {
         PRESSED,

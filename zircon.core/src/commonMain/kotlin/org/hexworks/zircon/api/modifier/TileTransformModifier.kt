@@ -10,8 +10,7 @@ import org.hexworks.zircon.api.data.Tile
 interface TileTransformModifier<T: Tile> : Modifier {
 
     /**
-     * Transforms the given [Tile] and returns
-     * the result.
+     * Transforms the given [Tile] and returns the result.
      */
     fun transform(tile: T): T
 
