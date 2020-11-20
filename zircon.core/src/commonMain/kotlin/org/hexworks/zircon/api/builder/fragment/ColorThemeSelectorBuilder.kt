@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.behavior.ThemeOverride
+import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.jvm.JvmStatic
 
 /**
- * Builder for a [Selector] to change the theme of multiple [ThemeOverride]s or [Group]s at runtime.
+ * Builder for a [Selector] to change the theme of multiple [ColorThemeOverride]s or [Group]s at runtime.
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class ColorThemeSelectorBuilder(
@@ -20,7 +20,7 @@ class ColorThemeSelectorBuilder(
         .sortedBy { it.name }
         .map { it.getTheme() }) {
 
-    private var themeOverrides = listOf<ThemeOverride>()
+    private var themeOverrides = listOf<ColorThemeOverride>()
     private var groups = listOf<Group<out Component>>()
 
     init {
@@ -35,7 +35,7 @@ class ColorThemeSelectorBuilder(
             message = "Themeable was renamed to ThemeOverride",
             replaceWith = ReplaceWith("this.withThemeOverrides(*themeOverrides)")
     )
-    fun withThemeables(vararg themeOverrides: ThemeOverride) = also {
+    fun withThemeables(vararg themeOverrides: ColorThemeOverride) = also {
         this.themeOverrides = themeOverrides.toList()
     }
 
@@ -43,7 +43,7 @@ class ColorThemeSelectorBuilder(
      * Sets the given [themeOverrides] to be updated whenever the underlying [Selector]'s
      * [Selector.selectedValue] changes.
      */
-    fun withThemeOverrides(vararg themeOverrides: ThemeOverride) = also {
+    fun withThemeOverrides(vararg themeOverrides: ColorThemeOverride) = also {
         this.themeOverrides = themeOverrides.toList()
     }
 

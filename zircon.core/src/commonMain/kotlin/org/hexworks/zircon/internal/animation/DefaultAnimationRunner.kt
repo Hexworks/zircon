@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.animation
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle

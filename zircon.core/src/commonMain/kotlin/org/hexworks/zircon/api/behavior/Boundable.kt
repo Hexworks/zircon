@@ -14,14 +14,26 @@ import kotlin.jvm.JvmStatic
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Boundable : HasSize {
 
+    /**
+     * A [Rect] contains the coordinates and the size of a [Boundable].
+     */
     val rect: Rect
 
+    /**
+     * Shorthand for [Rect.position]
+     */
     val position: Position
         get() = rect.position
 
+    /**
+     * Shorthand for [Rect.x]
+     */
     val x: Int
         get() = rect.x
 
+    /**
+     * Shorthand for [Rect.y]
+     */
     val y: Int
         get() = rect.y
 

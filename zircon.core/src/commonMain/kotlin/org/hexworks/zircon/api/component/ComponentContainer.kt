@@ -1,15 +1,15 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.ThemeOverride
+import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
 
 /**
  * Represents an object which can hold gui [Component]s and also maintains
  * a [theme] property that's synchronized for its child [Component]s.
  * @see Component
- * @see ThemeOverride
+ * @see ColorThemeOverride
  */
-interface ComponentContainer : ThemeOverride {
+interface ComponentContainer : ColorThemeOverride {
 
     /**
      * Adds a child [Component] to this [ComponentContainer]. It can either be

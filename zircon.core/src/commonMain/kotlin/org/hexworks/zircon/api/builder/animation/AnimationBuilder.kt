@@ -123,9 +123,6 @@ data class AnimationBuilder private constructor(
          * Creates a new [AnimationBuilder] to build [Animation]s.
          */
         fun newBuilder(): AnimationBuilder {
-            require(RuntimeConfig.config.betaEnabled) {
-                "Animations are a beta feature. Please enable them when setting up Zircon using an AppConfig."
-            }
             return AnimationBuilder()
         }
 

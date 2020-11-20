@@ -9,7 +9,18 @@ import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SO
 @Suppress("SpellCheckingInspection")
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
-    DEFAULT(ColorThemeBuilder.newBuilder().withName("Default").build()),
+    /**
+     * This is the default theme that was made by Hexworks.
+     */
+    HEXWORKS(ColorThemeBuilder.newBuilder()
+            .withName("Hexworks")
+            .withAccentColor(TileColor.fromString("#52b61d"))
+            .withPrimaryForegroundColor(TileColor.fromString("#b1d5d7"))
+            .withSecondaryForegroundColor(TileColor.fromString("#91b5b7"))
+            .withPrimaryBackgroundColor(TileColor.fromString("#5c335a"))
+            .withSecondaryBackgroundColor(TileColor.fromString("#341139"))
+            .build()
+    ),
 
     /**
      * Taken from
@@ -22,7 +33,8 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             .withSecondaryForegroundColor(TileColor.fromString("#bda576"))
             .withPrimaryBackgroundColor(TileColor.fromString("#52484e"))
             .withSecondaryBackgroundColor(TileColor.fromString("#292442"))
-            .build()),
+            .build()
+    ),
     /**
      * Taken from
      * https://lospec.com/palette-list/afternoon-haze

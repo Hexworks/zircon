@@ -10,6 +10,9 @@ import org.hexworks.zircon.api.grid.TileGrid
  */
 interface Application {
 
+    /**
+     * The tile grid that's being continuously rendered by this [Application].
+     */
     val tileGrid: TileGrid
 
     /**

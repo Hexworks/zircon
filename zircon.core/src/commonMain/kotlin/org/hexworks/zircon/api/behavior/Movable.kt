@@ -12,6 +12,9 @@ import kotlin.jvm.JvmStatic
  */
 interface Movable : Boundable {
 
+    /**
+     * Observable value that can be used to observe the changes of [rect].
+     */
     val rectValue: ObservableValue<Rect>
 
     /**

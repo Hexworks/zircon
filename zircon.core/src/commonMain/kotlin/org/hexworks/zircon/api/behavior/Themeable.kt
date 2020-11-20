@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.internal.behavior.impl.DefaultThemeOverride
+import org.hexworks.zircon.internal.behavior.impl.DefaultColorThemeOverride
 import kotlin.jvm.JvmStatic
 
 /**
@@ -20,6 +20,6 @@ interface Themeable : HasColorTheme {
     companion object {
 
         @JvmStatic
-        fun create(initialTheme: ColorTheme): ThemeOverride = DefaultThemeOverride(initialTheme)
+        fun create(initialTheme: ColorTheme): ColorThemeOverride = DefaultColorThemeOverride(initialTheme)
     }
 }

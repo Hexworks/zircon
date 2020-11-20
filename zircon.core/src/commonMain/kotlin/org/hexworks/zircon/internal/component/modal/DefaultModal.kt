@@ -20,10 +20,11 @@ open class DefaultModal<T : ModalResult>(
         renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
 ) : Modal<T>, DefaultContainer(
         componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        Observable<T> by DefaultObservable() {
+        renderer = renderingStrategy
+), Observable<T> by DefaultObservable() {
 
-    private var closed = false
+    final override var closed = false
+        private set
 
     @Synchronized
     override fun close(result: T) {
