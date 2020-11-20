@@ -15,6 +15,6 @@ class DefaultButton(
         renderer = renderingStrategy
 ) {
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractableStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
 
 }

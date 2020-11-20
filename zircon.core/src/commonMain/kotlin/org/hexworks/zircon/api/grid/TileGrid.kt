@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  * It also supports layering, cursor handling, character printing, event handling,
  * simple [Tile] drawing operations and many more.
  *
- * You can consider a [TileGrid] as an easy to use **facade** for all your tile grid
+ * You can consider a [TileGrid] as an easy to use **facade** for all of your tile grid
  * needs.
  *
  * **Note That** all [TileGrid]s have a [Layer] at index `0` which is used

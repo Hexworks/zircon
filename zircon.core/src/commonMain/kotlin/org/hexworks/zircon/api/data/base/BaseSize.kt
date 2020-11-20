@@ -7,6 +7,9 @@ import org.hexworks.zircon.api.shape.RectangleFactory
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * Base class for implementing [Size].
+ */
 abstract class BaseSize : Size {
 
     override operator fun plus(other: Size) = Size.create(width + other.width, height + other.height)

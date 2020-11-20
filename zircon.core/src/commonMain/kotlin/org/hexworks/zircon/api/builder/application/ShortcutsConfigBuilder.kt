@@ -12,51 +12,30 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("KDocUnresolvedReference")
 data class ShortcutsConfigBuilder(
-        /**
-         * Default is `<Space>` press.
-         */
-        var activateFocused: KeyboardEventMatcher = prototype.activateFocused,
-        /**
-         * Default is `<Space>` release.
-         */
-        var deactivateActivated: KeyboardEventMatcher = prototype.deactivateActivated,
-        /**
-         * Default is `<Tab>` press.
-         */
-        var focusNext: KeyboardEventMatcher = prototype.focusNext,
-        /**
-         * Default is `<Shift>`+`<Tab>` press.
-         */
-        var focusPrevious: KeyboardEventMatcher = prototype.focusPrevious
+        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfig.defaultConfig()
 ) : Builder<ShortcutsConfig> {
 
-    override fun build() = ShortcutsConfig(
-            activateFocused = activateFocused,
-            deactivateActivated = deactivateActivated,
-            focusNext = focusNext,
-            focusPrevious = focusPrevious)
-
-    override fun createCopy() = copy()
-
     fun withActivateFocused(activateFocused: KeyboardEventMatcher) = also {
-        this.activateFocused = activateFocused
+        shortcutsConfig = shortcutsConfig.copy(activateFocused = activateFocused)
     }
 
     fun withDeactivateActivated(deactivateActivated: KeyboardEventMatcher) = also {
-        this.deactivateActivated = deactivateActivated
+        shortcutsConfig = shortcutsConfig.copy(deactivateActivated = deactivateActivated)
     }
 
     fun withFocusNext(focusNext: KeyboardEventMatcher) = also {
-        this.focusNext = focusNext
+        shortcutsConfig = shortcutsConfig.copy(focusNext = focusNext)
     }
 
     fun withFocusPrevious(focusPrevious: KeyboardEventMatcher) = also {
-        this.focusPrevious = focusPrevious
+        shortcutsConfig = shortcutsConfig.copy(focusPrevious = focusPrevious)
     }
 
-    companion object {
+    override fun build() = shortcutsConfig
 
-        private val prototype = ShortcutsConfig()
+    override fun createCopy() = copy()
+
+    companion object {
 
         @JvmStatic
         fun newBuilder() = ShortcutsConfigBuilder()

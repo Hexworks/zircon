@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -26,17 +28,40 @@ interface ColorTheme {
      */
     val name: String
 
+    /**
+     * This color is typically used for the text of non-interactive components
+     * that have emphasis on them (like [Header]s).
+     */
     val primaryForegroundColor: TileColor
+    /**
+     * This color is typically used for the text of non-interactive components
+     * that don't have emphasis on them (like [Paragraph]s).
+     */
     val secondaryForegroundColor: TileColor
+    /**
+     * This color is typically used for the background of [Container]s.
+     */
     val primaryBackgroundColor: TileColor
+    /**
+     * This color is typically used for the root container.
+     */
     val secondaryBackgroundColor: TileColor
+    /**
+     * This color is typically used for the text and decorations of interactive components.
+     */
     val accentColor: TileColor
+
+    @Deprecated(
+            message = "contains a typo, use toInteractiveStyle instead",
+            replaceWith = ReplaceWith("this.toInteractiveStyle()")
+    )
+    fun toInteractableStyle(): ComponentStyleSet = toInteractiveStyle()
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default
-     * for interactable components (eg: [Button]s, [ToggleButton]s and so on).
+     * for interactive components (eg: [Button]s, [ToggleButton]s and so on).
      */
-    fun toInteractableStyle(): ComponentStyleSet = ComponentStyleSetBuilder.newBuilder()
+    fun toInteractiveStyle(): ComponentStyleSet = ComponentStyleSetBuilder.newBuilder()
             .withDefaultStyle(StyleSetBuilder.newBuilder()
                     .withForegroundColor(accentColor)
                     .withBackgroundColor(TileColor.transparent())

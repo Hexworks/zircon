@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.component
 
 /**
- * Represents a [Component] which is attached to a [ComponentContainer].
+ * Decorator that represents a [Component] which is attached to a [ComponentContainer].
  */
 interface AttachedComponent : Component {
 
     /**
      * Detaches the underlying [Component] from the [ComponentContainer] it is
-     * attached and returns the underlying [Component].
+     * attached to and returns the [Component].
      */
     fun detach(): Component
 

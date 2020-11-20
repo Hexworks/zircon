@@ -10,6 +10,7 @@ import kotlin.jvm.JvmStatic
  * will be used when a [Component]'s [ComponentState] changes.
  * @see ComponentState
  */
+@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface ComponentStyleSet {
 
     val isDefault

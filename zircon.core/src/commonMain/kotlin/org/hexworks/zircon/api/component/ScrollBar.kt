@@ -5,7 +5,9 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 
 /**
- * A [ScrollBar] is a [Component] that can be used
+ * A [ScrollBar] is a [Component] that can be used for scrolling content.
+ * Differs from a [Slider] in the way the bar is represented. In the case of
+ * a [ScrollBar] its size will be proportional to the number of elements.
  * @see Slider
  */
 interface ScrollBar : Component {

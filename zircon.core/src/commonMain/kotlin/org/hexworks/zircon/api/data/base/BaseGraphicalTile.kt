@@ -7,6 +7,9 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
 
+/**
+ * Base class for [GraphicalTile]s.
+ */
 abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override val foregroundColor: TileColor

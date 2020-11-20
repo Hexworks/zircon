@@ -8,6 +8,9 @@ import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
 
+/**
+ * Base class for [ImageTile]s.
+ */
 abstract class BaseImageTile : BaseTile(), ImageTile {
 
     override val foregroundColor: TileColor

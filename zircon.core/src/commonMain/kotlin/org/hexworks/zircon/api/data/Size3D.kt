@@ -20,9 +20,11 @@ import kotlin.jvm.JvmStatic
  *
  */
 @Suppress("DataClassPrivateConstructor")
-data class Size3D private constructor(val xLength: Int,
-                                      val yLength: Int,
-                                      val zLength: Int) : Comparable<Size3D> {
+data class Size3D private constructor(
+        val xLength: Int,
+        val yLength: Int,
+        val zLength: Int
+) : Comparable<Size3D> {
 
     operator fun plus(other: Size3D) = create(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 

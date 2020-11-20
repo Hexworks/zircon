@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.application
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.uievent.KeyboardEventType
+import kotlin.jvm.JvmStatic
 
 /**
  * These are the shortcuts that Zircon will use for component activation / deactivation
@@ -39,4 +40,9 @@ data class ShortcutsConfig(
                 code = KeyCode.TAB,
                 shiftDown = true
         )
-)
+) {
+    companion object {
+        @JvmStatic
+        fun defaultConfig() = ShortcutsConfig()
+    }
+}

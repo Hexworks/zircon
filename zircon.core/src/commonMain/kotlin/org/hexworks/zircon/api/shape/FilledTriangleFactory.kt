@@ -77,7 +77,7 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
                 endX += dx2
             }
         }
-        result.offsetToDefaultPosition()
+        result
     }
 
     /**
@@ -96,7 +96,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
-    fun buildFilledTriangle(p1: Position,
-                            p2: Position,
-                            p3: Position) = buildFilledTriangle(TriangleParameters(p1, p2, p3))
+    fun buildFilledTriangle(
+            p1: Position,
+            p2: Position,
+            p3: Position
+    ) = buildFilledTriangle(TriangleParameters(p1, p2, p3))
 }
