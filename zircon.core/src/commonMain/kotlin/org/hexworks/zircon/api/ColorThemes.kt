@@ -25,11 +25,17 @@ object ColorThemes {
             .build()
 
     /**
-     * The default theme which is produced from the default
-     * [ComponentStyleSets].
+     * This is a null object for color themes indicating that no
+     * theme is chosen.
      */
     @JvmStatic
-    fun defaultTheme() = ColorThemeResource.HEXWORKS.getTheme()
+    fun defaultTheme() = ColorThemeResource.DEFAULT.getTheme()
+
+    /**
+     * This is the theme that was made by Hexworks.
+     */
+    @JvmStatic
+    fun hexworks() = ColorThemeResource.HEXWORKS.getTheme()
 
     /**
      * Taken from

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class Defaults {
 
     public static TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
-    public static ColorThemeResource THEME = ColorThemeResource.TECH_LIGHT;
+    public static ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
     private static Random RANDOM = new Random();
 

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
+import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
@@ -10,7 +11,21 @@ import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SO
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     /**
-     * This is the default theme that was made by Hexworks.
+     * This is a null object for color themes indicating that no
+     * theme is chosen.
+     */
+    DEFAULT(ColorThemeBuilder.newBuilder()
+        .withName("Default")
+        .withAccentColor(ANSITileColor.BRIGHT_GREEN)
+        .withPrimaryForegroundColor(ANSITileColor.BRIGHT_MAGENTA)
+        .withSecondaryForegroundColor(ANSITileColor.BRIGHT_BLUE)
+        .withPrimaryBackgroundColor(ANSITileColor.BRIGHT_YELLOW)
+        .withSecondaryBackgroundColor(ANSITileColor.BRIGHT_RED)
+        .build()
+    ),
+
+    /**
+     * This is the theme that was made by Hexworks.
      */
     HEXWORKS(ColorThemeBuilder.newBuilder()
             .withName("Hexworks")
