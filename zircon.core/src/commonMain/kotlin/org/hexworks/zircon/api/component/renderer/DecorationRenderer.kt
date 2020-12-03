@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * [here](https://docs.google.com/drawings/d/1-gkoXeKblh8qOcd5XHGP1z5qP8lN8eBPvfVvWx8r5Tk/edit?usp=sharing)
  * for more details.
  */
-interface DecorationRenderer<T : RenderContext> {
+fun interface DecorationRenderer<T : RenderContext> {
 
     /**
      * Renders the decoration to the given [TileGraphics].
