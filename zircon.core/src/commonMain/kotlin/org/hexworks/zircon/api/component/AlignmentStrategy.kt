@@ -14,7 +14,7 @@ import org.hexworks.zircon.internal.component.alignment.WithinAlignmentStrategy
  * @see [PositionalAlignmentStrategy]
  * @see [WithinAlignmentStrategy]
  */
-interface AlignmentStrategy {
+fun interface AlignmentStrategy {
 
     /**
      * Calculates the [Position] for an object having
