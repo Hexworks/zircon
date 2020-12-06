@@ -76,30 +76,31 @@ kotlin {
 
 }
 
-tasks.withType<DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            includeNonPublic.set(false)
-            skipDeprecated.set(false)
-            skipEmptyPackages.set(true)
-            includes.from("module.md", "packages.md")
+tasks {
+    create<DokkaTask>("dokkaHtmlAsJava") {
+        val dokka_version: String by project
+        dependencies {
+            plugins("org.jetbrains.dokka:kotlin-as-java-plugin:$dokka_version")
+        }
+    }
 
-            samples.from("src/commonMain/kotlin/org/hexworks/zircon/samples")
+    withType<DokkaTask>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("module.md", "packages.md")
+                samples.from("src/commonMain/kotlin/org/hexworks/zircon/samples")
 
-            sourceLink {
-                localDirectory.set(file("src/commonMain/kotlin"))
-                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin"))
-                remoteLineSuffix.set("#L")
+                sourceLink {
+                    localDirectory.set(file("src/commonMain/kotlin"))
+                    remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin"))
+                }
+
+                sourceLink {
+                    localDirectory.set(file("src/jvmMain/kotlin"))
+                    remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/jvmMain/kotlin"))
+                }
+                jdkVersion.set(8)
             }
-            sourceLink {
-                localDirectory.set(file("src/jvmMain/kotlin"))
-                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/jvmMain/kotlin"))
-                remoteLineSuffix.set("#L")
-            }
-            jdkVersion.set(8)
-            noStdlibLink.set(false)
-            noJdkLink.set(false)
-            noAndroidSdkLink.set(false)
         }
     }
 }
