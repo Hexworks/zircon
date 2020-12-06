@@ -46,22 +46,24 @@ kotlin {
     }
 }
 
-tasks.withType<DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            includeNonPublic.set(false)
-            skipDeprecated.set(false)
-            skipEmptyPackages.set(true)
-            includes.from("module.md", "packages.md")
-            sourceLink {
-                localDirectory.set(file("src/main/kotlin"))
-                remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.jvm.libgdx/src/main/kotlin"))
-                remoteLineSuffix.set("#L")
+tasks {
+    create<DokkaTask>("dokkaHtmlAsJava") {
+        val dokka_version: String by project
+        dependencies {
+            plugins("org.jetbrains.dokka:kotlin-as-java-plugin:$dokka_version")
+        }
+    }
+
+    withType<DokkaTask>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("module.md", "packages.md")
+                sourceLink {
+                    localDirectory.set(file("src/main/kotlin"))
+                    remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.jvm.libgdx/src/main/kotlin"))
+                }
+                jdkVersion.set(8)
             }
-            jdkVersion.set(8)
-            noStdlibLink.set(false)
-            noJdkLink.set(false)
-            noAndroidSdkLink.set(false)
         }
     }
 }
