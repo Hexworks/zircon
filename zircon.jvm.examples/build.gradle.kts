@@ -6,7 +6,7 @@ plugins {
 base.archivesBaseName = "zircon.jvm.examples"
 
 application {
-    mainClassName = "org.hexworks.zircon.benchmark.SwingBenchmark"
+    mainClass.set("org.hexworks.zircon.benchmark.SwingBenchmark")
 }
 
 kotlin {
@@ -22,7 +22,7 @@ kotlin {
             api("org.openjdk.jol:jol-core:0.13")
         }
 
-        with (Libs) {
+        with(Libs) {
             api(gdx)
             api(gdxFreetype)
             api(gdxFreetypePlatform)
