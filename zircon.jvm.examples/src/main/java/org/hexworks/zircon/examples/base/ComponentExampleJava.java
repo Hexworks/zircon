@@ -49,7 +49,7 @@ public abstract class ComponentExampleJava {
         controls.addComponent(Components.label().withText("Pick a theme"));
 
         controls.addFragment(Fragments.colorThemeSelector(controls.getWidth(), THEME.getTheme())
-                .withThemeables(screen)
+                .withThemeOverrides(screen)
                 .build());
 
         controls.addComponent(Components.label());

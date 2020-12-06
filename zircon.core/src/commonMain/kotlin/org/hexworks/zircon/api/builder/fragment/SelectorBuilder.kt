@@ -12,11 +12,11 @@ import kotlin.jvm.JvmStatic
  * Builder for a [Selector].
  */
 open class SelectorBuilder<T : Any>(
-        val width: Int,
-        val values: List<T>,
-        private val boxBuilder: HBoxBuilder = HBoxBuilder().withSize(width, 1)
+    val width: Int,
+    val values: List<T>,
+    private val boxBuilder: HBoxBuilder = HBoxBuilder().withSize(width, 1)
 ) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>,
-        Builder<Selector<T>> {
+    Builder<Selector<T>> {
 
     init {
         require(values.isNotEmpty()) {
@@ -69,20 +69,21 @@ open class SelectorBuilder<T : Any>(
 
     override fun build(): Selector<T> {
         return DefaultSelector(
-                parent = boxBuilder.build(),
-                initialValues = values,
-                defaultSelected = defaultSelected,
-                centeredText = centeredText,
-                toStringMethod = toStringMethod,
-                clickable = clickable)
+            parent = boxBuilder.build(),
+            initialValues = values,
+            defaultSelected = defaultSelected,
+            centeredText = centeredText,
+            toStringMethod = toStringMethod,
+            clickable = clickable
+        )
     }
 
     override fun createCopy(): Builder<Selector<T>> {
         return newBuilder(width, values)
-                .withCenteredText(centeredText)
-                .withToStringMethod(toStringMethod)
-                .withClickableLabel(clickable)
-                .withPosition(boxBuilder.position)
+            .withCenteredText(centeredText)
+            .withToStringMethod(toStringMethod)
+            .withClickableLabel(clickable)
+            .withPosition(boxBuilder.position)
     }
 
     companion object {
