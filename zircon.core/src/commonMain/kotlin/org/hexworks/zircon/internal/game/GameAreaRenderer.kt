@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 interface GameAreaRenderer {
 
     fun render(
-            gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
-            graphics: TileGraphics,
-            fillerTile: Tile
+        gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
+        graphics: TileGraphics,
+        fillerTile: Tile
     )
 }

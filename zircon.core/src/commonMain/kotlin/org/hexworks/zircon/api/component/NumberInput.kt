@@ -15,6 +15,7 @@ interface NumberInput : Component {
      * Current value with respect to the maxValue
      */
     var currentValue: Int
+
     /**
      * Bindable, current value
      */

@@ -3,9 +3,9 @@ package org.hexworks.zircon.api.uievent
 import org.hexworks.zircon.api.data.Position
 
 data class MouseEventMatcher(
-        val type: MouseEventType? = null,
-        val button: Int? = null,
-        val position: Position? = null
+    val type: MouseEventType? = null,
+    val button: Int? = null,
+    val position: Position? = null
 ) {
 
     fun matches(event: MouseEvent): Boolean {
@@ -25,13 +25,14 @@ data class MouseEventMatcher(
     companion object {
 
         fun create(
-                type: MouseEventType? = null,
-                button: Int? = null,
-                position: Position? = null
+            type: MouseEventType? = null,
+            button: Int? = null,
+            position: Position? = null
         ) = MouseEventMatcher(
-                type = type,
-                button = button,
-                position = position)
+            type = type,
+            button = button,
+            position = position
+        )
     }
 
 }

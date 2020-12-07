@@ -43,7 +43,12 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
     fun createRooms(BSPTree: BSPTree = this) {
         BSPTree.leftBSPTree.fold(whenEmpty = {
             val bb = BSPTree.boundingBox
-            BSPTree.setRoom(Rect.create(Position.create(bb.position.x + 1, bb.position.y + 1), Size.create(bb.width - 1, bb.height - 1)))
+            BSPTree.setRoom(
+                Rect.create(
+                    Position.create(bb.position.x + 1, bb.position.y + 1),
+                    Size.create(bb.width - 1, bb.height - 1)
+                )
+            )
         }, whenPresent = {
             BSPTree.rightBSPTree.map {
                 createRooms(it)
@@ -77,8 +82,8 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
                 val char = nbr.toChar()
                 BSPTree.whenHasRoom { rec ->
 
-                    for (y in rec.position.y..rec.position.y + rec.height-1) {
-                        for (x in rec.position.x..rec.position.x + rec.width-1) {
+                    for (y in rec.position.y..rec.position.y + rec.height - 1) {
+                        for (x in rec.position.x..rec.position.x + rec.width - 1) {
                             array[y][x] = char
                         }
                     }

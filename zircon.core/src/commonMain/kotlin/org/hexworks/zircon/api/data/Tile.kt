@@ -2,9 +2,9 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.Modifier
@@ -14,7 +14,6 @@ import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.api.graphics.DrawSurface
 import kotlin.jvm.JvmStatic
 
 /**
@@ -150,8 +149,9 @@ interface Tile : Cacheable, StyleSet {
          */
         fun createCharacterTile(character: Char, style: StyleSet): CharacterTile {
             return DefaultCharacterTile(
-                    character = character,
-                    styleSet = style)
+                character = character,
+                styleSet = style
+            )
         }
 
         /**
@@ -159,29 +159,35 @@ interface Tile : Cacheable, StyleSet {
          */
         fun createImageTile(name: String, tileset: TilesetResource): ImageTile {
             return DefaultImageTile(
-                    tileset = tileset,
-                    name = name)
+                tileset = tileset,
+                name = name
+            )
         }
 
         /**
          * Creates a new [GraphicalTile].
          */
-        fun createGraphicTile(name: String,
-                              tags: Set<String>,
-                              tileset: TilesetResource = RuntimeConfig.config.defaultGraphicalTileset): GraphicalTile {
+        fun createGraphicTile(
+            name: String,
+            tags: Set<String>,
+            tileset: TilesetResource = RuntimeConfig.config.defaultGraphicalTileset
+        ): GraphicalTile {
             return DefaultGraphicalTile(
-                    name = name,
-                    tags = tags,
-                    tileset = tileset)
+                name = name,
+                tags = tags,
+                tileset = tileset
+            )
         }
 
         private val DEFAULT_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
-                character = ' ',
-                styleSet = StyleSet.defaultStyle())
+            character = ' ',
+            styleSet = StyleSet.defaultStyle()
+        )
 
         private val EMPTY_CHARACTER_TILE: CharacterTile = DefaultCharacterTile(
-                character = ' ',
-                styleSet = StyleSet.empty())
+            character = ' ',
+            styleSet = StyleSet.empty()
+        )
 
     }
 }

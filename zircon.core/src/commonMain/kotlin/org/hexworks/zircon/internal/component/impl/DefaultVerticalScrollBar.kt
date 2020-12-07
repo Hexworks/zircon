@@ -8,19 +8,19 @@ import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
 class DefaultVerticalScrollBar(
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<ScrollBar>,
-        minValue: Int,
-        maxValue: Int,
-        itemsShownAtOnce: Int,
-        numberOfSteps: Int
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<ScrollBar>,
+    minValue: Int,
+    maxValue: Int,
+    itemsShownAtOnce: Int,
+    numberOfSteps: Int
 ) : BaseScrollBar(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy,
-        minValue = minValue,
-        maxValue = maxValue,
-        itemsShownAtOnce = itemsShownAtOnce,
-        numberOfSteps = numberOfSteps
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy,
+    minValue = minValue,
+    maxValue = maxValue,
+    itemsShownAtOnce = itemsShownAtOnce,
+    numberOfSteps = numberOfSteps
 ) {
 
     override fun getMousePosition(event: MouseEvent): Int {

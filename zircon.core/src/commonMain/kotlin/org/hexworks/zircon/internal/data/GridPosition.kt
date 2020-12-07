@@ -11,8 +11,8 @@ import org.hexworks.zircon.api.data.base.BasePosition
  * will be used for drawing on the screen.
  */
 data class GridPosition(
-        override val x: Int,
-        override val y: Int
+    override val x: Int,
+    override val y: Int
 ) : BasePosition() {
 
     override fun toString() = "($x,$y)"

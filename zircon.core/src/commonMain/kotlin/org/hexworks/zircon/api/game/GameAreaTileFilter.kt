@@ -12,10 +12,10 @@ import org.hexworks.zircon.api.data.Size3D
 interface GameAreaTileFilter {
 
     fun transform(
-            visibleSize: Size3D,
-            offsetPosition: Position3D,
-            blockTileType: BlockTileType,
-            tileBuilder: TileBuilder,
+        visibleSize: Size3D,
+        offsetPosition: Position3D,
+        blockTileType: BlockTileType,
+        tileBuilder: TileBuilder,
     ): TileBuilder
 
     operator fun plus(other: GameAreaTileFilter): GameAreaTileFilter {
@@ -23,26 +23,26 @@ interface GameAreaTileFilter {
     }
 
     private class CompositeGameAreaTileFilter(
-            private val first: GameAreaTileFilter,
-            private val next: GameAreaTileFilter
+        private val first: GameAreaTileFilter,
+        private val next: GameAreaTileFilter
     ) : GameAreaTileFilter {
         override fun transform(
-                visibleSize: Size3D,
-                offsetPosition: Position3D,
-                blockTileType: BlockTileType,
-                tileBuilder: TileBuilder
+            visibleSize: Size3D,
+            offsetPosition: Position3D,
+            blockTileType: BlockTileType,
+            tileBuilder: TileBuilder
         ): TileBuilder {
             val prev = first.transform(
-                    visibleSize = visibleSize,
-                    offsetPosition = offsetPosition,
-                    blockTileType = blockTileType,
-                    tileBuilder = tileBuilder
+                visibleSize = visibleSize,
+                offsetPosition = offsetPosition,
+                blockTileType = blockTileType,
+                tileBuilder = tileBuilder
             )
             return next.transform(
-                    visibleSize = visibleSize,
-                    offsetPosition = offsetPosition,
-                    blockTileType = blockTileType,
-                    tileBuilder = prev
+                visibleSize = visibleSize,
+                offsetPosition = offsetPosition,
+                blockTileType = blockTileType,
+                tileBuilder = prev
             )
         }
     }
@@ -50,10 +50,10 @@ interface GameAreaTileFilter {
     companion object {
         val identity: GameAreaTileFilter = object : GameAreaTileFilter {
             override fun transform(
-                    visibleSize: Size3D,
-                    offsetPosition: Position3D,
-                    blockTileType: BlockTileType,
-                    tileBuilder: TileBuilder
+                visibleSize: Size3D,
+                offsetPosition: Position3D,
+                blockTileType: BlockTileType,
+                tileBuilder: TileBuilder
             ): TileBuilder {
                 return tileBuilder
             }

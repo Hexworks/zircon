@@ -13,8 +13,8 @@ import org.hexworks.zircon.api.modifier.Modifier
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 @Beta
 data class DefaultStackedTile(
-        override val baseTile: Tile,
-        private val rest: PersistentList<Tile> = persistentListOf()
+    override val baseTile: Tile,
+    private val rest: PersistentList<Tile> = persistentListOf()
 ) : StackedTile, Tile by baseTile {
 
     override val tiles: List<Tile> = persistentListOf(baseTile) + rest
@@ -22,51 +22,51 @@ data class DefaultStackedTile(
     override val top: Tile = rest.lastOrNull() ?: baseTile
 
     override fun withPushedTile(tile: Tile): StackedTile = DefaultStackedTile(
-            baseTile = baseTile,
-            rest = rest.add(tile)
+        baseTile = baseTile,
+        rest = rest.add(tile)
     )
 
     override fun withBaseTile(tile: Tile): StackedTile = DefaultStackedTile(
-            baseTile = tile,
-            rest = rest
+        baseTile = tile,
+        rest = rest
     )
 
     override fun withRemovedTile(tile: Tile): StackedTile = DefaultStackedTile(
-            baseTile = baseTile,
-            rest = rest.remove(tile)
+        baseTile = baseTile,
+        rest = rest.remove(tile)
     )
 
     override fun createCopy() = this
 
     override fun withForegroundColor(foregroundColor: TileColor) =
-            withBaseTile(baseTile.withForegroundColor(foregroundColor))
+        withBaseTile(baseTile.withForegroundColor(foregroundColor))
 
     override fun withBackgroundColor(backgroundColor: TileColor) =
-            withBaseTile(baseTile.withBackgroundColor(backgroundColor))
+        withBaseTile(baseTile.withBackgroundColor(backgroundColor))
 
     override fun withModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withModifiers(modifiers))
+        withBaseTile(baseTile.withModifiers(modifiers))
 
     override fun withModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withModifiers(modifiers.toSet()))
 
     override fun withAddedModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withAddedModifiers(modifiers))
+        withBaseTile(baseTile.withAddedModifiers(modifiers))
 
     override fun withAddedModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withAddedModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withAddedModifiers(modifiers.toSet()))
 
     override fun withRemovedModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withRemovedModifiers(modifiers))
+        withBaseTile(baseTile.withRemovedModifiers(modifiers))
 
     override fun withRemovedModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withRemovedModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withRemovedModifiers(modifiers.toSet()))
 
     override fun withNoModifiers() =
-            withBaseTile(baseTile.withNoModifiers())
+        withBaseTile(baseTile.withNoModifiers())
 
     override fun withStyle(style: StyleSet) =
-            withBaseTile(baseTile.withStyle(style))
+        withBaseTile(baseTile.withStyle(style))
 
     override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
 

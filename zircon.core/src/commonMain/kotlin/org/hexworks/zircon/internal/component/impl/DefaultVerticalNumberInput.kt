@@ -10,13 +10,14 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
 class DefaultVerticalNumberInput(
-        initialValue: Int,
-        minValue: Int,
-        maxValue: Int,
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : BaseNumberInput(
-        initialValue, minValue, maxValue, componentMetadata, renderingStrategy) {
+    initialValue: Int,
+    minValue: Int,
+    maxValue: Int,
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<NumberInput>
+) : BaseNumberInput(
+    initialValue, minValue, maxValue, componentMetadata, renderingStrategy
+) {
 
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.height)
 
@@ -26,9 +27,11 @@ class DefaultVerticalNumberInput(
         pos = pos.withY(0)
         val invertedPosition = Position.create(pos.y, pos.x)
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(
-                        position = invertedPosition.withRelative(relativePosition + contentOffset),
-                        emitter = this),
-                eventScope = ZirconScope)
+            event = ZirconEvent.RequestCursorAt(
+                position = invertedPosition.withRelative(relativePosition + contentOffset),
+                emitter = this
+            ),
+            eventScope = ZirconScope
+        )
     }
 }

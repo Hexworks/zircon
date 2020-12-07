@@ -21,11 +21,11 @@ import kotlin.jvm.JvmStatic
  * - has no text image by default
  */
 data class LayerBuilder(
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var size: Size = Size.defaultGridSize(),
-        private var offset: Position = Position.defaultPosition(),
-        private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
-        private var filler: Tile = Tile.empty()
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+    private var size: Size = Size.defaultGridSize(),
+    private var offset: Position = Position.defaultPosition(),
+    private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
+    private var filler: Tile = Tile.empty()
 ) : Builder<Layer> {
 
     /**
@@ -83,15 +83,16 @@ data class LayerBuilder(
 
     override fun build(): Layer = if (tileGraphics.isPresent) {
         ThreadSafeLayer(
-                initialPosition = offset,
-                initialContents = tileGraphics.get())
+            initialPosition = offset,
+            initialContents = tileGraphics.get()
+        )
     } else {
         ThreadSafeLayer(
-                initialPosition = offset,
-                initialContents = TileGraphicsBuilder.newBuilder()
-                        .withSize(size)
-                        .withTileset(tileset)
-                        .build()
+            initialPosition = offset,
+            initialContents = TileGraphicsBuilder.newBuilder()
+                .withSize(size)
+                .withTileset(tileset)
+                .build()
         )
     }.apply {
         if (filler != Tile.empty()) fill(filler)

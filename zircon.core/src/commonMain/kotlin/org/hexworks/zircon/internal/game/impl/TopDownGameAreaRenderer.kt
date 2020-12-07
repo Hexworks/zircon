@@ -16,9 +16,9 @@ class TopDownGameAreaRenderer : GameAreaRenderer {
     private val blockOrder = listOf(TOP, CONTENT, BOTTOM)
 
     override fun render(
-            gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
-            graphics: TileGraphics,
-            fillerTile: Tile
+        gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
+        graphics: TileGraphics,
+        fillerTile: Tile
     ) {
         val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
@@ -27,21 +27,23 @@ class TopDownGameAreaRenderer : GameAreaRenderer {
                 val stack = FastStackedTile(initialCapacity = visibleSize.zLength * 3)
                 stacking@ for (z in (visibleSize.zLength - 1) downTo 0) {
                     val pos = Position3D.create(
-                            x = x + visibleOffset.x,
-                            y = y + visibleOffset.y,
-                            z = z + visibleOffset.z // TODO: test all offsets!
+                        x = x + visibleOffset.x,
+                        y = y + visibleOffset.y,
+                        z = z + visibleOffset.z // TODO: test all offsets!
                     )
                     val block = blocks[pos]
                     if (block != null) {
                         for (order in blockOrder) {
                             val tile = block.tiles[order]
                             if (tile != null) {
-                                stack.addFirst(filter.transform(
+                                stack.addFirst(
+                                    filter.transform(
                                         visibleSize = visibleSize,
                                         offsetPosition = pos - visibleOffset,
                                         blockTileType = order,
                                         tile.toBuilder()
-                                ).build())
+                                    ).build()
+                                )
                                 if (tile.isOpaque) {
                                     break@stacking
                                 }

@@ -31,7 +31,8 @@ object TrueTypeFontResources {
      * https://int10h.org/oldschool-pc-fonts/
      */
     @JvmStatic
-    fun amstradNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.AMSTRAD_NARROW.toTilesetResource(height)
+    fun amstradNarrow(height: Int): TilesetResource =
+        BuiltInTrueTypeFontResource.AMSTRAD_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
@@ -45,7 +46,8 @@ object TrueTypeFontResources {
      * https://int10h.org/oldschool-pc-fonts/
      */
     @JvmStatic
-    fun ibmBiosNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS_NARROW.toTilesetResource(height)
+    fun ibmBiosNarrow(height: Int): TilesetResource =
+        BuiltInTrueTypeFontResource.IBM_BIOS_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
@@ -101,7 +103,8 @@ object TrueTypeFontResources {
      * https://int10h.org/oldschool-pc-fonts/
      */
     @JvmStatic
-    fun ibmPs2Narrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_PS2_NARROW.toTilesetResource(height)
+    fun ibmPs2Narrow(height: Int): TilesetResource =
+        BuiltInTrueTypeFontResource.IBM_PS2_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
@@ -123,15 +126,15 @@ object TrueTypeFontResources {
      */
     @JvmStatic
     fun loadTilesetFromFilesystem(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return TrueTypeTilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.FILESYSTEM
         )
     }
 
@@ -142,15 +145,15 @@ object TrueTypeFontResources {
      */
     @JvmStatic
     fun loadTilesetFromJar(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return TrueTypeTilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.JAR
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.JAR
         )
     }
 }

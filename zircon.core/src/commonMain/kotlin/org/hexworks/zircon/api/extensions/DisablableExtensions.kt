@@ -5,7 +5,6 @@ package org.hexworks.zircon.api.extensions
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.CanBeDisabled
-import org.hexworks.zircon.api.behavior.Disablable
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventResponse

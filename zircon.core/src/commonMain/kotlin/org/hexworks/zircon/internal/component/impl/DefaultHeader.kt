@@ -9,13 +9,14 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultHeader(
-        componentMetadata: ComponentMetadata,
-        initialText: String,
-        renderingStrategy: ComponentRenderingStrategy<Header>
+    componentMetadata: ComponentMetadata,
+    initialText: String,
+    renderingStrategy: ComponentRenderingStrategy<Header>
 ) : Header, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TextOverride by TextOverride.create(initialText) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+),
+    TextOverride by TextOverride.create(initialText) {
 
     override fun acceptsFocus() = false
 

@@ -10,19 +10,19 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 
 class ConcurrentTree<D : Any?>(
-        private val treeScope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob()),
-        private val channel: Channel<Message<D>> = Channel(Channel.BUFFERED)
+    private val treeScope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob()),
+    private val channel: Channel<Message<D>> = Channel(Channel.BUFFERED)
 ) : Tree<D> {
 
     sealed class Message<D : Any?> {
 
         data class AddChildTo<D : Any?>(
-                val parent: TreeNode<D>,
-                val child: TreeNode<D>
+            val parent: TreeNode<D>,
+            val child: TreeNode<D>
         ) : Message<D>()
 
         data class DeleteChild<D : Any?>(
-                val child: TreeNode<D>
+            val child: TreeNode<D>
         ) : Message<D>()
     }
 
@@ -45,8 +45,8 @@ class ConcurrentTree<D : Any?>(
                         val parent = msg.child.parent
                         val child = msg.child
                         val toDelete = backend
-                                .dropWhile { it !== child }
-                                .takeWhile { it === child || it.parent !== parent }
+                            .dropWhile { it !== child }
+                            .takeWhile { it === child || it.parent !== parent }
                         backend = backend.removeAll(toDelete)
                     }
                 }
@@ -55,9 +55,9 @@ class ConcurrentTree<D : Any?>(
     }
 
     private val root = ConcurrentTreeNode(
-            parent = null,
-            data = null,
-            tree = this
+        parent = null,
+        data = null,
+        tree = this
     )
 
     private var backend: PersistentList<TreeNode<D>> = persistentListOf(root)

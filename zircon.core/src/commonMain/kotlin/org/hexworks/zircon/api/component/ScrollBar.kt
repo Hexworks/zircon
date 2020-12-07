@@ -16,6 +16,7 @@ interface ScrollBar : Component {
      * Maximum value of the [ScrollBar]
      */
     val maxValue: Int
+
     /**
      * Minimum value of the [ScrollBar]
      */

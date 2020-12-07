@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.uievent
 
 data class ComponentEventMatcher(
-        val type: ComponentEventType? = null
+    val type: ComponentEventType? = null
 ) {
 
     fun matches(event: ComponentEvent): Boolean {
@@ -11,9 +11,10 @@ data class ComponentEventMatcher(
     companion object {
 
         fun create(
-                type: ComponentEventType? = null
+            type: ComponentEventType? = null
         ) = ComponentEventMatcher(
-                type = type)
+            type = type
+        )
     }
 
 }

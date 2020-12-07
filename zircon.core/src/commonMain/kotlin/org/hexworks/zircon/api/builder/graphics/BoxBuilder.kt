@@ -11,10 +11,10 @@ import org.hexworks.zircon.internal.graphics.DefaultBox
 import kotlin.jvm.JvmStatic
 
 data class BoxBuilder(
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var size: Size = Size.create(3, 3),
-        private var style: StyleSet = StyleSet.defaultStyle(),
-        private var boxType: BoxType = BoxType.BASIC
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+    private var size: Size = Size.create(3, 3),
+    private var style: StyleSet = StyleSet.defaultStyle(),
+    private var boxType: BoxType = BoxType.BASIC
 ) : Builder<Box> {
 
     /**
@@ -44,10 +44,11 @@ data class BoxBuilder(
     }
 
     override fun build(): Box = DefaultBox(
-            size = size,
-            styleSet = style,
-            boxType = boxType,
-            tileset = tileset)
+        size = size,
+        styleSet = style,
+        boxType = boxType,
+        tileset = tileset
+    )
 
     override fun createCopy() = copy()
 

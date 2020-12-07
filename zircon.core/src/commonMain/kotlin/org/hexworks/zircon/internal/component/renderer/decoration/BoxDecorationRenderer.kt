@@ -15,9 +15,9 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class BoxDecorationRenderer(
-        val boxType: BoxType = BoxType.SINGLE,
-        private val titleProperty: Property<String> = createPropertyFrom(""),
-        private val renderingMode: RenderingMode = NON_INTERACTIVE
+    val boxType: BoxType = BoxType.SINGLE,
+    private val titleProperty: Property<String> = createPropertyFrom(""),
+    private val renderingMode: RenderingMode = NON_INTERACTIVE
 ) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
@@ -32,12 +32,14 @@ data class BoxDecorationRenderer(
         } else titleProperty.value
         val size = tileGraphics.size
         val style = context.fetchStyleFor(renderingMode)
-        tileGraphics.draw(BoxBuilder.newBuilder()
+        tileGraphics.draw(
+            BoxBuilder.newBuilder()
                 .withBoxType(boxType)
                 .withSize(size)
                 .withStyle(style)
                 .withTileset(context.component.tileset)
-                .build())
+                .build()
+        )
         if (size.width > 4) {
             if (finalTitle.isNotBlank()) {
                 val cleanText = if (finalTitle.length > size.width - 4) {
@@ -45,25 +47,29 @@ data class BoxDecorationRenderer(
                 } else {
                     finalTitle
                 }
-                tileGraphics.draw(TileBuilder.newBuilder()
+                tileGraphics.draw(
+                    TileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorLeft)
-                        .build(), Position.create(1, 0))
+                        .build(), Position.create(1, 0)
+                )
                 val pos = Position.create(2, 0)
                 (cleanText.indices).forEach { idx ->
                     tileGraphics.draw(
-                            tile = TileBuilder.newBuilder()
-                                    .withStyleSet(style)
-                                    .withCharacter(cleanText[idx])
-                                    .build(),
-                            drawPosition = pos.withRelativeX(idx))
+                        tile = TileBuilder.newBuilder()
+                            .withStyleSet(style)
+                            .withCharacter(cleanText[idx])
+                            .build(),
+                        drawPosition = pos.withRelativeX(idx)
+                    )
                 }
                 tileGraphics.draw(
-                        tile = TileBuilder.newBuilder()
-                                .withStyleSet(style)
-                                .withCharacter(boxType.connectorRight)
-                                .build(),
-                        drawPosition = Position.create(2 + cleanText.length, 0))
+                    tile = TileBuilder.newBuilder()
+                        .withStyleSet(style)
+                        .withCharacter(boxType.connectorRight)
+                        .build(),
+                    drawPosition = Position.create(2 + cleanText.length, 0)
+                )
             }
         }
     }

@@ -8,11 +8,12 @@ import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileString(override val characterTiles: List<CharacterTile>,
-                                      override val size: Size,
-                                      private val textWrap: TextWrap)
-    : CharacterTileString,
-        Iterable<CharacterTile> by characterTiles {
+data class DefaultCharacterTileString(
+    override val characterTiles: List<CharacterTile>,
+    override val size: Size,
+    private val textWrap: TextWrap
+) : CharacterTileString,
+    Iterable<CharacterTile> by characterTiles {
 
     override val tiles: Map<Position, Tile>
         get() = buildTiles()
@@ -95,14 +96,15 @@ data class DefaultCharacterTileString(override val characterTiles: List<Characte
     }
 
     override fun plus(other: CharacterTileString) = DefaultCharacterTileString(
-            characterTiles = characterTiles.plus(other.characterTiles),
-            textWrap = textWrap,
-            size = size + other.size)
+        characterTiles = characterTiles.plus(other.characterTiles),
+        textWrap = textWrap,
+        size = size + other.size
+    )
 
     override fun withSize(size: Size): CharacterTileString {
         return copy(size = size)
     }
 
     private fun cursorIsNotAtBottomRightCorner(cursorHandler: DefaultCursorHandler) =
-            (cursorHandler.isCursorAtTheLastRow && cursorHandler.isCursorAtTheEndOfTheLine).not()
+        (cursorHandler.isCursorAtTheLastRow && cursorHandler.isCursorAtTheEndOfTheLine).not()
 }

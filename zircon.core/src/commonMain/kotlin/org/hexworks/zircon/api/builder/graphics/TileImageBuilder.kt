@@ -18,10 +18,10 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("ArrayInDataClass")
 data class TileImageBuilder(
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var filler: Tile = Tile.empty(),
-        private var size: Size = Size.one(),
-        private val tiles: MutableMap<Position, Tile> = mutableMapOf()
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+    private var filler: Tile = Tile.empty(),
+    private var size: Size = Size.one(),
+    private val tiles: MutableMap<Position, Tile> = mutableMapOf()
 ) : Builder<TileImage> {
 
     /**
@@ -68,9 +68,9 @@ data class TileImageBuilder(
 
     override fun build(): TileImage {
         return DefaultTileImage(
-                size = size,
-                tileset = tileset,
-                initialTiles = tiles.filter { size.containsPosition(it.key) }
+            size = size,
+            tileset = tileset,
+            initialTiles = tiles.filter { size.containsPosition(it.key) }
         ).withFiller(filler)
     }
 

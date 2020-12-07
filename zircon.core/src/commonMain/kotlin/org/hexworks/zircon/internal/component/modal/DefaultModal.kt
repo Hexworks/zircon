@@ -15,12 +15,12 @@ import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import kotlin.jvm.Synchronized
 
 open class DefaultModal<T : ModalResult>(
-        componentMetadata: ComponentMetadata,
-        override val darkenPercent: Double,
-        renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
+    componentMetadata: ComponentMetadata,
+    override val darkenPercent: Double,
+    renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
 ) : Modal<T>, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
 ), Observable<T> by DefaultObservable() {
 
     final override var closed = false
@@ -42,10 +42,12 @@ open class DefaultModal<T : ModalResult>(
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(colorTheme.secondaryForegroundColor)
-                        .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(colorTheme.secondaryForegroundColor)
+                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
+                    .build()
+            )
+            .build()
     }
 }

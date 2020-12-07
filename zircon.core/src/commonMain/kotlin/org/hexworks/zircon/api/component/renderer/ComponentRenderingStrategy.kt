@@ -18,7 +18,7 @@ interface ComponentRenderingStrategy<T : Component> {
      * decoration.
      */
     val contentPosition: Position
-    
+
     /**
      * Renders the given [component] onto the given [graphics].
      */

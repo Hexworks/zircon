@@ -49,7 +49,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
     }
 
     override fun withModifiers(vararg modifiers: Modifier): CharacterTile =
-            withModifiers(modifiers.toSet())
+        withModifiers(modifiers.toSet())
 
     override fun withModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (this.modifiers == modifiers) {
@@ -60,7 +60,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
     }
 
     override fun withAddedModifiers(vararg modifiers: Modifier): CharacterTile =
-            withAddedModifiers(modifiers.toSet())
+        withAddedModifiers(modifiers.toSet())
 
     override fun withAddedModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (this.modifiers.containsAll(modifiers)) {
@@ -71,7 +71,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
     }
 
     override fun withRemovedModifiers(vararg modifiers: Modifier): CharacterTile =
-            withRemovedModifiers(modifiers.toSet())
+        withRemovedModifiers(modifiers.toSet())
 
     override fun withRemovedModifiers(modifiers: Set<Modifier>): CharacterTile {
         return if (this.modifiers.intersect(modifiers).isEmpty()) {
@@ -98,6 +98,6 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
     }
 
     override fun toBuilder() = Tile.newBuilder()
-            .withCharacter(character)
-            .withStyleSet(styleSet)
+        .withCharacter(character)
+        .withStyleSet(styleSet)
 }

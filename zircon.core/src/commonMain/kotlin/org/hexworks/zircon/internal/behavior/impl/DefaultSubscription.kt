@@ -7,8 +7,8 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 
 class DefaultSubscription<T : Any>(
-        val listener: (T) -> Unit,
-        private var subscriptions: PersistentList<Subscription>
+    val listener: (T) -> Unit,
+    private var subscriptions: PersistentList<Subscription>
 ) : InternalSubscription<T> {
 
     override val disposeState: DisposeState = NotDisposed

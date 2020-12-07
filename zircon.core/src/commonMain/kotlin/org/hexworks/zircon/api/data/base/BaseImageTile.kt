@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
-import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.resource.TileType
 
 /**
  * Base class for [ImageTile]s.
@@ -29,12 +29,14 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
         get() = StyleSet.empty()
 
     override fun withName(name: String) = Tile.createImageTile(
-            name = name,
-            tileset = tileset)
+        name = name,
+        tileset = tileset
+    )
 
     override fun withTileset(tileset: TilesetResource) = Tile.createImageTile(
-            name = name,
-            tileset = tileset)
+        name = name,
+        tileset = tileset
+    )
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 
@@ -57,6 +59,6 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
     override fun withNoModifiers() = this
 
     override fun toBuilder() = Tile.newBuilder()
-            .withName(name)
-            .withTileset(tileset)
+        .withName(name)
+        .withTileset(tileset)
 }

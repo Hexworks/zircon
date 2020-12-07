@@ -21,11 +21,11 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("ArrayInDataClass")
 data class TileGraphicsBuilder(
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-        private var size: Size = Size.one(),
-        private var style: StyleSet = StyleSet.defaultStyle(),
-        private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
-        private var filler: Tile = Tile.empty()
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+    private var size: Size = Size.one(),
+    private var style: StyleSet = StyleSet.defaultStyle(),
+    private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
+    private var filler: Tile = Tile.empty()
 ) : Builder<TileGraphics> {
 
     fun withTileset(tileset: TilesetResource) = also {
@@ -76,23 +76,24 @@ data class TileGraphicsBuilder(
      * Builds a [FastTileGraphics] implementation.
      */
     override fun build(): TileGraphics = FastTileGraphics(
-            initialSize = size,
-            initialTileset = tileset,
-            initialTiles = tiles
+        initialSize = size,
+        initialTileset = tileset,
+        initialTiles = tiles
     ).apply {
         if (hasToFill()) fill(filler)
     }
 
     override fun createCopy() = copy(
-            tiles = tiles.toMutableMap())
+        tiles = tiles.toMutableMap()
+    )
 
     /**
      * Builds a [PersistentTileGraphics] implementation.
      */
     fun buildPersistent(): PersistentTileGraphics = PersistentTileGraphics(
-            initialSize = size,
-            initialTileset = tileset,
-            initialTiles = tiles.toPersistentMap()
+        initialSize = size,
+        initialTileset = tileset,
+        initialTiles = tiles.toPersistentMap()
     ).apply {
         if (hasToFill()) fill(filler)
     }

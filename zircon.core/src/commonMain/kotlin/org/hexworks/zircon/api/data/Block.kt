@@ -87,8 +87,8 @@ interface Block<T : Tile> : Copiable<Block<T>> {
         @JvmStatic
         fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
-                    .withEmptyTile(emptyTile)
-                    .build()
+                .withEmptyTile(emptyTile)
+                .build()
         }
     }
 }

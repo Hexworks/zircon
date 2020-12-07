@@ -3,11 +3,12 @@ package org.hexworks.zircon.internal.animation
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
-import org.hexworks.zircon.api.animation.AnimationState.*
+import org.hexworks.zircon.api.animation.AnimationState.FINISHED
+import org.hexworks.zircon.api.animation.AnimationState.INFINITE
+import org.hexworks.zircon.api.animation.AnimationState.IN_PROGRESS
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
@@ -30,12 +31,13 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     @Synchronized
     override fun start(animation: Animation): AnimationHandle {
         animation as? InternalAnimation
-                ?: error("The supplied animation does not implement required interface: InternalAnimation.")
+            ?: error("The supplied animation does not implement required interface: InternalAnimation.")
         if (debug) logger.debug("Adding animation to AnimationHandler ($id).")
         val result = DefaultAnimationHandle(
-                state = if (animation.isLoopedIndefinitely) INFINITE else IN_PROGRESS,
-                animation = animation,
-                animationRunner = this)
+            state = if (animation.isLoopedIndefinitely) INFINITE else IN_PROGRESS,
+            animation = animation,
+            animationRunner = this
+        )
         results[animation.id] = result
         animations[animation.id] = animation
         nextUpdatesForAnimations[animation.id] = SystemUtils.getCurrentTimeMs()

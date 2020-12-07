@@ -7,13 +7,14 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.base.BaseBlock
 
 class DefaultBlock<T : Tile>(
-        emptyTile: T,
-        initialTiles: PersistentMap<BlockTileType, T>
+    emptyTile: T,
+    initialTiles: PersistentMap<BlockTileType, T>
 ) : BaseBlock<T>(emptyTile, initialTiles) {
 
     override fun createCopy(): Block<T> {
         return DefaultBlock(
-                emptyTile = emptyTile,
-                initialTiles = tiles)
+            emptyTile = emptyTile,
+            initialTiles = tiles
+        )
     }
 }

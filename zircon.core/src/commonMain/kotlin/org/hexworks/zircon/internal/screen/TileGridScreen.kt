@@ -31,23 +31,23 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
 
 class TileGridScreen(
-        private val tileGrid: InternalTileGrid,
-        private val componentContainer: ModalComponentContainer =
-                buildComponentContainer(tileGrid.size, tileGrid.tileset),
-        private val bufferGrid: InternalTileGrid = ThreadSafeTileGrid(
-                initialSize = tileGrid.size,
-                initialTileset = tileGrid.tileset,
-                layerable = ComponentsLayerable(
-                        componentContainer = componentContainer,
-                        layerable = ThreadSafeLayerable(
-                                initialSize = tileGrid.size
-                        )
-                )
-        ),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+    private val tileGrid: InternalTileGrid,
+    private val componentContainer: ModalComponentContainer =
+        buildComponentContainer(tileGrid.size, tileGrid.tileset),
+    private val bufferGrid: InternalTileGrid = ThreadSafeTileGrid(
+        initialSize = tileGrid.size,
+        initialTileset = tileGrid.tileset,
+        layerable = ComponentsLayerable(
+            componentContainer = componentContainer,
+            layerable = ThreadSafeLayerable(
+                initialSize = tileGrid.size
+            )
+        )
+    ),
+    private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalScreen,
-        InternalTileGrid by bufferGrid,
-        InternalComponentContainer by componentContainer {
+    InternalTileGrid by bufferGrid,
+    InternalComponentContainer by componentContainer {
 
     override val renderables: List<Renderable>
         get() = bufferGrid.renderables
@@ -88,8 +88,8 @@ class TileGridScreen(
     }
 
     override fun handleMouseEvents(
-            eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
     ): Subscription {
         return eventProcessor.handleMouseEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
@@ -99,8 +99,8 @@ class TileGridScreen(
     }
 
     override fun handleKeyboardEvents(
-            eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
     ): Subscription {
         return eventProcessor.handleKeyboardEvents(eventType) { event, phase ->
             if (componentContainer.isMainContainerActive()) {
@@ -113,8 +113,9 @@ class TileGridScreen(
     override fun display() {
         if (activeScreenId != id) {
             Zircon.eventBus.publish(
-                    event = ScreenSwitch(id, this),
-                    eventScope = ZirconScope)
+                event = ScreenSwitch(id, this),
+                eventScope = ZirconScope
+            )
             activate()
             MouseEventType.values().forEach { eventType ->
                 tileGrid.handleMouseEvents(eventType) { event, phase ->
@@ -155,16 +156,17 @@ class TileGridScreen(
         private val LOGGER = LoggerFactory.getLogger(TileGrid::class)
 
         private fun buildComponentContainer(
-                initialSize: Size,
-                initialTileset: TilesetResource): ModalComponentContainer {
+            initialSize: Size,
+            initialTileset: TilesetResource
+        ): ModalComponentContainer {
             val metadata = ComponentMetadata(
-                    size = initialSize,
-                    relativePosition = Position.defaultPosition(),
-                    tileset = initialTileset,
-                    componentStyleSet = ComponentStyleSet.defaultStyleSet()
+                size = initialSize,
+                relativePosition = Position.defaultPosition(),
+                tileset = initialTileset,
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
             )
             return ModalComponentContainer(
-                    metadata = metadata
+                metadata = metadata
             )
         }
     }

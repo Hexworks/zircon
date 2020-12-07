@@ -17,8 +17,8 @@ import org.hexworks.zircon.internal.screen.TileGridScreen
  * - default `tileset` is `WANDERLUST` (CP437)
  */
 open class TileGridBuilder(
-        private var size: Size = Size.defaultGridSize(),
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    private var size: Size = Size.defaultGridSize(),
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
 ) : Builder<TileGrid> {
 
     /**
@@ -49,14 +49,14 @@ open class TileGridBuilder(
 
     override fun build(): TileGrid {
         return ThreadSafeTileGrid(
-                initialTileset = tileset,
-                initialSize = size
+            initialTileset = tileset,
+            initialSize = size
         )
     }
 
     override fun createCopy(): TileGridBuilder = TileGridBuilder(
-            size = size,
-            tileset = tileset
+        size = size,
+        tileset = tileset
     )
 
     companion object {

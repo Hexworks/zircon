@@ -1,17 +1,12 @@
 package org.hexworks.zircon.api.grid
 
 import org.hexworks.zircon.api.animation.AnimationRunner
-import org.hexworks.zircon.api.behavior.Clearable
-import org.hexworks.zircon.api.behavior.Closeable
-import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.behavior.ShutdownHook
-import org.hexworks.zircon.api.behavior.TypingSupport
+import org.hexworks.zircon.api.behavior.*
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.api.uievent.UIEventSource
+import org.hexworks.zircon.api.view.ViewContainer
 
 /**
  * The [TileGrid] is the most fundamental interface in Zircon.
@@ -38,7 +33,7 @@ import org.hexworks.zircon.api.uievent.UIEventSource
  * @see ViewContainer
  */
 interface TileGrid : AnimationRunner, Clearable, Closeable, DrawSurface, Layerable,
-        ShutdownHook, TypingSupport, UIEventSource, ViewContainer {
+    ShutdownHook, TypingSupport, UIEventSource, ViewContainer {
 
     val widthInPixels: Int
         get() = tileset.width * width

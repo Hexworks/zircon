@@ -12,14 +12,15 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 class DefaultProgressBar(
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<ProgressBar>,
-        override val range: Int,
-        override val numberOfSteps: Int,
-        override val displayPercentValueOfProgress: Boolean
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<ProgressBar>,
+    override val range: Int,
+    override val numberOfSteps: Int,
+    override val displayPercentValueOfProgress: Boolean
 ) : ProgressBar, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+) {
 
     override val progressProperty = 0.0.toProperty()
     override var progress: Double by progressProperty.asDelegate()
@@ -27,11 +28,13 @@ class DefaultProgressBar(
     override fun acceptsFocus() = false
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .build()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .build()
 
     fun getProgressBarState(): ProgressBarState {
         val currentProgress = min(range.toDouble(), progress)

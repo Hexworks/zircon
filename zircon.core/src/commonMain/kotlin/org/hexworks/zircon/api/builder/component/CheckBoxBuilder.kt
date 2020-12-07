@@ -2,12 +2,10 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxAlignment
 import org.hexworks.zircon.internal.component.renderer.DefaultCheckBoxRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 

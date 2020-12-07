@@ -7,10 +7,10 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 data class DefaultLayerState(
-        override val tiles: Map<Position, Tile>,
-        override val tileset: TilesetResource,
-        override val size: Size,
-        override val id: UUID,
-        override val position: Position,
-        override val isHidden: Boolean
+    override val tiles: Map<Position, Tile>,
+    override val tileset: TilesetResource,
+    override val size: Size,
+    override val id: UUID,
+    override val position: Position,
+    override val isHidden: Boolean
 ) : LayerState

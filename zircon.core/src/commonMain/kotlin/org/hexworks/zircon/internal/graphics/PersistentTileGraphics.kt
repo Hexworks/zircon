@@ -8,9 +8,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
 import org.hexworks.zircon.internal.data.PersistentTileGraphicsState
-import org.hexworks.zircon.internal.data.TileGraphicsState
 import kotlin.jvm.Synchronized
 
 /**
@@ -20,12 +18,12 @@ import kotlin.jvm.Synchronized
  * to read / write from multiple threads.
  */
 class PersistentTileGraphics(
-        initialSize: Size,
-        initialTileset: TilesetResource,
-        initialTiles: PersistentMap<Position, Tile> = persistentHashMapOf()
+    initialSize: Size,
+    initialTileset: TilesetResource,
+    initialTiles: PersistentMap<Position, Tile> = persistentHashMapOf()
 ) : BaseTileGraphics(
-        initialSize = initialSize,
-        initialTileset = initialTileset
+    initialSize = initialSize,
+    initialTileset = initialTileset
 ) {
 
     override var tiles: PersistentMap<Position, Tile> = initialTiles
@@ -33,9 +31,10 @@ class PersistentTileGraphics(
 
     override val state: PersistentTileGraphicsState
         get() = PersistentTileGraphicsState(
-                size = size,
-                tileset = tileset,
-                tiles = tiles)
+            size = size,
+            tileset = tileset,
+            tiles = tiles
+        )
 
     @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
@@ -53,15 +52,15 @@ class PersistentTileGraphics(
         var newTiles = tiles
         val tilesToAdd = mutableMapOf<Position, Tile>()
         tileMap.asSequence()
-                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
-                .map { (key, value) -> key + drawPosition to value }
-                .forEach { (pos, tile) ->
-                    if (tile.isEmpty) {
-                        newTiles = newTiles.remove(pos)
-                    } else {
-                        tilesToAdd[pos] = tile
-                    }
+            .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
+            .map { (key, value) -> key + drawPosition to value }
+            .forEach { (pos, tile) ->
+                if (tile.isEmpty) {
+                    newTiles = newTiles.remove(pos)
+                } else {
+                    tilesToAdd[pos] = tile
                 }
+            }
         newTiles = newTiles.putAll(tilesToAdd)
         tiles = newTiles
     }
@@ -76,8 +75,9 @@ class PersistentTileGraphics(
         if (filler.isNotEmpty) {
             val (currentTiles, _, currentSize) = state
             tiles = currentTiles.putAll(currentSize.fetchPositions()
-                    .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
-                    .map { it to filler }.toMap())
+                .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
+                .map { it to filler }.toMap()
+            )
         }
     }
 

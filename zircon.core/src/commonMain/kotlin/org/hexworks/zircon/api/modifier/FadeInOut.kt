@@ -6,12 +6,12 @@ import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeInOut(
-        private val stepsFadeIn: Int = 20,
-        private val timeMsFadeIn: Long = 2000,
-        private val glowOnFinalFadeInStep: Boolean = false,
-        private val timeMsBeforeFadingOut: Long = 5000,
-        private val stepsFadeOut: Int = 20,
-        private val timeMsFadeOut: Long = 2000
+    private val stepsFadeIn: Int = 20,
+    private val timeMsFadeIn: Long = 2000,
+    private val glowOnFinalFadeInStep: Boolean = false,
+    private val timeMsBeforeFadingOut: Long = 5000,
+    private val stepsFadeOut: Int = 20,
+    private val timeMsFadeOut: Long = 2000
 ) : TileTransformModifier<CharacterTile>, Fade {
 
     override fun isFadingFinished(): Boolean {

@@ -14,6 +14,7 @@ interface Slider : Component {
      * Maximum value of the [Slider]
      */
     val maxValue: Int
+
     /**
      * Minimum value of the [Slider]
      */

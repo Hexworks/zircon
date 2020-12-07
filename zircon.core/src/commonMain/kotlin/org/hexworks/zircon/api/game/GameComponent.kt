@@ -8,4 +8,4 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 
 @Beta
-interface GameComponent<T: Tile, B : Block<T>> : Component
+interface GameComponent<T : Tile, B : Block<T>> : Component

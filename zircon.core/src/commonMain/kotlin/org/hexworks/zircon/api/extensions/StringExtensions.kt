@@ -11,20 +11,22 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TextWrap
 import kotlin.jvm.JvmName
 
-fun String.toCharacterTileString(styleSet: StyleSet = StyleSet.defaultStyle(),
-                                 textWrap: TextWrap = TextWrap.WRAP,
-                                 size: Size = Size.create(length, 1)): CharacterTileString {
+fun String.toCharacterTileString(
+    styleSet: StyleSet = StyleSet.defaultStyle(),
+    textWrap: TextWrap = TextWrap.WRAP,
+    size: Size = Size.create(length, 1)
+): CharacterTileString {
     return CharacterTileStrings.newBuilder()
-            .withText(this)
-            .withStyleSet(styleSet)
-            .withTextWrap(textWrap)
-            .withSize(size)
-            .build()
+        .withText(this)
+        .withStyleSet(styleSet)
+        .withTextWrap(textWrap)
+        .withSize(size)
+        .build()
 }
 
 fun Char.toCharacterTile(styleSet: StyleSet = StyleSet.defaultStyle()): CharacterTile {
     return Tile.newBuilder()
-            .withCharacter(this)
-            .withStyleSet(styleSet)
-            .buildCharacterTile()
+        .withCharacter(this)
+        .withStyleSet(styleSet)
+        .buildCharacterTile()
 }

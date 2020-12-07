@@ -10,12 +10,15 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
-import org.hexworks.zircon.api.modifier.BorderPosition.*
+import org.hexworks.zircon.api.modifier.BorderPosition.BOTTOM
+import org.hexworks.zircon.api.modifier.BorderPosition.LEFT
+import org.hexworks.zircon.api.modifier.BorderPosition.RIGHT
+import org.hexworks.zircon.api.modifier.BorderPosition.TOP
 import org.hexworks.zircon.api.shape.LineFactory
 
 data class BorderDecorationRenderer(
-        val border: Border,
-        val renderingMode: RenderingMode = RenderingMode.NON_INTERACTIVE
+    val border: Border,
+    val renderingMode: RenderingMode = RenderingMode.NON_INTERACTIVE
 ) : ComponentDecorationRenderer {
 
     override val offset = Position.defaultPosition()
@@ -61,42 +64,58 @@ data class BorderDecorationRenderer(
 
         if (drawTop.or(drawLeft)) {
             tileGraphics.getTileAt(topLeftPos).map { char: Tile ->
-                tileGraphics.draw(char
-                        .withModifiers(BorderBuilder.newBuilder()
+                tileGraphics.draw(
+                    char
+                        .withModifiers(
+                            BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
                                 .withBorderColor(color)
                                 .withBorderPositions(topLeftBorders)
-                                .build()), topLeftPos)
+                                .build()
+                        ), topLeftPos
+                )
             }
         }
         if (drawTop.or(drawRight)) {
             tileGraphics.getTileAt(topRightPos).map { char ->
-                tileGraphics.draw(char
-                        .withModifiers(BorderBuilder.newBuilder()
+                tileGraphics.draw(
+                    char
+                        .withModifiers(
+                            BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
                                 .withBorderColor(color)
                                 .withBorderPositions(topRightBorders)
-                                .build()), topRightPos)
+                                .build()
+                        ), topRightPos
+                )
             }
         }
         if (drawLeft.or(drawBottom)) {
             tileGraphics.getTileAt(bottomLeftPos).map { char ->
-                tileGraphics.draw(char
-                        .withModifiers(BorderBuilder.newBuilder()
+                tileGraphics.draw(
+                    char
+                        .withModifiers(
+                            BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
                                 .withBorderColor(color)
                                 .withBorderPositions(bottomLeftBorders)
-                                .build()), bottomLeftPos)
+                                .build()
+                        ), bottomLeftPos
+                )
             }
         }
         if (drawRight.or(drawBottom)) {
             tileGraphics.getTileAt(bottomRightPos).map { char ->
-                tileGraphics.draw(char
-                        .withModifiers(BorderBuilder.newBuilder()
+                tileGraphics.draw(
+                    char
+                        .withModifiers(
+                            BorderBuilder.newBuilder()
                                 .withBorderType(border.borderType)
                                 .withBorderColor(color)
                                 .withBorderPositions(bottomRightBorders)
-                                .build()), bottomRightPos)
+                                .build()
+                        ), bottomRightPos
+                )
             }
         }
         if (size.width > 2) {
@@ -106,24 +125,32 @@ data class BorderDecorationRenderer(
                     if (drawTop) {
                         val topOffset = it.withRelativeX(1)
                         tileGraphics.getTileAt(topOffset).map { char ->
-                            tileGraphics.draw(char
-                                    .withModifiers(BorderBuilder.newBuilder()
+                            tileGraphics.draw(
+                                char
+                                    .withModifiers(
+                                        BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
                                             .withBorderColor(color)
                                             .withBorderPositions(TOP)
-                                            .build()), topOffset)
+                                            .build()
+                                    ), topOffset
+                            )
                         }
                     }
                     if (drawBottom) {
                         val bottomOffset = it.withRelativeX(1)
-                                .withRelativeY(size.height - 1)
+                            .withRelativeY(size.height - 1)
                         tileGraphics.getTileAt(bottomOffset).map { char ->
-                            tileGraphics.draw(char
-                                    .withModifiers(BorderBuilder.newBuilder()
+                            tileGraphics.draw(
+                                char
+                                    .withModifiers(
+                                        BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
                                             .withBorderColor(color)
                                             .withBorderPositions(BOTTOM)
-                                            .build()), bottomOffset)
+                                            .build()
+                                    ), bottomOffset
+                            )
                         }
                     }
                 }
@@ -136,24 +163,32 @@ data class BorderDecorationRenderer(
                     if (drawLeft) {
                         val leftOffset = it.withRelativeY(1)
                         tileGraphics.getTileAt(leftOffset).map { char ->
-                            tileGraphics.draw(char
-                                    .withModifiers(BorderBuilder.newBuilder()
+                            tileGraphics.draw(
+                                char
+                                    .withModifiers(
+                                        BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
                                             .withBorderColor(color)
                                             .withBorderPositions(LEFT)
-                                            .build()), leftOffset)
+                                            .build()
+                                    ), leftOffset
+                            )
                         }
                     }
                     if (drawRight) {
                         val rightOffset = it.withRelativeY(1)
-                                .withRelativeX(size.width - 1)
+                            .withRelativeX(size.width - 1)
                         tileGraphics.getTileAt(rightOffset).map { char ->
-                            tileGraphics.draw(char
-                                    .withModifiers(BorderBuilder.newBuilder()
+                            tileGraphics.draw(
+                                char
+                                    .withModifiers(
+                                        BorderBuilder.newBuilder()
                                             .withBorderType(border.borderType)
                                             .withBorderColor(color)
                                             .withBorderPositions(RIGHT)
-                                            .build()), rightOffset)
+                                            .build()
+                                    ), rightOffset
+                            )
                         }
                     }
                 }

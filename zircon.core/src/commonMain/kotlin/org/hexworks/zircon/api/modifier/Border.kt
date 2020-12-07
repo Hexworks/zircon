@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.color.TileColor
 import kotlin.jvm.JvmStatic
 
 data class Border(
-        val borderType: BorderType,
-        val borderColor: TileColor,
-        val borderWidth: Int,
-        val borderPositions: Set<BorderPosition>
+    val borderType: BorderType,
+    val borderColor: TileColor,
+    val borderWidth: Int,
+    val borderPositions: Set<BorderPosition>
 ) : TextureTransformModifier {
 
     override val cacheKey: String

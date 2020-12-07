@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
-import kotlin.jvm.JvmStatic
-import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.GameComponent
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.internal.game.impl.GameAreaComponentRenderer
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 
 /**
@@ -33,9 +33,9 @@ object GameComponents {
     @JvmStatic
     @JvmOverloads
     fun <C : Component, T : Tile, B : Block<T>> newGameAreaComponentRenderer(
-            gameArea: GameArea<T, B>,
-            projectionMode: ObservableValue<ProjectionMode> = ProjectionMode.TOP_DOWN.toProperty(),
-            fillerTile: Tile = Tile.defaultTile()
+        gameArea: GameArea<T, B>,
+        projectionMode: ObservableValue<ProjectionMode> = ProjectionMode.TOP_DOWN.toProperty(),
+        fillerTile: Tile = Tile.defaultTile()
     ): ComponentRenderer<C> = GameAreaComponentRenderer(gameArea, projectionMode, fillerTile)
 
 }

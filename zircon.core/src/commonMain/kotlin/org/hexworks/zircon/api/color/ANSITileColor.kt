@@ -8,10 +8,10 @@ import org.hexworks.zircon.internal.color.DefaultTileColor
  */
 @Suppress("RedundantModalityModifier")
 enum class ANSITileColor(
-        final override val red: Int,
-        final override val green: Int,
-        final override val blue: Int,
-        final override val alpha: Int
+    final override val red: Int,
+    final override val green: Int,
+    final override val blue: Int,
+    final override val alpha: Int
 ) : TileColor {
 
     RED(128, 0, 0, TileColor.defaultAlpha()),

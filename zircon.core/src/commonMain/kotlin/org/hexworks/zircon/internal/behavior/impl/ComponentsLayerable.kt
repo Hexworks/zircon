@@ -9,8 +9,8 @@ import org.hexworks.zircon.internal.graphics.Renderable
  * to enable smooth rendering of both.
  */
 class ComponentsLayerable(
-        private val componentContainer: InternalComponentContainer,
-        private val layerable: InternalLayerable
+    private val componentContainer: InternalComponentContainer,
+    private val layerable: InternalLayerable
 ) : InternalLayerable by layerable {
 
     override val renderables: List<Renderable>

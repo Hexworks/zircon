@@ -11,42 +11,51 @@ import org.hexworks.zircon.api.extensions.abbreviate
 import kotlin.jvm.Synchronized
 
 class DefaultLogArea constructor(
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<LogArea>
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<LogArea>
 ) : LogArea, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+) {
 
     private var currentInlineBuilder = createTextBoxBuilder()
     private val logElements = mutableListOf<AttachedComponent>()
 
     override fun addHeader(text: String, withNewLine: Boolean) {
         LOGGER.debug("Adding header text ($text) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(createTextBoxBuilder()
+        addLogElement(
+            createTextBoxBuilder()
                 .addHeader(text, withNewLine)
-                .build())
+                .build()
+        )
     }
 
     override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffectSpeedInMs: Long) {
         LOGGER.debug("Adding paragraph text ($paragraph) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(createTextBoxBuilder()
+        addLogElement(
+            createTextBoxBuilder()
                 .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
-                .build())
+                .build()
+        )
     }
 
     override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
         LOGGER.debug("Adding paragraph from builder to LogArea (id=${id.abbreviate()}).")
-        addLogElement(createTextBoxBuilder()
+        addLogElement(
+            createTextBoxBuilder()
                 .addParagraph(paragraphBuilder, withNewLine)
-                .build(), false)
+                .build(), false
+        )
     }
 
 
     override fun addListItem(item: String) {
         LOGGER.debug("Adding list item ($item) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(createTextBoxBuilder()
+        addLogElement(
+            createTextBoxBuilder()
                 .addListItem(item)
-                .build())
+                .build()
+        )
     }
 
     override fun addInlineText(text: String) {
@@ -69,9 +78,11 @@ class DefaultLogArea constructor(
     override fun addNewRows(numberOfRows: Int) {
         LOGGER.debug("Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()}).")
         (0 until numberOfRows).forEach { _ ->
-            addLogElement(createTextBoxBuilder()
+            addLogElement(
+                createTextBoxBuilder()
                     .addNewLine()
-                    .build())
+                    .build()
+            )
         }
     }
 
@@ -116,8 +127,8 @@ class DefaultLogArea constructor(
 
     private fun createTextBoxBuilder(): TextBoxBuilder {
         return TextBoxBuilder
-                .newBuilder(contentSize.width)
-                .withTileset(tileset)
+            .newBuilder(contentSize.width)
+            .withTileset(tileset)
     }
 
     companion object {

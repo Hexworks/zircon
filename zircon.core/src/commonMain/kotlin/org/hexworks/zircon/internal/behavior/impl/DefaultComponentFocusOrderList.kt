@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
 
 class DefaultComponentFocusOrderList(
-        private val root: RootContainer
+    private val root: RootContainer
 ) : ComponentFocusOrderList {
 
     override var focusedComponent: InternalComponent = root
@@ -47,8 +47,10 @@ class DefaultComponentFocusOrderList(
         var previous: InternalComponent = root
 
         tree.forEach { next ->
-            logger.debug("Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
-                    "previous for ${next.id.abbreviate()} is ${previous.id.abbreviate()}")
+            logger.debug(
+                "Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
+                        "previous for ${next.id.abbreviate()} is ${previous.id.abbreviate()}"
+            )
             nextsLookup[previous.id] = next
             prevsLookup[next.id] = previous
             previous = next
@@ -58,8 +60,10 @@ class DefaultComponentFocusOrderList(
         if (tree.isNotEmpty()) {
             logger.debug("Root, has children, adding circle between root and last.")
             // we make a connection between the first (root) and the last to make it circular
-            logger.debug("Next for ${tree.last().id.abbreviate()} is ${root.id.abbreviate()}, " +
-                    "prev for ${root.id.abbreviate()} is ${tree.last().id.abbreviate()}")
+            logger.debug(
+                "Next for ${tree.last().id.abbreviate()} is ${root.id.abbreviate()}, " +
+                        "prev for ${root.id.abbreviate()} is ${tree.last().id.abbreviate()}"
+            )
             nextsLookup[tree.last().id] = root
             prevsLookup[root.id] = tree.last()
         }
@@ -82,7 +86,7 @@ class DefaultComponentFocusOrderList(
     }
 
     private fun isNotAlreadyFocused(focusable: Focusable) =
-            focusedComponent.id != focusable.id
+        focusedComponent.id != focusable.id
 
     companion object {
 

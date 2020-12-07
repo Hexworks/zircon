@@ -10,9 +10,11 @@ class WelcomeView(tileGrid: TileGrid, theme: ColorTheme) : BaseView(tileGrid, th
 
     // we add components to the screen when the view is initialized
     init {
-        screen.addComponent(header()
+        screen.addComponent(
+            header()
                 .withAlignmentWithin(screen, ComponentAlignment.CENTER)
-                .withText("Hello, Zircon!"))
+                .withText("Hello, Zircon!")
+        )
     }
 
     // used to initialize resources (like network connections) that are resource-intensive

@@ -21,14 +21,15 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("DataClassPrivateConstructor")
 data class Size3D private constructor(
-        val xLength: Int,
-        val yLength: Int,
-        val zLength: Int
+    val xLength: Int,
+    val yLength: Int,
+    val zLength: Int
 ) : Comparable<Size3D> {
 
     operator fun plus(other: Size3D) = create(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 
-    operator fun minus(other: Size3D) = create(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
+    operator fun minus(other: Size3D) =
+        create(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
 
     override fun compareTo(other: Size3D): Int {
         return when {
@@ -86,9 +87,11 @@ data class Size3D private constructor(
             require(listOf(xLength, yLength, zLength).all { it >= 0 }) {
                 "Can't create a Size3D with a negative length."
             }
-            return Size3D(xLength = xLength,
-                    yLength = yLength,
-                    zLength = zLength)
+            return Size3D(
+                xLength = xLength,
+                yLength = yLength,
+                zLength = zLength
+            )
         }
 
         /**
@@ -97,8 +100,9 @@ data class Size3D private constructor(
          */
         @JvmStatic
         fun from2DSize(size: Size, zLength: Int = 0) = Size3D(
-                xLength = size.width,
-                yLength = size.height,
-                zLength = zLength)
+            xLength = size.width,
+            yLength = size.height,
+            zLength = zLength
+        )
     }
 }

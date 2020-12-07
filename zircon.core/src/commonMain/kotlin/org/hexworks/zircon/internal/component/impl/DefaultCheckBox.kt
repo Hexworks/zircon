@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
@@ -14,20 +15,20 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
-import org.hexworks.zircon.api.component.data.ComponentState
 import kotlin.jvm.Synchronized
 
 @Suppress("DuplicatedCode")
 class DefaultCheckBox(
-        componentMetadata: ComponentMetadata,
-        initialText: String,
-        override val labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT,
-        renderingStrategy: ComponentRenderingStrategy<CheckBox>
+    componentMetadata: ComponentMetadata,
+    initialText: String,
+    override val labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT,
+    renderingStrategy: ComponentRenderingStrategy<CheckBox>
 ) : CheckBox, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        Selectable by Selectable.create(),
-        TextOverride by TextOverride.create(initialText) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+),
+    Selectable by Selectable.create(),
+    TextOverride by TextOverride.create(initialText) {
 
     override var checkBoxState = UNCHECKED
         private set
@@ -82,17 +83,20 @@ class DefaultCheckBox(
          * @see ComponentState
          */
         CHECKING,
+
         /**
          * Used when a [CheckBox] is not being interacted with and it [isSelected]
          * [CHECKED] is followed by the [UNCHECKING] state.
          */
         CHECKED,
+
         /**
          * Used when a [CHECKED] [CheckBox] is active (being pressed/clicked).
          * [UNCHECKING] is followed by the [UNCHECKED] state.
          * @see ComponentState
          */
         UNCHECKING,
+
         /**
          * Used when a [CheckBox] is not selected and it is not being interacted
          * with.

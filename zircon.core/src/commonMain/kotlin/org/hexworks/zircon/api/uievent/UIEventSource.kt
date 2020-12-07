@@ -13,8 +13,8 @@ interface UIEventSource {
      * consume events.
      */
     fun handleMouseEvents(
-            eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
     ): Subscription
 
     /**
@@ -27,16 +27,18 @@ interface UIEventSource {
      * be used if you find yourself always returning [Processed] form your event listeners.
      */
     fun processMouseEvents(
-            eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> Unit
+    ): Subscription
 
     /**
      * Adds the given [handler] for keyboard events. Use this if you selectively
      * consume events.
      */
     fun handleKeyboardEvents(
-            eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription
 
     /**
      * Adds the given [handler] for [KeyboardEvent]s. Differs from a [handleKeyboardEvents]
@@ -48,6 +50,7 @@ interface UIEventSource {
      * be used if you find yourself always returning [Processed] form your event listeners.
      */
     fun processKeyboardEvents(
-            eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit
+    ): Subscription
 }

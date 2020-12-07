@@ -42,8 +42,8 @@ interface ComponentStyleSet {
          */
         @JvmStatic
         fun empty() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSet.empty())
-                .build()
+            .withDefaultStyle(StyleSet.empty())
+            .build()
 
     }
 }

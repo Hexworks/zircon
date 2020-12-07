@@ -18,14 +18,15 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
 open class DefaultHBox(
-        componentMetadata: ComponentMetadata,
-        initialTitle: String,
-        private val spacing: Int,
-        renderingStrategy: ComponentRenderingStrategy<HBox>
+    componentMetadata: ComponentMetadata,
+    initialTitle: String,
+    private val spacing: Int,
+    renderingStrategy: ComponentRenderingStrategy<HBox>
 ) : HBox, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TitleOverride by TitleOverride.create(initialTitle) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+),
+    TitleOverride by TitleOverride.create(initialTitle) {
 
     private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()
@@ -68,7 +69,7 @@ open class DefaultHBox(
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
-            require(availableSpace.containsBoundable(component.rect)) {
-                "There is not enough space ($availableSpace) left for the component: $component."
-            }
+        require(availableSpace.containsBoundable(component.rect)) {
+            "There is not enough space ($availableSpace) left for the component: $component."
+        }
 }

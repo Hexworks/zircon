@@ -9,24 +9,27 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
 class DefaultHorizontalNumberInput(
-        initialValue: Int,
-        minValue: Int,
-        maxValue: Int,
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : BaseNumberInput(
-        initialValue, minValue, maxValue, componentMetadata, renderingStrategy) {
+    initialValue: Int,
+    minValue: Int,
+    maxValue: Int,
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<NumberInput>
+) : BaseNumberInput(
+    initialValue, minValue, maxValue, componentMetadata, renderingStrategy
+) {
 
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
 
     override fun refreshCursor() {
         var pos = _textBuffer.cursor.position
         pos = pos.withX(min(pos.x, contentSize.width))
-                .withY(0)
+            .withY(0)
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(
-                        position = pos.withRelative(absolutePosition + contentOffset),
-                        emitter = this),
-                eventScope = ZirconScope)
+            event = ZirconEvent.RequestCursorAt(
+                position = pos.withRelative(absolutePosition + contentOffset),
+                emitter = this
+            ),
+            eventScope = ZirconScope
+        )
     }
 }

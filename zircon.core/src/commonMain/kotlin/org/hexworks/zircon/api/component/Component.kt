@@ -80,6 +80,7 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
 
     val componentStateValue: ObservableValue<ComponentState>
     val componentState: ComponentState
+
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
      * it by hand it will take precedence over the [ComponentStyleSet] provided

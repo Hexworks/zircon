@@ -4,8 +4,8 @@ import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.AttachedComponent
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -14,16 +14,16 @@ import org.hexworks.zircon.internal.component.InternalGroup
 import kotlin.jvm.Synchronized
 
 class DefaultRadioButtonGroup(
-        initialIsDisabled: Boolean,
-        initialIsHidden: Boolean,
-        initialTheme: ColorTheme,
-        initialTileset: TilesetResource,
-        private val groupDelegate: InternalGroup<RadioButton> = Components.group<RadioButton>()
-                .withIsDisabled(initialIsDisabled)
-                .withIsHidden(initialIsHidden)
-                .withTheme(initialTheme)
-                .withTileset(initialTileset)
-                .build() as InternalGroup<RadioButton>
+    initialIsDisabled: Boolean,
+    initialIsHidden: Boolean,
+    initialTheme: ColorTheme,
+    initialTileset: TilesetResource,
+    private val groupDelegate: InternalGroup<RadioButton> = Components.group<RadioButton>()
+        .withIsDisabled(initialIsDisabled)
+        .withIsHidden(initialIsHidden)
+        .withTheme(initialTheme)
+        .withTileset(initialTileset)
+        .build() as InternalGroup<RadioButton>
 ) : RadioButtonGroup, InternalGroup<RadioButton> by groupDelegate {
 
     private val buttons = mutableMapOf<String, Pair<GroupAttachedComponent, Subscription>>()

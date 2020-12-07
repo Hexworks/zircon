@@ -13,16 +13,18 @@ interface ComponentEventSource {
      * respond to events.
      */
     fun handleComponentEvents(
-            eventType: ComponentEventType,
-            handler: (event: ComponentEvent) -> UIEventResponse): Subscription
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> UIEventResponse
+    ): Subscription
 
     /**
      * Adds the given [handler] for [ComponentEvent]s. Use this if you handle all
      * events.
      */
     fun processComponentEvents(
-            eventType: ComponentEventType,
-            handler: (event: ComponentEvent) -> Unit): Subscription
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> Unit
+    ): Subscription
 
 
 }

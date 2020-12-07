@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.uievent.impl
 
 import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentHashMapOf
+import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.behavior.DisposeState
 import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -49,8 +49,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun handleMouseEvents(
-            eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler(event as MouseEvent, phase)
@@ -58,8 +59,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun processMouseEvents(
-            eventType: MouseEventType,
-            handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> Unit
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler(event as MouseEvent, phase)
@@ -68,8 +70,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun handleKeyboardEvents(
-            eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler(event as KeyboardEvent, phase)
@@ -77,8 +80,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun processKeyboardEvents(
-            eventType: KeyboardEventType,
-            handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             handler(event as KeyboardEvent, phase)
@@ -87,8 +91,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun handleComponentEvents(
-            eventType: ComponentEventType,
-            handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> UIEventResponse
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
@@ -98,8 +103,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     override fun processComponentEvents(
-            eventType: ComponentEventType,
-            handler: (event: ComponentEvent) -> Unit): Subscription {
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> Unit
+    ): Subscription {
         checkClosed()
         return buildSubscription(eventType) { event, phase ->
             if (phase == UIEventPhase.TARGET) {
@@ -109,10 +115,14 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
         }
     }
 
-    private fun buildSubscription(eventType: UIEventType, listener: (UIEvent, UIEventPhase) -> UIEventResponse): Subscription {
+    private fun buildSubscription(
+        eventType: UIEventType,
+        listener: (UIEvent, UIEventPhase) -> UIEventResponse
+    ): Subscription {
         val subscription = InputEventSubscription(
-                eventType = eventType,
-                listener = listener)
+            eventType = eventType,
+            listener = listener
+        )
         val subscriptions = listeners.getOrElse(eventType) { persistentListOf() }
         listeners = listeners.put(eventType, subscriptions.add(subscription))
         return subscription
@@ -123,8 +133,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     inner class InputEventSubscription(
-            private val eventType: UIEventType,
-            val listener: (UIEvent, UIEventPhase) -> UIEventResponse) : Subscription {
+        private val eventType: UIEventType,
+        val listener: (UIEvent, UIEventPhase) -> UIEventResponse
+    ) : Subscription {
 
         override var disposeState: DisposeState = NotDisposed
 

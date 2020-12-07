@@ -17,8 +17,8 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
 
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)
         val invertedDefaultStyleSet = defaultStyleSet
-                .withBackgroundColor(defaultStyleSet.foregroundColor)
-                .withForegroundColor(defaultStyleSet.backgroundColor)
+            .withBackgroundColor(defaultStyleSet.foregroundColor)
+            .withForegroundColor(defaultStyleSet.backgroundColor)
         val disabledStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DISABLED)
 
         val cursorPosition = context.component.currentStep
@@ -27,14 +27,17 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
         (0..barWidth).forEach { idx ->
             when {
                 idx == cursorPosition -> tileGraphics.draw(
-                        tile = Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, context.currentStyle),
-                        drawPosition = Position.create(0, idx))
+                    tile = Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, context.currentStyle),
+                    drawPosition = Position.create(0, idx)
+                )
                 idx < cursorPosition -> tileGraphics.draw(
-                        tile = Tile.createCharacterTile(' ', invertedDefaultStyleSet),
-                        drawPosition = Position.create(0, idx))
+                    tile = Tile.createCharacterTile(' ', invertedDefaultStyleSet),
+                    drawPosition = Position.create(0, idx)
+                )
                 else -> tileGraphics.draw(
-                        tile = Tile.createCharacterTile(' ', disabledStyleSet),
-                        drawPosition = Position.create(0, idx))
+                    tile = Tile.createCharacterTile(' ', disabledStyleSet),
+                    drawPosition = Position.create(0, idx)
+                )
             }
         }
     }

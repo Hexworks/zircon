@@ -8,6 +8,7 @@ interface TileTexture<out T> {
 
     val width: Int
     val height: Int
+
     /**
      * The actual texture.
      */

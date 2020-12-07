@@ -5,8 +5,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import kotlin.math.min
 
-class DefaultCursorHandler(initialCursorSpace: Size)
-    : InternalCursorHandler {
+class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
 
     override var isCursorVisible = false
 
@@ -34,8 +33,8 @@ class DefaultCursorHandler(initialCursorSpace: Size)
                 "Can't put the cursor at a negative position: $value"
             }
             field = cursorPosition
-                    .withX(min(value.x, cursorSpaceSize.width - 1))
-                    .withY(min(value.y, cursorSpaceSize.height - 1))
+                .withX(min(value.x, cursorSpaceSize.width - 1))
+                .withY(min(value.y, cursorSpaceSize.height - 1))
         }
 
     override fun moveCursorForward() {

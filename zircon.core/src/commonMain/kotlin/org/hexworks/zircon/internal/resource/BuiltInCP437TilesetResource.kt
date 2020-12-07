@@ -8,16 +8,16 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
 enum class BuiltInCP437TilesetResource(
-        val tilesetName: String,
-        override val width: Int,
-        override val height: Int,
-        val fileName: String = "${tilesetName}_${width}x$height.png",
-        override val id: UUID = UUIDFactory.randomUUID(),
-        override val tileType: TileType = TileType.CHARACTER_TILE,
-        override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
-        override val path: String = "/cp_437_tilesets/$fileName",
-        override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR)
-    : TilesetResource {
+    val tilesetName: String,
+    override val width: Int,
+    override val height: Int,
+    val fileName: String = "${tilesetName}_${width}x$height.png",
+    override val id: UUID = UUIDFactory.randomUUID(),
+    override val tileType: TileType = TileType.CHARACTER_TILE,
+    override val tilesetType: TilesetType = TilesetType.CP437_TILESET,
+    override val path: String = "/cp_437_tilesets/$fileName",
+    override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR
+) : TilesetResource {
 
     // These fonts come from the Dwarf Fortress Tileset Repository
     ACORN_8X16("acorn", 8, 16),

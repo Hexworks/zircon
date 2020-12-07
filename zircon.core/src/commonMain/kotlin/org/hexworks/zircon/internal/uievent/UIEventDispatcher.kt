@@ -1,8 +1,7 @@
 package org.hexworks.zircon.internal.uievent
 
-import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.uievent.UIEventType
 

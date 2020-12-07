@@ -4,11 +4,6 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.*
-import org.hexworks.zircon.api.game.GameComponent
-import org.hexworks.zircon.api.component.NumberInput
-import org.hexworks.zircon.api.component.TextArea
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Tile
 import kotlin.jvm.JvmStatic
 
 /**

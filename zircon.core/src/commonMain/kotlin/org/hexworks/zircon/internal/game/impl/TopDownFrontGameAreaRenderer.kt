@@ -11,18 +11,18 @@ import kotlin.math.max
 class TopDownFrontGameAreaRenderer : GameAreaRenderer {
 
     override fun render(
-            gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
-            graphics: TileGraphics,
-            fillerTile: Tile
+        gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
+        graphics: TileGraphics,
+        fillerTile: Tile
     ) {
         val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
         for (x in 0 until graphics.width) {
             val projectionSequence = generateProjectionSequence(
-                    visibleSize = visibleSize,
-                    visibleOffset = visibleOffset,
-                    x = x + visibleOffset.x,
-                    height = graphics.height
+                visibleSize = visibleSize,
+                visibleOffset = visibleOffset,
+                x = x + visibleOffset.x,
+                height = graphics.height
             )
             // TODO: test regression with y: was not translated to graphics position
             var y = 0
@@ -31,12 +31,14 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
                 stacking@ for ((pos, side) in vector) {
                     val tile = blocks[pos]?.getTileByType(side)
                     if (tile != null) {
-                        stack.addFirst(filter.transform(
+                        stack.addFirst(
+                            filter.transform(
                                 visibleSize = visibleSize,
                                 offsetPosition = pos - visibleOffset,
                                 blockTileType = side,
                                 tile.toBuilder()
-                        ).build())
+                            ).build()
+                        )
                         if (tile.isOpaque) {
                             break@stacking
                         }
@@ -51,17 +53,17 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
     }
 
     fun generateProjectionSequence(
-            visibleSize: Size3D,
-            visibleOffset: Position3D,
-            x: Int,
-            height: Int
+        visibleSize: Size3D,
+        visibleOffset: Position3D,
+        x: Int,
+        height: Int
     ): Sequence<Sequence<Pair<Position3D, BlockTileType>>> = sequence {
         val maxY = visibleOffset.y + visibleSize.yLength - 1
         val minZ = visibleOffset.z
         var currPos = Position3D.create(
-                x = x, // TODO: test regression:  `+ visibleOffset.x`
-                y = 0 + visibleOffset.y,
-                z = visibleSize.zLength - 1 + visibleOffset.z
+            x = x, // TODO: test regression:  `+ visibleOffset.x`
+            y = 0 + visibleOffset.y,
+            z = visibleSize.zLength - 1 + visibleOffset.z
         )
         var counter = max(height, visibleSize.yLength + visibleSize.zLength)
         do {
@@ -78,8 +80,8 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
     }
 
     fun generateFrontSequence(
-            visibleOffset: Position3D,
-            startPos: Position3D
+        visibleOffset: Position3D,
+        startPos: Position3D
     ): Sequence<Pair<Position3D, BlockTileType>> = sequence {
         var y = startPos.y
         var z = startPos.z
@@ -89,9 +91,9 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
         while (y >= minY && z >= minZ) {
             for (value in FrontTraversal.values()) {
                 val pos = Position3D.create(
-                        x = startPos.x,
-                        y = value.yTransformer(y),
-                        z = value.zTransformer(z)
+                    x = startPos.x,
+                    y = value.yTransformer(y),
+                    z = value.zTransformer(z)
                 )
                 if (pos.hasNegativeComponent.not()) {
                     yield(pos to value.facing)
@@ -103,8 +105,8 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
     }
 
     fun generateTopSequence(
-            visibleOffset: Position3D,
-            startPos: Position3D
+        visibleOffset: Position3D,
+        startPos: Position3D
     ): Sequence<Pair<Position3D, BlockTileType>> = sequence {
         var y = startPos.y
         var z = startPos.z
@@ -114,9 +116,9 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
         while (y >= minY && z >= minZ) {
             for (value in TopTraversal.values()) {
                 val pos = Position3D.create(
-                        x = startPos.x,
-                        y = value.yTransformer(y),
-                        z = value.zTransformer(z)
+                    x = startPos.x,
+                    y = value.yTransformer(y),
+                    z = value.zTransformer(z)
                 )
                 if (pos.hasNegativeComponent.not()) {
                     yield(pos to value.facing)
@@ -128,56 +130,56 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
     }
 
     private enum class FrontTraversal(
-            val yTransformer: (x: Int) -> Int,
-            val zTransformer: (z: Int) -> Int,
-            val facing: BlockTileType
+        val yTransformer: (x: Int) -> Int,
+        val zTransformer: (z: Int) -> Int,
+        val facing: BlockTileType
     ) {
         FRONT(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z },
-                facing = BlockTileType.FRONT
+            yTransformer = { y -> y },
+            zTransformer = { z -> z },
+            facing = BlockTileType.FRONT
         ),
         BOTTOM(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z },
-                facing = BlockTileType.BOTTOM
+            yTransformer = { y -> y },
+            zTransformer = { z -> z },
+            facing = BlockTileType.BOTTOM
         ),
         TOP(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z - 1 },
-                facing = BlockTileType.TOP
+            yTransformer = { y -> y },
+            zTransformer = { z -> z - 1 },
+            facing = BlockTileType.TOP
         ),
         BACK(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z - 1 },
-                facing = BlockTileType.BACK
+            yTransformer = { y -> y },
+            zTransformer = { z -> z - 1 },
+            facing = BlockTileType.BACK
         )
     }
 
     private enum class TopTraversal(
-            val yTransformer: (x: Int) -> Int,
-            val zTransformer: (z: Int) -> Int,
-            val facing: BlockTileType
+        val yTransformer: (x: Int) -> Int,
+        val zTransformer: (z: Int) -> Int,
+        val facing: BlockTileType
     ) {
         TOP(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z },
-                facing = BlockTileType.TOP
+            yTransformer = { y -> y },
+            zTransformer = { z -> z },
+            facing = BlockTileType.TOP
         ),
         BACK(
-                yTransformer = { y -> y },
-                zTransformer = { z -> z },
-                facing = BlockTileType.BACK
+            yTransformer = { y -> y },
+            zTransformer = { z -> z },
+            facing = BlockTileType.BACK
         ),
         FRONT(
-                yTransformer = { y -> y - 1 },
-                zTransformer = { z -> z },
-                facing = BlockTileType.FRONT
+            yTransformer = { y -> y - 1 },
+            zTransformer = { z -> z },
+            facing = BlockTileType.FRONT
         ),
         BOTTOM(
-                yTransformer = { y -> y - 1 },
-                zTransformer = { z -> z },
-                facing = BlockTileType.BOTTOM
+            yTransformer = { y -> y - 1 },
+            zTransformer = { z -> z },
+            facing = BlockTileType.BOTTOM
         )
     }
 }

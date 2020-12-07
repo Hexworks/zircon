@@ -26,12 +26,13 @@ object ComponentAlignments {
      */
     @JvmStatic
     fun alignmentWithin(
-            tileGrid: TileGrid,
-            alignmentType: ComponentAlignment
+        tileGrid: TileGrid,
+        alignmentType: ComponentAlignment
     ): AlignmentStrategy {
         return WithinAlignmentStrategy(
-                other = Boundable.create(size = tileGrid.size),
-                alignmentType = alignmentType)
+            other = Boundable.create(size = tileGrid.size),
+            alignmentType = alignmentType
+        )
     }
 
     /**
@@ -43,12 +44,13 @@ object ComponentAlignments {
      */
     @JvmStatic
     fun alignmentWithin(
-            container: Container,
-            alignmentType: ComponentAlignment
+        container: Container,
+        alignmentType: ComponentAlignment
     ): AlignmentStrategy {
         return WithinAlignmentStrategy(
-                other = Boundable.create(size = container.contentSize),
-                alignmentType = alignmentType)
+            other = Boundable.create(size = container.contentSize),
+            alignmentType = alignmentType
+        )
     }
 
     /**
@@ -60,12 +62,13 @@ object ComponentAlignments {
      */
     @JvmStatic
     fun alignmentAround(
-            component: Component,
-            alignmentType: ComponentAlignment
+        component: Component,
+        alignmentType: ComponentAlignment
     ): AlignmentStrategy {
         return AroundAlignmentStrategy(
-                other = component.relativeBounds,
-                alignmentType = alignmentType)
+            other = component.relativeBounds,
+            alignmentType = alignmentType
+        )
     }
 
     /**

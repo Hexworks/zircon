@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
  * @see DebugConfig for defaults
  */
 data class DebugConfigBuilder(
-        var debugConfig: DebugConfig = DebugConfig.defaultConfig()
+    var debugConfig: DebugConfig = DebugConfig.defaultConfig()
 ) : Builder<DebugConfig> {
 
     fun withRelaxBoundsCheck(relaxBoundsCheck: Boolean) = also {

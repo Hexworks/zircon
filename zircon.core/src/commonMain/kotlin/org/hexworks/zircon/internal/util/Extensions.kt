@@ -2,8 +2,8 @@ package org.hexworks.zircon.internal.util
 
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.internal.game.GameAreaState
 

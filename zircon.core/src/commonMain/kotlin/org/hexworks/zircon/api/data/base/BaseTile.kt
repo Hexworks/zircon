@@ -1,17 +1,12 @@
 package org.hexworks.zircon.api.data.base
 
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
-import org.hexworks.zircon.api.modifier.SimpleModifiers.CrossedOut
-import org.hexworks.zircon.api.modifier.SimpleModifiers.HorizontalFlip
-import org.hexworks.zircon.api.modifier.SimpleModifiers.Underline
-import org.hexworks.zircon.api.modifier.SimpleModifiers.VerticalFlip
+import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
 /**
  * Base class for all [Tile] implementations.
@@ -46,10 +41,10 @@ abstract class BaseTile : Tile {
         get() = this != Tile.empty()
 
     override fun fetchBorderData(): Set<Border> = modifiers
-            .asSequence()
-            .filter { it is Border }
-            .map { it as Border }
-            .toSet()
+        .asSequence()
+        .filter { it is Border }
+        .map { it as Border }
+        .toSet()
 
     override fun asCharacterTile() = Maybe.ofNullable(this as? CharacterTile)
 

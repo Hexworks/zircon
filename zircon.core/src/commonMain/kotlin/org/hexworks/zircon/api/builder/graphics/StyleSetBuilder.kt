@@ -11,9 +11,9 @@ import kotlin.jvm.JvmStatic
  * [TileColor]. Modifiers are empty by default.
  */
 data class StyleSetBuilder(
-        private var foregroundColor: TileColor = StyleSet.defaultStyle().foregroundColor,
-        private var backgroundColor: TileColor = StyleSet.defaultStyle().backgroundColor,
-        private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers
+    private var foregroundColor: TileColor = StyleSet.defaultStyle().foregroundColor,
+    private var backgroundColor: TileColor = StyleSet.defaultStyle().backgroundColor,
+    private var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers
 ) : Builder<StyleSet> {
 
     fun withForegroundColor(foregroundColor: TileColor) = also {
@@ -33,12 +33,14 @@ data class StyleSetBuilder(
     }
 
     override fun build(): StyleSet = StyleSet.create(
-            foregroundColor = foregroundColor,
-            backgroundColor = backgroundColor,
-            modifiers = modifiers.toMutableSet())
+        foregroundColor = foregroundColor,
+        backgroundColor = backgroundColor,
+        modifiers = modifiers.toMutableSet()
+    )
 
     override fun createCopy() = copy(
-            modifiers = modifiers.toSet())
+        modifiers = modifiers.toSet()
+    )
 
     companion object {
 

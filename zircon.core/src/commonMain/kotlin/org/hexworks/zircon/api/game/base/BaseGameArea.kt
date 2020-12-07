@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.game.base
 
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
-import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Beta
@@ -11,29 +10,23 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.game.GameArea
-import org.hexworks.zircon.api.game.GameArea.Companion.fetchPositionsWithOffset
 import org.hexworks.zircon.api.game.GameAreaTileFilter
-import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 @Beta
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
-        initialVisibleSize: Size3D,
-        initialActualSize: Size3D,
-        initialVisibleOffset: Position3D = Position3D.defaultPosition(),
-        initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
-        initialFilters: Iterable<GameAreaTileFilter>,
-        private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
-                initialVisibleSize = initialVisibleSize,
-                initialActualSize = initialActualSize
-        )
+    initialVisibleSize: Size3D,
+    initialActualSize: Size3D,
+    initialVisibleOffset: Position3D = Position3D.defaultPosition(),
+    initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
+    initialFilters: Iterable<GameAreaTileFilter>,
+    private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
+        initialVisibleSize = initialVisibleSize,
+        initialActualSize = initialActualSize
+    )
 ) : InternalGameArea<T, B>, Scrollable3D by scrollable3D {
 
     final override val visibleOffsetValue: ObservableValue<Position3D>
@@ -42,11 +35,11 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val filter = initialFilters.fold(GameAreaTileFilter.identity, GameAreaTileFilter::plus)
 
     override var state = GameAreaState(
-            blocks = initialContents,
-            actualSize = initialActualSize,
-            visibleSize = initialVisibleSize,
-            visibleOffset = initialVisibleOffset,
-            filter = filter
+        blocks = initialContents,
+        actualSize = initialActualSize,
+        visibleSize = initialVisibleSize,
+        visibleOffset = initialVisibleOffset,
+        filter = filter
     )
 
     override val blocks: Map<Position3D, B>
@@ -67,7 +60,8 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override fun setBlockAt(position: Position3D, block: B) {
         if (actualSize.containsPosition(position)) {
             state = state.copy(
-                    blocks = state.blocks.put(position, block))
+                blocks = state.blocks.put(position, block)
+            )
         }
     }
 

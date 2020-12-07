@@ -25,27 +25,27 @@ interface EditableTextBuffer {
     fun deleteRow(rowIdx: Int): MutableList<Char> = textBuffer.removeAt(rowIdx)
 
     fun getBoundingBoxSize(): Size = Size.create(
-            width = textBuffer.asSequence()
-                    .map { it.size }
-                    .maxOrNull() ?: 0,
-            height = textBuffer.size)
+        width = textBuffer.asSequence()
+            .map { it.size }
+            .maxOrNull() ?: 0,
+        height = textBuffer.size)
 
     fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.joinToString("") }
 
     fun getSize() = textBuffer.size
 
     fun getCharAt(position: Position): Maybe<Char> =
-            if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
-                Maybe.empty()
-            } else {
-                Maybe.of(textBuffer[position.y][position.x])
-            }
+        if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
+            Maybe.empty()
+        } else {
+            Maybe.of(textBuffer[position.y][position.x])
+        }
 
     fun rowCount(): Int = textBuffer.size
 
     companion object {
 
         fun create(text: String = "", cursor: Cursor = Cursor()): EditableTextBuffer =
-                DefaultEditableTextBuffer(text, cursor)
+            DefaultEditableTextBuffer(text, cursor)
     }
 }

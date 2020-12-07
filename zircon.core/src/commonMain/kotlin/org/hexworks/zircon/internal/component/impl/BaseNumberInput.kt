@@ -29,14 +29,15 @@ import org.hexworks.zircon.internal.event.ZirconScope
 
 //TODO: Finish minValue impl. and bug fixing
 abstract class BaseNumberInput(
-        initialValue: Int,
-        private val minValue: Int,
-        private val maxValue: Int,
-        componentMetadata: ComponentMetadata,
-        protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>)
-    : NumberInput, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    initialValue: Int,
+    private val minValue: Int,
+    private val maxValue: Int,
+    componentMetadata: ComponentMetadata,
+    protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>
+) : NumberInput, DefaultComponent(
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+) {
 
     final override var text: String
         get() = _textBuffer.getText()
@@ -87,19 +88,25 @@ abstract class BaseNumberInput(
     override fun textBuffer() = _textBuffer
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.primaryForegroundColor)
-                    .build())
-            .build()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                .withBackgroundColor(colorTheme.secondaryForegroundColor)
+                .build()
+        )
+        .withDisabledStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .withFocusedStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.primaryBackgroundColor)
+                .withBackgroundColor(colorTheme.primaryForegroundColor)
+                .build()
+        )
+        .build()
 
     override fun focusGiven() = whenEnabled {
         textBeforeModifications = text
@@ -113,8 +120,9 @@ abstract class BaseNumberInput(
         computeNumberValue()
         componentState = ComponentState.DEFAULT
         Zircon.eventBus.publish(
-                event = ZirconEvent.HideCursor(this),
-                eventScope = ZirconScope)
+            event = ZirconEvent.HideCursor(this),
+            eventScope = ZirconScope
+        )
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
@@ -147,7 +155,7 @@ abstract class BaseNumberInput(
     }
 
     private fun isNavigationKey(event: KeyboardEvent) =
-            event == TAB || event == REVERSE_TAB
+        event == TAB || event == REVERSE_TAB
 
     private fun checkAndAddChar(char: Char) {
         val virtualTextBuffer = EditableTextBuffer.create(text, _textBuffer.cursor)
@@ -188,14 +196,16 @@ abstract class BaseNumberInput(
 
     companion object {
         val TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                key = "\t",
-                code = KeyCode.TAB)
+            type = KeyboardEventType.KEY_RELEASED,
+            key = "\t",
+            code = KeyCode.TAB
+        )
 
         val REVERSE_TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                key = "\t",
-                code = KeyCode.TAB,
-                shiftDown = true)
+            type = KeyboardEventType.KEY_RELEASED,
+            key = "\t",
+            code = KeyCode.TAB,
+            shiftDown = true
+        )
     }
 }

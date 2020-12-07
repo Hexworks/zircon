@@ -9,13 +9,14 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultListItem(
-        componentMetadata: ComponentMetadata,
-        initialText: String,
-        renderingStrategy: ComponentRenderingStrategy<ListItem>
+    componentMetadata: ComponentMetadata,
+    initialText: String,
+    renderingStrategy: ComponentRenderingStrategy<ListItem>
 ) : ListItem, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TextOverride by TextOverride.create(initialText) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+),
+    TextOverride by TextOverride.create(initialText) {
 
     override fun acceptsFocus() = false
 

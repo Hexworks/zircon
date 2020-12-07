@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.internal.resource.ImageDictionaryTilesetResource
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.resource.ImageDictionaryTilesetResource
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import kotlin.jvm.JvmStatic
 
@@ -17,11 +17,11 @@ object ImageDictionaryTilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromFilesystem(
-            path: String
+        path: String
     ): TilesetResource {
         return ImageDictionaryTilesetResource(
-                path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM
+            path = path,
+            tilesetSourceType = TilesetSourceType.FILESYSTEM
         )
     }
 

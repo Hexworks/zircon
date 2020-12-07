@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 
 
 data class ComponentDecorationRenderContext(
-        val component: Component
+    val component: Component
 ) : RenderContext {
 
     /**
@@ -37,7 +37,7 @@ data class ComponentDecorationRenderContext(
      * for [RenderingMode.NON_INTERACTIVE] the [defaultStyle].
      */
     fun fetchStyleFor(renderingMode: RenderingMode): StyleSet {
-        if(component.isDisabled) {
+        if (component.isDisabled) {
             return currentComponentStyle.fetchStyleFor(DISABLED)
         }
         return when (renderingMode) {

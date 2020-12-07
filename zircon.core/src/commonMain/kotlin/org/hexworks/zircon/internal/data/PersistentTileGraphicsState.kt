@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 
 data class PersistentTileGraphicsState(
-        override val tiles: PersistentMap<Position, Tile>,
-        override val tileset: TilesetResource,
-        override val size: Size
+    override val tiles: PersistentMap<Position, Tile>,
+    override val tileset: TilesetResource,
+    override val size: Size
 ) : TileGraphicsState

@@ -47,6 +47,7 @@ interface Layerable {
 
     companion object {
 
-        internal const val WRONG_LAYER_TYPE_MSG = "The supplied Layer does not implement required interface: InternalLayer."
+        internal const val WRONG_LAYER_TYPE_MSG =
+            "The supplied Layer does not implement required interface: InternalLayer."
     }
 }

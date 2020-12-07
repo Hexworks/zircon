@@ -16,16 +16,19 @@ interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderC
      * Overwrites any existing content.
      */
     fun TileGraphics.fillWithText(
-            text: String,
-            style: StyleSet,
-            textWrap: TextWrap = TextWrap.WRAP) {
+        text: String,
+        style: StyleSet,
+        textWrap: TextWrap = TextWrap.WRAP
+    ) {
         clear()
-        draw(CharacterTileStrings
+        draw(
+            CharacterTileStrings
                 .newBuilder()
                 .withText(text)
                 .withSize(size)
                 .withTextWrap(textWrap)
-                .build())
+                .build()
+        )
         applyStyle(style)
     }
 }

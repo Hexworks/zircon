@@ -14,11 +14,11 @@ class DefaultHorizontalSlider(
     maxValue: Int,
     numberOfSteps: Int
 ) : BaseSlider(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy,
-        minValue = minValue,
-        maxValue = maxValue,
-        numberOfSteps = numberOfSteps
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy,
+    minValue = minValue,
+    maxValue = maxValue,
+    numberOfSteps = numberOfSteps
 ) {
 
     override fun getMousePosition(event: MouseEvent): Int {

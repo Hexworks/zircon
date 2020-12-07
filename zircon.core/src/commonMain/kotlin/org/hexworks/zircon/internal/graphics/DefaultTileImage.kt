@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 
 class DefaultTileImage(
-        override val size: Size,
-        override val tileset: TilesetResource,
-        initialTiles: Map<Position, Tile> = mapOf())
-    : BaseTileImage() {
+    override val size: Size,
+    override val tileset: TilesetResource,
+    initialTiles: Map<Position, Tile> = mapOf()
+) : BaseTileImage() {
 
     override val tiles: PersistentMap<Position, Tile> = persistentHashMapOf<Position, Tile>()
-            .putAll(initialTiles)
+        .putAll(initialTiles)
 
 }

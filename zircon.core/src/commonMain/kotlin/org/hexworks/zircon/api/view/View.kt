@@ -1,12 +1,12 @@
 package org.hexworks.zircon.api.view
 
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Fragment
+import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.view.base.BaseView
-import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.component.ColorTheme
 
 /**
  * A [View] is similar to a [Fragment], but instead of being a reusable group of [Component]s with additional

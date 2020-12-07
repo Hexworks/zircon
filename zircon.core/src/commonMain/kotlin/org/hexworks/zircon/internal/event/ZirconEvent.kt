@@ -13,8 +13,8 @@ sealed class ZirconEvent : Event {
      * Cursor is requested at the given `position`.
      */
     data class RequestCursorAt(
-            val position: Position,
-            override val emitter: Any
+        val position: Position,
+        override val emitter: Any
     ) : ZirconEvent()
 
     /**
@@ -22,8 +22,8 @@ sealed class ZirconEvent : Event {
      * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class RequestFocusFor(
-            val component: Component,
-            override val emitter: Any
+        val component: Component,
+        override val emitter: Any
     ) : ZirconEvent()
 
     /**
@@ -31,8 +31,8 @@ sealed class ZirconEvent : Event {
      * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
     data class ClearFocus(
-            val component: Component,
-            override val emitter: Any
+        val component: Component,
+        override val emitter: Any
     ) : ZirconEvent()
 
     /**
@@ -45,26 +45,26 @@ sealed class ZirconEvent : Event {
      * (eg: the `display` function has been called on a Screen data class).
      */
     data class ScreenSwitch(
-            val screenId: UUID,
-            override val emitter: Any
+        val screenId: UUID,
+        override val emitter: Any
     ) : ZirconEvent()
 
     /**
      * A [component] was added to a container.
      */
     data class ComponentAdded(
-            val parent: InternalContainer,
-            val component: InternalComponent,
-            override val emitter: Any
+        val parent: InternalContainer,
+        val component: InternalComponent,
+        override val emitter: Any
     ) : ZirconEvent()
 
     /**
      * A [component] was removed from a container.
      */
     data class ComponentRemoved(
-            val parent: InternalContainer,
-            val component: InternalComponent,
-            override val emitter: Any
+        val parent: InternalContainer,
+        val component: InternalComponent,
+        override val emitter: Any
     ) : ZirconEvent()
 
 }

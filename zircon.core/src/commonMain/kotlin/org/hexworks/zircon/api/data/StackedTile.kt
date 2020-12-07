@@ -6,7 +6,6 @@ import kotlinx.collections.immutable.toPersistentList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.data.DefaultStackedTile
-import org.hexworks.zircon.internal.data.FastStackedTile
 import kotlin.jvm.JvmStatic
 
 /**
@@ -65,11 +64,11 @@ interface StackedTile : Tile {
          */
         @JvmStatic
         fun create(
-                baseTile: Tile,
-                vararg rest: Tile
+            baseTile: Tile,
+            vararg rest: Tile
         ): StackedTile = DefaultStackedTile(
-                baseTile = baseTile,
-                rest = rest.toList().toPersistentList()
+            baseTile = baseTile,
+            rest = rest.toList().toPersistentList()
         )
     }
 }

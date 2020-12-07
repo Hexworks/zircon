@@ -19,14 +19,14 @@ import kotlin.math.roundToInt
 import kotlin.math.truncate
 
 abstract class BaseSlider(
-        final override val minValue: Int,
-        final override val maxValue: Int,
-        final override val numberOfSteps: Int,
-        componentMetadata: ComponentMetadata,
-        renderer: ComponentRenderingStrategy<Slider>
+    final override val minValue: Int,
+    final override val maxValue: Int,
+    final override val numberOfSteps: Int,
+    componentMetadata: ComponentMetadata,
+    renderer: ComponentRenderingStrategy<Slider>
 ) : Slider, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderer
+    componentMetadata = componentMetadata,
+    renderer = renderer
 ) {
 
     private val range: Int = maxValue - minValue
@@ -148,23 +148,31 @@ abstract class BaseSlider(
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.accentColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.primaryForegroundColor)
-                    .build())
-            .build()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.primaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .withMouseOverStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.primaryBackgroundColor)
+                .withBackgroundColor(colorTheme.accentColor)
+                .build()
+        )
+        .withDisabledStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryForegroundColor)
+                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                .build()
+        )
+        .withFocusedStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.primaryBackgroundColor)
+                .withBackgroundColor(colorTheme.primaryForegroundColor)
+                .build()
+        )
+        .build()
 
     override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)

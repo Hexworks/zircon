@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.HasSize
-import org.hexworks.zircon.api.behavior.Sizeable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile

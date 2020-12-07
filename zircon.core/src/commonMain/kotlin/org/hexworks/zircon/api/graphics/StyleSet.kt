@@ -41,7 +41,7 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
      * Creates a copy of this [StyleSet] with the given modifiers.
      */
     fun withModifiers(vararg modifiers: Modifier): StyleSet =
-            withModifiers(modifiers.toSet())
+        withModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers added.
@@ -52,7 +52,7 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
      * Creates a copy of this [StyleSet] with the given modifiers added.
      */
     fun withAddedModifiers(vararg modifiers: Modifier): StyleSet =
-            withAddedModifiers(modifiers.toSet())
+        withAddedModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers removed.
@@ -63,7 +63,7 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
      * Creates a copy of this [StyleSet] with the given modifiers removed.
      */
     fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet =
-            withRemovedModifiers(modifiers.toSet())
+        withRemovedModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with no modifiers.
@@ -100,22 +100,29 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * Creates a new [StyleSet].
          */
         @JvmStatic
-        fun create(foregroundColor: TileColor, backgroundColor: TileColor, modifiers: Set<Modifier> = setOf()): StyleSet {
+        fun create(
+            foregroundColor: TileColor,
+            backgroundColor: TileColor,
+            modifiers: Set<Modifier> = setOf()
+        ): StyleSet {
             return DefaultStyleSet(
-                    foregroundColor = foregroundColor,
-                    backgroundColor = backgroundColor,
-                    modifiers = modifiers)
+                foregroundColor = foregroundColor,
+                backgroundColor = backgroundColor,
+                modifiers = modifiers
+            )
         }
 
         private val DEFAULT_STYLE = DefaultStyleSet(
-                foregroundColor = TileColor.defaultForegroundColor(),
-                backgroundColor = TileColor.defaultBackgroundColor(),
-                modifiers = setOf())
+            foregroundColor = TileColor.defaultForegroundColor(),
+            backgroundColor = TileColor.defaultBackgroundColor(),
+            modifiers = setOf()
+        )
 
         private val EMPTY = DefaultStyleSet(
-                foregroundColor = TileColor.transparent(),
-                backgroundColor = TileColor.transparent(),
-                modifiers = setOf())
+            foregroundColor = TileColor.transparent(),
+            backgroundColor = TileColor.transparent(),
+            modifiers = setOf()
+        )
     }
 
 }

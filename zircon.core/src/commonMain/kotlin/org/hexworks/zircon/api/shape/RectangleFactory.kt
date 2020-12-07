@@ -10,9 +10,9 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
         val bottomRight = topRight.withRelativeY(size.height - 1)
         val bottomLeft = topLeft.withRelativeY(size.height - 1)
         LineFactory.buildLine(topLeft, topRight)
-                .plus(LineFactory.buildLine(topRight, bottomRight))
-                .plus(LineFactory.buildLine(bottomRight, bottomLeft))
-                .plus(LineFactory.buildLine(bottomLeft, topLeft))
+            .plus(LineFactory.buildLine(topRight, bottomRight))
+            .plus(LineFactory.buildLine(bottomRight, bottomLeft))
+            .plus(LineFactory.buildLine(bottomLeft, topLeft))
         // TODO: document that offsetToDefaultPositionWasRemoved
     }
 

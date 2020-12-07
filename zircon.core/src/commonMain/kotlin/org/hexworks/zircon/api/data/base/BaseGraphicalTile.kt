@@ -29,16 +29,18 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override fun withName(name: String): GraphicalTile {
         return Tile.createGraphicTile(
-                name = name,
-                tags = tags,
-                tileset = tileset)
+            name = name,
+            tags = tags,
+            tileset = tileset
+        )
     }
 
     override fun withTags(tags: Set<String>): GraphicalTile {
         return Tile.createGraphicTile(
-                name = name,
-                tags = tags,
-                tileset = tileset)
+            name = name,
+            tags = tags,
+            tileset = tileset
+        )
     }
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
@@ -62,7 +64,7 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
     override fun withNoModifiers() = this
 
     override fun toBuilder() = Tile.newBuilder()
-            .withName(name)
-            .withTags(tags)
-            .withTileset(tileset)
+        .withName(name)
+        .withTags(tags)
+        .withTileset(tileset)
 }
