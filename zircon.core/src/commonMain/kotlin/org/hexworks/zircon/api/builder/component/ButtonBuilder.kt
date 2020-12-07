@@ -13,8 +13,8 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 class ButtonBuilder(
-        private var text: String = "")
-    : BaseComponentBuilder<Button, ButtonBuilder>(DefaultButtonRenderer()) {
+    private var text: String = ""
+) : BaseComponentBuilder<Button, ButtonBuilder>(DefaultButtonRenderer()) {
 
     init {
         withDecorations(side())
@@ -23,21 +23,19 @@ class ButtonBuilder(
     fun withText(text: String) = also {
         this.text = text
         contentSize = contentSize
-                .withWidth(max(text.length, contentSize.width))
+            .withWidth(max(text.length, contentSize.width))
     }
 
     override fun build(): Button {
         val componentRenderer = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Button>)
+            decorationRenderers = decorationRenderers,
+            componentRenderer = componentRenderer as ComponentRenderer<Button>
+        )
         return DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                initialText = text,
-                renderingStrategy = componentRenderer).apply {
+            componentMetadata = generateMetadata(),
+            initialText = text,
+            renderingStrategy = componentRenderer
+        ).apply {
             colorTheme.map {
                 theme = it
             }
@@ -45,7 +43,7 @@ class ButtonBuilder(
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy())
-            .withText(text)
+        .withText(text)
 
     companion object {
 

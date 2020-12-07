@@ -17,6 +17,13 @@ import org.hexworks.zircon.api.tileset.Tileset
 interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
 
     /**
+     * Sets if the [Component] should be updated when it is attached to a parent
+     * or not. By default the [Component]'s common properties ([ComponentProperties])
+     * will be updated from its parent.
+     */
+    fun withUpdateOnAttach(updateOnAttach: Boolean): U
+
+    /**
      * Sets the [ComponentStyleSet] the [Component] will use.
      */
     fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U

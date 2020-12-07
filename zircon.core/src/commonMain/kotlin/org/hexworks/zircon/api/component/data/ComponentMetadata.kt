@@ -16,7 +16,8 @@ data class ComponentMetadata(
         val size: Size,
         val tileset: TilesetResource,
         val componentStyleSet: ComponentStyleSet,
-        val theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+        val theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+        val updateOnAttach: Boolean = false
 ) {
 
     init {

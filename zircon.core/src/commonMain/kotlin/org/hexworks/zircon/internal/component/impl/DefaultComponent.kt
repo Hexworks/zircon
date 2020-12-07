@@ -42,17 +42,17 @@ import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
-        componentMetadata: ComponentMetadata,
-        private val renderer: ComponentRenderingStrategy<out Component>,
-        private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
-        private val movable: Movable = DefaultMovable(
-                position = componentMetadata.relativePosition,
-                size = componentMetadata.size
-        )
+    componentMetadata: ComponentMetadata,
+    private val renderer: ComponentRenderingStrategy<out Component>,
+    private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
+    private val movable: Movable = DefaultMovable(
+        position = componentMetadata.relativePosition,
+        size = componentMetadata.size
+    )
 ) : InternalComponent,
-        ComponentEventSource by uiEventProcessor,
-        Movable by movable,
-        UIEventProcessor by uiEventProcessor {
+    ComponentEventSource by uiEventProcessor,
+    Movable by movable,
+    UIEventProcessor by uiEventProcessor {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
@@ -110,9 +110,13 @@ abstract class DefaultComponent(
     final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
-    private var styleOverride = Maybe.ofNullable(if (componentMetadata.componentStyleSet.isDefault) {
-        null
-    } else componentMetadata.componentStyleSet)
+    final override val updateOnAttach = componentMetadata.updateOnAttach
+
+    private var styleOverride = Maybe.ofNullable(
+        if (componentMetadata.componentStyleSet.isDefault) {
+            null
+        } else componentMetadata.componentStyleSet
+    )
     private var themeStyle = componentMetadata.componentStyleSet
 
     init {
@@ -172,15 +176,16 @@ abstract class DefaultComponent(
 
     final override fun requestFocus(): Boolean {
         Zircon.eventBus.publish(
-                event = RequestFocusFor(this, this),
-                eventScope = ZirconScope)
+            event = RequestFocusFor(this, this),
+            eventScope = ZirconScope
+        )
         return hasFocusValue.value
     }
 
     final override fun clearFocus() {
         Zircon.eventBus.publish(
-                event = ClearFocus(this, this),
-                eventScope = ZirconScope
+            event = ClearFocus(this, this),
+            eventScope = ZirconScope
         )
     }
 
@@ -265,9 +270,10 @@ abstract class DefaultComponent(
 
     private fun updateComponentState(eventType: EventType) {
         val key = ComponentStateKey(
-                oldState = componentState,
-                isFocused = hasFocusValue.value,
-                eventType = eventType)
+            oldState = componentState,
+            isFocused = hasFocusValue.value,
+            eventType = eventType
+        )
         logger.debug("Updating component state with $key.")
         COMPONENT_STATE_TRANSITIONS[key]?.let {
             logger.debug("Component state was updated to state $it.")
@@ -280,36 +286,38 @@ abstract class DefaultComponent(
     }
 
     data class ComponentStateKey(
-            val oldState: ComponentState,
-            val isFocused: Boolean,
-            val eventType: EventType)
+        val oldState: ComponentState,
+        val isFocused: Boolean,
+        val eventType: EventType
+    )
 
     companion object {
 
         protected val COMPONENT_STATE_TRANSITIONS = mapOf(
-                ComponentStateKey(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
-                ComponentStateKey(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
-                ComponentStateKey(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,
-                ComponentStateKey(HIGHLIGHTED, true, ACTIVATED) to ACTIVE,
-                ComponentStateKey(HIGHLIGHTED, false, MOUSE_EXITED) to DEFAULT,
-                ComponentStateKey(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
-                ComponentStateKey(ACTIVE, true, MOUSE_EXITED) to FOCUSED,
-                ComponentStateKey(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
-                ComponentStateKey(ACTIVE, true, DEACTIVATED) to FOCUSED,
-                ComponentStateKey(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
-                ComponentStateKey(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
-                ComponentStateKey(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
-                ComponentStateKey(FOCUSED, true, ACTIVATED) to ACTIVE,
+            ComponentStateKey(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
+            ComponentStateKey(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
+            ComponentStateKey(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,
+            ComponentStateKey(HIGHLIGHTED, true, ACTIVATED) to ACTIVE,
+            ComponentStateKey(HIGHLIGHTED, false, MOUSE_EXITED) to DEFAULT,
+            ComponentStateKey(HIGHLIGHTED, false, ACTIVATED) to ACTIVE,
+            ComponentStateKey(ACTIVE, true, MOUSE_EXITED) to FOCUSED,
+            ComponentStateKey(ACTIVE, true, MOUSE_RELEASED) to HIGHLIGHTED,
+            ComponentStateKey(ACTIVE, true, DEACTIVATED) to FOCUSED,
+            ComponentStateKey(FOCUSED, true, FOCUS_TAKEN) to DEFAULT,
+            ComponentStateKey(FOCUSED, true, MOUSE_ENTERED) to HIGHLIGHTED,
+            ComponentStateKey(FOCUSED, true, MOUSE_RELEASED) to HIGHLIGHTED,
+            ComponentStateKey(FOCUSED, true, ACTIVATED) to ACTIVE,
 
-                // UNINTUITIVE SPECIAL CASES
+            // UNINTUITIVE SPECIAL CASES
 
-                // this particular case can happen when the user is pressing a button which
-                // on its action callback removes the focus from it
-                ComponentStateKey(ACTIVE, false, DEACTIVATED) to HIGHLIGHTED,
-                // This happens when space is pressed on a component then the user presses tab (and focus is lost)
-                ComponentStateKey(ACTIVE, true, FOCUS_TAKEN) to DEFAULT,
-                // this happens when a component is removed when clicked in a HBox and
-                // the next (to its right) component gets realigned
-                ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED)
+            // this particular case can happen when the user is pressing a button which
+            // on its action callback removes the focus from it
+            ComponentStateKey(ACTIVE, false, DEACTIVATED) to HIGHLIGHTED,
+            // This happens when space is pressed on a component then the user presses tab (and focus is lost)
+            ComponentStateKey(ACTIVE, true, FOCUS_TAKEN) to DEFAULT,
+            // this happens when a component is removed when clicked in a HBox and
+            // the next (to its right) component gets realigned
+            ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED
+        )
     }
 }
