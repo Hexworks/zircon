@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
+import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -17,17 +18,19 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmSynthetic
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>
 ) : ComponentBuilder<T, U>, Builder<T> {
 
     private val logger = LoggerFactory.getLogger(this::class)
 
     protected var props: CommonComponentProperties<T> = CommonComponentProperties(
-            componentRenderer = initialRenderer)
+        componentRenderer = initialRenderer
+    )
         private set
 
     val position: Position
@@ -48,10 +51,13 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     val componentRenderer: ComponentRenderer<out T>
         get() = props.componentRenderer
 
+    val updateOnAttach: Boolean
+        get() = props.updateOnAttach
+
     val size: Size
         get() = preferredSize.orElse(decorationRenderers
-                .map { it.occupiedSize }
-                .fold(contentSize, Size::plus))
+            .map { it.occupiedSize }
+            .fold(contentSize, Size::plus))
 
     private val alignmentStrategy: AlignmentStrategy
         get() = props.alignmentStrategy
@@ -59,8 +65,8 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     val title: String
         get() = decorationRenderers
-                .filterIsInstance<BoxDecorationRenderer>()
-                .firstOrNull()?.title ?: ""
+            .filterIsInstance<BoxDecorationRenderer>()
+            .firstOrNull()?.title ?: ""
 
     /**
      * The size which is set by the user. This takes precedence
@@ -73,6 +79,20 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
      * This field is ignored if the user explicitly sets [size].
      */
     protected var contentSize = Size.one()
+
+    protected fun generateMetadata() = ComponentMetadata(
+        relativePosition = position,
+        size = size,
+        tileset = tileset,
+        componentStyleSet = componentStyleSet,
+        theme = colorTheme.orElse(RuntimeConfig.config.defaultColorTheme),
+        updateOnAttach = updateOnAttach
+    )
+
+    override fun withUpdateOnAttach(updateOnAttach: Boolean): U {
+        props.updateOnAttach = updateOnAttach
+        return this as U
+    }
 
     override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
         props.componentStyleSet = componentStyleSet

@@ -36,6 +36,12 @@ interface InternalComponent :
     val isAttachedToRoot: Boolean
         get() = root.isPresent
 
+    /**
+     * Tells whether the [Component]'s observable properties should be
+     * updated from the parent when the component is attached.
+     */
+    val updateOnAttach: Boolean
+
     override var componentState: ComponentState
 
     /**

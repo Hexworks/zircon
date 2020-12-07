@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.game
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.CP437TilesetResources.rexPaint20x20
 import org.hexworks.zircon.api.ColorThemes.stormyGreen
 import org.hexworks.zircon.api.ComponentDecorations.box
@@ -39,7 +40,9 @@ import kotlin.system.exitProcess
 
 @Suppress("DuplicatedCode")
 class GameAreaWithScrollingKotlin {
+
     companion object {
+
         private val THEME = stormyGreen()
         private val TILESET = rexPaint20x20()
         private val DIMENSIONS = Toolkit.getDefaultToolkit().screenSize
@@ -48,43 +51,50 @@ class GameAreaWithScrollingKotlin {
         private val GRID_SIZE = create(GRID_WIDTH, GRID_HEIGHT)
 
         private val LEVEL_COUNT = 10
-        private val FILLER: Tile = empty().withBackgroundColor(fromString("#e7b751"))
+        private val FILLER: Tile = empty()
+            .withCharacter('x')
+            .withBackgroundColor(fromString("#e7b751"))
         private val PYRAMID_COLOR = fromString("#ecc987")
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val screen = create(startTileGrid(AppConfig.newBuilder()
-                    .withDefaultTileset(TILESET)
-                    .withSize(GRID_SIZE)
-                    .withDebugMode(true)
-                    .build()))
+
+            val screen = create(
+                startTileGrid(
+                    AppConfig.newBuilder()
+                        .withDefaultTileset(TILESET)
+                        .withSize(GRID_SIZE)
+                        .withDebugMode(true)
+                        .build()
+                )
+            )
             val actions = panel()
-                    .withSize(24, 5)
-                    .withPosition(1, 1)
-                    .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
-                    .build()
+                .withSize(24, 5)
+                .withPosition(1, 1)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
+                .build()
             val quit = button()
-                    .withText("Quit")
-                    .build()
+                .withText("Quit")
+                .build()
             quit.onActivated { exitProcess(0) }
             val projections = vbox()
-                    .withSize(24, 4)
-                    .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
-                    .withPosition(Position.create(0, 2).relativeToBottomOf(actions))
-                    .build()
+                .withSize(24, 4)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
+                .withPosition(Position.create(0, 2).relativeToBottomOf(actions))
+                .build()
             val topDown = radioButton()
-                    .withText("Top Down")
-                    .withKey(ProjectionMode.TOP_DOWN.name)
-                    .build()
+                .withText("Top Down")
+                .withKey(ProjectionMode.TOP_DOWN.name)
+                .build()
             val topDownOblique = radioButton()
-                    .withText("Top Down Oblique")
-                    .withKey(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT.name)
-                    .build()
+                .withText("Top Down Oblique")
+                .withKey(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT.name)
+                .build()
             val projectionsGroup = radioButtonGroup()
-                    .build().apply {
-                        addComponent(topDown)
-                        addComponent(topDownOblique)
-                    }
+                .build().apply {
+                    addComponent(topDown)
+                    addComponent(topDownOblique)
+                }
             projections.addComponents(topDown, topDownOblique)
             val projectionProperty = projectionsGroup.selectedButtonProperty.bindTransform {
                 it.map { radioButton ->
@@ -95,43 +105,49 @@ class GameAreaWithScrollingKotlin {
             val visibleGameAreaSize = GRID_SIZE.minus(create(2, 2)).toSize3D(5)
             val actualGameAreaSize = create(Int.MAX_VALUE, Int.MAX_VALUE)
             val gameArea: GameArea<Tile, Block<Tile>> = newGameAreaBuilder<Tile, Block<Tile>>()
-                    .withActualSize(actualGameAreaSize.toSize3D(LEVEL_COUNT))
-                    .withVisibleSize(visibleGameAreaSize)
-                    .withFilter(object : GameAreaTileFilter {
-                        override fun transform(
-                                visibleSize: Size3D,
-                                offsetPosition: Position3D,
-                                blockTileType: BlockTileType,
-                                tileBuilder: TileBuilder
-                        ): TileBuilder {
-                            val step = when(blockTileType) {
-                                BlockTileType.TOP -> 1 / (visibleSize.zLength.toDouble() * 5)
-                                BlockTileType.FRONT -> 1 / (visibleSize.zLength.toDouble() * 3)
-                                else -> 1.0
-                            }
-                            val style = tileBuilder.styleSet()
-                            return tileBuilder.withStyleSet(
-                                    style.withForegroundColor(style.foregroundColor
-                                            .darkenByPercent(step * (visibleSize.zLength - offsetPosition.z).toDouble()))
-                            )
+                .withActualSize(actualGameAreaSize.toSize3D(LEVEL_COUNT))
+                .withVisibleSize(visibleGameAreaSize)
+                .withFilter(object : GameAreaTileFilter {
+                    override fun transform(
+                        visibleSize: Size3D,
+                        offsetPosition: Position3D,
+                        blockTileType: BlockTileType,
+                        tileBuilder: TileBuilder
+                    ): TileBuilder {
+                        val step = when (blockTileType) {
+                            BlockTileType.TOP -> 1 / (visibleSize.zLength.toDouble() * 5)
+                            BlockTileType.FRONT -> 1 / (visibleSize.zLength.toDouble() * 3)
+                            else -> 1.0
                         }
-                    })
-                    .build()
+                        val style = tileBuilder.styleSet()
+                        return tileBuilder.withStyleSet(
+                            style.withForegroundColor(
+                                style.foregroundColor
+                                    .darkenByPercent(step * (visibleSize.zLength - offsetPosition.z).toDouble())
+                            )
+                        )
+                    }
+                })
+                .build()
             val gamePanel = panel()
-                    .withSize(screen.size)
-                    .withComponentRenderer(newGameAreaComponentRenderer(
-                            gameArea = gameArea,
-                            projectionMode = projectionProperty,
-                            fillerTile = FILLER
-                    ))
-                    .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game Area with Scrolling"))
-                    .build()
+                .withSize(screen.size)
+                .withComponentRenderer(
+                    newGameAreaComponentRenderer(
+                        gameArea = gameArea,
+                        projectionMode = projectionProperty,
+                        fillerTile = FILLER
+                    )
+                )
+                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game Area with Scrolling"))
+                .build()
             gamePanel.addComponents(actions, projections)
             val levels: MutableMap<Int, List<TileGraphics>> = HashMap()
             for (i in 0 until LEVEL_COUNT) {
-                levels[i] = listOf(tileGraphicsBuilder()
+                levels[i] = listOf(
+                    tileGraphicsBuilder()
                         .withSize(actualGameAreaSize)
-                        .build())
+                        .build()
+                )
             }
             screen.addComponent(gamePanel)
             enableMovement(screen, gameArea)
@@ -144,25 +160,26 @@ class GameAreaWithScrollingKotlin {
 
         private fun generatePyramid(height: Int, startPos: Position3D, gameArea: GameArea<Tile, Block<Tile>>) {
             val wall = Tile.newBuilder()
-                    .withCharacter(Symbols.BLOCK_SOLID)
-                    .withForegroundColor(PYRAMID_COLOR)
-                    .build()
+                .withCharacter(Symbols.BLOCK_SOLID)
+                .withForegroundColor(PYRAMID_COLOR)
+                .build()
             val currLevel = AtomicInteger(startPos.z)
             for (currSize in 0 until height) {
                 val levelOffset = startPos.to2DPosition()
-                        .withRelativeX(-currSize)
-                        .withRelativeY(-currSize)
+                    .withRelativeX(-currSize)
+                    .withRelativeY(-currSize)
                 val levelSize = create(1 + currSize * 2, 1 + currSize * 2)
                 levelSize.fetchPositions().forEach { position ->
                     val pos = position.plus(levelOffset).toPosition3D(currLevel.get())
                     val top = wall.withForegroundColor(PYRAMID_COLOR)
                     gameArea.setBlockAt(
-                            position = pos,
-                            block = Block.newBuilder<Tile>()
-                                    .withTop(top)
-                                    .withFront(wall)
-                                    .withEmptyTile(empty())
-                                    .build())
+                        position = pos,
+                        block = Block.newBuilder<Tile>()
+                            .withTop(top)
+                            .withFront(wall)
+                            .withEmptyTile(empty())
+                            .build()
+                    )
 
                 }
                 currLevel.decrementAndGet()

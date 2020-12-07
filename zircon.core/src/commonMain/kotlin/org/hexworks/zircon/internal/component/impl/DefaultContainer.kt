@@ -25,11 +25,11 @@ import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(
-        componentMetadata: ComponentMetadata,
-        renderer: ComponentRenderingStrategy<out Component>
+    componentMetadata: ComponentMetadata,
+    renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderer
+    componentMetadata = componentMetadata,
+    renderer = renderer
 ) {
 
     final override val children: ObservableList<InternalComponent> by lazy {
@@ -61,12 +61,12 @@ open class DefaultContainer(
         children.add(ic)
 
         Zircon.eventBus.publish(
-                event = ComponentAdded(
-                        parent = this,
-                        component = component.asInternalComponent(),
-                        emitter = this
-                ),
-                eventScope = ZirconScope
+            event = ComponentAdded(
+                parent = this,
+                component = component.asInternalComponent(),
+                emitter = this
+            ),
+            eventScope = ZirconScope
         )
 
         return attachment
@@ -104,28 +104,42 @@ open class DefaultContainer(
             }
             children.firstOrNull { it.intersects(component) }?.let {
                 throw IllegalArgumentException(
-                        "You can't add a component to a container which intersects with other components. " +
-                                "$it is intersecting with $component.")
+                    "You can't add a component to a container which intersects with other components. " +
+                            "$it is intersecting with $component."
+                )
             }
         }
         return component
     }
 
     private inner class DefaultAttachedComponent(
-            override val component: InternalComponent,
-            override val parentContainer: InternalContainer
+        override val component: InternalComponent,
+        override val parentContainer: InternalContainer
     ) : InternalAttachedComponent, InternalComponent by component {
 
         init {
             component.parent = Maybe.of(parentContainer)
-            component.disabledProperty.updateFrom(parentContainer.disabledProperty)
-                    .keepWhile(component.hasParent)
-            component.hiddenProperty.updateFrom(parentContainer.hiddenProperty)
-                    .keepWhile(component.hasParent)
-            component.themeProperty.updateFrom(
+            component.disabledProperty
+                .updateFrom(
+                    observable = parentContainer.disabledProperty
+                )
+                .keepWhile(component.hasParent)
+            component.hiddenProperty
+                .updateFrom(
+                    observable = parentContainer.hiddenProperty
+                )
+                .keepWhile(component.hasParent)
+            component.themeProperty
+                .updateFrom(
                     observable = parentContainer.themeProperty,
-                    updateWhenBound = theme == ColorThemes.defaultTheme()).keepWhile(component.hasParent)
-            component.tilesetProperty.updateFrom(parentContainer.tilesetProperty).keepWhile(component.hasParent)
+                    updateWhenBound = theme == ColorThemes.defaultTheme()
+                )
+                .keepWhile(component.hasParent)
+            component.tilesetProperty
+                .updateFrom(
+                    observable = parentContainer.tilesetProperty
+                )
+                .keepWhile(component.hasParent)
         }
 
         @Synchronized
@@ -133,11 +147,13 @@ open class DefaultContainer(
             component.parent = Maybe.empty()
             this@DefaultContainer.children.remove(component)
             Zircon.eventBus.publish(
-                    event = ComponentRemoved(
-                            parent = parentContainer,
-                            component = component,
-                            emitter = this),
-                    eventScope = ZirconScope)
+                event = ComponentRemoved(
+                    parent = parentContainer,
+                    component = component,
+                    emitter = this
+                ),
+                eventScope = ZirconScope
+            )
             return component
         }
     }

@@ -71,6 +71,8 @@ class ComponentStub(
 
     override val isAttached: Boolean
         get() = parent.isPresent
+    override val updateOnAttach: Boolean
+        get() = true
 
     override val children: ObservableList<InternalComponent>
         get() = persistentListOf<InternalComponent>().toProperty()
