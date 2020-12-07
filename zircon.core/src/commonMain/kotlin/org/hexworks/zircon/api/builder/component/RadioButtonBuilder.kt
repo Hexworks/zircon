@@ -31,13 +31,10 @@ class RadioButtonBuilder(
             "Can't create a Radio Button without a key."
         }
         return DefaultRadioButton(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
             key = key.get(),
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<RadioButton>
-            )
         )
     }
 

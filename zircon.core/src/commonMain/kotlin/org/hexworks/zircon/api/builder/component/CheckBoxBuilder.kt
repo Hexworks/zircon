@@ -38,13 +38,10 @@ class CheckBoxBuilder(
 
     override fun build(): CheckBox {
         return DefaultCheckBox(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
             labelAlignment = labelAlignment,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<CheckBox>
-            )
         )
     }
 

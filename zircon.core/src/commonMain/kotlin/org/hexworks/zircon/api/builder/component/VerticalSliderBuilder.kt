@@ -41,14 +41,11 @@ class VerticalSliderBuilder(
     }
 
     override fun build(): Slider = DefaultVerticalSlider(
-        componentMetadata = generateMetadata(),
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
         minValue = minValue,
         maxValue = maxValue,
         numberOfSteps = numberOfSteps,
-        renderingStrategy = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = props.componentRenderer as ComponentRenderer<Slider>
-        )
     )
 
     override fun createCopy() = newBuilder().withProps(props.copy())

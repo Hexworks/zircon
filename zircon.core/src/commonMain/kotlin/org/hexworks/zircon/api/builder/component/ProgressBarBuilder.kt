@@ -38,14 +38,11 @@ class ProgressBarBuilder(
 
     override fun build(): ProgressBar {
         return DefaultProgressBar(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             range = range,
             numberOfSteps = numberOfSteps,
             displayPercentValueOfProgress = displayPercentValueOfProgress,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = props.componentRenderer as ComponentRenderer<ProgressBar>
-            )
         )
     }
 

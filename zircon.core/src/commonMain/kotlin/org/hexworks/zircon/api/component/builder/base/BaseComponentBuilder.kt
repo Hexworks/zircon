@@ -3,10 +3,7 @@ package org.hexworks.zircon.api.component.builder.base
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.AlignmentStrategy
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -17,6 +14,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmSynthetic
@@ -80,13 +78,18 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
      */
     protected var contentSize = Size.one()
 
-    protected fun generateMetadata() = ComponentMetadata(
+    protected fun createMetadata() = ComponentMetadata(
         relativePosition = position,
         size = size,
         tileset = tileset,
         componentStyleSet = componentStyleSet,
         theme = colorTheme.orElse(RuntimeConfig.config.defaultColorTheme),
         updateOnAttach = updateOnAttach
+    )
+
+    protected fun createRenderingStrategy() = DefaultComponentRenderingStrategy(
+        decorationRenderers = decorationRenderers,
+        componentRenderer = componentRenderer as ComponentRenderer<T>
     )
 
     override fun withUpdateOnAttach(updateOnAttach: Boolean): U {

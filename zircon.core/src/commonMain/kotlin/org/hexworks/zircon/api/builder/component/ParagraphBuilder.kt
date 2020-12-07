@@ -34,13 +34,9 @@ class ParagraphBuilder(
             listOf()
         }
         return DefaultParagraph(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Paragraph>,
-                componentPostProcessors = postProcessors
-            )
         )
     }
 

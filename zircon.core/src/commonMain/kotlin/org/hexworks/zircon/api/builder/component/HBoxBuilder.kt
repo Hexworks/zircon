@@ -22,12 +22,9 @@ class HBoxBuilder(
 
     override fun build(): HBox {
         return DefaultHBox(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialTitle = title,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<HBox>
-            ),
             spacing = spacing
         )
     }

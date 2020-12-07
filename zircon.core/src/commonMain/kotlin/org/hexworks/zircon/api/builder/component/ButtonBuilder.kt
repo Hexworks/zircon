@@ -26,14 +26,10 @@ class ButtonBuilder(
     }
 
     override fun build(): Button {
-        val componentRenderer = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = componentRenderer as ComponentRenderer<Button>
-        )
         return DefaultButton(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
-            renderingStrategy = componentRenderer
         )
     }
 

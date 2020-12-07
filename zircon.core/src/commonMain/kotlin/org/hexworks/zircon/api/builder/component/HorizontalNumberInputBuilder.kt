@@ -43,14 +43,11 @@ class HorizontalNumberInputBuilder(
     }
 
     override fun build(): NumberInput = DefaultHorizontalNumberInput(
-        componentMetadata = generateMetadata(),
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
         initialValue = initialValue,
         minValue = minValue,
         maxValue = maxValue,
-        renderingStrategy = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>
-        )
     )
 
     override fun createCopy() = newBuilder(width).withProps(props.copy())

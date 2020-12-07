@@ -25,12 +25,9 @@ class TextAreaBuilder(
 
     override fun build(): TextArea {
         return DefaultTextArea(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = props.componentRenderer as ComponentRenderer<TextArea>
-            )
         )
     }
 

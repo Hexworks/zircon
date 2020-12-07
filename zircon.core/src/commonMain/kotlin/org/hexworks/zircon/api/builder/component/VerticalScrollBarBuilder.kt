@@ -25,15 +25,12 @@ class VerticalScrollBarBuilder(
     }
 
     override fun build(): ScrollBar = DefaultVerticalScrollBar(
-        componentMetadata = generateMetadata(),
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
         minValue = minValue,
         maxValue = maxValue,
         itemsShownAtOnce = size.height,
         numberOfSteps = size.height,
-        renderingStrategy = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>
-        )
     )
 
     override fun createCopy() = newBuilder().withProps(props.copy())

@@ -34,12 +34,9 @@ class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer(
             "Can't build an Icon without an icon tile"
         }
         return DefaultIcon(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialIcon = icon.get(),
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Icon>
-            )
         )
     }
 

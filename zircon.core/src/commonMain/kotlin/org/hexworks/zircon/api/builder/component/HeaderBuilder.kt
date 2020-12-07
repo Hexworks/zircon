@@ -22,12 +22,9 @@ class HeaderBuilder(
 
     override fun build(): Header {
         return DefaultHeader(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Header>
-            )
         )
     }
 

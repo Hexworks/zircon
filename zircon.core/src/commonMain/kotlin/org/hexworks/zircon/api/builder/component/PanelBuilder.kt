@@ -14,12 +14,9 @@ class PanelBuilder
 
     override fun build(): Panel {
         return DefaultPanel(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialTitle = title,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Panel>
-            )
         )
     }
 
