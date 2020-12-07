@@ -19,11 +19,8 @@ class LogAreaBuilder(
 
     override fun build(): LogArea {
         return DefaultLogArea(
-            componentMetadata = generateMetadata(),
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = props.componentRenderer as ComponentRenderer<LogArea>
-            )
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
         )
     }
 

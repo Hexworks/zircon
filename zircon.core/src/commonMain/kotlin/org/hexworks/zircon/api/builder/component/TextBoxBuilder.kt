@@ -174,11 +174,8 @@ class TextBoxBuilder(
 
     override fun build(): TextBox {
         return DefaultTextBox(
-            componentMetadata = generateMetadata(),
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>
-            )
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
         ).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)

@@ -8,14 +8,14 @@ import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
 class DefaultHorizontalSlider(
-        componentMetadata: ComponentMetadata,
-        renderer: ComponentRenderingStrategy<Slider>,
-        minValue: Int,
-        maxValue: Int,
-        numberOfSteps: Int
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<Slider>,
+    minValue: Int,
+    maxValue: Int,
+    numberOfSteps: Int
 ) : BaseSlider(
         componentMetadata = componentMetadata,
-        renderer = renderer,
+        renderer = renderingStrategy,
         minValue = minValue,
         maxValue = maxValue,
         numberOfSteps = numberOfSteps

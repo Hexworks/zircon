@@ -28,12 +28,9 @@ class LabelBuilder(
 
     override fun build(): Label {
         return DefaultLabel(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Label>
-            )
         )
     }
 

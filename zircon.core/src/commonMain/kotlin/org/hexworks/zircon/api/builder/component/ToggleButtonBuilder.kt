@@ -29,15 +29,11 @@ class ToggleButtonBuilder(
     }
 
     override fun build(): ToggleButton {
-        val componentRenderer = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = componentRenderer as ComponentRenderer<ToggleButton>
-        )
         return DefaultToggleButton(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = text,
             initialSelected = isSelected,
-            renderingStrategy = componentRenderer
         )
     }
 

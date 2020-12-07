@@ -23,12 +23,9 @@ class ListItemBuilder(
     override fun build(): ListItem {
         val fixedText = text.withNewLinesStripped()
         return DefaultListItem(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialText = fixedText,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<ListItem>
-            )
         )
     }
 

@@ -24,12 +24,9 @@ class VBoxBuilder(
 
     override fun build(): VBox {
         return DefaultVBox(
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
             initialTitle = title,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<VBox>
-            ),
             spacing = spacing
         )
     }

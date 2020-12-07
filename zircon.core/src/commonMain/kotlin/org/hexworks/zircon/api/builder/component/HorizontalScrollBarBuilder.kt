@@ -23,15 +23,12 @@ class HorizontalScrollBarBuilder(
     }
 
     override fun build(): ScrollBar = DefaultHorizontalScrollBar(
-        componentMetadata = generateMetadata(),
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
         minValue = minValue,
         maxValue = maxValue,
         itemsShownAtOnce = size.width,
         numberOfSteps = size.width,
-        renderingStrategy = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorationRenderers,
-            componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>
-        )
     )
 
     override fun createCopy() = newBuilder().withProps(props.copy())

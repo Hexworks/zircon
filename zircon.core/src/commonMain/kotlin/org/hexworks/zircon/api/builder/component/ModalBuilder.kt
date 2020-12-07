@@ -67,7 +67,7 @@ class ModalBuilder<T : ModalResult>(
         )
         val modal = DefaultModal<T>(
             darkenPercent = darkenPercent,
-            componentMetadata = generateMetadata(),
+            componentMetadata = createMetadata(),
             renderingStrategy = componentRenderer
         )
         modal.addComponent(component)
