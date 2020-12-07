@@ -19,7 +19,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmSynthetic
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
@@ -43,7 +42,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     val tileset: TilesetResource
         get() = props.tileset
 
-    val colorTheme: Maybe<ColorTheme>
+    val colorTheme: ColorTheme?
         get() = props.colorTheme
 
     val decorationRenderers: List<ComponentDecorationRenderer>
@@ -86,7 +85,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         size = size,
         tileset = tileset,
         componentStyleSet = componentStyleSet,
-        theme = colorTheme.orElse(RuntimeConfig.config.defaultColorTheme),
+        theme = colorTheme,
         updateOnAttach = updateOnAttach
     )
 
@@ -111,7 +110,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     }
 
     override fun withColorTheme(colorTheme: ColorTheme): U {
-        props.colorTheme = Maybe.of(colorTheme)
+        props.colorTheme = colorTheme
         return this as U
     }
 

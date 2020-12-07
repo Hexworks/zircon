@@ -1,5 +1,4 @@
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
-import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     id("org.jetbrains.dokka")

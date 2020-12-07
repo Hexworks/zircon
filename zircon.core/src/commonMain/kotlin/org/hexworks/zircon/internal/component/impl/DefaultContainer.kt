@@ -121,23 +121,26 @@ open class DefaultContainer(
             component.parent = Maybe.of(parentContainer)
             component.disabledProperty
                 .updateFrom(
-                    observable = parentContainer.disabledProperty
+                    observable = parentContainer.disabledProperty,
+                    updateWhenBound = component.updateOnAttach
                 )
                 .keepWhile(component.hasParent)
             component.hiddenProperty
                 .updateFrom(
-                    observable = parentContainer.hiddenProperty
+                    observable = parentContainer.hiddenProperty,
+                    updateWhenBound = component.updateOnAttach
                 )
                 .keepWhile(component.hasParent)
             component.themeProperty
                 .updateFrom(
                     observable = parentContainer.themeProperty,
-                    updateWhenBound = theme == ColorThemes.defaultTheme()
+                    updateWhenBound = component.updateOnAttach
                 )
                 .keepWhile(component.hasParent)
             component.tilesetProperty
                 .updateFrom(
-                    observable = parentContainer.tilesetProperty
+                    observable = parentContainer.tilesetProperty,
+                    updateWhenBound = component.updateOnAttach
                 )
                 .keepWhile(component.hasParent)
         }
