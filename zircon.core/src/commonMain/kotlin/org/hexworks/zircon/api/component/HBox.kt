@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.ComponentDecorations
+import org.hexworks.zircon.api.behavior.TitleOverride
 
 /**
  * A [HBox] is a [Container] that automatically aligns elements added to it

@@ -42,8 +42,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         if (dx1 > dx2) {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                        toPoint = Position.create(endX.toInt(), startY.toInt()))
+                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                )
                 startY++
                 startX += dx2
                 endX += dx1
@@ -51,8 +52,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             endX = points[1].x.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                        toPoint = Position.create(endX.toInt(), startY.toInt()))
+                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                )
                 startY++
                 startX += dx2
                 endX += dx3
@@ -60,8 +62,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         } else {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                        toPoint = Position.create(endX.toInt(), startY.toInt()))
+                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                )
                 startY++
                 startX += dx1
                 endX += dx2
@@ -70,8 +73,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             startY = points[1].y.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                        fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                        toPoint = Position.create(endX.toInt(), startY.toInt()))
+                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
+                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                )
                 startY++
                 startX += dx3
                 endX += dx2
@@ -97,8 +101,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
     fun buildFilledTriangle(
-            p1: Position,
-            p2: Position,
-            p3: Position
+        p1: Position,
+        p2: Position,
+        p3: Position
     ) = buildFilledTriangle(TriangleParameters(p1, p2, p3))
 }

@@ -36,8 +36,8 @@ abstract class BasePosition : Position {
      * `this` object is a [PixelPosition].
      */
     override fun toPixelPosition(tileset: TilesetResource): PixelPosition =
-            this as? PixelPosition
-                    ?: PixelPosition(x * tileset.width, y * tileset.height)
+        this as? PixelPosition
+            ?: PixelPosition(x * tileset.width, y * tileset.height)
 
     /**
      * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.
@@ -51,11 +51,13 @@ abstract class BasePosition : Position {
         }
         return when (this) {
             is PixelPosition -> PixelPosition(
-                    x = x + other.x,
-                    y = y + other.y)
+                x = x + other.x,
+                y = y + other.y
+            )
             is GridPosition -> GridPosition(
-                    x = x + other.x,
-                    y = y + other.y)
+                x = x + other.x,
+                y = y + other.y
+            )
             else -> throw UnsupportedOperationException("Can't add unknown Position type")
         }
     }
@@ -72,11 +74,13 @@ abstract class BasePosition : Position {
         }
         return when (this) {
             is PixelPosition -> PixelPosition(
-                    x = x - other.x,
-                    y = y - other.y)
+                x = x - other.x,
+                y = y - other.y
+            )
             is GridPosition -> GridPosition(
-                    x = x - other.x,
-                    y = y - other.y)
+                x = x - other.x,
+                y = y - other.y
+            )
             else -> throw UnsupportedOperationException("Can't subtract unknown Position type")
         }
     }
@@ -86,26 +90,26 @@ abstract class BasePosition : Position {
      * supplied x index.
      */
     override fun withX(x: Int): Position =
-            if (this.x == x) {
-                this
-            } else if (x == 0 && y == 0) {
-                Position.zero()
-            } else {
-                create(x, y, this)
-            }
+        if (this.x == x) {
+            this
+        } else if (x == 0 && y == 0) {
+            Position.zero()
+        } else {
+            create(x, y, this)
+        }
 
     /**
      * Creates a new [Position] object representing a position with the same y index as this but with a
      * supplied y index.
      */
     override fun withY(y: Int): Position =
-            if (this.y == y) {
-                this
-            } else if (x == 0 && y == 0) {
-                Position.zero()
-            } else {
-                create(x, y, this)
-            }
+        if (this.y == y) {
+            this
+        } else if (x == 0 && y == 0) {
+            Position.zero()
+        } else {
+            create(x, y, this)
+        }
 
     /**
      * Creates a new [Position] object representing a position on the same y, but with a x offset by a

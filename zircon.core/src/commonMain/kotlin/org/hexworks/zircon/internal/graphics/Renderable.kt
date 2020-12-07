@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CanBeHidden
-import org.hexworks.zircon.api.behavior.Hideable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.graphics.TileGraphics
 

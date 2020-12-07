@@ -14,12 +14,12 @@ import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
 class DefaultSelector<T : Any>(
-        parent: HBox,
-        defaultSelected: T,
-        initialValues: Iterable<T>,
-        private val centeredText: Boolean = true,
-        private val toStringMethod: (T) -> String = Any::toString,
-        clickable: Boolean = false
+    parent: HBox,
+    defaultSelected: T,
+    initialValues: Iterable<T>,
+    private val centeredText: Boolean = true,
+    private val toStringMethod: (T) -> String = Any::toString,
+    clickable: Boolean = false
 ) : Selector<T> {
 
     override val valuesProperty: ListProperty<T> = initialValues.toProperty()
@@ -33,13 +33,15 @@ class DefaultSelector<T : Any>(
     override val selected: T
         get() = selectedValue.value
 
-    private val rightButton = Components.button().withText(Symbols.ARROW_RIGHT.toString()).withDecorations().build().apply {
-        processComponentEvents(ComponentEventType.ACTIVATED) { showNextValue() }
-    }
+    private val rightButton =
+        Components.button().withText(Symbols.ARROW_RIGHT.toString()).withDecorations().build().apply {
+            processComponentEvents(ComponentEventType.ACTIVATED) { showNextValue() }
+        }
 
-    private val leftButton = Components.button().withText(Symbols.ARROW_LEFT.toString()).withDecorations().build().apply {
-        processComponentEvents(ComponentEventType.ACTIVATED) { showPrevValue() }
-    }
+    private val leftButton =
+        Components.button().withText(Symbols.ARROW_LEFT.toString()).withDecorations().build().apply {
+            processComponentEvents(ComponentEventType.ACTIVATED) { showPrevValue() }
+        }
 
     private val labelSize = Size.create(parent.contentSize.width - (leftButton.width + rightButton.width), 1)
 
@@ -55,10 +57,10 @@ class DefaultSelector<T : Any>(
             })
         } else {
             addComponent(Components.label()
-                    .withSize(labelSize)
-                    .build().apply {
-                        initLabel()
-                    })
+                .withSize(labelSize)
+                .build().apply {
+                    initLabel()
+                })
         }
 
         addComponent(rightButton)

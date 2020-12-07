@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl.textedit.transformation
 
-import org.hexworks.zircon.internal.component.impl.textedit.TextBufferTransformation
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
+import org.hexworks.zircon.internal.component.impl.textedit.TextBufferTransformation
 
 class AddRowBreak : TextBufferTransformation {
 
@@ -12,20 +12,20 @@ class AddRowBreak : TextBufferTransformation {
 
         // we take only the chars before our cursor
         val remainingRow = cursorRow.asSequence()
-                .take(charsToKeep)
-                .toMutableList()
+            .take(charsToKeep)
+            .toMutableList()
 
         // we add the rest to a new row
         val newRow = cursorRow
-                .asSequence()
-                .drop(charsToKeep)
-                .toMutableList()
+            .asSequence()
+            .drop(charsToKeep)
+            .toMutableList()
 
         // then we replace / add the rows
         buffer.textBuffer[cursor.rowIdx] = remainingRow
         buffer.textBuffer.add(cursor.rowIdx + 1, newRow)
         buffer.cursor = cursor
-                .withRelativeRow(1)
-                .withRelativeColumn(-cursor.colIdx)
+            .withRelativeRow(1)
+            .withRelativeColumn(-cursor.colIdx)
     }
 }

@@ -21,8 +21,8 @@ object Shapes {
      */
     @JvmStatic
     fun buildFilledRectangle(
-            topLeft: Position,
-            size: Size
+        topLeft: Position,
+        size: Size
     ) = FilledRectangleFactory.createShape(RectangleParameters(topLeft, size))
 
     /**
@@ -34,9 +34,9 @@ object Shapes {
      */
     @JvmStatic
     fun buildTriangle(
-            p1: Position,
-            p2: Position,
-            p3: Position
+        p1: Position,
+        p2: Position,
+        p3: Position
     ) = TriangleFactory.createShape(TriangleParameters(p1, p2, p3))
 
     /**
@@ -50,8 +50,8 @@ object Shapes {
      */
     @JvmStatic
     fun buildRectangle(
-            topLeft: Position,
-            size: Size
+        topLeft: Position,
+        size: Size
     ) = RectangleFactory.createShape(RectangleParameters(topLeft, size))
 
     @JvmStatic
@@ -66,8 +66,8 @@ object Shapes {
      */
     @JvmStatic
     fun buildFilledTriangle(
-            p1: Position,
-            p2: Position,
-            p3: Position
+        p1: Position,
+        p2: Position,
+        p3: Position
     ) = FilledTriangleFactory.createShape(TriangleParameters(p1, p2, p3))
 }

@@ -8,15 +8,15 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.config.RuntimeConfig
 
 @Beta
 @Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 data class AnimationBuilder private constructor(
-        private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
-        private val positions: MutableList<Position> = mutableListOf(),
-        private var tick: Long = 1000L / DEFAULT_FPS,
-        private var uniqueFrameCount: Int = -1) : Builder<Animation> {
+    private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
+    private val positions: MutableList<Position> = mutableListOf(),
+    private var tick: Long = 1000L / DEFAULT_FPS,
+    private var uniqueFrameCount: Int = -1
+) : Builder<Animation> {
 
     var totalFrameCount: Int = -1
         private set
@@ -39,8 +39,10 @@ data class AnimationBuilder private constructor(
     }
 
     fun addFrame(frame: AnimationFrame) = also {
-        this.frames.add(frame as? InternalAnimationFrame
-                ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame"))
+        this.frames.add(
+            frame as? InternalAnimationFrame
+                ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame")
+        )
         recalculateFrameCountAndLength()
     }
 
@@ -49,7 +51,7 @@ data class AnimationBuilder private constructor(
             "You can't add zero frames to an animation!"
         }
         frames as? List<InternalAnimationFrame>
-                ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame")
+            ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame")
         this.frames.addAll(frames)
         recalculateFrameCountAndLength()
     }
@@ -88,31 +90,32 @@ data class AnimationBuilder private constructor(
             frame.position = positions[i]
         }
         return DefaultAnimation(
-                frames = frames,
-                tick = tick,
-                loopCount = loopCount,
-                uniqueFrameCount = uniqueFrameCount,
-                totalFrameCount = totalFrameCount)
+            frames = frames,
+            tick = tick,
+            loopCount = loopCount,
+            uniqueFrameCount = uniqueFrameCount,
+            totalFrameCount = totalFrameCount
+        )
     }
 
     override fun createCopy() = copy(
-            frames = frames
-                    .asSequence()
-                    .map { frame ->
-                        DefaultAnimationFrame(
-                                size = frame.size,
-                                layers = frame.layers.asSequence()
-                                        .map { it.createCopy().asInternalLayer() }
-                                        .toList(),
-                                repeatCount = frame.repeatCount)
-                    }
-                    .toMutableList(),
-            positions = positions.toMutableList())
+        frames = frames
+            .asSequence()
+            .map { frame ->
+                DefaultAnimationFrame(
+                    size = frame.size,
+                    layers = frame.layers.asSequence()
+                        .map { it.createCopy().asInternalLayer() }
+                        .toList(),
+                    repeatCount = frame.repeatCount)
+            }
+            .toMutableList(),
+        positions = positions.toMutableList())
 
     private fun recalculateFrameCountAndLength() {
         totalFrameCount = frames.asSequence()
-                .map { it.repeatCount }
-                .reduce(Int::plus)
+            .map { it.repeatCount }
+            .reduce(Int::plus)
         uniqueFrameCount = frames.size
     }
 

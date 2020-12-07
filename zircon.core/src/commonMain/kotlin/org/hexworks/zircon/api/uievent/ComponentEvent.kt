@@ -16,8 +16,8 @@ import org.hexworks.zircon.api.screen.Screen
  * [StopPropagation].
  */
 data class ComponentEvent(
-        /**
-         * The type of the [ComponentEvent].
-         */
-        override val type: ComponentEventType
+    /**
+     * The type of the [ComponentEvent].
+     */
+    override val type: ComponentEventType
 ) : UIEvent

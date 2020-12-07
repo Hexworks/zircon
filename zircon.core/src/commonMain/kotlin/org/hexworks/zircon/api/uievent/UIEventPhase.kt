@@ -14,12 +14,14 @@ enum class UIEventPhase {
      * from the root to the target. Happens before [TARGET] and [BUBBLE].
      */
     CAPTURE,
+
     /**
      * The target phase is when the target receives the event.
      * Note that for [TileGrid]s and [Screen]s this is the only phase
      * which will happen. Happens after [CAPTURE] and before [BUBBLE]
      */
     TARGET,
+
     /**
      * The bubbling phase happens when the ui components are being traversed
      * backwards from the target to the root. Happens after [CAPTURE] and [TARGET]

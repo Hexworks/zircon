@@ -58,12 +58,14 @@ abstract class BaseRect : Rect {
     override operator fun component4() = height
 
     override operator fun plus(rect: Rect) = Rect.create(
-            position = position + rect.position,
-            size = size + rect.size)
+        position = position + rect.position,
+        size = size + rect.size
+    )
 
     override operator fun minus(rect: Rect) = Rect.create(
-            position = position - rect.position,
-            size = size - rect.size)
+        position = position - rect.position,
+        size = size - rect.size
+    )
 
     override infix fun intersects(boundable: Boundable): Boolean {
         val otherBounds = boundable.rect
@@ -148,7 +150,7 @@ abstract class BaseRect : Rect {
 
     override fun fetchPositions(): Iterable<Position> {
         return size.fetchPositions()
-                .map { it + position }
+            .map { it + position }
     }
 
     override fun withX(x: Int) = Rect.create(position.withX(x), size)

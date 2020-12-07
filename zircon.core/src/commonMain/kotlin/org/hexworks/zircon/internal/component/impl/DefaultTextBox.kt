@@ -8,11 +8,12 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultTextBox(
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<TextBox>
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<TextBox>
 ) : TextBox, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+) {
 
     override fun acceptsFocus() = false
 

@@ -16,8 +16,8 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  */
 @Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 data class BlockBuilder<T : Tile>(
-        private var emptyTile: Maybe<T> = Maybe.empty(),
-        private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
+    private var emptyTile: Maybe<T> = Maybe.empty(),
+    private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
 ) : Builder<Block<T>> {
 
     fun withEmptyTile(tile: T) = also {
@@ -73,13 +73,14 @@ data class BlockBuilder<T : Tile>(
             "Can't build block: no empty tile supplied."
         }
         return DefaultBlock(
-                emptyTile = emptyTile.get(),
-                initialTiles = tiles.toPersistentMap()
+            emptyTile = emptyTile.get(),
+            initialTiles = tiles.toPersistentMap()
         )
     }
 
     override fun createCopy() = copy(
-            tiles = tiles.toMutableMap())
+        tiles = tiles.toMutableMap()
+    )
 
     companion object {
 

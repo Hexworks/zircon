@@ -26,12 +26,12 @@ interface RootContainer : InternalContainer {
     fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
 
     override fun addComponent(builder: Builder<Component>): AttachedComponent =
-            addComponent(builder.build())
+        addComponent(builder.build())
 
     override fun addComponents(vararg components: Component): List<AttachedComponent> =
-            components.map(::addComponent)
+        components.map(::addComponent)
 
     override fun addComponents(vararg components: Builder<Component>): List<AttachedComponent> =
-            components.map(::addComponent)
+        components.map(::addComponent)
 
 }

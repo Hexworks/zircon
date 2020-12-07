@@ -10,10 +10,10 @@ import org.hexworks.zircon.api.fragment.VerticalTabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 class DefaultVerticalTabBar(
-        contentSize: Size,
-        barSize: Size,
-        defaultSelected: String,
-        private val tabs: Map<String, Component>
+    contentSize: Size,
+    barSize: Size,
+    defaultSelected: String,
+    private val tabs: Map<String, Component>
 ) : VerticalTabBar {
 
     init {
@@ -29,26 +29,26 @@ class DefaultVerticalTabBar(
     }
 
     override val root = Components.hbox()
-            .withComponentRenderer(NoOpComponentRenderer())
-            .withSize(contentSize.withRelativeWidth(barSize.width))
-            .build()
+        .withComponentRenderer(NoOpComponentRenderer())
+        .withSize(contentSize.withRelativeWidth(barSize.width))
+        .build()
 
     private lateinit var currentTab: Button
 
     init {
         val bar = Components.vbox()
-                .withComponentRenderer(NoOpComponentRenderer())
-                .withSize(barSize)
-                .build().apply { root.addComponent(this) }
+            .withComponentRenderer(NoOpComponentRenderer())
+            .withSize(barSize)
+            .build().apply { root.addComponent(this) }
 
         var contentArea = createContentArea(contentSize)
         var contentAttachment = root.addComponent(contentArea)
 
         tabs.forEach { (tab, content) ->
             val btn = Components.button()
-                    .withText(tab)
-                    .withDecorations()
-                    .build()
+                .withText(tab)
+                .withDecorations()
+                .build()
             bar.addComponent(btn).onActivated {
                 contentAttachment.detach()
                 contentAttachment = root.addComponent(createContentArea(contentSize))
@@ -67,10 +67,10 @@ class DefaultVerticalTabBar(
     }
 
     private fun createContentArea(size: Size) = Components.panel()
-            .withRendererFunction { tileGraphics, ctx ->
-                val bg = ctx.component.theme.primaryBackgroundColor.withAlpha(25)
-                tileGraphics.fill(Tile.empty().withBackgroundColor(bg))
-            }
-            .withSize(size)
-            .build()
+        .withRendererFunction { tileGraphics, ctx ->
+            val bg = ctx.component.theme.primaryBackgroundColor.withAlpha(25)
+            tileGraphics.fill(Tile.empty().withBackgroundColor(bg))
+        }
+        .withSize(size)
+        .build()
 }

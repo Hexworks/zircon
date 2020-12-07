@@ -7,8 +7,8 @@ import kotlin.jvm.JvmStatic
  * This enum contains the metadata for the built-in True Type fonts.
  */
 enum class BuiltInTrueTypeFontResource(
-        private val fileName: String,
-        private val ratioFn: (Int) -> Int
+    private val fileName: String,
+    private val ratioFn: (Int) -> Int
 ) {
 
     /**
@@ -16,6 +16,7 @@ enum class BuiltInTrueTypeFontResource(
      */
     UBUNTU_MONO("ubuntu_mono", { it.div(2) }),
     INCONSOLATA("inconsolata", { it.div(2) }),
+
     /**
      * These fonts are part of the Ultimate Oldschool PC Font Pack and licensed under
      * Creative Commons Attribution-ShareAlike 4.0 International License.
@@ -37,11 +38,12 @@ enum class BuiltInTrueTypeFontResource(
     VTECH_NARROW("vtech", { it.div(2) });
 
     fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
-            path = "$FONTS_DIR/$fileName.$FONTS_EXT",
-            width = ratioFn.invoke(height),
-            height = height,
-            tilesetSourceType = TilesetSourceType.JAR,
-            name = name)
+        path = "$FONTS_DIR/$fileName.$FONTS_EXT",
+        width = ratioFn.invoke(height),
+        height = height,
+        tilesetSourceType = TilesetSourceType.JAR,
+        name = name
+    )
 
     companion object {
 
@@ -50,17 +52,17 @@ enum class BuiltInTrueTypeFontResource(
 
         @JvmStatic
         fun squareFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.ratioFn(1) == 1 }
-                .map { it.toTilesetResource(height) }
+            .filter { it.ratioFn(1) == 1 }
+            .map { it.toTilesetResource(height) }
 
         @JvmStatic
         fun wideFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.ratioFn(2) > 2 }
-                .map { it.toTilesetResource(height) }
+            .filter { it.ratioFn(2) > 2 }
+            .map { it.toTilesetResource(height) }
 
         @JvmStatic
         fun narrowFonts(height: Int): List<TilesetResource> = values()
-                .filter { it.ratioFn(2) < 2 }
-                .map { it.toTilesetResource(height) }
+            .filter { it.ratioFn(2) < 2 }
+            .map { it.toTilesetResource(height) }
     }
 }

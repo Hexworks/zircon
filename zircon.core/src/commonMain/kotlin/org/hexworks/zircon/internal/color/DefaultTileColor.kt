@@ -3,10 +3,12 @@ package org.hexworks.zircon.internal.color
 import org.hexworks.zircon.api.color.ColorInterpolator
 import org.hexworks.zircon.api.color.TileColor
 
-internal data class DefaultTileColor(override val red: Int,
-                                     override val green: Int,
-                                     override val blue: Int,
-                                     override val alpha: Int = TileColor.defaultAlpha()) : TileColor {
+internal data class DefaultTileColor(
+    override val red: Int,
+    override val green: Int,
+    override val blue: Int,
+    override val alpha: Int = TileColor.defaultAlpha()
+) : TileColor {
 
     override val cacheKey = "TextColor(r=$red,g=$green,b=$blue,a=$alpha)"
 
@@ -49,7 +51,8 @@ internal data class DefaultTileColor(override val red: Int,
             red = (red * (1f - percentage)).toInt(),
             green = (green * (1f - percentage)).toInt(),
             blue = (blue * (1f - percentage)).toInt(),
-            alpha = alpha)
+            alpha = alpha
+        )
     }
 
     override fun lightenByPercent(percentage: Double): TileColor {
@@ -58,7 +61,8 @@ internal data class DefaultTileColor(override val red: Int,
             red = (red * (1f + percentage)).toInt(),
             green = (green * (1f + percentage)).toInt(),
             blue = (blue * (1f + percentage)).toInt(),
-            alpha = alpha)
+            alpha = alpha
+        )
     }
 
     private fun requireRange(percentage: Double) {

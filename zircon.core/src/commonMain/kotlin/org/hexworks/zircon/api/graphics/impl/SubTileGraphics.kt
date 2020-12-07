@@ -25,8 +25,8 @@ import org.hexworks.zircon.internal.graphics.InternalTileGraphics
  */
 @Suppress("OverridingDeprecatedMember")
 class SubTileGraphics(
-        private val rect: Rect,
-        private val backend: InternalTileGraphics
+    private val rect: Rect,
+    private val backend: InternalTileGraphics
 ) : InternalTileGraphics {
 
     override val size = rect.size
@@ -38,11 +38,12 @@ class SubTileGraphics(
         get() {
             val (tiles, tileset) = backend.state
             return TileGraphicsState.create(
-                    tiles = tiles.filter {
-                        rect.containsPosition(it.key)
-                    }.map {
-                        it.key - offset to it.value
-                    }.toMap(), tileset = tileset, size = size)
+                tiles = tiles.filter {
+                    rect.containsPosition(it.key)
+                }.map {
+                    it.key - offset to it.value
+                }.toMap(), tileset = tileset, size = size
+            )
         }
 
     override val tilesetProperty = object : Property<TilesetResource> {
@@ -59,11 +60,18 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun updateFrom(observable: ObservableValue<TilesetResource>, updateWhenBound: Boolean): Binding<TilesetResource> {
+        override fun updateFrom(
+            observable: ObservableValue<TilesetResource>,
+            updateWhenBound: Boolean
+        ): Binding<TilesetResource> {
             restrictOperation()
         }
 
-        override fun <U : Any> updateFrom(observable: ObservableValue<U>, updateWhenBound: Boolean, converter: (U) -> TilesetResource): Binding<TilesetResource> {
+        override fun <U : Any> updateFrom(
+            observable: ObservableValue<U>,
+            updateWhenBound: Boolean,
+            converter: (U) -> TilesetResource
+        ): Binding<TilesetResource> {
             restrictOperation()
         }
 
@@ -71,7 +79,11 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun <S : Any> bind(other: Property<S>, updateWhenBound: Boolean, converter: IsomorphicConverter<S, TilesetResource>): Binding<TilesetResource> {
+        override fun <S : Any> bind(
+            other: Property<S>,
+            updateWhenBound: Boolean,
+            converter: IsomorphicConverter<S, TilesetResource>
+        ): Binding<TilesetResource> {
             restrictOperation()
         }
 
@@ -129,10 +141,10 @@ class SubTileGraphics(
         val (tiles, _, size) = state
         val result = mutableMapOf<Position, Tile>()
         size.fetchPositions()
-                .minus(tiles.keys.filter { it != Tile.empty() })
-                .forEach { emptyPos ->
-                    result[emptyPos] = filler
-                }
+            .minus(tiles.keys.filter { it != Tile.empty() })
+            .forEach { emptyPos ->
+                result[emptyPos] = filler
+            }
         draw(result)
     }
 
@@ -155,9 +167,11 @@ class SubTileGraphics(
     }
 
     override fun toSubTileGraphics(rect: Rect) = backend.toSubTileGraphics(
-            Rect.create(
-                    position = offset + rect.position,
-                    size = size.min(rect.size)))
+        Rect.create(
+            position = offset + rect.position,
+            size = size.min(rect.size)
+        )
+    )
 
 
     // RESTRICTED OPERATIONS

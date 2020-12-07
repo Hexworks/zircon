@@ -15,7 +15,7 @@ import kotlin.jvm.JvmStatic
  * @see AppConfig for all the default values.
  */
 data class AppConfigBuilder(
-        private var config: AppConfig = AppConfig.defaultConfiguration()
+    private var config: AppConfig = AppConfig.defaultConfiguration()
 ) : Builder<AppConfig> {
 
     /**
@@ -73,8 +73,8 @@ data class AppConfigBuilder(
     @JvmOverloads
     fun withFullScreen(fullScreen: Boolean = true) = also {
         config = config.copy(
-                fullScreen = fullScreen,
-                borderless = fullScreen
+            fullScreen = fullScreen,
+            borderless = fullScreen
         )
     }
 
@@ -175,8 +175,8 @@ data class AppConfigBuilder(
      */
     fun withIcon(iconData: ByteArray) = also {
         config = config.copy(
-                iconData = iconData,
-                iconPath = null
+            iconData = iconData,
+            iconPath = null
         )
     }
 
@@ -186,8 +186,8 @@ data class AppConfigBuilder(
      */
     fun withIcon(iconPath: String) = also {
         config = config.copy(
-                iconPath = iconPath,
-                iconData = null
+            iconPath = iconPath,
+            iconData = null
         )
     }
 
@@ -197,8 +197,8 @@ data class AppConfigBuilder(
     }
 
     @Deprecated(
-            message = "Use withBorderless instead",
-            replaceWith = ReplaceWith("this.withBorderless(true)")
+        message = "Use withBorderless instead",
+        replaceWith = ReplaceWith("this.withBorderless(true)")
     )
     fun borderless() = withBorderless(true)
 
@@ -212,8 +212,8 @@ data class AppConfigBuilder(
     fun fullScreen() = withFullScreen(true)
 
     @Deprecated(
-            message = "use withFullScreen instead",
-            replaceWith = ReplaceWith("this.withFullScreen(screenWidth, screenHeight)")
+        message = "use withFullScreen instead",
+        replaceWith = ReplaceWith("this.withFullScreen(screenWidth, screenHeight)")
     )
     fun fullScreen(screenWidth: Int, screenHeight: Int) = withFullScreen(screenWidth, screenHeight)
 

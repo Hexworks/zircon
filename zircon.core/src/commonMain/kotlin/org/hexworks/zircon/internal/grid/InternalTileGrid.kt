@@ -14,14 +14,17 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
      * The base layer of this [InternalTileGrid] (at index `0`).
      */
     var backend: Layer
+
     /**
      * The [Layerable] this [InternalTileGrid] currently uses.
      */
     var layerable: InternalLayerable
+
     /**
      * The [InternalAnimationRunner] this [InternalTileGrid] currently uses.
      */
     var animationHandler: InternalAnimationRunner
+
     /**
      * The [InternalCursorHandler] this [InternalTileGrid] currently uses.
      */

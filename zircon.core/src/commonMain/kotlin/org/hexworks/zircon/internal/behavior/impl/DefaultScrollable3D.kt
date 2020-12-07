@@ -8,13 +8,15 @@ import org.hexworks.zircon.api.data.Size3D
 import kotlin.math.max
 import kotlin.math.min
 
-class DefaultScrollable3D(initialVisibleSize: Size3D,
-                          initialActualSize: Size3D)
-    : Scrollable3D {
+class DefaultScrollable3D(
+    initialVisibleSize: Size3D,
+    initialActualSize: Size3D
+) : Scrollable3D {
 
     private val scrollable2D = DefaultScrollable(
-            visibleSize = initialVisibleSize.to2DSize(),
-            initialActualSize = initialActualSize.to2DSize())
+        visibleSize = initialVisibleSize.to2DSize(),
+        initialActualSize = initialActualSize.to2DSize()
+    )
 
     override val visibleSize = initialVisibleSize
     override val actualSize = initialActualSize
@@ -27,26 +29,30 @@ class DefaultScrollable3D(initialVisibleSize: Size3D,
     override var visibleOffset by visibleOffsetValue.asDelegate()
 
     override fun scrollOneRight() = Position3D.from2DPosition(
-            position = scrollable2D.scrollOneRight(),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollOneRight(),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollOneLeft() = Position3D.from2DPosition(
-            position = scrollable2D.scrollOneLeft(),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollOneLeft(),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollOneForward() = Position3D.from2DPosition(
-            position = scrollable2D.scrollOneDown(),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollOneDown(),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollOneBackward() = Position3D.from2DPosition(
-            position = scrollable2D.scrollOneUp(),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollOneUp(),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
@@ -65,26 +71,30 @@ class DefaultScrollable3D(initialVisibleSize: Size3D,
     }
 
     override fun scrollRightBy(x: Int) = Position3D.from2DPosition(
-            position = scrollable2D.scrollRightBy(x),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollRightBy(x),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollLeftBy(x: Int) = Position3D.from2DPosition(
-            position = scrollable2D.scrollLeftBy(x),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollLeftBy(x),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollForwardBy(y: Int) = Position3D.from2DPosition(
-            position = scrollable2D.scrollDownBy(y),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollDownBy(y),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 
     override fun scrollBackwardBy(y: Int) = Position3D.from2DPosition(
-            position = scrollable2D.scrollUpBy(y),
-            z = visibleOffset.z).apply {
+        position = scrollable2D.scrollUpBy(y),
+        z = visibleOffset.z
+    ).apply {
         visibleOffset = this
     }
 

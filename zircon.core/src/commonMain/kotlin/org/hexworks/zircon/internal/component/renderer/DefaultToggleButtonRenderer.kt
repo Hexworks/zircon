@@ -22,34 +22,47 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
             text
         }
         tileGraphics.fillWithText(
-                text = "   $clearedText",
-                style = context.currentStyle)
+            text = "   $clearedText",
+            style = context.currentStyle
+        )
 
         val isToggled = context.component.isSelected
         val theme = context.component.theme
         val toggledBackground = ANSITileColor.GRAY.withAlpha(0)
         val unToggledBackground = ANSITileColor.GRAY.withAlpha(0)
-        val bar = Tile.createCharacterTile(Symbols.SINGLE_LINE_HORIZONTAL, StyleSet.create(
+        val bar = Tile.createCharacterTile(
+            Symbols.SINGLE_LINE_HORIZONTAL, StyleSet.create(
                 foregroundColor = theme.secondaryForegroundColor,
-                backgroundColor = if (isToggled) toggledBackground else unToggledBackground))
+                backgroundColor = if (isToggled) toggledBackground else unToggledBackground
+            )
+        )
         if (isToggled) {
             tileGraphics.draw(bar, Position.create(0, 0))
             tileGraphics.draw(
-                    tile = Tile.createCharacterTile(Symbols.TRIPLE_BAR, StyleSet.create(
-                            foregroundColor = theme.accentColor,
-                            backgroundColor = toggledBackground)),
-                    drawPosition = Position.create(1, 0))
+                tile = Tile.createCharacterTile(
+                    Symbols.TRIPLE_BAR, StyleSet.create(
+                        foregroundColor = theme.accentColor,
+                        backgroundColor = toggledBackground
+                    )
+                ),
+                drawPosition = Position.create(1, 0)
+            )
         } else {
             tileGraphics.draw(
-                    tile = Tile.createCharacterTile(Symbols.TRIPLE_BAR, StyleSet.create(
-                            foregroundColor = theme.primaryForegroundColor,
-                            backgroundColor = unToggledBackground)),
-                    drawPosition = Position.create(0, 0))
+                tile = Tile.createCharacterTile(
+                    Symbols.TRIPLE_BAR, StyleSet.create(
+                        foregroundColor = theme.primaryForegroundColor,
+                        backgroundColor = unToggledBackground
+                    )
+                ),
+                drawPosition = Position.create(0, 0)
+            )
             tileGraphics.draw(bar, Position.create(1, 0))
         }
         tileGraphics.draw(
-                tile = Tile.empty(),
-                drawPosition = Position.create(2, 0))
+            tile = Tile.empty(),
+            drawPosition = Position.create(2, 0)
+        )
     }
 
     companion object {

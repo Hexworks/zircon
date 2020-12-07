@@ -28,10 +28,10 @@ import kotlin.jvm.Synchronized
  * If no modals are open, the [mainContainer] is active.
  */
 class ModalComponentContainer(
-        private val metadata: ComponentMetadata,
-        private val mainContainer: InternalComponentContainer = buildContainer(
-                metadata = metadata
-        )
+    private val metadata: ComponentMetadata,
+    private val mainContainer: InternalComponentContainer = buildContainer(
+        metadata = metadata
+    )
 ) : InternalComponentContainer {
 
     private val logger = LoggerFactory.getLogger(this::class)
@@ -91,7 +91,8 @@ class ModalComponentContainer(
         val previousContainer = containerStack.fetchLast()
         previousContainer.deactivate()
         val modalContainer = buildContainer(
-                metadata = metadata)
+            metadata = metadata
+        )
         containerStack.add(modalContainer)
         modal.onClosed {
             modalContainer.deactivate()
@@ -122,14 +123,14 @@ class ModalComponentContainer(
 
         private fun buildContainer(metadata: ComponentMetadata): InternalComponentContainer {
             val renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = listOf(),
-                    componentRenderer = RootContainerRenderer()
+                decorationRenderers = listOf(),
+                componentRenderer = RootContainerRenderer()
             )
             val container = DefaultComponentContainer(
-                    root = DefaultRootContainer(
-                            componentMetadata = metadata,
-                            renderingStrategy = renderingStrategy
-                    )
+                root = DefaultRootContainer(
+                    componentMetadata = metadata,
+                    renderingStrategy = renderingStrategy
+                )
             )
             container.theme = ColorThemes.empty()
             return container

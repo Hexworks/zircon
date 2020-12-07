@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  *
  * @param T the type of the draw surface (eg.: Graphics2D)
  */
-interface TilesetLoader<T: Any> {
+interface TilesetLoader<T : Any> {
 
     /**
      * Loads a [Tileset] using the given `resource`.

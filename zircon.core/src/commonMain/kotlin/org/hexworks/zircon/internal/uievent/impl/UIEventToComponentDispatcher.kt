@@ -33,8 +33,8 @@ import kotlin.jvm.JvmSynthetic
  * to [Component]s.
  */
 class UIEventToComponentDispatcher(
-        private val root: RootContainer,
-        private val focusOrderList: ComponentFocusOrderList
+    private val root: RootContainer,
+    private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
 
     private var lastMousePosition = Position.unknown()
@@ -121,16 +121,22 @@ class UIEventToComponentDispatcher(
      */
     @ExperimentalContracts
     private fun handleHoveredComponentChange(event: MouseEvent): UIEventResponse {
-        val exitedResponse = dispatch(event.copy(
+        val exitedResponse = dispatch(
+            event.copy(
                 type = MOUSE_EXITED,
-                position = lastMousePosition))
+                position = lastMousePosition
+            )
+        )
         lastMousePosition = event.position
         root.fetchComponentByPosition(lastMousePosition).map {
             lastHoveredComponent = it
         }
-        val enteredResponse = dispatch(event.copy(
+        val enteredResponse = dispatch(
+            event.copy(
                 type = MOUSE_ENTERED,
-                position = lastMousePosition))
+                position = lastMousePosition
+            )
+        )
         return exitedResponse.pickByPrecedence(enteredResponse)
     }
 
@@ -180,7 +186,12 @@ class UIEventToComponentDispatcher(
      *   trying the default actions.
      */
     @ExperimentalContracts
-    fun executePhase(component: InternalComponent, event: UIEvent, phase: UIEventPhase, previousResult: UIEventResponse): UIEventResponse {
+    fun executePhase(
+        component: InternalComponent,
+        event: UIEvent,
+        phase: UIEventPhase,
+        previousResult: UIEventResponse
+    ): UIEventResponse {
         var result = previousResult
         result = result.pickByPrecedence(component.process(event, phase))
         if (result.shouldStopPropagation()) {
@@ -282,17 +293,18 @@ class UIEventToComponentDispatcher(
 
 @ExperimentalContracts
 private fun mouseExitedComponent(
-        event: UIEvent,
-        lastMousePosition: Position,
-        lastHoveredComponent: Component,
-        root: RootContainer
+    event: UIEvent,
+    lastMousePosition: Position,
+    lastHoveredComponent: Component,
+    root: RootContainer
 ): Boolean {
     contract {
         returns(true) implies (event is MouseEvent)
     }
     return if (event is MouseEvent &&
-            event.type in setOf(MOUSE_MOVED, MOUSE_DRAGGED) &&
-            event.position != lastMousePosition) {
+        event.type in setOf(MOUSE_MOVED, MOUSE_DRAGGED) &&
+        event.position != lastMousePosition
+    ) {
         root.fetchComponentByPosition(event.position).map { currentComponent ->
             lastHoveredComponent.id != currentComponent.id
         }.orElse(false)

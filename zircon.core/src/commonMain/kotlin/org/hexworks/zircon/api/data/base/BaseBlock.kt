@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.data.base
 
 import kotlinx.collections.immutable.PersistentMap
-import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
@@ -14,8 +13,8 @@ import org.hexworks.zircon.platform.extension.getOrDefault
  * [Block] to implement custom blocks.
  */
 abstract class BaseBlock<T : Tile>(
-        override val emptyTile: T,
-        override var tiles: PersistentMap<BlockTileType, T>
+    override val emptyTile: T,
+    override var tiles: PersistentMap<BlockTileType, T>
 ) : Block<T> {
 
     override var top: T
@@ -92,11 +91,12 @@ abstract class BaseBlock<T : Tile>(
 
     override fun createCopy(): Block<T> {
         throw UnsupportedOperationException(
-                "This implementation of Block doesn't support creating a copy. Consider extending BlockBase and implementing it.")
+            "This implementation of Block doesn't support creating a copy. Consider extending BlockBase and implementing it."
+        )
     }
 
     override fun toBuilder() = Block.newBuilder<T>()
-            .withEmptyTile(emptyTile)
-            .withTiles(tiles)
+        .withEmptyTile(emptyTile)
+        .withTiles(tiles)
 
 }

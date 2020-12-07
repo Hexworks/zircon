@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.*
 import org.hexworks.zircon.internal.resource.CP437TilesetResource
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import kotlin.jvm.JvmStatic
 
@@ -442,15 +442,15 @@ object CP437TilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromFilesystem(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return CP437TilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.FILESYSTEM
         )
     }
 
@@ -461,15 +461,15 @@ object CP437TilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromJar(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return CP437TilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.JAR
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.JAR
         )
     }
 }

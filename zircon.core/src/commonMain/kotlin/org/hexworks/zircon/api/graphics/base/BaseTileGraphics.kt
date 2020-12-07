@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
@@ -22,8 +21,8 @@ import org.hexworks.zircon.internal.graphics.InternalTileGraphics
  * use this class as a base class.
  */
 abstract class BaseTileGraphics(
-        initialTileset: TilesetResource,
-        initialSize: Size
+    initialTileset: TilesetResource,
+    initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
 
     final override val tilesetProperty = initialTileset.toProperty { newValue ->
@@ -35,51 +34,64 @@ abstract class BaseTileGraphics(
     final override val size = initialSize
 
     override fun draw(tileComposite: TileComposite) = draw(
-            tileComposite = tileComposite,
-            drawPosition = Position.zero(),
-            drawArea = tileComposite.size)
+        tileComposite = tileComposite,
+        drawPosition = Position.zero(),
+        drawArea = tileComposite.size
+    )
 
-    override fun draw(tileComposite: TileComposite,
-                            drawPosition: Position) = draw(
-            tileComposite = tileComposite,
-            drawPosition = drawPosition,
-            drawArea = tileComposite.size)
+    override fun draw(
+        tileComposite: TileComposite,
+        drawPosition: Position
+    ) = draw(
+        tileComposite = tileComposite,
+        drawPosition = drawPosition,
+        drawArea = tileComposite.size
+    )
 
-    override fun draw(tileComposite: TileComposite,
-                            drawPosition: Position,
-                            drawArea: Size) = draw(
-            tileMap = tileComposite.tiles,
-            drawPosition = drawPosition,
-            drawArea = drawArea)
+    override fun draw(
+        tileComposite: TileComposite,
+        drawPosition: Position,
+        drawArea: Size
+    ) = draw(
+        tileMap = tileComposite.tiles,
+        drawPosition = drawPosition,
+        drawArea = drawArea
+    )
 
     override fun draw(tileMap: Map<Position, Tile>) = draw(
-            tileMap = tileMap,
-            drawPosition = Position.zero(),
-            drawArea = this.size)
+        tileMap = tileMap,
+        drawPosition = Position.zero(),
+        drawArea = this.size
+    )
 
-    override fun draw(tileMap: Map<Position, Tile>,
-                            drawPosition: Position) = draw(
-            tileMap = tileMap,
-            drawPosition = drawPosition,
-            drawArea = this.size)
+    override fun draw(
+        tileMap: Map<Position, Tile>,
+        drawPosition: Position
+    ) = draw(
+        tileMap = tileMap,
+        drawPosition = drawPosition,
+        drawArea = this.size
+    )
 
     override fun toString(): String {
         val currTiles = tiles
         return (0 until height).joinToString("") { y ->
             (0 until width).joinToString("") { x ->
                 (currTiles[Position.create(x, y)] ?: Tile.defaultTile())
-                        .asCharacterTile()
-                        .orElse(Tile.defaultTile())
-                        .character.toString()
+                    .asCharacterTile()
+                    .orElse(Tile.defaultTile())
+                    .character.toString()
             }.plus("\n")
         }.trim()
     }
 
     override fun toSubTileGraphics(
-            rect: Rect): SubTileGraphics {
+        rect: Rect
+    ): SubTileGraphics {
         return SubTileGraphics(
-                rect = rect,
-                backend = this)
+            rect = rect,
+            backend = this
+        )
     }
 
     override fun toTileImage(): TileImage {
@@ -89,9 +101,9 @@ abstract class BaseTileGraphics(
 
     override fun toLayer(offset: Position): Layer {
         return if (this is Layer) this else LayerBuilder.newBuilder()
-                .withOffset(offset)
-                .withTileGraphics(createCopy())
-                .build()
+            .withOffset(offset)
+            .withTileGraphics(createCopy())
+            .build()
     }
 
     override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())

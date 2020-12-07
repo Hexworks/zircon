@@ -6,8 +6,10 @@ import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 /**
  * Represents the position where a user edits a document.
  */
-data class Cursor constructor(val rowIdx: Int = 0,
-                              val colIdx: Int = 0) {
+data class Cursor constructor(
+    val rowIdx: Int = 0,
+    val colIdx: Int = 0
+) {
 
     val position: Position
         get() = Position.create(colIdx, rowIdx)
@@ -31,7 +33,7 @@ data class Cursor constructor(val rowIdx: Int = 0,
     fun canMoveLeft() = colIdx > 0
 
     fun canMoveRight(textBuffer: EditableTextBuffer) =
-            textBuffer.getLastColumnIdxForRow(rowIdx) >= colIdx
+        textBuffer.getLastColumnIdxForRow(rowIdx) >= colIdx
 
     fun withRow(rowIdx: Int) = copy(rowIdx = rowIdx)
 

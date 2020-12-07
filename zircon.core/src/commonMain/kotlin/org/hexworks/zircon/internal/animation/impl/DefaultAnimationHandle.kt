@@ -11,9 +11,9 @@ import org.hexworks.zircon.internal.animation.InternalAnimationRunner
  * Default implementation of the [AnimationHandle] interface.
  */
 internal class DefaultAnimationHandle(
-        state: AnimationState,
-        private val animationRunner: InternalAnimationRunner,
-        private val animation: InternalAnimation
+    state: AnimationState,
+    private val animationRunner: InternalAnimationRunner,
+    private val animation: InternalAnimation
 ) : AnimationHandle, Animation by animation {
 
     private val stateProperty = state.toProperty()

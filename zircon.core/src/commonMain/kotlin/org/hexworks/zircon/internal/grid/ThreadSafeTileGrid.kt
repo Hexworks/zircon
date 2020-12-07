@@ -31,17 +31,18 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
 
 class ThreadSafeTileGrid(
-        initialTileset: TilesetResource,
-        initialSize: Size,
-        override var layerable: InternalLayerable = buildLayerable(initialSize),
-        override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
-        override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
-                initialCursorSpace = initialSize),
-        private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+    initialTileset: TilesetResource,
+    initialSize: Size,
+    override var layerable: InternalLayerable = buildLayerable(initialSize),
+    override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
+    override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
+        initialCursorSpace = initialSize
+    ),
+    private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalTileGrid,
-        ShutdownHook by DefaultShutdownHook(),
-        UIEventProcessor by eventProcessor,
-        ViewContainer by ViewContainer.create() {
+    ShutdownHook by DefaultShutdownHook(),
+    UIEventProcessor by eventProcessor,
+    ViewContainer by ViewContainer.create() {
 
     init {
         initializeLayerable(initialSize, initialTileset)
@@ -223,16 +224,18 @@ class ThreadSafeTileGrid(
     }
 
     private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {
-        layerable.addLayer(Layer.newBuilder()
+        layerable.addLayer(
+            Layer.newBuilder()
                 .withSize(initialSize)
                 .withTileset(initialTileset)
-                .build())
+                .build()
+        )
     }
 
 }
 
 private fun buildLayerable(initialSize: Size): ThreadSafeLayerable {
     return ThreadSafeLayerable(
-            initialSize = initialSize
+        initialSize = initialSize
     )
 }

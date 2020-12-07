@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Tile
  * [Tile] for the [org.hexworks.zircon.internal.renderer.Renderer].
  * **Note that** this is an ephemeral change and won't modify any persistent state.
  */
-interface TileTransformModifier<T: Tile> : Modifier {
+interface TileTransformModifier<T : Tile> : Modifier {
 
     /**
      * Transforms the given [Tile] and returns the result.

@@ -22,15 +22,16 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.jvm.Synchronized
 
 class DefaultComponentContainer(
-        private val root: RootContainer,
-        private val focusOrderList: ComponentFocusOrderList = DefaultComponentFocusOrderList(root),
-        private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
-                root = root,
-                focusOrderList = focusOrderList)
+    private val root: RootContainer,
+    private val focusOrderList: ComponentFocusOrderList = DefaultComponentFocusOrderList(root),
+    private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
+        root = root,
+        focusOrderList = focusOrderList
+    )
 ) : InternalComponentContainer,
-        ComponentContainer by root,
-        ComponentFocusOrderList by focusOrderList,
-        UIEventDispatcher by dispatcher {
+    ComponentContainer by root,
+    ComponentFocusOrderList by focusOrderList,
+    UIEventDispatcher by dispatcher {
 
     override val isActive = false.toProperty()
     override val flattenedTree: List<InternalComponent>

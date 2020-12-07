@@ -5,17 +5,18 @@ import org.hexworks.zircon.api.Beta
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 @Beta
 enum class BoxType(
-        val topLeft: Char,
-        val topRight: Char,
-        val bottomLeft: Char,
-        val bottomRight: Char,
-        val vertical: Char,
-        val horizontal: Char,
-        val connectorCross: Char,
-        val connectorLeft: Char,
-        val connectorRight: Char,
-        val connectorDown: Char,
-        val connectorUp: Char) {
+    val topLeft: Char,
+    val topRight: Char,
+    val bottomLeft: Char,
+    val bottomRight: Char,
+    val vertical: Char,
+    val horizontal: Char,
+    val connectorCross: Char,
+    val connectorLeft: Char,
+    val connectorRight: Char,
+    val connectorDown: Char,
+    val connectorUp: Char
+) {
 
     BASIC('+', '+', '+', '+', '|', '-', '+', '+', '+', '+', '+'),
     SINGLE('┌', '┐', '└', '┘', '│', '─', '┼', '┤', '├', '┬', '┴'),

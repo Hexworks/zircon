@@ -14,8 +14,8 @@ interface Closeable {
         get() = isClosed
 
     @Deprecated(
-            message = "This will be replaced by closedValue in the next release",
-            replaceWith = ReplaceWith("closedValue")
+        message = "This will be replaced by closedValue in the next release",
+        replaceWith = ReplaceWith("closedValue")
     )
     val isClosed: ObservableValue<Boolean>
 

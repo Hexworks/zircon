@@ -9,8 +9,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.Shape
 import kotlin.math.max
 
-class DefaultShape(override val positions: Set<Position> = setOf())
-    : Shape, Collection<Position> by positions {
+class DefaultShape(override val positions: Set<Position> = setOf()) : Shape, Collection<Position> by positions {
 
     override fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics {
         val offsetPositions = offsetToDefaultPosition()
@@ -21,9 +20,9 @@ class DefaultShape(override val positions: Set<Position> = setOf())
             maxRow = max(maxRow, row)
         }
         val result = TileGraphicsBuilder.newBuilder()
-                .withSize(Size.create(maxCol + 1, maxRow + 1))
-                .withTileset(tileset)
-                .build()
+            .withSize(Size.create(maxCol + 1, maxRow + 1))
+            .withTileset(tileset)
+            .build()
         offsetPositions.forEach {
             result.draw(tile, it)
         }
@@ -35,10 +34,10 @@ class DefaultShape(override val positions: Set<Position> = setOf())
             "You can't transform a Shape with zero points!"
         }
         val offset = Position.create(
-                x = positions.minByOrNull { it.x }!!.x,
-                y = positions.minByOrNull { it.y }!!.y
+            x = positions.minByOrNull { it.x }!!.x,
+            y = positions.minByOrNull { it.y }!!.y
         )
         return DefaultShape(positions.map { it - offset }
-                .toSet())
+            .toSet())
     }
 }

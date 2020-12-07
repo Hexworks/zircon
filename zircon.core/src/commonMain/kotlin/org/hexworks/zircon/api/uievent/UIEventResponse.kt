@@ -6,16 +6,17 @@ import kotlin.jvm.JvmStatic
  * Represents the possible responses to an [UIEvent].
  */
 sealed class UIEventResponse(
-        /**
-         * Tells whether the [UIEvent] had any effect on
-         * the underlying system or not.
-         */
-        val eventProcessed: Boolean,
-        /**
-         * How important the given response is compared to
-         * the others.
-         */
-        private val precedence: Int) {
+    /**
+     * Tells whether the [UIEvent] had any effect on
+     * the underlying system or not.
+     */
+    val eventProcessed: Boolean,
+    /**
+     * How important the given response is compared to
+     * the others.
+     */
+    private val precedence: Int
+) {
 
     fun hasPrecedenceOver(other: UIEventResponse) = this.precedence > other.precedence
 

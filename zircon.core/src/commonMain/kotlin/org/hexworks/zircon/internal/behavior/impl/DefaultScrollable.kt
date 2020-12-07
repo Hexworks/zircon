@@ -6,8 +6,10 @@ import org.hexworks.zircon.api.data.Size
 import kotlin.math.max
 import kotlin.math.min
 
-class DefaultScrollable(override val visibleSize: Size,
-                        initialActualSize: Size) : Scrollable {
+class DefaultScrollable(
+    override val visibleSize: Size,
+    initialActualSize: Size
+) : Scrollable {
 
     override var actualSize: Size = initialActualSize
         set(value) {

@@ -19,24 +19,25 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
         val checkBox = STATES.getValue(state)
         val checkBoxWithLabel =
-                if (text == "") checkBox
-                else {
-                    val maxTextLength = tileGraphics.size.width - DECORATION_WIDTH
-                    val clearedText =
-                            if (text.length > maxTextLength) {
-                                text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
-                            } else {
-                                text
-                            }
-                    when (labelAlignment) {
-                        DefaultCheckBox.CheckBoxAlignment.LEFT -> "$clearedText $checkBox"
-                        DefaultCheckBox.CheckBoxAlignment.RIGHT -> "$checkBox $clearedText"
+            if (text == "") checkBox
+            else {
+                val maxTextLength = tileGraphics.size.width - DECORATION_WIDTH
+                val clearedText =
+                    if (text.length > maxTextLength) {
+                        text.substring(0, maxTextLength - 3).plus(ELLIPSIS)
+                    } else {
+                        text
                     }
+                when (labelAlignment) {
+                    DefaultCheckBox.CheckBoxAlignment.LEFT -> "$clearedText $checkBox"
+                    DefaultCheckBox.CheckBoxAlignment.RIGHT -> "$checkBox $clearedText"
                 }
+            }
 
         tileGraphics.fillWithText(
-                text = checkBoxWithLabel,
-                style = context.currentStyle)
+            text = checkBoxWithLabel,
+            style = context.currentStyle
+        )
     }
 
     companion object {
@@ -50,10 +51,11 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
         const val DECORATION_WIDTH = BUTTON_WIDTH + 1
 
         private val STATES = mapOf(
-                Pair(UNCHECKED, UNCHECKED_BUTTON),
-                Pair(CHECKING, CHECKING_BUTTON),
-                Pair(CHECKED, CHECKED_BUTTON),
-                Pair(UNCHECKING, UNCHECKING_BUTTON))
+            Pair(UNCHECKED, UNCHECKED_BUTTON),
+            Pair(CHECKING, CHECKING_BUTTON),
+            Pair(CHECKED, CHECKED_BUTTON),
+            Pair(UNCHECKING, UNCHECKING_BUTTON)
+        )
 
     }
 }

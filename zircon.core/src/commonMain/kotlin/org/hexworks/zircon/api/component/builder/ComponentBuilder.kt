@@ -89,7 +89,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Same as calling `withAlignment(alignmentWithin(tileGrid, alignment))`
      */
     fun withAlignmentWithin(tileGrid: TileGrid, alignment: ComponentAlignment): U =
-            withAlignment(alignmentWithin(tileGrid, alignment))
+        withAlignment(alignmentWithin(tileGrid, alignment))
 
     /**
      * Aligns the resulting [Component] within the [container] using the
@@ -97,7 +97,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Same as calling `withAlignment(alignmentWithin(container, alignment))`
      */
     fun withAlignmentWithin(container: Container, alignment: ComponentAlignment): U =
-            withAlignment(alignmentWithin(container, alignment))
+        withAlignment(alignmentWithin(container, alignment))
 
     /**
      * Aligns the resulting [Component] around the [component] using the
@@ -105,6 +105,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> {
      * Same as calling `withAlignment(alignmentWithin(container, alignment))`
      */
     fun withAlignmentAround(component: Component, alignment: ComponentAlignment): U =
-            withAlignment(alignmentAround(component, alignment))
+        withAlignment(alignmentAround(component, alignment))
 
 }

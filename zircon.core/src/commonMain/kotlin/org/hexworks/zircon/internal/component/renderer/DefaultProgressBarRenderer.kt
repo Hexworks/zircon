@@ -16,8 +16,8 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
         tileGraphics.applyStyle(currentStyleSet)
 
         val invertedStyleSet = currentStyleSet
-                .withBackgroundColor(currentStyleSet.foregroundColor)
-                .withForegroundColor(currentStyleSet.backgroundColor)
+            .withBackgroundColor(currentStyleSet.foregroundColor)
+            .withForegroundColor(currentStyleSet.backgroundColor)
 
         (0 until progressBarState.currentProgression).forEach { idx ->
             tileGraphics.draw(Tile.createCharacterTile(' ', invertedStyleSet), Position.create(idx, 0))
@@ -32,8 +32,9 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
                 val pos = Position.create(start + idx, 0)
                 val char = text[idx]
                 val tile = Tile.createCharacterTile(
-                        character = char,
-                        style = if (pos.x > progressBarState.currentProgression) currentStyleSet else style)
+                    character = char,
+                    style = if (pos.x > progressBarState.currentProgression) currentStyleSet else style
+                )
                 tileGraphics.draw(tile, pos)
             }
         }

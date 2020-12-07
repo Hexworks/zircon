@@ -12,12 +12,12 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
  * Contains metadata that is common to **all** [Component]s.
  */
 data class ComponentMetadata(
-        val relativePosition: Position,
-        val size: Size,
-        val tileset: TilesetResource,
-        val componentStyleSet: ComponentStyleSet,
-        val theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
-        val updateOnAttach: Boolean = false
+    val relativePosition: Position,
+    val size: Size,
+    val tileset: TilesetResource,
+    val componentStyleSet: ComponentStyleSet,
+    val theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+    val updateOnAttach: Boolean = false
 ) {
 
     init {

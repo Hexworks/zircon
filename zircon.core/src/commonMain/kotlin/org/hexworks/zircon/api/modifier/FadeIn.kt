@@ -6,9 +6,9 @@ import org.hexworks.zircon.api.modifier.impl.Fade
 import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeIn(
-        private val steps: Int = 20,
-        private val timeMs: Long = 2000,
-        private val glowOnFinalStep: Boolean = true
+    private val steps: Int = 20,
+    private val timeMs: Long = 2000,
+    private val glowOnFinalStep: Boolean = true
 ) : TileTransformModifier<CharacterTile>, Fade {
 
     override val cacheKey: String
@@ -45,10 +45,14 @@ data class FadeIn(
     }
 
     private fun generateTile(tile: CharacterTile): CharacterTile {
-        return tile.withBackgroundColor(tile.backgroundColor
-                .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
-                .withForegroundColor(tile.foregroundColor
-                        .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps))))
+        return tile.withBackgroundColor(
+            tile.backgroundColor
+                .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps)))
+        )
+            .withForegroundColor(
+                tile.foregroundColor
+                    .darkenByPercent(1.0.minus(currentStep.toDouble().div(steps)))
+            )
     }
 
     private fun isFirstRender() = lastRender == Long.MIN_VALUE

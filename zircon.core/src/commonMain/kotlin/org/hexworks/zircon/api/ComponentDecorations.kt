@@ -22,11 +22,11 @@ object ComponentDecorations {
     @JvmOverloads
     @JvmStatic
     fun border(
-            border: Border = Border.newBuilder().build(),
-            renderingMode: RenderingMode = NON_INTERACTIVE
+        border: Border = Border.newBuilder().build(),
+        renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = BorderDecorationRenderer(
-            border = border,
-            renderingMode = renderingMode
+        border = border,
+        renderingMode = renderingMode
     )
 
     /**
@@ -37,13 +37,13 @@ object ComponentDecorations {
     @JvmOverloads
     @JvmStatic
     fun box(
-            boxType: BoxType = BoxType.SINGLE,
-            title: String = "",
-            renderingMode: RenderingMode = NON_INTERACTIVE
+        boxType: BoxType = BoxType.SINGLE,
+        title: String = "",
+        renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = BoxDecorationRenderer(
-            boxType = boxType,
-            titleProperty = createPropertyFrom(title),
-            renderingMode = renderingMode
+        boxType = boxType,
+        titleProperty = createPropertyFrom(title),
+        renderingMode = renderingMode
     )
 
     /**
@@ -54,19 +54,19 @@ object ComponentDecorations {
     @JvmOverloads
     @JvmStatic
     fun side(
-            leftSideCharacter: Char = '[',
-            rightSideCharacter: Char = ']',
-            renderingMode: RenderingMode = RenderingMode.INTERACTIVE
+        leftSideCharacter: Char = '[',
+        rightSideCharacter: Char = ']',
+        renderingMode: RenderingMode = RenderingMode.INTERACTIVE
     ): ComponentDecorationRenderer = SideDecorationRenderer(
-            leftSideCharacter = leftSideCharacter,
-            rightSideCharacter = rightSideCharacter,
-            renderingMode = renderingMode
+        leftSideCharacter = leftSideCharacter,
+        rightSideCharacter = rightSideCharacter,
+        renderingMode = renderingMode
     )
 
     @JvmOverloads
     @JvmStatic
     fun halfBlock(
-            renderingMode: RenderingMode = NON_INTERACTIVE
+        renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
 
     /**

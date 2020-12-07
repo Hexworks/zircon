@@ -7,11 +7,13 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 
-internal class DefaultAnimation(override val tick: Long,
-                                override val loopCount: Int,
-                                override val totalFrameCount: Int,
-                                override val uniqueFrameCount: Int,
-                                frames: List<InternalAnimationFrame>) : InternalAnimation {
+internal class DefaultAnimation(
+    override val tick: Long,
+    override val loopCount: Int,
+    override val totalFrameCount: Int,
+    override val uniqueFrameCount: Int,
+    frames: List<InternalAnimationFrame>
+) : InternalAnimation {
 
     override val id: UUID = UUIDFactory.randomUUID()
 

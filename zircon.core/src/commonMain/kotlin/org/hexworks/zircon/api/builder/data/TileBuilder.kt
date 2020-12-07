@@ -24,11 +24,11 @@ import org.hexworks.zircon.internal.data.DefaultImageTile
  */
 @Suppress("UNCHECKED_CAST")
 data class TileBuilder(
-        private var character: Char = ' ',
-        private var name: String = " ",
-        private var tags: Set<String> = setOf(),
-        private var styleSet: StyleSet = StyleSet.defaultStyle(),
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    private var character: Char = ' ',
+    private var name: String = " ",
+    private var tags: Set<String> = setOf(),
+    private var styleSet: StyleSet = StyleSet.defaultStyle(),
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
 ) : Builder<Tile> {
 
     fun character() = character
@@ -79,27 +79,31 @@ data class TileBuilder(
 
     override fun build(): Tile {
         return DefaultCharacterTile(
-                character = character,
-                styleSet = styleSet)
+            character = character,
+            styleSet = styleSet
+        )
     }
 
     fun buildCharacterTile(): CharacterTile {
         return DefaultCharacterTile(
-                character = character,
-                styleSet = styleSet)
+            character = character,
+            styleSet = styleSet
+        )
     }
 
     fun buildImageTile(): ImageTile {
         return DefaultImageTile(
-                tileset = tileset,
-                name = name)
+            tileset = tileset,
+            name = name
+        )
     }
 
     fun buildGraphicalTile(): GraphicalTile {
         return DefaultGraphicalTile(
-                name = name,
-                tags = tags,
-                tileset = tileset)
+            name = name,
+            tags = tags,
+            tileset = tileset
+        )
     }
 
     override fun createCopy() = copy()

@@ -21,16 +21,17 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.Synchronized
 
 open class ThreadSafeLayer(
-        initialPosition: Position,
-        initialContents: TileGraphics,
-        private val movable: Movable = DefaultMovable(
-                position = initialPosition,
-                size = initialContents.size),
-        private val backend: InternalTileGraphics = FastTileGraphics(
-                initialSize = initialContents.size,
-                initialTileset = initialContents.tileset,
-                initialTiles = initialContents.tiles
-        )
+    initialPosition: Position,
+    initialContents: TileGraphics,
+    private val movable: Movable = DefaultMovable(
+        position = initialPosition,
+        size = initialContents.size
+    ),
+    private val backend: InternalTileGraphics = FastTileGraphics(
+        initialSize = initialContents.size,
+        initialTileset = initialContents.tileset,
+        initialTiles = initialContents.tiles
+    )
 ) : Clearable, InternalLayer, Movable by movable, TileGraphics by backend {
 
     final override val id: UUID = UUIDFactory.randomUUID()
@@ -123,8 +124,9 @@ open class ThreadSafeLayer(
     @Synchronized
     final override fun createCopy(): Layer {
         return ThreadSafeLayer(
-                initialPosition = position,
-                initialContents = tiles.toTileGraphics(size, tileset)).apply {
+            initialPosition = position,
+            initialContents = tiles.toTileGraphics(size, tileset)
+        ).apply {
             isHidden = isHidden
         }
     }
@@ -148,10 +150,10 @@ open class ThreadSafeLayer(
 
     override fun toString(): String {
         return DrawSurfaces.tileGraphicsBuilder()
-                .withSize(size)
-                .withTiles(tiles)
-                .build()
-                .toString()
+            .withSize(size)
+            .withTiles(tiles)
+            .build()
+            .toString()
     }
 
 }

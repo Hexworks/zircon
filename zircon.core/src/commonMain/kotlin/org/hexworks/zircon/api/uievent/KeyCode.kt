@@ -4,10 +4,11 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 
 enum class KeyCode(
-        /**
-         * The unicode key code for the given key
-         */
-        val code: Int) {
+    /**
+     * The unicode key code for the given key
+     */
+    val code: Int
+) {
 
     /**
      * This [KeyCode] represents a key which is unknown,
@@ -207,9 +208,11 @@ enum class KeyCode(
      */
     fun toChar(): Maybe<Char> {
         val char = code.toChar()
-        return Maybe.ofNullable(if (TextUtils.isPrintableCharacter(char)) {
-            char
-        } else null)
+        return Maybe.ofNullable(
+            if (TextUtils.isPrintableCharacter(char)) {
+                char
+            } else null
+        )
     }
 
     companion object {

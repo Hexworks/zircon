@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
 import kotlin.jvm.Synchronized
 
 class ThreadSafeLayerable(
-        initialSize: Size
+    initialSize: Size
 ) : InternalLayerable {
 
     override val size: Size = initialSize
@@ -76,7 +76,7 @@ class ThreadSafeLayerable(
         get() = this in 0 until layers.size
 
     private inner class DefaultLayerHandle(
-            private val backend: InternalLayer
+        private val backend: InternalLayer
     ) : LayerHandle, InternalLayer by backend {
 
         private var attached = true

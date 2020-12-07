@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import kotlin.jvm.JvmStatic
 
@@ -21,15 +21,15 @@ object GraphicalTilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromFilesystem(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return GraphicalTilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.FILESYSTEM
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.FILESYSTEM
         )
     }
 
@@ -40,15 +40,15 @@ object GraphicalTilesetResources {
      */
     @JvmStatic
     fun loadTilesetFromJar(
-            width: Int,
-            height: Int,
-            path: String
+        width: Int,
+        height: Int,
+        path: String
     ): TilesetResource {
         return GraphicalTilesetResource(
-                width = width,
-                height = height,
-                path = path,
-                tilesetSourceType = TilesetSourceType.JAR
+            width = width,
+            height = height,
+            path = path,
+            tilesetSourceType = TilesetSourceType.JAR
         )
     }
 }

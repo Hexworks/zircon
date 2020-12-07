@@ -3,7 +3,10 @@ package org.hexworks.zircon.api.component.builder.base
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.AlignmentStrategy
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata

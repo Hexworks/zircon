@@ -26,8 +26,8 @@ object Fragments {
      */
     @JvmStatic
     fun tilesetSelector(
-            width: Int,
-            tileset: TilesetResource
+        width: Int,
+        tileset: TilesetResource
     ): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, tileset)
 
     /**
@@ -35,8 +35,8 @@ object Fragments {
      */
     @JvmStatic
     fun colorThemeSelector(
-            width: Int,
-            theme: ColorTheme
+        width: Int,
+        theme: ColorTheme
     ): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, theme)
 
 }

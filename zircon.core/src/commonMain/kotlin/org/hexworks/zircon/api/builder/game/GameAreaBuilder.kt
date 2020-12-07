@@ -10,8 +10,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.ProjectionMode
-import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.game.impl.DefaultGameArea
 
 /**
@@ -21,18 +19,18 @@ import org.hexworks.zircon.internal.game.impl.DefaultGameArea
 @Beta
 @Suppress("unused", "MemberVisibilityCanBePrivate", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 data class GameAreaBuilder<T : Tile, B : Block<T>>(
-        private var actualSize: Size3D = Size3D.one(),
-        private var visibleSize: Size3D = Size3D.one(),
-        private var visibleOffset: Position3D = Position3D.defaultPosition(),
-        private var blocks: MutableMap<Position3D, B> = mutableMapOf(),
-        private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
-        private val filters: MutableList<GameAreaTileFilter> = mutableListOf()
+    private var actualSize: Size3D = Size3D.one(),
+    private var visibleSize: Size3D = Size3D.one(),
+    private var visibleOffset: Position3D = Position3D.defaultPosition(),
+    private var blocks: MutableMap<Position3D, B> = mutableMapOf(),
+    private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
+    private val filters: MutableList<GameAreaTileFilter> = mutableListOf()
 ) : Builder<GameArea<T, B>> {
 
     fun withActualSize(size: Size3D) = also {
         this.actualSize = size
         blocks = blocks.filterKeys { actualSize.containsPosition(it) }
-                .toMutableMap()
+            .toMutableMap()
     }
 
     fun withVisibleSize(size: Size3D) = also {
@@ -55,16 +53,17 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
 
     override fun build(): GameArea<T, B> {
         return DefaultGameArea(
-                initialVisibleSize = visibleSize,
-                initialActualSize = actualSize,
-                initialContents = blocks.toPersistentMap(),
-                initialVisibleOffset = visibleOffset,
-                initialFilters = filters.toList()
+            initialVisibleSize = visibleSize,
+            initialActualSize = actualSize,
+            initialContents = blocks.toPersistentMap(),
+            initialVisibleOffset = visibleOffset,
+            initialFilters = filters.toList()
         )
     }
 
     override fun createCopy() = copy(
-            blocks = blocks.toMutableMap())
+        blocks = blocks.toMutableMap()
+    )
 
     companion object {
 

@@ -43,6 +43,6 @@ interface Movable : Boundable {
         @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
         @JvmStatic
         fun create(size: Size, position: Position = Position.zero()): Movable =
-                DefaultMovable(size, position)
+            DefaultMovable(size, position)
     }
 }

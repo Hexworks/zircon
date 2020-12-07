@@ -15,12 +15,12 @@ class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInpu
         val tileTemplate = Tile.createCharacterTile(' ', style)
         tileGraphics.size.fetchPositions().forEach { pos ->
             component.textBuffer().getCharAt(pos).fold(
-                    whenEmpty = {
-                        tileGraphics.draw(tileTemplate, pos)
-                    },
-                    whenPresent = { char ->
-                        tileGraphics.draw(tileTemplate.withCharacter(char), pos)
-                    })
+                whenEmpty = {
+                    tileGraphics.draw(tileTemplate, pos)
+                },
+                whenPresent = { char ->
+                    tileGraphics.draw(tileTemplate.withCharacter(char), pos)
+                })
         }
     }
 }

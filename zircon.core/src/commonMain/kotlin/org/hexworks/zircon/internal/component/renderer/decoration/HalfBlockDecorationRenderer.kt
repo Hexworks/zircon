@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.modifier.Crop
 import org.hexworks.zircon.api.shape.LineFactory
 
 class HalfBlockDecorationRenderer(
-        private val renderingMode: RenderingMode
+    private val renderingMode: RenderingMode
 ) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
@@ -29,61 +29,63 @@ class HalfBlockDecorationRenderer(
         val bottomRight = size.fetchBottomRightPosition()
 
         val topTile = Tile.defaultTile()
-                .withCharacter(Symbols.LOWER_HALF_BLOCK)
-                .withBackgroundColor(TileColor.transparent())
-                .withForegroundColor(style.foregroundColor)
-                .asCharacterTile().get()
+            .withCharacter(Symbols.LOWER_HALF_BLOCK)
+            .withBackgroundColor(TileColor.transparent())
+            .withForegroundColor(style.foregroundColor)
+            .asCharacterTile().get()
 
         LineFactory.buildLine(topLeft, topRight).positions
-                .drop(1)
-                .dropLast(1).forEach {
-                    tileGraphics.draw(topTile, it)
-                }
+            .drop(1)
+            .dropLast(1).forEach {
+                tileGraphics.draw(topTile, it)
+            }
         LineFactory.buildLine(topLeft, bottomLeft).positions
-                .drop(1)
-                .dropLast(1).forEach {
-                    tileGraphics.draw(topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK), it)
-                }
+            .drop(1)
+            .dropLast(1).forEach {
+                tileGraphics.draw(topTile.withCharacter(Symbols.RIGHT_HALF_BLOCK), it)
+            }
         LineFactory.buildLine(topRight, bottomRight).positions
-                .drop(1)
-                .dropLast(1).forEach {
-                    tileGraphics.draw(topTile.withCharacter(Symbols.LEFT_HALF_BLOCK), it)
-                }
+            .drop(1)
+            .dropLast(1).forEach {
+                tileGraphics.draw(topTile.withCharacter(Symbols.LEFT_HALF_BLOCK), it)
+            }
         LineFactory.buildLine(bottomLeft, bottomRight).positions
-                .drop(1)
-                .dropLast(1).forEach {
-                    tileGraphics.draw(topTile.withCharacter(Symbols.UPPER_HALF_BLOCK), it)
-                }
+            .drop(1)
+            .dropLast(1).forEach {
+                tileGraphics.draw(topTile.withCharacter(Symbols.UPPER_HALF_BLOCK), it)
+            }
 
         val tileset = tileGraphics.tileset
 
         val cropRight = Crop(
-                x = tileset.width.div(2),
-                y = 0,
-                width = tileset.width.div(2),
-                height = tileset.height)
+            x = tileset.width.div(2),
+            y = 0,
+            width = tileset.width.div(2),
+            height = tileset.height
+        )
 
         val cropLeft = Crop(
-                x = 0,
-                y = 0,
-                width = tileset.width.div(2),
-                height = tileset.height)
+            x = 0,
+            y = 0,
+            width = tileset.width.div(2),
+            height = tileset.height
+        )
 
         val topLeftTile = Tile.defaultTile()
-                .withCharacter(Symbols.LOWER_HALF_BLOCK)
-                .withModifiers(cropRight)
-                .withBackgroundColor(TileColor.transparent())
-                .withForegroundColor(style.foregroundColor)
-                .asCharacterTile().get()
+            .withCharacter(Symbols.LOWER_HALF_BLOCK)
+            .withModifiers(cropRight)
+            .withBackgroundColor(TileColor.transparent())
+            .withForegroundColor(style.foregroundColor)
+            .asCharacterTile().get()
 
         val topRightTile = topLeftTile
-                .withModifiers(cropLeft)
+            .withModifiers(cropLeft)
 
         val bottomLeftTile = topLeftTile
-                .withCharacter(Symbols.UPPER_HALF_BLOCK)
+            .withCharacter(Symbols.UPPER_HALF_BLOCK)
 
         val bottomRightTile = bottomLeftTile
-                .withModifiers(cropLeft)
+            .withModifiers(cropLeft)
 
         tileGraphics.draw(topLeftTile, topLeft)
         tileGraphics.draw(topRightTile, topRight)

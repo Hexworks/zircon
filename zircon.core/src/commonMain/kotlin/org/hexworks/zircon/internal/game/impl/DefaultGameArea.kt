@@ -9,15 +9,15 @@ import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.base.BaseGameArea
 
 class DefaultGameArea<T : Tile, B : Block<T>>(
-        initialVisibleSize: Size3D,
-        initialActualSize: Size3D,
-        initialVisibleOffset: Position3D,
-        initialContents: PersistentMap<Position3D, B>,
-        initialFilters: Iterable<GameAreaTileFilter>
+    initialVisibleSize: Size3D,
+    initialActualSize: Size3D,
+    initialVisibleOffset: Position3D,
+    initialContents: PersistentMap<Position3D, B>,
+    initialFilters: Iterable<GameAreaTileFilter>
 ) : BaseGameArea<T, B>(
-        initialVisibleSize = initialVisibleSize,
-        initialActualSize = initialActualSize,
-        initialVisibleOffset = initialVisibleOffset,
-        initialContents = initialContents,
-        initialFilters = initialFilters
+    initialVisibleSize = initialVisibleSize,
+    initialActualSize = initialActualSize,
+    initialVisibleOffset = initialVisibleOffset,
+    initialContents = initialContents,
+    initialFilters = initialFilters
 )

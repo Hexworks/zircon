@@ -14,11 +14,11 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class ColorThemeSelectorBuilder(
-        width: Int,
-        theme: ColorTheme
+    width: Int,
+    theme: ColorTheme
 ) : SelectorBuilder<ColorTheme>(width, ColorThemeResource.values()
-        .sortedBy { it.name }
-        .map { it.getTheme() }) {
+    .sortedBy { it.name }
+    .map { it.getTheme() }) {
 
     private var themeOverrides = listOf<ColorThemeOverride>()
     private var groups = listOf<Group<out Component>>()
@@ -32,8 +32,8 @@ class ColorThemeSelectorBuilder(
      * [Selector.selectedValue] changes.
      */
     @Deprecated(
-            message = "Themeable was renamed to ThemeOverride",
-            replaceWith = ReplaceWith("this.withThemeOverrides(*themeOverrides)")
+        message = "Themeable was renamed to ThemeOverride",
+        replaceWith = ReplaceWith("this.withThemeOverrides(*themeOverrides)")
     )
     fun withThemeables(vararg themeOverrides: ColorThemeOverride) = also {
         this.themeOverrides = themeOverrides.toList()

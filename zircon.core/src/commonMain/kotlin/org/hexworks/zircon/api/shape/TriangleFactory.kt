@@ -27,8 +27,8 @@ object TriangleFactory : ShapeFactory<TriangleParameters> {
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
     fun buildTriangle(
-            p1: Position,
-            p2: Position,
-            p3: Position
+        p1: Position,
+        p2: Position,
+        p3: Position
     ) = buildTriangle(TriangleParameters(p1, p2, p3))
 }

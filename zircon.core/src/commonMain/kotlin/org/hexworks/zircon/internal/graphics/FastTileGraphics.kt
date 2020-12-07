@@ -17,12 +17,12 @@ import kotlin.jvm.Synchronized
  * for speed and uses an array behind the scenes.
  */
 class FastTileGraphics(
-        initialSize: Size,
-        initialTileset: TilesetResource,
-        initialTiles: Map<Position, Tile> = mapOf()
+    initialSize: Size,
+    initialTileset: TilesetResource,
+    initialTiles: Map<Position, Tile> = mapOf()
 ) : BaseTileGraphics(
-        initialSize = initialSize,
-        initialTileset = initialTileset
+    initialSize = initialSize,
+    initialTileset = initialTileset
 ) {
 
     private var arr = arrayOfNulls<Map.Entry<Position, Tile>>(initialSize.width * initialSize.height)
@@ -38,9 +38,9 @@ class FastTileGraphics(
     override val state: TileGraphicsState
         @Synchronized
         get() = DefaultTileGraphicsState(
-                size = size,
-                tileset = tileset,
-                tiles = tiles.createCopy()
+            size = size,
+            tileset = tileset,
+            tiles = tiles.createCopy()
         )
 
     fun contents() = tiles.contents()
@@ -55,15 +55,15 @@ class FastTileGraphics(
     @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         tileMap.asSequence()
-                .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
-                .map { (key, value) -> key + drawPosition to value }
-                .forEach { (pos, tile) ->
-                    if (tile.isEmpty) {
-                        arr[pos.index] = null
-                    } else {
-                        arr[pos.index] = Entry(pos, tile)
-                    }
+            .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
+            .map { (key, value) -> key + drawPosition to value }
+            .forEach { (pos, tile) ->
+                if (tile.isEmpty) {
+                    arr[pos.index] = null
+                } else {
+                    arr[pos.index] = Entry(pos, tile)
                 }
+            }
     }
 
     @Synchronized

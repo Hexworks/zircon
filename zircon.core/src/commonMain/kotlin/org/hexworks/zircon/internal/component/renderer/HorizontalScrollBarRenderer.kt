@@ -16,8 +16,8 @@ class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
         val defaultStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DEFAULT)
         val invertedDefaultStyleSet = defaultStyleSet
-                .withBackgroundColor(defaultStyleSet.foregroundColor)
-                .withForegroundColor(defaultStyleSet.backgroundColor)
+            .withBackgroundColor(defaultStyleSet.foregroundColor)
+            .withForegroundColor(defaultStyleSet.backgroundColor)
         val disabledStyleSet = context.componentStyle.fetchStyleFor(ComponentState.DISABLED)
 
         val lowBarPosition = context.component.currentStep
@@ -26,9 +26,18 @@ class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
 
         (0..totalScrollBarWidth).forEach { idx ->
             when {
-                idx < lowBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Position.create(idx, 0))
-                idx > highBarPosition -> tileGraphics.draw(Tile.createCharacterTile(' ', disabledStyleSet), Position.create(idx, 0))
-                else -> tileGraphics.draw(Tile.createCharacterTile(' ', invertedDefaultStyleSet), Position.create(idx, 0))
+                idx < lowBarPosition -> tileGraphics.draw(
+                    Tile.createCharacterTile(' ', disabledStyleSet),
+                    Position.create(idx, 0)
+                )
+                idx > highBarPosition -> tileGraphics.draw(
+                    Tile.createCharacterTile(' ', disabledStyleSet),
+                    Position.create(idx, 0)
+                )
+                else -> tileGraphics.draw(
+                    Tile.createCharacterTile(' ', invertedDefaultStyleSet),
+                    Position.create(idx, 0)
+                )
             }
         }
     }

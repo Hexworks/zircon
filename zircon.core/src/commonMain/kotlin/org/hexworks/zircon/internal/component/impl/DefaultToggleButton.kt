@@ -10,15 +10,16 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 
 @Suppress("DuplicatedCode")
 class DefaultToggleButton(
-        componentMetadata: ComponentMetadata,
-        initialText: String,
-        initialSelected: Boolean,
-        renderingStrategy: ComponentRenderingStrategy<ToggleButton>
+    componentMetadata: ComponentMetadata,
+    initialText: String,
+    initialSelected: Boolean,
+    renderingStrategy: ComponentRenderingStrategy<ToggleButton>
 ) : ToggleButton, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy),
-        TextOverride by TextOverride.create(initialText),
-        Selectable by Selectable.create(initialSelected) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+),
+    TextOverride by TextOverride.create(initialText),
+    Selectable by Selectable.create(initialSelected) {
 
     override fun activated() = whenEnabledRespondWith {
         isSelected = isSelected.not()

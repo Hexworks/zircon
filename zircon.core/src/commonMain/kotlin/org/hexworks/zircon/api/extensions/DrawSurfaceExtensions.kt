@@ -1,4 +1,5 @@
 @file:JvmName("DrawSurfaceUtils")
+
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.DrawSurfaces
@@ -27,10 +28,10 @@ fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileI
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
     return DrawSurfaces.tileImageBuilder()
-            .withTiles(this)
-            .withSize(size)
-            .withTileset(tileset)
-            .build()
+        .withTiles(this)
+        .withSize(size)
+        .withTileset(tileset)
+        .build()
 }
 
 /**
@@ -49,9 +50,9 @@ fun Map<Position, Tile>.toTileComposite(size: Size): TileComposite {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
     return DrawSurfaces.tileCompositeBuilder()
-            .withSize(size)
-            .withTiles(this)
-            .build()
+        .withSize(size)
+        .withTiles(this)
+        .build()
 }
 
 /**
@@ -70,8 +71,8 @@ fun Map<Position, Tile>.toTileGraphics(size: Size, tileset: TilesetResource): Ti
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
     return DrawSurfaces.tileGraphicsBuilder()
-            .withTiles(this)
-            .withSize(size)
-            .withTileset(tileset)
-            .build()
+        .withTiles(this)
+        .withSize(size)
+        .withTileset(tileset)
+        .build()
 }

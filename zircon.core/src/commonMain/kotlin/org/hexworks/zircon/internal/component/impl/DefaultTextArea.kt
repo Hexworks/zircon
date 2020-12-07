@@ -33,14 +33,15 @@ import kotlin.math.min
 
 @Suppress("DuplicatedCode")
 class DefaultTextArea constructor(
-        initialText: String,
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<TextArea>
+    initialText: String,
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<TextArea>
 ) : TextArea,
-        Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
-        DefaultComponent(
-                componentMetadata = componentMetadata,
-                renderer = renderingStrategy) {
+    Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
+    DefaultComponent(
+        componentMetadata = componentMetadata,
+        renderer = renderingStrategy
+    ) {
 
     override var text: String
         get() = textBuffer.getText()
@@ -58,19 +59,25 @@ class DefaultTextArea constructor(
     override fun textBuffer() = textBuffer
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                    .build())
-            .withDisabledStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build())
-            .withFocusedStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.primaryBackgroundColor)
-                    .withBackgroundColor(colorTheme.primaryForegroundColor)
-                    .build())
-            .build()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryBackgroundColor)
+                .withBackgroundColor(colorTheme.secondaryForegroundColor)
+                .build()
+        )
+        .withDisabledStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .withFocusedStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.primaryBackgroundColor)
+                .withBackgroundColor(colorTheme.primaryForegroundColor)
+                .build()
+        )
+        .build()
 
     override fun focusGiven() = whenEnabled {
         refreshCursor()
@@ -79,8 +86,9 @@ class DefaultTextArea constructor(
 
     override fun focusTaken() = whenEnabled {
         Zircon.eventBus.publish(
-                event = ZirconEvent.HideCursor(this),
-                eventScope = ZirconScope)
+            event = ZirconEvent.HideCursor(this),
+            eventScope = ZirconScope
+        )
         super.focusTaken()
     }
 
@@ -120,7 +128,7 @@ class DefaultTextArea constructor(
     }
 
     private fun isNavigationKey(event: KeyboardEvent) =
-            event == TAB || event == REVERSE_TAB
+        event == TAB || event == REVERSE_TAB
 
     private fun scrollToCursor() {
         val bufferCursorPos = textBuffer.cursor.position
@@ -145,27 +153,29 @@ class DefaultTextArea constructor(
     }
 
     private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =
-            bufferCursorPos.y >= visibleOffset.y + visibleSize.height
+        bufferCursorPos.y >= visibleOffset.y + visibleSize.height
 
     private fun bufferCursorOverflowsUp(bufferCursorPos: Position) =
-            bufferCursorPos.y < visibleOffset.y
+        bufferCursorPos.y < visibleOffset.y
 
     private fun bufferCursorPosOverlapsRight(bufferCursorPos: Position) =
-            bufferCursorPos.x >= visibleOffset.x + visibleSize.width
+        bufferCursorPos.x >= visibleOffset.x + visibleSize.width
 
     private fun bufferCursorOverflowsLeft(bufferPos: Position) =
-            bufferPos.x < visibleOffset.x
+        bufferPos.x < visibleOffset.x
 
     private fun refreshCursor() {
         var pos = textBuffer.cursor.position
-                .minus(visibleOffset)
+            .minus(visibleOffset)
         pos = pos.withX(min(pos.x, contentSize.width))
         pos = pos.withY(min(pos.y, contentSize.height))
         Zircon.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(
-                        position = pos.withRelative(position + contentOffset),
-                        emitter = this),
-                eventScope = ZirconScope)
+            event = ZirconEvent.RequestCursorAt(
+                position = pos.withRelative(position + contentOffset),
+                emitter = this
+            ),
+            eventScope = ZirconScope
+        )
     }
 
     private fun refreshVirtualSpaceSize() {
@@ -181,15 +191,17 @@ class DefaultTextArea constructor(
 
     companion object {
         val TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                key = "\t",
-                code = KeyCode.TAB)
+            type = KeyboardEventType.KEY_RELEASED,
+            key = "\t",
+            code = KeyCode.TAB
+        )
 
         val REVERSE_TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_RELEASED,
-                key = "\t",
-                code = KeyCode.TAB,
-                shiftDown = true)
+            type = KeyboardEventType.KEY_RELEASED,
+            key = "\t",
+            code = KeyCode.TAB,
+            shiftDown = true
+        )
 
     }
 }

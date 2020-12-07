@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
 class ArrayBackedTileMap(
-        private val dimensions: Size,
-        private val arr: Array<Map.Entry<Position, Tile>?>
+    private val dimensions: Size,
+    private val arr: Array<Map.Entry<Position, Tile>?>
 ) : AbstractMap<Position, Tile>() {
 
     override val entries: Set<Map.Entry<Position, Tile>>
@@ -41,16 +41,16 @@ class ArrayBackedTileMap(
     }
 
     fun createCopy() = ArrayBackedTileMap(
-            dimensions = dimensions,
-            arr = arr.copyOf()
+        dimensions = dimensions,
+        arr = arr.copyOf()
     )
 
     private val Position.index: Int
         get() = dimensions.width * y + x
 
     class Entry(
-            override val key: Position,
-            override val value: Tile
+        override val key: Position,
+        override val value: Tile
     ) : Map.Entry<Position, Tile>
 
 }

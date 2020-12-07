@@ -20,12 +20,12 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("ArrayInDataClass")
 data class CharacterTileStringBuilder(
-        private var text: String = NO_VALUE,
-        private var textWrap: TextWrap = WRAP,
-        private var size: Size = Size.unknown(),
-        private val modifiers: MutableSet<Modifier> = mutableSetOf(),
-        private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
-        private var backgroundColor: TileColor = TileColor.defaultBackgroundColor()
+    private var text: String = NO_VALUE,
+    private var textWrap: TextWrap = WRAP,
+    private var size: Size = Size.unknown(),
+    private val modifiers: MutableSet<Modifier> = mutableSetOf(),
+    private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
+    private var backgroundColor: TileColor = TileColor.defaultBackgroundColor()
 ) : Builder<CharacterTileString> {
 
     fun withText(text: String) = also {
@@ -68,20 +68,20 @@ data class CharacterTileStringBuilder(
 
     override fun build(): CharacterTileString {
         return DefaultCharacterTileString(
-                characterTiles = if (text == NO_VALUE || text.isBlank()) {
-                    listOf()
-                } else {
-                    text.map {
-                        TileBuilder.newBuilder()
-                                .withForegroundColor(foregroundColor)
-                                .withBackgroundColor(backgroundColor)
-                                .withCharacter(it)
-                                .withModifiers(modifiers)
-                                .buildCharacterTile()
-                    }
-                },
-                size = size,
-                textWrap = textWrap)
+            characterTiles = if (text == NO_VALUE || text.isBlank()) {
+                listOf()
+            } else {
+                text.map {
+                    TileBuilder.newBuilder()
+                        .withForegroundColor(foregroundColor)
+                        .withBackgroundColor(backgroundColor)
+                        .withCharacter(it)
+                        .withModifiers(modifiers)
+                        .buildCharacterTile()
+                }
+            },
+            size = size,
+            textWrap = textWrap)
     }
 
     override fun createCopy() = copy()

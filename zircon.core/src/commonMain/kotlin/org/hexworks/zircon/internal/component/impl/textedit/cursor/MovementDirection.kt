@@ -8,10 +8,12 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
         if (cursor.canMoveUp()) {
             val prevRowIdx = cursor.rowIdx - 1
             cursor.copy(
-                    rowIdx = prevRowIdx,
-                    colIdx = kotlin.math.min(
-                            document.getColumnCount(prevRowIdx),
-                            cursor.colIdx))
+                rowIdx = prevRowIdx,
+                colIdx = kotlin.math.min(
+                    document.getColumnCount(prevRowIdx),
+                    cursor.colIdx
+                )
+            )
         } else {
             cursor
         }
@@ -20,10 +22,12 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
         if (cursor.canMoveDown(document)) {
             val nextRowIdx = cursor.rowIdx + 1
             cursor.copy(
-                    rowIdx = nextRowIdx,
-                    colIdx = kotlin.math.min(
-                            document.getColumnCount(nextRowIdx),
-                            cursor.colIdx))
+                rowIdx = nextRowIdx,
+                colIdx = kotlin.math.min(
+                    document.getColumnCount(nextRowIdx),
+                    cursor.colIdx
+                )
+            )
         } else {
             cursor
         }
@@ -32,12 +36,14 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
         when {
             cursor.canMoveLeft() ->
                 cursor.copy(
-                        colIdx = cursor.colIdx - 1)
+                    colIdx = cursor.colIdx - 1
+                )
             cursor.canMoveUp() -> {
                 val prevRowIdx = cursor.rowIdx - 1
                 cursor.copy(
-                        rowIdx = prevRowIdx,
-                        colIdx = document.getColumnCount(prevRowIdx))
+                    rowIdx = prevRowIdx,
+                    colIdx = document.getColumnCount(prevRowIdx)
+                )
             }
             else -> cursor
         }
@@ -46,11 +52,13 @@ enum class MovementDirection(private val moveFn: (Cursor, EditableTextBuffer) ->
         when {
             cursor.canMoveRight(document) ->
                 cursor.copy(
-                        colIdx = cursor.colIdx + 1)
+                    colIdx = cursor.colIdx + 1
+                )
             cursor.canMoveDown(document) -> {
                 cursor.copy(
-                        rowIdx = cursor.rowIdx + 1,
-                        colIdx = 0)
+                    rowIdx = cursor.rowIdx + 1,
+                    colIdx = 0
+                )
             }
             else -> cursor
         }

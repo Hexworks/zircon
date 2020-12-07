@@ -9,12 +9,13 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Tile
 
 class DefaultIcon(
-        componentMetadata: ComponentMetadata,
-        initialIcon: Tile,
-        renderingStrategy: ComponentRenderingStrategy<Icon>
+    componentMetadata: ComponentMetadata,
+    initialIcon: Tile,
+    renderingStrategy: ComponentRenderingStrategy<Icon>
 ) : Icon, DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+) {
 
     override val iconProperty = createPropertyFrom(initialIcon)
     override var icon: Tile by iconProperty.asDelegate()

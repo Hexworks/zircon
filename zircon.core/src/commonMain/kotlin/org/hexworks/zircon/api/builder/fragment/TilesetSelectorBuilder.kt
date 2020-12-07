@@ -13,8 +13,8 @@ import kotlin.jvm.JvmStatic
  * Builder for a [Selector] to change the tileset of multiple [TilesetOverride]s or [Group]s at runtime.
  */
 class TilesetSelectorBuilder private constructor(
-        width: Int,
-        tileset: TilesetResource
+    width: Int,
+    tileset: TilesetResource
 ) : SelectorBuilder<TilesetResource>(width, TilesetResources.allTextTilesetsCompatibleWith(tileset)) {
 
     private var tilesetOverrides = listOf<TilesetOverride>()

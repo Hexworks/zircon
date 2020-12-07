@@ -22,8 +22,9 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
             text
         }
         tileGraphics.fillWithText(
-                text = "${STATES.getValue(state)} $clearedText",
-                style = context.currentStyle)
+            text = "${STATES.getValue(state)} $clearedText",
+            style = context.currentStyle
+        )
     }
 
     companion object {
@@ -34,8 +35,9 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         const val DECORATION_WIDTH = NOT_SELECTED_BUTTON.length + 1
 
         private val STATES = mapOf(
-                Pair(PRESSED, PRESSED_BUTTON),
-                Pair(SELECTED, SELECTED_BUTTON),
-                Pair(NOT_SELECTED, NOT_SELECTED_BUTTON))
+            Pair(PRESSED, PRESSED_BUTTON),
+            Pair(SELECTED, SELECTED_BUTTON),
+            Pair(NOT_SELECTED, NOT_SELECTED_BUTTON)
+        )
     }
 }

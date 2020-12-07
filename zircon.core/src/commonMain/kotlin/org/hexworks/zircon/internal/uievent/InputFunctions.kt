@@ -9,10 +9,13 @@ fun injectStringAsKeyboardEvents(string: String, tileGrid: InternalTileGrid): UI
         TextUtils.isPrintableCharacter(it)
     }.flatMap { char ->
         listOf(KeyboardEventType.KEY_PRESSED, KeyboardEventType.KEY_TYPED, KeyboardEventType.KEY_RELEASED).map { type ->
-            tileGrid.process(KeyboardEvent(
+            tileGrid.process(
+                KeyboardEvent(
                     type = type,
                     key = "$char",
-                    code = KeyCode.findByCode(char.toInt())), UIEventPhase.TARGET)
+                    code = KeyCode.findByCode(char.toInt())
+                ), UIEventPhase.TARGET
+            )
         }
     }.fold(Pass, UIEventResponse::pickByPrecedence)
 }

@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
@@ -14,9 +13,9 @@ import org.hexworks.zircon.internal.graphics.InternalLayer
  * Default implementation of the [AnimationFrame] interface.
  */
 data class DefaultAnimationFrame(
-        override val size: Size,
-        override val layers: List<InternalLayer>,
-        override val repeatCount: Int
+    override val size: Size,
+    override val layers: List<InternalLayer>,
+    override val repeatCount: Int
 ) : InternalAnimationFrame {
 
     override var position: Position = Position.defaultPosition()

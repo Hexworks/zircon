@@ -17,12 +17,12 @@ object ColorThemes {
      */
     @JvmStatic
     fun empty() = ColorThemeBuilder.newBuilder()
-            .withAccentColor(TileColor.transparent())
-            .withPrimaryForegroundColor(TileColor.transparent())
-            .withSecondaryForegroundColor(TileColor.transparent())
-            .withPrimaryBackgroundColor(TileColor.transparent())
-            .withSecondaryBackgroundColor(TileColor.transparent())
-            .build()
+        .withAccentColor(TileColor.transparent())
+        .withPrimaryForegroundColor(TileColor.transparent())
+        .withSecondaryForegroundColor(TileColor.transparent())
+        .withPrimaryBackgroundColor(TileColor.transparent())
+        .withSecondaryBackgroundColor(TileColor.transparent())
+        .build()
 
     /**
      * This is a null object for color themes indicating that no

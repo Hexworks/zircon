@@ -5,11 +5,10 @@ package org.hexworks.zircon.api.game
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
-import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 /**
@@ -57,7 +56,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
     companion object {
 
         internal fun fetchPositionsWithOffset(offset: Position3D, size: Size3D) =
-                size.fetchPositions().map { it.plus(offset) }
+            size.fetchPositions().map { it.plus(offset) }
 
     }
 

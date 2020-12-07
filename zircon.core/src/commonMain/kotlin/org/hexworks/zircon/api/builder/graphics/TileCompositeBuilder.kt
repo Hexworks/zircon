@@ -15,8 +15,9 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("ArrayInDataClass")
 data class TileCompositeBuilder(
-        private var size: Size = Size.one(),
-        private var tiles: MutableMap<Position, Tile> = mutableMapOf()) : Builder<TileComposite> {
+    private var size: Size = Size.one(),
+    private var tiles: MutableMap<Position, Tile> = mutableMapOf()
+) : Builder<TileComposite> {
 
     /**
      * Sets the size for the new [TileComposite]. Note that [tiles] will
@@ -51,8 +52,8 @@ data class TileCompositeBuilder(
 
     private fun removeOutOfBoundsTiles(size: Size = this.size) {
         this.tiles = tiles
-                .filterKeys { size.containsPosition(it) }
-                .toMutableMap()
+            .filterKeys { size.containsPosition(it) }
+            .toMutableMap()
     }
 
     override fun build(): TileComposite {

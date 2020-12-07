@@ -24,9 +24,9 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("DataClassPrivateConstructor")
 data class Position3D private constructor(
-        val x: Int,
-        val y: Int,
-        val z: Int
+    val x: Int,
+    val y: Int,
+    val z: Int
 ) : Comparable<Position3D> {
 
     val isUnknown: Boolean
@@ -66,9 +66,10 @@ data class Position3D private constructor(
      * `Position3D(x = 3, y = 3, z = 3)`.
      */
     operator fun plus(other: Position3D) = Position3D(
-            x = this.x + other.x,
-            y = this.y + other.y,
-            z = this.z + other.z)
+        x = this.x + other.x,
+        y = this.y + other.y,
+        z = this.z + other.z
+    )
 
     /**
      * Returns a new [Position3D] which is the difference of `x`, `y` and `z` in both [Position3D]s.
@@ -76,9 +77,10 @@ data class Position3D private constructor(
      * `Position3D(x = 1, y = 1, z = 1)`.
      */
     operator fun minus(other: Position3D) = Position3D(
-            x = this.x - other.x,
-            y = this.y - other.y,
-            z = this.z - other.z)
+        x = this.x - other.x,
+        y = this.y - other.y,
+        z = this.z - other.z
+    )
 
     /**
      * Creates a new [Position3D] object representing a 3D position with the same `y` and `y` as this but with
@@ -128,8 +130,8 @@ data class Position3D private constructor(
      * [Position3D].
      */
     fun withRelative(translate: Position3D) = withRelativeY(translate.y)
-            .withRelativeX(translate.x)
-            .withRelativeZ(translate.z)
+        .withRelativeX(translate.x)
+        .withRelativeZ(translate.z)
 
     /**
      * Transforms this [Position3D] to a [Size3D] so if
@@ -167,9 +169,10 @@ data class Position3D private constructor(
          */
         @JvmStatic
         fun from2DPosition(position: Position, z: Int = 0) = Position3D(
-                x = position.x,
-                y = position.y,
-                z = z)
+            x = position.x,
+            y = position.y,
+            z = z
+        )
 
         private val DEFAULT_POSITION = create(0, 0, 0)
         private val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)

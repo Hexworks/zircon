@@ -2,9 +2,7 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.application.ShortcutsConfig
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
-import org.hexworks.zircon.api.uievent.KeyboardEventType
 import kotlin.jvm.JvmStatic
 
 /**
@@ -12,7 +10,7 @@ import kotlin.jvm.JvmStatic
  */
 @Suppress("KDocUnresolvedReference")
 data class ShortcutsConfigBuilder(
-        private var shortcutsConfig: ShortcutsConfig = ShortcutsConfig.defaultConfig()
+    private var shortcutsConfig: ShortcutsConfig = ShortcutsConfig.defaultConfig()
 ) : Builder<ShortcutsConfig> {
 
     fun withActivateFocused(activateFocused: KeyboardEventMatcher) = also {

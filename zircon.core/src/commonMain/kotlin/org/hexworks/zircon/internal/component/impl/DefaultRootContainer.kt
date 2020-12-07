@@ -18,11 +18,11 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 
 class DefaultRootContainer(
-        componentMetadata: ComponentMetadata,
-        renderingStrategy: ComponentRenderingStrategy<RootContainer>
+    componentMetadata: ComponentMetadata,
+    renderingStrategy: ComponentRenderingStrategy<RootContainer>
 ) : RootContainer, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
 ) {
 
     override val componentTree = persistentListOf(this as InternalComponent).toProperty()
@@ -59,22 +59,24 @@ class DefaultRootContainer(
     override fun focusTaken() = Processed
 
     override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                    .build())
-            .build()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(colorTheme.secondaryForegroundColor)
+                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
+                .build()
+        )
+        .build()
 
     override fun calculatePathTo(component: InternalComponent): List<InternalComponent> {
         return componentTree.filter { it.containsBoundable(component) }
     }
 
     override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> =
-            if (this.containsPosition(absolutePosition).not()) {
-                Maybe.empty()
-            } else {
-                Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
-            }
+        if (this.containsPosition(absolutePosition).not()) {
+            Maybe.empty()
+        } else {
+            Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
+        }
 
     private val InternalComponent.otherComponentTree: Collection<InternalComponent>
         get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.otherComponentTree }

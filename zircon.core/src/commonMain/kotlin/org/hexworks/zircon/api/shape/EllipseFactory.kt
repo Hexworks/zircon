@@ -67,9 +67,11 @@ object EllipseFactory : ShapeFactory<EllipseParameters> {
             return DefaultShape(mutableSetOf())
         }
         val delta = fromPosition.minus(toPosition)
-        return createShape(EllipseParameters(
+        return createShape(
+            EllipseParameters(
                 center = fromPosition,
                 size = Size.create(abs(delta.x), abs(delta.y))
-        ))
+            )
+        )
     }
 }

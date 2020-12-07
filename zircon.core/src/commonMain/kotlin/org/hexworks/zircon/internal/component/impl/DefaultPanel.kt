@@ -7,12 +7,13 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
 open class DefaultPanel(
-        componentMetadata: ComponentMetadata,
-        initialTitle: String,
-        renderingStrategy: ComponentRenderingStrategy<Panel>
+    componentMetadata: ComponentMetadata,
+    initialTitle: String,
+    renderingStrategy: ComponentRenderingStrategy<Panel>
 ) : Panel, DefaultContainer(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy), TitleOverride by TitleOverride.create(initialTitle) {
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
+), TitleOverride by TitleOverride.create(initialTitle) {
 
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 

@@ -10,5 +10,6 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
  * states of [components] as well.
  */
 class CompositeLayerStateHolder(
-        private val layerable: Layerable,
-        private val components: InternalComponentContainer)
+    private val layerable: Layerable,
+    private val components: InternalComponentContainer
+)

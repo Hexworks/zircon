@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 @Beta
 enum class ProjectionMode(
-        val gameAreaRenderer: GameAreaRenderer
+    val gameAreaRenderer: GameAreaRenderer
 ) {
 
     /**

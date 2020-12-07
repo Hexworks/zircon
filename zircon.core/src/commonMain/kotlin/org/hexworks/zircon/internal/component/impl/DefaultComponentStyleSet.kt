@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.data.ComponentState.values
 import org.hexworks.zircon.api.graphics.StyleSet
 
 data class DefaultComponentStyleSet(
-        private val styles: Map<ComponentState, StyleSet>
+    private val styles: Map<ComponentState, StyleSet>
 ) : ComponentStyleSet {
 
     init {

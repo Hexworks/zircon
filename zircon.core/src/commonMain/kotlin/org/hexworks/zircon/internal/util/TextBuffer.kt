@@ -22,18 +22,18 @@ class TextBuffer(text: String) {
     fun getSize() = currentText.size
 
     fun getRow(row: Int): Maybe<StringBuilder> =
-            if (row < currentText.size && row >= 0) {
-                Maybe.of(currentText[row])
-            } else {
-                Maybe.empty()
-            }
+        if (row < currentText.size && row >= 0) {
+            Maybe.of(currentText[row])
+        } else {
+            Maybe.empty()
+        }
 
     fun getCharAt(position: Position) =
-            if (position.y >= currentText.size || currentText[position.y].length <= position.x) {
-                Maybe.empty()
-            } else {
-                Maybe.of(currentText[position.y][position.x])
-            }
+        if (position.y >= currentText.size || currentText[position.y].length <= position.x) {
+            Maybe.empty()
+        } else {
+            Maybe.of(currentText[position.y][position.x])
+        }
 
     fun getTextSection(position: Position, size: Size): List<String> {
         val fromRow = position.y
@@ -47,11 +47,13 @@ class TextBuffer(text: String) {
             do {
                 val row = currentText[rowIdx]
                 val toCol = min(fromCol + size.width, row.length)
-                list.add(if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
-                    ""
-                } else {
-                    row.substring(fromCol, toCol)
-                })
+                list.add(
+                    if (requestedColsHaveNoIntersectionWithBuffer(fromCol, toCol, row)) {
+                        ""
+                    } else {
+                        row.substring(fromCol, toCol)
+                    }
+                )
                 rowIdx++
             } while (rowIdx <= toRow)
             list
@@ -74,9 +76,9 @@ class TextBuffer(text: String) {
     }
 
     private fun requestedRowsHaveNoIntersectionWithBuffer(fromRow: Int, toRow: Int) =
-            toRow < fromRow || fromRow >= currentText.size
+        toRow < fromRow || fromRow >= currentText.size
 
     private fun requestedColsHaveNoIntersectionWithBuffer(fromCol: Int, toCol: Int, row: StringBuilder) =
-            toCol <= fromCol || fromCol >= row.length
+        toCol <= fromCol || fromCol >= row.length
 
 }

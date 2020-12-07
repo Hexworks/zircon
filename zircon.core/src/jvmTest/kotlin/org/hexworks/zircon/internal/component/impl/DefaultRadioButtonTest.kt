@@ -8,12 +8,14 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -26,7 +28,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRendere
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("TestFunctionName")
+@Suppress("TestFunctionName", "UNCHECKED_CAST")
 class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadioButton>() {
 
     override lateinit var target: DefaultRadioButton
@@ -34,22 +36,30 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.accentColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withActiveStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.accentColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .withMouseOverStyle(
+                StyleSetBuilder.newBuilder()
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withActiveStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .build()
 
 
     @Before
@@ -57,16 +67,18 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         rendererStub = ComponentRendererStub(DefaultRadioButtonRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build()
         target = DefaultRadioButton(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_20X1,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub),
-                initialText = DefaultCheckBoxTest.TEXT,
-                key = "key"
+            componentMetadata = ComponentMetadata(
+                size = SIZE_20X1,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<RadioButton>
+            ),
+            initialText = DefaultCheckBoxTest.TEXT,
+            key = "key"
         )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
@@ -74,17 +86,19 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Test
     fun shouldProperlyAddRadioButtonText() {
         val surface = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE_20X1)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withSize(SIZE_20X1)
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
         target.render(surface)
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .withCharacter(char)
-                            .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
-                            .build())
+                .isEqualTo(
+                    TileBuilder.newBuilder()
+                        .withCharacter(char)
+                        .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
+                        .build()
+                )
         }
     }
 
@@ -145,8 +159,10 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
 
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         rendererStub.clear()
         target.activated()
 
@@ -155,8 +171,10 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
 
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.focusGiven()
         rendererStub.clear()
         target.activated()
@@ -170,14 +188,15 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.focusGiven()
         rendererStub.clear()
         target.mouseReleased(
-                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }
 
     private fun getButtonChar() = graphics.getTileAt(Position.create(1, 0))
-            .get().asCharacterTile().get().character
+        .get().asCharacterTile().get().character
 
     companion object {
         val SIZE_20X1 = Size.create(20, 1)

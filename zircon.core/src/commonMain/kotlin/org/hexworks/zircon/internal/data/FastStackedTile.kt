@@ -16,8 +16,8 @@ import org.hexworks.zircon.internal.resource.TileType
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 @Beta
 class FastStackedTile(
-        initialTiles: List<Tile> = listOf(),
-        initialCapacity: Int = initialTiles.size
+    initialTiles: List<Tile> = listOf(),
+    initialCapacity: Int = initialTiles.size
 ) : StackedTile {
 
     private val actualTiles = ArrayDeque<Tile>(initialCapacity).apply {
@@ -73,54 +73,54 @@ class FastStackedTile(
         get() = baseTile.modifiers
 
     override fun withPushedTile(tile: Tile): StackedTile = FastStackedTile(
-            initialTiles = tiles.plus(tile)
+        initialTiles = tiles.plus(tile)
     )
 
     override fun withBaseTile(tile: Tile): StackedTile = FastStackedTile(
-            initialTiles = tiles.toMutableList().apply {
-                set(0, tile)
-            }
+        initialTiles = tiles.toMutableList().apply {
+            set(0, tile)
+        }
     )
 
     override fun withRemovedTile(tile: Tile): StackedTile = FastStackedTile(
-            initialTiles = tiles.minus(tile)
+        initialTiles = tiles.minus(tile)
     )
 
     override fun fetchBorderData() = baseTile.fetchBorderData()
 
     override fun createCopy() = FastStackedTile(
-            initialTiles = tiles.toList()
+        initialTiles = tiles.toList()
     )
 
     override fun withForegroundColor(foregroundColor: TileColor) =
-            withBaseTile(baseTile.withForegroundColor(foregroundColor))
+        withBaseTile(baseTile.withForegroundColor(foregroundColor))
 
     override fun withBackgroundColor(backgroundColor: TileColor) =
-            withBaseTile(baseTile.withBackgroundColor(backgroundColor))
+        withBaseTile(baseTile.withBackgroundColor(backgroundColor))
 
     override fun withModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withModifiers(modifiers))
+        withBaseTile(baseTile.withModifiers(modifiers))
 
     override fun withModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withModifiers(modifiers.toSet()))
 
     override fun withAddedModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withAddedModifiers(modifiers))
+        withBaseTile(baseTile.withAddedModifiers(modifiers))
 
     override fun withAddedModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withAddedModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withAddedModifiers(modifiers.toSet()))
 
     override fun withRemovedModifiers(modifiers: Set<Modifier>) =
-            withBaseTile(baseTile.withRemovedModifiers(modifiers))
+        withBaseTile(baseTile.withRemovedModifiers(modifiers))
 
     override fun withRemovedModifiers(vararg modifiers: Modifier) =
-            withBaseTile(baseTile.withRemovedModifiers(modifiers.toSet()))
+        withBaseTile(baseTile.withRemovedModifiers(modifiers.toSet()))
 
     override fun withNoModifiers() =
-            withBaseTile(baseTile.withNoModifiers())
+        withBaseTile(baseTile.withNoModifiers())
 
     override fun withStyle(style: StyleSet) =
-            withBaseTile(baseTile.withStyle(style))
+        withBaseTile(baseTile.withStyle(style))
 
     override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
 

@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultParagraph(
-        componentMetadata: ComponentMetadata,
-        initialText: String,
-        renderingStrategy: ComponentRenderingStrategy<Paragraph>
+    componentMetadata: ComponentMetadata,
+    initialText: String,
+    renderingStrategy: ComponentRenderingStrategy<Paragraph>
 ) : Paragraph, TextOverride by TextOverride.create(initialText), DefaultComponent(
-        componentMetadata = componentMetadata,
-        renderer = renderingStrategy
+    componentMetadata = componentMetadata,
+    renderer = renderingStrategy
 ) {
 
     override fun acceptsFocus() = false

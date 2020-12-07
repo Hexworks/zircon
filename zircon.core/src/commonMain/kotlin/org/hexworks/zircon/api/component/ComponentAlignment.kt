@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.behavior.Boundable
 
 /**
  * Contains the possible alignment options for a [Boundable] object
@@ -11,8 +11,8 @@ import org.hexworks.zircon.api.behavior.Boundable
  */
 // TODO: wouldn't BoundableAlignment be a better name?
 enum class ComponentAlignment(
-        private val withinFn: (other: Rect, target: Size) -> Position,
-        private val aroundFn: (other: Rect, target: Size) -> Position
+    private val withinFn: (other: Rect, target: Size) -> Position,
+    private val aroundFn: (other: Rect, target: Size) -> Position
 ) {
 
     TOP_LEFT(withinFn = { _, _ ->
@@ -24,7 +24,7 @@ enum class ComponentAlignment(
         other.topCenter.withRelativeX(-target.width / 2)
     }, aroundFn = { other, target ->
         other.topCenter.withRelativeY(-target.height)
-                .withRelativeX(-target.width / 2)
+            .withRelativeX(-target.width / 2)
     }),
     TOP_RIGHT(withinFn = { other, target ->
         other.topRight.withRelativeX(-target.width)
@@ -33,22 +33,22 @@ enum class ComponentAlignment(
     }),
     RIGHT_CENTER(withinFn = { other, target ->
         other.rightCenter.withRelativeX(-target.width)
-                .withRelativeY(-target.height / 2)
+            .withRelativeY(-target.height / 2)
     }, aroundFn = { other, target ->
         other.rightCenter.withRelativeY(-target.height / 2)
     }),
     BOTTOM_RIGHT(withinFn = { other, target ->
         other.bottomRight.withRelativeX(-target.width)
-                .withRelativeY(-target.height)
+            .withRelativeY(-target.height)
     }, aroundFn = { other, _ ->
         other.bottomRight
     }),
     BOTTOM_CENTER(withinFn = { other, target ->
         other.bottomCenter.withRelativeY(-target.height)
-                .withRelativeX(-target.width / 2)
+            .withRelativeX(-target.width / 2)
     }, aroundFn = { other, target ->
         other.bottomCenter
-                .withRelativeX(-target.width / 2)
+            .withRelativeX(-target.width / 2)
     }),
     BOTTOM_LEFT(withinFn = { other, target ->
         other.bottomLeft.withRelativeY(-target.height)
@@ -59,11 +59,11 @@ enum class ComponentAlignment(
         other.leftCenter.withRelativeY(-target.height / 2)
     }, aroundFn = { other, target ->
         other.leftCenter.withRelativeX(-target.width)
-                .withRelativeY(-target.height / 2)
+            .withRelativeY(-target.height / 2)
     }),
     CENTER(withinFn = { other, target ->
         other.center.withRelativeY(-target.height / 2)
-                .withRelativeX(-target.width / 2)
+            .withRelativeX(-target.width / 2)
     }, aroundFn = { _, _ ->
         throw UnsupportedOperationException("Can't use CENTER alignment around a container.")
     });

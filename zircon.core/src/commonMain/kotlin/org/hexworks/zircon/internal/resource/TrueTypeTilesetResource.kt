@@ -5,11 +5,11 @@ package org.hexworks.zircon.internal.resource
  * [org.hexworks.zircon.api.data.CharacterTile]s.
  */
 internal class TrueTypeTilesetResource(
-        override val width: Int,
-        override val height: Int,
-        override val path: String,
-        override val tilesetSourceType: TilesetSourceType,
-        val name: String = ""
+    override val width: Int,
+    override val height: Int,
+    override val path: String,
+    override val tilesetSourceType: TilesetSourceType,
+    val name: String = ""
 ) : BaseTilesetResource() {
 
     override val tileType = TileType.CHARACTER_TILE

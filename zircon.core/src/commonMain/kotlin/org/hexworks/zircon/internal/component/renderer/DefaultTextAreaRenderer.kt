@@ -16,12 +16,12 @@ class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
         tileGraphics.size.fetchPositions().forEach { pos ->
             val fixedPos = pos + component.visibleOffset
             component.textBuffer().getCharAt(fixedPos).fold(
-                    whenEmpty = {
-                        tileGraphics.draw(tileTemplate, pos)
-                    },
-                    whenPresent = { char ->
-                        tileGraphics.draw(tileTemplate.withCharacter(char), pos)
-                    })
+                whenEmpty = {
+                    tileGraphics.draw(tileTemplate, pos)
+                },
+                whenPresent = { char ->
+                    tileGraphics.draw(tileTemplate.withCharacter(char), pos)
+                })
         }
     }
 }

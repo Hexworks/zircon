@@ -15,8 +15,9 @@ abstract class BaseSize : Size {
     override operator fun plus(other: Size) = Size.create(width + other.width, height + other.height)
 
     override operator fun minus(other: Size) = Size.create(
-            width = max(0, width - other.width),
-            height = max(0, height - other.height))
+        width = max(0, width - other.width),
+        height = max(0, height - other.height)
+    )
 
     override operator fun component1() = width
 
@@ -60,8 +61,8 @@ abstract class BaseSize : Size {
 
     override fun fetchBoundingBoxPositions(): Set<Position> {
         return RectangleFactory
-                .buildRectangle(Position.defaultPosition(), this)
-                .positions
+            .buildRectangle(Position.defaultPosition(), this)
+            .positions
     }
 
     override fun fetchTopLeftPosition() = Position.topLeftCorner()
@@ -106,12 +107,12 @@ abstract class BaseSize : Size {
 
     override fun max(other: Size): Size {
         return withWidth(max(width, other.width))
-                .withHeight(max(height, other.height))
+            .withHeight(max(height, other.height))
     }
 
     override fun min(other: Size): Size {
         return withWidth(min(width, other.width))
-                .withHeight(min(height, other.height))
+            .withHeight(min(height, other.height))
     }
 
     override fun with(size: Size): Size {

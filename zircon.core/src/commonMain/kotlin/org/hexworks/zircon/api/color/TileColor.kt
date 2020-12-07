@@ -2,8 +2,8 @@
 
 package org.hexworks.zircon.api.color
 
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.color.DefaultTileColor
 import kotlin.jvm.JvmStatic
 
