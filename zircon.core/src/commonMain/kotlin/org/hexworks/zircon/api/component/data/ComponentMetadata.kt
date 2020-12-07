@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
 
 /**
  * Contains metadata that is common to **all** [Component]s.
@@ -16,7 +15,7 @@ data class ComponentMetadata(
     val size: Size,
     val tileset: TilesetResource,
     val componentStyleSet: ComponentStyleSet,
-    val theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+    val theme: ColorTheme? = null,
     val updateOnAttach: Boolean = false
 ) {
 
