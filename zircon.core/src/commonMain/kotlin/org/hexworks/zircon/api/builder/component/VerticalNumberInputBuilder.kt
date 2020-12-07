@@ -2,8 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.CommonComponentProperties
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -13,12 +11,12 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 class VerticalNumberInputBuilder(
-        val height: Int,
-        private var initialValue: Int = 0,
-        private var minValue: Int = 0,
-        private var maxValue: Int = Int.MAX_VALUE
+    val height: Int,
+    private var initialValue: Int = 0,
+    private var minValue: Int = 0,
+    private var maxValue: Int = Int.MAX_VALUE
 ) : BaseComponentBuilder<NumberInput, VerticalNumberInputBuilder>(
-        DefaultVerticalNumberInputRenderer() as ComponentRenderer<NumberInput>
+    DefaultVerticalNumberInputRenderer() as ComponentRenderer<NumberInput>
 ) {
 
     fun withInitialValue(value: Int) = also {
@@ -35,8 +33,8 @@ class VerticalNumberInputBuilder(
             initialValue = maxValue
         }
         contentSize = contentSize
-                .withHeight(max(this.maxValue.toString().length + 1, height))
-                .withWidth(1)
+            .withHeight(max(this.maxValue.toString().length + 1, height))
+            .withWidth(1)
     }
 
     fun withMinValue(value: Int) = also {
@@ -47,30 +45,21 @@ class VerticalNumberInputBuilder(
     }
 
     override fun build(): NumberInput = DefaultVerticalNumberInput(
-            componentMetadata = ComponentMetadata(
-                    size = size,
-                    relativePosition = position,
-                    componentStyleSet = componentStyleSet,
-                    tileset = tileset
-            ),
-            initialValue = initialValue,
-            minValue = minValue,
-            maxValue = maxValue,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>
-            )
-    ).apply {
-        colorTheme.map {
-            theme = it
-        }
-    }
+        componentMetadata = generateMetadata(),
+        initialValue = initialValue,
+        minValue = minValue,
+        maxValue = maxValue,
+        renderingStrategy = DefaultComponentRenderingStrategy(
+            decorationRenderers = decorationRenderers,
+            componentRenderer = props.componentRenderer as ComponentRenderer<NumberInput>
+        )
+    )
 
     override fun createCopy() = newBuilder(height)
-            .withProps(props.copy())
-            .withInitialValue(initialValue)
-            .withMinValue(minValue)
-            .withMaxValue(maxValue)
+        .withProps(props.copy())
+        .withInitialValue(initialValue)
+        .withMinValue(minValue)
+        .withMaxValue(maxValue)
 
     companion object {
 

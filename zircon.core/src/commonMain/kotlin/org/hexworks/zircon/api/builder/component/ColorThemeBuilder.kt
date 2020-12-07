@@ -6,12 +6,13 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
 
 data class ColorThemeBuilder(
-        private var name: String = "anonymous",
-        private var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-        private var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-        private var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-        private var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-        private var accentColor: TileColor = TileColor.defaultForegroundColor()) : Builder<ColorTheme> {
+    private var name: String = "anonymous",
+    private var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+    private var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+    private var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+    private var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+    private var accentColor: TileColor = TileColor.defaultForegroundColor()
+) : Builder<ColorTheme> {
 
     fun withName(name: String) = also {
         this.name = name
@@ -40,12 +41,13 @@ data class ColorThemeBuilder(
     override fun createCopy() = copy()
 
     override fun build(): ColorTheme = DefaultColorTheme(
-            name = name,
-            primaryForegroundColor = primaryForegroundColor,
-            primaryBackgroundColor = primaryBackgroundColor,
-            secondaryForegroundColor = secondaryForegroundColor,
-            secondaryBackgroundColor = secondaryBackgroundColor,
-            accentColor = accentColor)
+        name = name,
+        primaryForegroundColor = primaryForegroundColor,
+        primaryBackgroundColor = primaryBackgroundColor,
+        secondaryForegroundColor = secondaryForegroundColor,
+        secondaryBackgroundColor = secondaryBackgroundColor,
+        accentColor = accentColor
+    )
 
     companion object {
 

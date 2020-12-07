@@ -10,11 +10,11 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 class GroupBuilder<T : Component>(
-        private var isDisabled: Boolean = false,
-        private var isHidden: Boolean = false,
-        private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
-    : Builder<Group<T>> {
+    private var isDisabled: Boolean = false,
+    private var isHidden: Boolean = false,
+    private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+) : Builder<Group<T>> {
 
     fun withIsDisabled(isDisabled: Boolean) = also {
         this.isDisabled = isDisabled
@@ -33,17 +33,19 @@ class GroupBuilder<T : Component>(
         this.tileset = tileset
     }
 
-    override fun build(): Group<T> = DefaultGroup<T>(
-            initialIsDisabled = isDisabled,
-            initialIsHidden = isHidden,
-            initialTheme = theme,
-            initialTileset = tileset)
+    override fun build(): Group<T> = DefaultGroup(
+        initialIsDisabled = isDisabled,
+        initialIsHidden = isHidden,
+        initialTheme = theme,
+        initialTileset = tileset
+    )
 
     override fun createCopy() = GroupBuilder<T>(
-            isDisabled = isDisabled,
-            isHidden = isHidden,
-            tileset = tileset,
-            theme = theme)
+        isDisabled = isDisabled,
+        isHidden = isHidden,
+        tileset = tileset,
+        theme = theme
+    )
 
     companion object {
 

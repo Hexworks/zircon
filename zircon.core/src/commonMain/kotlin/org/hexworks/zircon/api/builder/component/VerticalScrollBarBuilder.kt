@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -16,8 +15,8 @@ import kotlin.jvm.JvmStatic
  * - [maxValue]: `100`
  */
 class VerticalScrollBarBuilder(
-        private var minValue: Int = 0,
-        private var maxValue: Int = 100
+    private var minValue: Int = 0,
+    private var maxValue: Int = 100
 ) : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
 
     fun withNumberOfScrollableItems(items: Int) = also {
@@ -26,28 +25,19 @@ class VerticalScrollBarBuilder(
     }
 
     override fun build(): ScrollBar = DefaultVerticalScrollBar(
-            componentMetadata = ComponentMetadata(
-                    size = size,
-                    relativePosition = position,
-                    componentStyleSet = componentStyleSet,
-                    tileset = tileset
-            ),
-            minValue = minValue,
-            maxValue = maxValue,
-            itemsShownAtOnce = size.height,
-            numberOfSteps = size.height,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>
-            )
-    ).apply {
-        colorTheme.map {
-            theme = it
-        }
-    }
+        componentMetadata = generateMetadata(),
+        minValue = minValue,
+        maxValue = maxValue,
+        itemsShownAtOnce = size.height,
+        numberOfSteps = size.height,
+        renderingStrategy = DefaultComponentRenderingStrategy(
+            decorationRenderers = decorationRenderers,
+            componentRenderer = props.componentRenderer as ComponentRenderer<ScrollBar>
+        )
+    )
 
     override fun createCopy() = newBuilder().withProps(props.copy())
-            .withNumberOfScrollableItems(maxValue)
+        .withNumberOfScrollableItems(maxValue)
 
     companion object {
 

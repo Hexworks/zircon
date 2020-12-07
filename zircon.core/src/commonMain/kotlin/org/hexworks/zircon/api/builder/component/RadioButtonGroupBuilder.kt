@@ -10,11 +10,11 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 class RadioButtonGroupBuilder(
-        private var isDisabled: Boolean = false,
-        private var isHidden: Boolean = false,
-        private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
-        private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset)
-    : Builder<RadioButtonGroup> {
+    private var isDisabled: Boolean = false,
+    private var isHidden: Boolean = false,
+    private var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+) : Builder<RadioButtonGroup> {
 
     fun withIsDisabled(isDisabled: Boolean) = also {
         this.isDisabled = isDisabled
@@ -34,16 +34,18 @@ class RadioButtonGroupBuilder(
     }
 
     override fun build(): RadioButtonGroup = DefaultRadioButtonGroup(
-            initialIsDisabled = isDisabled,
-            initialIsHidden = isHidden,
-            initialTheme = theme,
-            initialTileset = tileset)
+        initialIsDisabled = isDisabled,
+        initialIsHidden = isHidden,
+        initialTheme = theme,
+        initialTileset = tileset
+    )
 
     override fun createCopy() = RadioButtonGroupBuilder(
-            isDisabled = isDisabled,
-            isHidden = isHidden,
-            theme = theme,
-            tileset = tileset)
+        isDisabled = isDisabled,
+        isHidden = isHidden,
+        theme = theme,
+        tileset = tileset
+    )
 
     companion object {
 

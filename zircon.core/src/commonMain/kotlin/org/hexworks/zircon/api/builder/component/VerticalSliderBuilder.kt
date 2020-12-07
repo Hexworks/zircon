@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalSlider
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -18,9 +17,9 @@ import kotlin.math.max
  * - [numberOfSteps]: `10`
  */
 class VerticalSliderBuilder(
-        private var minValue: Int = 0,
-        private var maxValue: Int = 100,
-        private var numberOfSteps: Int = 10,
+    private var minValue: Int = 0,
+    private var maxValue: Int = 100,
+    private var numberOfSteps: Int = 10,
 ) : BaseComponentBuilder<Slider, VerticalSliderBuilder>(VerticalSliderRenderer()) {
 
     fun withMaxValue(max: Int) = also {
@@ -38,32 +37,24 @@ class VerticalSliderBuilder(
         require(steps in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
         this.numberOfSteps = steps
         contentSize = contentSize
-                .withHeight(max(steps + 1, contentSize.height))
+            .withHeight(max(steps + 1, contentSize.height))
     }
 
     override fun build(): Slider = DefaultVerticalSlider(
-            componentMetadata = ComponentMetadata(
-                    size = size,
-                    relativePosition = position,
-                    componentStyleSet = componentStyleSet,
-                    tileset = tileset
-            ),
-            minValue = minValue,
-            maxValue = maxValue,
-            numberOfSteps = numberOfSteps,
-            renderingStrategy = DefaultComponentRenderingStrategy(
-                    decorationRenderers = decorationRenderers,
-                    componentRenderer = props.componentRenderer as ComponentRenderer<Slider>)
-    ).apply {
-        colorTheme.map {
-            theme = it
-        }
-    }
+        componentMetadata = generateMetadata(),
+        minValue = minValue,
+        maxValue = maxValue,
+        numberOfSteps = numberOfSteps,
+        renderingStrategy = DefaultComponentRenderingStrategy(
+            decorationRenderers = decorationRenderers,
+            componentRenderer = props.componentRenderer as ComponentRenderer<Slider>
+        )
+    )
 
     override fun createCopy() = newBuilder().withProps(props.copy())
-            .withMinValue(minValue)
-            .withMaxValue(maxValue)
-            .withNumberOfSteps(numberOfSteps)
+        .withMinValue(minValue)
+        .withMaxValue(maxValue)
+        .withNumberOfSteps(numberOfSteps)
 
     companion object {
 

@@ -107,7 +107,7 @@ abstract class DefaultComponent(
     final override val disabledProperty = false.toProperty()
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
 
-    final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
+    final override val themeProperty = componentMetadata.theme.toProperty()
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
     final override val updateOnAttach = componentMetadata.updateOnAttach
