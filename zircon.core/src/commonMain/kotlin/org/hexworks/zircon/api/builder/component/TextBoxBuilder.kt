@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.TextBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -17,9 +16,9 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 class TextBoxBuilder(
-        private val initialContentWidth: Int,
-        private var nextPosition: Position = Position.defaultPosition(),
-        private val components: MutableList<Component> = mutableListOf()
+    private val initialContentWidth: Int,
+    private var nextPosition: Position = Position.defaultPosition(),
+    private val components: MutableList<Component> = mutableListOf()
 ) : BaseComponentBuilder<TextBox, TextBoxBuilder>(DefaultTextBoxRenderer()) {
 
     private val inlineElements = mutableListOf<Component>()
@@ -37,13 +36,15 @@ class TextBoxBuilder(
     @JvmOverloads
     fun addHeader(text: String, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, text.length.div(contentWidth) + 1)
-        components.add(HeaderBuilder.newBuilder()
+        components.add(
+            HeaderBuilder.newBuilder()
                 .withSize(size)
                 .withText(text)
                 // TODO: regression test tileset in all methods here
                 .withTileset(tileset)
                 .withAlignment(positionalAlignment(nextPosition))
-                .build())
+                .build()
+        )
         updateSizeAndPosition(size.height)
         if (withNewLine) {
             addNewLine()
@@ -53,13 +54,15 @@ class TextBoxBuilder(
     @JvmOverloads
     fun addParagraph(paragraph: String, withNewLine: Boolean = true, withTypingEffectSpeedInMs: Long = 0) = also {
         val size = Size.create(contentWidth, paragraph.length.div(contentWidth) + 1)
-        components.add(ParagraphBuilder.newBuilder()
+        components.add(
+            ParagraphBuilder.newBuilder()
                 .withSize(size)
                 .withText(paragraph)
                 .withTypingEffect(withTypingEffectSpeedInMs)
                 .withTileset(tileset)
                 .withAlignment(positionalAlignment(nextPosition))
-                .build())
+                .build()
+        )
         updateSizeAndPosition(size.height)
         if (withNewLine) {
             addNewLine()
@@ -83,9 +86,9 @@ class TextBoxBuilder(
     fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean = true) = also {
         val size = Size.create(contentWidth, paragraphBuilder.text.length.div(contentWidth) + 1)
         val paragraph = paragraphBuilder
-                .withAlignment(positionalAlignment(nextPosition))
-                .withSize(size)
-                .build()
+            .withAlignment(positionalAlignment(nextPosition))
+            .withSize(size)
+            .build()
         components.add(paragraph)
         updateSizeAndPosition(size.height)
         if (withNewLine) {
@@ -95,12 +98,14 @@ class TextBoxBuilder(
 
     fun addListItem(item: String) = also {
         val size = Size.create(contentWidth, item.length.div(contentWidth) + 1)
-        components.add(ListItemBuilder.newBuilder()
+        components.add(
+            ListItemBuilder.newBuilder()
                 .withSize(size)
                 .withText(item)
                 .withAlignment(positionalAlignment(nextPosition))
                 .withTileset(tileset)
-                .build())
+                .build()
+        )
         updateSizeAndPosition(size.height)
     }
 
@@ -109,11 +114,13 @@ class TextBoxBuilder(
         require(currentInlineLength + text.length < contentWidth) {
             "The length of elements in the current line can't be bigger than '$contentWidth'."
         }
-        inlineElements.add(LabelBuilder.newBuilder()
+        inlineElements.add(
+            LabelBuilder.newBuilder()
                 .withText(text)
                 .withAlignment(positionalAlignment(Position.create(currentInlineLength, 0)))
                 .withTileset(tileset)
-                .build())
+                .build()
+        )
     }
 
     fun addInlineComponent(component: Component) = also {
@@ -161,22 +168,17 @@ class TextBoxBuilder(
 
     private fun currentInlineLength(): Int {
         return inlineElements.asSequence()
-                .map { it.size.width }
-                .fold(0, Int::plus)
+            .map { it.size.width }
+            .fold(0, Int::plus)
     }
 
     override fun build(): TextBox {
         return DefaultTextBox(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset
-                ),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>
-                )
+            componentMetadata = generateMetadata(),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = decorationRenderers,
+                componentRenderer = props.componentRenderer as ComponentRenderer<TextBox>
+            )
         ).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)
@@ -185,9 +187,9 @@ class TextBoxBuilder(
     }
 
     override fun createCopy() = TextBoxBuilder(
-            initialContentWidth = contentWidth,
-            nextPosition = nextPosition,
-            components = components.toMutableList()
+        initialContentWidth = contentWidth,
+        nextPosition = nextPosition,
+        components = components.toMutableList()
     ).withProps(props.copy())
 
 

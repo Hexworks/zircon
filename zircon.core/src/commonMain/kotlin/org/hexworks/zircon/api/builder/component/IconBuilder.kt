@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -35,19 +34,13 @@ class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer(
             "Can't build an Icon without an icon tile"
         }
         return DefaultIcon(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                initialIcon = icon.get(),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<Icon>)).apply {
-            colorTheme.map {
-                theme = it
-            }
-        }
+            componentMetadata = generateMetadata(),
+            initialIcon = icon.get(),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = decorationRenderers,
+                componentRenderer = componentRenderer as ComponentRenderer<Icon>
+            )
+        )
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy()).apply {

@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -17,10 +16,10 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 class ModalBuilder<T : ModalResult>(
-        private var darkenPercent: Double = .5,
-        private var centeredDialog: Boolean = true,
-        private var contentComponent: Maybe<Component> = Maybe.empty())
-    : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
+    private var darkenPercent: Double = .5,
+    private var centeredDialog: Boolean = true,
+    private var contentComponent: Maybe<Component> = Maybe.empty()
+) : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
 
     fun withParentSize(size: Size) = also {
         super.withSize(size)
@@ -55,36 +54,33 @@ class ModalBuilder<T : ModalResult>(
             "Can't build a modal which has a component which is bigger than the modal."
         }
         if (centeredDialog) {
-            component.moveTo(Position.create(
+            component.moveTo(
+                Position.create(
                     x = (size.width - component.size.width) / 2,
-                    y = (size.height - component.size.height) / 2))
+                    y = (size.height - component.size.height) / 2
+                )
+            )
         }
         val componentRenderer = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorationRenderers,
-                componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>)
+            decorationRenderers = decorationRenderers,
+            componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>
+        )
         val modal = DefaultModal<T>(
-                darkenPercent = darkenPercent,
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                renderingStrategy = componentRenderer).apply {
-            colorTheme.map {
-                theme = it
-            }
-        }
+            darkenPercent = darkenPercent,
+            componentMetadata = generateMetadata(),
+            renderingStrategy = componentRenderer
+        )
         modal.addComponent(component)
         return modal
     }
 
     override fun createCopy() = newBuilder<T>().withProps(props.copy())
-            .withCenteredDialog(centeredDialog).apply {
-                contentComponent.map { component ->
-                    withComponent(component)
-                }
-            }.withDarkenPercent(darkenPercent)
-            .withParentSize(size)
+        .withCenteredDialog(centeredDialog).apply {
+            contentComponent.map { component ->
+                withComponent(component)
+            }
+        }.withDarkenPercent(darkenPercent)
+        .withParentSize(size)
 
     companion object {
 

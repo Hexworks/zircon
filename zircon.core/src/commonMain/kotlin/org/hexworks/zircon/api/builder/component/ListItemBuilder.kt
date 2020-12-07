@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -12,35 +11,29 @@ import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
 class ListItemBuilder(
-        private var text: String = "")
-    : BaseComponentBuilder<ListItem, ListItemBuilder>(DefaultListItemRenderer()) {
+    private var text: String = ""
+) : BaseComponentBuilder<ListItem, ListItemBuilder>(DefaultListItemRenderer()) {
 
     fun withText(text: String) = also {
         this.text = text.withNewLinesStripped()
         contentSize = contentSize
-                .withWidth(max(this.text.length + 2, contentSize.width))
+            .withWidth(max(this.text.length + 2, contentSize.width))
     }
 
     override fun build(): ListItem {
         val fixedText = text.withNewLinesStripped()
         return DefaultListItem(
-                componentMetadata = ComponentMetadata(
-                        size = size,
-                        relativePosition = position,
-                        componentStyleSet = componentStyleSet,
-                        tileset = tileset),
-                initialText = fixedText,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = decorationRenderers,
-                        componentRenderer = componentRenderer as ComponentRenderer<ListItem>)).apply {
-            colorTheme.map {
-                theme = it
-            }
-        }
+            componentMetadata = generateMetadata(),
+            initialText = fixedText,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = decorationRenderers,
+                componentRenderer = componentRenderer as ComponentRenderer<ListItem>
+            )
+        )
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy())
-            .withText(text)
+        .withText(text)
 
     companion object {
 

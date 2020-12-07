@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
 
@@ -11,8 +11,8 @@ import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
  * They will be used accordingly when the component's state changes.
  */
 data class ComponentStyleSetBuilder(
-        private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf())
-    : Builder<ComponentStyleSet> {
+    private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf()
+) : Builder<ComponentStyleSet> {
 
     init {
         ComponentState.values().forEach {
@@ -22,18 +22,18 @@ data class ComponentStyleSetBuilder(
 
     override fun build(): ComponentStyleSet {
         ComponentState.values()
-                .filterNot { it == ComponentState.DEFAULT }
-                .forEach {
-                    if (styles[it] === StyleSet.defaultStyle()) {
-                        styles[it] = styles[ComponentState.DEFAULT]!!
-                    }
+            .filterNot { it == ComponentState.DEFAULT }
+            .forEach {
+                if (styles[it] === StyleSet.defaultStyle()) {
+                    styles[it] = styles[ComponentState.DEFAULT]!!
                 }
+            }
         return DefaultComponentStyleSet(styles)
     }
 
     override fun createCopy() = copy(
-            styles = styles.map { Pair(it.key, it.value) }
-                    .toMap().toMutableMap())
+        styles = styles.map { Pair(it.key, it.value) }
+            .toMap().toMutableMap())
 
     fun withDefaultStyle(styleSet: StyleSet) = also {
         styles[ComponentState.DEFAULT] = styleSet
