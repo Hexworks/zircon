@@ -123,8 +123,8 @@ object ComponentDecorations {
     @Beta
     @JvmStatic
     fun padding(
-        x: Int,
-        y: Int
+        y: Int,
+        x: Int
     ): ComponentDecorationRenderer = PaddingDecorationRenderer(
         top = y,
         right = x,

@@ -90,7 +90,7 @@ open class DefaultContainer(
             "You can't add a component to itself."
         }
         require(component.isAttached.not()) {
-            "This component is already attached to a parent. Please detach it first."
+            "Component $component is already attached to a parent. Please detach it first."
         }
         val originalRect = component.rect
         component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
@@ -149,6 +149,7 @@ open class DefaultContainer(
         override fun detach(): Component {
             component.parent = Maybe.empty()
             this@DefaultContainer.children.remove(component)
+            component.resetState()
             Zircon.eventBus.publish(
                 event = ComponentRemoved(
                     parent = parentContainer,

@@ -44,4 +44,9 @@ interface ComponentContainer : ColorThemeOverride {
      */
     fun addFragment(fragment: Fragment): AttachedComponent = addComponent(fragment.root)
 
+    /**
+     * Adds the [Fragment.root] of the given [Fragment] to this [ComponentContainer].
+     */
+    fun addFragments(vararg fragments: Fragment): List<AttachedComponent> = fragments.map(::addFragment)
+
 }
