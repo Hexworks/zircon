@@ -30,7 +30,7 @@ public abstract class TwoColumnComponentExampleJava extends ComponentExampleJava
                 .build();
 
         VBox rightBox = vbox()
-                .withDecorations(box(BoxType.SINGLE, "Buttons on panel"), shadow())
+                .withDecorations(box(BoxType.SINGLE, "Within a Panel"), shadow())
                 .withSpacing(1)
                 .withSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
                 .build();

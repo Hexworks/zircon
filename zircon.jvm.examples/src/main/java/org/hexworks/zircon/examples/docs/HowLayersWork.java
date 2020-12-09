@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.grid.TileGrid;
 public class HowLayersWork {
 
     public static void main(String[] args) {
+
         TileGrid tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
                 .withSize(20, 10)
                 .build());

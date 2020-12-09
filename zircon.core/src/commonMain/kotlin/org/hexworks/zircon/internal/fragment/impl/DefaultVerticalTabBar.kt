@@ -16,18 +16,6 @@ class DefaultVerticalTabBar(
     private val tabs: Map<String, Component>
 ) : VerticalTabBar {
 
-    init {
-        require(contentSize.height >= barSize.height) {
-            "Can't have a higher bar than the content area."
-        }
-        require(tabs.containsKey(defaultSelected)) {
-            "Default selected tab $defaultSelected is not present in tabs."
-        }
-        require(tabs.size <= barSize.height) {
-            "Tab bar height ${barSize.height} is not enough for the number of items supplied: ${tabs.size}."
-        }
-    }
-
     override val root = Components.hbox()
         .withComponentRenderer(NoOpComponentRenderer())
         .withSize(contentSize.withRelativeWidth(barSize.width))
