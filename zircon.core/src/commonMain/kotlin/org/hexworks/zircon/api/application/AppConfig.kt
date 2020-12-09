@@ -66,9 +66,9 @@ data class AppConfig(
     /**
      * Controls the [Size] of the resulting tile grid when the [Application]
      * is started.
-     * Default is `80x24`
+     * Default is `80x40`
      */
-    val size: Size = Size.create(80, 24),
+    val size: Size = Size.create(80, 40),
     /**
      * Controls if the [Application] will be full screen or not.
      * Default is `false`

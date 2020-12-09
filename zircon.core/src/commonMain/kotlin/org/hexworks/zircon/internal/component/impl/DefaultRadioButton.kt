@@ -13,7 +13,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 
-@Suppress("DuplicatedCode")
 class DefaultRadioButton(
     componentMetadata: ComponentMetadata,
     initialText: String,
