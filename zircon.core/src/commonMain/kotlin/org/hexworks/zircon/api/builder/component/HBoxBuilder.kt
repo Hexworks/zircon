@@ -23,7 +23,7 @@ class HBoxBuilder(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
             initialTitle = title,
-            spacing = spacing
+            spacing = spacing,
         )
     }
 

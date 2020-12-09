@@ -30,16 +30,14 @@ data class ShadowDecorationRenderer(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(graphicsSize.width - 1, 0)
-            )
-                .map { it to shadowTile }.toMap(),
+            ).map { it to shadowTile }.toMap(),
             drawPosition = Position.create(1, graphicsSize.height - 1)
         )
         tileGraphics.draw(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(0, graphicsSize.height - 1)
-            )
-                .map { it to shadowTile }.toMap(),
+            ).map { it to shadowTile }.toMap(),
             drawPosition = Position.create(graphicsSize.width - 1, 1)
         )
     }

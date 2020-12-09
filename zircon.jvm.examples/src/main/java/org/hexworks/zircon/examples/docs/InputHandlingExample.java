@@ -15,6 +15,7 @@ import static org.hexworks.zircon.api.ComponentDecorations.box;
 import static org.hexworks.zircon.api.ComponentDecorations.shadow;
 import static org.hexworks.zircon.api.Functions.fromBiConsumer;
 import static org.hexworks.zircon.api.Functions.fromConsumer;
+import static org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED;
 
 public class InputHandlingExample {
 
@@ -54,14 +55,14 @@ public class InputHandlingExample {
         // adding the component to the screen
 
         // when you handle events you need to return a response
-        button.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        button.handleComponentEvents(ACTIVATED, (event) -> {
             System.out.println("Skipped component event");
             return UIEventResponse.pass(); // pass means that you didn't handle the event
         });
 
         // when you process events you don't have to return a response, Zircon will treat
         // processors as if they were returning the `processed` response.
-        button.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer((event) -> {
+        button.processComponentEvents(ACTIVATED, fromConsumer((event) -> {
             System.out.println("Button pressed!");
         }));
 
