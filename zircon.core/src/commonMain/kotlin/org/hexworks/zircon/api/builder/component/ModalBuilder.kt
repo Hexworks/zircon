@@ -16,8 +16,8 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 class ModalBuilder<T : ModalResult>(
-    private var darkenPercent: Double = .5,
-    private var centeredDialog: Boolean = true,
+    private var darkenPercent: Double = 0.0,
+    private var centeredDialog: Boolean = false,
     private var contentComponent: Maybe<Component> = Maybe.empty()
 ) : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
 
@@ -38,7 +38,7 @@ class ModalBuilder<T : ModalResult>(
         this.darkenPercent = percentage
     }
 
-    override fun withSize(size: Size): ModalBuilder<T> {
+    override fun withSize(size: Size): Nothing {
         throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
     }
 
@@ -67,7 +67,9 @@ class ModalBuilder<T : ModalResult>(
         )
         val modal = DefaultModal<T>(
             darkenPercent = darkenPercent,
-            componentMetadata = createMetadata(),
+            // TODO: document this (updateOnAttach is needed as we don't want the modal to have the empty theme
+            // TODO: of the ModalComponentContainer)
+            componentMetadata = createMetadata().copy(updateOnAttach = false),
             renderingStrategy = componentRenderer
         )
         modal.addComponent(component)

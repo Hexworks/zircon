@@ -54,7 +54,7 @@ interface InternalComponent :
      */
     fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
-    fun resetState() {
+    override fun resetState() {
         clearFocus()
         componentState = ComponentState.DEFAULT
     }

@@ -17,6 +17,7 @@ object ColorThemes {
      */
     @JvmStatic
     fun empty() = ColorThemeBuilder.newBuilder()
+        .withName("empty")
         .withAccentColor(TileColor.transparent())
         .withPrimaryForegroundColor(TileColor.transparent())
         .withSecondaryForegroundColor(TileColor.transparent())

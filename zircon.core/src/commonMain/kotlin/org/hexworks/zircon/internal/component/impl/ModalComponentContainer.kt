@@ -62,7 +62,21 @@ class ModalComponentContainer(
 
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
-        return containerStack.lastOrNull()?.dispatch(event) ?: Pass
+        var lastIdx = containerStack.lastIndex
+        logger.debug {
+            "Dispatching event $event. Last index in container stack: $lastIdx. Stack size is: ${containerStack.size}."
+        }
+        var result: UIEventResponse = Pass
+        // TODO: test this new mechanism
+        while (lastIdx >= 0 && result == Pass) {
+            val last = containerStack[lastIdx]
+            result = last.dispatch(event)
+            logger.debug {
+                "Result of last dispatch: $result. Stack size is: ${containerStack.size}."
+            }
+            lastIdx--
+        }
+        return result
     }
 
     @Synchronized

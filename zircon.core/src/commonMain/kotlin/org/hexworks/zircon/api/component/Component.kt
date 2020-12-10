@@ -100,6 +100,8 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      */
     fun clearCustomStyle()
 
+    fun resetState()
+
     /**
      * Adds a listener to this [Component] that will be called whenever
      * this [Component] is activated.
