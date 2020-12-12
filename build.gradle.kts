@@ -47,7 +47,7 @@ tasks {
     }
 
     dokkaHtmlMultiModule {
-        outputDirectory.set(docsDir.resolve(project.version.toString()))
+        outputDirectory.set(docsDir.resolve(project.version.toString() + "-KOTLIN"))
         finalizedBy(renameModulesToIndex, generateDocsIndexTask)
     }
 

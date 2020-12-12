@@ -1,0 +1,77 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:org.hexworks.zircon.internal.application/LibgdxApplication/<get-tileGrid>/#/PointingToDeclaration/org.hexworks.zircon.internal.application/-libgdx-application/get-tile-grid.html
+$dokka.location:org.hexworks.zircon.internal.application/LibgdxGame/<get-libgdxApplication>/#/PointingToDeclaration/org.hexworks.zircon.internal.application/-libgdx-game/get-libgdx-application.html
+$dokka.location:org.hexworks.zircon.internal.renderer/LibgdxRenderer/<get-closed>/#/PointingToDeclaration/org.hexworks.zircon.internal.renderer/-libgdx-renderer/get-closed.html
+$dokka.location:org.hexworks.zircon.internal.renderer/LibgdxRenderer/<get-closedValue>/#/PointingToDeclaration/org.hexworks.zircon.internal.renderer/-libgdx-renderer/get-closed-value.html
+$dokka.location:org.hexworks.zircon.internal.renderer/LibgdxRenderer/<get-isClosed>/#/PointingToDeclaration/org.hexworks.zircon.internal.renderer/-libgdx-renderer/get-is-closed.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset.Companion/<get-CP437_METADATA>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/-companion/get-c-p437_-m-e-t-a-d-a-t-a.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset.TileTextureMetadata/<get-x>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/-tile-texture-metadata/get-x.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset.TileTextureMetadata/<get-y>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/-tile-texture-metadata/get-y.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset/<get-height>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/get-height.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset/<get-id>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/get-id.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset/<get-size>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/get-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset/<get-targetType>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/get-target-type.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxCP437Tileset/<get-width>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-c-p437-tileset/get-width.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-char>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-char.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-description>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-description.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-name>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-tags>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-tags.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-x>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-x.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<get-y>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/get-y.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-char>/#kotlin.Char/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-char.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-description>/#kotlin.String/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-description.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-name>/#kotlin.String/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-tags>/#kotlin.collections.Set[kotlin.String]/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-tags.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-x>/#kotlin.Int/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-x.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileData/<set-y>/#kotlin.Int/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-data/set-y.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<get-name>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/get-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<get-tiles>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/get-tiles.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<get-tilesPerRow>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/get-tiles-per-row.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<set-name>/#kotlin.String/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/set-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<set-tiles>/#kotlin.collections.List[org.hexworks.zircon.internal.tileset.LibgdxGraphicalTileset.TileData]/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/set-tiles.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileFile/<set-tilesPerRow>/#kotlin.Int/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-file/set-tiles-per-row.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<get-files>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/get-files.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<get-name>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/get-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<get-size>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/get-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<set-files>/#kotlin.collections.List[org.hexworks.zircon.internal.tileset.LibgdxGraphicalTileset.TileFile]/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/set-files.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<set-name>/#kotlin.String/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/set-name.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset.TileInfo/<set-size>/#kotlin.Int/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/-tile-info/set-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset/<get-height>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/get-height.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset/<get-id>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/get-id.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset/<get-size>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/get-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset/<get-targetType>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/get-target-type.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxGraphicalTileset/<get-width>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-graphical-tileset/get-width.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset.OffsetTileTexture/<get-height>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/-offset-tile-texture/get-height.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset.OffsetTileTexture/<get-texture>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/-offset-tile-texture/get-texture.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset.OffsetTileTexture/<get-width>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/-offset-tile-texture/get-width.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset.OffsetTileTexture/<get-xOffset>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/-offset-tile-texture/get-x-offset.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset.OffsetTileTexture/<get-yOffset>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/-offset-tile-texture/get-y-offset.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset/<get-height>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/get-height.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset/<get-id>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/get-id.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset/<get-size>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/get-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset/<get-targetType>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/get-target-type.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxMonospaceFontTileset/<get-width>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-monospace-font-tileset/get-width.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset.Companion/<get-CP437_METADATA>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/-companion/get-c-p437_-m-e-t-a-d-a-t-a.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset.TileTextureMetadata/<get-x>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/-tile-texture-metadata/get-x.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset.TileTextureMetadata/<get-y>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/-tile-texture-metadata/get-y.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset/<get-height>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/get-height.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset/<get-id>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/get-id.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset/<get-size>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/get-size.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset/<get-targetType>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/get-target-type.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTileset/<get-width>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset/get-width.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTilesetLoader/<get-closed>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset-loader/get-closed.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTilesetLoader/<get-closedValue>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset-loader/get-closed-value.html
+$dokka.location:org.hexworks.zircon.internal.tileset/LibgdxTilesetLoader/<get-isClosed>/#/PointingToDeclaration/org.hexworks.zircon.internal.tileset/-libgdx-tileset-loader/get-is-closed.html
+$dokka.location:org.hexworks.zircon.internal.util//fromBottom/org.hexworks.zircon.api.data.Position#org.hexworks.zircon.api.component.Container/PointingToDeclaration/org.hexworks.zircon.internal.util/-lib-g-d-x-tile-grid-fill-kt/from-bottom.html
+$dokka.location:org.hexworks.zircon.internal.util//fromRight/org.hexworks.zircon.api.data.Position#org.hexworks.zircon.api.component.Container/PointingToDeclaration/org.hexworks.zircon.internal.util/-lib-g-d-x-tile-grid-fill-kt/from-right.html
+$dokka.location:org.hexworks.zircon.internal.util//gridFillByScreenSize/#kotlin.Int#kotlin.Int#kotlin.Int#kotlin.Int/PointingToDeclaration/org.hexworks.zircon.internal.util/-lib-g-d-x-tile-grid-fill-kt/grid-fill-by-screen-size.html
+$dokka.location:org.hexworks.zircon.internal.util/Assets/<get-MANAGER>/#/PointingToDeclaration/org.hexworks.zircon.internal.util/-assets/get-m-a-n-a-g-e-r.html
+org.hexworks.zircon.api
+org.hexworks.zircon.internal.application
+org.hexworks.zircon.internal.listeners
+org.hexworks.zircon.internal.renderer
+org.hexworks.zircon.internal.tileset
+org.hexworks.zircon.internal.tileset.transformer
+org.hexworks.zircon.internal.util
+
