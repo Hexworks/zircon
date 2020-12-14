@@ -13,6 +13,14 @@ import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
 import java.util.function.Consumer
 
 class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ButtonsExampleKotlin().show("Buttons Example")
+        }
+    }
+
     override fun build(box: VBox) {
         val invisible = button()
                 .withText("Click Me")
@@ -41,12 +49,5 @@ class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
                         .build(),
                 invisible, disabled)
         disabled.isDisabled = true
-    }
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            ButtonsExampleKotlin().show("Buttons Example")
-        }
     }
 }

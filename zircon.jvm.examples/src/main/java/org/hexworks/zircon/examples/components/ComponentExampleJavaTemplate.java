@@ -6,7 +6,7 @@ import org.hexworks.zircon.examples.base.TwoColumnComponentExampleJava;
 public class ComponentExampleJavaTemplate extends TwoColumnComponentExampleJava {
 
     public static void main(String[] args) {
-        new PaddingExampleKotlin().show("Padding Example");
+        new ComponentExampleJavaTemplate().show("Padding Example");
     }
 
     @Override
