@@ -15,6 +15,13 @@ import java.util.*
 
 class ComponentStyleSetExampleKotlin : OneColumnComponentExampleKotlin() {
 
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ComponentStyleSetExampleKotlin().show("Moving a Component")
+        }
+    }
+
     override fun build(box: VBox) {
         val panel = panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
@@ -34,12 +41,5 @@ class ComponentStyleSetExampleKotlin : OneColumnComponentExampleKotlin() {
                 .withPosition(1, 3)
                 .build()
         panel.addComponent(simpleBtn)
-    }
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            ComponentStyleSetExampleJava().show("Moving a Component")
-        }
     }
 }

@@ -10,6 +10,14 @@ import kotlin.concurrent.thread
 
 class ComponentMoveExampleKotlin : OneColumnComponentExampleKotlin() {
 
+    companion object {
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            ComponentMoveExampleKotlin().show("Moving a Component")
+        }
+    }
+
     override fun build(box: VBox) {
 
         val panel = panel()
@@ -33,14 +41,6 @@ class ComponentMoveExampleKotlin : OneColumnComponentExampleKotlin() {
             panel.moveBy(create(5, 5))
             Thread.sleep(2000)
             innerPanel.moveBy(create(2, 2))
-        }
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            ComponentMoveExampleKotlin().show("Moving a Component")
         }
     }
 }
