@@ -15,8 +15,8 @@ import org.hexworks.zircon.api.fragment.Table
  * The **internal** default implementation of [Table].
  */
 class DefaultTable<M: Any>(
-    data: List<M>,
-    columns: List<TableColumn<M, *, *>>,
+    private val data: List<M>,
+    private val columns: List<TableColumn<M, *, *>>,
     /**
      * The height this fragment will use. Keep in mind that the first row will be used as header row.
      */
@@ -47,56 +47,64 @@ class DefaultTable<M: Any>(
         height = fragmentHeight
     )
 
-    override val root: VBox
+    override val root: VBox = Components
+        .vbox()
+        .withSpacing(0)
+        .withSize(size)
+        .build()
 
     private val currentRows: MutableList<AttachedComponent> = mutableListOf()
 
     init {
-        root = Components
-            .vbox()
-            .withSpacing(0)
-            .withSize(size)
-            .build()
-
+        val headerRow = headerRow()
         root
             .addComponents(
-                headerRow(columns, size.width),
-                dataPanel(data, columns, Size.create(size.width, fragmentHeight - 1))
+                headerRow,
+                dataPanel(Size.create(size.width, size.height - headerRow.height))
             )
     }
 
-    private fun dataPanel(data: List<M>, columns: List<TableColumn<M, *, *>>, panelSize: Size): VBox =
-        Components
+    private fun dataPanel(panelSize: Size): VBox {
+        println("Creating data panel with size $panelSize")
+        return Components
             .vbox()
             .withSize(panelSize)
             .withSpacing(rowSpacing)
             .build()
             .apply {
+                var remainingHeight = panelSize.height
+                println("Available height: $remainingHeight")
+                // TODO: Improve this loop to not loop over all elements
                 data.forEach { model ->
-                    val cells: List<Component> = columns
-                        .map { it.newCell(model) }
-                    val rowHeight = cells.maxOf { it.height }
-                    val row = Components
-                        .hbox()
-                        .withSpacing(rowSpacing)
-                        .withSize(panelSize.width, rowHeight)
-                        .build()
-                    cells.forEach { cell ->
-                        row.addComponent(cell)
+                    val newRow = newRowFor(model)
+                    if(remainingHeight > 0) {
+                        println("Adding row with height ${newRow.height}")
+                        currentRows.add(addComponent(newRow))
                     }
-                    var remainingHeight = panelSize.height
-                    while (remainingHeight >= rowHeight) {
-                        currentRows
-                            .add(addComponent(row))
-                        remainingHeight -= rowHeight
-                    }
+                    remainingHeight -= newRow.height + rowSpacing
+                    println("Remaining height: $remainingHeight")
                 }
             }
+    }
 
-    private fun headerRow(columns: List<TableColumn<M, *, *>>, fragmentWidth: Int): HBox =
-        Components
+    private fun newRowFor(model: M): Component {
+        val cells: List<Component> = columns
+            .map { it.newCell(model) }
+        val rowHeight = cells.maxOf { it.height }
+        val row = Components
             .hbox()
-            .withSize(fragmentWidth, 1)
+            .withSpacing(rowSpacing)
+            .withSize(size.width, rowHeight)
+            .build()
+        cells.forEach { row.addComponent(it) }
+        return row.also { println("row for $model: ${it.size}") }
+    }
+
+    private fun headerRow(): HBox {
+        println("Creating header row...")
+        return Components
+            .hbox()
+            .withSize(size.width, 1)
             .withSpacing(colSpacing)
             .build()
             .apply {
@@ -105,8 +113,10 @@ class DefaultTable<M: Any>(
                         addComponent(
                             Components
                                 .header()
-                                .withText(column.name.substring(0, column.width))
+                                .withText(column.name)
                                 .withSize(column.width, 1))
                     }
             }
+            .also { println("Header row: ${it.size}") }
+    }
 }
