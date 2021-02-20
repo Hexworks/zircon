@@ -1,6 +1,9 @@
 package org.hexworks.zircon.examples.playground;
 
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.component.ComponentAlignment;
 import org.hexworks.zircon.api.component.Panel;
@@ -35,7 +38,7 @@ public class TablePrototypeJava {
                 new Model(5, "Amanda", "Flair", "Brewer")
         );
 
-        Table<Model> table = new Table<>(fields, models);
+        TableOld<Model> table = new TableOld<>(fields, models);
 
         Screen screen = Screen.create(SwingApplications.startTileGrid(
                 AppConfig.newBuilder()

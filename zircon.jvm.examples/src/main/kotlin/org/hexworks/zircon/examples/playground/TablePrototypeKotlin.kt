@@ -41,7 +41,7 @@ object TablePrototypeKotlin {
             Model(5, "Amanda", "Flair", "Brewer")
         )
 
-        val table = Table(
+        val table = TableOld(
             fields = fields,
             models = models
         )
