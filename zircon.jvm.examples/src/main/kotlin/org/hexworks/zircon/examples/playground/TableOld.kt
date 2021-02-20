@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Size
 
-class Table<M : Any>(
+class TableOld<M : Any>(
     fields: List<ModelField<M>>,
     models: List<M>
 ) : Fragment {
