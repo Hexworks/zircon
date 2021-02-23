@@ -68,7 +68,6 @@ class DefaultTable<M: Any>(
     }
 
     private fun dataPanel(panelSize: Size): VBox {
-        println("Creating data panel with size $panelSize")
         return Components
             .vbox()
             .withSize(panelSize)
@@ -76,16 +75,13 @@ class DefaultTable<M: Any>(
             .build()
             .apply {
                 var remainingHeight = panelSize.height
-                println("Available height: $remainingHeight")
                 // TODO: Improve this loop to not loop over all elements
                 data.forEach { model ->
                     val newRow = newRowFor(model)
                     if(remainingHeight > 0) {
-                        println("Adding row with height ${newRow.height}")
                         currentRows.add(addComponent(newRow))
                     }
                     remainingHeight -= newRow.height + rowSpacing
-                    println("Remaining height: $remainingHeight")
                 }
             }
     }
@@ -100,11 +96,10 @@ class DefaultTable<M: Any>(
             .withSize(size.width, rowHeight)
             .build()
         cells.forEach { row.addComponent(it) }
-        return row.also { println("row for $model: ${it.size}") }
+        return row
     }
 
     private fun headerRow(): HBox {
-        println("Creating header row...")
         return Components
             .hbox()
             .withSize(size.width, 1)
@@ -116,6 +111,5 @@ class DefaultTable<M: Any>(
                         addComponent(column.header)
                     }
             }
-            .also { println("Header row: ${it.size}") }
     }
 }

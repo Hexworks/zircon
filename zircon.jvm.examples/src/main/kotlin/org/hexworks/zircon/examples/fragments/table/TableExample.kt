@@ -10,6 +10,8 @@ import org.hexworks.zircon.api.screen.Screen
  */
 object TableExample {
 
+    private val theme = ColorThemes.zenburnVanilla()
+
     @JvmStatic
     fun main(args: Array<String>) {
         val tableFragment: Table<Person> = buildTable()
@@ -27,7 +29,7 @@ object TableExample {
         val screen = Screen.create(tileGrid)
 
         screen.addFragment(tableFragment)
-        screen.theme = ColorThemes.amigaOs()
+        screen.theme = theme
         screen.display()
     }
 
@@ -36,6 +38,7 @@ object TableExample {
             .table(50.randomPersons())
             .withHeight(20)
             .withColumnSpacing(1)
+            .withRowSpacing(0)
             .withColumns(
                 Columns
                     .textColumn("First name", 14, Person::firstName),
@@ -46,7 +49,7 @@ object TableExample {
                 Columns
                     .textColumn("Gender", 1, Person::gender),
                 Columns
-                    .textColumn("Wage", 7, Person::wage)
+                    .textColumnFormatted("Wage", 8, "%,d $", Person::wage)
             )
             .build()
 }
