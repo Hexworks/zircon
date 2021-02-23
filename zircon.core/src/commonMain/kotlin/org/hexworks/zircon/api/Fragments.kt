@@ -2,12 +2,12 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.builder.fragment.ColorThemeSelectorBuilder
 import org.hexworks.zircon.api.builder.fragment.SelectorBuilder
+import org.hexworks.zircon.api.builder.fragment.TableBuilder
 import org.hexworks.zircon.api.builder.fragment.TilesetSelectorBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.resource.TilesetResource
-import kotlin.jvm.JvmStatic
 
 /**
  * This *facade* object provides builders for the built-in [Fragment]s
@@ -38,5 +38,8 @@ object Fragments {
         width: Int,
         theme: ColorTheme
     ): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, theme)
+
+    fun <M: Any> table(data: List<M>): TableBuilder<M> =
+        TableBuilder(data)
 
 }

@@ -10,7 +10,8 @@ fun randomPerson(): Person =
         randomFirstName(),
         randomLastName(),
         Random.nextInt(18, 80),
-        Gender.values().random()
+        Gender.values().random(),
+        Random.nextInt(10000, 90500)
     )
 
 private fun randomFirstName(): String =
