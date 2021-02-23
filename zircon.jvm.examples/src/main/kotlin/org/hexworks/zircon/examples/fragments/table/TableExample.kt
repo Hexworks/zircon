@@ -1,14 +1,9 @@
 package org.hexworks.zircon.examples.fragments.table
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.fragment.impl.table.DefaultTable
-import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
 
 /**
  * This example shows the usage of the table fragment.
@@ -37,18 +32,21 @@ object TableExample {
     }
 
     private fun buildTable(): Table<Person> =
-        // TODO: Use Fragments.table()
-        DefaultTable(
-            50.randomPersons(),
-            listOf(
-                TableColumn(
-                    "first name",
-                    14,
-                    Person::firstName
-                ) {
-                    Components.label().withSize(14, 1).withText(it).build()
-                }
-            ),
-            20
-        )
+        Fragments
+            .table(50.randomPersons())
+            .withHeight(20)
+            .withColumnSpacing(1)
+            .withColumns(
+                Columns
+                    .textColumn("First name", 14, Person::firstName),
+                Columns
+                    .textColumn("Last name", 14, Person::lastName),
+                Columns
+                    .textColumn("Age", 3, Person::age),
+                Columns
+                    .textColumn("Gender", 1, Person::gender),
+                Columns
+                    .textColumn("Wage", 7, Person::wage)
+            )
+            .build()
 }

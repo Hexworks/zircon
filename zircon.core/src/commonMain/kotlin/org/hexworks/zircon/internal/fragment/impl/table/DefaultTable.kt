@@ -29,6 +29,9 @@ class DefaultTable<M: Any>(
         require(data.isNotEmpty()) {
             "A table may not be empty! Please feed it some data to display."
         }
+        require(columns.isNotEmpty()) {
+            "A table must have at least one column."
+        }
         val minHeight = 2
         require(fragmentHeight >= minHeight) {
             "A table requires a height of at least $minHeight."
@@ -93,7 +96,7 @@ class DefaultTable<M: Any>(
         val rowHeight = cells.maxOf { it.height }
         val row = Components
             .hbox()
-            .withSpacing(rowSpacing)
+            .withSpacing(colSpacing)
             .withSize(size.width, rowHeight)
             .build()
         cells.forEach { row.addComponent(it) }
@@ -110,11 +113,7 @@ class DefaultTable<M: Any>(
             .apply {
                 columns
                     .forEach { column ->
-                        addComponent(
-                            Components
-                                .header()
-                                .withText(column.name)
-                                .withSize(column.width, 1))
+                        addComponent(column.header)
                     }
             }
             .also { println("Header row: ${it.size}") }
