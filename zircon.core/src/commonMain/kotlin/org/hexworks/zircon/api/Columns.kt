@@ -17,7 +17,7 @@ object Columns {
      * @param valueAccessor returns the value to be used in each cell of the column. It should preferable be a
      *  [String] or similar primitive type so that calling toString on it does not have strange side effects.
      */
-    fun <M: Any, V: Any> textColumn(name: String, width: Int, valueAccessor: (M) -> V): TableColumn<M, V, Label> =
+    fun <M : Any, V : Any> textColumn(name: String, width: Int, valueAccessor: (M) -> V): TableColumn<M, V, Label> =
         TableColumn(
             name,
             width,
@@ -28,5 +28,22 @@ object Columns {
                 .withSize(width, 1)
                 .withText(cellValue.toString())
                 .build()
+        }
+
+    /**
+     * Creat a [textColumn] with the value returned by [valueAccessor] formatted with the format string [format].
+     */
+    fun <M : Any, V : Any> textColumnFormatted(
+        name: String,
+        width: Int,
+        format: String,
+        valueAccessor: (M) -> V
+    ): TableColumn<M, *, *> =
+        textColumn(name, width) {
+            format
+                .format(
+                    valueAccessor
+                        .invoke(it)
+                )
         }
 }
