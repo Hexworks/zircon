@@ -2,7 +2,11 @@ package org.hexworks.zircon.examples.fragments.table
 
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
 
 /**
@@ -47,9 +51,32 @@ object TableExample {
                 Columns
                     .textColumn("Age", 3, Person::age),
                 Columns
-                    .textColumn("Gender", 1, Person::gender),
+                    .icon("Gender", Person::gender) {gender -> iconFor(gender)},
                 Columns
                     .textColumnFormatted("Wage", 8, "%,d $", Person::wage)
             )
             .build()
+
+    private fun iconFor(gender: Gender): Icon =
+            Components
+                    .icon()
+                    .withIcon(gender.icon)
+                    .withColorTheme(theme)
+                    .build()
+
+    private val Gender.icon
+        get() = TileBuilder
+                .newBuilder()
+                .withForegroundColor(when (this) {
+                    Gender.MALE -> ANSITileColor.BLUE
+                    Gender.FEMALE -> ANSITileColor.RED
+                })
+                .withBackgroundColor(ANSITileColor.WHITE)
+                .withCharacter(
+                        when (this) {
+                            Gender.MALE -> Symbols.MALE
+                            Gender.FEMALE -> Symbols.FEMALE
+                        }
+                )
+                .buildCharacterTile()
 }
