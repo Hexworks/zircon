@@ -7,8 +7,12 @@ import org.hexworks.zircon.api.component.Component
  * This class represents the definition of a column in a table. It provides means to get the value
  * from a model object and wrap that value into a [Component]. This component is then displayed
  * as table cell.
+ *
+ * @param M the type of the model. In other words: Every element/row in the table has this type
+ * @param V the type of the value of each cell in this column
+ * @param C type of the [Component] used to represent each cell
  */
-open class TableColumn<M: Any, V: Any, C: Component>(
+open class TableColumn<M : Any, V : Any, C : Component>(
     /**
      * The name of this column. Will be used as table header.
      */

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
 
@@ -38,7 +39,7 @@ object Columns {
         width: Int,
         format: String,
         valueAccessor: (M) -> V
-    ): TableColumn<M, *, *> =
+    ): TableColumn<M, *, Label> =
         textColumn(name, width) {
             format
                 .format(
@@ -46,4 +47,14 @@ object Columns {
                         .invoke(it)
                 )
         }
+
+    fun <M: Any, V: Any> icon(name: String,
+                              valueAccessor: (M) -> V,
+                              iconGenerator: (V) -> Icon): TableColumn<M, V, Icon> =
+            TableColumn(
+                    name,
+                    1,
+                    valueAccessor,
+                    iconGenerator
+            )
 }
