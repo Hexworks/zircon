@@ -10,6 +10,9 @@ import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 
 /**
  * The **internal** default implementation of [Table].
@@ -96,6 +99,15 @@ class DefaultTable<M: Any>(
             .withSize(size.width, rowHeight)
             .build()
         cells.forEach { row.addComponent(it) }
+        row.handleMouseEvents(MouseEventType.MOUSE_CLICKED) { _, phase ->
+            // allow for the cells to implement custom mouse event handling
+            if (phase == UIEventPhase.BUBBLE) {
+                selectedElement.updateValue(model)
+                UIEventResponse.processed()
+            } else {
+                UIEventResponse.pass()
+            }
+        }
         return row
     }
 
