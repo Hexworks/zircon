@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.uievent.ComponentEventType
 
 /**
  * This example shows the usage of the table fragment.
@@ -21,6 +22,8 @@ import org.hexworks.zircon.api.screen.Screen
 object TableExample {
 
     private val theme = ColorThemes.zenburnVanilla()
+
+    private const val WAGE_FORMAT = "%,d $"
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -44,6 +47,26 @@ object TableExample {
         screen.display()
     }
 
+    private fun buildTable(): Table<Person> =
+        Fragments
+            .table(50.randomPersons())
+            .withHeight(20)
+            .withColumnSpacing(1)
+            .withRowSpacing(0)
+            .withColumns(
+                Columns
+                    .textColumn("First name", 14, Person::firstName),
+                Columns
+                    .textColumn("Last name", 14, Person::lastName),
+                Columns
+                    .textColumn("Age", 3, Person::age),
+                Columns
+                    .icon("Gender", Person::gender) { gender -> iconFor(gender) },
+                Columns
+                    .textColumn("Wage", 8) { it.wage.bindTransform { wage -> WAGE_FORMAT.format(wage) } }
+            )
+            .build()
+
     private fun buildPanel(tableFragment: Table<Person>): VBox {
         return Components
             .vbox()
@@ -66,21 +89,41 @@ object TableExample {
                         .withIcon(tableFragment.selectedRow.gender.icon)
                         .build()
                         .apply { iconProperty.updateFrom(personObs.bindTransform { it.gender.icon }) },
+                    personObs
+                        .asLabel(contentSize.width) { WAGE_FORMAT.format(wage.value) }
+                        .apply {
+                            personObs.onChange {
+                                val binding = textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
+                                    WAGE_FORMAT.format(wage)
+                                })
+                                personObs.onChange { binding.dispose() }
+                            }
+                        },
                     Components
-                        .horizontalNumberInput(1)
-                        .withSize(contentSize.width, 1)
-                        .withMinValue(10000)
-                        .withMaxValue(90000)
-                        .withInitialValue(tableFragment.selectedRow.wage)
+                        .button()
+                        .withText("shuffle")
                         .build()
                         .apply {
-                            currentValueProperty.updateFrom(personObs.bindTransform { it.wage })
+                            processComponentEvents(ComponentEventType.ACTIVATED) {
+                                val newWage = randomWage()
+                                val p = personObs.value
+                                p.wage.updateValue(newWage)
+                            }
+                        },
+                    Components
+                        .horizontalNumberInput(contentSize.width)
+                        .withMaxValue(Person.MAX_WAGE)
+                        .withMinValue(Person.MIN_WAGE)
+                        .build()
+                        .apply {
+                            currentValue = personObs.value.wage.value
+                            currentValueProperty.bindTransform { personObs.value.wage.updateValue(it) }
                         }
                 )
             }
     }
 
-    private fun ObservableValue<Person>.asLabel(width: Int, labelText: Person.() -> String): Label =
+    private fun <T: Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
         Components
             .label()
             .withSize(width, 1)
@@ -88,26 +131,6 @@ object TableExample {
             .apply {
                 textProperty.updateFrom(bindTransform(labelText), true)
             }
-
-    private fun buildTable(): Table<Person> =
-        Fragments
-            .table(50.randomPersons())
-            .withHeight(20)
-            .withColumnSpacing(1)
-            .withRowSpacing(0)
-            .withColumns(
-                Columns
-                    .textColumn("First name", 14, Person::firstName),
-                Columns
-                    .textColumn("Last name", 14, Person::lastName),
-                Columns
-                    .textColumn("Age", 3, Person::age),
-                Columns
-                    .icon("Gender", Person::gender) {gender -> iconFor(gender)},
-                Columns
-                    .textColumnFormatted("Wage", 8, "%,d $", Person::wage)
-            )
-            .build()
 
     private fun iconFor(gender: Gender): Icon =
             Components

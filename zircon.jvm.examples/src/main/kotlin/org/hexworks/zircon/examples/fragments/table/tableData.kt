@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.fragments.table
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import kotlin.random.Random
 
 fun Int.randomPersons(): List<Person> =
@@ -11,8 +12,10 @@ fun randomPerson(): Person =
         randomLastName(),
         Random.nextInt(18, 80),
         Gender.values().random(),
-        Random.nextInt(10000, 90500)
+        randomWage().toProperty()
     )
+
+internal fun randomWage() = Random.nextInt(Person.MIN_WAGE, Person.MAX_WAGE)
 
 private fun randomFirstName(): String =
     firstNames.random()
