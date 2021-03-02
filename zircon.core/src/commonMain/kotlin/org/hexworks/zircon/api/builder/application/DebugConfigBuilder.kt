@@ -17,15 +17,15 @@ data class DebugConfigBuilder(
     }
 
     fun withDisplayGrid(displayGrid: Boolean) = also {
-        debugConfig.copy(displayGrid = displayGrid)
+        debugConfig = debugConfig.copy(displayGrid = displayGrid)
     }
 
     fun withDisplayCoordinates(displayCoordinates: Boolean) = also {
-        debugConfig.copy(displayCoordinates = displayCoordinates)
+        debugConfig = debugConfig.copy(displayCoordinates = displayCoordinates)
     }
 
     fun withDisplayFps(displayFps: Boolean) = also {
-        debugConfig.copy(displayFps = displayFps)
+        debugConfig = debugConfig.copy(displayFps = displayFps)
     }
 
     override fun build() = debugConfig

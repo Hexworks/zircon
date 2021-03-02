@@ -16,7 +16,12 @@ class CheckBoxBuilder(
 ) : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(DefaultCheckBoxRenderer()) {
 
     init {
-        contentSize = Size.create(DefaultCheckBoxRenderer.BUTTON_WIDTH, 1)
+        val totalSize =
+            if (text == "")
+                DefaultCheckBoxRenderer.BUTTON_WIDTH
+            else
+                text.length + DefaultCheckBoxRenderer.DECORATION_WIDTH
+        contentSize = Size.create(totalSize, 1)
     }
 
     fun withText(text: String) = also {
