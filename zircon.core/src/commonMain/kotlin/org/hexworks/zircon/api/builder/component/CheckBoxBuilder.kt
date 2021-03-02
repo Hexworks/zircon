@@ -16,13 +16,13 @@ class CheckBoxBuilder(
 ) : BaseComponentBuilder<CheckBox, CheckBoxBuilder>(DefaultCheckBoxRenderer()) {
 
     init {
-        contentSize = Size.create(text.length + DefaultCheckBoxRenderer.DECORATION_WIDTH, 1)
+        contentSize = Size.create(text.length + DefaultCheckBoxRenderer.BUTTON_WIDTH, 1)
     }
 
     fun withText(text: String) = also {
         this.text = text
         contentSize = contentSize
-            .withWidth(max(text.length + DefaultCheckBoxRenderer.DECORATION_WIDTH, contentSize.width))
+            .withWidth(max(text.length + DefaultCheckBoxRenderer.BUTTON_WIDTH, contentSize.width))
     }
 
     fun withLeftAlignedText() = also {
