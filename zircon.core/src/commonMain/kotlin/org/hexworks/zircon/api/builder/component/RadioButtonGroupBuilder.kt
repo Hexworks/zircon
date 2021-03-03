@@ -3,12 +3,14 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class RadioButtonGroupBuilder(
     private var isDisabled: Boolean = false,
     private var isHidden: Boolean = false,

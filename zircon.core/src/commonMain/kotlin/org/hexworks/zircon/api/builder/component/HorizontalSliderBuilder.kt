@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
 import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
 import kotlin.jvm.JvmStatic
@@ -11,6 +12,7 @@ import kotlin.math.max
 /**
  * Builder for the slider. By default, it creates a slider with a maxValue of 100 and 10 steps.
  */
+@ZirconDsl
 class HorizontalSliderBuilder(
     private var minValue: Int = 0,
     private var maxValue: Int = 100,

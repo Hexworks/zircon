@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
 
@@ -10,6 +11,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
  * Use this to build [StyleSet]s for your [org.hexworks.zircon.api.component.Component]s.
  * They will be used accordingly when the component's state changes.
  */
+@ZirconDsl
 data class ComponentStyleSetBuilder(
     private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf()
 ) : Builder<ComponentStyleSet> {
