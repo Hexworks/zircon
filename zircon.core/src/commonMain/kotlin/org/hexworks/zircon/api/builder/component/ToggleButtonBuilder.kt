@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
@@ -9,6 +10,7 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class ToggleButtonBuilder(
     private var text: String = "",
     private var isSelected: Boolean = false
