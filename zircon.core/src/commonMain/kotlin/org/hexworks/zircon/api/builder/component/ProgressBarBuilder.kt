@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import kotlin.jvm.JvmStatic
@@ -11,6 +12,7 @@ import kotlin.math.max
 /**
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
  */
+@ZirconDsl
 class ProgressBarBuilder(
     private var range: Int = 100,
     private var numberOfSteps: Int = 10,

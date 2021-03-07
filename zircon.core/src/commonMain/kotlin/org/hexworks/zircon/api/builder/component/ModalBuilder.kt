@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
@@ -15,6 +16,7 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class ModalBuilder<T : ModalResult>(
     private var darkenPercent: Double = 0.0,
     private var centeredDialog: Boolean = false,

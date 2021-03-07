@@ -2,11 +2,13 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultVBox
 import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class VBoxBuilder(
     private var spacing: Int = 0
 ) : BaseComponentBuilder<VBox, VBoxBuilder>(
