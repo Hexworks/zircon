@@ -43,7 +43,7 @@ object Columns {
         }
 
     /**
-     * Creat a [textColumn] with the value returned by [valueAccessor] formatted with the format string [format].
+     * Creates a [textColumn] with the value returned by [valueAccessor] formatted with the format string [format].
      */
     fun <M : Any, V : Any> textColumnFormatted(
         name: String,
@@ -59,6 +59,9 @@ object Columns {
                 )
         }
 
+    /**
+     * Creates a column of width 1 which represents its values with an [Icon].
+     */
     fun <M: Any, V: Any> icon(name: String,
                               valueAccessor: (M) -> V,
                               iconGenerator: (V) -> Icon): TableColumn<M, V, Icon> =
