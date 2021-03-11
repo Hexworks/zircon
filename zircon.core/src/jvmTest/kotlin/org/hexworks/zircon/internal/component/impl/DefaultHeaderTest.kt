@@ -8,9 +8,11 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
 import org.junit.Before
@@ -59,6 +61,19 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
     @Test
     fun shouldNotAcceptGivenFocus() {
         assertThat(target.focusGiven()).isEqualTo(Pass)
+    }
+
+    @Test
+    fun shouldGenerateProperTiles() {
+        rendererStub.clear()
+        rendererStub.render(graphics, ComponentRenderContext(target))
+        // Careful, the last line has a trailing space
+        assertThat(graphics.convertCharacterTilesToString()).isEqualTo("""
+            But
+            ton
+             te
+            xt 
+        """.trimIndent())
     }
 
     companion object {
