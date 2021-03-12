@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
+import org.hexworks.zircon.padLineEnd
 import org.junit.Before
 import org.junit.Test
 
@@ -35,10 +36,10 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultHeaderRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10_4).build()
         target = DefaultHeader(
                 componentMetadata = ComponentMetadata(
-                        size = SIZE_3_4,
+                        size = SIZE_10_4,
                         relativePosition = POSITION_2_3,
                         componentStyleSet = COMPONENT_STYLES,
                         tileset = TILESET_REX_PAINT_20X20),
@@ -69,11 +70,11 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
         rendererStub.render(graphics, ComponentRenderContext(target))
         // Careful, the last line has a trailing space
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo("""
-            But
-            ton
-             te
-            xt 
-        """.trimIndent())
+            Button tex
+            t
+             
+             
+        """.trimIndent().padLineEnd(SIZE_10_4.width))
     }
 
     companion object {
