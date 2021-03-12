@@ -70,8 +70,8 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
         rendererStub.render(graphics, ComponentRenderContext(target))
         // Careful, the last line has a trailing space
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo("""
-            Button tex
-            t
+            Button
+            text
              
              
         """.trimIndent().padLineEnd(SIZE_10_4.width))
