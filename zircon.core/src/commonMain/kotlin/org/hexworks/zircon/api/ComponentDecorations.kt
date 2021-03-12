@@ -5,6 +5,7 @@ package org.hexworks.zircon.api
 import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.graphics.BoxType
@@ -42,11 +43,13 @@ object ComponentDecorations {
     fun box(
         boxType: BoxType = BoxType.SINGLE,
         title: String = "",
-        renderingMode: RenderingMode = NON_INTERACTIVE
+        renderingMode: RenderingMode = NON_INTERACTIVE,
+        titleAlignment: Alignment = Alignment.TOP_LEFT
     ): ComponentDecorationRenderer = BoxDecorationRenderer(
         boxType = boxType,
         titleProperty = createPropertyFrom(title),
-        renderingMode = renderingMode
+        renderingMode = renderingMode,
+        titleAlignment = titleAlignment
     )
 
     /**

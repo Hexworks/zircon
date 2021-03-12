@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component.renderer
 
 import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
@@ -33,4 +34,37 @@ interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRe
     enum class RenderingMode {
         INTERACTIVE, NON_INTERACTIVE
     }
+
+    /**
+     * Alignment for decorator attributes like box title.
+     */
+    enum class Alignment {
+        TOP_LEFT,
+        TOP_CENTER,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_CENTER,
+        BOTTOM_RIGHT
+    }
+}
+
+internal fun Alignment.isLeft() = when(this) {
+    Alignment.TOP_LEFT, Alignment.BOTTOM_LEFT -> true
+    else -> false
+}
+internal fun Alignment.isRight() = when(this) {
+    Alignment.TOP_RIGHT, Alignment.BOTTOM_RIGHT -> true
+    else -> false
+}
+internal fun Alignment.isCenter() = when(this) {
+    Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER -> true
+    else -> false
+}
+internal fun Alignment.isTop() = when (this) {
+    Alignment.TOP_LEFT, Alignment.TOP_RIGHT, Alignment.TOP_CENTER -> true
+    else -> false
+}
+internal fun Alignment.isBottom() = when (this) {
+    Alignment.BOTTOM_LEFT, Alignment.BOTTOM_RIGHT, Alignment.BOTTOM_CENTER -> true
+    else -> false
 }
