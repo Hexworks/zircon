@@ -19,9 +19,16 @@ class VerticalScrollBarBuilder(
     private var maxValue: Int = 100
 ) : BaseComponentBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
 
+    private var itemsShownAtOnce: Int? = null
+
     fun withNumberOfScrollableItems(items: Int) = also {
         require(items > 0) { "Number of items must be greater than 0." }
         this.maxValue = items
+    }
+
+    fun withItemsShownAtOnce(count: Int) = also {
+        require(count > 0) { "Count must be greater than 0." }
+        this.itemsShownAtOnce = count
     }
 
     override fun build(): ScrollBar = DefaultVerticalScrollBar(
@@ -29,7 +36,7 @@ class VerticalScrollBarBuilder(
         renderingStrategy = createRenderingStrategy(),
         minValue = minValue,
         maxValue = maxValue,
-        itemsShownAtOnce = size.height,
+        itemsShownAtOnce = itemsShownAtOnce ?: size.height,
         numberOfSteps = size.height,
     )
 
