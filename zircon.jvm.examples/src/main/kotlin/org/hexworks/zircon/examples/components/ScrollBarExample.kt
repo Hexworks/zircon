@@ -7,24 +7,19 @@ import org.hexworks.zircon.api.Components
 
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.component.AttachedComponent
-import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.internal.fragment.impl.VerticalScrollableList
 
 object ScrollBarExample {
 
     private val theme = ColorThemes.arc()
     private val tileset = CP437TilesetResources.wanderlust16x16()
-    private val attachments = mutableListOf<AttachedComponent>()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -46,63 +41,15 @@ object ScrollBarExample {
         (0 until 70).forEach { idx ->
             demoList.add("Item $idx")
         }
-        val scrollFragment = DemoScrollFragment(Size.create(20, 15), Position.create(0, 1), demoList)
+        val scrollFragment = VerticalScrollableList(
+            Size.create(20, 15),
+            Position.create(0, 1),
+            demoList,
+            onItemActivated = { item, idx ->
+                println("You clicked on $item at idx $idx")
+            }
+        )
         panel.addFragment(scrollFragment)
-
-        val compositeScrollBarPanel = Components.vbox()
-                .withSize(1, 17)
-                .withSpacing(0)
-                .withAlignment(positionalAlignment(20, 0))
-                .build()
-        val scrollbar1 = Components.verticalScrollbar()
-                .withSize(1, 15)
-                .withNumberOfScrollableItems(70)
-                .withDecorations()
-                .build()
-        val decrementButton = Components.button()
-                .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-                .withSize(1, 1)
-                .withDecorations()
-                .build().apply {
-                    processComponentEvents(ComponentEventType.ACTIVATED) {
-                        scrollbar1.decrementValues()
-                    }
-                }
-        val incrementButton = Components.button()
-                .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-                .withSize(1, 1)
-                .withDecorations()
-                .build().apply {
-                    processComponentEvents(ComponentEventType.ACTIVATED) {
-                        scrollbar1.incrementValues()
-                    }
-                }
-        scrollbar1.onValueChange {
-            scrollFragment.scrollTo(it.newValue)
-        }
-        compositeScrollBarPanel.addComponent(decrementButton)
-        compositeScrollBarPanel.addComponent(scrollbar1)
-        compositeScrollBarPanel.addComponent(incrementButton)
-        panel.addComponent(compositeScrollBarPanel)
-
-        // register scrollbar1 for handling mouse events
-        scrollbar1.handleMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_DOWN) { _, _ ->
-            scrollbar1.incrementValues()
-            Processed
-        }
-
-        scrollbar1.handleMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_UP) { _, _ ->
-            scrollbar1.decrementValues()
-            Processed
-        }
-
-        /*scrollbar1.processMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_DOWN) { _, _ ->
-            scrollbar1.incrementValues()
-        }
-
-        scrollbar1.processMouseEvents(MouseEventType.MOUSE_WHEEL_ROTATED_UP) { _, _ ->
-            scrollbar1.decrementValues()
-        }*/
 
         val scrollbar2 = Components.horizontalScrollbar()
                 .withSize(20, 1)
@@ -133,41 +80,4 @@ object ScrollBarExample {
         screen.theme = theme
     }
 
-    class DemoScrollFragment(private val size: Size, position: Position, private var items: List<String>) : Fragment {
-        private var topDisplayedItem: Int = 0
-        override val root = Components.vbox()
-                .withSize(size)
-                .withAlignment(positionalAlignment(position))
-                .withDecorations()
-                .withSpacing(0)
-                .build()
-
-        init {
-            displayListFromIndex()
-        }
-
-        private fun displayListFromIndex() {
-            attachments.forEach {
-                it.detach()
-            }
-            attachments.clear()
-            val maxIdx = when {
-                topDisplayedItem + size.height < items.size -> topDisplayedItem + size.height
-                else -> items.size
-            }
-            (topDisplayedItem until maxIdx).forEach { idx ->
-                attachments.add(root.addComponent(
-                        Components.label()
-                                .withText(items[idx])
-                                .withDecorations()
-                                .build()))
-            }
-            root.theme = theme
-        }
-
-        fun scrollTo(idx: Int) {
-            topDisplayedItem = idx
-            displayListFromIndex()
-        }
-    }
 }

@@ -59,11 +59,7 @@ abstract class BaseScrollBar(
     }
 
     private fun computeCurrentStep(newValue: Int) {
-        val actualValue = when {
-            newValue > maxValue -> maxValue
-            newValue < minValue -> minValue
-            else -> newValue
-        }
+        val actualValue = newValue.coerceIn(minValue..maxValue)
         val actualStep = actualValue.toDouble() / valuePerStep
         val roundedStep = truncate(actualStep)
         currentStep = roundedStep.toInt()
@@ -84,6 +80,9 @@ abstract class BaseScrollBar(
     override fun incrementStep() {
         if (currentStep + barSizeInSteps < numberOfSteps) {
             computeValueToClosestOfStep(currentStep + 1)
+        } else {
+            // Try to increase by partial step, so we can always get to the last partial page of items
+            incrementValues()
         }
     }
 
@@ -166,6 +165,20 @@ abstract class BaseScrollBar(
 
             Processed
         } else Pass
+    }
+
+    override fun mouseWheelRotatedUp(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (phase != UIEventPhase.TARGET) return Pass
+        val originalValue = currentValue
+        decrementStep()
+        return if (currentValue != originalValue) Processed else Pass
+    }
+
+    override fun mouseWheelRotatedDown(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (phase != UIEventPhase.TARGET) return Pass
+        val originalValue = currentValue
+        incrementStep()
+        return if (currentValue != originalValue) Processed else Pass
     }
 
     abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse

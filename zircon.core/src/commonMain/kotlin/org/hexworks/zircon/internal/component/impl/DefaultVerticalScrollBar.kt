@@ -31,11 +31,11 @@ class DefaultVerticalScrollBar(
         if (phase == UIEventPhase.TARGET) {
             when (event.code) {
                 KeyCode.UP -> {
-                    incrementValues()
+                    decrementValues()
                     Processed
                 }
                 KeyCode.DOWN -> {
-                    decrementValues()
+                    incrementValues()
                     Processed
                 }
                 KeyCode.RIGHT -> {
