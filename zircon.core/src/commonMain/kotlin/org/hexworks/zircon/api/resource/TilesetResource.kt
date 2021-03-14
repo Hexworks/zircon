@@ -14,6 +14,12 @@ interface TilesetResource : Identifiable {
 
     val tileType: TileType
     val tilesetType: TilesetType
+    /**
+     * A "stringly-typed" field to identify tilesets to be loaded by custom tileset loaders.
+     *
+     * For example, a tileset loader designed for Tiled might use a subtype of `TILED`.
+     */
+    val tilesetSubtype: String? get() = null
     val tilesetSourceType: TilesetSourceType
     val width: Int
     val height: Int

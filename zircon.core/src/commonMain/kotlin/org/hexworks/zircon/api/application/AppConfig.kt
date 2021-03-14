@@ -9,6 +9,8 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.renderer.Renderer
 import kotlin.jvm.JvmStatic
 
 /**
@@ -121,7 +123,12 @@ data class AppConfig(
     /**
      * If set, contains custom properties that plugin authors can set and access.
      */
-    internal val customProperties: Map<AppConfigKey<*>, Any> = emptyMap()
+    internal val customProperties: Map<AppConfigKey<*>, Any> = emptyMap(),
+    /**
+     * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
+     * before using the default [TilesetLoader] of the [Renderer].
+     */
+    val tilesetLoaders: List<TilesetLoader<*>> = emptyList()
 ) {
 
     /**

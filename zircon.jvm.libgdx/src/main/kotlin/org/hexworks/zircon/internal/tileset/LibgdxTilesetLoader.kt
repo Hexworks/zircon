@@ -21,9 +21,12 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<SpriteBatch> {
         return tilesetCache.getOrPut(resource.id) {
             LOADERS[resource.getLoaderKey()]?.invoke(resource)
-                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.§")
+                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
         }
     }
+
+    override fun canLoadResource(resource: TilesetResource): Boolean =
+        resource.id in tilesetCache || resource.getLoaderKey() in LOADERS
 
     override fun close() {
         isClosed.value = true
@@ -48,7 +51,6 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
                     LibgdxMonospaceFontTileset(
                             resource = resource)
                 }
-                //TODO Support for other types of tilesets
         )
     }
 }
