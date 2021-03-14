@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
@@ -209,6 +210,18 @@ data class AppConfigBuilder(
     fun <T : Any> withProperty(key: AppConfigKey<T>, value: T): AppConfigBuilder = also {
         config = config.copy(
             customProperties = config.customProperties + (key to value)
+        )
+    }
+
+    /**
+     * Sets the additional tileset loaders that should be attempted before falling back to the default
+     * tileset loader the renderer uses.
+     *
+     * **Order matters.** Loaders earlier in the list will be attempted first.
+     */
+    fun withTilesetLoaders(vararg loaders: TilesetLoader<*>) = also {
+        config = config.copy(
+            tilesetLoaders = loaders.toList()
         )
     }
 
