@@ -119,6 +119,9 @@ object GameComponentExample {
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
                 .withVisibleSize(Size3D.create(3, 6, 3))
                 .build()
+        screen.onShutdown {
+            gameArea.dispose()
+        }
 
         val panel = Components.panel()
                 .withSize(width, height)
