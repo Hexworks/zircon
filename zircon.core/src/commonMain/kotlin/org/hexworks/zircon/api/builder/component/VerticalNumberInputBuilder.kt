@@ -3,12 +3,14 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInputRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class VerticalNumberInputBuilder(
     val height: Int,
     private var initialValue: Int = 0,
