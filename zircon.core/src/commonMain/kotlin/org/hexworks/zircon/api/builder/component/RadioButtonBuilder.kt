@@ -3,12 +3,14 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class RadioButtonBuilder(
     private var text: String = "",
     private var key: Maybe<String> = Maybe.empty()

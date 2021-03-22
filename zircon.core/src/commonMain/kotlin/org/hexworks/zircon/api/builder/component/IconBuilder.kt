@@ -5,12 +5,14 @@ import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer()) {
 
     private var icon = Maybe.empty<Tile>()
