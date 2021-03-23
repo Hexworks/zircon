@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Size
  *
  * @param M the type of the underlying model representing this table's data.
  */
-interface Table<M: Any>: Fragment {
+interface Table<M : Any> : Fragment {
     /**
      * The element representing the currently selected row.
      */
