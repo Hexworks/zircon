@@ -88,15 +88,10 @@ object TableExample {
                         .asLabel(contentSize.width) { wage.value.formatWage() }
                         .apply {
                             personObs.onChange {
-                                val bindingPerson = textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
+                                textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
                                     wage.formatWage()
                                 })
-                                val bindingWage =
-                                    textProperty.updateFrom(personObs.value.wage.bindTransform { it.formatWage() })
-                                personObs.onChange {
-                                    bindingPerson.dispose()
-                                    bindingWage.dispose()
-                                }
+                                textProperty.updateFrom(personObs.value.wage.bindTransform { it.formatWage() })
                             }
                         },
                     Components
@@ -136,8 +131,7 @@ object TableExample {
                         .withIcon(person.value.height.icon)
                         .build()
                         .apply { iconProperty.updateFrom(person.bindTransform { it.height.icon }) },
-                    Components.
-                        label()
+                    Components.label()
                         .withSize(width - 2, 1)
                         .withText(person.value.height.name)
                         .build()
@@ -145,7 +139,7 @@ object TableExample {
                 )
             }
 
-    private fun <T: Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
+    private fun <T : Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
         Components
             .label()
             .withSize(width, 1)
@@ -155,27 +149,29 @@ object TableExample {
             }
 
     private fun iconFor(height: Height): Icon =
-            Components
-                    .icon()
-                    .withIcon(height.icon)
-                    .withColorTheme(theme)
-                    .build()
+        Components
+            .icon()
+            .withIcon(height.icon)
+            .withColorTheme(theme)
+            .build()
 
     private val Height.icon
         get() = TileBuilder
-                .newBuilder()
-                .withForegroundColor(when (this) {
+            .newBuilder()
+            .withForegroundColor(
+                when (this) {
                     Height.TALL -> ANSITileColor.BLUE
                     Height.SHORT -> ANSITileColor.RED
-                })
-                .withBackgroundColor(ANSITileColor.WHITE)
-                .withCharacter(
-                        when (this) {
-                            Height.TALL -> Symbols.TRIANGLE_UP_POINTING_BLACK
-                            Height.SHORT -> Symbols.TRIANGLE_DOWN_POINTING_BLACK
-                        }
-                )
-                .buildCharacterTile()
+                }
+            )
+            .withBackgroundColor(ANSITileColor.WHITE)
+            .withCharacter(
+                when (this) {
+                    Height.TALL -> Symbols.TRIANGLE_UP_POINTING_BLACK
+                    Height.SHORT -> Symbols.TRIANGLE_DOWN_POINTING_BLACK
+                }
+            )
+            .buildCharacterTile()
 
     private fun Int.formatWage(): String {
         val thousands = this / 1000
