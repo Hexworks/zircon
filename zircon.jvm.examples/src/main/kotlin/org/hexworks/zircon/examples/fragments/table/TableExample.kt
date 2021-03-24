@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.VBox
@@ -84,11 +85,7 @@ object TableExample {
                         .build(),
                     personObs.asLabel(contentSize.width, Person::firstName),
                     personObs.asLabel(contentSize.width, Person::lastName),
-                    Components
-                        .icon()
-                        .withIcon(tableFragment.selectedRow.height.icon)
-                        .build()
-                        .apply { iconProperty.updateFrom(personObs.bindTransform { it.height.icon }) },
+                    heightPanel(contentSize.width, personObs),
                     personObs
                         .asLabel(contentSize.width) { WAGE_FORMAT.format(wage.value) }
                         .apply {
@@ -122,6 +119,28 @@ object TableExample {
                 )
             }
     }
+
+    private fun heightPanel(width: Int, person: ObservableValue<Person>): HBox =
+        Components
+            .hbox()
+            .withSpacing(1)
+            .withSize(width, 1)
+            .build()
+            .apply {
+                addComponents(
+                    Components
+                        .icon()
+                        .withIcon(person.value.height.icon)
+                        .build()
+                        .apply { iconProperty.updateFrom(person.bindTransform { it.height.icon }) },
+                    Components.
+                        label()
+                        .withSize(width - 2, 1)
+                        .withText(person.value.height.name)
+                        .build()
+                        .apply { textProperty.updateFrom(person.bindTransform { it.height.name }) }
+                )
+            }
 
     private fun <T: Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
         Components
