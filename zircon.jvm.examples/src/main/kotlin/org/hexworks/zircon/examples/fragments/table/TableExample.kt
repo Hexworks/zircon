@@ -90,10 +90,15 @@ object TableExample {
                         .asLabel(contentSize.width) { WAGE_FORMAT.format(wage.value) }
                         .apply {
                             personObs.onChange {
-                                val binding = textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
+                                val bindingPerson = textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
                                     WAGE_FORMAT.format(wage)
                                 })
-                                personObs.onChange { binding.dispose() }
+                                val bindingWage =
+                                    textProperty.updateFrom(personObs.value.wage.bindTransform { WAGE_FORMAT.format(it) })
+                                personObs.onChange {
+                                    bindingPerson.dispose()
+                                    bindingWage.dispose()
+                                }
                             }
                         },
                     Components
