@@ -6,7 +6,7 @@ data class Person(
     val firstName: String,
     val lastName: String,
     val age: Int,
-    val gender: Gender,
+    val height: Height,
     val wage: Property<Int>
 ) {
     companion object {
