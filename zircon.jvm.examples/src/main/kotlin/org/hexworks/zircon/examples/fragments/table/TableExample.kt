@@ -61,7 +61,7 @@ object TableExample {
                 Columns
                     .textColumn("Age", 3, Person::age),
                 Columns
-                    .icon("Gender", Person::gender) { gender -> iconFor(gender) },
+                    .icon("Height", Person::height) { height -> iconFor(height) },
                 Columns
                     .textColumn("Wage", 8) { it.wage.bindTransform { wage -> WAGE_FORMAT.format(wage) } }
             )
@@ -86,9 +86,9 @@ object TableExample {
                     personObs.asLabel(contentSize.width, Person::lastName),
                     Components
                         .icon()
-                        .withIcon(tableFragment.selectedRow.gender.icon)
+                        .withIcon(tableFragment.selectedRow.height.icon)
                         .build()
-                        .apply { iconProperty.updateFrom(personObs.bindTransform { it.gender.icon }) },
+                        .apply { iconProperty.updateFrom(personObs.bindTransform { it.height.icon }) },
                     personObs
                         .asLabel(contentSize.width) { WAGE_FORMAT.format(wage.value) }
                         .apply {
@@ -132,25 +132,25 @@ object TableExample {
                 textProperty.updateFrom(bindTransform(labelText), true)
             }
 
-    private fun iconFor(gender: Gender): Icon =
+    private fun iconFor(height: Height): Icon =
             Components
                     .icon()
-                    .withIcon(gender.icon)
+                    .withIcon(height.icon)
                     .withColorTheme(theme)
                     .build()
 
-    private val Gender.icon
+    private val Height.icon
         get() = TileBuilder
                 .newBuilder()
                 .withForegroundColor(when (this) {
-                    Gender.MALE -> ANSITileColor.BLUE
-                    Gender.FEMALE -> ANSITileColor.RED
+                    Height.TALL -> ANSITileColor.BLUE
+                    Height.SHORT -> ANSITileColor.RED
                 })
                 .withBackgroundColor(ANSITileColor.WHITE)
                 .withCharacter(
                         when (this) {
-                            Gender.MALE -> Symbols.MALE
-                            Gender.FEMALE -> Symbols.FEMALE
+                            Height.TALL -> Symbols.TRIANGLE_UP_POINTING_BLACK
+                            Height.SHORT -> Symbols.TRIANGLE_DOWN_POINTING_BLACK
                         }
                 )
                 .buildCharacterTile()

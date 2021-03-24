@@ -11,7 +11,7 @@ fun randomPerson(): Person =
         randomFirstName(),
         randomLastName(),
         Random.nextInt(18, 80),
-        Gender.values().random(),
+        Height.values().random(),
         randomWage().toProperty()
     )
 
