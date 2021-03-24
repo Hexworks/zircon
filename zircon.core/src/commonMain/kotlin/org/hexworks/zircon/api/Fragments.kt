@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
 
 /**
  * This *facade* object provides builders for the built-in [Fragment]s
