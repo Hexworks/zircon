@@ -24,8 +24,6 @@ object TableExample {
 
     private val theme = ColorThemes.zenburnVanilla()
 
-    private const val WAGE_FORMAT = "%,d $"
-
     @JvmStatic
     fun main(args: Array<String>) {
         val tableFragment: Table<Person> = buildTable()
@@ -64,7 +62,7 @@ object TableExample {
                 Columns
                     .icon("Height", Person::height) { height -> iconFor(height) },
                 Columns
-                    .textColumn("Wage", 8) { it.wage.bindTransform { wage -> WAGE_FORMAT.format(wage) } }
+                    .textColumn("Wage", 8) { it.wage.bindTransform { wage -> wage.formatWage() } }
             )
             .build()
 
@@ -87,14 +85,14 @@ object TableExample {
                     personObs.asLabel(contentSize.width, Person::lastName),
                     heightPanel(contentSize.width, personObs),
                     personObs
-                        .asLabel(contentSize.width) { WAGE_FORMAT.format(wage.value) }
+                        .asLabel(contentSize.width) { wage.value.formatWage() }
                         .apply {
                             personObs.onChange {
                                 val bindingPerson = textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
-                                    WAGE_FORMAT.format(wage)
+                                    wage.formatWage()
                                 })
                                 val bindingWage =
-                                    textProperty.updateFrom(personObs.value.wage.bindTransform { WAGE_FORMAT.format(it) })
+                                    textProperty.updateFrom(personObs.value.wage.bindTransform { it.formatWage() })
                                 personObs.onChange {
                                     bindingPerson.dispose()
                                     bindingWage.dispose()
@@ -178,4 +176,10 @@ object TableExample {
                         }
                 )
                 .buildCharacterTile()
+
+    private fun Int.formatWage(): String {
+        val thousands = this / 1000
+        val remainder = this % 1000
+        return "$thousands,${remainder.toString().padStart(3, '0')} $"
+    }
 }
