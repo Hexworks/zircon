@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
 /**
  * This object provides different presets for [TableColumn]s.
  */
-object Columns {
+object TableColumns {
 
     /**
      * Creates a [TableColumn] that represents it's cell values with a [Label]. The text of the label

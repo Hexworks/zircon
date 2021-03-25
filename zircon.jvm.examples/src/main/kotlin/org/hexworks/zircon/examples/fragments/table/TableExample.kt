@@ -53,15 +53,15 @@ object TableExample {
             .withColumnSpacing(1)
             .withRowSpacing(0)
             .withColumns(
-                Columns
+                TableColumns
                     .textColumn("First name", 14, Person::firstName),
-                Columns
+                TableColumns
                     .textColumn("Last name", 14, Person::lastName),
-                Columns
+                TableColumns
                     .textColumn("Age", 3, Person::age),
-                Columns
+                TableColumns
                     .icon("Height", Person::height) { height -> iconFor(height) },
-                Columns
+                TableColumns
                     .textColumn("Wage", 8) { it.wage.bindTransform { wage -> wage.formatWage() } }
             )
             .build()
