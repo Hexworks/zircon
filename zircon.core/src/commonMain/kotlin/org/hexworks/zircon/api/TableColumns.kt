@@ -35,7 +35,10 @@ object TableColumns {
                 .build()
                 .apply {
                     if (cellValue is ObservableValue<*>) {
-                        textProperty.updateFrom(cellValue.bindTransform { it.toString() }, true)
+                        textProperty.updateFrom(
+                            cellValue.bindTransform { it.toString() },
+                            updateWhenBound = true
+                        )
                     } else {
                         text = cellValue.toString()
                     }
