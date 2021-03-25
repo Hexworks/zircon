@@ -66,7 +66,7 @@ class DefaultTable<M: Any>(
         root
             .addComponents(
                 headerRow,
-                dataPanel(Size.create(size.width, size.height - headerRow.height))
+                dataPanel(size.withRelativeHeight(- headerRow.height))
             )
     }
 
