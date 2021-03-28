@@ -77,14 +77,23 @@ class DefaultTable<M: Any>(
             .withSpacing(rowSpacing)
             .build()
             .apply {
-                var remainingHeight = panelSize.height
                 // TODO: Improve this loop to not loop over all elements
-                data.forEach { model ->
-                    val newRow = newRowFor(model)
-                    if(remainingHeight > 0) {
-                        currentRows.add(addComponent(newRow))
-                    }
-                    remainingHeight -= newRow.height + rowSpacing
+                var rows = 0
+                val modelIterator = data.listIterator()
+                val firstRow: Component? = if (modelIterator.hasNext()) {
+                    newRowFor(modelIterator.next())
+                        .also { currentRows.add(addComponent(it)) }
+                } else {
+                    null
+                }
+                var neededHeight = firstRow?.height ?: 0
+                var remainingHeight = panelSize.height - neededHeight
+                while (remainingHeight >= neededHeight && modelIterator.hasNext()) {
+                    val newRow = newRowFor(modelIterator.next())
+                    println("adding row ${++rows}. remaining $remainingHeight / ${panelSize.height}. Needing height $neededHeight")
+                    currentRows.add(addComponent(newRow))
+                    neededHeight = newRow.height + rowSpacing
+                    remainingHeight -= neededHeight
                 }
             }
     }
