@@ -2,8 +2,11 @@ package org.hexworks.zircon.api.game.base
 
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentHashMapOf
+import org.hexworks.cobalt.core.behavior.DisposeState
+import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
@@ -45,10 +48,16 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override val blocks: Map<Position3D, B>
         get() = state.blocks
 
-    init {
-        visibleOffsetValue.onChange { (_, newValue) ->
-            state = state.copy(visibleOffset = newValue)
-        }
+    override var disposeState: DisposeState = NotDisposed
+        internal set
+
+    private val offsetChangedSubscription = visibleOffsetValue.onChange { (_, newValue) ->
+        state = state.copy(visibleOffset = newValue)
+    }
+
+    override fun dispose(disposeState: DisposeState) {
+        offsetChangedSubscription.dispose()
+        this.disposeState = disposeState
     }
 
     override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)

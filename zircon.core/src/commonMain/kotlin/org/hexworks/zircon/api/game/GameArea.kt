@@ -2,6 +2,7 @@
 
 package org.hexworks.zircon.api.game
 
+import org.hexworks.cobalt.core.behavior.Disposable
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
@@ -15,11 +16,12 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * A [GameArea] represents the 3D space in which the entities of a game take place.
  * The space is composed of [Block]s which are just voxels (like in Minecraft) which
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
+ * If it is no longer used it should be [dispose]d to free resources.
  */
 // TODO: document that `fetchBlocksAt` and `fetchBlocksAtLevel` were removed.
 // TODO: document that GameArea no longer implements TilesetOverride
 @Beta
-interface GameArea<T : Tile, B : Block<T>> : Scrollable3D {
+interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
 
     /**
      * Contains **all** the currently present [Block]s in this [GameArea].

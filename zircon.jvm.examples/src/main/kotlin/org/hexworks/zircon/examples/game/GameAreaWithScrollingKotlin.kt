@@ -129,6 +129,9 @@ class GameAreaWithScrollingKotlin {
                     }
                 })
                 .build()
+            screen.onShutdown {
+                gameArea.dispose()
+            }
             val gamePanel = panel()
                 .withSize(screen.size)
                 .withComponentRenderer(
