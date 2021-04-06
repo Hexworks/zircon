@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -9,6 +10,7 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class LabelBuilder(
     private var text: String = ""
 ) : BaseComponentBuilder<Label, LabelBuilder>(DefaultLabelRenderer()) {

@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
@@ -10,6 +11,7 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class ParagraphBuilder(
     internal var text: String = "",
     private var typingEffectSpeedInMs: Long = 0
