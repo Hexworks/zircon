@@ -56,6 +56,9 @@ object TopDownObliqueWorldExample {
                 .withVisibleSize(panel.contentSize.to3DSize(VISIBLE_Z_LEVELS))
                 .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
                 .build()
+        screen.onShutdown {
+            ga.dispose()
+        }
 
         val gc = Components.label()
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(ga))
