@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxAlignment
 import org.hexworks.zircon.internal.component.renderer.DefaultCheckBoxRenderer
@@ -9,7 +11,7 @@ import kotlin.jvm.JvmStatic
 import kotlin.math.max
 
 @Suppress("UNCHECKED_CAST")
-
+@ZirconDsl
 class CheckBoxBuilder(
     private var text: String = "",
     private var labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT
