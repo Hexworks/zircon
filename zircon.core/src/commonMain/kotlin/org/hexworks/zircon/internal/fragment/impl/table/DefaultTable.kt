@@ -1,7 +1,8 @@
 package org.hexworks.zircon.internal.fragment.impl.table
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.AttachedComponent
@@ -19,7 +20,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
  * The **internal** default implementation of [Table].
  */
 class DefaultTable<M: Any>(
-    private val data: List<M>,
+    private val data: ObservableList<M>,
     private val columns: List<TableColumn<M, *, *>>,
     /**
      * The height this fragment will use. Keep in mind that the first row will be used as header row.
@@ -30,9 +31,6 @@ class DefaultTable<M: Any>(
 ): Table<M> {
 
     init {
-        require(data.isNotEmpty()) {
-            "A table may not be empty! Please feed it some data to display."
-        }
         require(columns.isNotEmpty()) {
             "A table must have at least one column."
         }
@@ -42,12 +40,12 @@ class DefaultTable<M: Any>(
         }
     }
 
-    private val selectedElement: Property<M> = data.first().toProperty()
+    private val selectedElements: ListProperty<M> = emptyList<M>().toProperty()
 
-    override val selectedRowValue: ObservableValue<M> = selectedElement
+    override val selectedRowsValue: ObservableList<M> = selectedElements
 
-    override val selectedRow: M
-        get() = selectedRowValue.value
+    override val selectedRows: List<M>
+        get() = selectedRowsValue.value
 
     override val size: Size = Size.create(
         width = columns.sumBy { it.width } + ((columns.size - 1) * colSpacing),
@@ -91,7 +89,6 @@ class DefaultTable<M: Any>(
                 var remainingHeight = panelSize.height - neededHeight
                 while (remainingHeight >= neededHeight && modelIterator.hasNext()) {
                     val newRow = newRowFor(modelIterator.next())
-                    println("adding row ${++rows}. remaining $remainingHeight / ${panelSize.height}. Needing height $neededHeight")
                     currentRows.add(addComponent(newRow))
                     neededHeight = newRow.height + rowSpacing
                     remainingHeight -= neededHeight
@@ -112,7 +109,8 @@ class DefaultTable<M: Any>(
         row.handleMouseEvents(MouseEventType.MOUSE_CLICKED) { _, phase ->
             // allow for the cells to implement custom mouse event handling
             if (phase == UIEventPhase.BUBBLE) {
-                selectedElement.updateValue(model)
+                selectedElements.clear()
+                selectedElements.add(model)
                 UIEventResponse.processed()
             } else {
                 UIEventResponse.pass()

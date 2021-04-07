@@ -1,6 +1,8 @@
 package org.hexworks.zircon.examples.fragments.table
 
+import org.hexworks.cobalt.databinding.api.binding.bindMap
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
@@ -81,7 +83,17 @@ object TableExample {
             .withPosition(Position.topRightOf(tableFragment.root))
             .build()
             .apply {
-                val personObs: ObservableValue<Person> = tableFragment.selectedRowValue
+                val personObs: ObservableValue<Person> =
+                    tableFragment
+                        .selectedRowsValue.bindTransform {
+                            it.firstOrNull() ?: Person(
+                                "None",
+                                "Selected",
+                                0,
+                                Height.SHORT,
+                                50000.toProperty()
+                            )
+                        }
                 addComponents(
                     Components
                         .header()
