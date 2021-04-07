@@ -46,6 +46,10 @@ object CustomGameAreaExample {
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
                 .build())
 
+        screen.onShutdown {
+            gameArea.dispose()
+        }
+
         screen.display()
 
     }

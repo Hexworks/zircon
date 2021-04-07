@@ -1,8 +1,9 @@
 package org.hexworks.zircon.examples.game;
 
+import kotlin.Unit;
+import org.hexworks.cobalt.core.behavior.DisposedByHand;
 import org.hexworks.cobalt.databinding.api.extension.Properties;
 import org.hexworks.cobalt.databinding.api.property.Property;
-import org.hexworks.cobalt.databinding.api.value.ObservableValue;
 import org.hexworks.zircon.api.*;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.color.ColorInterpolator;
@@ -102,6 +103,10 @@ public class GameAreaWithScrollingJava {
                 .withActualSize(actualGameAreaSize.to3DSize(LEVEL_COUNT))
                 .withVisibleSize(visibleGameAreaSize)
                 .build();
+        screen.onShutdown(() -> {
+            gameArea.dispose(DisposedByHand.INSTANCE);
+            return Unit.INSTANCE;
+        });
 
         final Panel gamePanel = Components.panel()
                 .withSize(screen.getSize())

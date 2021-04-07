@@ -36,6 +36,10 @@ object BSPExample {
                 .withSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
                 .build())
 
+        screen.onShutdown {
+            gameArea.dispose()
+        }
+
         screen.display()
     }
 
