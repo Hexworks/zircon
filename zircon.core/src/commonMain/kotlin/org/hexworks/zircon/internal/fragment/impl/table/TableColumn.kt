@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl.table
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Component
 
@@ -12,6 +13,7 @@ import org.hexworks.zircon.api.component.Component
  * @param V the type of the value of each cell in this column
  * @param C type of the [Component] used to represent each cell
  */
+@Beta
 open class TableColumn<M : Any, V : Any, C : Component>(
     /**
      * The name of this column. Will be used as table header.
