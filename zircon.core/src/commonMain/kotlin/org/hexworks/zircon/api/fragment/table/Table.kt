@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.fragment
+package org.hexworks.zircon.api.fragment.table
 
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Beta

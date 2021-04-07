@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.builder.fragment
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.api.fragment.table.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.table.DefaultTable
-import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
+import org.hexworks.zircon.api.fragment.table.TableColumn
 
 @Beta
 class TableBuilder<M : Any>(private val data: List<M>): FragmentBuilder<Table<M>, TableBuilder<M>> {

@@ -11,12 +11,11 @@ import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.api.fragment.table.Table
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
 
 /**
  * This example shows the usage of the table fragment.
@@ -54,12 +53,12 @@ object TableExample {
             .withColumnSpacing(1)
             .withRowSpacing(0)
             .withColumns(
-                TableColumn("full name", 14, {person: Person -> "${person.firstName}\n ${person.lastName}"}) {
-                    Components.textArea()
-                        .withSize(14, 2)
-                        .withText(it)
-                        .build()
-                },
+//                TableColumn("full name", 14, {person: Person -> "${person.firstName}\n ${person.lastName}"}) {
+//                    Components.textArea()
+//                        .withSize(14, 2)
+//                        .withText(it)
+//                        .build()
+//                },
                 TableColumns
                     .textColumn("First name", 14, Person::firstName),
                 TableColumns
