@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.fragment.impl.table
+package org.hexworks.zircon.api.fragment.table
 
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.Components
@@ -31,8 +31,7 @@ open class TableColumn<M : Any, V : Any, C : Component>(
      * of 1.
      */
     open val header: Component =
-        Components
-            .header()
+        Components.header()
             .withText(name)
             .withSize(width, 1)
             .build()

@@ -9,7 +9,8 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.api.fragment.table.Table
+import org.hexworks.zircon.api.fragment.table.TableColumn
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventResponse

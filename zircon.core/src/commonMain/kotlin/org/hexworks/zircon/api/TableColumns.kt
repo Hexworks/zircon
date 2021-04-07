@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
-import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
+import org.hexworks.zircon.api.fragment.table.TableColumn
 
 /**
  * This object provides different presets for [TableColumn]s.
