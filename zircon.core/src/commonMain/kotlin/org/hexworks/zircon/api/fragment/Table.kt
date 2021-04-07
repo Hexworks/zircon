@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.fragment
 
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Size
 
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.data.Size
  *
  * @param M the type of the underlying model representing this table's data.
  */
+@Beta
 interface Table<M : Any> : Fragment {
     /**
      * The element representing the currently selected row.

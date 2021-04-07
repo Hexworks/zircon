@@ -10,6 +10,7 @@ import org.hexworks.zircon.internal.fragment.impl.table.TableColumn
 /**
  * This object provides different presets for [TableColumn]s.
  */
+@Beta
 object TableColumns {
 
     /**

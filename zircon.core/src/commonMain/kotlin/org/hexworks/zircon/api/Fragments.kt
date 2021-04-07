@@ -40,6 +40,10 @@ object Fragments {
         theme: ColorTheme
     ): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, theme)
 
+    /**
+     * Creates a new [TableBuilder] to build a [org.hexworks.zircon.api.fragment.Table] with its [TableColumns]
+     */
+    @Beta
     fun <M: Any> table(data: List<M>): TableBuilder<M> =
         TableBuilder(data)
 
