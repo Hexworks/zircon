@@ -1,14 +1,13 @@
 package org.hexworks.zircon.api.fragment.table
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.data.Size
 
 /**
  * A table fragment displays data in rows. Each row contains several cells. How a cell is displayed depends
- * on the definition of it's column.
+ * on the definition of it's [TableColumn].
  *
  * A table contains data of type [M] (the model). Every model object represents one row in the table.
  *
@@ -24,7 +23,7 @@ interface Table<M : Any> : Fragment {
     val selectedRows: List<M>
 
     /**
-     * The elements of the table that are currently selected as [ObservableValue].
+     * The elements of the table that are currently selected as [ObservableList].
      */
     val selectedRowsValue: ObservableList<M>
 

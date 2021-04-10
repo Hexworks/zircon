@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.table.Table
-import org.hexworks.zircon.api.fragment.table.TableColumn
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
@@ -30,7 +29,7 @@ object TableExample {
     fun main(args: Array<String>) {
         val tableFragment: Table<Person> = buildTable()
 
-        val selectionPanel = buildPanel(tableFragment)
+        val selectionPanel = buildSelectionPanel(tableFragment)
 
         val tileGrid = SwingApplications.startTileGrid(
             AppConfig.newBuilder()
@@ -48,6 +47,10 @@ object TableExample {
         screen.display()
     }
 
+    /**
+     * The core of this example. This method shows how to build a [Table] using [Fragments.table] and
+     * [TableColumns].
+     */
     private fun buildTable(): Table<Person> =
         Fragments
                 // TODO: Use an observable list and add UI elements to add/remove elements
@@ -69,7 +72,10 @@ object TableExample {
             )
             .build()
 
-    private fun buildPanel(tableFragment: Table<Person>): VBox {
+    /**
+     * Builds the right panel displaying the currently selected person.
+     */
+    private fun buildSelectionPanel(tableFragment: Table<Person>): VBox {
         return Components
             .vbox()
             .withSize(25, tableFragment.size.height)
