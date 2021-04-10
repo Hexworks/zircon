@@ -1,6 +1,5 @@
 package org.hexworks.zircon.examples.fragments.table
 
-import org.hexworks.cobalt.databinding.api.binding.bindMap
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -14,6 +13,7 @@ import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.table.Table
+import org.hexworks.zircon.api.fragment.table.TableColumn
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
@@ -50,17 +50,12 @@ object TableExample {
 
     private fun buildTable(): Table<Person> =
         Fragments
+                // TODO: Use an observable list and add UI elements to add/remove elements
             .table(50.randomPersons())
             .withHeight(20)
             .withColumnSpacing(1)
             .withRowSpacing(0)
             .withColumns(
-//                TableColumn("full name", 14, {person: Person -> "${person.firstName}\n ${person.lastName}"}) {
-//                    Components.textArea()
-//                        .withSize(14, 2)
-//                        .withText(it)
-//                        .build()
-//                },
                 TableColumns
                     .textColumn("First name", 14, Person::firstName),
                 TableColumns
@@ -70,7 +65,7 @@ object TableExample {
                 TableColumns
                     .icon("Height", Person::height) { height -> iconFor(height) },
                 TableColumns
-                    .textColumn("Wage", 8) { it.wage.bindTransform { wage -> wage.formatWage() } }
+                    .textColumnObservable("Wage", 8) { it.wage.bindTransform { wage -> wage.formatWage() } }
             )
             .build()
 
