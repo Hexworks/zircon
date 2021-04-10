@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.fragment.impl.table
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
@@ -69,6 +68,9 @@ class DefaultTable<M: Any>(
             )
     }
 
+    /**
+     * Builds the [VBox] representing the "data panel" which contains all the rows of the table.
+     */
     private fun dataPanel(panelSize: Size): VBox {
         return Components
             .vbox()
@@ -77,7 +79,6 @@ class DefaultTable<M: Any>(
             .build()
             .apply {
                 // TODO: Improve this loop to not loop over all elements
-                var rows = 0
                 val modelIterator = data.listIterator()
                 val firstRow: Component? = if (modelIterator.hasNext()) {
                     newRowFor(modelIterator.next())
@@ -119,6 +120,9 @@ class DefaultTable<M: Any>(
         return row
     }
 
+    /**
+     * Builds the [HBox] containing the column headers.
+     */
     private fun headerRow(): HBox {
         return Components
             .hbox()
