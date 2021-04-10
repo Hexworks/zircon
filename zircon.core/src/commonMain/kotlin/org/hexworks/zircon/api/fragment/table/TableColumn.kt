@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Component
 
 /**
- * This class represents the definition of a column in a table. It provides means to get the value
- * from a model object and wrap that value into a [Component]. This component is then displayed
+ * This class represents the definition of a column in a [Table]. It provides means to get the value
+ * from a model object and wrap that value into a [Component]. That component is then displayed
  * as table cell.
  *
  * @param M the type of the model. In other words: Every element/row in the table has this type
