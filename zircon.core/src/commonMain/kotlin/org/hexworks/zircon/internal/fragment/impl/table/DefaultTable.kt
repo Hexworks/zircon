@@ -59,42 +59,45 @@ class DefaultTable<M: Any>(
 
     private val currentRows: MutableList<AttachedComponent> = mutableListOf()
 
+    private val dataPanel: VBox
+
     init {
         val headerRow = headerRow()
+        dataPanel = Components
+            .vbox()
+            .withSize(size.withRelativeHeight(-headerRow.height))
+            .withSpacing(rowSpacing)
+            .build()
         root
             .addComponents(
                 headerRow,
-                dataPanel(size.withRelativeHeight(- headerRow.height))
+                dataPanel
             )
+        reloadData()
+        data.onChange { reloadData() }
     }
 
-    /**
-     * Builds the [VBox] representing the "data panel" which contains all the rows of the table.
-     */
-    private fun dataPanel(panelSize: Size): VBox {
-        return Components
-            .vbox()
-            .withSize(panelSize)
-            .withSpacing(rowSpacing)
-            .build()
-            .apply {
-                // TODO: Improve this loop to not loop over all elements
-                val modelIterator = data.listIterator()
-                val firstRow: Component? = if (modelIterator.hasNext()) {
-                    newRowFor(modelIterator.next())
-                        .also { currentRows.add(addComponent(it)) }
-                } else {
-                    null
-                }
-                var neededHeight = firstRow?.height ?: 0
-                var remainingHeight = panelSize.height - neededHeight
-                while (remainingHeight >= neededHeight && modelIterator.hasNext()) {
-                    val newRow = newRowFor(modelIterator.next())
-                    currentRows.add(addComponent(newRow))
-                    neededHeight = newRow.height + rowSpacing
-                    remainingHeight -= neededHeight
-                }
+    private fun reloadData() {
+        currentRows.forEach { it.detach() }
+        currentRows.clear()
+        dataPanel.apply {
+            // TODO: Improve this loop to not loop over all elements
+            val modelIterator = data.listIterator()
+            val firstRow: Component? = if (modelIterator.hasNext()) {
+                newRowFor(modelIterator.next())
+                    .also { currentRows.add(addComponent(it)) }
+            } else {
+                null
             }
+            var neededHeight = firstRow?.height ?: 0
+            var remainingHeight = contentSize.height - neededHeight
+            while (remainingHeight >= neededHeight && modelIterator.hasNext()) {
+                val newRow = newRowFor(modelIterator.next())
+                currentRows.add(addComponent(newRow))
+                neededHeight = newRow.height + rowSpacing
+                remainingHeight -= neededHeight
+            }
+        }
     }
 
     private fun newRowFor(model: M): Component {
