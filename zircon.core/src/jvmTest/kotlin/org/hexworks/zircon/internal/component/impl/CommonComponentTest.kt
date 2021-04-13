@@ -40,6 +40,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val POSITION_2_3 = Position.create(2, 3)
     val POSITION_1_1 = Position.create(1, 1)
     val SIZE_3_4 = Size.create(3, 4)
+    val SIZE_10_4 = Size.create(10, 4)
     val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
     val COMPONENT_STYLES = ComponentStyleSet.defaultStyleSet()
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
