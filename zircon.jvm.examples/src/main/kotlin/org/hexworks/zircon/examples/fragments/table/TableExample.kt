@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.fragments.table
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.*
@@ -24,6 +25,8 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 object TableExample {
 
     private val theme = ColorThemes.zenburnVanilla()
+
+    private val data: ListProperty<Person> = 2.randomPersons().toProperty()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -54,7 +57,7 @@ object TableExample {
     private fun buildTable(): Table<Person> =
         Fragments
                 // TODO: Use an observable list and add UI elements to add/remove elements
-            .table(50.randomPersons())
+            .table(data)
             .withHeight(20)
             .withColumnSpacing(1)
             .withRowSpacing(0)
@@ -132,6 +135,26 @@ object TableExample {
                         .apply {
                             currentValue = personObs.value.wage.value
                             currentValueProperty.bindTransform { personObs.value.wage.updateValue(it) }
+                        },
+                    Components
+                        .button()
+                        .withText("add person")
+                        .build()
+                        .apply {
+                            processComponentEvents(ComponentEventType.ACTIVATED) {
+                                data.add(randomPerson())
+                            }
+                        },
+                    Components
+                        .button()
+                        .withText("remove person")
+                        .build()
+                        .apply {
+                            processComponentEvents(ComponentEventType.ACTIVATED) {
+                                if (data.isNotEmpty()) {
+                                    data.removeAt(data.lastIndex)
+                                }
+                            }
                         }
                 )
             }
