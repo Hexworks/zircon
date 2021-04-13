@@ -138,23 +138,46 @@ object TableExample {
                         },
                     Components
                         .button()
-                        .withText("add person")
+                        .withSize(contentSize.withHeight(1))
                         .build()
                         .apply {
+                            textProperty.updateFrom(personObs.bindTransform { "Delete ${it.firstName} ${it.lastName}" })
                             processComponentEvents(ComponentEventType.ACTIVATED) {
-                                data.add(randomPerson())
+                                data.remove(personObs.value)
                             }
                         },
                     Components
-                        .button()
-                        .withText("remove person")
+                        .hbox()
+                        .withSpacing(1)
+                        .withSize(contentSize.withHeight(1))
                         .build()
                         .apply {
-                            processComponentEvents(ComponentEventType.ACTIVATED) {
-                                if (data.isNotEmpty()) {
-                                    data.removeAt(data.lastIndex)
-                                }
-                            }
+                            addComponents(
+                                Components
+                                    .button()
+                                    .withText("+")
+                                    .build()
+                                    .apply {
+                                        processComponentEvents(ComponentEventType.ACTIVATED) {
+                                            data.add(randomPerson())
+                                        }
+                                    },
+                                Components
+                                    .label()
+                                    .withText("random Person")
+                                    .build(),
+                                Components
+                                    .button()
+                                    .withText("-")
+                                    .build()
+                                    .apply {
+                                        processComponentEvents(ComponentEventType.ACTIVATED) {
+                                            if (data.isNotEmpty()) {
+                                                data.removeAt(data.lastIndex)
+                                            }
+                                        }
+                                    }
+                            )
                         }
                 )
             }
