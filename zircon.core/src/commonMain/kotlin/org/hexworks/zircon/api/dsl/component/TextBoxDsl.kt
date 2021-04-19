@@ -17,5 +17,7 @@ fun textBox(
 fun TextBoxBuilder.paragraph(withNewLine: Boolean = true, init: ParagraphBuilder.() -> Unit) =
     addParagraph(ParagraphBuilder().apply(init).build(), withNewLine)
 
-fun TextBoxBuilder.inlineComponent(init: () -> Component) =
-    addInlineComponent(init())
+fun TextBoxBuilder.inlineComponent(init: ComponentScope.() -> Unit) =
+    addInlineComponent(
+        ComponentScope().apply(init).build()
+    )
