@@ -6,7 +6,9 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 
+@ZirconDsl
 class ComponentScope {
     private lateinit var component: Component
 
