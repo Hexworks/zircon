@@ -8,8 +8,8 @@ import org.hexworks.zircon.api.component.modal.ModalResult
 fun <T : ModalResult> modal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
     ModalBuilder<T>().apply(init).build()
 
-fun <T : ModalResult> ModalBuilder<T>.component(init: () -> Component) {
+fun <T : ModalResult> ModalBuilder<T>.component(init: ComponentScope.() -> Unit) {
     withComponent(
-        init()
+        ComponentScope().apply(init).build()
     )
 }

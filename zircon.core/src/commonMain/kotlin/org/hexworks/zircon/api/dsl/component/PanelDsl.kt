@@ -5,4 +5,3 @@ import org.hexworks.zircon.api.component.Panel
 
 fun panel(): Panel =
     PanelBuilder().build()
-
