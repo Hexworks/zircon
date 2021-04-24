@@ -5,10 +5,12 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.*
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
+import org.hexworks.zircon.api.component.renderer.isRight
+import org.hexworks.zircon.api.component.renderer.isTop
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
@@ -17,7 +19,8 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 data class BoxDecorationRenderer(
     val boxType: BoxType = BoxType.SINGLE,
     private val titleProperty: Property<String> = createPropertyFrom(""),
-    private val renderingMode: RenderingMode = NON_INTERACTIVE
+    private val renderingMode: RenderingMode = NON_INTERACTIVE,
+    private val titleAlignment: Alignment = Alignment.TOP_LEFT
 ) : ComponentDecorationRenderer {
 
     override val offset = Position.offset1x1()
@@ -47,13 +50,24 @@ data class BoxDecorationRenderer(
                 } else {
                     finalTitle
                 }
+                val titleOffsetX = when {
+                    titleAlignment.isLeft() -> 0
+                    titleAlignment.isRight() -> size.width - cleanText.length - 4
+                    titleAlignment.isCenter() -> (size.width - cleanText.length - 4) / 2
+                    else -> throw IllegalStateException("unreachable")
+                }
+                val titleOffsetY = when {
+                    titleAlignment.isTop() -> 0
+                    titleAlignment.isBottom() -> size.height - 1
+                    else -> throw IllegalStateException("unreachable")
+                }
                 tileGraphics.draw(
                     TileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorLeft)
-                        .build(), Position.create(1, 0)
+                        .build(), Position.create(1 + titleOffsetX, titleOffsetY)
                 )
-                val pos = Position.create(2, 0)
+                val pos = Position.create(2 + titleOffsetX, titleOffsetY)
                 (cleanText.indices).forEach { idx ->
                     tileGraphics.draw(
                         tile = TileBuilder.newBuilder()
@@ -68,7 +82,7 @@ data class BoxDecorationRenderer(
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorRight)
                         .build(),
-                    drawPosition = Position.create(2 + cleanText.length, 0)
+                    drawPosition = Position.create(2 + titleOffsetX + cleanText.length, titleOffsetY)
                 )
             }
         }
