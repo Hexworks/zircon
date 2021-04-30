@@ -223,7 +223,7 @@ It is detailed [here](https://hexworks.org/zircon/docs/2018-11-22-resource-handl
 
 If you want to see a new feature feel free to [create a new Issue](https://github.com/Hexworks/zircon/issues/new) or discuss it with us on [Discord][discord]. Here are some features which are either under way or planned:
 
-- [ ] [Scrollable Components](https://github.com/Hexworks/zircon/issues/25)
+- [x] [Scrollable Components](https://github.com/Hexworks/zircon/issues/25)
 - [ ] [Floating Components](https://github.com/Hexworks/zircon/issues/23)
 - [ ] [Drag'n Drop Support](https://github.com/Hexworks/zircon/issues/22)
 - [ ] [Custom Layout Support](https://github.com/Hexworks/zircon/issues/28)
@@ -231,13 +231,13 @@ If you want to see a new feature feel free to [create a new Issue](https://githu
 - [ ] [Custom Component Support](https://github.com/Hexworks/zircon/issues/26)
 - [ ] [Menus](https://github.com/Hexworks/zircon/issues/135)
 - [ ] [Tree Component](https://github.com/Hexworks/zircon/issues/184)
-- [ ] [Table Component](https://github.com/Hexworks/zircon/issues/185)
+- [x] [Table Component](https://github.com/Hexworks/zircon/issues/185)
 - [ ] [Accordion Component](https://github.com/Hexworks/zircon/issues/27)
 - [ ] [Combo Box Component](https://github.com/Hexworks/zircon/issues/262)
 - [ ] [IntelliJ Plugin](https://github.com/Hexworks/zircon/issues/191)
-- [ ] [Javadoc-style Documentation](https://github.com/Hexworks/zircon/issues/146)
+- [x] [Javadoc-style Documentation](https://github.com/Hexworks/zircon/issues/146)
 - [ ] [Console for Zircon](https://github.com/Hexworks/zircon/issues/183)
-- [ ] [Grid / Screen Filters](https://github.com/Hexworks/zircon/issues/271)
+- [x] [Grid / Screen Filters](https://github.com/Hexworks/zircon/issues/271)
 
 If you'd like to give any of these a shot feel free to *contribute*.
 
