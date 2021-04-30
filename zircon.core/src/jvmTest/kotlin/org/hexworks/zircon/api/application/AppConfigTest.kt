@@ -1,9 +1,13 @@
 package org.hexworks.zircon.api.application
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.test.assertThat
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.junit.Test
+
+private object TestAppConfigKey : AppConfigKey<String>
+private object TestAppConfigKey2 : AppConfigKey<String>
 
 class AppConfigTest {
 
@@ -27,6 +31,60 @@ class AppConfigTest {
                 .isEqualTo(IS_BLINKING)
         assertThat(target.isClipboardAvailable)
                 .isEqualTo(HAS_CLIPBOARD)
+    }
+
+    @Test
+    fun propertyUnset() {
+        val appConfig = AppConfigBuilder.newBuilder().build()
+        assertThat(appConfig[TestAppConfigKey])
+            .isEmpty()
+    }
+
+    @Test
+    fun propertySet() {
+        val appConfig = AppConfigBuilder.newBuilder()
+            .withProperty(TestAppConfigKey, "foo")
+            .build()
+        assertThat(appConfig[TestAppConfigKey])
+            .hasValue("foo")
+    }
+
+    @Test
+    fun propertyOverwrite() {
+        val appConfig = AppConfigBuilder.newBuilder()
+            .withProperty(TestAppConfigKey, "foo")
+            .withProperty(TestAppConfigKey, "bar")
+            .build()
+        assertThat(appConfig[TestAppConfigKey])
+            .hasValue("bar")
+    }
+
+    @Test
+    fun propertyMultiple() {
+        val appConfig = AppConfigBuilder.newBuilder()
+            .withProperty(TestAppConfigKey, "foo")
+            .withProperty(TestAppConfigKey2, "bar")
+            .build()
+        assertThat(appConfig[TestAppConfigKey])
+            .hasValue("foo")
+        assertThat(appConfig[TestAppConfigKey2])
+            .hasValue("bar")
+    }
+
+    @Test
+    fun propertyExample() {
+        // Plugin API
+        val key = object : AppConfigKey<Int> {} // use a real internal or private `object`, not an anonymous one!
+        fun AppConfigBuilder.enableCoolFeature() = also { withProperty(key, 42) }
+
+        // User code
+        val appConfig = AppConfigBuilder.newBuilder()
+            .enableCoolFeature()
+            .build()
+
+        // Plugin internals
+        assertThat(appConfig[key])
+            .hasValue(42)
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.application
 
+import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.GraphicalTilesetResources
@@ -14,6 +15,8 @@ import kotlin.jvm.JvmStatic
  * Object that encapsulates the configuration parameters for an [Application].
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
+ *
+ * Typically you'll want to construct this using [AppConfigBuilder], not AppConfig's constructor.
  */
 @Suppress("ArrayInDataClass")
 data class AppConfig(
@@ -114,14 +117,33 @@ data class AppConfig(
      * If set [iconPath] will contain the path of the resource that points
      * to an icon image that will be used in the application window.
      */
-    val iconPath: String? = null
+    val iconPath: String? = null,
+    /**
+     * If set, contains custom properties that plugin authors can set and access.
+     */
+    internal val customProperties: Map<AppConfigKey<*>, Any> = emptyMap()
 ) {
 
     /**
      * Tells whether bounds check should be performed or not.
      * This depends on the various debug mode configurations.
      */
-    fun shouldCheckBounds() = debugMode.not() || (debugMode && debugConfig.relaxBoundsCheck.not())
+    fun shouldCheckBounds() = !debugMode || !debugConfig.relaxBoundsCheck
+
+    /**
+     * Retrieve a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * never set, returns an empty [Maybe].
+     *
+     * ### End Developers
+     *
+     * You probably don't need to call this API.
+     */
+    operator fun <T : Any> get(key: AppConfigKey<T>): Maybe<T> {
+        val value: Any? = customProperties[key]
+        // This is actually a safe cast because of the way `withProperty` is defined.
+        @Suppress("UNCHECKED_CAST")
+        return Maybe.ofNullable(value as T?)
+    }
 
     companion object {
 

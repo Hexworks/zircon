@@ -191,6 +191,27 @@ data class AppConfigBuilder(
         )
     }
 
+    /**
+     * Adds a custom property into the AppConfig object. This can later be retrieved using [AppConfig.getProperty].
+     *
+     * ### End Developers
+     *
+     * You probably don't need to call this API.
+     *
+     * ### Plugin Developers
+     *
+     * Write extension methods off of [AppConfigBuilder] that call this API in order to enable end developers
+     * to pass configuration in through AppConfig that your plugin can later use. It's recommended that [key]
+     * be an `object` with minimal visibility (e.g. `internal`).
+     *
+     * @sample org.hexworks.zircon.api.application.AppConfigTest.propertyExample
+     */
+    fun <T : Any> withProperty(key: AppConfigKey<T>, value: T): AppConfigBuilder = also {
+        config = config.copy(
+            customProperties = config.customProperties + (key to value)
+        )
+    }
+
     @Deprecated("This will be removed in the next version, as the behavior is inconsistent.")
     fun withFullScreen(screenWidth: Int, screenHeight: Int) = also {
         throw UnsupportedOperationException("Unstable api, use withFullScreen(true) instead")
