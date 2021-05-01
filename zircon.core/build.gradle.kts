@@ -12,7 +12,7 @@ import TestLibs.assertjCore
 import TestLibs.kotlinTestAnnotationsCommon
 import TestLibs.kotlinTestCommon
 import TestLibs.logbackCore
-import TestLibs.mockitoAll
+import TestLibs.mockitoCore
 import TestLibs.mockitoKotlin
 
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -65,7 +65,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
 
-                implementation(mockitoAll)
+                implementation(mockitoCore)
                 implementation(mockitoKotlin)
                 implementation(assertjCore)
                 implementation(logbackClassic)
