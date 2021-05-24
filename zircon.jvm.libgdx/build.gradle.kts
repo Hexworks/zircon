@@ -40,7 +40,7 @@ kotlin {
 
         with(TestLibs) {
             testImplementation(junit)
-            testImplementation(mockitoAll)
+            testImplementation(mockitoCore)
             testImplementation(assertjCore)
         }
     }
