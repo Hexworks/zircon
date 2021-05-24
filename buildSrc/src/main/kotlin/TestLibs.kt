@@ -14,8 +14,8 @@ object TestLibs {
     const val logbackCore = "ch.qos.logback:logback-core:$logbackVersion"
 
     const val junit = "junit:junit:$junitVersion"
-    const val mockitoAll = "org.mockito:mockito-all:$mockitoVersion"
-    const val mockitoKotlin = "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    const val mockitoCore = "org.mockito:mockito-core:$mockitoVersion"
+    const val mockitoKotlin = "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
     const val assertjCore = "org.assertj:assertj-core:$assertjVersion"
     const val assertk = "com.willowtreeapps.assertk:assertk-jvm:$assertkVersion"
 }

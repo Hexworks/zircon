@@ -1,23 +1,25 @@
 package org.hexworks.zircon.internal.uievent.impl
 
-import com.nhaarman.mockito_kotlin.anyOrNull
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations.initMocks
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
+import org.mockito.kotlin.*
+import org.mockito.quality.Strictness
 import kotlin.contracts.ExperimentalContracts
 
 @Suppress("TestFunctionName")
 @ExperimentalContracts
 class UIEventToComponentDispatcherTest {
+    @get:Rule
+    val mockitoRule: MockitoRule = MockitoJUnit.rule().strictness(Strictness.STRICT_STUBS)
 
     lateinit var target: UIEventToComponentDispatcher
 
@@ -35,17 +37,16 @@ class UIEventToComponentDispatcherTest {
 
     @Before
     fun setUp() {
-        initMocks(this)
-        Mockito.`when`(rootMock.calculatePathTo(anyOrNull())).thenReturn(listOf(rootMock))
+        whenever(rootMock.calculatePathTo(anyOrNull())).thenReturn(listOf(rootMock))
         target = UIEventToComponentDispatcher(rootMock, focusOrderListMock)
     }
 
     @Test
     fun dispatchShouldReturnPassWhenThereIsNoTarget() {
-        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(rootMock)
+        whenever(focusOrderListMock.focusedComponent).thenReturn(rootMock)
 
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
+        whenever(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
+        whenever(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
 
         val result = target.dispatch(KEY_A_PRESSED_EVENT)
 
@@ -55,9 +56,9 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun dispatchShouldReturnProcessedWhenTargetsDefaultIsRun() {
 
-        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(rootMock)
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Processed)
+        whenever(focusOrderListMock.focusedComponent).thenReturn(rootMock)
+        whenever(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
+        whenever(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Processed)
 
         val result = target.dispatch(KEY_A_PRESSED_EVENT)
 
@@ -67,28 +68,29 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun dispatchShouldReturnPreventDefaultWhenChildPreventedDefault() {
 
-        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
+        whenever(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
 
-        Mockito.`when`(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
+        whenever(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
 
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
 
-        Mockito.`when`(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(PreventDefault)
-        Mockito.`when`(child0Mock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE))
-                .thenThrow(IllegalStateException("Child mock 0 shouldn't have been called with key pressed in the capture phase"))
+        whenever(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(PreventDefault)
 
-        Mockito.`when`(child1Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
-        Mockito.`when`(child1Mock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET))
-                .thenThrow(IllegalStateException("Child mock 1 shouldn't have been called with key pressed in the target phase"))
+        whenever(child1Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(Pass)
 
 
-        Mockito.`when`(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)).thenReturn(Pass)
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE))
-                .thenThrow(IllegalStateException("Root mock shouldn't have been called with key pressed in the bubble phase"))
+        whenever(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)).thenReturn(Pass)
+        whenever(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)).thenReturn(Pass)
 
         val result = target.dispatch(KEY_A_PRESSED_EVENT)
+
+        // Child mock 0 shouldn't be called with key pressed in the capture phase
+        verify(child0Mock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)
+        // Child mock 1 shouldn't be called with key pressed in the target phase
+        verify(child1Mock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)
+        // Root mock shouldn't be called with key pressed in the bubble phase
+        verify(rootMock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)
 
         assertThat(result).isEqualTo(PreventDefault)
     }
@@ -96,23 +98,23 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun dispatchShouldReturnStopPropagationWhenFirstChildStoppedPropagation() {
 
-        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
-        Mockito.`when`(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
+        whenever(focusOrderListMock.focusedComponent).thenReturn(child1Mock)
+        whenever(rootMock.calculatePathTo(child1Mock)).thenReturn(listOf(rootMock, child0Mock, child1Mock))
 
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
 
-        Mockito.`when`(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(StopPropagation)
-
-        Mockito.`when`(child1Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET))
-                .thenThrow(IllegalStateException("Child mock 1 shouldn't have been called with process in the target phase"))
-        Mockito.`when`(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE))
-                .thenThrow(IllegalStateException("Child mock 0 shouldn't have been called with process in the bubble phase"))
-        Mockito.`when`(rootMock.process(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE))
-                .thenThrow(IllegalStateException("Root mock shouldn't have been called with process in the bubble phase"))
+        whenever(child0Mock.process(KEY_A_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(StopPropagation)
 
 
         val result = target.dispatch(KEY_A_PRESSED_EVENT)
+
+        // Child mock 1 shouldn't be called with process in the target phase
+        verify(child1Mock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.TARGET)
+        // Child mock 0 shouldn't be called with process in the bubble phase
+        verify(child0Mock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)
+        // Root mock shouldn't be called with process in the bubble phase
+        verify(rootMock, never()).keyPressed(KEY_A_PRESSED_EVENT, UIEventPhase.BUBBLE)
 
         assertThat(result).isEqualTo(StopPropagation)
     }
@@ -120,17 +122,17 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun When_a_child_stops_propagation_of_the_tab_key_Then_component_events_shouldnt_be_performed() {
 
-        Mockito.`when`(focusOrderListMock.focusedComponent).thenReturn(child0Mock)
-        Mockito.`when`(rootMock.calculatePathTo(child0Mock)).thenReturn(listOf(rootMock, child0Mock))
+        whenever(focusOrderListMock.focusedComponent).thenReturn(child0Mock)
+        whenever(rootMock.calculatePathTo(child0Mock)).thenReturn(listOf(rootMock, child0Mock))
 
-        Mockito.`when`(rootMock.process(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
-        Mockito.`when`(rootMock.keyPressed(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.process(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
+        whenever(rootMock.keyPressed(TAB_PRESSED_EVENT, UIEventPhase.CAPTURE)).thenReturn(Pass)
 
-        Mockito.`when`(child0Mock.process(TAB_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(StopPropagation)
+        whenever(child0Mock.process(TAB_PRESSED_EVENT, UIEventPhase.TARGET)).thenReturn(StopPropagation)
 
         val result = target.dispatch(TAB_PRESSED_EVENT)
 
-        verify(child0Mock, times(0)).focusGiven()
+        verify(child0Mock, never()).focusGiven()
 
         assertThat(result).isEqualTo(StopPropagation)
     }
