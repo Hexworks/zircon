@@ -19,7 +19,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.ChainedTilesetLoader
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.PixelPosition
@@ -39,7 +41,9 @@ class LibgdxRenderer(
     private val config = RuntimeConfig.config
     private var maybeBatch: Maybe<SpriteBatch> = Maybes.empty()
     private lateinit var cursorRenderer: ShapeRenderer
-    private val tilesetLoader = LibgdxTilesetLoader()
+    private val tilesetLoader: TilesetLoader<SpriteBatch> =
+            ChainedTilesetLoader.inOrder(config.tilesetLoaders as List<TilesetLoader<SpriteBatch>>
+                    + LibgdxTilesetLoader())
     private var blinkOn = true
     private var timeSinceLastBlink: Float = 0f
 

@@ -24,9 +24,12 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<Graphics2D> {
         return tilesetCache.getOrPut(resource.id) {
             LOADERS[resource.getLoaderKey()]?.invoke(resource)
-                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.§")
+                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
         }
     }
+
+    override fun canLoadResource(resource: TilesetResource): Boolean =
+        resource.id in tilesetCache || resource.getLoaderKey() in LOADERS
 
     override fun close() {
         isClosed.value = true
@@ -34,7 +37,6 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
     }
 
     companion object {
-
         fun TilesetResource.getLoaderKey() = "${this.tileType.name}-${this.tilesetType.name}"
 
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<Graphics2D>> = mapOf(
