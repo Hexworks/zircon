@@ -17,7 +17,11 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
+import org.hexworks.zircon.api.component.data.ComponentState.DISABLED
+import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -26,12 +30,24 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.ACTIVATED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.DEACTIVATED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_GIVEN
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_TAKEN
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_ENTERED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_EXITED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_RELEASED
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
@@ -58,6 +74,8 @@ abstract class DefaultComponent(
 
     // Identifiable
     final override val id: UUID = UUID.randomUUID()
+
+    final override val name: String = componentMetadata.name
 
     // Hideable
     final override val hiddenProperty = createPropertyFrom(false)
@@ -253,7 +271,7 @@ abstract class DefaultComponent(
 
     override fun toString(): String {
         val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
-        return "${this::class.simpleName}(id=${id.toString().substring(0, 4)}, " +
+        return "${name.ifBlank { this::class.simpleName }}(id=${id.toString().substring(0, 4)}, " +
                 "absolutePosition=$absolutePosition, relativePosition=$relativePosition, size=$size, " +
                 "state=$componentState, disabled=$isDisabled$text)"
     }

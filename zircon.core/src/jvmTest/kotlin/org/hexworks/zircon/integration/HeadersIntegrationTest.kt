@@ -44,7 +44,7 @@ class HeadersIntegrationTest : ComponentIntegrationTestBase() {
 
         val tooLongHeader = Components.header()
                 .withText("Too long header")
-                .withSize(10, 1)
+                .withPreferredSize(10, 1)
                 .withAlignment(positionalAlignment(2, 13))
 
         screen.addComponent(tooLongHeader)

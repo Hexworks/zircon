@@ -32,33 +32,33 @@ object PanelsExample {
 
         screen.addComponent(Components.panel()
                 .withDecorations(box(title = "No Render"))
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withComponentRenderer(NoOpComponentRenderer())
                 .withAlignment(positionalAlignment(1, 1)))
 
         screen.addComponent(Components.panel()
                 .withDecorations(shadow())
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(1, 8)))
 
         screen.addComponent(Components.panel()
                 .withDecorations(box(), shadow())
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(1, 15)))
 
         screen.addComponent(Components.panel()
                 .withDecorations(box(boxType = BoxType.DOUBLE))
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(1, 22)))
 
         screen.addComponent(Components.panel()
                 .withDecorations(box(boxType = BoxType.BASIC))
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(21, 1)))
 
         val disabledPanel = Components.panel()
                 .withDecorations(box(title = "Disabled"))
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(21, 8))
                 .build()
 
@@ -70,16 +70,16 @@ object PanelsExample {
                 .withDecorations(
                         halfBlock(),
                         shadow())
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withAlignment(positionalAlignment(21, 15)))
 
         screen.addComponent(Components.panel()
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withDecorations(box(title = "Wombat", boxType = BoxType.TOP_BOTTOM_DOUBLE))
                 .withAlignment(positionalAlignment(21, 22)))
 
         screen.addComponent(Components.panel()
-                .withSize(18, 5)
+                .withPreferredSize(18, 5)
                 .withDecorations(box(boxType = BoxType.LEFT_RIGHT_DOUBLE))
                 .withAlignment(positionalAlignment(41, 1)))
 
@@ -92,13 +92,13 @@ object PanelsExample {
         screen.addComponent(panel)
 
         val nested0 = Components.panel()
-                .withSize(14, 15)
+                .withPreferredSize(14, 15)
                 .withAlignment(positionalAlignment(1, 1))
                 .withDecorations(box(title = "Nested 0", boxType = BoxType.DOUBLE))
                 .build()
 
         val nested1 = Components.panel()
-                .withSize(10, 11)
+                .withPreferredSize(10, 11)
                 .withAlignment(positionalAlignment(1, 1))
                 .withDecorations(box(title = "Nested 1", boxType = BoxType.DOUBLE))
                 .build()

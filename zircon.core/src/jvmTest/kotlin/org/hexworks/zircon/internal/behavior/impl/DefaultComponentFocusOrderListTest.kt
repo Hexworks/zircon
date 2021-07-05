@@ -51,7 +51,7 @@ class DefaultComponentFocusOrderListTest {
     fun When_the_root_has_children_Then_focus_order_is_the_flattened_tree() {
 
         val button0 = Components.button().build() as InternalComponent
-        val box = Components.vbox().withSize(10, 2).withPosition(Position.bottomLeftOf(button0)).build()
+        val box = Components.vbox().withPreferredSize(10, 2).withPosition(Position.bottomLeftOf(button0)).build()
         val button1a = Components.button().build() as InternalComponent
         val button1b = Components.button().build() as InternalComponent
 

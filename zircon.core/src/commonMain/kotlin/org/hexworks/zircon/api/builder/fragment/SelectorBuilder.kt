@@ -12,9 +12,9 @@ import kotlin.jvm.JvmStatic
  * Builder for a [Selector].
  */
 open class SelectorBuilder<T : Any>(
-    val width: Int,
-    val values: List<T>,
-    private val boxBuilder: HBoxBuilder = HBoxBuilder().withSize(width, 1)
+        val width: Int,
+        val values: List<T>,
+        private val boxBuilder: HBoxBuilder = HBoxBuilder().withPreferredSize(width, 1)
 ) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>,
     Builder<Selector<T>> {
 

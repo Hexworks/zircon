@@ -124,7 +124,7 @@ object GameComponentExample {
         }
 
         val panel = Components.panel()
-                .withSize(width, height)
+                .withPreferredSize(width, height)
                 .withDecorations(box(title = "Game Component"))
                 .build()
 

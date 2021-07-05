@@ -5,12 +5,14 @@ import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.halfBlock
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.ComponentDecorations.side
-import org.hexworks.zircon.api.Components.button
-import org.hexworks.zircon.api.Functions.fromConsumer
 import org.hexworks.zircon.api.component.VBox
-import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.component.buildPanel
+import org.hexworks.zircon.api.dsl.component.buildVbox
+import org.hexworks.zircon.api.dsl.component.button
+import org.hexworks.zircon.api.dsl.component.plus
 import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
-import java.util.function.Consumer
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
 
@@ -22,32 +24,43 @@ class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
     }
 
     override fun build(box: VBox) {
-        val invisible = button()
-                .withText("Click Me")
-                .withDecorations(side())
-                .build()
-        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer(Consumer { invisible.isHidden = true }))
-        val disabled = button()
-                .withText("Disabled")
-                .build()
-        box.addComponents(
-                button()
-                        .withText("Default")
-                        .build(),
-                button()
-                        .withText("Boxed")
-                        .withDecorations(box())
-                        .build(),
-                button()
-                        .withText("Too long name for button")
-                        .withDecorations(box(), shadow())
-                        .withSize(10, 4)
-                        .build(),
-                button()
-                        .withText("Half Block")
-                        .withDecorations(halfBlock(), shadow())
-                        .build(),
-                invisible, disabled)
-        disabled.isDisabled = true
+        box.addComponent(buildVbox {
+
+            componentRenderer = NoOpComponentRenderer()
+
+            spacing = 1
+
+            button { +"Default" }
+
+            button {
+                +"Boxed"
+                decoration = box()
+            }
+
+            button {
+                +"Too long name for button"
+                decorations = box() + shadow()
+            }
+
+            button {
+                +"Half Block"
+                decorations = halfBlock() + shadow()
+            }
+
+            button {
+                +"Click Me"
+                decoration = side()
+            }.apply {
+                onActivated {
+                    isHidden = true
+                }
+            }
+
+            button {
+                +"Disabled"
+            }.apply {
+                isDisabled = true
+            }
+        })
     }
 }

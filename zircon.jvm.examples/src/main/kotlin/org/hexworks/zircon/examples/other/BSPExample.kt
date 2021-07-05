@@ -33,7 +33,7 @@ object BSPExample {
 
         screen.addComponent(Components.label()
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
-                .withSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
+                .withPreferredSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
                 .build())
 
         screen.onShutdown {

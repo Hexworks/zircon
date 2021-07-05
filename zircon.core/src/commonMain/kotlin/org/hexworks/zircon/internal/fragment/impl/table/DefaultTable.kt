@@ -102,13 +102,13 @@ class DefaultTable<M: Any>(
 
     private fun newRowFor(model: M): Component {
         val cells: List<Component> = columns
-            .map { it.newCell(model) }
+                .map { it.newCell(model) }
         val rowHeight = cells.maxOf { it.height }
         val row = Components
-            .hbox()
-            .withSpacing(colSpacing)
-            .withSize(size.width, rowHeight)
-            .build()
+                .hbox()
+                .withSpacing(colSpacing)
+                .withPreferredSize(size.width, rowHeight)
+                .build()
         cells.forEach { row.addComponent(it) }
         row.handleMouseEvents(MouseEventType.MOUSE_CLICKED) { _, phase ->
             // allow for the cells to implement custom mouse event handling
@@ -128,15 +128,15 @@ class DefaultTable<M: Any>(
      */
     private fun headerRow(): HBox {
         return Components
-            .hbox()
-            .withSize(size.width, 1)
-            .withSpacing(colSpacing)
-            .build()
-            .apply {
-                columns
-                    .forEach { column ->
-                        addComponent(column.header)
-                    }
-            }
+                .hbox()
+                .withPreferredSize(size.width, 1)
+                .withSpacing(colSpacing)
+                .build()
+                .apply {
+                    columns
+                            .forEach { column ->
+                                addComponent(column.header)
+                            }
+                }
     }
 }

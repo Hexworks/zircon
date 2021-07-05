@@ -68,12 +68,12 @@ object InCP437WeTrust {
                 }
 
         val mainPanel = Components.vbox()
-                .withSize(19, 19)
+                .withPreferredSize(19, 19)
                 .withPosition(2, 1)
                 .build()
                 .apply {
                     addComponent(Components.panel()
-                            .withSize(19, 1)
+                            .withPreferredSize(19, 1)
                             .build()
                             .apply {
                                 addFragment(
@@ -89,7 +89,7 @@ object InCP437WeTrust {
 
         val btn = Components.checkBox()
                 .withText("In CP437 we trust!")
-                .withSize(23, 1)
+                .withPreferredSize(23, 1)
                 .withPosition(Position.bottomLeftOf(mainPanel) - Position.create(2, 0))
                 .build()
 
@@ -98,7 +98,7 @@ object InCP437WeTrust {
         // mouse over for the current symbol
         screen.addComponent(Components.vbox()
                 .withSpacing(0)
-                .withSize(21, 3)
+                .withPreferredSize(21, 3)
                 .withPosition(Position.bottomLeftOf(btn) + Position.create(1, 1))
                 .build()
                 .apply {
@@ -115,13 +115,13 @@ object InCP437WeTrust {
     private fun symbolResolver(subStringStart: Int) =
             Components
                     .label()
-                    .withSize(21, 1)
+                    .withPreferredSize(21, 1)
                     .build()
                     .apply {
                         textProperty.updateFrom(
                                 currentSymbol.bindTransform {
                                     val symbolName = symbolsMap[it] ?: "(not special)".padEnd(21) + it.toString()
-                                    if(symbolName.length > subStringStart) {
+                                    if (symbolName.length > subStringStart) {
                                         symbolName.substring(subStringStart)
                                     } else {
                                         ""

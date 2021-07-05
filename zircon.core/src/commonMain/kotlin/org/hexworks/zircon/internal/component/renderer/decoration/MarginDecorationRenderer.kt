@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 @Beta
-data class PaddingDecorationRenderer(
+data class MarginDecorationRenderer(
     val top: Int,
     val right: Int,
     val bottom: Int,

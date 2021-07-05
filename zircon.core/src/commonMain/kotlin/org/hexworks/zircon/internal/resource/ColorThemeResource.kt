@@ -851,112 +851,112 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
      * http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
      */
     SOLARIZED_DARK_YELLOW(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Yellow")
             .withAccentColor(TileColor.fromString("#b58900"))
             .build()
     ),
 
     SOLARIZED_DARK_ORANGE(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Orange")
             .withAccentColor(TileColor.fromString("#cb4b16"))
             .build()
     ),
 
     SOLARIZED_DARK_RED(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Red")
             .withAccentColor(TileColor.fromString("#dc322f"))
             .build()
     ),
 
     SOLARIZED_DARK_MAGENTA(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Magenta")
             .withAccentColor(TileColor.fromString("#d33682"))
             .build()
     ),
 
     SOLARIZED_DARK_VIOLET(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Violet")
             .withAccentColor(TileColor.fromString("#6c71c4"))
             .build()
     ),
 
     SOLARIZED_DARK_BLUE(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Blue")
             .withAccentColor(TileColor.fromString("#268bd2"))
             .build()
     ),
 
     SOLARIZED_DARK_CYAN(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Cyan")
             .withAccentColor(TileColor.fromString("#2aa198"))
             .build()
     ),
 
     SOLARIZED_DARK_GREEN(
-        SOLARIZED_DARK_BASE.colorThemeBuilder.copy()
+        SOLARIZED_DARK_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Dark Green")
             .withAccentColor(TileColor.fromString("#859900"))
             .build()
     ),
 
     SOLARIZED_LIGHT_YELLOW(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Yellow")
             .withAccentColor(TileColor.fromString("#b58900"))
             .build()
     ),
 
     SOLARIZED_LIGHT_ORANGE(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Orange")
             .withAccentColor(TileColor.fromString("#cb4b16"))
             .build()
     ),
 
     SOLARIZED_LIGHT_RED(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Red")
             .withAccentColor(TileColor.fromString("#dc322f"))
             .build()
     ),
 
     SOLARIZED_LIGHT_MAGENTA(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Magenta")
             .withAccentColor(TileColor.fromString("#d33682"))
             .build()
     ),
 
     SOLARIZED_LIGHT_VIOLET(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Violet")
             .withAccentColor(TileColor.fromString("#6c71c4"))
             .build()
     ),
 
     SOLARIZED_LIGHT_BLUE(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Blue")
             .withAccentColor(TileColor.fromString("#268bd2"))
             .build()
     ),
 
     SOLARIZED_LIGHT_CYAN(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Cyan")
             .withAccentColor(TileColor.fromString("#2aa198"))
             .build()
     ),
 
     SOLARIZED_LIGHT_GREEN(
-        SOLARIZED_LIGHT_BASE.colorThemeBuilder.copy()
+        SOLARIZED_LIGHT_BASE.colorThemeBuilder.createCopy()
             .withName("Solarized Light Green")
             .withAccentColor(TileColor.fromString("#859900"))
             .build()

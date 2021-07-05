@@ -70,7 +70,7 @@ class DefaultVBox(
 
     private fun checkAvailableSpace(component: Component) =
         require(availableSpace.containsBoundable(component.rect)) {
-            "There is not enough space ($availableSpace) left for the component: $component."
+            "There is not enough space ${availableSpace.size} left in $this to add $component as a child."
         }
 
 }

@@ -27,7 +27,7 @@ object GroupExample {
         screen.display()
 
         val leftPanel = Components.panel()
-                .withSize(15, 10)
+                .withPreferredSize(15, 10)
                 .withPosition(6, 5)
                 .withDecorations(box(title = "Left Panel"))
                 .withColorTheme(ColorThemes.adriftInDreams())
@@ -35,7 +35,7 @@ object GroupExample {
                 .build()
 
         val rightPanel = Components.panel()
-                .withSize(15, 10)
+                .withPreferredSize(15, 10)
                 .withPosition(Position.create(18, 0).relativeToRightOf(leftPanel))
                 .withDecorations(box(title = "Right Panel"))
                 .withColorTheme(ColorThemes.afterTheHeist())

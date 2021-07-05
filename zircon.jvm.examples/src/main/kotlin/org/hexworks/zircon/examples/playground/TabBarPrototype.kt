@@ -15,25 +15,25 @@ object TabBarPrototype {
     fun main(args: Array<String>) {
 
         val screen = SwingApplications.startTileGrid(
-            AppConfig.newBuilder()
-                .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-                .build()
+                AppConfig.newBuilder()
+                        .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                        .build()
         ).toScreen()
 
         val tabBar = Components.hbox()
-            .withSize(40, 3)
-            .withDecorations(ComponentDecorations.padding(0, 1))
-            .withComponentRenderer(NoOpComponentRenderer())
-            .build()
+                .withPreferredSize(40, 3)
+                .withDecorations(ComponentDecorations.margin(0, 1))
+                .withComponentRenderer(NoOpComponentRenderer())
+                .build()
         val content = Components.panel()
-            .withSize(40, 27)
-            .build()
+                .withPreferredSize(40, 27)
+                .build()
 
         val box = Components.vbox()
-            .withComponentRenderer(NoOpComponentRenderer())
-            .withAlignmentWithin(screen, ComponentAlignment.CENTER)
-            .withSize(40, 30)
-            .build()
+                .withComponentRenderer(NoOpComponentRenderer())
+                .withAlignmentWithin(screen, ComponentAlignment.CENTER)
+                .withPreferredSize(40, 30)
+                .build()
 
         screen.addComponent(box)
         box.addComponents(tabBar, content)
@@ -43,29 +43,29 @@ object TabBarPrototype {
         val tab2 = DefaultTab("Tab 2", "tab2")
 
         val tab0Content = Components.textBox(30)
-            .addHeader("Tab 0 Content")
-            .addParagraph("This is the content of Tab 0")
-            .withDecorations(ComponentDecorations.padding(1))
-            .build()
+                .addHeader("Tab 0 Content")
+                .addParagraph("This is the content of Tab 0")
+                .withDecorations(ComponentDecorations.margin(1))
+                .build()
 
         val tab1Content = Components.textBox(30)
-            .addHeader("Tab 1 Content")
-            .addParagraph("This is the content of Tab 1")
-            .withDecorations(ComponentDecorations.padding(1))
-            .build()
+                .addHeader("Tab 1 Content")
+                .addParagraph("This is the content of Tab 1")
+                .withDecorations(ComponentDecorations.margin(1))
+                .build()
 
         val tab2Content = Components.textBox(30)
-            .addHeader("Tab 2 Content")
-            .addParagraph("This is the content of Tab 2")
-            .withDecorations(ComponentDecorations.padding(1))
-            .build()
+                .addHeader("Tab 2 Content")
+                .addParagraph("This is the content of Tab 2")
+                .withDecorations(ComponentDecorations.margin(1))
+                .build()
 
         var currentContent: AttachedComponent? = null
 
         val lookup = mapOf(
-            tab0.key to tab0Content,
-            tab1.key to tab1Content,
-            tab2.key to tab2Content
+                tab0.key to tab0Content,
+                tab1.key to tab1Content,
+                tab2.key to tab2Content
         )
 
         tabBar.addFragments(tab0, tab1, tab2)

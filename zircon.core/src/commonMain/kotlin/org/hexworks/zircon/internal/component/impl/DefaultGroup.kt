@@ -16,7 +16,8 @@ class DefaultGroup<T : Component>(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,
-    initialTileset: TilesetResource
+    initialTileset: TilesetResource,
+    override val name: String
 ) : InternalGroup<T> {
 
     private val componentBindings: ComponentBindings = mutableMapOf()

@@ -51,7 +51,7 @@ object SliderExample {
                 .withAlignment(positionalAlignment(0, 5))
                 .build()
         val label = Components.label()
-                .withSize(5, 1)
+                .withPreferredSize(5, 1)
                 .withText("30")
                 .withAlignmentAround(slider1, ComponentAlignment.RIGHT_CENTER)
                 .build()
@@ -74,7 +74,7 @@ object SliderExample {
 
 
         val compositeSliderPanel1 = Components.hbox()
-                .withSize(17, 1)
+                .withPreferredSize(17, 1)
                 .withSpacing(0)
                 .withAlignment(positionalAlignment(0, 15))
                 .build()
@@ -85,7 +85,7 @@ object SliderExample {
                 .build()
         val decrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_LEFT_POINTING_BLACK}")
-                .withSize(1, 1)
+                .withPreferredSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processMouseEvents(MouseEventType.MOUSE_PRESSED) { _, _ ->
@@ -97,7 +97,7 @@ object SliderExample {
                 }
         val incrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_RIGHT_POINTING_BLACK}")
-                .withSize(1, 1)
+                .withPreferredSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {

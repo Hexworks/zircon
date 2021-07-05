@@ -144,7 +144,7 @@ class UIEventToComponentDispatcher(
             )
         )
         lastMousePosition = event.position
-        root.fetchComponentByPosition(lastMousePosition).map {
+        root.fetchComponentByPositionOrNull(lastMousePosition)?.let {
             lastHoveredComponent = it
         }
         val enteredResponse = dispatch(

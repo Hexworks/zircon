@@ -32,7 +32,7 @@ public class PaddingExampleJava extends TwoColumnComponentExampleJava {
         box.addComponent(p0);
         p0.addComponent(panel()
                 .withSize(panelWidth, panelHeight)
-                .withDecorations(box(BoxType.SINGLE, "Padding 1"), padding(1)));
+                .withDecorations(box(BoxType.SINGLE, "Padding 1"), margin(1)));
 
         Panel p1 = panel().withSize(panelWidth, panelHeight)
                 .withDecorations(border())
@@ -42,7 +42,7 @@ public class PaddingExampleJava extends TwoColumnComponentExampleJava {
         box.addComponent(p1);
         p1.addComponent(panel()
                 .withSize(panelWidth, panelHeight)
-                .withDecorations(box(BoxType.SINGLE, "Padding 1, 2"), padding(1, 2)));
+                .withDecorations(box(BoxType.SINGLE, "Padding 1, 2"), margin(1, 2)));
 
         Panel p2 = panel().withSize(panelWidth, panelHeight)
                 .withDecorations(border())
@@ -52,7 +52,7 @@ public class PaddingExampleJava extends TwoColumnComponentExampleJava {
         box.addComponent(p2);
         p2.addComponent(panel()
                 .withSize(panelWidth, panelHeight)
-                .withDecorations(box(BoxType.SINGLE, "Padding 0, 1, 2, 3"), padding(0, 1, 2, 3)));
+                .withDecorations(box(BoxType.SINGLE, "Padding 0, 1, 2, 3"), margin(0, 1, 2, 3)));
     }
 
 }

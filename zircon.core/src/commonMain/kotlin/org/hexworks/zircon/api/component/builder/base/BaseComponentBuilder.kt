@@ -1,8 +1,7 @@
 package org.hexworks.zircon.api.component.builder.base
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -11,6 +10,7 @@ import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.data.CommonComponentProperties
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
@@ -21,126 +21,154 @@ import org.hexworks.zircon.internal.component.renderer.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 import kotlin.jvm.JvmSynthetic
 
+/**
+ * This class can be used as a base class for creating [ComponentBuilder]s.
+ * If your component has text use [ComponentWithTextBuilder] instead.
+ */
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-    initialRenderer: ComponentRenderer<out T>
-) : ComponentBuilder<T, U>, Builder<T> {
+        initialRenderer: ComponentRenderer<out T>
+) : ComponentBuilder<T, U> {
+
+    override var name: String = ""
+
+    override var position: Position
+        get() = props.alignmentStrategy.calculatePosition(size)
+        set(value) {
+            props.alignmentStrategy = ComponentAlignments.positionalAlignment(value)
+        }
+
+    override var alignment: AlignmentStrategy
+        get() = props.alignmentStrategy
+        set(value) {
+            props.alignmentStrategy = value
+        }
+
+    override var preferredSize: Size = Size.unknown()
+        set(value) {
+            if (preferredContentSize.isNotUnknown) {
+                preferredContentSize = Size.unknown()
+            }
+            field = value
+        }
+
+    override var preferredContentSize: Size = Size.unknown()
+        set(value) {
+            if (preferredSize.isNotUnknown) {
+                preferredSize = Size.unknown()
+            }
+            field = value
+        }
+
+    override val contentSize: Size
+        get() = if (preferredSize.isUnknown) {
+            if (preferredContentSize.isUnknown) {
+                Size.one()
+            } else preferredContentSize
+        } else preferredSize - decorations.occupiedSize
+
+    override val size: Size
+        get() = if (preferredSize.isUnknown) {
+            if (preferredContentSize.isUnknown) {
+                contentSize + decorations.occupiedSize
+            } else preferredContentSize + decorations.occupiedSize
+        } else preferredSize
+
+    override var colorTheme: ColorTheme?
+        get() = props.colorTheme
+        set(value) {
+            props.colorTheme = value
+        }
+
+    override var decoration: ComponentDecorationRenderer? = null
+        set(value) {
+            value?.let {
+                decorations = listOf(value)
+            }
+        }
+
+    override var decorations: List<ComponentDecorationRenderer>
+        get() = props.decorationRenderers
+        set(value) {
+            props.decorationRenderers = value.reversed()
+        }
+
+    override val title: String
+        get() = this.decorations
+                .filterIsInstance<BoxDecorationRenderer>()
+                .firstOrNull()?.title ?: ""
+
+    override var componentStyleSet: ComponentStyleSet
+        get() = props.componentStyleSet
+        set(value) {
+            props.componentStyleSet = value
+        }
+
+    override var tileset: TilesetResource
+        get() = props.tileset
+        set(value) {
+            props.tileset = value
+        }
+
+    override var updateOnAttach: Boolean
+        get() = props.updateOnAttach
+        set(value) {
+            props.updateOnAttach = value
+        }
+
+    override var componentRenderer: ComponentRenderer<out T>
+        get() = props.componentRenderer
+        set(value) {
+            props.componentRenderer = value
+        }
+
+    override var renderFunction: (TileGraphics, ComponentRenderContext<T>) -> Unit
+        get() = { g, c -> componentRenderer.render(g, c as ComponentRenderContext<Nothing>) }
+        set(value) {
+            componentRenderer = object : ComponentRenderer<T> {
+                override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<T>) {
+                    value(tileGraphics, context)
+                }
+            }
+        }
 
     private val logger = LoggerFactory.getLogger(this::class)
 
+    protected var postProcessors: List<ComponentPostProcessor<T>> = listOf()
+
     protected var props: CommonComponentProperties<T> = CommonComponentProperties(
-        componentRenderer = initialRenderer
+            componentRenderer = initialRenderer
     )
         private set
 
-    val position: Position
-        get() = props.alignmentStrategy.calculatePosition(size)
-
-    val componentStyleSet: ComponentStyleSet
-        get() = props.componentStyleSet
-
-    val tileset: TilesetResource
-        get() = props.tileset
-
-    val colorTheme: ColorTheme?
-        get() = props.colorTheme
-
-    val decorationRenderers: List<ComponentDecorationRenderer>
-        get() = props.decorationRenderers
-
-    val componentRenderer: ComponentRenderer<out T>
-        get() = props.componentRenderer
-
-    val updateOnAttach: Boolean
-        get() = props.updateOnAttach
-
-    val size: Size
-        get() = preferredSize.orElse(decorationRenderers
-            .map { it.occupiedSize }
-            .fold(contentSize, Size::plus))
-
-    private val alignmentStrategy: AlignmentStrategy
-        get() = props.alignmentStrategy
-
-
-    val title: String
-        get() = decorationRenderers
-            .filterIsInstance<BoxDecorationRenderer>()
-            .firstOrNull()?.title ?: ""
-
-    /**
-     * The size which is set by the user. This takes precedence
-     * over [contentSize] when set by the user.
-     */
-    private var preferredSize = Maybe.empty<Size>()
-
-    /**
-     * The size which is needed to properly display current contents.
-     * This field is ignored if the user explicitly sets [size].
-     */
-    protected var contentSize = Size.one()
-
-    protected fun createMetadata() = ComponentMetadata(
-        relativePosition = position,
-        size = size,
-        tileset = tileset,
-        componentStyleSet = componentStyleSet,
-        theme = colorTheme,
-        updateOnAttach = updateOnAttach
-    )
-
     protected fun createRenderingStrategy() = DefaultComponentRenderingStrategy(
-        decorationRenderers = decorationRenderers,
-        componentRenderer = componentRenderer as ComponentRenderer<T>
+            decorationRenderers = decorations,
+            componentRenderer = componentRenderer as ComponentRenderer<T>,
+            componentPostProcessors = postProcessors
     )
 
-    override fun withUpdateOnAttach(updateOnAttach: Boolean): U {
-        props.updateOnAttach = updateOnAttach
-        return this as U
+    protected open fun createMetadata() = ComponentMetadata(
+            relativePosition = position,
+            size = size,
+            tileset = tileset,
+            componentStyleSet = componentStyleSet,
+            theme = colorTheme,
+            updateOnAttach = updateOnAttach,
+            name = name
+    )
+
+    protected fun fixContentSizeFor(length: Int) {
+        if (length doesntFitWithin contentSize) {
+            this.preferredContentSize = Size.create(length, 1)
+        }
     }
 
-    override fun withComponentStyleSet(componentStyleSet: ComponentStyleSet): U {
-        props.componentStyleSet = componentStyleSet
-        return this as U
-    }
+    protected infix fun Int.doesntFitWithin(size: Size) = this > size.width * size.height
 
-    override fun withTileset(tileset: TilesetResource): U {
-        props.tileset = tileset
-        return this as U
-    }
+    protected infix fun Size.fitsWithin(other: Size) = other.toRect().containsBoundable(toRect())
 
-    override fun withColorTheme(colorTheme: ColorTheme): U {
-        props.colorTheme = colorTheme
-        return this as U
-    }
-
-    override fun withAlignment(alignmentStrategy: AlignmentStrategy): U {
-        props.alignmentStrategy = alignmentStrategy
-        return this as U
-    }
-
-    override fun withDecorations(vararg renderers: ComponentDecorationRenderer): U {
-        props.decorationRenderers = renderers.reversed()
-        return this as U
-    }
-
-    override fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U {
-        props.componentRenderer = componentRenderer
-        return this as U
-    }
-
-    override fun withRendererFunction(fn: (TileGraphics, ComponentRenderContext<T>) -> Unit): U {
-        return withComponentRenderer(object : ComponentRenderer<T> {
-            override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<T>) {
-                fn(tileGraphics, context)
-            }
-        })
-    }
-
-    override fun withSize(size: Size): U {
-        preferredSize = Maybe.of(size)
-        return this as U
-    }
+    protected val List<ComponentDecorationRenderer>.occupiedSize
+        get() = this.map { it.occupiedSize }.fold(Size.zero(), Size::plus)
 
     @JvmSynthetic
     internal fun withProps(props: CommonComponentProperties<T>): U {

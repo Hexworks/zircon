@@ -3,18 +3,19 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
+import org.hexworks.zircon.internal.dsl.ZirconDsl
+import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-data class ColorThemeBuilder(
-    private var name: String = "anonymous",
-    private var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-    private var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-    private var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-    private var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-    private var accentColor: TileColor = TileColor.defaultForegroundColor()
-) : Builder<ColorTheme> {
+class ColorThemeBuilder : Builder<ColorTheme> {
+
+    var name: String = "anonymous"
+    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
+    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
+    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
+    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
+    var accentColor: TileColor = TileColor.defaultForegroundColor()
 
     fun withName(name: String) = also {
         this.name = name
@@ -40,19 +41,26 @@ data class ColorThemeBuilder(
         this.accentColor = accentColor
     }
 
-    override fun createCopy() = copy()
-
     override fun build(): ColorTheme = DefaultColorTheme(
-        name = name,
-        primaryForegroundColor = primaryForegroundColor,
-        primaryBackgroundColor = primaryBackgroundColor,
-        secondaryForegroundColor = secondaryForegroundColor,
-        secondaryBackgroundColor = secondaryBackgroundColor,
-        accentColor = accentColor
+            name = name,
+            primaryForegroundColor = primaryForegroundColor,
+            primaryBackgroundColor = primaryBackgroundColor,
+            secondaryForegroundColor = secondaryForegroundColor,
+            secondaryBackgroundColor = secondaryBackgroundColor,
+            accentColor = accentColor
     )
+
+    override fun createCopy() = newBuilder()
+            .withPrimaryForegroundColor(primaryForegroundColor)
+            .withPrimaryBackgroundColor(primaryBackgroundColor)
+            .withSecondaryForegroundColor(secondaryForegroundColor)
+            .withSecondaryBackgroundColor(secondaryBackgroundColor)
+            .withAccentColor(accentColor)
+
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = ColorThemeBuilder()
     }
 }

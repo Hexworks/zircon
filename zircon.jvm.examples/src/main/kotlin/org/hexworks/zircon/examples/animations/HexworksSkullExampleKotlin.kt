@@ -10,7 +10,7 @@ object HexworksSkullExampleKotlin {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        displayScreen(ColorThemes.defaultTheme()).apply {
+        displayScreen(ColorThemes.empty()).apply {
             start(hexworksSkull(
                     position = Position.create(width / 2 - 6, height / 2 - 12),
                     tileset = tileset))

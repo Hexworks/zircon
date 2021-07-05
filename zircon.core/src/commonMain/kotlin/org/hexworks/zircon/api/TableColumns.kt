@@ -29,7 +29,7 @@ object TableColumns {
         ) { cellValue ->
             Components
                 .label()
-                .withSize(width, 1)
+                .withPreferredSize(width, 1)
                 .withText(cellValue.toString())
                 .build()
         }
@@ -52,15 +52,15 @@ object TableColumns {
             valueAccessor
         ) { cellValue ->
             Components
-                .label()
-                .withSize(width, 1)
-                .build()
-                .apply {
-                    textProperty.updateFrom(
-                        cellValue.bindTransform { it.toString() },
-                        updateWhenBound = true
-                    )
-                }
+                    .label()
+                    .withPreferredSize(width, 1)
+                    .build()
+                    .apply {
+                        textProperty.updateFrom(
+                                cellValue.bindTransform { it.toString() },
+                                updateWhenBound = true
+                        )
+                    }
         }
 
     /**

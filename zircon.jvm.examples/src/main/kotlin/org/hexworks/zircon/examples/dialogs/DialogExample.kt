@@ -23,7 +23,7 @@ object DialogExample {
 
     class TestFragment : Fragment {
         override val root = Components.panel()
-                .withSize(23, 13)
+                .withPreferredSize(23, 13)
                 .withColorTheme(theme)
                 .build()
     }
@@ -39,7 +39,7 @@ object DialogExample {
         val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withSize(25, 16)
+                .withPreferredSize(25, 16)
                 .withDecorations(box(title = "Modal"))
                 .build()
 
