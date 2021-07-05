@@ -1,20 +1,36 @@
 package org.hexworks.zircon.internal.uievent.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
 import org.hexworks.zircon.api.uievent.ComponentEventType.DEACTIVATED
 import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_GIVEN
 import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_TAKEN
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_DOWN
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_UP
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.PreventDefault
+import org.hexworks.zircon.api.uievent.StopPropagation
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -26,7 +42,6 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import kotlin.jvm.JvmSynthetic
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
@@ -68,7 +83,7 @@ class UIEventToComponentDispatcher(
 
         // otherwise business as usual
 
-        return findTarget(event).map { target ->
+        return findTargetOrNull(event)?.let { target ->
             // we perform regular event propagation, then try to transform the event
             // to component events and we pick the result which has highest precedence
             // note that the result of the regular propagation can't influence the
@@ -77,7 +92,7 @@ class UIEventToComponentDispatcher(
             if (result.shouldStopPropagation()) {
                 result
             } else result.pickByPrecedence(performComponentEvents(target, event))
-        }.orElse(Pass)
+        } ?: Pass
     }
 
     /**
@@ -143,16 +158,16 @@ class UIEventToComponentDispatcher(
     /**
      * Tries to find the target [Component] for the given [event].
      */
-    private fun findTarget(event: UIEvent): Maybe<out InternalComponent> {
+    private fun findTargetOrNull(event: UIEvent): InternalComponent? {
         return when (event) {
             is KeyboardEvent -> {
-                Maybe.of(focusOrderList.focusedComponent)
+                focusOrderList.focusedComponent
             }
             is MouseEvent -> {
-                root.fetchComponentByPosition(event.position)
+                root.fetchComponentByPositionOrNull(event.position)
             }
             else -> {
-                Maybe.empty()
+                null
             }
         }
     }

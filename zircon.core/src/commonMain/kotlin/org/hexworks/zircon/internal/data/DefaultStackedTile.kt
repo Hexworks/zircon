@@ -70,9 +70,15 @@ data class DefaultStackedTile(
 
     override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
 
+    override fun asCharacterTileOrNull() = top.asCharacterTileOrNull()
+
     override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
 
+    override fun asImageTileOrNull() = top.asImageTileOrNull()
+
     override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
+
+    override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
 
     override fun toBuilder(): TileBuilder {
         throw UnsupportedOperationException("This operation is not implemented yet")

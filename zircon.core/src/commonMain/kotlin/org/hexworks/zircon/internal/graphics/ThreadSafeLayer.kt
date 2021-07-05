@@ -56,6 +56,11 @@ open class ThreadSafeLayer(
     }
 
     @Synchronized
+    override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
+        return backend.getTileAtOrNull(position)
+    }
+
+    @Synchronized
     final override fun drawAbsoluteTileAt(position: Position, tile: Tile) {
         backend.draw(tile, position - this.position)
     }

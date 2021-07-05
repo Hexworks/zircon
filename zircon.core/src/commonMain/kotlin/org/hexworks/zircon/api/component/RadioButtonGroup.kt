@@ -9,6 +9,7 @@ import org.hexworks.cobalt.datatypes.Maybe
  */
 interface RadioButtonGroup : Group<RadioButton> {
 
+    // TODO: how to use nullables instead?
     var selectedButton: Maybe<RadioButton>
     val selectedButtonProperty: Property<Maybe<RadioButton>>
 

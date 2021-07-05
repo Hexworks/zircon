@@ -23,7 +23,10 @@ interface RootContainer : InternalContainer {
 
     fun calculatePathTo(component: InternalComponent): List<InternalComponent>
 
+    @Deprecated("Use the orNull construct instead", ReplaceWith("fetchComponentByPositionOrNull(absolutePosition)"))
     fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
+
+    fun fetchComponentByPositionOrNull(absolutePosition: Position): InternalComponent?
 
     override fun addComponent(builder: Builder<Component>): AttachedComponent =
         addComponent(builder.build())

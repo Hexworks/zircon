@@ -40,6 +40,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
     /**
      * Returns the [Block] at the given `position` (if any).
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("fetchBlockAtOrNull(position)"))
     fun fetchBlockAt(position: Position3D): Maybe<B>
 
     /**

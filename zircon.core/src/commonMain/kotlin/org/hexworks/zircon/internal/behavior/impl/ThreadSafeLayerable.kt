@@ -12,7 +12,6 @@ import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
-import kotlin.jvm.Synchronized
 
 class ThreadSafeLayerable(
     initialSize: Size
@@ -28,6 +27,9 @@ class ThreadSafeLayerable(
     override fun getLayerAt(level: Int): Maybe<LayerHandle> {
         return Maybe.ofNullable(DefaultLayerHandle(layers[level]))
     }
+
+    override fun getLayerAtOrNull(level: Int): LayerHandle? =
+        layers.getOrNull(level)?.let { DefaultLayerHandle(it) }
 
     @Synchronized
     override fun addLayer(layer: Layer): LayerHandle {

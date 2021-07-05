@@ -21,11 +21,19 @@ class TextBuffer(text: String) {
 
     fun getSize() = currentText.size
 
+    @Deprecated("Use the orNull construct instead", ReplaceWith("getRowOrNull(row)"))
     fun getRow(row: Int): Maybe<StringBuilder> =
         if (row < currentText.size && row >= 0) {
             Maybe.of(currentText[row])
         } else {
             Maybe.empty()
+        }
+
+    fun getRowOrNull(row: Int): StringBuilder? =
+        if (row < currentText.size && row >= 0) {
+            currentText[row]
+        } else {
+            null
         }
 
     fun getCharAt(position: Position) =

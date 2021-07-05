@@ -7,12 +7,12 @@ import kotlin.random.Random
 
 @Suppress("DataClassPrivateConstructor")
 class DefaultMarkovChainNode<T : Any>(
-    data: T? = null,
+    private val data: T? = null,
     private val random: Random = Random(5234321)
 ) : MarkovChainNode<T> {
 
     private val nextNodes: MutableList<Pair<Double, MarkovChainNode<T>>> = mutableListOf()
-    private var data: Maybe<T> = Maybe.ofNullable(data)
+    private var maybeData: Maybe<T> = Maybe.ofNullable(data)
 
     override val id: UUID = UUIDFactory.randomUUID()
 
@@ -30,7 +30,9 @@ class DefaultMarkovChainNode<T : Any>(
         return this
     }
 
-    override fun data() = data
+    override fun data() = maybeData
+
+    override fun dataOrNull(): T? = data
 
     override fun addNext(probability: Double, nextNode: MarkovChainNode<T>): MarkovChainNode<T> {
         val currentTotal = nextNodes.map { it.first }.foldRight(0.0, Double::plus)
@@ -42,7 +44,7 @@ class DefaultMarkovChainNode<T : Any>(
     }
 
     override fun setData(data: T): MarkovChainNode<T> {
-        this.data = Maybe.of(data)
+        this.maybeData = Maybe.of(data)
         return this
     }
 

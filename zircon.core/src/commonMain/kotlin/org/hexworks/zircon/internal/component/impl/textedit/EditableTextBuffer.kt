@@ -34,11 +34,19 @@ interface EditableTextBuffer {
 
     fun getSize() = textBuffer.size
 
+    @Deprecated("Use the orNull construct instead", ReplaceWith("getCharAtOrNull(position)"))
     fun getCharAt(position: Position): Maybe<Char> =
         if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
             Maybe.empty()
         } else {
             Maybe.of(textBuffer[position.y][position.x])
+        }
+
+    fun getCharAtOrNull(position: Position): Char? =
+        if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
+            null
+        } else {
+            textBuffer[position.y][position.x]
         }
 
     fun rowCount(): Int = textBuffer.size
