@@ -206,6 +206,7 @@ enum class KeyCode(
     /**
      * Converts this [KeyCode] to a [Char] if possible.
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("toCharOrNull()"))
     fun toChar(): Maybe<Char> {
         val char = code.toChar()
         return Maybe.ofNullable(
@@ -213,6 +214,17 @@ enum class KeyCode(
                 char
             } else null
         )
+    }
+
+    /**
+     * Converts this [KeyCode] to a [Char] if possible.
+     */
+    fun toCharOrNull(): Char? {
+        val char = code.toChar()
+        return if (TextUtils.isPrintableCharacter(char)) {
+            char
+        } else null
+
     }
 
     companion object {

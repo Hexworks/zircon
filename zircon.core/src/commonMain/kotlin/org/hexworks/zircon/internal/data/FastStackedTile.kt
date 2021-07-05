@@ -4,7 +4,11 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.GraphicalTile
+import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.StackedTile
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
@@ -124,9 +128,15 @@ class FastStackedTile(
 
     override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
 
+    override fun asCharacterTileOrNull() = top.asCharacterTileOrNull()
+
     override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
 
+    override fun asImageTileOrNull() = top.asImageTileOrNull()
+
     override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
+
+    override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
 
     override fun toBuilder(): TileBuilder {
         throw UnsupportedOperationException("This operation is not implemented yet")

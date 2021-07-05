@@ -12,7 +12,13 @@ interface Cache<T> {
     /**
      * Retrieves a tileset region by a `key` if present.
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("retrieveIfPresentOrNull(key)"))
     fun retrieveIfPresent(key: String): Maybe<T>
+
+    /**
+     * Retrieves a tileset region by a `key` if present.
+     */
+    fun retrieveIfPresentOrNull(key: String): T?
 
     /**
      * Caches the given object and then returns it.

@@ -20,6 +20,11 @@ interface MarkovChainNode<T : Any> : Identifiable {
     fun data(): Maybe<T>
 
     /**
+     * Returns the satellite data stored in this node.
+     */
+    fun dataOrNull(): T?
+
+    /**
      * Adds a new [MarkovChainNode] and returns `this`.
      */
     fun addNext(probability: Double, nextNode: MarkovChainNode<T>): MarkovChainNode<T>
