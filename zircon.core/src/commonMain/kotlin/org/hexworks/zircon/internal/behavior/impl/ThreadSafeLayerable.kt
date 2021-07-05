@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
+import kotlin.jvm.Synchronized
 
 class ThreadSafeLayerable(
     initialSize: Size
