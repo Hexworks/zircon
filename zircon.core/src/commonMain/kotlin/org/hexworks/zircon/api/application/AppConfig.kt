@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
+import kotlin.jvm.JvmStatic
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].

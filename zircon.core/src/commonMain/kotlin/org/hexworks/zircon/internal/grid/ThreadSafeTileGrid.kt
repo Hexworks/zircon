@@ -29,6 +29,7 @@ import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import kotlin.jvm.Synchronized
 
 class ThreadSafeTileGrid(
     initialTileset: TilesetResource,
