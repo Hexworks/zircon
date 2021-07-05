@@ -42,6 +42,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlin.jvm.JvmSynthetic
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
