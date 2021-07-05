@@ -63,7 +63,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val panel = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(32, 16)
+                .withPreferredSize(32, 16)
                 .withAlignment(positionalAlignment(1, 1))
                 .build() as InternalContainer
         val panelHeader = HeaderBuilder.newBuilder()
@@ -79,7 +79,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 .build() as InternalComponent
         val innerPanel = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel2"))
-                .withSize(16, 10)
+                .withPreferredSize(16, 10)
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withAlignment(positionalAlignment(1, 2))
                 .build() as InternalContainer
@@ -121,13 +121,13 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val panel0 = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(32, 16)
+                .withPreferredSize(32, 16)
                 .withAlignment(positionalAlignment(Position.offset1x1()))
                 .build() as InternalContainer
         val panel1 = PanelBuilder.newBuilder()
                 .withDecorations(box(title = "Panel2"))
                 .withTileset(TILESET_REX_PAINT_20X20)
-                .withSize(16, 10)
+                .withPreferredSize(16, 10)
                 .withAlignment(positionalAlignment(1, 1))
                 .build() as InternalContainer
         val header0 = HeaderBuilder.newBuilder()

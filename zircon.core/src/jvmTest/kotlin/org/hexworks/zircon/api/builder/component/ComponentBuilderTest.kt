@@ -69,7 +69,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     open fun shouldProperlyApplyBoxType() {
         target.withDecorations(box(boxType = BOX_TYPE_DOUBLE))
 
-        assertThat(target.decorationRenderers
+        assertThat(target.decorations
                 .filterIsInstance<BoxDecorationRenderer>().first().boxType).isEqualTo(BOX_TYPE_DOUBLE)
     }
 
@@ -77,7 +77,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     open fun shouldProperlyApplyWrappedWithBox() {
         target.withDecorations(box())
 
-        assertThat(target.decorationRenderers
+        assertThat(target.decorations
                 .filterIsInstance<BoxDecorationRenderer>()).hasSize(1)
     }
 
@@ -85,7 +85,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     open fun shouldProperlyApplyWrappedWithShadow() {
         target.withDecorations(shadow())
 
-        assertThat(target.decorationRenderers
+        assertThat(target.decorations
                 .filterIsInstance<ShadowDecorationRenderer>()).hasSize(1)
     }
 
@@ -93,7 +93,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     open fun shouldProperlyApplyDecorationRenderers() {
         target.withDecorations(*DECORATION_RENDERERS)
 
-        assertThat(target.decorationRenderers).containsExactlyElementsOf(DECORATION_RENDERERS.toMutableList())
+        assertThat(target.decorations).containsExactlyElementsOf(DECORATION_RENDERERS.toMutableList())
     }
 
     companion object {

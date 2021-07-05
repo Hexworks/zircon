@@ -13,7 +13,7 @@ class CheckBoxesIntegrationTest : ComponentIntegrationTestBase() {
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(28, 28)
+                .withPreferredSize(28, 28)
                 .withAlignment(positionalAlignment(31, 1))
                 .build()
         screen.addComponent(panel)
@@ -43,7 +43,7 @@ class CheckBoxesIntegrationTest : ComponentIntegrationTestBase() {
 
         val tooLongCheckBox = Components.checkBox()
                 .withText("Too long text")
-                .withSize(12, 1)
+                .withPreferredSize(12, 1)
                 .withAlignment(positionalAlignment(2, 13))
 
         screen.addComponent(tooLongCheckBox)

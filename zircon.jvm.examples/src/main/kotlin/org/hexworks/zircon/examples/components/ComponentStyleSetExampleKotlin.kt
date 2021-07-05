@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.Components.button
 import org.hexworks.zircon.api.Components.panel
+import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ComponentStyleSet.Companion.newBuilder
@@ -25,7 +26,7 @@ class ComponentStyleSetExampleKotlin : OneColumnComponentExampleKotlin() {
     override fun build(box: VBox) {
         val panel = panel()
                 .withDecorations(box(title = "Buttons on panel"), shadow())
-                .withSize(30, 20)
+                .withPreferredSize(30, 20)
                 .withPosition(5, 5)
                 .build()
         box.addComponent(panel)

@@ -10,7 +10,7 @@ class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(7
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
                 .withDecorations(box(title = "Log"))
-                .withSize(60, 25)
+                .withPreferredSize(60, 25)
                 .build()
 
         screen.addComponent(panel)

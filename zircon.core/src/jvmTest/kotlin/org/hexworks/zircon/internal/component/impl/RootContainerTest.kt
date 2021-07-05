@@ -169,7 +169,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         fun vbox(tileset: TilesetResource): InternalContainer = Components.vbox()
                 .withTileset(tileset)
-                .withSize(3, 4)
+                .withPreferredSize(3, 4)
                 .build().asInternalComponent()
     }
 }

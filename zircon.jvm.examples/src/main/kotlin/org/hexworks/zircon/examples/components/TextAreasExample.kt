@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object TextAreasExample {
 
-    private val theme = ColorThemes.solarizedLightOrange()
+    private val theme = ColorThemes.arc()
     private val tileset = TrueTypeFontResources.kaypro(16)
 
     @JvmStatic
@@ -34,29 +34,29 @@ object TextAreasExample {
 
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(28, 28)
+                .withPreferredSize(28, 28)
                 .withPosition(31, 1)
                 .build()
         screen.addComponent(panel)
 
         screen.addComponent(Components.textArea()
                 .withText("Some text")
-                .withSize(13, 5)
+                .withPreferredSize(13, 5)
                 .withPosition(2, 2))
         panel.addComponent(Components.textArea()
                 .withText("Some text")
-                .withSize(13, 5)
+                .withPreferredSize(13, 5)
                 .withPosition(2, 2))
 
         screen.addComponent(Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
-                .withSize(13, 7)
+                .withPreferredSize(13, 7)
                 .withPosition(2, 8))
         panel.addComponent(Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
-                .withSize(13, 7)
+                .withPreferredSize(13, 7)
                 .withPosition(2, 8))
 
         screen.addComponent(Components.label()
@@ -78,7 +78,7 @@ object TextAreasExample {
                 .build()
 
         val hbox = Components.hbox()
-                .withSize(18, 4)
+                .withPreferredSize(18, 4)
                 .withSpacing(0)
                 .withPosition(2, 20)
                 .withDecorations(box(), shadow())
@@ -97,7 +97,7 @@ object TextAreasExample {
 
         val decrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-                .withSize(1, 1)
+                .withPreferredSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {
@@ -106,7 +106,7 @@ object TextAreasExample {
                 }
         val incrementButton = Components.button()
                 .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-                .withSize(1, 1)
+                .withPreferredSize(1, 1)
                 .withDecorations()
                 .build().apply {
                     processComponentEvents(ComponentEventType.ACTIVATED) {

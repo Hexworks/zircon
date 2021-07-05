@@ -15,6 +15,7 @@ data class ComponentMetadata(
     val size: Size,
     val tileset: TilesetResource,
     val componentStyleSet: ComponentStyleSet,
+    val name: String = "",
     val theme: ColorTheme? = null,
     val updateOnAttach: Boolean = false
 ) {

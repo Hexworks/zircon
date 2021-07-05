@@ -81,7 +81,7 @@ class ObliqueCityWithScrollingKotlin {
                     .withDebugMode(true)
                     .build()))
             val actions = panel()
-                    .withSize(24, 5)
+                    .withPreferredSize(24, 5)
                     .withPosition(1, 1)
                     .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
                     .build()
@@ -90,7 +90,7 @@ class ObliqueCityWithScrollingKotlin {
                     .build()
             quit.onActivated { exitProcess(0) }
             val projections = vbox()
-                    .withSize(24, 4)
+                    .withPreferredSize(24, 4)
                     .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
                     .withPosition(Position.create(0, 2).relativeToBottomOf(actions))
                     .build()

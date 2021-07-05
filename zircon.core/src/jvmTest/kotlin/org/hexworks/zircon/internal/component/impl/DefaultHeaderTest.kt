@@ -27,26 +27,31 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultHeaderRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10_4).build()
         target = DefaultHeader(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_10_4,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<Header>),
-                initialText = TEXT)
+            componentMetadata = ComponentMetadata(
+                size = SIZE_10_4,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<Header>
+            ),
+            initialText = TEXT
+        )
     }
 
     @Test
@@ -69,12 +74,14 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
         rendererStub.clear()
         rendererStub.render(graphics, ComponentRenderContext(target))
         // Careful, the last line has a trailing space
-        assertThat(graphics.convertCharacterTilesToString()).isEqualTo("""
+        assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
+            """
             Button
             text
              
              
-        """.trimIndent().padLineEnd(SIZE_10_4.width))
+        """.trimIndent().padLineEnd(SIZE_10_4.width)
+        )
     }
 
     companion object {

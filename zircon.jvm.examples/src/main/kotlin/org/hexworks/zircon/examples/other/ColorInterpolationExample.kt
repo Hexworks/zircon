@@ -41,7 +41,7 @@ object ColorInterpolationExample {
         val screen = Screen.create(tileGrid)
         val panel = Components.panel()
                 .withDecorations(box(title = "Interpolations"), shadow())
-                .withSize(34, 30)
+                .withPreferredSize(34, 30)
                 .build()
         screen.addComponent(panel)
 
@@ -149,7 +149,7 @@ object ColorInterpolationExample {
                 .build()
 
         val resultPanel = Components.panel()
-                .withSize(7, 7)
+                .withPreferredSize(7, 7)
                 .withDecorations()
                 .withPosition(13, 15)
                 .withDecorations(box())
