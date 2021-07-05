@@ -19,6 +19,10 @@ class DefaultCache<R : Cacheable>(maximumSize: Long = 5000,
         return Maybe.ofNullable(backend.getIfPresent(key))
     }
 
+    override fun retrieveIfPresentOrNull(key: String): R? {
+        return backend.getIfPresent(key)
+    }
+
     override fun store(key: String, obj: R): R {
         backend.put(key, obj)
         return obj

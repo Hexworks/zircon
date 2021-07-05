@@ -28,7 +28,13 @@ interface Layerable {
     /**
      * Returns the [Layer] at the given [level] (if present).
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("getLayerAtOrNull(level)"))
     fun getLayerAt(level: Int): Maybe<LayerHandle>
+
+    /**
+     * Returns the [Layer] at the given [level] (if present).
+     */
+    fun getLayerAtOrNull(level: Int): LayerHandle?
 
     /**
      * Adds a layer on top of the currently present layers.

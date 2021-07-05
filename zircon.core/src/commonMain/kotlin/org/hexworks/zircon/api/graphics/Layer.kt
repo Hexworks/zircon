@@ -31,7 +31,15 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("getAbsoluteTileAtOrNull(position)"))
     fun getAbsoluteTileAt(position: Position): Maybe<Tile>
+
+    /**
+     * Same as [TileGraphics.getTileAt] but will consider the given [position]
+     * as an absolute position (the position is relative to the top left corner
+     * of the screen, not the top left corner of the [Layer]).
+     */
+    fun getAbsoluteTileAtOrNull(position: Position): Tile?
 
     /**
      * Same as [TileGraphics.draw] but will consider the given [position]

@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -28,7 +29,6 @@ import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import kotlin.jvm.Synchronized
 
 class ThreadSafeTileGrid(
     initialTileset: TilesetResource,
@@ -99,6 +99,10 @@ class ThreadSafeTileGrid(
 
     override fun getTileAt(position: Position): Maybe<Tile> {
         return backend.getTileAt(position)
+    }
+
+    override fun getTileAtOrNull(position: Position): Tile? {
+        return backend.getTileAtOrNull(position)
     }
 
     @Synchronized
@@ -208,6 +212,8 @@ class ThreadSafeTileGrid(
     // LAYERABLE
 
     override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
+
+    override fun getLayerAtOrNull(level: Int): LayerHandle? = layerable.getLayerAtOrNull(level)
 
     override fun addLayer(layer: Layer) = layerable.addLayer(layer)
 

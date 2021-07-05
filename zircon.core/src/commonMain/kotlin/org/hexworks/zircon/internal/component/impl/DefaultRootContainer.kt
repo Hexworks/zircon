@@ -78,6 +78,13 @@ class DefaultRootContainer(
             Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
         }
 
+    override fun fetchComponentByPositionOrNull(absolutePosition: Position): InternalComponent? =
+        if (this.containsPosition(absolutePosition).not()) {
+            null
+        } else {
+            componentTree.last { it.containsPosition(absolutePosition) }
+        }
+
     private val InternalComponent.otherComponentTree: Collection<InternalComponent>
         get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.otherComponentTree }
 

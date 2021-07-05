@@ -9,6 +9,7 @@ object Maybes {
     /**
      * Creates an empty [Maybe].
      */
+    @Deprecated("This function is deprecated, use the orNull constructs instead")
     @JvmStatic
     fun <T> empty(): Maybe<T> {
         return Maybe.empty()
@@ -17,6 +18,7 @@ object Maybes {
     /**
      * Creates a [Maybe] of a non-nullable value.
      */
+    @Deprecated("This function is deprecated, use the orNull constructs instead")
     @JvmStatic
     fun <T> of(value: T): Maybe<T> {
         return Maybe.of(value)
@@ -25,6 +27,7 @@ object Maybes {
     /**
      * Creates a [Maybe] of a nullable value.
      */
+    @Deprecated("This function is deprecated, use the orNull constructs instead")
     @JvmStatic
     fun <T> ofNullable(value: T?): Maybe<T> {
         return Maybe.ofNullable(value)

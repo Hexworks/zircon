@@ -98,17 +98,35 @@ interface Tile : Cacheable, StyleSet {
     /**
      * Returns this [Tile] as a [CharacterTile] if possible.
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("asCharacterTileOrNull()"))
     fun asCharacterTile(): Maybe<CharacterTile>
+
+    /**
+     * Returns this [Tile] as a [CharacterTile] if possible.
+     */
+    fun asCharacterTileOrNull(): CharacterTile?
 
     /**
      * Returns this [Tile] as an [ImageTile] if possible.
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("asImageTileOrNull()"))
     fun asImageTile(): Maybe<ImageTile>
+
+    /**
+     * Returns this [Tile] as an [ImageTile] if possible.
+     */
+    fun asImageTileOrNull(): ImageTile?
 
     /**
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
+    @Deprecated("Use the orNull construct instead", ReplaceWith("asGraphicalTileOrNull()"))
     fun asGraphicTile(): Maybe<GraphicalTile>
+
+    /**
+     * Returns this [Tile] as a [GraphicalTile] if possible.
+     */
+    fun asGraphicalTileOrNull(): GraphicalTile?
 
     /**
      * Creates a new [TileBuilder] preconfigured with the contents of

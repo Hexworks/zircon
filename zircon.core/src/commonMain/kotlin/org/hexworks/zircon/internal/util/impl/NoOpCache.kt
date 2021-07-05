@@ -10,6 +10,8 @@ class NoOpCache<T> : Cache<T> {
 
     override fun retrieveIfPresent(key: String) = Maybe.empty<T>()
 
+    override fun retrieveIfPresentOrNull(key: String): T? = null
+
     override fun store(key: String, obj: T): T = obj
 
 }

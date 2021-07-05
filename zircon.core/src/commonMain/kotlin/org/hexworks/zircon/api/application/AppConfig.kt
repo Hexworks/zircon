@@ -11,7 +11,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
-import kotlin.jvm.JvmStatic
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].
@@ -141,15 +140,28 @@ data class AppConfig(
      * Retrieve a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
      * never set, returns an empty [Maybe].
      *
-     * ### End Developers
+     * **Note that** you probably don't need to call this API.
      *
-     * You probably don't need to call this API.
+     * TODO: this should have been the getOrNull variant, but now we can't modify it otherwise it would break the API
      */
     operator fun <T : Any> get(key: AppConfigKey<T>): Maybe<T> {
         val value: Any? = customProperties[key]
         // This is actually a safe cast because of the way `withProperty` is defined.
         @Suppress("UNCHECKED_CAST")
         return Maybe.ofNullable(value as T?)
+    }
+
+    /**
+     * Retrieve a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * never set, returns an empty [Maybe].
+     *
+     * **Note that** you probably don't need to call this API.
+     */
+    fun <T : Any> getOrNull(key: AppConfigKey<T>): T? {
+        val value: Any? = customProperties[key]
+        // This is actually a safe cast because of the way `withProperty` is defined.
+        @Suppress("UNCHECKED_CAST")
+        return value as T?
     }
 
     companion object {
