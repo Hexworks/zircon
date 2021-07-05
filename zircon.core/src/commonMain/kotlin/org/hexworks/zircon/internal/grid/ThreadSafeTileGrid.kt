@@ -49,7 +49,7 @@ class ThreadSafeTileGrid(
         initializeLayerable(initialSize, initialTileset)
     }
 
-    override var backend: Layer = layerable.getLayerAt(0).get()
+    override var backend: Layer = layerable.getLayerAtOrNull(0)!!
 
     override val tiles: Map<Position, Tile>
         get() = backend.tiles

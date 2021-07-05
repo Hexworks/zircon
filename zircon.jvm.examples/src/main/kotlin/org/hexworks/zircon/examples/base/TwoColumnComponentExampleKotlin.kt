@@ -10,21 +10,21 @@ import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 abstract class TwoColumnComponentExampleKotlin(
-        size: Size = Defaults.GRID_SIZE
+    size: Size = GRID_SIZE
 ) : ComponentExampleKotlin(size) {
 
     override fun addExamples(exampleArea: HBox) {
         val leftBox = vbox()
-                .withSize(exampleArea.width / 2, exampleArea.height)
+                .withPreferredSize(exampleArea.width / 2, exampleArea.height)
                 .withComponentRenderer(NoOpComponentRenderer())
                 .withSpacing(1)
                 .build()
         val rightBox = vbox()
                 .withDecorations(box(BoxType.SINGLE, "Buttons on panel"), shadow())
                 .withSpacing(1)
-                .withSize(exampleArea.width / 2, exampleArea.height)
+                .withPreferredSize(exampleArea.width / 2, exampleArea.height)
+                .withChildren(label().build())
                 .build()
-        rightBox.addComponent(label().build())
 
         build(leftBox)
         build(rightBox)

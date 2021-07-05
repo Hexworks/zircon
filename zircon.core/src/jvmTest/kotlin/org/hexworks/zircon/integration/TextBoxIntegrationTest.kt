@@ -12,7 +12,7 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
                 .withDecorations(box())
-                .withSize(28, 28)
+                .withPreferredSize(28, 28)
                 .withAlignment(positionalAlignment(30, 1))
                 .build()
         screen.addComponent(panel)
@@ -51,12 +51,12 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addParagraph("And a multi-line paragraph with typewriter effect..."))
 
         screen.addComponent(Components.textBox(22)
-                .withAlignment(positionalAlignment(1, 17))
+                .withAlignment(positionalAlignment(1, 18))
                 .addHeader("Decorated!")
                 .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."))
         panel.addComponent(Components.textBox(22)
-                .withAlignment(positionalAlignment(0, 15))
+                .withAlignment(positionalAlignment(0, 16))
                 .withDecorations(box(), shadow())
                 .addHeader("Decorated!")
                 .addParagraph("This is a paragraph which won't fit on one line."))

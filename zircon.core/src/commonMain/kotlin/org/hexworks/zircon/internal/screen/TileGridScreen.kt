@@ -163,7 +163,8 @@ class TileGridScreen(
                 size = initialSize,
                 relativePosition = Position.defaultPosition(),
                 tileset = initialTileset,
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
+                name = "Modal Component Container"
             )
             return ModalComponentContainer(
                 metadata = metadata

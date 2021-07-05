@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.Components.label
 import org.hexworks.zircon.api.Components.logArea
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
+import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.VBox
@@ -15,6 +16,13 @@ import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 
 class CustomRendererExample : OneColumnComponentExampleKotlin() {
 
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            CustomRendererExample().show("Custom Renderer")
+        }
+    }
+
     override fun build(box: VBox) {
 
         val logArea = logArea()
@@ -23,7 +31,7 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
                 .build()
 
         val colored = label()
-                .withSize(10, 1)
+                .withPreferredSize(10, 1)
                 .withRendererFunction { graphics, _ ->
                     graphics.draw("Colored".toCharacterTileString(StyleSet.create(RED, GREEN)))
                 }.build()
@@ -50,15 +58,7 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
         logArea.addInlineComponent(leftLabel)
         logArea.commitInlineElements()
 
-        box.addComponents(logArea)
+        box.addComponent(logArea)
 
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            CustomRendererExample().show("Custom Renderer")
-        }
     }
 }

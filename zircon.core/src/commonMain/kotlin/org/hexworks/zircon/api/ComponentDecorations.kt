@@ -77,8 +77,7 @@ object ComponentDecorations {
     fun shadow(): ComponentDecorationRenderer = ShadowDecorationRenderer()
 
     /**
-     * Can be used to add a half box decoration (half-height "border") to
-     * a [Component].
+     * Can be used to add a half box decoration (half-height "border") to a [Component].
      */
     @JvmOverloads
     @JvmStatic
@@ -87,14 +86,14 @@ object ComponentDecorations {
     ): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
 
     /**
-     * Can be used to add padding to a [Component]. Padding is measured in tiles.
-     * @param value the padding to add to all sides (top, right, bottom and left)
+     * Can be used to add margin to a [Component]. Padding is measured in tiles.
+     * @param value the margin to add to all sides (top, right, bottom and left)
      */
     @Beta
     @JvmStatic
-    fun padding(
+    fun margin(
         value: Int
-    ): ComponentDecorationRenderer = PaddingDecorationRenderer(
+    ): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = value,
         right = value,
         bottom = value,
@@ -102,16 +101,16 @@ object ComponentDecorations {
     )
 
     /**
-     * Can be used to add padding to a [Component]. Padding is measured in tiles.
+     * Can be used to add margin to a [Component]. Padding is measured in tiles.
      */
     @Beta
     @JvmStatic
-    fun padding(
+    fun margin(
         top: Int,
         right: Int,
         bottom: Int,
         left: Int
-    ): ComponentDecorationRenderer = PaddingDecorationRenderer(
+    ): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = top,
         right = right,
         bottom = bottom,
@@ -119,16 +118,16 @@ object ComponentDecorations {
     )
 
     /**
-     * Can be used to add padding to a [Component]. Padding is measured in tiles.
-     * @param x horizontal padding (left and right)
-     * @param y vertical padding (top and bottom)
+     * Can be used to add margin to a [Component]. Padding is measured in tiles.
+     * @param x horizontal margin (left and right)
+     * @param y vertical margin (top and bottom)
      */
     @Beta
     @JvmStatic
-    fun padding(
+    fun margin(
         y: Int,
         x: Int
-    ): ComponentDecorationRenderer = PaddingDecorationRenderer(
+    ): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = y,
         right = x,
         bottom = y,

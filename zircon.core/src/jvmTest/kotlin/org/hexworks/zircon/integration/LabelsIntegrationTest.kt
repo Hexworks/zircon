@@ -20,7 +20,7 @@ class LabelsIntegrationTest : ComponentIntegrationTestBase() {
 
         screen.addComponent(Components.label()
                 .withText("Barbaz wombat")
-                .withSize(5, 2)
+                .withPreferredSize(5, 2)
                 .withPosition(2, 6)
                 .build())
 

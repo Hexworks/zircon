@@ -25,13 +25,13 @@ object RadioButtonGroupsExample {
 
         val leftBox = Components.vbox()
                 .withPosition(5, 5)
-                .withSize(20, 15)
+                .withPreferredSize(20, 15)
                 .withDecorations(box())
                 .build()
 
         val rightBox = Components.vbox()
                 .withPosition(35, 5)
-                .withSize(20, 15)
+                .withPreferredSize(20, 15)
                 .withDecorations(box())
                 .build()
 

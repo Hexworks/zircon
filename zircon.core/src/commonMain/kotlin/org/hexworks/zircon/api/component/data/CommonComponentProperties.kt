@@ -12,6 +12,7 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 data class CommonComponentProperties<T : Component>(
+    var name: String = "",
     var colorTheme: ColorTheme? = null,
     var componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet(),
     var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,

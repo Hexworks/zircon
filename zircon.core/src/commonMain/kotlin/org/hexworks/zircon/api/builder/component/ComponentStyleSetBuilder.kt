@@ -3,62 +3,79 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
+import org.hexworks.zircon.internal.dsl.ZirconDsl
+import kotlin.jvm.JvmStatic
 
 /**
  * Use this to build [StyleSet]s for your [org.hexworks.zircon.api.component.Component]s.
  * They will be used accordingly when the component's state changes.
  */
 @ZirconDsl
-data class ComponentStyleSetBuilder(
-    private val styles: MutableMap<ComponentState, StyleSet> = mutableMapOf()
-) : Builder<ComponentStyleSet> {
+class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
 
-    init {
-        ComponentState.values().forEach {
-            styles[it] = StyleSet.defaultStyle()
-        }
-    }
+    var defaultStyle: StyleSet = StyleSet.defaultStyle()
+    var highlightedStyle: StyleSet = StyleSet.defaultStyle()
+    var activeStyle: StyleSet = StyleSet.defaultStyle()
+    var disabledStyle: StyleSet = StyleSet.defaultStyle()
+    var focusedStyle: StyleSet = StyleSet.defaultStyle()
 
     override fun build(): ComponentStyleSet {
+        val styles = mutableMapOf(
+                ComponentState.DEFAULT to defaultStyle,
+                ComponentState.HIGHLIGHTED to highlightedStyle,
+                ComponentState.ACTIVE to activeStyle,
+                ComponentState.DISABLED to disabledStyle,
+                ComponentState.FOCUSED to focusedStyle
+        )
         ComponentState.values()
-            .filterNot { it == ComponentState.DEFAULT }
-            .forEach {
-                if (styles[it] === StyleSet.defaultStyle()) {
-                    styles[it] = styles[ComponentState.DEFAULT]!!
+                .filterNot { it == ComponentState.DEFAULT }
+                .forEach {
+                    // this means that they didn't change the value
+                    // so we'll use whatever they set for default
+                    if (styles[it] === StyleSet.defaultStyle()) {
+                        styles[it] = styles[ComponentState.DEFAULT]!!
+                    }
                 }
-            }
         return DefaultComponentStyleSet(styles)
     }
 
-    override fun createCopy() = copy(
-        styles = styles.map { Pair(it.key, it.value) }
-            .toMap().toMutableMap())
-
     fun withDefaultStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.DEFAULT] = styleSet
+        defaultStyle = styleSet
     }
 
+    @Deprecated("use withHighlightedStyle instead", ReplaceWith("withHighlightedStyle(styleSet)"))
     fun withMouseOverStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.HIGHLIGHTED] = styleSet
+        withHighlightedStyle(styleSet)
+    }
+
+    fun withHighlightedStyle(styleSet: StyleSet) = also {
+        highlightedStyle = styleSet
     }
 
     fun withActiveStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.ACTIVE] = styleSet
+        activeStyle = styleSet
     }
 
     fun withDisabledStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.DISABLED] = styleSet
+        disabledStyle = styleSet
     }
 
     fun withFocusedStyle(styleSet: StyleSet) = also {
-        styles[ComponentState.FOCUSED] = styleSet
+        focusedStyle = styleSet
     }
+
+    override fun createCopy() = newBuilder()
+            .withDisabledStyle(disabledStyle)
+            .withFocusedStyle(focusedStyle)
+            .withActiveStyle(activeStyle)
+            .withDefaultStyle(defaultStyle)
+            .withHighlightedStyle(highlightedStyle)
 
     companion object {
 
+        @JvmStatic
         fun newBuilder() = ComponentStyleSetBuilder()
 
     }

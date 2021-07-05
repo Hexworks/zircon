@@ -62,26 +62,26 @@ class VerticalScrollableList<T>(
         .build()
 
     private val actualScrollbar: ScrollBar = Components.verticalScrollbar()
-        .withSize(1, size.height - 2)
-        .withItemsShownAtOnce(size.height)
-        .withNumberOfScrollableItems(items.size)
-        .withDecorations()
+            .withPreferredSize(1, size.height - 2)
+            .withItemsShownAtOnce(size.height)
+            .withNumberOfScrollableItems(items.size)
+            .withDecorations()
         .also { builder ->
             scrollbarRenderer?.let { builder.withComponentRenderer(it) }
         }
         .build()
 
     private val decrementButton = Components.button()
-        .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-        .withSize(1, 1)
-        .withDecorations()
-        .build()
+            .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
+            .withPreferredSize(1, 1)
+            .withDecorations()
+            .build()
 
     private val incrementButton = Components.button()
-        .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-        .withSize(1, 1)
-        .withDecorations()
-        .build()
+            .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
+            .withPreferredSize(1, 1)
+            .withDecorations()
+            .build()
 
     init {
         root.addComponents(scrollPanel, scrollBarVbox)

@@ -19,9 +19,9 @@ class UpdateOnAttachExampleKotlin {
             ).toScreen()
 
             val box = Components.vbox()
-                .withSpacing(1)
-                .withAlignment(ComponentAlignments.alignmentWithin(screen, CENTER))
-                .withSize(20, 10)
+                    .withSpacing(1)
+                    .withAlignment(ComponentAlignments.alignmentWithin(screen, CENTER))
+                    .withPreferredSize(20, 10)
                 .build().apply {
                     addComponent(Components.header().withText("Same style"))
                 }

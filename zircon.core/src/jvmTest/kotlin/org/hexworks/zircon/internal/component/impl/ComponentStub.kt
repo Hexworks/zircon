@@ -143,6 +143,9 @@ class ComponentStub(
         error("not implemented")
     }
 
+    override val name: String
+        get() = TODO("Not yet implemented")
+
     override fun close() {
         error("not implemented")
     }

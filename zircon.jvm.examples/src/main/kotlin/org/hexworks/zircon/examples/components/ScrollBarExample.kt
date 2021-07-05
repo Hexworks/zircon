@@ -31,7 +31,7 @@ object ScrollBarExample {
         val screen = Screen.create(tileGrid)
         val panel = Components.panel()
                 .withDecorations(box(title = "Scrollbar on panel"), shadow())
-                .withSize(Size.create(30, 28))
+                .withPreferredSize(Size.create(30, 28))
                 .withAlignment(positionalAlignment(29, 1))
                 .build()
         screen.addComponent(panel)
@@ -52,7 +52,7 @@ object ScrollBarExample {
         panel.addFragment(scrollFragment)
 
         val scrollbar2 = Components.horizontalScrollbar()
-                .withSize(20, 1)
+                .withPreferredSize(20, 1)
                 .withNumberOfScrollableItems(200)
                 .withDecorations()
                 .withAlignment(positionalAlignment(1, 23))

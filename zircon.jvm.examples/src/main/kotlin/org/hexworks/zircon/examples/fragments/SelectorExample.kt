@@ -22,19 +22,19 @@ object SelectorExample {
         val screen = Screen.create(tileGrid)
         screen.theme = theme
 
-        val leftPanel = Components.panel().withSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER).withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
+        val leftPanel = Components.panel().withPreferredSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER).withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
             screen.addComponent(it)
         }
 
         val fragmentsList = Components.vbox()
-                .withSize(leftPanel.contentSize.width, 20)
+                .withPreferredSize(leftPanel.contentSize.width, 20)
                 .withAlignmentWithin(leftPanel, ComponentAlignment.CENTER)
                 .withSpacing(2)
                 .build().also {
                     leftPanel.addComponent(it)
                 }
 
-        val logArea = Components.logArea().withSize(40, 40).withAlignmentWithin(screen, ComponentAlignment.RIGHT_CENTER).withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE, "Logs")).build().also {
+        val logArea = Components.logArea().withPreferredSize(40, 40).withAlignmentWithin(screen, ComponentAlignment.RIGHT_CENTER).withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE, "Logs")).build().also {
             screen.addComponent(it)
         }
 

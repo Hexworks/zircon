@@ -30,7 +30,7 @@ object TextAreaDisableExample {
         val textArea = Components.textArea()
                 .withText("Enabled")
                 .withPosition(2, 2)
-                .withSize(10, 3)
+                .withPreferredSize(10, 3)
                 .build()
 
         val toggleButton = Components.button()
