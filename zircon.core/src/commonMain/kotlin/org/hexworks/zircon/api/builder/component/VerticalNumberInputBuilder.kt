@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
-        initialRenderer = DefaultVerticalNumberInputRenderer()
+    initialRenderer = DefaultVerticalNumberInputRenderer()
 ) {
 
     override fun calculateContentSize(): Size {
@@ -21,18 +21,18 @@ class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput, VerticalNumbe
     }
 
     override fun build(): NumberInput = DefaultVerticalNumberInput(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            initialValue = initialValue,
-            minValue = minValue,
-            maxValue = maxValue,
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
+        initialValue = initialValue,
+        minValue = minValue,
+        maxValue = maxValue,
     )
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withInitialValue(initialValue)
-            .withMinValue(minValue)
-            .withMaxValue(maxValue)
+        .withProps(props.copy())
+        .withInitialValue(initialValue)
+        .withMinValue(minValue)
+        .withMaxValue(maxValue)
 
     companion object {
 

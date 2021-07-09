@@ -48,22 +48,26 @@ interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRe
     }
 }
 
-internal fun Alignment.isLeft() = when(this) {
+internal fun Alignment.isLeft() = when (this) {
     Alignment.TOP_LEFT, Alignment.BOTTOM_LEFT -> true
     else -> false
 }
-internal fun Alignment.isRight() = when(this) {
+
+internal fun Alignment.isRight() = when (this) {
     Alignment.TOP_RIGHT, Alignment.BOTTOM_RIGHT -> true
     else -> false
 }
-internal fun Alignment.isCenter() = when(this) {
+
+internal fun Alignment.isCenter() = when (this) {
     Alignment.TOP_CENTER, Alignment.BOTTOM_CENTER -> true
     else -> false
 }
+
 internal fun Alignment.isTop() = when (this) {
     Alignment.TOP_LEFT, Alignment.TOP_RIGHT, Alignment.TOP_CENTER -> true
     else -> false
 }
+
 internal fun Alignment.isBottom() = when (this) {
     Alignment.BOTTOM_LEFT, Alignment.BOTTOM_RIGHT, Alignment.BOTTOM_CENTER -> true
     else -> false

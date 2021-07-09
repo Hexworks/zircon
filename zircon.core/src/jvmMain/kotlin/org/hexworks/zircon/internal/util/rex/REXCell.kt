@@ -7,9 +7,11 @@ import java.nio.ByteBuffer
 /**
  * Represents a CP437 character on a REX Paint [REXLayer].
  */
-data class REXCell(private val character: Char,
-                   private val foregroundColor: TileColor,
-                   private val backgroundColor: TileColor) {
+data class REXCell(
+    private val character: Char,
+    private val foregroundColor: TileColor,
+    private val backgroundColor: TileColor
+) {
 
     fun getCharacter() = character
 
@@ -23,9 +25,20 @@ data class REXCell(private val character: Char,
          */
         fun fromByteBuffer(buffer: ByteBuffer): REXCell {
             return REXCell(
-                    character = CP437Utils.convertCp437toUnicode(buffer.int),
-                    foregroundColor = TileColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 255),
-                    backgroundColor = TileColor.create(buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, buffer.get().toInt() and 0xFF, 255))
+                character = CP437Utils.convertCp437toUnicode(buffer.int),
+                foregroundColor = TileColor.create(
+                    buffer.get().toInt() and 0xFF,
+                    buffer.get().toInt() and 0xFF,
+                    buffer.get().toInt() and 0xFF,
+                    255
+                ),
+                backgroundColor = TileColor.create(
+                    buffer.get().toInt() and 0xFF,
+                    buffer.get().toInt() and 0xFF,
+                    buffer.get().toInt() and 0xFF,
+                    255
+                )
+            )
         }
     }
 }

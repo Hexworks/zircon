@@ -20,11 +20,13 @@ object DelayedExample {
         screen.cursorPosition = Position.create(1, 1)
         text.forEachIndexed { index, c ->
             val delayTime = 250 + index * 250
-            screen.putTile(Tile.defaultTile()
+            screen.putTile(
+                Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
-                    .withModifiers(Delay(delayTime.toLong())))
+                    .withModifiers(Delay(delayTime.toLong()))
+            )
         }
 
     }

@@ -140,13 +140,15 @@ class UIEventToComponentDispatcherTest {
 
     companion object {
         val KEY_A_PRESSED_EVENT = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                key = "a",
-                code = KeyCode.KEY_A)
+            type = KeyboardEventType.KEY_PRESSED,
+            key = "a",
+            code = KeyCode.KEY_A
+        )
 
         val TAB_PRESSED_EVENT = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.TAB,
-                key = "\t")
+            type = KeyboardEventType.KEY_PRESSED,
+            code = KeyCode.TAB,
+            key = "\t"
+        )
     }
 }

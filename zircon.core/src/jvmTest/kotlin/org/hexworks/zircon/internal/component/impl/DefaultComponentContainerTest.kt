@@ -36,15 +36,20 @@ class DefaultComponentContainerTest {
 
     @Before
     fun setUp() {
-        target = DefaultComponentContainer(DefaultRootContainer(
+        target = DefaultComponentContainer(
+            DefaultRootContainer(
                 componentMetadata = ComponentMetadata(
-                        relativePosition = Position.defaultPosition(),
-                        size = SIZE,
-                        tileset = TILESET,
-                        componentStyleSet = buildStyles()),
+                    relativePosition = Position.defaultPosition(),
+                    size = SIZE,
+                    tileset = TILESET,
+                    componentStyleSet = buildStyles()
+                ),
                 renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = RootContainerRenderer())))
+                    decorationRenderers = listOf(),
+                    componentRenderer = RootContainerRenderer()
+                )
+            )
+        )
     }
 
     @Test
@@ -62,9 +67,11 @@ class DefaultComponentContainerTest {
     @Ignore
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
-        target.addComponent(PanelBuilder.newBuilder()
+        target.addComponent(
+            PanelBuilder.newBuilder()
                 .withSize(Size.create(999, 999))
-                .build())
+                .build()
+        )
     }
 
     @Test
@@ -190,10 +197,12 @@ class DefaultComponentContainerTest {
         val button = createButton()
         target.addComponent(button)
         val other = ButtonBuilder.newBuilder()
-                .withText(BUTTON_TEXT)
-                .withPosition(Position.create(0, 1)
-                        .relativeToBottomOf(button))
-                .build()
+            .withText(BUTTON_TEXT)
+            .withPosition(
+                Position.create(0, 1)
+                    .relativeToBottomOf(button)
+            )
+            .build()
         target.addComponent(other)
 
         target.dispatch(TAB)
@@ -240,10 +249,10 @@ class DefaultComponentContainerTest {
     }
 
     private fun createButton() = ButtonBuilder.newBuilder()
-            .withPosition(BUTTON_POSITION)
-            .withText(BUTTON_TEXT)
-            .withComponentStyleSet(buildStyles())
-            .build()
+        .withPosition(BUTTON_POSITION)
+        .withText(BUTTON_TEXT)
+        .withComponentStyleSet(buildStyles())
+        .build()
 
     companion object {
         const val BUTTON_TEXT = "TEXT"
@@ -251,48 +260,51 @@ class DefaultComponentContainerTest {
         val SIZE = Size.create(30, 20)
         val BUTTON_POSITION = Position.create(6, 7)
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.BLUE)
-                .withForegroundColor(ANSITileColor.RED)
-                .build()
+            .withBackgroundColor(ANSITileColor.BLUE)
+            .withForegroundColor(ANSITileColor.RED)
+            .build()
         private val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.GREEN)
-                .withForegroundColor(ANSITileColor.YELLOW)
-                .build()
+            .withBackgroundColor(ANSITileColor.GREEN)
+            .withForegroundColor(ANSITileColor.YELLOW)
+            .build()
         private val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.MAGENTA)
-                .withForegroundColor(ANSITileColor.BLUE)
-                .build()
+            .withBackgroundColor(ANSITileColor.MAGENTA)
+            .withForegroundColor(ANSITileColor.BLUE)
+            .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.YELLOW)
-                .withForegroundColor(ANSITileColor.CYAN)
-                .build()
+            .withBackgroundColor(ANSITileColor.YELLOW)
+            .withForegroundColor(ANSITileColor.CYAN)
+            .build()
         private val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.RED)
-                .withForegroundColor(ANSITileColor.CYAN)
-                .build()
+            .withBackgroundColor(ANSITileColor.RED)
+            .withForegroundColor(ANSITileColor.CYAN)
+            .build()
 
         fun buildStyles() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(DEFAULT_STYLE)
-                .withActiveStyle(ACTIVE_STYLE)
-                .withDisabledStyle(DISABLED_STYLE)
-                .withFocusedStyle(FOCUSED_STYLE)
-                .withMouseOverStyle(MOUSE_OVER_STYLE)
-                .build()
+            .withDefaultStyle(DEFAULT_STYLE)
+            .withActiveStyle(ACTIVE_STYLE)
+            .withDisabledStyle(DISABLED_STYLE)
+            .withFocusedStyle(FOCUSED_STYLE)
+            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .build()
 
         val SPACE = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                code = KeyCode.SPACE,
-                key = " ")
+            type = KeyboardEventType.KEY_PRESSED,
+            code = KeyCode.SPACE,
+            key = " "
+        )
 
         val TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                key = "\t",
-                code = KeyCode.TAB)
+            type = KeyboardEventType.KEY_PRESSED,
+            key = "\t",
+            code = KeyCode.TAB
+        )
 
         val REVERSE_TAB = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                key = "\t",
-                code = KeyCode.TAB,
-                shiftDown = true)
+            type = KeyboardEventType.KEY_PRESSED,
+            key = "\t",
+            code = KeyCode.TAB,
+            shiftDown = true
+        )
     }
 }

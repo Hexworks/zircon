@@ -33,43 +33,47 @@ class DefaultComponentRenderingStrategyTest {
     @Before
     fun setUp() {
         target = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(
-                        ShadowDecorationRenderer(),
-                        BoxDecorationRenderer()),
-                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
+            decorationRenderers = listOf(
+                ShadowDecorationRenderer(),
+                BoxDecorationRenderer()
+            ),
+            componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>
+        )
     }
 
     @Test
     fun shouldRenderButtonWithDecorations() {
         val size = Size.create(8, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .build().apply {
-                    fill(Tile.defaultTile().withCharacter('_'))
-                }
+            .withSize(size)
+            .build().apply {
+                fill(Tile.defaultTile().withCharacter('_'))
+            }
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(shadow(), box(), side()),
-                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>
+            decorationRenderers = listOf(shadow(), box(), side()),
+            componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>
         )
 
         val btn = DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        size = size,
-                        relativePosition = Position.defaultPosition(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                initialText = "qux",
-                renderingStrategy = target
+            componentMetadata = ComponentMetadata(
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
+                relativePosition = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            initialText = "qux",
+            renderingStrategy = target
         )
 
         target.render(btn, graphics)
 
         assertThat(graphics.tiles.values.map { it.asCharacterTile().get().character }).containsExactly(
-                '┌', '─', '─', '─', '─', '─', '┐', '_',
-                '│', '[', 'q', 'u', 'x', ']', '│', '░',
-                '└', '─', '─', '─', '─', '─', '┘', '░',
-                '_', '░', '░', '░', '░', '░', '░', '░')
+            '┌', '─', '─', '─', '─', '─', '┐', '_',
+            '│', '[', 'q', 'u', 'x', ']', '│', '░',
+            '└', '─', '─', '─', '─', '─', '┘', '░',
+            '_', '░', '░', '░', '░', '░', '░', '░'
+        )
 
     }
 
@@ -77,54 +81,61 @@ class DefaultComponentRenderingStrategyTest {
     fun shouldNotRenderButtonWhenItIsInvisible() {
         val size = Size.create(8, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .build()
+            .withSize(size)
+            .build()
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(shadow(), box(), side()),
-                componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>)
+            decorationRenderers = listOf(shadow(), box(), side()),
+            componentRenderer = DefaultButtonRenderer() as ComponentRenderer<Button>
+        )
 
         val btn = DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        size = size,
-                        relativePosition = Position.defaultPosition(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                initialText = "qux",
-                renderingStrategy = target)
+            componentMetadata = ComponentMetadata(
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
+                relativePosition = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            initialText = "qux",
+            renderingStrategy = target
+        )
 
         btn.isHidden = true
 
         target.render(btn, graphics)
 
         assertThat(graphics.fetchCharacters())
-                .containsExactlyElementsOf(MutableList(32) { ' ' })
+            .containsExactlyElementsOf(MutableList(32) { ' ' })
     }
 
     @Test
     fun shouldProperlyRenderComponentWithoutDecorations() {
         val size = Size.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .build()
-                .apply {
-                    fill(Tile.defaultTile().withCharacter('_'))
-                }
+            .withSize(size)
+            .build()
+            .apply {
+                fill(Tile.defaultTile().withCharacter('_'))
+            }
 
         val label = DefaultLabel(
-                componentMetadata = ComponentMetadata(
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        size = size,
-                        relativePosition = Position.defaultPosition(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                initialText = "Long text",
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = DefaultLabelRenderer() as ComponentRenderer<Label>))
+            componentMetadata = ComponentMetadata(
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
+                relativePosition = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            initialText = "Long text",
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = DefaultLabelRenderer() as ComponentRenderer<Label>
+            )
+        )
 
         val target = DefaultComponentRenderingStrategy(
-                decorationRenderers = listOf(),
-                componentRenderer = DefaultLabelRenderer())
+            decorationRenderers = listOf(),
+            componentRenderer = DefaultLabelRenderer()
+        )
 
         target.render(label, graphics)
     }
@@ -134,29 +145,32 @@ class DefaultComponentRenderingStrategyTest {
 
         val size = Size.create(5, 5)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .build()
-                .apply {
-                    fill(Tile.defaultTile().withCharacter('_'))
-                }
+            .withSize(size)
+            .build()
+            .apply {
+                fill(Tile.defaultTile().withCharacter('_'))
+            }
 
         val button = DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        size = size,
-                        relativePosition = Position.defaultPosition(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                initialText = "foo",
-                renderingStrategy = target)
+            componentMetadata = ComponentMetadata(
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
+                relativePosition = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            initialText = "foo",
+            renderingStrategy = target
+        )
 
         target.render(button, graphics)
 
         assertThat(graphics.tiles.values.map { it.asCharacterTile().get().character }).containsExactly(
-                '┌', '─', '─', '┐', '_',
-                '│', 'f', 'o', '│', '░',
-                '│', 'o', ' ', '│', '░',
-                '└', '─', '─', '┘', '░',
-                '_', '░', '░', '░', '░')
+            '┌', '─', '─', '┐', '_',
+            '│', 'f', 'o', '│', '░',
+            '│', 'o', ' ', '│', '░',
+            '└', '─', '─', '┘', '░',
+            '_', '░', '░', '░', '░'
+        )
     }
 
     @Test
@@ -164,24 +178,27 @@ class DefaultComponentRenderingStrategyTest {
 
         val size = Size.create(4, 4)
         val graphics = TileGraphicsBuilder.newBuilder()
-                .withSize(size)
-                .build()
+            .withSize(size)
+            .build()
 
         val button = DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        size = size,
-                        relativePosition = Position.defaultPosition(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                initialText = "bar",
-                renderingStrategy = target)
+            componentMetadata = ComponentMetadata(
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                size = size,
+                relativePosition = Position.defaultPosition(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            initialText = "bar",
+            renderingStrategy = target
+        )
 
         target.render(button, graphics)
 
         assertThat(graphics.fetchCharacters()).containsExactly(
-                '┌', '─', '┐', ' ',
-                '│', 'b', '│', '░',
-                '└', '─', '┘', '░',
-                ' ', '░', '░', '░')
+            '┌', '─', '┐', ' ',
+            '│', 'b', '│', '░',
+            '└', '─', '┘', '░',
+            ' ', '░', '░', '░'
+        )
     }
 }

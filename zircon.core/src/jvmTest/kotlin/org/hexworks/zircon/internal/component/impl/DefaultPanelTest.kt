@@ -24,11 +24,13 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
@@ -36,15 +38,18 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
         rendererStub = ComponentRendererStub(DefaultPanelRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE).build()
         target = DefaultPanel(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE,
-                        relativePosition = POSITION,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<Panel>),
-                initialTitle = TITLE)
+            componentMetadata = ComponentMetadata(
+                size = SIZE,
+                relativePosition = POSITION,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<Panel>
+            ),
+            initialTitle = TITLE
+        )
     }
 
     @Test

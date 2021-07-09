@@ -12,40 +12,52 @@ class LabelsIntegrationTest : ComponentIntegrationTestBase() {
 
 
     override fun buildScreenContent(screen: Screen) {
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Foobar")
                 .withDecorations(shadow())
                 .withPosition(2, 2)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Barbaz wombat")
                 .withPreferredSize(5, 2)
                 .withPosition(2, 6)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Qux")
                 .withDecorations(box(), shadow())
                 .withPosition(2, 10)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Qux")
                 .withDecorations(box(DOUBLE), shadow())
                 .withPosition(15, 2)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Wtf")
                 .withDecorations(box(SINGLE), box(DOUBLE), shadow())
                 .withPosition(15, 7)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Wtf")
                 .withDecorations(halfBlock(), shadow())
                 .withPosition(15, 14)
-                .build())
+                .build()
+        )
     }
 }

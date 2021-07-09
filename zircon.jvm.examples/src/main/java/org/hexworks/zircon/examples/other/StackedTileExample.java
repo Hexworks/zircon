@@ -93,7 +93,7 @@ public class StackedTileExample {
 
     private static void drawAdditionAt(Position gridPosition, TileGrid app, Tile result, Tile... tiles) {
         int y = 0;
-        for (Tile tile: tiles) {
+        for (Tile tile : tiles) {
             if (y > 0) {
                 app.draw(charTile('+', WHITE, BLACK), gridPosition.withRelativeY(y - 1));
             }

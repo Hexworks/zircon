@@ -25,11 +25,13 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
@@ -37,13 +39,16 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = POSITION_2_3,
-                        size = SIZE_3_4,
-                        tileset = TILESET_REX_PAINT_20X20,
-                        componentStyleSet = COMPONENT_STYLES),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub))
+            componentMetadata = ComponentMetadata(
+                relativePosition = POSITION_2_3,
+                size = SIZE_3_4,
+                tileset = TILESET_REX_PAINT_20X20,
+                componentStyleSet = COMPONENT_STYLES
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                componentRenderer = rendererStub
+            )
+        )
     }
 
     @Test
@@ -61,7 +66,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         target.addComponent(box)
 
         assertThat(target.componentTree.map { it.id }).isEqualTo(
-                listOf(target.id, box.id, foo.id, bar.id))
+            listOf(target.id, box.id, foo.id, bar.id)
+        )
     }
 
     @Test
@@ -75,7 +81,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         box.addComponents(foo, bar)
 
         assertThat(target.componentTree.map { it.id }).isEqualTo(
-                listOf(target.id, box.id, foo.id, bar.id))
+            listOf(target.id, box.id, foo.id, bar.id)
+        )
     }
 
     @Test
@@ -84,10 +91,10 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val pos = Position.create(1, 2)
 
         val label = Components.label()
-                .withPosition(pos)
-                .withSize(Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withPosition(pos)
+            .withSize(Size.one())
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
 
         target.addComponent(label)
 
@@ -107,35 +114,35 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val panelPos = Position.create(1, 1)
 
         val panel = Components.panel()
-                .withSize(Size.create(2, 3))
-                .withPosition(panelPos)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withSize(Size.create(2, 3))
+            .withPosition(panelPos)
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
 
         val label0 = Components.label()
-                .withPosition(label0Pos)
-                .withSize(Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withPosition(label0Pos)
+            .withSize(Size.one())
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
 
         val label1 = Components.label()
-                .withPosition(label1Pos)
-                .withSize(Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withPosition(label1Pos)
+            .withSize(Size.one())
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
 
         panel.addComponents(label0, label1)
         target.addComponent(panel)
 
         assertThat(target.fetchComponentByPosition(POSITION_2_3 + label0Pos + panelPos).get())
-                .isEqualTo(label0)
+            .isEqualTo(label0)
     }
 
     @Test
     fun Given_an_empty_root_component_When_trying_to_fetch_self_Then_it_is_present() {
 
         assertThat(target.fetchComponentByPosition(POSITION_2_3).get().id)
-                .isEqualTo(target.id)
+            .isEqualTo(target.id)
     }
 
 
@@ -143,16 +150,16 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     fun shouldProperlyCalculatePathFromRoot() {
 
         val panel = Components.panel()
-                .withSize(Size.create(2, 3))
-                .withPosition(Position.offset1x1())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build().asInternalComponent()
+            .withSize(Size.create(2, 3))
+            .withPosition(Position.offset1x1())
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build().asInternalComponent()
 
         val label = Components.label()
-                .withPosition(Position.offset1x1())
-                .withSize(Size.one())
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build().asInternalComponent()
+            .withPosition(Position.offset1x1())
+            .withSize(Size.one())
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build().asInternalComponent()
 
         panel.addComponent(label)
         target.addComponent(panel)
@@ -163,14 +170,14 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     companion object {
 
         fun label(tileset: TilesetResource, text: String): InternalComponent = Components.label()
-                .withTileset(tileset)
-                .withText(text)
-                .build().asInternalComponent()
+            .withTileset(tileset)
+            .withText(text)
+            .build().asInternalComponent()
 
         fun vbox(tileset: TilesetResource): InternalContainer = Components.vbox()
-                .withTileset(tileset)
-                .withPreferredSize(3, 4)
-                .build().asInternalComponent()
+            .withTileset(tileset)
+            .withPreferredSize(3, 4)
+            .build().asInternalComponent()
     }
 }
 

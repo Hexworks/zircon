@@ -38,14 +38,17 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         componentStub = ComponentStub(DefaultContainerTest.COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
         rendererStub = ComponentRendererStub()
         target = object : DefaultComponent(
-                componentMetadata = ComponentMetadata(
-                        size = DefaultContainerTest.SIZE_4x4,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderer = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub)) {
+            componentMetadata = ComponentMetadata(
+                size = DefaultContainerTest.SIZE_4x4,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderer = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub
+            )
+        ) {
 
             override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 appliedColorTheme = colorTheme
@@ -97,7 +100,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldProperlyApplyStylesOnInit() {
         assertThat(target.componentState)
-                .isEqualTo(ComponentState.DEFAULT)
+            .isEqualTo(ComponentState.DEFAULT)
     }
 
     @Test
@@ -137,8 +140,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         }
 
         target.process(
-                event = MouseEvent(MOUSE_CLICKED, 1, Position.defaultPosition()),
-                phase = BUBBLE)
+            event = MouseEvent(MOUSE_CLICKED, 1, Position.defaultPosition()),
+            phase = BUBBLE
+        )
 
         assertThat(notified).isTrue()
     }
@@ -146,8 +150,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_hovered_Then_it_has_mouse_over_style() {
         target.mouseEntered(
-                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            phase = TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }
@@ -155,12 +160,14 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset() {
         target.mouseEntered(
-                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            phase = TARGET
+        )
 
         target.mouseExited(
-                event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+            phase = TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.DEFAULT)
     }
@@ -170,8 +177,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         target.focusGiven()
 
         target.mouseExited(
-                event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+            phase = TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.FOCUSED)
     }
@@ -185,21 +193,21 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         val leafPos = Position.create(1, 2)
 
         val root = PanelBuilder.newBuilder()
-                .withSize(Size.create(10, 10))
-                .withPosition(rootPos)
-                .build()
+            .withSize(Size.create(10, 10))
+            .withPosition(rootPos)
+            .build()
 
         val parent = PanelBuilder.newBuilder()
-                .withSize(Size.create(7, 7))
-                .withPosition(parentPos)
-                .build()
+            .withSize(Size.create(7, 7))
+            .withPosition(parentPos)
+            .build()
 
         root.addComponent(parent)
 
         val leaf = LabelBuilder.newBuilder()
-                .withPosition(leafPos)
-                .withText("foo")
-                .build()
+            .withPosition(leafPos)
+            .withText("foo")
+            .build()
 
         parent.addComponent(leaf)
 
@@ -215,8 +223,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         }
 
         target.process(
-                event = MouseEvent(MOUSE_PRESSED, 1, POSITION_2_3),
-                phase = BUBBLE)
+            event = MouseEvent(MOUSE_PRESSED, 1, POSITION_2_3),
+            phase = BUBBLE
+        )
 
         assertThat(pressed.get()).isTrue()
     }

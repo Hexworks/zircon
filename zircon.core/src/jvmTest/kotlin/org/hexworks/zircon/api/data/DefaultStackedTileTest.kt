@@ -9,20 +9,20 @@ import kotlin.test.assertTrue
 class DefaultStackedTileTest {
 
     private val t1 = Tile.newBuilder()
-            .withCharacter('1')
-            .withForegroundColor(ANSITileColor.RED)
-            .withBackgroundColor(TileColor.transparent())
-            .buildCharacterTile()
+        .withCharacter('1')
+        .withForegroundColor(ANSITileColor.RED)
+        .withBackgroundColor(TileColor.transparent())
+        .buildCharacterTile()
     private val t2 = Tile.newBuilder()
-            .withCharacter('2')
-            .withForegroundColor(ANSITileColor.GREEN)
-            .withBackgroundColor(TileColor.transparent())
-            .buildCharacterTile()
+        .withCharacter('2')
+        .withForegroundColor(ANSITileColor.GREEN)
+        .withBackgroundColor(TileColor.transparent())
+        .buildCharacterTile()
     private val t3 = Tile.newBuilder()
-            .withCharacter('3')
-            .withForegroundColor(ANSITileColor.BLUE)
-            .withBackgroundColor(TileColor.transparent())
-            .buildCharacterTile()
+        .withCharacter('3')
+        .withForegroundColor(ANSITileColor.BLUE)
+        .withBackgroundColor(TileColor.transparent())
+        .buildCharacterTile()
 
     @Test
     fun simpleStack() {
@@ -88,7 +88,11 @@ class DefaultStackedTileTest {
         stack.shouldBeComposedOf(t1)
         stack.withRemovedTile(t3).shouldBeComposedOf(t1)
         val withRemovedTile = stack.withRemovedTile(t1)
-        assertEquals(stack, withRemovedTile, "After trying to remove the base tile, the StackedTile should still be the same")
+        assertEquals(
+            stack,
+            withRemovedTile,
+            "After trying to remove the base tile, the StackedTile should still be the same"
+        )
         withRemovedTile.shouldBeComposedOf(t1)
     }
 

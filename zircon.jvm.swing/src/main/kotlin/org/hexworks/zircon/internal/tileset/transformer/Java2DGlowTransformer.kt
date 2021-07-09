@@ -24,10 +24,12 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     }
 
                     // Get character image:
-                    val charImage = swapColor(t,
-                            tile.backgroundColor.toAWTColor(),
-                            Color(0, 0, 0, 0),
-                            tile)
+                    val charImage = swapColor(
+                        t,
+                        tile.backgroundColor.toAWTColor(),
+                        Color(0, 0, 0, 0),
+                        tile
+                    )
 
                     // Generate glow image:
                     val filter = GaussianFilter()
@@ -45,9 +47,10 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     gc.dispose()
 
                     return DefaultTileTexture(
-                            width = txt.width,
-                            height = txt.height,
-                            texture = result)
+                        width = txt.width,
+                        height = txt.height,
+                        texture = result
+                    )
                 }
             }
         }
@@ -71,8 +74,9 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
         }
 
         return DefaultTileTexture(
-                width = texture.width,
-                height = texture.height,
-                texture = image)
+            width = texture.width,
+            height = texture.height,
+            texture = image
+        )
     }
 }

@@ -11,17 +11,19 @@ class DefaultRectTest {
     @Test
     fun shouldProperlyPlusTwoRects() {
         assertThat(
-                Rect.create(Position.create(1, 1), Size.create(1, 1))
-                        .plus(Rect.create(Position.create(2, 2), Size.create(2, 2))))
-                .isEqualTo(Rect.create(Position.create(3, 3), Size.create(3, 3)))
+            Rect.create(Position.create(1, 1), Size.create(1, 1))
+                .plus(Rect.create(Position.create(2, 2), Size.create(2, 2)))
+        )
+            .isEqualTo(Rect.create(Position.create(3, 3), Size.create(3, 3)))
     }
 
     @Test
     fun shouldProperlyMinusTwoRects() {
         assertThat(
-                Rect.create(Position.create(3, 3), Size.create(3, 3))
-                        .minus(Rect.create(Position.create(2, 2), Size.create(2, 2))))
-                .isEqualTo(Rect.create(Position.create(1, 1), Size.create(1, 1)))
+            Rect.create(Position.create(3, 3), Size.create(3, 3))
+                .minus(Rect.create(Position.create(2, 2), Size.create(2, 2)))
+        )
+            .isEqualTo(Rect.create(Position.create(1, 1), Size.create(1, 1)))
     }
 
     @Test
@@ -30,7 +32,7 @@ class DefaultRectTest {
         val target = Rect.create(Position.offset1x1(), Size.one())
 
         assertThat(target.withPosition(pos))
-                .isEqualTo(Rect.create(pos, Size.one()))
+            .isEqualTo(Rect.create(pos, Size.one()))
     }
 
     @Test
@@ -39,7 +41,7 @@ class DefaultRectTest {
         val target = Rect.create(Position.offset1x1(), Size.one())
 
         assertThat(target.withRelativePosition(pos))
-                .isEqualTo(Rect.create(pos + Position.offset1x1(), Size.one()))
+            .isEqualTo(Rect.create(pos + Position.offset1x1(), Size.one()))
     }
 
     @Test
@@ -48,7 +50,7 @@ class DefaultRectTest {
         val target = Rect.create(Position.offset1x1(), Size.one())
 
         assertThat(target.withSize(size))
-                .isEqualTo(Rect.create(Position.offset1x1(), size))
+            .isEqualTo(Rect.create(Position.offset1x1(), size))
     }
 
     @Test
@@ -57,7 +59,7 @@ class DefaultRectTest {
         val target = Rect.create(Position.offset1x1(), Size.one())
 
         assertThat(target.withRelativeSize(size))
-                .isEqualTo(Rect.create(Position.offset1x1(), Size.one() + size))
+            .isEqualTo(Rect.create(Position.offset1x1(), Size.one() + size))
     }
 
 }

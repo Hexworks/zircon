@@ -15,19 +15,20 @@ class DefaultRadioButtonGroupTest {
     @Before
     fun setUp() {
         target = DefaultRadioButtonGroup(
-                initialIsDisabled = false,
-                initialIsHidden = false,
-                initialTheme = ColorThemes.afterglow(),
-                initialTileset = CP437TilesetResources.bisasam16x16())
+            initialIsDisabled = false,
+            initialIsHidden = false,
+            initialTheme = ColorThemes.afterglow(),
+            initialTileset = CP437TilesetResources.bisasam16x16()
+        )
     }
 
     @Test
     fun shouldSelectButtonWhenClicked() {
 
         val btn = Components.radioButton()
-                .withKey("qux")
-                .withText("baz")
-                .build() as (DefaultRadioButton)
+            .withKey("qux")
+            .withText("baz")
+            .build() as (DefaultRadioButton)
         target.addComponent(btn)
 
         btn.activated()
@@ -40,13 +41,13 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldProperlyDeselectPreviouslySelectedButtonWhenNewOneIsSelected() {
         val oldBtn = Components.radioButton()
-                .withKey("old")
-                .withText("old")
-                .build() as (DefaultRadioButton)
+            .withKey("old")
+            .withText("old")
+            .build() as (DefaultRadioButton)
         val newBtn = Components.radioButton()
-                .withKey("new")
-                .withText("new")
-                .build() as (DefaultRadioButton)
+            .withKey("new")
+            .withText("new")
+            .build() as (DefaultRadioButton)
         oldBtn.isSelected = true
         newBtn.isSelected = true
         target.addComponents(oldBtn, newBtn)

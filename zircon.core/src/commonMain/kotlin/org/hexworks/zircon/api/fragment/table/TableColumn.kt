@@ -31,13 +31,13 @@ open class TableColumn<M : Any, V : Any, C : Component>(
      * of 1.
      */
     open val header: Component =
-            Components.header()
-                    .withText(name)
-                    .withPreferredSize(width, 1)
-                    .build()
+        Components.header()
+            .withText(name)
+            .withPreferredSize(width, 1)
+            .build()
 
     fun newCell(rowElement: M): C =
-            componentCreator(
-                    valueAccessor(rowElement)
-            )
+        componentCreator(
+            valueAccessor(rowElement)
+        )
 }

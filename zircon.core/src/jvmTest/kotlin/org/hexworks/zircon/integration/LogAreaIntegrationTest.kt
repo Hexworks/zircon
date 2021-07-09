@@ -9,14 +9,14 @@ class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(7
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .withDecorations(box(title = "Log"))
-                .withPreferredSize(60, 25)
-                .build()
+            .withDecorations(box(title = "Log"))
+            .withPreferredSize(60, 25)
+            .build()
 
         screen.addComponent(panel)
         val logArea = Components.logArea()
-                .withSize(Size.create(58, 23))
-                .build()
+            .withSize(Size.create(58, 23))
+            .build()
 
         logArea.addParagraph("This is a simple log row")
         logArea.addParagraph("This is a further log row with a modifier")
@@ -24,9 +24,9 @@ class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(7
 
         logArea.addInlineText("This is a log row with a ")
         val btn = Components.button()
-                .withDecorations()
-                .withText("Button")
-                .build()
+            .withDecorations()
+            .withText("Button")
+            .build()
         logArea.addInlineComponent(btn)
         logArea.commitInlineElements()
 

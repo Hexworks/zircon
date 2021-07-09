@@ -40,18 +40,18 @@ class GroupBuilder<T : Component> : Builder<Group<T>> {
     }
 
     override fun build(): Group<T> = DefaultGroup(
-            initialIsDisabled = isDisabled,
-            initialIsHidden = isHidden,
-            initialTheme = theme,
-            initialTileset = tileset,
-            name = name
+        initialIsDisabled = isDisabled,
+        initialIsHidden = isHidden,
+        initialTheme = theme,
+        initialTileset = tileset,
+        name = name
     )
 
     override fun createCopy() = newBuilder<T>()
-            .withIsDisabled(isDisabled)
-            .withIsHidden(isHidden)
-            .withTheme(theme)
-            .withTileset(tileset)
+        .withIsDisabled(isDisabled)
+        .withIsHidden(isHidden)
+        .withTheme(theme)
+        .withTileset(tileset)
 
 
     companion object {

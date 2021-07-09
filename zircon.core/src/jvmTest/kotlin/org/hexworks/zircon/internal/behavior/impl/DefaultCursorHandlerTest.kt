@@ -18,7 +18,7 @@ class DefaultCursorHandlerTest {
     @Test
     fun defaultCursorPositionShouldBeDefaultPosition() {
         assertThat(target.cursorPosition)
-                .isEqualTo(Position.defaultPosition())
+            .isEqualTo(Position.defaultPosition())
     }
 
     @Test
@@ -26,13 +26,13 @@ class DefaultCursorHandlerTest {
         target.cursorPosition = Position.offset1x1()
 
         assertThat(target.cursorPosition)
-                .isEqualTo(Position.offset1x1())
+            .isEqualTo(Position.offset1x1())
     }
 
     @Test
     fun defaultCursorVisibilityShouldBeFalse() {
         assertThat(target.isCursorVisible)
-                .isFalse()
+            .isFalse()
     }
 
     @Test
@@ -40,7 +40,7 @@ class DefaultCursorHandlerTest {
         target.isCursorVisible = false
 
         assertThat(target.isCursorVisible)
-                .isFalse()
+            .isFalse()
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -121,7 +121,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.cursorPosition)
-                .isEqualTo(pos.withRelativeX(-1))
+            .isEqualTo(pos.withRelativeX(-1))
     }
 
     @Test
@@ -131,7 +131,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.cursorPosition)
-                .isEqualTo(Position.create(SIZE.width - 1, 0))
+            .isEqualTo(Position.create(SIZE.width - 1, 0))
     }
 
     @Test
@@ -141,7 +141,7 @@ class DefaultCursorHandlerTest {
         target.moveCursorBackward()
 
         assertThat(target.cursorPosition)
-                .isEqualTo(pos)
+            .isEqualTo(pos)
     }
 
     @Test(expected = IllegalArgumentException::class)

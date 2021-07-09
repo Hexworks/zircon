@@ -46,11 +46,11 @@ class DefaultAnimationRunnerTest {
     @Test
     fun shouldReturnInfiniteWhenAnimationIsInfinite() {
         val infiniteAnimation = AnimationBuilder.newBuilder()
-                .addFrame(DefaultAnimationFrame(Size.one(), listOf(), 1))
-                .addPosition(Position.offset1x1())
-                .withLoopCount(0)
-                .withFps(1)
-                .build()
+            .addFrame(DefaultAnimationFrame(Size.one(), listOf(), 1))
+            .addPosition(Position.offset1x1())
+            .withLoopCount(0)
+            .withFps(1)
+            .build()
 
         val result = target.start(infiniteAnimation)
 
@@ -88,9 +88,9 @@ class DefaultAnimationRunnerTest {
 //        whenever(animationMock.hasNextFrame()).thenReturn(false)
 
         val tileGrid = TileGridBuilder.newBuilder()
-                .withSize(Size.create(50, 50))
-                .withTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
-                .build()
+            .withSize(Size.create(50, 50))
+            .withTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
+            .build()
 
         val result = target.start(animationMock)
 

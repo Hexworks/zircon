@@ -19,11 +19,11 @@ import kotlin.jvm.JvmOverloads
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class TextBoxBuilder private constructor(
-        private val initialContentWidth: Int,
-        initialPreferredContentSize: Size = Size.unknown().withWidth(initialContentWidth),
-        private var nextPosition: Position = Position.defaultPosition(),
-        private val components: MutableList<Component> = mutableListOf(),
-        private val inlineElements: MutableList<Component> = mutableListOf()
+    private val initialContentWidth: Int,
+    initialPreferredContentSize: Size = Size.unknown().withWidth(initialContentWidth),
+    private var nextPosition: Position = Position.defaultPosition(),
+    private val components: MutableList<Component> = mutableListOf(),
+    private val inlineElements: MutableList<Component> = mutableListOf()
 ) : BaseComponentBuilder<TextBox, TextBoxBuilder>(DefaultTextBoxRenderer()) {
 
     init {
@@ -44,109 +44,111 @@ class TextBoxBuilder private constructor(
 
     @JvmOverloads
     fun addHeader(
-            text: String,
-            withNewLine: Boolean = true
+        text: String,
+        withNewLine: Boolean = true
     ) = also {
         addHeader(
-                headerBuilder = HeaderBuilder.newBuilder()
-                        .withText(text)
-                        .withTileset(tileset),
-                withNewLine = withNewLine
+            headerBuilder = HeaderBuilder.newBuilder()
+                .withText(text)
+                .withTileset(tileset),
+            withNewLine = withNewLine
         )
     }
 
     @JvmOverloads
     fun addHeader(
-            headerBuilder: HeaderBuilder,
-            withNewLine: Boolean = true
+        headerBuilder: HeaderBuilder,
+        withNewLine: Boolean = true
     ) = also {
         val size = Size.create(contentWidth, headerBuilder.text.length.div(contentWidth) + 1)
         addHeader(
-                header = headerBuilder
-                        .withAlignment(positionalAlignment(nextPosition))
-                        .withPreferredSize(size)
-                        .build(),
-                withNewLine = withNewLine
+            header = headerBuilder
+                .withAlignment(positionalAlignment(nextPosition))
+                .withPreferredSize(size)
+                .build(),
+            withNewLine = withNewLine
         )
     }
 
     @JvmOverloads
     fun addHeader(
-            header: Header,
-            withNewLine: Boolean = true
+        header: Header,
+        withNewLine: Boolean = true
     ): TextBoxBuilder = addBlockComponent(header, withNewLine)
 
     @JvmOverloads
     fun addParagraph(
-            text: String,
-            withNewLine: Boolean = true,
-            withTypingEffectSpeedInMs: Long = 0
+        text: String,
+        withNewLine: Boolean = true,
+        withTypingEffectSpeedInMs: Long = 0
     ) = also {
         addParagraph(
-                paragraphBuilder = ParagraphBuilder.newBuilder()
-                        .withText(text)
-                        .withTypingEffect(withTypingEffectSpeedInMs)
-                        .withTileset(tileset),
-                withNewLine = withNewLine)
+            paragraphBuilder = ParagraphBuilder.newBuilder()
+                .withText(text)
+                .withTypingEffect(withTypingEffectSpeedInMs)
+                .withTileset(tileset),
+            withNewLine = withNewLine
+        )
     }
 
     @JvmOverloads
     fun addParagraph(
-            paragraphBuilder: ParagraphBuilder,
-            withNewLine: Boolean = true
+        paragraphBuilder: ParagraphBuilder,
+        withNewLine: Boolean = true
     ) = also {
         val size = Size.create(contentWidth, paragraphBuilder.text.length.div(contentWidth) + 1)
         addParagraph(
-                paragraph = paragraphBuilder
-                        .withAlignment(positionalAlignment(nextPosition))
-                        .withPreferredSize(size)
-                        .build(),
-                withNewLine = withNewLine)
+            paragraph = paragraphBuilder
+                .withAlignment(positionalAlignment(nextPosition))
+                .withPreferredSize(size)
+                .build(),
+            withNewLine = withNewLine
+        )
     }
 
     @JvmOverloads
     fun addParagraph(
-            paragraph: Paragraph,
-            withNewLine: Boolean = true
+        paragraph: Paragraph,
+        withNewLine: Boolean = true
     ): TextBoxBuilder = addBlockComponent(paragraph, withNewLine)
 
     @JvmOverloads
     fun addListItem(
-            text: String,
-            withNewLine: Boolean = true
+        text: String,
+        withNewLine: Boolean = true
     ) = also {
         addListItem(
-                listItemBuilder = ListItemBuilder.newBuilder()
-                        .withText(text)
-                        .withTileset(tileset),
-                withNewLine = withNewLine
+            listItemBuilder = ListItemBuilder.newBuilder()
+                .withText(text)
+                .withTileset(tileset),
+            withNewLine = withNewLine
         )
     }
 
     @JvmOverloads
     fun addListItem(
-            listItemBuilder: ListItemBuilder,
-            withNewLine: Boolean = true
+        listItemBuilder: ListItemBuilder,
+        withNewLine: Boolean = true
     ) = also {
         val size = Size.create(contentWidth, listItemBuilder.text.length.div(contentWidth) + 1)
         addListItem(
-                listItem = listItemBuilder
-                        .withAlignment(positionalAlignment(nextPosition))
-                        .withPreferredSize(size)
-                        .build(),
-                withNewLine = withNewLine
+            listItem = listItemBuilder
+                .withAlignment(positionalAlignment(nextPosition))
+                .withPreferredSize(size)
+                .build(),
+            withNewLine = withNewLine
         )
     }
 
     @JvmOverloads
     fun addListItem(
-            listItem: ListItem,
-            withNewLine: Boolean = true
+        listItem: ListItem,
+        withNewLine: Boolean = true
     ): TextBoxBuilder = addBlockComponent(listItem, withNewLine)
 
     private fun addBlockComponent(
-            component: Component,
-            withNewLine: Boolean
+        component: Component,
+        withNewLine: Boolean
     ): TextBoxBuilder = also {
         require(component.width <= contentWidth) {
             "Child width (${component.width} must be less than or equal to content width (${contentWidth})."
@@ -166,11 +168,11 @@ class TextBoxBuilder private constructor(
             "The length of elements in the current line can't be bigger than '$contentWidth'."
         }
         inlineElements.add(
-                LabelBuilder.newBuilder()
-                        .withText(text)
-                        .withAlignment(positionalAlignment(Position.create(currentInlineLength, 0)))
-                        .withTileset(tileset)
-                        .build()
+            LabelBuilder.newBuilder()
+                .withText(text)
+                .withAlignment(positionalAlignment(Position.create(currentInlineLength, 0)))
+                .withTileset(tileset)
+                .build()
         )
     }
 
@@ -219,14 +221,14 @@ class TextBoxBuilder private constructor(
 
     private fun currentInlineLength(): Int {
         return inlineElements.asSequence()
-                .map { it.size.width }
-                .fold(0, Int::plus)
+            .map { it.size.width }
+            .fold(0, Int::plus)
     }
 
     override fun build(): TextBox {
         return DefaultTextBox(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
         ).also { textBox ->
             components.forEach {
                 textBox.addComponent(it)
@@ -235,11 +237,11 @@ class TextBoxBuilder private constructor(
     }
 
     override fun createCopy() = TextBoxBuilder(
-            initialContentWidth = contentWidth,
-            nextPosition = nextPosition,
-            components = components.toMutableList(),
-            initialPreferredContentSize = preferredContentSize,
-            inlineElements = inlineElements
+        initialContentWidth = contentWidth,
+        nextPosition = nextPosition,
+        components = components.toMutableList(),
+        initialPreferredContentSize = preferredContentSize,
+        inlineElements = inlineElements
     ).withProps(props.copy())
 
 

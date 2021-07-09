@@ -21,25 +21,25 @@ class HorizontalSliderBuilder : SliderBuilder<Slider, HorizontalSliderBuilder>(H
         set(value) {
             require(value in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
             preferredContentSize = Size.create(
-                    width = value + 1,
-                    height = 1
+                width = value + 1,
+                height = 1
             )
             field = value
         }
 
     override fun build(): Slider = DefaultHorizontalSlider(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            minValue = minValue,
-            maxValue = maxValue,
-            numberOfSteps = numberOfSteps,
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
+        minValue = minValue,
+        maxValue = maxValue,
+        numberOfSteps = numberOfSteps,
     )
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withMinValue(minValue)
-            .withMaxValue(maxValue)
-            .withNumberOfSteps(numberOfSteps)
+        .withProps(props.copy())
+        .withMinValue(minValue)
+        .withMaxValue(maxValue)
+        .withNumberOfSteps(numberOfSteps)
 
     companion object {
 

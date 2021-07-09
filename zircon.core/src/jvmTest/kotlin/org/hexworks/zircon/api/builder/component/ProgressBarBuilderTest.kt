@@ -22,10 +22,10 @@ class ProgressBarBuilderTest : ComponentBuilderTest<ProgressBar, ProgressBarBuil
     @Test
     fun shouldProperlySetDefaultContentWidth() {
         target.withRange(10)
-                .withNumberOfSteps(10)
+            .withNumberOfSteps(10)
         val progressBar = target.build()
         assertThat(progressBar.contentSize.width)
-                .isEqualTo(10)
+            .isEqualTo(10)
     }
 }
 

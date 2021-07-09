@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.screen.Screen.Companion.create
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 abstract class ComponentExampleKotlin(
-        private val size: Size = GRID_SIZE
+    private val size: Size = GRID_SIZE
 ) {
 
     /**
@@ -30,40 +30,43 @@ abstract class ComponentExampleKotlin(
     fun createExampleContainer(screen: Screen, title: String): VBox {
 
         val container = vbox()
-                .withPreferredSize(size)
-                .withSpacing(1)
-                .withComponentRenderer(NoOpComponentRenderer())
-                .withTileset(DEFAULT_TILESET)
-                .build()
+            .withPreferredSize(size)
+            .withSpacing(1)
+            .withComponentRenderer(NoOpComponentRenderer())
+            .withTileset(DEFAULT_TILESET)
+            .build()
 
         val heading = hbox()
-                .withPreferredSize(size.width, 5)
-                .build()
+            .withPreferredSize(size.width, 5)
+            .build()
 
         val controls = vbox()
-                .withPreferredSize(size.width / 2, 5)
-                .build()
+            .withPreferredSize(size.width / 2, 5)
+            .build()
 
         controls.addComponent(label().withText("Pick a theme"))
 
-        controls.addFragment(Fragments.colorThemeSelector(controls.width - 4, DEFAULT_THEME)
+        controls.addFragment(
+            Fragments.colorThemeSelector(controls.width - 4, DEFAULT_THEME)
                 .withThemeOverrides(screen)
-                .build())
+                .build()
+        )
 
         controls.addComponent(label())
 
         controls.addComponent(label().withText("Pick a tileset"))
         val tilesetSelector = tilesetSelector(controls.width - 4, DEFAULT_TILESET)
-                .withTilesetOverrides(container)
-                .build()
+            .withTilesetOverrides(container)
+            .build()
         controls.addFragment(tilesetSelector)
         heading.addComponents(
-                header().withText(title).withPreferredSize(size.width / 2, 1).build(),
-                controls)
+            header().withText(title).withPreferredSize(size.width / 2, 1).build(),
+            controls
+        )
         val exampleArea = hbox()
-                .withComponentRenderer(NoOpComponentRenderer())
-                .withPreferredSize(size.width, size.height - 6)
-                .build()
+            .withComponentRenderer(NoOpComponentRenderer())
+            .withPreferredSize(size.width, size.height - 6)
+            .build()
         addExamples(exampleArea)
         container.addComponents(heading, exampleArea)
         return container
@@ -73,16 +76,18 @@ abstract class ComponentExampleKotlin(
      * Shows this example with the given title on the screen.
      */
     fun show(title: String) {
-        val tileGrid = startTileGrid(newBuilder()
+        val tileGrid = startTileGrid(
+            newBuilder()
                 .withDefaultTileset(DEFAULT_TILESET)
                 .withSize(size.plus(create(2, 2)))
-                .build())
+                .build()
+        )
         val screen = create(tileGrid)
         val container: Container = panel()
-                .withPreferredSize(size)
-                .withPosition(offset1x1())
-                .withComponentRenderer(NoOpComponentRenderer())
-                .build()
+            .withPreferredSize(size)
+            .withPosition(offset1x1())
+            .withComponentRenderer(NoOpComponentRenderer())
+            .build()
         container.addComponent(createExampleContainer(screen, title))
         screen.addComponent(container)
         screen.display()

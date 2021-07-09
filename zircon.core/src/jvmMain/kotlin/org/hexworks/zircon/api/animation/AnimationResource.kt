@@ -33,17 +33,18 @@ class AnimationResource {
                     val frameImage = REXPaintResource.loadREXFile(files.first { it.name == fileName }.inputStream())
                     val size = frameImage.toLayerList(tileset).maxByOrNull { it.size }!!.size
                     DefaultAnimationFrame(
-                            size = size,
-                            layers = frameImage.toLayerList(tileset).map { it.asInternalLayer() },
-                            repeatCount = frame.repeatCount)
+                        size = size,
+                        layers = frameImage.toLayerList(tileset).map { it.asInternalLayer() },
+                        repeatCount = frame.repeatCount
+                    )
                 }
                 // we need this trick to not load the file (and create a frame out of it) if it has already been loaded
                 frameMap[frame.frame]!!.copy(repeatCount = frame.repeatCount)
             }
             return AnimationBuilder.newBuilder()
-                    .withFps(animationData.frameRate)
-                    .withLoopCount(animationData.loopCount)
-                    .addFrames(frames)
+                .withFps(animationData.frameRate)
+                .withLoopCount(animationData.loopCount)
+                .addFrames(frames)
         }
     }
 }

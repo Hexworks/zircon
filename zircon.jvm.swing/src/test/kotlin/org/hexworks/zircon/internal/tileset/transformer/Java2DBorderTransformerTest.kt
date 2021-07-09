@@ -28,7 +28,7 @@ class Java2DBorderTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = TileBuilder.newBuilder()
-                .withModifiers(Modifiers.border())
-                .build()
+            .withModifiers(Modifiers.border())
+            .build()
     }
 }

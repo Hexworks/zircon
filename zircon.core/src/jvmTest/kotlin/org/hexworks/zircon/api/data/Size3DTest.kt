@@ -23,13 +23,13 @@ class Size3DTest {
     @Test
     fun shouldProperlyPlus() {
         assertThat(Size3D.create(1, 2, 3).plus(Size3D.create(2, 1, 4)))
-                .isEqualTo(Size3D.create(3, 3, 7))
+            .isEqualTo(Size3D.create(3, 3, 7))
     }
 
     @Test
     fun shouldProperlyMinus() {
         assertThat(Size3D.create(8, 4, 6).minus(Size3D.create(2, 1, 4)))
-                .isEqualTo(Size3D.create(6, 3, 2))
+            .isEqualTo(Size3D.create(6, 3, 2))
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -47,14 +47,15 @@ class Size3DTest {
         val size = Size3D.create(2, 2, 2)
 
         assertThat(size.fetchPositions().toList()).containsExactly(
-                Position3D.create(0, 0, 0),
-                Position3D.create(1, 0, 0),
-                Position3D.create(0, 1, 0),
-                Position3D.create(1, 1, 0),
-                Position3D.create(0, 0, 1),
-                Position3D.create(1, 0, 1),
-                Position3D.create(0, 1, 1),
-                Position3D.create(1, 1, 1))
+            Position3D.create(0, 0, 0),
+            Position3D.create(1, 0, 0),
+            Position3D.create(0, 1, 0),
+            Position3D.create(1, 1, 0),
+            Position3D.create(0, 0, 1),
+            Position3D.create(1, 0, 1),
+            Position3D.create(0, 1, 1),
+            Position3D.create(1, 1, 1)
+        )
     }
 
     @Test
@@ -80,10 +81,10 @@ class Size3DTest {
     @Test
     fun shouldProperlyCheckContainsPosition() {
         val size = Size3D.create(2, 2, 2)
-        val posContained = Position3D.create(1,1,1)
-        val posZero = Position3D.create(0,0,0)
-        val posTooBig = Position3D.create(3,3,3)
-        val posTooSmall = Position3D.create(-1,-1,-1)
+        val posContained = Position3D.create(1, 1, 1)
+        val posZero = Position3D.create(0, 0, 0)
+        val posTooBig = Position3D.create(3, 3, 3)
+        val posTooSmall = Position3D.create(-1, -1, -1)
 
         assertThat(size.containsPosition(posContained)).isTrue()
         assertThat(size.containsPosition(posZero)).isTrue()

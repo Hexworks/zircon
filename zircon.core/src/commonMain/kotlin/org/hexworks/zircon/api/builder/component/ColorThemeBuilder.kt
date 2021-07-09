@@ -42,20 +42,20 @@ class ColorThemeBuilder : Builder<ColorTheme> {
     }
 
     override fun build(): ColorTheme = DefaultColorTheme(
-            name = name,
-            primaryForegroundColor = primaryForegroundColor,
-            primaryBackgroundColor = primaryBackgroundColor,
-            secondaryForegroundColor = secondaryForegroundColor,
-            secondaryBackgroundColor = secondaryBackgroundColor,
-            accentColor = accentColor
+        name = name,
+        primaryForegroundColor = primaryForegroundColor,
+        primaryBackgroundColor = primaryBackgroundColor,
+        secondaryForegroundColor = secondaryForegroundColor,
+        secondaryBackgroundColor = secondaryBackgroundColor,
+        accentColor = accentColor
     )
 
     override fun createCopy() = newBuilder()
-            .withPrimaryForegroundColor(primaryForegroundColor)
-            .withPrimaryBackgroundColor(primaryBackgroundColor)
-            .withSecondaryForegroundColor(secondaryForegroundColor)
-            .withSecondaryBackgroundColor(secondaryBackgroundColor)
-            .withAccentColor(accentColor)
+        .withPrimaryForegroundColor(primaryForegroundColor)
+        .withPrimaryBackgroundColor(primaryBackgroundColor)
+        .withSecondaryForegroundColor(secondaryForegroundColor)
+        .withSecondaryBackgroundColor(secondaryBackgroundColor)
+        .withAccentColor(accentColor)
 
 
     companion object {

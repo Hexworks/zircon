@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.fragment.impl.table.DefaultTable
 import org.hexworks.zircon.api.fragment.table.TableColumn
 
 @Beta
-class TableBuilder<M : Any>(private val data: ObservableList<M>): FragmentBuilder<Table<M>, TableBuilder<M>> {
+class TableBuilder<M : Any>(private val data: ObservableList<M>) : FragmentBuilder<Table<M>, TableBuilder<M>> {
 
     private val columns: MutableList<TableColumn<M, *, *>> = mutableListOf()
     private var height: Int = 5

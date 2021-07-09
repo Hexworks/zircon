@@ -11,31 +11,31 @@ class ANSITileColorTest {
     @Test
     fun shouldReturnProperAWTColor() {
         assertThat(ANSITileColor.YELLOW.toAWTColor())
-                .isEqualTo(YELLOW)
+            .isEqualTo(YELLOW)
     }
 
     @Test
     fun shouldReturnProperRed() {
         assertThat(ANSITileColor.YELLOW.red)
-                .isEqualTo(RED)
+            .isEqualTo(RED)
     }
 
     @Test
     fun shouldReturnProperGreen() {
         assertThat(ANSITileColor.YELLOW.green)
-                .isEqualTo(GREEN)
+            .isEqualTo(GREEN)
     }
 
     @Test
     fun shouldReturnProperBlue() {
         assertThat(ANSITileColor.YELLOW.blue)
-                .isEqualTo(BLUE)
+            .isEqualTo(BLUE)
     }
 
     @Test
     fun shouldReturnProperAlpha() {
         assertThat(ANSITileColor.YELLOW.alpha)
-                .isEqualTo(ALPHA)
+            .isEqualTo(ALPHA)
     }
 
     companion object {

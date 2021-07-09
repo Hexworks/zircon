@@ -32,8 +32,8 @@ import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 class LibgdxRenderer(
-        private val grid: InternalTileGrid,
-        private val debug: Boolean = false
+    private val grid: InternalTileGrid,
+    private val debug: Boolean = false
 ) : Renderer {
 
     override val isClosed = false.toProperty()
@@ -42,8 +42,10 @@ class LibgdxRenderer(
     private var maybeBatch: Maybe<SpriteBatch> = Maybes.empty()
     private lateinit var cursorRenderer: ShapeRenderer
     private val tilesetLoader: TilesetLoader<SpriteBatch> =
-            ChainedTilesetLoader.inOrder(config.tilesetLoaders as List<TilesetLoader<SpriteBatch>>
-                    + LibgdxTilesetLoader())
+        ChainedTilesetLoader.inOrder(
+            config.tilesetLoaders as List<TilesetLoader<SpriteBatch>>
+                    + LibgdxTilesetLoader()
+        )
     private var blinkOn = true
     private var timeSinceLastBlink: Float = 0f
 
@@ -91,9 +93,9 @@ class LibgdxRenderer(
                 val renderable = renderables[i]
                 if (!renderable.isHidden) {
                     val graphics = FastTileGraphics(
-                            initialSize = renderable.size,
-                            initialTileset = renderable.tileset,
-                            initialTiles = emptyMap()
+                        initialSize = renderable.size,
+                        initialTileset = renderable.tileset,
+                        initialTiles = emptyMap()
                     )
                     renderable.render(graphics)
                     graphics.contents().forEach { (tilePos, tile) ->
@@ -110,10 +112,10 @@ class LibgdxRenderer(
             for ((pos, tiles) in tilesToRender) {
                 for ((tile, tileset) in tiles) {
                     renderTile(
-                            batch = batch,
-                            position = pos.toPixelPosition(tileset),
-                            tile = tile,
-                            tileset = tilesetLoader.loadTilesetFrom(tileset)
+                        batch = batch,
+                        position = pos.toPixelPosition(tileset),
+                        tile = tile,
+                        tileset = tilesetLoader.loadTilesetFrom(tileset)
                     )
                 }
             }
@@ -128,10 +130,10 @@ class LibgdxRenderer(
     }
 
     private fun renderTile(
-            batch: SpriteBatch,
-            tile: Tile,
-            tileset: Tileset<SpriteBatch>,
-            position: PixelPosition
+        batch: SpriteBatch,
+        tile: Tile,
+        tileset: Tileset<SpriteBatch>,
+        position: PixelPosition
     ) {
         if (tile.isNotEmpty) {
             var finalTile = tile
@@ -144,29 +146,29 @@ class LibgdxRenderer(
             }
             finalTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
-                        .withForegroundColor(tile.backgroundColor)
+                    .withForegroundColor(tile.backgroundColor)
             } else {
                 tile
             }
             drawBack(
-                    tile = finalTile,
-                    surface = batch,
-                    position = position
+                tile = finalTile,
+                surface = batch,
+                position = position
             )
             ((finalTile as? TilesetHolder)?.let {
                 tilesetLoader.loadTilesetFrom(it.tileset)
             } ?: tileset).drawTile(
-                    tile = finalTile,
-                    surface = batch,
-                    position = position
+                tile = finalTile,
+                surface = batch,
+                position = position
             )
         }
     }
 
     private fun drawBack(
-            tile: Tile,
-            surface: SpriteBatch,
-            position: Position
+        tile: Tile,
+        surface: SpriteBatch,
+        position: Position
     ) {
         val x = position.x.toFloat()
         val y = position.y.toFloat()
@@ -176,10 +178,10 @@ class LibgdxRenderer(
         backSprite.setOriginBasedPosition(x, y)
         backSprite.flip(false, true)
         backSprite.color = Color(
-                tile.backgroundColor.red.toFloat() / 255,
-                tile.backgroundColor.green.toFloat() / 255,
-                tile.backgroundColor.blue.toFloat() / 255,
-                tile.backgroundColor.alpha.toFloat() / 255
+            tile.backgroundColor.red.toFloat() / 255,
+            tile.backgroundColor.green.toFloat() / 255,
+            tile.backgroundColor.blue.toFloat() / 255,
+            tile.backgroundColor.alpha.toFloat() / 255
         )
         backSprite.draw(surface)
     }
@@ -220,19 +222,19 @@ class LibgdxRenderer(
 
     private fun colorToGDXColor(color: TileColor): Color {
         return Color(
-                color.red / 255.0f,
-                color.green / 255.0f,
-                color.blue / 255.0f,
-                color.alpha / 255.0f
+            color.red / 255.0f,
+            color.green / 255.0f,
+            color.blue / 255.0f,
+            color.alpha / 255.0f
         )
     }
 
     fun TileColor.toGdxColor(): Color {
         return Color(
-                this.red / 255.0f,
-                this.green / 255.0f,
-                this.blue / 255.0f,
-                this.alpha / 255.0f
+            this.red / 255.0f,
+            this.green / 255.0f,
+            this.blue / 255.0f,
+            this.alpha / 255.0f
         )
     }
 }

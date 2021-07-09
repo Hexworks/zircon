@@ -15,10 +15,11 @@ class Java2DCropTransformer : TextureTransformer<BufferedImage> {
         val txt = texture.texture
         val newImage = BufferedImage(texture.width, texture.width, BufferedImage.TRANSLUCENT)
         newImage.createGraphics()
-                .drawImage(txt.getSubimage(x, y, width, height), x, y, null)
+            .drawImage(txt.getSubimage(x, y, width, height), x, y, null)
         return DefaultTileTexture(
-                width = txt.width,
-                height = txt.height,
-                texture = newImage)
+            width = txt.width,
+            height = txt.height,
+            texture = newImage
+        )
     }
 }

@@ -10,15 +10,15 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class HeaderBuilder : ComponentWithTextBuilder<Header, HeaderBuilder>(
-        initialRenderer = DefaultHeaderRenderer(),
-        initialText = ""
+    initialRenderer = DefaultHeaderRenderer(),
+    initialText = ""
 ) {
 
     override fun build(): Header {
         return DefaultHeader(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
         )
     }
 

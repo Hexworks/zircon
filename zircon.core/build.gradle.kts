@@ -107,9 +107,9 @@ tasks {
 
 publishing {
     publishWith(
-            project = project,
-            module = "zircon.core",
-            desc = "Core component of Zircon."
+        project = project,
+        module = "zircon.core",
+        desc = "Core component of Zircon."
     )
 }
 

@@ -18,21 +18,25 @@ object FadeOutExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(40, 10))
                 .withDebugMode(true)
-                .build())
+                .build()
+        )
 
         val text = "This text fades out"
 
         tileGrid.cursorPosition = Position.create(1, 1)
         text.forEach { c ->
-            tileGrid.putTile(Tile.defaultTile()
+            tileGrid.putTile(
+                Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
-                    .withModifiers(Modifiers.fadeOut(20, 2000)))
+                    .withModifiers(Modifiers.fadeOut(20, 2000))
+            )
         }
 
     }

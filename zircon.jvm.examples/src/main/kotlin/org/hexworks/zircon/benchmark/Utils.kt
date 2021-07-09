@@ -34,9 +34,9 @@ fun calculateSizeOfRec(obj: Any, level: Int = 0): Long {
     layout.fields().filter { it.name() != "value" }.forEach { fieldLayout ->
         restSize += fieldLayout.size()
         restSize += obj::class.members
-                .firstOrNull {
-                    it.name == fieldLayout.name()
-                }?.call(obj)?.let { calculateSizeOfRec(it, level + 1) } ?: 0
+            .firstOrNull {
+                it.name == fieldLayout.name()
+            }?.call(obj)?.let { calculateSizeOfRec(it, level + 1) } ?: 0
     }
     return layout.instanceSize() + restSize
 }
@@ -48,8 +48,8 @@ fun measureRuntimeOf(timeUnit: TimeUnit, fn: () -> Unit): RunTime {
     fn()
     val end = System.nanoTime()
     return RunTime(
-            timeUnit.convert(end - start, TimeUnit.NANOSECONDS),
-            timeUnit
+        timeUnit.convert(end - start, TimeUnit.NANOSECONDS),
+        timeUnit
     )
 }
 

@@ -56,7 +56,7 @@ object TableExample {
      */
     private fun buildTable(): Table<Person> =
         Fragments
-                // TODO: Use an observable list and add UI elements to add/remove elements
+            // TODO: Use an observable list and add UI elements to add/remove elements
             .table(data)
             .withHeight(20)
             .withColumnSpacing(1)
@@ -80,11 +80,11 @@ object TableExample {
      */
     private fun buildSelectionPanel(tableFragment: Table<Person>): VBox {
         return Components
-                .vbox()
-                .withPreferredSize(25, tableFragment.size.height)
-                .withSpacing(1)
-                .withDecorations(ComponentDecorations.box(BoxType.SINGLE))
-                .withPosition(Position.topRightOf(tableFragment.root))
+            .vbox()
+            .withPreferredSize(25, tableFragment.size.height)
+            .withSpacing(1)
+            .withDecorations(ComponentDecorations.box(BoxType.SINGLE))
+            .withPosition(Position.topRightOf(tableFragment.root))
             .build()
             .apply {
                 val personObs: ObservableValue<Person> =
@@ -184,34 +184,34 @@ object TableExample {
     }
 
     private fun heightPanel(width: Int, person: ObservableValue<Person>): HBox =
-            Components
-                    .hbox()
-                    .withSpacing(1)
-                    .withPreferredSize(width, 1)
-                    .build()
-                    .apply {
-                        addComponents(
-                                Components
-                                        .icon()
-                                        .withIcon(person.value.height.icon)
-                                        .build()
-                                        .apply { iconProperty.updateFrom(person.bindTransform { it.height.icon }) },
-                                Components.label()
-                                        .withPreferredSize(width - 2, 1)
-                                        .withText(person.value.height.name)
-                                        .build()
-                                        .apply { textProperty.updateFrom(person.bindTransform { it.height.name }) }
-                        )
-                    }
+        Components
+            .hbox()
+            .withSpacing(1)
+            .withPreferredSize(width, 1)
+            .build()
+            .apply {
+                addComponents(
+                    Components
+                        .icon()
+                        .withIcon(person.value.height.icon)
+                        .build()
+                        .apply { iconProperty.updateFrom(person.bindTransform { it.height.icon }) },
+                    Components.label()
+                        .withPreferredSize(width - 2, 1)
+                        .withText(person.value.height.name)
+                        .build()
+                        .apply { textProperty.updateFrom(person.bindTransform { it.height.name }) }
+                )
+            }
 
     private fun <T : Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
-            Components
-                    .label()
-                    .withPreferredSize(width, 1)
-                    .build()
-                    .apply {
-                        textProperty.updateFrom(bindTransform(labelText), true)
-                    }
+        Components
+            .label()
+            .withPreferredSize(width, 1)
+            .build()
+            .apply {
+                textProperty.updateFrom(bindTransform(labelText), true)
+            }
 
     private fun iconFor(height: Height): Icon =
         Components

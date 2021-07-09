@@ -16,9 +16,11 @@ import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.event.MouseEvent.NOBUTTON
 
-class ZirconInputListener(private val fontWidth: Int,
-                          private val fontHeight: Int,
-                          private val tileGrid: InternalTileGrid) : InputProcessor {
+class ZirconInputListener(
+    private val fontWidth: Int,
+    private val fontHeight: Int,
+    private val tileGrid: InternalTileGrid
+) : InputProcessor {
 
     private var clicking = false
     private var lastMouseLocation = Position.unknown()
@@ -37,8 +39,9 @@ class ZirconInputListener(private val fontWidth: Int,
             false
         } else {
             val event = createKeyboardEvent(
-                    keyCode = keyCode,
-                    type = KEY_TYPED)
+                keyCode = keyCode,
+                type = KEY_TYPED
+            )
             if (RuntimeConfig.config.isClipboardAvailable && event.isPasteEvent()) {
                 pasteClipboardContent()
             } else {
@@ -57,8 +60,9 @@ class ZirconInputListener(private val fontWidth: Int,
         }
         KEY_EVENT_TO_KEY_TYPE_LOOKUP[keycode]?.let { keyCode ->
             val event = createKeyboardEvent(
-                    keyCode = keyCode,
-                    type = KEY_PRESSED)
+                keyCode = keyCode,
+                type = KEY_PRESSED
+            )
             return if (RuntimeConfig.config.isClipboardAvailable && event.isPasteEvent()) {
                 pasteClipboardContent()
             } else {
@@ -77,9 +81,12 @@ class ZirconInputListener(private val fontWidth: Int,
             shiftPressed = false
         }
         KEY_EVENT_TO_KEY_TYPE_LOOKUP[keycode]?.let { keyCode ->
-            return tileGrid.process(createKeyboardEvent(
+            return tileGrid.process(
+                createKeyboardEvent(
                     keyCode = keyCode,
-                    type = KEY_RELEASED), UIEventPhase.TARGET).eventProcessed
+                    type = KEY_RELEASED
+                ), UIEventPhase.TARGET
+            ).eventProcessed
         }
         return false
     }
@@ -93,13 +100,14 @@ class ZirconInputListener(private val fontWidth: Int,
     private fun createKeyboardEvent(keyCode: KeyCode, type: KeyboardEventType): KeyboardEvent {
         val keyChar = keyCode.toChar()
         return KeyboardEvent(
-                type = type,
-                key = "${keyChar.orElse(' ')}",
-                code = keyCode,
-                ctrlDown = ctrlPressed,
-                altDown = altPressed,
-                metaDown = metaPressed,
-                shiftDown = shiftPressed)
+            type = type,
+            key = "${keyChar.orElse(' ')}",
+            code = keyCode,
+            ctrlDown = ctrlPressed,
+            altDown = altPressed,
+            metaDown = metaPressed,
+            shiftDown = shiftPressed
+        )
     }
 
     private fun KeyboardEvent.isPasteEvent() = (code == KeyCode.INSERT &&
@@ -150,14 +158,17 @@ class ZirconInputListener(private val fontWidth: Int,
     private fun processMouseEvent(eventType: MouseEventType, x: Int, y: Int, button: Int) {
         try {
             val position = Position.create(
-                    x = Math.max(0, x.div(fontWidth)),
-                    y = Math.max(0, y.div(fontHeight)))
+                x = Math.max(0, x.div(fontWidth)),
+                y = Math.max(0, y.div(fontHeight))
+            )
             MouseEvent(
-                    type = eventType,
-                    button = button,
-                    position = position).let {
+                type = eventType,
+                button = button,
+                position = position
+            ).let {
                 if (mouseMovedToNewPosition(eventType, position)
-                                .or(isNotMoveEvent(eventType))) {
+                        .or(isNotMoveEvent(eventType))
+                ) {
                     lastMouseLocation = position
                     tileGrid.process(it, UIEventPhase.TARGET)
                 }
@@ -171,7 +182,7 @@ class ZirconInputListener(private val fontWidth: Int,
     private fun isNotMoveEvent(eventType: MouseEventType) = eventType != MouseEventType.MOUSE_MOVED
 
     private fun mouseMovedToNewPosition(eventType: MouseEventType, position: Position) =
-            eventType == MouseEventType.MOUSE_MOVED && position != lastMouseLocation
+        eventType == MouseEventType.MOUSE_MOVED && position != lastMouseLocation
 
     companion object {
 
@@ -180,103 +191,104 @@ class ZirconInputListener(private val fontWidth: Int,
         // of Zircon
 
         private val KEY_EVENT_TO_KEY_TYPE_LOOKUP = mapOf(
-                NUM_0 to KeyCode.DIGIT_0,
-                NUM_1 to KeyCode.DIGIT_1,
-                NUM_2 to KeyCode.DIGIT_2,
-                NUM_3 to KeyCode.DIGIT_3,
-                NUM_4 to KeyCode.DIGIT_4,
-                NUM_5 to KeyCode.DIGIT_5,
-                NUM_6 to KeyCode.DIGIT_6,
-                NUM_7 to KeyCode.DIGIT_7,
-                NUM_8 to KeyCode.DIGIT_8,
-                NUM_9 to KeyCode.DIGIT_9,
-                A to KeyCode.KEY_A,
-                ALT_LEFT to KeyCode.ALT,
-                ALT_RIGHT to KeyCode.ALT,
-                APOSTROPHE to KeyCode.APOSTROPHE,
-                AT to KeyCode.AT,
-                B to KeyCode.KEY_B,
-                BACK to KeyCode.BACKSPACE,
-                BACKSLASH to KeyCode.BACKSLASH,
-                C to KeyCode.KEY_C,
-                CLEAR to KeyCode.CLEAR,
-                COMMA to KeyCode.COMMA,
-                D to KeyCode.KEY_D,
-                DEL to KeyCode.DELETE,
-                BACKSPACE to KeyCode.BACKSPACE,
-                FORWARD_DEL to KeyCode.DELETE,
-                DOWN to KeyCode.DOWN,
-                LEFT to KeyCode.LEFT,
-                RIGHT to KeyCode.RIGHT,
-                UP to KeyCode.UP,
-                E to KeyCode.KEY_E,
-                ENTER to KeyCode.ENTER,
-                EQUALS to KeyCode.EQUALS,
-                F to KeyCode.KEY_F,
-                G to KeyCode.KEY_G,
-                GRAVE to KeyCode.DEAD_GRAVE,
-                H to KeyCode.KEY_H,
-                HOME to KeyCode.HOME,
-                I to KeyCode.KEY_I,
-                J to KeyCode.KEY_J,
-                K to KeyCode.KEY_K,
-                L to KeyCode.KEY_L,
-                LEFT_BRACKET to KeyCode.OPEN_BRACKET,
-                M to KeyCode.KEY_M,
-                MENU to KeyCode.CONTEXT_MENU,
-                MINUS to KeyCode.MINUS,
-                N to KeyCode.KEY_N,
-                O to KeyCode.KEY_O,
-                P to KeyCode.KEY_P,
-                PERIOD to KeyCode.PERIOD,
-                PLUS to KeyCode.PLUS,
-                Q to KeyCode.KEY_Q,
-                R to KeyCode.KEY_R,
-                RIGHT_BRACKET to KeyCode.CLOSE_BRACKET,
-                S to KeyCode.KEY_S,
-                SEMICOLON to KeyCode.SEMICOLON,
-                SHIFT_LEFT to KeyCode.SHIFT,
-                SHIFT_RIGHT to KeyCode.SHIFT,
-                SLASH to KeyCode.SLASH,
-                SPACE to KeyCode.SPACE,
-                STAR to KeyCode.ASTERISK,
-                T to KeyCode.KEY_T,
-                TAB to KeyCode.TAB,
-                U to KeyCode.KEY_U,
-                V to KeyCode.KEY_V,
-                W to KeyCode.KEY_W,
-                X to KeyCode.KEY_X,
-                Y to KeyCode.KEY_Y,
-                Z to KeyCode.KEY_Z,
-                CONTROL_LEFT to KeyCode.CONTROL,
-                CONTROL_RIGHT to KeyCode.CONTROL,
-                ESCAPE to KeyCode.ESCAPE,
-                END to KeyCode.END,
-                INSERT to KeyCode.INSERT,
-                PAGE_UP to KeyCode.PAGE_UP,
-                PAGE_DOWN to KeyCode.PAGE_DOWN,
-                NUMPAD_0 to KeyCode.NUMPAD_0,
-                NUMPAD_1 to KeyCode.NUMPAD_1,
-                NUMPAD_2 to KeyCode.NUMPAD_2,
-                NUMPAD_3 to KeyCode.NUMPAD_3,
-                NUMPAD_4 to KeyCode.NUMPAD_4,
-                NUMPAD_5 to KeyCode.NUMPAD_5,
-                NUMPAD_6 to KeyCode.NUMPAD_6,
-                NUMPAD_7 to KeyCode.NUMPAD_7,
-                NUMPAD_8 to KeyCode.NUMPAD_8,
-                NUMPAD_9 to KeyCode.NUMPAD_9,
-                COLON to KeyCode.COLON,
-                F1 to KeyCode.F1,
-                F2 to KeyCode.F2,
-                F3 to KeyCode.F3,
-                F4 to KeyCode.F4,
-                F5 to KeyCode.F5,
-                F6 to KeyCode.F6,
-                F7 to KeyCode.F7,
-                F8 to KeyCode.F8,
-                F9 to KeyCode.F9,
-                F10 to KeyCode.F10,
-                F11 to KeyCode.F11,
-                F12 to KeyCode.F12)
+            NUM_0 to KeyCode.DIGIT_0,
+            NUM_1 to KeyCode.DIGIT_1,
+            NUM_2 to KeyCode.DIGIT_2,
+            NUM_3 to KeyCode.DIGIT_3,
+            NUM_4 to KeyCode.DIGIT_4,
+            NUM_5 to KeyCode.DIGIT_5,
+            NUM_6 to KeyCode.DIGIT_6,
+            NUM_7 to KeyCode.DIGIT_7,
+            NUM_8 to KeyCode.DIGIT_8,
+            NUM_9 to KeyCode.DIGIT_9,
+            A to KeyCode.KEY_A,
+            ALT_LEFT to KeyCode.ALT,
+            ALT_RIGHT to KeyCode.ALT,
+            APOSTROPHE to KeyCode.APOSTROPHE,
+            AT to KeyCode.AT,
+            B to KeyCode.KEY_B,
+            BACK to KeyCode.BACKSPACE,
+            BACKSLASH to KeyCode.BACKSLASH,
+            C to KeyCode.KEY_C,
+            CLEAR to KeyCode.CLEAR,
+            COMMA to KeyCode.COMMA,
+            D to KeyCode.KEY_D,
+            DEL to KeyCode.DELETE,
+            BACKSPACE to KeyCode.BACKSPACE,
+            FORWARD_DEL to KeyCode.DELETE,
+            DOWN to KeyCode.DOWN,
+            LEFT to KeyCode.LEFT,
+            RIGHT to KeyCode.RIGHT,
+            UP to KeyCode.UP,
+            E to KeyCode.KEY_E,
+            ENTER to KeyCode.ENTER,
+            EQUALS to KeyCode.EQUALS,
+            F to KeyCode.KEY_F,
+            G to KeyCode.KEY_G,
+            GRAVE to KeyCode.DEAD_GRAVE,
+            H to KeyCode.KEY_H,
+            HOME to KeyCode.HOME,
+            I to KeyCode.KEY_I,
+            J to KeyCode.KEY_J,
+            K to KeyCode.KEY_K,
+            L to KeyCode.KEY_L,
+            LEFT_BRACKET to KeyCode.OPEN_BRACKET,
+            M to KeyCode.KEY_M,
+            MENU to KeyCode.CONTEXT_MENU,
+            MINUS to KeyCode.MINUS,
+            N to KeyCode.KEY_N,
+            O to KeyCode.KEY_O,
+            P to KeyCode.KEY_P,
+            PERIOD to KeyCode.PERIOD,
+            PLUS to KeyCode.PLUS,
+            Q to KeyCode.KEY_Q,
+            R to KeyCode.KEY_R,
+            RIGHT_BRACKET to KeyCode.CLOSE_BRACKET,
+            S to KeyCode.KEY_S,
+            SEMICOLON to KeyCode.SEMICOLON,
+            SHIFT_LEFT to KeyCode.SHIFT,
+            SHIFT_RIGHT to KeyCode.SHIFT,
+            SLASH to KeyCode.SLASH,
+            SPACE to KeyCode.SPACE,
+            STAR to KeyCode.ASTERISK,
+            T to KeyCode.KEY_T,
+            TAB to KeyCode.TAB,
+            U to KeyCode.KEY_U,
+            V to KeyCode.KEY_V,
+            W to KeyCode.KEY_W,
+            X to KeyCode.KEY_X,
+            Y to KeyCode.KEY_Y,
+            Z to KeyCode.KEY_Z,
+            CONTROL_LEFT to KeyCode.CONTROL,
+            CONTROL_RIGHT to KeyCode.CONTROL,
+            ESCAPE to KeyCode.ESCAPE,
+            END to KeyCode.END,
+            INSERT to KeyCode.INSERT,
+            PAGE_UP to KeyCode.PAGE_UP,
+            PAGE_DOWN to KeyCode.PAGE_DOWN,
+            NUMPAD_0 to KeyCode.NUMPAD_0,
+            NUMPAD_1 to KeyCode.NUMPAD_1,
+            NUMPAD_2 to KeyCode.NUMPAD_2,
+            NUMPAD_3 to KeyCode.NUMPAD_3,
+            NUMPAD_4 to KeyCode.NUMPAD_4,
+            NUMPAD_5 to KeyCode.NUMPAD_5,
+            NUMPAD_6 to KeyCode.NUMPAD_6,
+            NUMPAD_7 to KeyCode.NUMPAD_7,
+            NUMPAD_8 to KeyCode.NUMPAD_8,
+            NUMPAD_9 to KeyCode.NUMPAD_9,
+            COLON to KeyCode.COLON,
+            F1 to KeyCode.F1,
+            F2 to KeyCode.F2,
+            F3 to KeyCode.F3,
+            F4 to KeyCode.F4,
+            F5 to KeyCode.F5,
+            F6 to KeyCode.F6,
+            F7 to KeyCode.F7,
+            F8 to KeyCode.F8,
+            F9 to KeyCode.F9,
+            F10 to KeyCode.F10,
+            F11 to KeyCode.F11,
+            F12 to KeyCode.F12
+        )
     }
 }

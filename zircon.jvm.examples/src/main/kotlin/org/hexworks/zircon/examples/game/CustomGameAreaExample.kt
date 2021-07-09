@@ -19,12 +19,12 @@ import org.hexworks.zircon.api.screen.Screen
 object CustomGameAreaExample {
 
     class CustomGameArea(
-            visibleSize: Size3D,
-            actualSize: Size3D
+        visibleSize: Size3D,
+        actualSize: Size3D
     ) : BaseGameArea<Tile, Block<Tile>>(
-            initialVisibleSize = visibleSize,
-            initialActualSize = actualSize,
-            initialFilters = listOf()
+        initialVisibleSize = visibleSize,
+        initialActualSize = actualSize,
+        initialFilters = listOf()
     )
 
     @JvmStatic
@@ -34,17 +34,21 @@ object CustomGameAreaExample {
 
         makeCaves(gameArea)
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withSize(VISIBLE_SIZE.to2DSize())
                 .enableBetaFeatures()
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withSize(VISIBLE_SIZE.to2DSize())
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
-                .build())
+                .build()
+        )
 
         screen.onShutdown {
             gameArea.dispose()
@@ -72,7 +76,8 @@ object CustomGameAreaExample {
                     for (ox in -1..1) {
                         for (oy in -1..1) {
                             if (x + ox < 0 || x + ox >= width || y + oy < 0
-                                    || y + oy >= height)
+                                || y + oy >= height
+                            )
                                 continue
 
                             if (tiles[Position.create(x + ox, y + oy)] === FLOOR)
@@ -88,22 +93,24 @@ object CustomGameAreaExample {
         }
         tiles.forEach { (pos, tile) ->
             val pos3D = pos.toPosition3D(0)
-            gameArea.setBlockAt(pos3D, Block.newBuilder<Tile>()
+            gameArea.setBlockAt(
+                pos3D, Block.newBuilder<Tile>()
                     .withContent(tile)
                     .withEmptyTile(Tile.empty())
-                    .build())
+                    .build()
+            )
         }
     }
 
     private val FLOOR = Tile.newBuilder()
-            .withCharacter(Symbols.INTERPUNCT)
-            .withForegroundColor(ANSITileColor.YELLOW)
-            .buildCharacterTile()
+        .withCharacter(Symbols.INTERPUNCT)
+        .withForegroundColor(ANSITileColor.YELLOW)
+        .buildCharacterTile()
 
     private val WALL = Tile.newBuilder()
-            .withCharacter('#')
-            .withForegroundColor(TileColor.fromString("#999999"))
-            .buildCharacterTile()
+        .withCharacter('#')
+        .withForegroundColor(TileColor.fromString("#999999"))
+        .buildCharacterTile()
 
     private val VISIBLE_SIZE = Size3D.create(60, 30, 10)
     private val ACTUAL_SIZE = Size3D.create(100, 100, 100)

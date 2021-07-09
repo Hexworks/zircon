@@ -9,43 +9,43 @@ class Position3DTest {
     fun shouldBeGreaterThanWhenZIsGreaterThanOther() {
 
         assertThat(POS.compareTo(POS_WITH_LESSER_Z))
-                .isEqualTo(GREATER)
+            .isEqualTo(GREATER)
     }
 
     @Test
     fun shouldBeLessThanWhenZIsLessThanOther() {
         assertThat(POS.compareTo(POS_WITH_GREATER_Z))
-                .isEqualTo(LESS)
+            .isEqualTo(LESS)
     }
 
     @Test
     fun shouldBeGreaterThanWhenZIsEqualAndYIsGreaterThanOther() {
         assertThat(POS.compareTo(POS_WITH_EQUAL_Z_LESSER_Y))
-                .isEqualTo(GREATER)
+            .isEqualTo(GREATER)
     }
 
     @Test
     fun shouldBeLessThanWhenZIsEqualAndYIsLessThanOther() {
         assertThat(POS.compareTo(POS_WITH_EQUAL_Z_GREATER_Y))
-                .isEqualTo(LESS)
+            .isEqualTo(LESS)
     }
 
     @Test
     fun shouldBeGreaterThanWhenZAndYIsEqualAndXIsGreaterThanOther() {
         assertThat(POS.compareTo(POS_WITH_EQUAL_Z_AND_Y_LESSER_X))
-                .isEqualTo(GREATER)
+            .isEqualTo(GREATER)
     }
 
     @Test
     fun shouldBeLessThanWhenZAndYIsEqualAndXIsLessThanOther() {
         assertThat(POS.compareTo(POS_WITH_EQUAL_Z_AND_Y_GREATER_X))
-                .isEqualTo(LESS)
+            .isEqualTo(LESS)
     }
 
     @Test
     fun shouldBeEqualWhenEverythingIsEqual() {
         assertThat(POS.compareTo(POS))
-                .isEqualTo(EQUAL)
+            .isEqualTo(EQUAL)
     }
 
     companion object {

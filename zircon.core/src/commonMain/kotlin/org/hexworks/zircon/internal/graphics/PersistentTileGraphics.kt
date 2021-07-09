@@ -74,9 +74,10 @@ class PersistentTileGraphics(
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
             val (currentTiles, _, currentSize) = state
-            tiles = currentTiles.putAll(currentSize.fetchPositions()
-                .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
-                .map { it to filler }.toMap()
+            tiles = currentTiles.putAll(
+                currentSize.fetchPositions()
+                    .minus(currentTiles.filterValues { it.isNotEmpty }.keys)
+                    .map { it to filler }.toMap()
             )
         }
     }

@@ -23,29 +23,34 @@ object VerticalTabBarExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val screen = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(size)
                 .withDebugMode(true)
-                .build()).toScreen()
+                .build()
+        ).toScreen()
 
         val contentSize = screen.size - Size.create(2, 2)
 
         val content = Components.panel()
-                .withSize(contentSize)
-                .withPosition(1, 1)
-                .withComponentRenderer(NoOpComponentRenderer())
-                .build()
+            .withSize(contentSize)
+            .withPosition(1, 1)
+            .withComponentRenderer(NoOpComponentRenderer())
+            .build()
 
-        content.addFragment(DefaultVerticalTabBar(
+        content.addFragment(
+            DefaultVerticalTabBar(
                 contentSize = contentSize.withRelativeWidth(-10),
                 barSize = contentSize.withWidth(10),
                 defaultSelected = "Buttons",
                 tabs = mapOf(
-                        "Buttons" to ButtonsExampleKotlin().createExampleContainer(screen, "Buttons"),
-                        "CheckBoxes" to CheckBoxesExampleJava().createExampleContainer(screen, "CheckBoxes"),
-                        "ToggleBtns" to ToggleButtonsExampleJava().createExampleContainer(screen, "ToggleBtns")
-                )))
+                    "Buttons" to ButtonsExampleKotlin().createExampleContainer(screen, "Buttons"),
+                    "CheckBoxes" to CheckBoxesExampleJava().createExampleContainer(screen, "CheckBoxes"),
+                    "ToggleBtns" to ToggleButtonsExampleJava().createExampleContainer(screen, "ToggleBtns")
+                )
+            )
+        )
 
         screen.addComponent(content)
         screen.display()

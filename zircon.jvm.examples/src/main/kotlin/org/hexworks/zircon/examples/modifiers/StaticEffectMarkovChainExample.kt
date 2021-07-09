@@ -33,50 +33,66 @@ object StaticEffectMarkovChainExample {
     fun main(args: Array<String>) {
 
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(80, 40))
                 .withDebugMode(true)
-                .build())
+                .build()
+        )
 
         val defaultGlow = Glow()
 
         tileGrid.size.fetchPositions().forEach { _ ->
 
             val tile = Tile.empty()
-                    .withForegroundColor(normal)
-                    .withBackgroundColor(background)
-                    .withCharacter(characters[random.nextInt(characters.size)])
-                    .withModifiers(defaultGlow)
+                .withForegroundColor(normal)
+                .withBackgroundColor(background)
+                .withCharacter(characters[random.nextInt(characters.size)])
+                .withModifiers(defaultGlow)
 
-            val initialNode = MarkovChainNode.create(tile,
-                    random.nextLong())
+            val initialNode = MarkovChainNode.create(
+                tile,
+                random.nextLong()
+            )
 
-            val emptyNode = MarkovChainNode.create(tile
+            val emptyNode = MarkovChainNode.create(
+                tile
                     .withCharacter(' '),
-                    random.nextLong())
+                random.nextLong()
+            )
 
-            val staticNode0 = MarkovChainNode.create(tile
+            val staticNode0 = MarkovChainNode.create(
+                tile
                     .withCharacter(Symbols.SINGLE_LINE_HORIZONTAL)
                     .withForegroundColor(glow0),
-                    random.nextLong())
-            val staticNode1 = MarkovChainNode.create(tile
+                random.nextLong()
+            )
+            val staticNode1 = MarkovChainNode.create(
+                tile
                     .withCharacter(Symbols.DOUBLE_LINE_HORIZONTAL)
                     .withForegroundColor(glow1),
-                    random.nextLong())
+                random.nextLong()
+            )
 
-            val noiseNode0 = MarkovChainNode.create(tile
+            val noiseNode0 = MarkovChainNode.create(
+                tile
                     .withCharacter(Symbols.BLOCK_SPARSE)
                     .withForegroundColor(dark),
-                    random.nextLong())
-            val noiseNode1 = MarkovChainNode.create(tile
+                random.nextLong()
+            )
+            val noiseNode1 = MarkovChainNode.create(
+                tile
                     .withCharacter(Symbols.BLOCK_MIDDLE)
                     .withForegroundColor(dark),
-                    random.nextLong())
-            val noiseNode2 = MarkovChainNode.create(tile
+                random.nextLong()
+            )
+            val noiseNode2 = MarkovChainNode.create(
+                tile
                     .withCharacter(Symbols.BLOCK_DENSE)
                     .withForegroundColor(dark),
-                    random.nextLong())
+                random.nextLong()
+            )
 
             initialNode.addNext(.0025, emptyNode)
             emptyNode.addNext(.999, initialNode)

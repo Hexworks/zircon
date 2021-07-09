@@ -27,12 +27,16 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
 
     @Test
     open fun When_a_highlighted_component_with_focus_is_no_longer_hovered_Then_it_becomes_focused() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.focusGiven()
         rendererStub.clear()
-        target.mouseExited(event = MouseEvent(MouseEventType.MOUSE_EXITED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseExited(
+            event = MouseEvent(MouseEventType.MOUSE_EXITED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(FOCUSED)
     }
@@ -55,8 +59,9 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         rendererStub.clear()
 
         target.mouseExited(
-                event = MouseEvent(MouseEventType.MOUSE_EXITED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MouseEventType.MOUSE_EXITED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(FOCUSED)
     }
@@ -78,8 +83,9 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         target.focusGiven()
         rendererStub.clear()
         target.mouseReleased(
-                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }
@@ -92,8 +98,9 @@ abstract class FocusableComponentImplementationTest<T : InternalComponent> : Com
         rendererStub.clear()
 
         target.mouseReleased(
-                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }

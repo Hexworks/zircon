@@ -10,21 +10,21 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class TextAreaBuilder : ComponentWithTextBuilder<TextArea, TextAreaBuilder>(
-        initialRenderer = DefaultTextAreaRenderer(),
-        initialText = ""
+    initialRenderer = DefaultTextAreaRenderer(),
+    initialText = ""
 ) {
 
     override fun build(): TextArea {
         return DefaultTextArea(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withText(text)
+        .withProps(props.copy())
+        .withText(text)
 
     companion object {
 

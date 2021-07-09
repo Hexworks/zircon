@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 
 
-
 object Assets {
     val MANAGER: AssetManager = AssetManager()
 
@@ -20,7 +19,7 @@ object Assets {
         MANAGER.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
     }
 
-    fun getCP437TextureDescriptor(tilesetName: String) : AssetDescriptor<Texture> {
+    fun getCP437TextureDescriptor(tilesetName: String): AssetDescriptor<Texture> {
         return AssetDescriptor<Texture>(tilesetName.substring(1), Texture::class.java)
     }
 }

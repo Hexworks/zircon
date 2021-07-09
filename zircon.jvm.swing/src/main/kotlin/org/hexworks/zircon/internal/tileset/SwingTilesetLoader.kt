@@ -24,7 +24,7 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<Graphics2D> {
         return tilesetCache.getOrPut(resource.id) {
             LOADERS[resource.getLoaderKey()]?.invoke(resource)
-                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
+                ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
         }
     }
 
@@ -40,20 +40,20 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
         fun TilesetResource.getLoaderKey() = "${this.tileType.name}-${this.tilesetType.name}"
 
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<Graphics2D>> = mapOf(
-                "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
-                    Java2DCP437Tileset(
-                            resource = resource,
-                            source = ImageLoader.readImage(resource)
-                    )
-                },
-                "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
-                    Java2DGraphicTileset(resource)
-                },
-                "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
-                    MonospaceAwtFontTileset(resource)
-                },
-                "$IMAGE_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
-                    Java2DImageDictionaryTileset(resource)
-                })
+            "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
+                Java2DCP437Tileset(
+                    resource = resource,
+                    source = ImageLoader.readImage(resource)
+                )
+            },
+            "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
+                Java2DGraphicTileset(resource)
+            },
+            "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
+                MonospaceAwtFontTileset(resource)
+            },
+            "$IMAGE_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
+                Java2DImageDictionaryTileset(resource)
+            })
     }
 }

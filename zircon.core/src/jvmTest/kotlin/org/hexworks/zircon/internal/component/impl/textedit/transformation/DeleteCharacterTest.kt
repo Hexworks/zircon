@@ -20,10 +20,13 @@ class DeleteCharacterTest {
         target.applyTo(buffer)
 
         assertThat(buffer.cursor).isEqualTo(
-                cursor.withRelativeColumn(-1))
+            cursor.withRelativeColumn(-1)
+        )
         assertThat(buffer.textBuffer).isEqualTo(
-                mutableListOf(mutableListOf(OTHER_CHAR, OTHER_CHAR),
-                        mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR))
+            mutableListOf(
+                mutableListOf(OTHER_CHAR, OTHER_CHAR),
+                mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)
+            )
         )
     }
 
@@ -37,10 +40,16 @@ class DeleteCharacterTest {
         target.applyTo(buffer)
 
         assertThat(buffer.cursor).isEqualTo(
-                cursor.withRelativeRow(-1).withRelativeColumn(3))
+            cursor.withRelativeRow(-1).withRelativeColumn(3)
+        )
         assertThat(buffer.textBuffer).isEqualTo(
-                mutableListOf(mutableListOf(OTHER_CHAR, CHAR_TO_DELETE, OTHER_CHAR,
-                        OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)))
+            mutableListOf(
+                mutableListOf(
+                    OTHER_CHAR, CHAR_TO_DELETE, OTHER_CHAR,
+                    OTHER_CHAR, OTHER_CHAR, OTHER_CHAR
+                )
+            )
+        )
     }
 
     @Test
@@ -54,19 +63,23 @@ class DeleteCharacterTest {
         target.applyTo(buffer)
 
         assertThat(buffer.cursor).isEqualTo(
-                cursor)
+            cursor
+        )
         assertThat(buffer.textBuffer).isEqualTo(
-                mutableListOf(mutableListOf(OTHER_CHAR, CHAR_TO_DELETE, OTHER_CHAR),
-                        mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)))
+            mutableListOf(
+                mutableListOf(OTHER_CHAR, CHAR_TO_DELETE, OTHER_CHAR),
+                mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)
+            )
+        )
     }
 
     companion object {
         const val OTHER_CHAR = 'a'
         const val CHAR_TO_DELETE = 'x'
         fun generateBuffer(cursor: Cursor) = DefaultEditableTextBuffer(
-                source = "$OTHER_CHAR$CHAR_TO_DELETE$OTHER_CHAR" + SystemUtils.getLineSeparator() +
-                        "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
-                cursor = cursor
+            source = "$OTHER_CHAR$CHAR_TO_DELETE$OTHER_CHAR" + SystemUtils.getLineSeparator() +
+                    "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
+            cursor = cursor
         )
     }
 }

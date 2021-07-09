@@ -11,9 +11,12 @@ object HexworksSkullExampleKotlin {
     fun main(args: Array<String>) {
 
         displayScreen(ColorThemes.empty()).apply {
-            start(hexworksSkull(
+            start(
+                hexworksSkull(
                     position = Position.create(width / 2 - 6, height / 2 - 12),
-                    tileset = tileset))
+                    tileset = tileset
+                )
+            )
         }
 
     }

@@ -20,9 +20,9 @@ class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer(
 
     override fun build(): Icon {
         return DefaultIcon(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialIcon = iconTile
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialIcon = iconTile
         )
     }
 

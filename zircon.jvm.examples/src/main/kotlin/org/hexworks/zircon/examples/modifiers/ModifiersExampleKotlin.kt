@@ -22,7 +22,7 @@ import kotlin.random.Random
 object ModifiersExampleKotlin {
 
     private val random = Random(687483)
-    
+
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -49,9 +49,12 @@ object ModifiersExampleKotlin {
         screen.putTile(randomTile().withAddedModifiers(Modifiers.delay(2000L)))
     }
 
-    private fun randomTile() = Tile.createCharacterTile('x', StyleSet.create(
+    private fun randomTile() = Tile.createCharacterTile(
+        'x', StyleSet.create(
             foregroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)],
-            backgroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]))
+            backgroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]
+        )
+    )
 }
 
 

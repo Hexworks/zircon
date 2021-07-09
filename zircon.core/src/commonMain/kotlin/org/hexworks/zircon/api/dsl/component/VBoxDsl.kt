@@ -15,5 +15,5 @@ fun buildVbox(init: VBoxBuilder.() -> Unit): VBox =
  * receiver [BaseContainerBuilder] it and returns the [VBox].
  */
 fun <T : BaseContainerBuilder<*, *>> T.vbox(
-        init: VBoxBuilder.() -> Unit
+    init: VBoxBuilder.() -> Unit
 ): VBox = buildChildFor(this, VBoxBuilder(), init)

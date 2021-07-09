@@ -9,11 +9,15 @@ object LibgdxBenchmark {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        Benchmark().execute(LibgdxApplications.startTileGrid(AppConfigBuilder.newBuilder()
-                .withSize(BENCHMARK_SIZE)
-                .withDefaultTileset(BENCHMARK_TILESET)
-                .withDebugMode(true)
-                .build()))
+        Benchmark().execute(
+            LibgdxApplications.startTileGrid(
+                AppConfigBuilder.newBuilder()
+                    .withSize(BENCHMARK_SIZE)
+                    .withDefaultTileset(BENCHMARK_TILESET)
+                    .withDebugMode(true)
+                    .build()
+            )
+        )
     }
 
 

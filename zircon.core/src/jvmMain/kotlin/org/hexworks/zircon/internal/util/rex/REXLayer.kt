@@ -13,9 +13,9 @@ import java.nio.ByteBuffer
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
  */
 data class REXLayer(
-        private val width: Int,
-        private val height: Int,
-        private val cells: List<REXCell>
+    private val width: Int,
+    private val height: Int,
+    private val cells: List<REXCell>
 ) {
 
     fun getWidth() = width
@@ -29,9 +29,9 @@ data class REXLayer(
      */
     fun toLayer(tileset: TilesetResource): Layer {
         val layer = LayerBuilder.newBuilder()
-                .withTileset(tileset)
-                .withSize(Size.create(width, height))
-                .build()
+            .withTileset(tileset)
+            .withSize(Size.create(width, height))
+            .build()
 
         for (y in 0 until height) {
             for (x in 0 until width) {
@@ -42,12 +42,13 @@ data class REXLayer(
                     continue
                 }
                 layer.draw(
-                        tile = TileBuilder.newBuilder()
-                                .withCharacter(cell.getCharacter())
-                                .withBackgroundColor(cell.getBackgroundColor())
-                                .withForegroundColor(cell.getForegroundColor())
-                                .build(),
-                        drawPosition = Position.create(x, y))
+                    tile = TileBuilder.newBuilder()
+                        .withCharacter(cell.getCharacter())
+                        .withBackgroundColor(cell.getBackgroundColor())
+                        .withForegroundColor(cell.getForegroundColor())
+                        .build(),
+                    drawPosition = Position.create(x, y)
+                )
             }
         }
         return layer

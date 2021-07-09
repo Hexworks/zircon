@@ -50,24 +50,24 @@ class ObliqueCityWithScrollingKotlin {
         private val GRID_SIZE = create(GRID_WIDTH, GRID_HEIGHT)
 
         private val GRASS_TILE = Tile.newBuilder()
-                .withBackgroundColor(fromString("#243000"))
-                .withForegroundColor(fromString("#394c00"))
-                .buildCharacterTile()
+            .withBackgroundColor(fromString("#243000"))
+            .withForegroundColor(fromString("#394c00"))
+            .buildCharacterTile()
         private val GRASS_TILES = listOf(
-                GRASS_TILE,
-                GRASS_TILE,
-                GRASS_TILE,
-                GRASS_TILE.withCharacter('%'),
-                GRASS_TILE.withCharacter('\''),
-                GRASS_TILE.withCharacter(','),
-                GRASS_TILE.withCharacter('.'),
-                GRASS_TILE.withCharacter(';')
+            GRASS_TILE,
+            GRASS_TILE,
+            GRASS_TILE,
+            GRASS_TILE.withCharacter('%'),
+            GRASS_TILE.withCharacter('\''),
+            GRASS_TILE.withCharacter(','),
+            GRASS_TILE.withCharacter('.'),
+            GRASS_TILE.withCharacter(';')
         )
 
         private val PAVEMENT_TILE = Tile.newBuilder()
-                .withBackgroundColor(fromString("#1f292e"))
-                .withForegroundColor(fromString("#2a373e"))
-                .buildCharacterTile()
+            .withBackgroundColor(fromString("#1f292e"))
+            .withForegroundColor(fromString("#2a373e"))
+            .buildCharacterTile()
 
         private val GAME_AREA_SIZE = Size3D.create(100, 100, 10)
         private val FILLER = GRASS_TILE
@@ -75,38 +75,42 @@ class ObliqueCityWithScrollingKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val screen = create(startTileGrid(AppConfig.newBuilder()
-                    .withDefaultTileset(TILESET)
-                    .withSize(GRID_SIZE)
-                    .withDebugMode(true)
-                    .build()))
+            val screen = create(
+                startTileGrid(
+                    AppConfig.newBuilder()
+                        .withDefaultTileset(TILESET)
+                        .withSize(GRID_SIZE)
+                        .withDebugMode(true)
+                        .build()
+                )
+            )
             val actions = panel()
-                    .withPreferredSize(24, 5)
-                    .withPosition(1, 1)
-                    .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
-                    .build()
+                .withPreferredSize(24, 5)
+                .withPosition(1, 1)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
+                .build()
             val quit = button()
-                    .withText("Quit")
-                    .build()
+                .withText("Quit")
+                .build()
             quit.onActivated { exitProcess(0) }
             val projections = vbox()
-                    .withPreferredSize(24, 4)
-                    .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
-                    .withPosition(Position.create(0, 2).relativeToBottomOf(actions))
-                    .build()
+                .withPreferredSize(24, 4)
+                .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
+                .withPosition(Position.create(0, 2).relativeToBottomOf(actions))
+                .build()
             val topDown = radioButton()
-                    .withText("Top Down")
-                    .withKey(ProjectionMode.TOP_DOWN.name)
-                    .build()
+                .withText("Top Down")
+                .withKey(ProjectionMode.TOP_DOWN.name)
+                .build()
             val topDownOblique = radioButton()
-                    .withText("Top Down Oblique")
-                    .withKey(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT.name)
-                    .build()
+                .withText("Top Down Oblique")
+                .withKey(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT.name)
+                .build()
             val projectionsGroup = radioButtonGroup()
-                    .build().apply {
-                        addComponent(topDown)
-                        addComponent(topDownOblique)
-                    }
+                .build().apply {
+                    addComponent(topDown)
+                    addComponent(topDownOblique)
+                }
             projections.addComponents(topDown, topDownOblique)
             val projectionProperty = projectionsGroup.selectedButtonProperty.bindTransform {
                 it.map { radioButton ->
@@ -116,31 +120,35 @@ class ObliqueCityWithScrollingKotlin {
             actions.addComponents(quit)
             val visibleGameAreaSize = GRID_SIZE.minus(create(2, 2)).toSize3D(10)
             val gameArea: GameArea<Tile, Block<Tile>> = newGameAreaBuilder<Tile, Block<Tile>>()
-                    .withActualSize(GAME_AREA_SIZE)
-                    .withVisibleSize(visibleGameAreaSize)
-                    .build()
+                .withActualSize(GAME_AREA_SIZE)
+                .withVisibleSize(visibleGameAreaSize)
+                .build()
             screen.onShutdown {
                 gameArea.dispose()
             }
             val gamePanel = panel()
-                    .withSize(screen.size)
-                    .withComponentRenderer(newGameAreaComponentRenderer(
-                            gameArea = gameArea,
-                            projectionMode = projectionProperty,
-                            fillerTile = FILLER
-                    ))
-                    .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game Area with Scrolling"))
-                    .build()
+                .withSize(screen.size)
+                .withComponentRenderer(
+                    newGameAreaComponentRenderer(
+                        gameArea = gameArea,
+                        projectionMode = projectionProperty,
+                        fillerTile = FILLER
+                    )
+                )
+                .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game Area with Scrolling"))
+                .build()
             gamePanel.addComponents(actions, projections)
             screen.addComponent(gamePanel)
             enableMovement(screen, gameArea)
 
             generateGrass(gameArea)
-            generateBuilding(gameArea, create(
+            generateBuilding(
+                gameArea, create(
                     x = RANDOM.nextInt(10) + 20,
                     y = RANDOM.nextInt(10) + 20,
                     z = RANDOM.nextInt(10) + 20
-            ))
+                )
+            )
 
             screen.theme = THEME
             screen.display()
@@ -149,18 +157,18 @@ class ObliqueCityWithScrollingKotlin {
         private fun generateGrass(gameArea: GameArea<Tile, Block<Tile>>) {
             gameArea.actualSize.to2DSize().fetchPositions().forEach { pos ->
                 gameArea.setBlockAt(
-                        position = pos.toPosition3D(0),
-                        block = Block.newBuilder<Tile>()
-                                .withEmptyTile(empty())
-                                .withBottom(GRASS_TILES.fetchRandomElement())
-                                .build()
+                    position = pos.toPosition3D(0),
+                    block = Block.newBuilder<Tile>()
+                        .withEmptyTile(empty())
+                        .withBottom(GRASS_TILES.fetchRandomElement())
+                        .build()
                 )
             }
         }
 
         private fun generateBuilding(
-                gameArea: GameArea<Tile, Block<Tile>>,
-                position: Position3D
+            gameArea: GameArea<Tile, Block<Tile>>,
+            position: Position3D
         ) {
             val pos = position.to2DPosition()
             val buildingPos = pos + Position.offset1x1()
@@ -169,25 +177,27 @@ class ObliqueCityWithScrollingKotlin {
             val rect = Shapes.buildRectangle(pos, baseSize)
             rect.positions.forEach {
                 gameArea.setBlockAt(
-                        position = it.toPosition3D(0),
-                        block = newBlock().withBottom(PAVEMENT_TILE).build()
+                    position = it.toPosition3D(0),
+                    block = newBlock().withBottom(PAVEMENT_TILE).build()
                 )
             }
             gameArea.setBlockAt(
-                    position = (baseSize.fetchTopLeftPosition() + pos).toPosition3D(0),
-                    block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_TOP_LEFT_CORNER)).build()
+                position = (baseSize.fetchTopLeftPosition() + pos).toPosition3D(0),
+                block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_TOP_LEFT_CORNER)).build()
             )
             gameArea.setBlockAt(
-                    position = (baseSize.fetchTopRightPosition() + pos).toPosition3D(0),
-                    block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_TOP_RIGHT_CORNER)).build()
+                position = (baseSize.fetchTopRightPosition() + pos).toPosition3D(0),
+                block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_TOP_RIGHT_CORNER)).build()
             )
             gameArea.setBlockAt(
-                    position = (baseSize.fetchBottomLeftPosition() + pos).toPosition3D(0),
-                    block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER)).build()
+                position = (baseSize.fetchBottomLeftPosition() + pos).toPosition3D(0),
+                block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER))
+                    .build()
             )
             gameArea.setBlockAt(
-                    position = (baseSize.fetchBottomRightPosition() + pos).toPosition3D(0),
-                    block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER)).build()
+                position = (baseSize.fetchBottomRightPosition() + pos).toPosition3D(0),
+                block = newBlock().withBottom(PAVEMENT_TILE.withCharacter(Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER))
+                    .build()
             )
         }
 
@@ -226,8 +236,8 @@ class ObliqueCityWithScrollingKotlin {
         }
 
         private fun GameArea<Tile, Block<Tile>>.replaceBlockAt(
-                position3D: Position3D,
-                fn: (Block<Tile>) -> Block<Tile>
+            position3D: Position3D,
+            fn: (Block<Tile>) -> Block<Tile>
         ) {
             fetchBlockAtOrNull(position3D)?.let { block ->
                 setBlockAt(position3D, fn(block))

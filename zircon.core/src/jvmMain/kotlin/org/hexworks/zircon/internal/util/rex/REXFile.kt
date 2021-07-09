@@ -6,9 +6,11 @@ import java.nio.ByteOrder
 /**
  * Represents a REX Paint File, which contains version and [REXLayer] information.
  */
-data class REXFile(private val version: Int,
-                   private val numberOfLayers: Int,
-                   private val layers: List<REXLayer>) {
+data class REXFile(
+    private val version: Int,
+    private val numberOfLayers: Int,
+    private val layers: List<REXLayer>
+) {
 
     fun getVersion() = version
 
