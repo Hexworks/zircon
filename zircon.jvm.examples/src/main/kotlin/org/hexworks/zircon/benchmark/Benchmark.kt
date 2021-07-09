@@ -30,32 +30,42 @@ class Benchmark {
 
         val layers = (0..layerCount).map {
             val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                    .withSize(layerSize)
-                    .withTileset(BENCHMARK_TILESET)
-                    .build()
+                .withSize(layerSize)
+                .withTileset(BENCHMARK_TILESET)
+                .build()
             layerSize.fetchPositions().forEach {
                 imageLayer.draw(filler, it)
             }
             val layer = LayerBuilder.newBuilder()
-                    .withOffset(Position.create(
-                            x = random.nextInt(gridWidth - layerWidth),
-                            y = random.nextInt(gridHeight - layerHeight)))
-                    .withTileGraphics(imageLayer)
-                    .build()
+                .withOffset(
+                    Position.create(
+                        x = random.nextInt(gridWidth - layerWidth),
+                        y = random.nextInt(gridHeight - layerHeight)
+                    )
+                )
+                .withTileGraphics(imageLayer)
+                .build()
 
             grid.addLayer(layer)
             layer
         }
 
         val tiles = listOf(
-                Tile.newBuilder().withCharacter('a').withStyleSet(StyleSet.create(
-                        foregroundColor = ANSITileColor.YELLOW,
-                        backgroundColor = ANSITileColor.BLUE))
-                        .buildCharacterTile(),
-                Tile.newBuilder().withCharacter('b').withStyleSet(StyleSet.create(
-                        foregroundColor = ANSITileColor.GREEN,
-                        backgroundColor = ANSITileColor.RED))
-                        .buildCharacterTile())
+            Tile.newBuilder().withCharacter('a').withStyleSet(
+                StyleSet.create(
+                    foregroundColor = ANSITileColor.YELLOW,
+                    backgroundColor = ANSITileColor.BLUE
+                )
+            )
+                .buildCharacterTile(),
+            Tile.newBuilder().withCharacter('b').withStyleSet(
+                StyleSet.create(
+                    foregroundColor = ANSITileColor.GREEN,
+                    backgroundColor = ANSITileColor.RED
+                )
+            )
+                .buildCharacterTile()
+        )
 
         grid.fill(tiles[0])
 
@@ -70,9 +80,12 @@ class Benchmark {
             if (now < nextRender) {
                 drawRandomTiles(grid, tiles[currIdx], percentage)
                 layers.forEach {
-                    it.asInternalLayer().moveTo(Position.create(
+                    it.asInternalLayer().moveTo(
+                        Position.create(
                             x = random.nextInt(gridWidth - layerWidth),
-                            y = random.nextInt(gridHeight - layerHeight)))
+                            y = random.nextInt(gridHeight - layerHeight)
+                        )
+                    )
                 }
                 currIdx = if (currIdx == 0) 1 else 0
                 nextRender = System.currentTimeMillis() + interval
@@ -83,21 +96,26 @@ class Benchmark {
     }
 
     private fun drawRandomTiles(
-            tileGrid: TileGrid,
-            tile: Tile,
-            percentage: Double
+        tileGrid: TileGrid,
+        tile: Tile,
+        percentage: Double
     ) {
         repeat((tileGrid.size.width * tileGrid.size.height).times(percentage).toInt()) {
-            tileGrid.draw(tile, Position.create(
+            tileGrid.draw(
+                tile, Position.create(
                     x = random.nextInt(tileGrid.size.width),
                     y = random.nextInt(tileGrid.size.height)
-            ))
+                )
+            )
         }
     }
 
     companion object {
         val BENCHMARK_DIMENSIONS = Toolkit.getDefaultToolkit().screenSize
         val BENCHMARK_TILESET = CP437TilesetResources.zaratustra16x16()
-        val BENCHMARK_SIZE = Size.create(BENCHMARK_DIMENSIONS.width / BENCHMARK_TILESET.width, BENCHMARK_DIMENSIONS.height / BENCHMARK_TILESET.width)
+        val BENCHMARK_SIZE = Size.create(
+            BENCHMARK_DIMENSIONS.width / BENCHMARK_TILESET.width,
+            BENCHMARK_DIMENSIONS.height / BENCHMARK_TILESET.width
+        )
     }
 }

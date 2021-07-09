@@ -8,22 +8,25 @@ import org.hexworks.zircon.api.data.Tile
 
 object ImageTileExample {
 
-    private val imageDictionary = ImageDictionaryTilesetResources.loadTilesetFromFilesystem("zircon.jvm.examples/src/main/resources/image_dictionary")
+    private val imageDictionary =
+        ImageDictionaryTilesetResources.loadTilesetFromFilesystem("zircon.jvm.examples/src/main/resources/image_dictionary")
 
     @JvmStatic
     fun main(args: Array<String>) {
 
         val tileGrid = SwingApplications.startTileGrid()
 
-        tileGrid.draw(CharacterTileStrings.newBuilder()
+        tileGrid.draw(
+            CharacterTileStrings.newBuilder()
                 .withText("You can see an image tile below...")
-                .build())
+                .build()
+        )
 
 
         val imageTile = Tile.newBuilder()
-                .withTileset(imageDictionary)
-                .withName("hexworks_logo.png")
-                .buildImageTile()
+            .withTileset(imageDictionary)
+            .withName("hexworks_logo.png")
+            .buildImageTile()
 
         tileGrid.draw(imageTile, Position.create(30, 20))
 

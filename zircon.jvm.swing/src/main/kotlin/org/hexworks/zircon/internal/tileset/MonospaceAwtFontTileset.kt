@@ -15,8 +15,7 @@ import java.awt.GraphicsEnvironment
 import java.io.File
 
 
-class MonospaceAwtFontTileset(private val resource: TilesetResource)
-    : Tileset<Graphics2D> {
+class MonospaceAwtFontTileset(private val resource: TilesetResource) : Tileset<Graphics2D> {
 
     override val id: UUID = UUIDFactory.randomUUID()
     override val targetType = Graphics2D::class
@@ -33,12 +32,13 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource)
                     " a CharacterTile-based tileset."
         }
         font = Font.createFont(
-                Font.TRUETYPE_FONT,
-                if (resource.tilesetSourceType == JAR) {
-                    this::class.java.getResourceAsStream(resource.path)
-                } else {
-                    File(resource.path).inputStream()
-                }).deriveFont(resource.height.toFloat())
+            Font.TRUETYPE_FONT,
+            if (resource.tilesetSourceType == JAR) {
+                this::class.java.getResourceAsStream(resource.path)
+            } else {
+                File(resource.path).inputStream()
+            }
+        ).deriveFont(resource.height.toFloat())
         val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
         ge.registerFont(font)
     }

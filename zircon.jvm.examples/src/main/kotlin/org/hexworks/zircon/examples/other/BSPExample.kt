@@ -24,17 +24,21 @@ object BSPExample {
 
         createMap(gameArea, ACTUAL_SIZE.xLength, ACTUAL_SIZE.yLength)
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withSize(Size.create(ACTUAL_SIZE.xLength + 1, ACTUAL_SIZE.yLength + 1))
                 .enableBetaFeatures()
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
                 .withPreferredSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
-                .build())
+                .build()
+        )
 
         screen.onShutdown {
             gameArea.dispose()
@@ -58,13 +62,15 @@ object BSPExample {
                 for (y in rec.position.y until rec.position.y + rec.height) {
                     for (x in rec.position.x until rec.position.x + rec.width) {
                         val tile = Tile.newBuilder()
-                                .withCharacter(char)
-                                .withForegroundColor(TileColor.fromString("#999999"))
-                                .buildCharacterTile()
-                        gameArea.setBlockAt(Position3D.create(x, y, 0), Block.newBuilder<Tile>()
+                            .withCharacter(char)
+                            .withForegroundColor(TileColor.fromString("#999999"))
+                            .buildCharacterTile()
+                        gameArea.setBlockAt(
+                            Position3D.create(x, y, 0), Block.newBuilder<Tile>()
                                 .withContent(tile)
                                 .withEmptyTile(Tile.empty())
-                                .build())
+                                .build()
+                        )
                     }
                 }
             }
@@ -74,12 +80,12 @@ object BSPExample {
     }
 
     class CustomGameArea(
-            visibleSize: Size3D,
-            actualSize: Size3D
+        visibleSize: Size3D,
+        actualSize: Size3D
     ) : BaseGameArea<Tile, Block<Tile>>(
-            initialVisibleSize = visibleSize,
-            initialActualSize = actualSize,
-            initialFilters = listOf()
+        initialVisibleSize = visibleSize,
+        initialActualSize = actualSize,
+        initialFilters = listOf()
     )
 
 }

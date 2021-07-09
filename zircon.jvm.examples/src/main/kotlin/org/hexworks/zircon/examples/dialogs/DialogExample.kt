@@ -23,44 +23,46 @@ object DialogExample {
 
     class TestFragment : Fragment {
         override val root = Components.panel()
-                .withPreferredSize(23, 13)
-                .withColorTheme(theme)
-                .build()
+            .withPreferredSize(23, 13)
+            .withColorTheme(theme)
+            .build()
     }
 
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withPreferredSize(25, 16)
-                .withDecorations(box(title = "Modal"))
-                .build()
+            .withPreferredSize(25, 16)
+            .withDecorations(box(title = "Modal"))
+            .build()
 
 
         panel.addFragment(TestFragment())
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
-                .withCenteredDialog(true)
-                .withParentSize(screen.size)
-                .withColorTheme(theme)
-                .withComponent(panel)
-                .build()
+            .withCenteredDialog(true)
+            .withParentSize(screen.size)
+            .withColorTheme(theme)
+            .withComponent(panel)
+            .build()
 
         panel.addComponent(Components.button()
-                .withText("Close")
-                .withAlignmentWithin(panel, ComponentAlignment.BOTTOM_CENTER)
-                .build().apply {
-                    processComponentEvents(ComponentEventType.ACTIVATED) {
-                        modal.close(EmptyModalResult)
-                    }
-                })
+            .withText("Close")
+            .withAlignmentWithin(panel, ComponentAlignment.BOTTOM_CENTER)
+            .build().apply {
+                processComponentEvents(ComponentEventType.ACTIVATED) {
+                    modal.close(EmptyModalResult)
+                }
+            })
 
         screen.display()
         screen.theme = theme

@@ -11,10 +11,10 @@ public class IconExample {
 
     public static void main(String[] args) throws IOException {
         SwingApplications.startTileGrid(
-            new AppConfigBuilder()
+                new AppConfigBuilder()
 //                .withIcon(loadIcon("/image_dictionary/hexworks_logo.png"))
-                .withIcon("image_dictionary/hexworks_logo.png")
-                .build());
+                        .withIcon("image_dictionary/hexworks_logo.png")
+                        .build());
     }
 
     private static byte[] loadIcon(final String path) throws IOException {

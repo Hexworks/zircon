@@ -27,9 +27,10 @@ class Java2DTileCoordinateTransformer : TextureTransformer<BufferedImage> {
                     drawString("${pos.x}", 1, texture.height / 2)
                     drawString("${pos.y}", 1, texture.height - 1)
                     return DefaultTileTexture(
-                            width = texture.width,
-                            height = texture.height,
-                            texture = txt)
+                        width = texture.width,
+                        height = texture.height,
+                        texture = txt
+                    )
                 }
             }
         }

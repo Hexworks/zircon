@@ -10,31 +10,39 @@ class TextAreaIntegrationTest : ComponentIntegrationTestBase() {
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .withDecorations(box())
-                .withPreferredSize(28, 28)
-                .withPosition(31, 1)
-                .build()
+            .withDecorations(box())
+            .withPreferredSize(28, 28)
+            .withPosition(31, 1)
+            .build()
         screen.addComponent(panel)
 
-        screen.addComponent(Components.textArea()
+        screen.addComponent(
+            Components.textArea()
                 .withText("Some text")
                 .withPreferredSize(13, 5)
-                .withPosition(2, 2))
-        panel.addComponent(Components.textArea()
+                .withPosition(2, 2)
+        )
+        panel.addComponent(
+            Components.textArea()
                 .withText("Some text")
                 .withPreferredSize(13, 5)
-                .withPosition(2, 2))
+                .withPosition(2, 2)
+        )
 
-        screen.addComponent(Components.textArea()
+        screen.addComponent(
+            Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(BoxType.DOUBLE), shadow())
                 .withPreferredSize(13, 7)
-                .withPosition(2, 8))
-        panel.addComponent(Components.textArea()
+                .withPosition(2, 8)
+        )
+        panel.addComponent(
+            Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(BoxType.DOUBLE), shadow())
                 .withPreferredSize(13, 7)
-                .withPosition(2, 8))
+                .withPosition(2, 8)
+        )
     }
 
 }

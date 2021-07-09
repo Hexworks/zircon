@@ -35,7 +35,7 @@ interface Size : Comparable<Size> {
     /**
      * Returns this [Size] or [other] if this size [isUnknown].
      */
-    fun orElse(other: Size) = if(isUnknown) other else this
+    fun orElse(other: Size) = if (isUnknown) other else this
 
     /**
      * Creates a list of [Position]s in the order in which they should

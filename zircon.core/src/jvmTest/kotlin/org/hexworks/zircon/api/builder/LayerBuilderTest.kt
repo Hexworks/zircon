@@ -20,20 +20,20 @@ class LayerBuilderTest {
     @Test
     fun shouldProperlyBuildLayer() {
         val result = target
-                .withSize(SIZE)
-                .withOffset(OFFSET)
-                .build().apply {
-                    fill(FILLER)
-                }
+            .withSize(SIZE)
+            .withOffset(OFFSET)
+            .build().apply {
+                fill(FILLER)
+            }
 
         assertThat(result.size)
-                .isEqualTo(SIZE)
+            .isEqualTo(SIZE)
 
         assertThat(result.position)
-                .isEqualTo(OFFSET)
+            .isEqualTo(OFFSET)
 
         assertThat(result.getTileAt(OFFSET).get())
-                .isEqualTo(FILLER)
+            .isEqualTo(FILLER)
     }
 
     companion object {

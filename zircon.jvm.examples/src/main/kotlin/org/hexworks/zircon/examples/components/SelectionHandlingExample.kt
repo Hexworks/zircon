@@ -18,21 +18,23 @@ object SelectionHandlingExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val cb0 = Components.checkBox()
-                .withText("Foo")
-                .build()
+            .withText("Foo")
+            .build()
 
         val cb1 = Components.checkBox()
-                .withText("Bar")
-                .withPosition(0, 2)
-                .build()
+            .withText("Bar")
+            .withPosition(0, 2)
+            .build()
 
         screen.addComponent(cb0)
         screen.addComponent(cb1)

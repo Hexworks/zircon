@@ -18,10 +18,12 @@ object InputHandlingExampleKotlin {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(SCREEN_SIZE)
-                .build())
+                .build()
+        )
 
         // called for all keyboard events
         tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { event, _ ->

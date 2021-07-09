@@ -7,8 +7,8 @@ import org.hexworks.cobalt.datatypes.Maybe
  * which is empty if `idx` is out of bounds.
  */
 fun StringBuilder.getIfPresent(idx: Int) =
-        if (idx >= length) {
-            Maybe.empty()
-        } else {
-            Maybe.of(get(idx))
-        }
+    if (idx >= length) {
+        Maybe.empty()
+    } else {
+        Maybe.of(get(idx))
+    }

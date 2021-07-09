@@ -36,19 +36,25 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .build()
+            )
+            .withDisabledStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
@@ -56,10 +62,11 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(COMMON_COMPONENT_METADATA.size).build()
         target = DefaultTextArea(
-                componentMetadata = COMMON_COMPONENT_METADATA,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub as ComponentRenderer<TextArea>),
-                initialText = TEXT
+            componentMetadata = COMMON_COMPONENT_METADATA,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                componentRenderer = rendererStub as ComponentRenderer<TextArea>
+            ),
+            initialText = TEXT
         )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
@@ -72,7 +79,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     @Test
     fun shouldUseProperFont() {
         assertThat(target.tileset.id)
-                .isEqualTo(TILESET_REX_PAINT_20X20.id)
+            .isEqualTo(TILESET_REX_PAINT_20X20.id)
     }
 
     @Test
@@ -85,11 +92,13 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target = initializeMultiLineTextArea()
 
         target.keyPressed(
-                event = KeyboardEvent(
-                        type = KeyboardEventType.KEY_PRESSED,
-                        key = "${KeyCode.RIGHT.toChar()}",
-                        code = KeyCode.RIGHT),
-                phase = TARGET)
+            event = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.RIGHT.toChar()}",
+                code = KeyCode.RIGHT
+            ),
+            phase = TARGET
+        )
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
     }
@@ -99,23 +108,29 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target = initializeMultiLineTextArea()
 
         target.keyPressed(
-                event = KeyboardEvent(
-                        type = KeyboardEventType.KEY_PRESSED,
-                        key = "${KeyCode.RIGHT.toChar()}",
-                        code = KeyCode.RIGHT),
-                phase = TARGET)
+            event = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.RIGHT.toChar()}",
+                code = KeyCode.RIGHT
+            ),
+            phase = TARGET
+        )
         target.keyPressed(
-                event = KeyboardEvent(
-                        type = KeyboardEventType.KEY_PRESSED,
-                        key = "${KeyCode.RIGHT.toChar()}",
-                        code = KeyCode.RIGHT),
-                phase = TARGET)
+            event = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.RIGHT.toChar()}",
+                code = KeyCode.RIGHT
+            ),
+            phase = TARGET
+        )
         target.keyPressed(
-                event = KeyboardEvent(
-                        type = KeyboardEventType.KEY_PRESSED,
-                        key = "${KeyCode.LEFT.toChar()}",
-                        code = KeyCode.LEFT),
-                phase = TARGET)
+            event = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.LEFT.toChar()}",
+                code = KeyCode.LEFT
+            ),
+            phase = TARGET
+        )
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
     }
@@ -125,11 +140,13 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target = initializeMultiLineTextArea()
 
         target.keyPressed(
-                event = KeyboardEvent(
-                        type = KeyboardEventType.KEY_PRESSED,
-                        key = "${KeyCode.DOWN.toChar()}",
-                        code = KeyCode.DOWN),
-                phase = TARGET)
+            event = KeyboardEvent(
+                type = KeyboardEventType.KEY_PRESSED,
+                key = "${KeyCode.DOWN.toChar()}",
+                code = KeyCode.DOWN
+            ),
+            phase = TARGET
+        )
 
         assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
     }
@@ -194,7 +211,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.focusGiven()
 
         assertThat(target.componentState)
-                .isEqualTo(FOCUSED)
+            .isEqualTo(FOCUSED)
         assertThat(cursorVisible).isTrue()
     }
 
@@ -207,7 +224,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.focusTaken()
 
         assertThat(target.componentState)
-                .isEqualTo(DEFAULT)
+            .isEqualTo(DEFAULT)
         assertThat(cursorHidden).isTrue()
     }
 
@@ -218,15 +235,17 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         val character = graphics.getTileAt(Position.defaultPosition())
 
         assertThat(character.get().asCharacterTile().get().character)
-                .isEqualTo(UPDATE_TEXT)
+            .isEqualTo(UPDATE_TEXT)
     }
 
     private fun initializeMultiLineTextArea(): DefaultTextArea {
         return DefaultTextArea(
-                componentMetadata = COMMON_COMPONENT_METADATA,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub as ComponentRenderer<TextArea>),
-                initialText = MULTI_LINE_TEXT)
+            componentMetadata = COMMON_COMPONENT_METADATA,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                componentRenderer = rendererStub as ComponentRenderer<TextArea>
+            ),
+            initialText = MULTI_LINE_TEXT
+        )
     }
 
     companion object {
@@ -236,9 +255,10 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         val MULTI_LINE_TEXT = "text${SEP}text$SEP"
 
         val DOWN = KeyboardEvent(
-                type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.DOWN.toChar()}",
-                code = KeyCode.DOWN)
+            type = KeyboardEventType.KEY_PRESSED,
+            key = "${KeyCode.DOWN.toChar()}",
+            code = KeyCode.DOWN
+        )
 
         val UP = DOWN.copy(key = " ", code = KeyCode.UP)
         val LEFT = DOWN.copy(key = " ", code = KeyCode.LEFT)

@@ -18,21 +18,25 @@ object FadeInOutExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 10))
                 .withDebugMode(true)
-                .build())
+                .build()
+        )
 
         val text = "This text fades in and then after a few seconds out"
 
         tileGrid.cursorPosition = Position.create(1, 1)
         text.forEach { c ->
-            tileGrid.putTile(Tile.defaultTile()
+            tileGrid.putTile(
+                Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
-                    .withModifiers(Modifiers.fadeInOut()))
+                    .withModifiers(Modifiers.fadeInOut())
+            )
         }
 
     }

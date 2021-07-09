@@ -11,9 +11,11 @@ import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 
-class LibgdxGame(private val appConfig: AppConfig,
-                 private val libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration(),
-                 private var started: Boolean = false) : Game() {
+class LibgdxGame(
+    private val appConfig: AppConfig,
+    private val libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration(),
+    private var started: Boolean = false
+) : Game() {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -24,7 +26,7 @@ class LibgdxGame(private val appConfig: AppConfig,
     val libgdxApplication = LibgdxApplication(appConfig)
 
     fun start() {
-        if(!started) {
+        if (!started) {
             LwjglApplication(this, libgdxConfig)
         }
         started = true
@@ -41,9 +43,10 @@ class LibgdxGame(private val appConfig: AppConfig,
         val tileGrid = libgdxApplication.tileGrid
 
         Gdx.input.inputProcessor = ZirconInputListener(
-                fontWidth = tileset.width,
-                fontHeight = tileset.height,
-                tileGrid = tileGrid)
+            fontWidth = tileset.width,
+            fontHeight = tileset.height,
+            tileGrid = tileGrid
+        )
     }
 
     override fun render() {
@@ -59,8 +62,10 @@ class LibgdxGame(private val appConfig: AppConfig,
     }
 
     companion object {
-        fun build(appConfig: AppConfig = AppConfig.defaultConfiguration(),
-                  libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()): LibgdxGame {
+        fun build(
+            appConfig: AppConfig = AppConfig.defaultConfiguration(),
+            libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
+        ): LibgdxGame {
             return LibgdxGame(appConfig, libgdxConfig)
         }
     }

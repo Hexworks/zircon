@@ -33,11 +33,11 @@ import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer(
-        private val canvas: Canvas,
-        private val frame: JFrame,
-        private val tileGrid: InternalTileGrid,
-        private val config: AppConfig,
-        private val app: Application
+    private val canvas: Canvas,
+    private val frame: JFrame,
+    private val tileGrid: InternalTileGrid,
+    private val config: AppConfig,
+    private val app: Application
 ) : Renderer {
 
     override val isClosed = false.toProperty()
@@ -47,12 +47,15 @@ class SwingCanvasRenderer(
     private var lastBlink: Long = lastRender
 
     private val tilesetLoader: TilesetLoader<Graphics2D> =
-            ChainedTilesetLoader.inOrder(config.tilesetLoaders as List<TilesetLoader<Graphics2D>>
-                    + SwingTilesetLoader())
+        ChainedTilesetLoader.inOrder(
+            config.tilesetLoaders as List<TilesetLoader<Graphics2D>>
+                    + SwingTilesetLoader()
+        )
     private val keyboardEventListener = KeyboardEventListener()
     private val mouseEventListener = object : MouseEventListener(
-            fontWidth = tileGrid.tileset.width,
-            fontHeight = tileGrid.tileset.height) {
+        fontWidth = tileGrid.tileset.width,
+        fontHeight = tileGrid.tileset.height
+    ) {
         override fun mouseClicked(e: MouseEvent) {
             super.mouseClicked(e)
             canvas.requestFocusInWindow()
@@ -77,8 +80,9 @@ class SwingCanvasRenderer(
         }
 
         canvas.preferredSize = Dimension(
-                tileGrid.widthInPixels,
-                tileGrid.heightInPixels)
+            tileGrid.widthInPixels,
+            tileGrid.heightInPixels
+        )
         canvas.minimumSize = Dimension(tileGrid.tileset.width, tileGrid.tileset.height)
         canvas.isFocusable = true
         canvas.requestFocusInWindow()
@@ -166,10 +170,10 @@ class SwingCanvasRenderer(
             }
             for ((tile, tileset) in tiles) {
                 renderTile(
-                        graphics = graphics,
-                        position = pos,
-                        tile = tile,
-                        tileset = tilesetLoader.loadTilesetFrom(tileset)
+                    graphics = graphics,
+                    position = pos,
+                    tile = tile,
+                    tileset = tilesetLoader.loadTilesetFrom(tileset)
                 )
             }
             tiles.clear()
@@ -183,9 +187,9 @@ class SwingCanvasRenderer(
     private fun fetchLayers(): List<Pair<Position, TileGraphics>> {
         return tileGrid.renderables.map { renderable ->
             val tg = FastTileGraphics(
-                    initialSize = renderable.size,
-                    initialTileset = renderable.tileset,
-                    initialTiles = emptyMap()
+                initialSize = renderable.size,
+                initialTileset = renderable.tileset,
+                initialTiles = emptyMap()
             )
             if (!renderable.isHidden) {
                 renderable.render(tg)
@@ -207,10 +211,10 @@ class SwingCanvasRenderer(
     }
 
     private fun renderTile(
-            graphics: Graphics2D,
-            position: Position,
-            tile: Tile,
-            tileset: Tileset<Graphics2D>
+        graphics: Graphics2D,
+        position: Position,
+        tile: Tile,
+        tileset: Tileset<Graphics2D>
     ) {
         if (tile.isNotEmpty) {
             var finalTile = tile
@@ -223,16 +227,16 @@ class SwingCanvasRenderer(
             }
             finalTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
-                        .withForegroundColor(tile.backgroundColor)
+                    .withForegroundColor(tile.backgroundColor)
             } else {
                 tile
             }
             ((finalTile as? TilesetHolder)?.let {
                 tilesetLoader.loadTilesetFrom(it.tileset)
             } ?: tileset).drawTile(
-                    tile = finalTile,
-                    surface = graphics,
-                    position = position
+                tile = finalTile,
+                surface = graphics,
+                position = position
             )
         }
     }

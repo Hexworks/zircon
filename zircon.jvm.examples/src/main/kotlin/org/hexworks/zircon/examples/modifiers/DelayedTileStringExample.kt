@@ -19,26 +19,32 @@ object DelayedTileStringExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(SIZE)
                 .withDebugMode(true)
-                .build())
+                .build()
+        )
 
         val screen = ScreenBuilder.createScreenFor(tileGrid)
 
         val panel = Components.panel()
-                .withDecorations(box())
-                .withSize(Size.create(48, 20))
-                .build()
+            .withDecorations(box())
+            .withSize(Size.create(48, 20))
+            .build()
 
         screen.addComponent(panel)
 
         val myText = "This is a very long string I'd like to add with a typrewriter effect"
 
-        panel.addComponent(Components.textBox(panel.contentSize.width)
-                .addParagraph(text = myText,
-                        withTypingEffectSpeedInMs = 200))
+        panel.addComponent(
+            Components.textBox(panel.contentSize.width)
+                .addParagraph(
+                    text = myText,
+                    withTypingEffectSpeedInMs = 200
+                )
+        )
 
         screen.theme = THEME
         screen.display()

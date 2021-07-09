@@ -32,7 +32,7 @@ class ConcurrentTreeTest {
         target.createChild("0")
         target.createChild("1")
 
-        while(channel.isEmpty.not()) {
+        while (channel.isEmpty.not()) {
             delay(1)
         }
 
@@ -47,7 +47,7 @@ class ConcurrentTreeTest {
         child1.createChild("10")
         child1.createChild("11")
 
-        while(channel.isEmpty.not()) {
+        while (channel.isEmpty.not()) {
             delay(1)
         }
 
@@ -64,7 +64,7 @@ class ConcurrentTreeTest {
 
         child1.remove()
 
-        while(channel.isEmpty.not()) {
+        while (channel.isEmpty.not()) {
             delay(1)
         }
 
@@ -81,7 +81,7 @@ class ConcurrentTreeTest {
 
         child11.remove()
 
-        while(channel.isEmpty.not()) {
+        while (channel.isEmpty.not()) {
             delay(1)
         }
 

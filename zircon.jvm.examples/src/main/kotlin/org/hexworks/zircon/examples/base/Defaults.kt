@@ -21,33 +21,33 @@ val GRID_SIZE = create(96, 54)
 val DEFAULT_THEME = ColorThemes.gamebookers()
 val DEFAULT_TILESET = CP437TilesetResources.rogueYun16x16()
 val TILESETS: List<TilesetResource> = BuiltInCP437TilesetResource.values()
-        .toList()
-        .plus(BuiltInTrueTypeFontResource.values().map { it.toTilesetResource(16) })
-        .filter {
-            it.width == DEFAULT_TILESET_SIZE && it.height == DEFAULT_TILESET_SIZE
-        }
+    .toList()
+    .plus(BuiltInTrueTypeFontResource.values().map { it.toTilesetResource(16) })
+    .filter {
+        it.width == DEFAULT_TILESET_SIZE && it.height == DEFAULT_TILESET_SIZE
+    }
 
 
 fun displayScreen(
-        theme: ColorTheme = DEFAULT_THEME,
-        tileset: TilesetResource = DEFAULT_TILESET
+    theme: ColorTheme = DEFAULT_THEME,
+    tileset: TilesetResource = DEFAULT_TILESET
 ) = SwingApplications.startTileGrid(
-        newBuilder()
-                .withDefaultTileset(tileset)
-                .withSize(GRID_SIZE)
-                .build()
+    newBuilder()
+        .withDefaultTileset(tileset)
+        .withSize(GRID_SIZE)
+        .build()
 )
-        .toScreen().apply {
-            this.theme = theme
-            display()
-        }
+    .toScreen().apply {
+        this.theme = theme
+        display()
+    }
 
 fun startTileGrid(
-        theme: ColorTheme = DEFAULT_THEME,
-        tileset: TilesetResource = DEFAULT_TILESET
+    theme: ColorTheme = DEFAULT_THEME,
+    tileset: TilesetResource = DEFAULT_TILESET
 ) = SwingApplications.startTileGrid(
-        newBuilder()
-                .withDefaultTileset(tileset)
-                .withSize(GRID_SIZE)
-                .build()
+    newBuilder()
+        .withDefaultTileset(tileset)
+        .withSize(GRID_SIZE)
+        .build()
 )

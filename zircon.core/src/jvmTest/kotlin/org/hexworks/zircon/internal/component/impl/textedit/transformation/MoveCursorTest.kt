@@ -41,10 +41,10 @@ class MoveCursorTest {
         val cursor = Cursor(2, 6)
         val document = generateBufferFor(cursor)
         MoveCursor(DOWN)
-                .applyTo(document)
+            .applyTo(document)
 
         assertThat(document.cursor)
-                .isEqualTo(Cursor(3, 3))
+            .isEqualTo(Cursor(3, 3))
     }
 
     @Test
@@ -107,10 +107,11 @@ class MoveCursorTest {
         private const val ROW2 = "Longer row"
         private const val ROW3 = "Row"
         private val ROWS = listOf(ROW0, ROW1, ROW2, ROW3)
-                .joinToString(SystemUtils.getLineSeparator())
+            .joinToString(SystemUtils.getLineSeparator())
 
         fun generateBufferFor(cursor: Cursor) = DefaultEditableTextBuffer(
-                source = ROWS,
-                cursor = cursor)
+            source = ROWS,
+            cursor = cursor
+        )
     }
 }

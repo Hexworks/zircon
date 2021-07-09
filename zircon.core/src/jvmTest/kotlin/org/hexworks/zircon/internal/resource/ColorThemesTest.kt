@@ -10,14 +10,14 @@ class ColorThemesTest {
     @Test
     fun shouldContainAllThemes() {
         val themeCount = ColorThemes::class.members
-                .filter { it.isFinal }
-                .filterNot { it.name == "newBuilder" || it.name == "empty" }
-                .map { accessor ->
-                    assertThat(accessor.call(ColorThemes))
-                            .describedAs("Theme: ${accessor.name}")
-                            .isInstanceOf(ColorTheme::class.java)
-                    1
-                }.reduce(Int::plus)
+            .filter { it.isFinal }
+            .filterNot { it.name == "newBuilder" || it.name == "empty" }
+            .map { accessor ->
+                assertThat(accessor.call(ColorThemes))
+                    .describedAs("Theme: ${accessor.name}")
+                    .isInstanceOf(ColorTheme::class.java)
+                1
+            }.reduce(Int::plus)
 
         assertThat(themeCount).isEqualTo(ENUM_THEMES.size)
     }

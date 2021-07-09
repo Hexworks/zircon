@@ -18,9 +18,9 @@ object ViewsExampleKotlin {
     class InitialView(grid: TileGrid) : BaseView(grid, ColorThemes.adriftInDreams()) {
 
         val dockOther = Components.button()
-                .withText("Dock other")
-                .withPosition(0, 2)
-                .build()
+            .withText("Dock other")
+            .withPosition(0, 2)
+            .build()
 
         init {
             screen.apply {
@@ -43,9 +43,9 @@ object ViewsExampleKotlin {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         val dockInitial = Components.button()
-                .withText("Dock initial")
-                .withPosition(12, 2)
-                .build()
+            .withText("Dock initial")
+            .withPosition(12, 2)
+            .build()
 
         init {
             screen.apply {
@@ -66,9 +66,11 @@ object ViewsExampleKotlin {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val initial = InitialView(tileGrid)
         val other = OtherView(tileGrid)

@@ -10,9 +10,9 @@ class LibgdxTextureCloner : TextureTransformer<TextureRegion> {
 
     override fun transform(texture: TileTexture<TextureRegion>, tile: Tile): TileTexture<TextureRegion> {
         return DefaultTileTexture(
-                width = texture.width,
-                height = texture.height,
-                texture = TextureRegion(texture.texture)
+            width = texture.width,
+            height = texture.height,
+            texture = TextureRegion(texture.texture)
         )
     }
 }

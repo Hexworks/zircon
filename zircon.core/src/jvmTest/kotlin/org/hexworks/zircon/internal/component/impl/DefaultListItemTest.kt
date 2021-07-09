@@ -24,26 +24,31 @@ class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultListItemRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         target = DefaultListItem(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_3_4,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<ListItem>),
-                initialText = TEXT)
+            componentMetadata = ComponentMetadata(
+                size = SIZE_3_4,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<ListItem>
+            ),
+            initialText = TEXT
+        )
     }
 
     @Test

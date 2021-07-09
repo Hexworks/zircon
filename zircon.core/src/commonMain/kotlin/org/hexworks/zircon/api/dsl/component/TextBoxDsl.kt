@@ -12,8 +12,8 @@ import org.hexworks.zircon.api.component.Header
  * Creates a new [TextBox] using the component builder DSL and returns it.
  */
 fun buildTextBox(
-        initialContentWidth: Int,
-        init: TextBoxBuilder.() -> Unit
+    initialContentWidth: Int,
+    init: TextBoxBuilder.() -> Unit
 ): TextBox = TextBoxBuilder.newBuilder(initialContentWidth).apply(init).build()
 
 /**
@@ -21,8 +21,8 @@ fun buildTextBox(
  * receiver [BaseContainerBuilder] it and returns the [TextBox].
  */
 fun <T : BaseContainerBuilder<*, *>> T.textBox(
-        initialWidth: Int,
-        init: TextBoxBuilder.() -> Unit
+    initialWidth: Int,
+    init: TextBoxBuilder.() -> Unit
 ): TextBox = buildChildFor(this, TextBoxBuilder.newBuilder(initialWidth), init)
 
 /**
@@ -30,8 +30,8 @@ fun <T : BaseContainerBuilder<*, *>> T.textBox(
  * receiver [TextBoxBuilder].
  */
 fun TextBoxBuilder.paragraph(
-        withNewLine: Boolean = true,
-        init: ParagraphBuilder.() -> Unit
+    withNewLine: Boolean = true,
+    init: ParagraphBuilder.() -> Unit
 ) = addParagraph(ParagraphBuilder().apply(init).build(), withNewLine)
 
 /**
@@ -39,8 +39,8 @@ fun TextBoxBuilder.paragraph(
  * receiver [TextBoxBuilder].
  */
 fun TextBoxBuilder.header(
-        withNewLine: Boolean = true,
-        init: HeaderBuilder.() -> Unit
+    withNewLine: Boolean = true,
+    init: HeaderBuilder.() -> Unit
 ) = addHeader(HeaderBuilder().apply(init).build(), withNewLine)
 
 /**
@@ -48,6 +48,6 @@ fun TextBoxBuilder.header(
  * receiver [TextBoxBuilder].
  */
 fun TextBoxBuilder.listItem(
-        withNewLine: Boolean = true,
-        init: ListItemBuilder.() -> Unit
+    withNewLine: Boolean = true,
+    init: ListItemBuilder.() -> Unit
 ) = addListItem(ListItemBuilder().apply(init).build(), withNewLine)

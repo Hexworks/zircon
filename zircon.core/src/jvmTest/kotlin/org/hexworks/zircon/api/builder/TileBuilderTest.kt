@@ -13,21 +13,23 @@ class TileBuilderTest {
     @Test
     fun shouldBuildProperTextCharacter() {
         val result = TileBuilder.newBuilder()
-                .withBackgroundColor(BG_COLOR)
-                .withForegroundColor(FG_COLOR)
-                .withCharacter(CHAR)
-                .withTags(TAGS)
-                .withModifiers(MODIFIER)
-                .build()
+            .withBackgroundColor(BG_COLOR)
+            .withForegroundColor(FG_COLOR)
+            .withCharacter(CHAR)
+            .withTags(TAGS)
+            .withModifiers(MODIFIER)
+            .build()
 
         assertThat(result).isEqualTo(
-                Tile.createCharacterTile(
-                        character = CHAR,
-                        style = StyleSetBuilder.newBuilder()
-                                .withForegroundColor(FG_COLOR)
-                                .withBackgroundColor(BG_COLOR)
-                                .withModifiers(MODIFIER)
-                                .build()))
+            Tile.createCharacterTile(
+                character = CHAR,
+                style = StyleSetBuilder.newBuilder()
+                    .withForegroundColor(FG_COLOR)
+                    .withBackgroundColor(BG_COLOR)
+                    .withModifiers(MODIFIER)
+                    .build()
+            )
+        )
     }
 
     companion object {

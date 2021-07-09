@@ -13,14 +13,15 @@ class DefaultScrollable3DTest {
     @Before
     fun setUp() {
         target = DefaultScrollable3D(
-                initialVisibleSize = VISIBLE_SPACE_SIZE,
-                initialActualSize = VIRTUAL_SPACE_SIZE)
+            initialVisibleSize = VISIBLE_SPACE_SIZE,
+            initialActualSize = VIRTUAL_SPACE_SIZE
+        )
     }
 
     @Test
     fun shouldProperlyReportVirtualSpaceSize() {
         assertThat(target.actualSize)
-                .isEqualTo(VIRTUAL_SPACE_SIZE)
+            .isEqualTo(VIRTUAL_SPACE_SIZE)
     }
 
     @Test
@@ -28,7 +29,7 @@ class DefaultScrollable3DTest {
         target.scrollOneRight()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(1, 0, 0))
+            .isEqualTo(Position3D.create(1, 0, 0))
     }
 
     @Test
@@ -38,7 +39,7 @@ class DefaultScrollable3DTest {
         target.scrollOneLeft()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(1, 0, 0))
+            .isEqualTo(Position3D.create(1, 0, 0))
     }
 
     @Test
@@ -46,7 +47,7 @@ class DefaultScrollable3DTest {
         target.scrollOneForward()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 1, 0))
+            .isEqualTo(Position3D.create(0, 1, 0))
     }
 
     @Test
@@ -56,7 +57,7 @@ class DefaultScrollable3DTest {
         target.scrollOneBackward()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 1, 0))
+            .isEqualTo(Position3D.create(0, 1, 0))
     }
 
     @Test
@@ -64,7 +65,7 @@ class DefaultScrollable3DTest {
         target.scrollOneUp()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 1))
+            .isEqualTo(Position3D.create(0, 0, 1))
     }
 
     @Test
@@ -74,7 +75,7 @@ class DefaultScrollable3DTest {
         target.scrollOneDown()
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 1))
+            .isEqualTo(Position3D.create(0, 0, 1))
     }
 
     @Test
@@ -82,7 +83,7 @@ class DefaultScrollable3DTest {
         target.scrollRightBy(5)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(5, 0, 0))
+            .isEqualTo(Position3D.create(5, 0, 0))
     }
 
     @Test
@@ -91,7 +92,7 @@ class DefaultScrollable3DTest {
         target.scrollLeftBy(3)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(2, 0, 0))
+            .isEqualTo(Position3D.create(2, 0, 0))
     }
 
     @Test
@@ -99,7 +100,7 @@ class DefaultScrollable3DTest {
         target.scrollForwardBy(5)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 5, 0))
+            .isEqualTo(Position3D.create(0, 5, 0))
     }
 
     @Test
@@ -108,7 +109,7 @@ class DefaultScrollable3DTest {
         target.scrollBackwardBy(3)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 2, 0))
+            .isEqualTo(Position3D.create(0, 2, 0))
     }
 
     @Test
@@ -116,7 +117,7 @@ class DefaultScrollable3DTest {
         target.scrollUpBy(5)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 5))
+            .isEqualTo(Position3D.create(0, 0, 5))
     }
 
     @Test
@@ -125,7 +126,7 @@ class DefaultScrollable3DTest {
         target.scrollDownBy(3)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 2))
+            .isEqualTo(Position3D.create(0, 0, 2))
     }
 
     @Test
@@ -133,7 +134,7 @@ class DefaultScrollable3DTest {
         target.scrollRightBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(5, 0, 0))
+            .isEqualTo(Position3D.create(5, 0, 0))
     }
 
     @Test
@@ -142,7 +143,7 @@ class DefaultScrollable3DTest {
         target.scrollLeftBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 0))
+            .isEqualTo(Position3D.create(0, 0, 0))
     }
 
     @Test
@@ -150,7 +151,7 @@ class DefaultScrollable3DTest {
         target.scrollForwardBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 5, 0))
+            .isEqualTo(Position3D.create(0, 5, 0))
     }
 
     @Test
@@ -159,7 +160,7 @@ class DefaultScrollable3DTest {
         target.scrollBackwardBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 0))
+            .isEqualTo(Position3D.create(0, 0, 0))
     }
 
     @Test
@@ -168,7 +169,7 @@ class DefaultScrollable3DTest {
         target.scrollDownBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 0))
+            .isEqualTo(Position3D.create(0, 0, 0))
     }
 
     @Test
@@ -176,7 +177,7 @@ class DefaultScrollable3DTest {
         target.scrollUpBy(Int.MAX_VALUE)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(Position3D.create(0, 0, 5))
+            .isEqualTo(Position3D.create(0, 0, 5))
     }
 
     @Test
@@ -185,7 +186,7 @@ class DefaultScrollable3DTest {
         target.scrollTo(newPosition)
 
         assertThat(target.visibleOffset)
-                .isEqualTo(newPosition)
+            .isEqualTo(newPosition)
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -215,12 +216,14 @@ class DefaultScrollable3DTest {
 
     companion object {
         val VIRTUAL_SPACE_SIZE = Size3D.create(
-                xLength = 10,
-                yLength = 10,
-                zLength = 10)
+            xLength = 10,
+            yLength = 10,
+            zLength = 10
+        )
         val VISIBLE_SPACE_SIZE = Size3D.create(
-                xLength = 5,
-                yLength = 5,
-                zLength = 5)
+            xLength = 5,
+            yLength = 5,
+            zLength = 5
+        )
     }
 }

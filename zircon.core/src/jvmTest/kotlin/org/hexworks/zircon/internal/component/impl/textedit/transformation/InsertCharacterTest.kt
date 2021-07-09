@@ -18,7 +18,8 @@ class InsertCharacterTest {
         target.applyTo(buffer)
 
         assertThat(buffer.cursor).isEqualTo(
-                cursor.withRelativeColumn(1))
+            cursor.withRelativeColumn(1)
+        )
     }
 
     companion object {
@@ -26,7 +27,8 @@ class InsertCharacterTest {
         private const val OTHER_CHAR = 'a'
 
         fun generateBuffer(cursor: Cursor) = DefaultEditableTextBuffer(
-                source = "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
-                cursor = cursor)
+            source = "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
+            cursor = cursor
+        )
     }
 }

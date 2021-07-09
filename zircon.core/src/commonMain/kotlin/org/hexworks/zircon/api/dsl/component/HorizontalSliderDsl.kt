@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
 fun buildHorizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
-        HorizontalSliderBuilder().apply(init).build()
+    HorizontalSliderBuilder().apply(init).build()
 
 /**
  * Creates a new [Slider] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Slider].
  */
 fun <T : BaseContainerBuilder<*, *>> T.horizontalSlider(
-        init: HorizontalSliderBuilder.() -> Unit
+    init: HorizontalSliderBuilder.() -> Unit
 ): Slider = buildChildFor(this, HorizontalSliderBuilder(), init)

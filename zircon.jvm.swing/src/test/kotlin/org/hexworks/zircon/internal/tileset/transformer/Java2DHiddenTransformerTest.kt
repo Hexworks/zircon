@@ -27,7 +27,7 @@ class Java2DHiddenTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = Tile.newBuilder()
-                .withModifiers(Modifiers.hidden())
-                .build()
+            .withModifiers(Modifiers.hidden())
+            .build()
     }
 }

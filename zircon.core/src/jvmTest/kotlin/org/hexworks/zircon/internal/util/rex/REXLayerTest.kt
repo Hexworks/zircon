@@ -28,15 +28,17 @@ class REXLayerTest {
         assertThat(layer.size).isEqualTo(Size.create(2, 1))
 
         assertChar(
-                'A',
-                DefaultTileColor(85, 85, 85, 255),
-                DefaultTileColor(170, 170, 170, 255),
-                layer.getTileAt(Position.create(0, 0)).get())
+            'A',
+            DefaultTileColor(85, 85, 85, 255),
+            DefaultTileColor(170, 170, 170, 255),
+            layer.getTileAt(Position.create(0, 0)).get()
+        )
         assertChar(
-                'B',
-                DefaultTileColor(35, 35, 35, 255),
-                DefaultTileColor(133, 133, 133, 255),
-                layer.getTileAt(Position.create(1, 0)).get())
+            'B',
+            DefaultTileColor(35, 35, 35, 255),
+            DefaultTileColor(133, 133, 133, 255),
+            layer.getTileAt(Position.create(1, 0)).get()
+        )
     }
 
     @Test
@@ -63,17 +65,17 @@ class REXLayerTest {
 
     private fun createTestData(): ByteBuffer {
         val raw = arrayOf(
-                // layer size
-                0x02, 0x00, 0x00, 0x00, // xLength
-                0x01, 0x00, 0x00, 0x00, // yLength
-                // cell #1
-                0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
-                0xaa, 0xaa, 0xaa,       // foreground
-                0x55, 0x55, 0x55,       // background
-                // cell #2
-                0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
-                0x85, 0x85, 0x85,       // foreground
-                0x23, 0x23, 0x23        // background
+            // layer size
+            0x02, 0x00, 0x00, 0x00, // xLength
+            0x01, 0x00, 0x00, 0x00, // yLength
+            // cell #1
+            0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
+            0xaa, 0xaa, 0xaa,       // foreground
+            0x55, 0x55, 0x55,       // background
+            // cell #2
+            0x42, 0x00, 0x00, 0x00, // character (hex 42 -> dec 66 -> 'B')
+            0x85, 0x85, 0x85,       // foreground
+            0x23, 0x23, 0x23        // background
         )
         val ba = ByteArray(raw.size)
         for ((i, b) in raw.withIndex()) {

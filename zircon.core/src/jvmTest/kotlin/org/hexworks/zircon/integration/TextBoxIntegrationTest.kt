@@ -11,13 +11,14 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
 
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
-                .withDecorations(box())
-                .withPreferredSize(28, 28)
-                .withAlignment(positionalAlignment(30, 1))
-                .build()
+            .withDecorations(box())
+            .withPreferredSize(28, 28)
+            .withAlignment(positionalAlignment(30, 1))
+            .build()
         screen.addComponent(panel)
 
-        screen.addComponent(Components.textBox(26)
+        screen.addComponent(
+            Components.textBox(26)
                 .withAlignment(positionalAlignment(2, 2))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
@@ -26,14 +27,18 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addListItem("And another list item")
                 .addNewLine()
                 .addInlineText("Inline text ")
-                .addInlineComponent(Components.button()
+                .addInlineComponent(
+                    Components.button()
                         .withText("Button")
-                        .build())
+                        .build()
+                )
                 .addInlineText(" text")
                 .commitInlineElements()
                 .addNewLine()
-                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200))
-        panel.addComponent(Components.textBox(26)
+                .addParagraph("And a multi-line paragraph with typewriter effect...", withTypingEffectSpeedInMs = 200)
+        )
+        panel.addComponent(
+            Components.textBox(26)
                 .withAlignment(positionalAlignment(Position.zero()))
                 .addHeader("Header!")
                 .addParagraph("This is a plain text box.")
@@ -42,24 +47,31 @@ class TextBoxIntegrationTest : ComponentIntegrationTestBase() {
                 .addListItem("And another list item")
                 .addNewLine()
                 .addInlineText("Inline text ")
-                .addInlineComponent(Components.button()
+                .addInlineComponent(
+                    Components.button()
                         .withText("Button")
-                        .build())
+                        .build()
+                )
                 .addInlineText(" text")
                 .commitInlineElements()
                 .addNewLine()
-                .addParagraph("And a multi-line paragraph with typewriter effect..."))
+                .addParagraph("And a multi-line paragraph with typewriter effect...")
+        )
 
-        screen.addComponent(Components.textBox(22)
+        screen.addComponent(
+            Components.textBox(22)
                 .withAlignment(positionalAlignment(1, 18))
                 .addHeader("Decorated!")
                 .withDecorations(box(), shadow())
-                .addParagraph("This is a paragraph which won't fit on one line."))
-        panel.addComponent(Components.textBox(22)
+                .addParagraph("This is a paragraph which won't fit on one line.")
+        )
+        panel.addComponent(
+            Components.textBox(22)
                 .withAlignment(positionalAlignment(0, 16))
                 .withDecorations(box(), shadow())
                 .addHeader("Decorated!")
-                .addParagraph("This is a paragraph which won't fit on one line."))
+                .addParagraph("This is a paragraph which won't fit on one line.")
+        )
     }
 
 }

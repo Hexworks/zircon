@@ -21,57 +21,61 @@ object LayerTransformerExample {
         val screen = displayScreen()
 
         val transformingLayer = Layer.newBuilder()
-                .withSize(Size.create(20, 20))
-                .withOffset(Position.create(1, 5))
-                .build().apply {
-                    fill(Tile.newBuilder()
-                            .withBackgroundColor(RED)
-                            .withForegroundColor(GREEN)
-                            .withCharacter('x')
-                            .buildCharacterTile())
-                }
+            .withSize(Size.create(20, 20))
+            .withOffset(Position.create(1, 5))
+            .build().apply {
+                fill(
+                    Tile.newBuilder()
+                        .withBackgroundColor(RED)
+                        .withForegroundColor(GREEN)
+                        .withCharacter('x')
+                        .buildCharacterTile()
+                )
+            }
 
         val hideableLayer = Layer.newBuilder()
-                .withSize(Size.create(20, 20))
-                .withOffset(Position.create(39, 5))
-                .build().apply {
-                    fill(Tile.newBuilder()
-                            .withBackgroundColor(BLUE)
-                            .withForegroundColor(YELLOW)
-                            .withCharacter('+')
-                            .buildCharacterTile())
-                }
+            .withSize(Size.create(20, 20))
+            .withOffset(Position.create(39, 5))
+            .build().apply {
+                fill(
+                    Tile.newBuilder()
+                        .withBackgroundColor(BLUE)
+                        .withForegroundColor(YELLOW)
+                        .withCharacter('+')
+                        .buildCharacterTile()
+                )
+            }
 
         val transformToggle = Components.toggleButton()
-                .withText("Transform")
-                .build().apply {
-                    selectedProperty.onChange {
-                        if (it.newValue) {
-                            transformingLayer.transform { _, tile ->
-                                tile.withAddedModifiers(HideModifier)
-                            }
-                        } else {
-                            transformingLayer.transform { _, tile ->
-                                tile.withRemovedModifiers(HideModifier)
-                            }
+            .withText("Transform")
+            .build().apply {
+                selectedProperty.onChange {
+                    if (it.newValue) {
+                        transformingLayer.transform { _, tile ->
+                            tile.withAddedModifiers(HideModifier)
+                        }
+                    } else {
+                        transformingLayer.transform { _, tile ->
+                            tile.withRemovedModifiers(HideModifier)
                         }
                     }
                 }
+            }
 
         screen.addComponent(transformToggle)
 
         screen.addComponent(Components.toggleButton()
-                .withText("Hide")
-                .withPosition(Position.topRightOf(transformToggle) + Position.create(1, 0))
-                .build().apply {
-                    selectedProperty.onChange {
-                        if (it.newValue) {
-                            hideableLayer.hide()
-                        } else {
-                            hideableLayer.show()
-                        }
+            .withText("Hide")
+            .withPosition(Position.topRightOf(transformToggle) + Position.create(1, 0))
+            .build().apply {
+                selectedProperty.onChange {
+                    if (it.newValue) {
+                        hideableLayer.hide()
+                    } else {
+                        hideableLayer.show()
                     }
-                })
+                }
+            })
 
         screen.addLayer(transformingLayer)
         screen.addLayer(hideableLayer)

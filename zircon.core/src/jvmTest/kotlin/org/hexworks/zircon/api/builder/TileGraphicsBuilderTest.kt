@@ -12,16 +12,16 @@ class TileGraphicsBuilderTest {
     @Test
     fun shouldBuildProperTileGraphic() {
         val result = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE)
-                .build()
-                .apply {
-                    fill(FILLER)
-                }
+            .withSize(SIZE)
+            .build()
+            .apply {
+                fill(FILLER)
+            }
 
         assertThat(result.size).isEqualTo(SIZE)
 
         assertThat(result.getTileAt(Position.create(SIZE.width - 1, SIZE.height - 1)).get())
-                .isEqualTo(FILLER)
+            .isEqualTo(FILLER)
     }
 
     companion object {

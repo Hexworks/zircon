@@ -7,6 +7,6 @@ class ResourcesTest {
     @Test
     fun shouldBeAbleToLoadResources() {
         REXPaintResource
-                .loadREXFile(this.javaClass.getResourceAsStream("/rex_files/cp437_table.xp"))
+            .loadREXFile(this.javaClass.getResourceAsStream("/rex_files/cp437_table.xp"))
     }
 }

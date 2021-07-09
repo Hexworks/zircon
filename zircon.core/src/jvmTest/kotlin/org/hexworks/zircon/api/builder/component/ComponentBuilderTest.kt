@@ -69,24 +69,30 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
     open fun shouldProperlyApplyBoxType() {
         target.withDecorations(box(boxType = BOX_TYPE_DOUBLE))
 
-        assertThat(target.decorations
-                .filterIsInstance<BoxDecorationRenderer>().first().boxType).isEqualTo(BOX_TYPE_DOUBLE)
+        assertThat(
+            target.decorations
+                .filterIsInstance<BoxDecorationRenderer>().first().boxType
+        ).isEqualTo(BOX_TYPE_DOUBLE)
     }
 
     @Test
     open fun shouldProperlyApplyWrappedWithBox() {
         target.withDecorations(box())
 
-        assertThat(target.decorations
-                .filterIsInstance<BoxDecorationRenderer>()).hasSize(1)
+        assertThat(
+            target.decorations
+                .filterIsInstance<BoxDecorationRenderer>()
+        ).hasSize(1)
     }
 
     @Test
     open fun shouldProperlyApplyWrappedWithShadow() {
         target.withDecorations(shadow())
 
-        assertThat(target.decorations
-                .filterIsInstance<ShadowDecorationRenderer>()).hasSize(1)
+        assertThat(
+            target.decorations
+                .filterIsInstance<ShadowDecorationRenderer>()
+        ).hasSize(1)
     }
 
     @Test
@@ -100,12 +106,14 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
         val POSITION_4X5 = Position.create(4, 5)
         val SIZE_5X6 = Size.create(5, 6)
         val COMPONENT_STYLE_SET = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withBackgroundColor(GREEN)
-                        .withForegroundColor(RED)
-                        .withModifiers(VerticalFlip)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withBackgroundColor(GREEN)
+                    .withForegroundColor(RED)
+                    .withModifiers(VerticalFlip)
+                    .build()
+            )
+            .build()
         const val TITLE_FOO = "FOO"
         val TILESET_ROGUE_YUN = CP437TilesetResources.rogueYun16x16()
         val BOX_TYPE_DOUBLE = BoxType.DOUBLE

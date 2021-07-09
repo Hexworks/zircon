@@ -10,14 +10,14 @@ class GraphicalTilesetResourcesTest {
     @Test
     fun shouldContainAllGraphicTilesets() {
         val fontCount = GraphicalTilesetResources::class.members
-                .filter { it.isFinal }
-                .filter { it.parameters.size == 1 }
-                .map { accessor ->
-                    assertThat(accessor.call(GraphicalTilesetResources))
-                            .describedAs("Graphic Tileset: ${accessor.name}")
-                            .isInstanceOf(TilesetResource::class.java)
-                    1
-                }.reduce(Int::plus)
+            .filter { it.isFinal }
+            .filter { it.parameters.size == 1 }
+            .map { accessor ->
+                assertThat(accessor.call(GraphicalTilesetResources))
+                    .describedAs("Graphic Tileset: ${accessor.name}")
+                    .isInstanceOf(TilesetResource::class.java)
+                1
+            }.reduce(Int::plus)
 
         assertThat(fontCount).isEqualTo(ENUM_GRAPHIC_TILESETS.size)
     }

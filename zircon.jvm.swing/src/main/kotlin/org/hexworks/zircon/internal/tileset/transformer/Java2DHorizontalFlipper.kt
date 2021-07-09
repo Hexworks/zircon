@@ -15,9 +15,10 @@ class Java2DHorizontalFlipper : TextureTransformer<BufferedImage> {
         val tx = AffineTransform.getScaleInstance(-1.0, 1.0)
         tx.translate(-backend.width.toDouble(), 0.0)
         return DefaultTileTexture(
-                width = texture.width,
-                height = texture.height,
-                texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null))
+            width = texture.width,
+            height = texture.height,
+            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null)
+        )
 
     }
 }

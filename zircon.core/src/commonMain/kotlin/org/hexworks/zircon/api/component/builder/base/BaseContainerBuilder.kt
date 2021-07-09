@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Size
  */
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseContainerBuilder<T : Container, U : ComponentBuilder<T, U>>(
-        initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>
 ) : BaseComponentBuilder<T, U>(initialRenderer) {
 
     var childrenToAdd: List<Component> = listOf()
@@ -39,13 +39,13 @@ abstract class BaseContainerBuilder<T : Container, U : ComponentBuilder<T, U>>(
     }
 
     override fun createMetadata() = ComponentMetadata(
-            relativePosition = position,
-            size = if (hasNoExplicitSize()) calculatedSize else size,
-            tileset = tileset,
-            componentStyleSet = componentStyleSet,
-            theme = colorTheme,
-            updateOnAttach = updateOnAttach,
-            name = name
+        relativePosition = position,
+        size = if (hasNoExplicitSize()) calculatedSize else size,
+        tileset = tileset,
+        componentStyleSet = componentStyleSet,
+        theme = colorTheme,
+        updateOnAttach = updateOnAttach,
+        name = name
     )
 
     private fun hasNoExplicitSize() = preferredContentSize.isUnknown && preferredSize.isUnknown

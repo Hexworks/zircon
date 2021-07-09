@@ -11,11 +11,13 @@ import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
-class LibgdxApplication(appConfig: AppConfig,
-                        override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
-                                initialTileset = appConfig.defaultTileset,
-                                initialSize = appConfig.size))
-    : Disposable, Application {
+class LibgdxApplication(
+    appConfig: AppConfig,
+    override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
+        initialTileset = appConfig.defaultTileset,
+        initialSize = appConfig.size
+    )
+) : Disposable, Application {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 

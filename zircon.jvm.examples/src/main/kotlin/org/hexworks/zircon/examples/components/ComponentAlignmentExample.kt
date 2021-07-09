@@ -29,146 +29,198 @@ object ComponentAlignmentExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withDecorations(box(title = "Component alignment test"), shadow())
-                .withSize(Size.create(30, 15))
-                .withAlignmentWithin(screen, CENTER)
-                .build()
+            .withDecorations(box(title = "Component alignment test"), shadow())
+            .withSize(Size.create(30, 15))
+            .withAlignmentWithin(screen, CENTER)
+            .build()
         screen.addComponent(panel)
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("TL")
                 .withAlignmentWithin(panel, TOP_LEFT)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("TC")
                 .withAlignmentWithin(panel, TOP_CENTER)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("TR")
                 .withAlignmentWithin(panel, TOP_RIGHT)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("RC")
                 .withAlignmentWithin(panel, RIGHT_CENTER)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("BR")
                 .withAlignmentWithin(panel, BOTTOM_RIGHT)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("BC")
                 .withAlignmentWithin(panel, BOTTOM_CENTER)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("BL")
                 .withAlignmentWithin(panel, BOTTOM_LEFT)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("LC")
                 .withAlignmentWithin(panel, LEFT_CENTER)
-                .build())
+                .build()
+        )
 
-        panel.addComponent(Components.label()
+        panel.addComponent(
+            Components.label()
                 .withText("CENTER")
                 .withAlignmentWithin(panel, CENTER)
-                .build())
+                .build()
+        )
 
         // positioning labels around the panel
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TL")
                 .withAlignmentAround(panel, TOP_LEFT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TC")
                 .withAlignmentAround(panel, TOP_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TR")
                 .withAlignmentAround(panel, TOP_RIGHT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("RC")
                 .withAlignmentAround(panel, RIGHT_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BR")
                 .withAlignmentAround(panel, BOTTOM_RIGHT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BC")
                 .withAlignmentAround(panel, BOTTOM_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BL")
                 .withAlignmentAround(panel, BOTTOM_LEFT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("LC")
                 .withAlignmentAround(panel, LEFT_CENTER)
-                .build())
+                .build()
+        )
 
         // positioning components within the screen
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TL")
                 .withAlignmentWithin(screen, TOP_LEFT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TC")
                 .withAlignmentWithin(screen, TOP_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("TR")
                 .withAlignmentWithin(screen, TOP_RIGHT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("RC")
                 .withAlignmentWithin(screen, RIGHT_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BR")
                 .withAlignmentWithin(screen, BOTTOM_RIGHT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BC")
                 .withAlignmentWithin(screen, BOTTOM_CENTER)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("BL")
                 .withAlignmentWithin(screen, BOTTOM_LEFT)
-                .build())
+                .build()
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("LC")
                 .withAlignmentWithin(screen, LEFT_CENTER)
-                .build())
+                .build()
+        )
 
         screen.display()
         screen.theme = theme

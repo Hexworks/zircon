@@ -14,17 +14,17 @@ class PanelBuilder : BaseContainerBuilder<Panel, PanelBuilder>(DefaultPanelRende
 
     override fun build(): Panel {
         return DefaultPanel(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialTitle = title,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialTitle = title,
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
         }
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withChildren(*childrenToAdd.toTypedArray())
+        .withProps(props.copy())
+        .withChildren(*childrenToAdd.toTypedArray())
 
     override fun calculateContentSize(): Size {
         // best effort

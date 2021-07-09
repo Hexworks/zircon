@@ -20,23 +20,25 @@ object TextAreaDisableExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = LibgdxApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = LibgdxApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(60, 30)
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val textArea = Components.textArea()
-                .withText("Enabled")
-                .withPosition(2, 2)
-                .withPreferredSize(10, 3)
-                .build()
+            .withText("Enabled")
+            .withPosition(2, 2)
+            .withPreferredSize(10, 3)
+            .build()
 
         val toggleButton = Components.button()
-                .withText("Toggle TextArea")
-                .withPosition(14, 2)
-                .build()
+            .withText("Toggle TextArea")
+            .withPosition(14, 2)
+            .build()
 
         toggleButton.processComponentEvents(ComponentEventType.ACTIVATED) {
             if (textArea.isEnabled) {

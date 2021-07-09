@@ -13,10 +13,10 @@ import org.hexworks.zircon.api.uievent.Pass
 object PlayerMoveExampleKotlin {
 
     private val PLAYER_TILE = Tile.newBuilder()
-            .withBackgroundColor(ANSITileColor.BLACK)
-            .withForegroundColor(ANSITileColor.WHITE)
-            .withCharacter('@')
-            .buildCharacterTile()
+        .withBackgroundColor(ANSITileColor.BLACK)
+        .withForegroundColor(ANSITileColor.WHITE)
+        .withCharacter('@')
+        .buildCharacterTile()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -24,9 +24,9 @@ object PlayerMoveExampleKotlin {
         val tileGrid = SwingApplications.startTileGrid()
 
         val player = tileGrid.addLayer(Layer.newBuilder()
-                .withSize(Size.one())
-                .withOffset(Position.create(tileGrid.width / 2, tileGrid.height / 2))
-                .build().apply { fill(PLAYER_TILE) })
+            .withSize(Size.one())
+            .withOffset(Position.create(tileGrid.width / 2, tileGrid.height / 2))
+            .build().apply { fill(PLAYER_TILE) })
 
         tileGrid.processKeyboardEvents(KEY_PRESSED) { event, _ ->
             when (event.code) {

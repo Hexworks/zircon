@@ -49,7 +49,7 @@ object Fragments {
      * generally recommended to directly pass an [ObservableList] to the table fragment.
      */
     @Beta
-    fun <M: Any> table(data: List<M>): TableBuilder<M> =
+    fun <M : Any> table(data: List<M>): TableBuilder<M> =
         table(data.toProperty())
 
     /**
@@ -59,7 +59,7 @@ object Fragments {
      * in the list will be reflected in the UI.
      */
     @Beta
-    fun <M: Any> table(data: ObservableList<M>): TableBuilder<M> =
+    fun <M : Any> table(data: ObservableList<M>): TableBuilder<M> =
         TableBuilder(data)
 
 }

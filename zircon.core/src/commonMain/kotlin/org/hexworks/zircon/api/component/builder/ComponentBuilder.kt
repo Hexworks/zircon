@@ -22,7 +22,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 
 @Suppress("UNCHECKED_CAST")
-interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>>: Builder<T> {
+interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
 
     var name: String
     var position: Position

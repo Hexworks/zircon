@@ -13,9 +13,9 @@ class REXCellTest {
     @Ignore
     fun test() {
         val raw = arrayOf(
-                0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
-                0xaa, 0xaa, 0xaa,       // foreground
-                0x55, 0x55, 0x55        // background
+            0x41, 0x00, 0x00, 0x00, // character (hex 41 -> dec 65 -> 'A')
+            0xaa, 0xaa, 0xaa,       // foreground
+            0x55, 0x55, 0x55        // background
         )
         val ba = ByteArray(raw.size)
         for ((i, b) in raw.withIndex()) {

@@ -19,14 +19,14 @@ class LogAreaBuilder : BaseComponentBuilder<LogArea, LogAreaBuilder>(DefaultLogA
 
     override fun build(): LogArea {
         return DefaultLogArea(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withLogRowHistorySize(logRowHistorySize)
+        .withProps(props.copy())
+        .withLogRowHistorySize(logRowHistorySize)
 
     companion object {
 
