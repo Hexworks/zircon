@@ -16,12 +16,12 @@ class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumb
         tileGraphics.size.fetchPositions().forEach { pos ->
             val invertedPos = Position.create(pos.y, pos.x)
             component.textBuffer().getCharAt(invertedPos).fold(
-                    whenEmpty = {
-                        tileGraphics.draw(tileTemplate, pos)
-                    },
-                    whenPresent = { char ->
-                        tileGraphics.draw(tileTemplate.withCharacter(char), pos)
-                    })
+                whenEmpty = {
+                    tileGraphics.draw(tileTemplate, pos)
+                },
+                whenPresent = { char ->
+                    tileGraphics.draw(tileTemplate.withCharacter(char), pos)
+                })
         }
     }
 }

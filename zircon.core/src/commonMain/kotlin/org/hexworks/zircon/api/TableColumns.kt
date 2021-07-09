@@ -45,34 +45,40 @@ object TableColumns {
      * cell. The observed value will simply be converted to a String by calling `toString()` on it so be sure
      * that it's string representation is useful.
      */
-    fun <M : Any, V : ObservableValue<*>> textColumnObservable(name: String, width: Int, valueAccessor: (M) -> V): TableColumn<M, V, Label> =
+    fun <M : Any, V : ObservableValue<*>> textColumnObservable(
+        name: String,
+        width: Int,
+        valueAccessor: (M) -> V
+    ): TableColumn<M, V, Label> =
         TableColumn(
             name,
             width,
             valueAccessor
         ) { cellValue ->
             Components
-                    .label()
-                    .withPreferredSize(width, 1)
-                    .build()
-                    .apply {
-                        textProperty.updateFrom(
-                                cellValue.bindTransform { it.toString() },
-                                updateWhenBound = true
-                        )
-                    }
+                .label()
+                .withPreferredSize(width, 1)
+                .build()
+                .apply {
+                    textProperty.updateFrom(
+                        cellValue.bindTransform { it.toString() },
+                        updateWhenBound = true
+                    )
+                }
         }
 
     /**
      * Creates a column of width 1 which represents its values with an [Icon].
      */
-    fun <M: Any, V: Any> icon(name: String,
-                              valueAccessor: (M) -> V,
-                              iconGenerator: (V) -> Icon): TableColumn<M, V, Icon> =
-            TableColumn(
-                    name,
-                    1,
-                    valueAccessor,
-                    iconGenerator
-            )
+    fun <M : Any, V : Any> icon(
+        name: String,
+        valueAccessor: (M) -> V,
+        iconGenerator: (V) -> Icon
+    ): TableColumn<M, V, Icon> =
+        TableColumn(
+            name,
+            1,
+            valueAccessor,
+            iconGenerator
+        )
 }

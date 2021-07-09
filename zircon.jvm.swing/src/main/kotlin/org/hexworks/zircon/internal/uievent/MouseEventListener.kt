@@ -13,8 +13,9 @@ import java.awt.event.MouseWheelEvent
 import kotlin.math.abs
 
 open class MouseEventListener(
-        private val fontWidth: Int,
-        private val fontHeight: Int) : MouseAdapter() {
+    private val fontWidth: Int,
+    private val fontHeight: Int
+) : MouseAdapter() {
 
     private val logger = LoggerFactory.getLogger(this::class)
     private val events = mutableListOf<Pair<org.hexworks.zircon.api.uievent.MouseEvent, UIEventPhase>>()
@@ -70,14 +71,17 @@ open class MouseEventListener(
     private fun processMouseEvent(eventType: MouseEventType, e: MouseEvent) {
         try {
             val position = Position.create(
-                    x = 0.coerceAtLeast(e.x.div(fontWidth)),
-                    y = 0.coerceAtLeast(e.y.div(fontHeight)))
+                x = 0.coerceAtLeast(e.x.div(fontWidth)),
+                y = 0.coerceAtLeast(e.y.div(fontHeight))
+            )
             org.hexworks.zircon.api.uievent.MouseEvent(
-                    type = eventType,
-                    button = e.button,
-                    position = position).let {
+                type = eventType,
+                button = e.button,
+                position = position
+            ).let {
                 if (mouseMovedToNewPosition(eventType, position)
-                                .or(isNotMoveEvent(eventType))) {
+                        .or(isNotMoveEvent(eventType))
+                ) {
                     lastMouseLocation = position
                     logger.debug("Processing Mouse Event: $it.")
                     events.add(it to TARGET)
@@ -92,6 +96,6 @@ open class MouseEventListener(
     private fun isNotMoveEvent(eventType: MouseEventType) = eventType != MOUSE_MOVED
 
     private fun mouseMovedToNewPosition(eventType: MouseEventType, position: Position) =
-            eventType in setOf(MOUSE_MOVED, MOUSE_DRAGGED) && position != lastMouseLocation
+        eventType in setOf(MOUSE_MOVED, MOUSE_DRAGGED) && position != lastMouseLocation
 
 }

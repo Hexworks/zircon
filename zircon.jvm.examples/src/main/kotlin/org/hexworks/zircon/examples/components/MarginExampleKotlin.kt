@@ -38,10 +38,12 @@ class MarginExampleKotlin : TwoColumnComponentExampleKotlin() {
 
             panel {
                 preferredSize = Size.create(panelWidth, panelHeight)
-                decoration = border(Border.newBuilder()
+                decoration = border(
+                    Border.newBuilder()
                         .withBorderColor(BRIGHT_GREEN)
                         .withBorderPositions(TOP, RIGHT, LEFT)
-                        .build(), INTERACTIVE)
+                        .build(), INTERACTIVE
+                )
                 componentRenderer = NoOpComponentRenderer()
 
                 panel {
@@ -52,9 +54,11 @@ class MarginExampleKotlin : TwoColumnComponentExampleKotlin() {
 
             panel {
                 preferredSize = Size.create(panelWidth, panelHeight)
-                decoration = border(Border.newBuilder()
+                decoration = border(
+                    Border.newBuilder()
                         .withBorderColor(BRIGHT_GREEN)
-                        .build(), INTERACTIVE)
+                        .build(), INTERACTIVE
+                )
                 componentRenderer = NoOpComponentRenderer()
 
                 panel {
@@ -65,10 +69,12 @@ class MarginExampleKotlin : TwoColumnComponentExampleKotlin() {
 
             panel {
                 preferredSize = Size.create(panelWidth, panelHeight)
-                decoration = border(Border.newBuilder()
+                decoration = border(
+                    Border.newBuilder()
                         .withBorderColor(BRIGHT_GREEN)
                         .withBorderPositions(BOTTOM, RIGHT, LEFT)
-                        .build(), INTERACTIVE)
+                        .build(), INTERACTIVE
+                )
                 componentRenderer = NoOpComponentRenderer()
 
                 panel {

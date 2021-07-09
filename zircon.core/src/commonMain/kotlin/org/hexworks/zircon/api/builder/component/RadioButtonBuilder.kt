@@ -10,9 +10,9 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton, RadioButtonBuilder>(
-        initialRenderer = DefaultRadioButtonRenderer(),
-        initialText = "",
-        reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
+    initialRenderer = DefaultRadioButtonRenderer(),
+    initialText = "",
+    reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
 ) {
 
     var key: String = ""
@@ -26,17 +26,17 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton, RadioButtonBuil
             "Can't create a Radio Button without a key."
         }
         return DefaultRadioButton(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
-                key = key,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
+            key = key,
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withText(text)
-            .withKey(key)
+        .withProps(props.copy())
+        .withText(text)
+        .withKey(key)
 
     companion object {
 

@@ -13,69 +13,75 @@ object SelectorExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withSize(Size.create(60, 40))
                 .withBorderless(true)
                 .withDefaultTileset(CP437TilesetResources.wanderlust16x16())
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
         screen.theme = theme
 
-        val leftPanel = Components.panel().withPreferredSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER).withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
-            screen.addComponent(it)
-        }
+        val leftPanel =
+            Components.panel().withPreferredSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER)
+                .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
+                screen.addComponent(it)
+            }
 
         val fragmentsList = Components.vbox()
-                .withPreferredSize(leftPanel.contentSize.width, 20)
-                .withAlignmentWithin(leftPanel, ComponentAlignment.CENTER)
-                .withSpacing(2)
-                .build().also {
-                    leftPanel.addComponent(it)
-                }
+            .withPreferredSize(leftPanel.contentSize.width, 20)
+            .withAlignmentWithin(leftPanel, ComponentAlignment.CENTER)
+            .withSpacing(2)
+            .build().also {
+                leftPanel.addComponent(it)
+            }
 
-        val logArea = Components.logArea().withPreferredSize(40, 40).withAlignmentWithin(screen, ComponentAlignment.RIGHT_CENTER).withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE, "Logs")).build().also {
-            screen.addComponent(it)
-        }
+        val logArea =
+            Components.logArea().withPreferredSize(40, 40).withAlignmentWithin(screen, ComponentAlignment.RIGHT_CENTER)
+                .withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE, "Logs")).build().also {
+                screen.addComponent(it)
+            }
 
         val width = fragmentsList.contentSize.width
 
         fragmentsList.addFragment(
-                Fragments.selector(width, listOf("Centered", "strings", "as", "values")).build()
+            Fragments.selector(width, listOf("Centered", "strings", "as", "values")).build()
         )
 
         fragmentsList.addFragment(
-                Fragments.selector(width, listOf("Strings", "left", "aligned")).withCenteredText(false).build()
+            Fragments.selector(width, listOf("Strings", "left", "aligned")).withCenteredText(false).build()
         )
 
         fragmentsList.addFragment(
-                Fragments.selector(width, listOf("Long", "values", "get", "truncated and that's it")).build()
+            Fragments.selector(width, listOf("Long", "values", "get", "truncated and that's it")).build()
         )
 
         // This is a special form of MultiSelect
         fragmentsList.addFragment(
-                Fragments.colorThemeSelector(width, theme).withThemeOverrides(screen).build()
+            Fragments.colorThemeSelector(width, theme).withThemeOverrides(screen).build()
         )
 
         fragmentsList.addFragment(
-                Fragments.selector(width, listOf(2, 4, 8, 16, 32)).build().apply {
-                    selectedValue.onChange { (oldValue, newValue) ->
-                        logArea.addParagraph("Changed value from $oldValue to $newValue", true)
-                    }
+            Fragments.selector(width, listOf(2, 4, 8, 16, 32)).build().apply {
+                selectedValue.onChange { (oldValue, newValue) ->
+                    logArea.addParagraph("Changed value from $oldValue to $newValue", true)
                 }
+            }
         )
 
         fragmentsList.addFragment(
-                Fragments.selector(width, listOf("Click", "me!")).withClickableLabel(true).build().apply {
-                    selectedValue.onChange { (oldValue, newValue) ->
-                        val text = if (oldValue == newValue) {
-                            "You clicked the label!"
-                        } else {
-                            "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
-                        }
-                        logArea.addParagraph(text, true)
+            Fragments.selector(width, listOf("Click", "me!")).withClickableLabel(true).build().apply {
+                selectedValue.onChange { (oldValue, newValue) ->
+                    val text = if (oldValue == newValue) {
+                        "You clicked the label!"
+                    } else {
+                        "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
                     }
+                    logArea.addParagraph(text, true)
                 }
+            }
         )
 
         screen.display()

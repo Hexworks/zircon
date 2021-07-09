@@ -5,7 +5,8 @@ import org.hexworks.cobalt.datatypes.Maybe
 
 fun <T> assertThat(maybe: Maybe<T>) = MaybeAssert(maybe)
 
-class MaybeAssert<T>(actual: Maybe<T>) : AbstractObjectAssert<MaybeAssert<T>, Maybe<T>>(actual, MaybeAssert::class.java) {
+class MaybeAssert<T>(actual: Maybe<T>) :
+    AbstractObjectAssert<MaybeAssert<T>, Maybe<T>>(actual, MaybeAssert::class.java) {
     fun isPresent() = also {
         isNotNull
 

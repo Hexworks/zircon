@@ -45,20 +45,20 @@ class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
     }
 
     override fun build(): RadioButtonGroup = DefaultRadioButtonGroup(
-            initialIsDisabled = isDisabled,
-            initialIsHidden = isHidden,
-            initialTheme = theme,
-            initialTileset = tileset
+        initialIsDisabled = isDisabled,
+        initialIsHidden = isHidden,
+        initialTheme = theme,
+        initialTileset = tileset
     ).apply {
         addComponents(*radioButtons.toTypedArray())
     }
 
     override fun createCopy() = newBuilder()
-            .withIsDisabled(isDisabled)
-            .withIsHidden(isHidden)
-            .withTheme(theme)
-            .withTileset(tileset)
-            .withRadioButtons(*radioButtons.toTypedArray())
+        .withIsDisabled(isDisabled)
+        .withIsHidden(isHidden)
+        .withTheme(theme)
+        .withTileset(tileset)
+        .withRadioButtons(*radioButtons.toTypedArray())
 
 
     companion object {

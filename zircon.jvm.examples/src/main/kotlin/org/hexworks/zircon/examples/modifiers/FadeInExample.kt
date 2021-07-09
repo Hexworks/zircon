@@ -19,32 +19,38 @@ object FadeInExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(40, 10))
                 .withDebugMode(true)
-                .build())
+                .build()
+        )
 
         val text = "This text fades in with a glow"
 
         tileGrid.cursorPosition = Position.create(1, 1)
         text.forEach { c ->
-            tileGrid.putTile(Tile.defaultTile()
+            tileGrid.putTile(
+                Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
-                    .withModifiers(Modifiers.fadeIn(10, 2000)))
+                    .withModifiers(Modifiers.fadeIn(10, 2000))
+            )
         }
 
         val textWithoutGlow = "This text fades in without a glow"
 
         tileGrid.cursorPosition = Position.create(1, 3)
         textWithoutGlow.forEach { c ->
-            tileGrid.putTile(Tile.defaultTile()
+            tileGrid.putTile(
+                Tile.defaultTile()
                     .withBackgroundColor(TileColor.transparent())
                     .withForegroundColor(ColorThemes.nord().accentColor)
                     .withCharacter(c)
-                    .withModifiers(FadeIn(10, 2000, false)))
+                    .withModifiers(FadeIn(10, 2000, false))
+            )
         }
 
     }

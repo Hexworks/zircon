@@ -17,10 +17,10 @@ object MouseMovedExample {
         val screen = displayScreen()
 
         val panel = Components.panel()
-                .withSize(Size.create(20, 5))
-                .withAlignment(alignmentWithin(screen, CENTER))
-                .withDecorations(box(title = "Hover me"))
-                .build()
+            .withSize(Size.create(20, 5))
+            .withAlignment(alignmentWithin(screen, CENTER))
+            .withDecorations(box(title = "Hover me"))
+            .build()
 
         screen.addComponent(panel)
 

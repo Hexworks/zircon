@@ -21,35 +21,37 @@ object ProgressBarExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withDecorations(box(title = "Progress Bars on panel"), shadow())
-                .withSize(Size.create(30, 28))
-                .withAlignment(positionalAlignment(29, 1))
-                .build()
+            .withDecorations(box(title = "Progress Bars on panel"), shadow())
+            .withSize(Size.create(30, 28))
+            .withAlignment(positionalAlignment(29, 1))
+            .build()
         screen.addComponent(panel)
 
         val progressBar = Components.progressBar()
-                .withRange(100)
-                .withNumberOfSteps(25)
-                .withPosition(0, 5)
-                .withDecorations(box())
-                .withSize(Size.create(25, 3))
-                .build()
+            .withRange(100)
+            .withNumberOfSteps(25)
+            .withPosition(0, 5)
+            .withDecorations(box())
+            .withSize(Size.create(25, 3))
+            .build()
 
         val progressBarWithPercentValue = Components.progressBar()
-                .withRange(100)
-                .withNumberOfSteps(23)
-                .withPosition(0, 10)
-                .withDisplayPercentValueOfProgress(true)
-                .withDecorations(box())
-                .build()
+            .withRange(100)
+            .withNumberOfSteps(23)
+            .withPosition(0, 10)
+            .withDisplayPercentValueOfProgress(true)
+            .withDecorations(box())
+            .build()
 
 
         panel.addComponent(progressBar)

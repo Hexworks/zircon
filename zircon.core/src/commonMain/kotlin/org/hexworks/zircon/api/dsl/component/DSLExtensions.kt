@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 
 operator fun ComponentDecorationRenderer.plus(
-        other: ComponentDecorationRenderer
+    other: ComponentDecorationRenderer
 ): List<ComponentDecorationRenderer> {
     return listOf(this, other)
 }

@@ -35,42 +35,55 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.accentColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withActiveStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.accentColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .withMouseOverStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withActiveStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withDisabledStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultCheckBoxRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build()
         target = DefaultCheckBox(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_20X1,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<CheckBox>),
-                initialText = TEXT)
+            componentMetadata = ComponentMetadata(
+                size = SIZE_20X1,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<CheckBox>
+            ),
+            initialText = TEXT
+        )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
 
@@ -79,10 +92,12 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
         val offset = 4
         TEXT.forEachIndexed { i, char ->
             assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .withCharacter(char)
-                            .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
-                            .build())
+                .isEqualTo(
+                    TileBuilder.newBuilder()
+                        .withCharacter(char)
+                        .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
+                        .build()
+                )
         }
     }
 
@@ -122,8 +137,10 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
 
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
@@ -131,8 +148,10 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
 
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.focusGiven()
         target.activated()
 

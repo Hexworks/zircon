@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
 
 abstract class NumberInputBuilder<T : NumberInput, B : BaseComponentBuilder<T, B>>(
-        initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>
 ) : BaseComponentBuilder<T, B>(initialRenderer) {
 
     var initialValue: Int = 0

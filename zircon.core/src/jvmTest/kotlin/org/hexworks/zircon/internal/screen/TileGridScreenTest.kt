@@ -31,15 +31,16 @@ class TileGridScreenTest {
         AppConfig.newBuilder().enableBetaFeatures().build()
         tileset = FONT
         grid = ThreadSafeTileGrid(
-                initialTileset = tileset,
-                initialSize = SIZE)
+            initialTileset = tileset,
+            initialSize = SIZE
+        )
         target = TileGridScreen(grid)
     }
 
     @Test
     fun shouldUseGridsTilesetWhenCreating() {
         assertThat(target.tileset.id)
-                .isEqualTo(grid.tileset.id)
+            .isEqualTo(grid.tileset.id)
     }
 
     @Test
@@ -60,7 +61,7 @@ class TileGridScreenTest {
     fun shouldBeDrawnWhenCharacterSet() {
         target.draw(CHAR, Position.offset1x1())
         assertThat(target.getTileAt(Position.offset1x1()).get())
-                .isEqualTo(CHAR)
+            .isEqualTo(CHAR)
 
     }
 
@@ -72,24 +73,24 @@ class TileGridScreenTest {
         target.clear()
 
         assertThat(target.getTileAt(Position.offset1x1()))
-                .isNotEqualTo(CHAR)
+            .isNotEqualTo(CHAR)
     }
 
     @Test
     fun When_a_layer_and_a_component_is_added_Then_renderables_should_be_returned_in_proper_order() {
         val layer = LayerBuilder.newBuilder()
-                .withSize(Size.create(3, 4))
-                .build().apply {
-                    draw(Tile.defaultTile().withCharacter('x'), Position.offset1x1())
-                }.asInternalLayer()
+            .withSize(Size.create(3, 4))
+            .build().apply {
+                draw(Tile.defaultTile().withCharacter('x'), Position.offset1x1())
+            }.asInternalLayer()
 
         val button = Components.button().withText("y").withPosition(Position.create(2, 3)).build()
 
         val surfaceLayer = LayerBuilder.newBuilder()
-                .withSize(Size.create(5, 6))
-                .build().apply {
-                    draw(Tile.defaultTile().withCharacter('z'), Position.create(2, 3))
-                }.asInternalLayer()
+            .withSize(Size.create(5, 6))
+            .build().apply {
+                draw(Tile.defaultTile().withCharacter('z'), Position.create(2, 3))
+            }.asInternalLayer()
 
         target.draw(surfaceLayer)
         target.addLayer(layer)
@@ -101,14 +102,14 @@ class TileGridScreenTest {
         val renderables: List<Renderable> = target.renderables.toList()
 
         assertThat(renderables.joinToString())
-                .isEqualTo(listOf(target.root, button, surfaceLayer, layer).joinToString())
+            .isEqualTo(listOf(target.root, button, surfaceLayer, layer).joinToString())
     }
 
     companion object {
         val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResources.rogueYun16x16()
         val CHAR = TileBuilder.newBuilder()
-                .withCharacter('x')
-                .build()
+            .withCharacter('x')
+            .build()
     }
 }

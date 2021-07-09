@@ -22,8 +22,7 @@ import org.w3c.dom.Text
 import kotlin.math.abs
 
 
-class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
-    : Tileset<SpriteBatch> {
+class LibgdxMonospaceFontTileset(private val resource: TilesetResource) : Tileset<SpriteBatch> {
 
     override val id: UUID = UUIDFactory.randomUUID()
     override val targetType = SpriteBatch::class
@@ -58,12 +57,15 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
         val tileTex = fetchTextureForTile(tile) as OffsetTileTexture
         val tileSprite = Sprite(tileTex.texture)
         tileSprite.setOrigin(0f, 0f)
-        tileSprite.setOriginBasedPosition(x + tileTex.xOffset.toFloat(), y - tileTex.yOffset.toFloat() - tileSprite.height)
+        tileSprite.setOriginBasedPosition(
+            x + tileTex.xOffset.toFloat(),
+            y - tileTex.yOffset.toFloat() - tileSprite.height
+        )
         tileSprite.color = Color(
-                tile.foregroundColor.red.toFloat() / 255,
-                tile.foregroundColor.green.toFloat() / 255,
-                tile.foregroundColor.blue.toFloat() / 255,
-                tile.foregroundColor.alpha.toFloat() / 255
+            tile.foregroundColor.red.toFloat() / 255,
+            tile.foregroundColor.green.toFloat() / 255,
+            tile.foregroundColor.blue.toFloat() / 255,
+            tile.foregroundColor.alpha.toFloat() / 255
         )
         tileSprite.draw(surface)
     }
@@ -74,19 +76,19 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource)
         val tr = TextureRegion(page.texture, glyph.u, glyph.v, glyph.u2, glyph.v2)
 
         return OffsetTileTexture(
-                width = width,
-                height = height,
-                xOffset = glyph.xoffset,
-                yOffset = glyph.yoffset,
-                texture = tr
+            width = width,
+            height = height,
+            xOffset = glyph.xoffset,
+            yOffset = glyph.yoffset,
+            texture = tr
         )
     }
 
     class OffsetTileTexture<T>(
-            override val width: Int,
-            override val height: Int,
-            val xOffset: Int,
-            val yOffset: Int,
-            override val texture: T
+        override val width: Int,
+        override val height: Int,
+        val xOffset: Int,
+        val yOffset: Int,
+        override val texture: T
     ) : TileTexture<T>
 }

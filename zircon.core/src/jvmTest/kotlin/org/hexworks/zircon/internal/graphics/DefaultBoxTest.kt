@@ -13,15 +13,15 @@ class DefaultBoxTest {
     @Test
     fun test() {
         assertThat(BoxBuilder.newBuilder()
-                .withBoxType(BoxType.DOUBLE)
-                .withSize(Size.create(5, 5))
-                .withStyle(StyleSetBuilder.newBuilder().build())
-                .build()
-                .apply {
-                    fill(TileBuilder.newBuilder().withCharacter('x').build())
-                }
-                .toString())
-                .isEqualTo(EXPECTED_BOX)
+            .withBoxType(BoxType.DOUBLE)
+            .withSize(Size.create(5, 5))
+            .withStyle(StyleSetBuilder.newBuilder().build())
+            .build()
+            .apply {
+                fill(TileBuilder.newBuilder().withCharacter('x').build())
+            }
+            .toString())
+            .isEqualTo(EXPECTED_BOX)
     }
 
     companion object {

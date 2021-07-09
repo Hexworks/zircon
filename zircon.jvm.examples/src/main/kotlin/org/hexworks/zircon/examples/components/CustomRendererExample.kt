@@ -26,15 +26,15 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
     override fun build(box: VBox) {
 
         val logArea = logArea()
-                .withSize(box.size)
-                .withDecorations(box())
-                .build()
+            .withSize(box.size)
+            .withDecorations(box())
+            .build()
 
         val colored = label()
-                .withPreferredSize(10, 1)
-                .withRendererFunction { graphics, _ ->
-                    graphics.draw("Colored".toCharacterTileString(StyleSet.create(RED, GREEN)))
-                }.build()
+            .withPreferredSize(10, 1)
+            .withRendererFunction { graphics, _ ->
+                graphics.draw("Colored".toCharacterTileString(StyleSet.create(RED, GREEN)))
+            }.build()
 
         with(logArea) {
             addInlineText("This is a ")
@@ -44,16 +44,18 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
         }
 
         val leftLabel = label()
-                .withText("Nightmare")
-                .withPosition(1, 0)
-                .withColorTheme(ColorThemeBuilder.newBuilder()
-                        .withAccentColor(BRIGHT_YELLOW)
-                        .withPrimaryForegroundColor(RED)
-                        .withPrimaryBackgroundColor(GREEN)
-                        .withSecondaryForegroundColor(BLUE)
-                        .withSecondaryBackgroundColor(CYAN)
-                        .build())
-                .build()
+            .withText("Nightmare")
+            .withPosition(1, 0)
+            .withColorTheme(
+                ColorThemeBuilder.newBuilder()
+                    .withAccentColor(BRIGHT_YELLOW)
+                    .withPrimaryForegroundColor(RED)
+                    .withPrimaryBackgroundColor(GREEN)
+                    .withSecondaryForegroundColor(BLUE)
+                    .withSecondaryBackgroundColor(CYAN)
+                    .build()
+            )
+            .build()
 
         logArea.addInlineComponent(leftLabel)
         logArea.commitInlineElements()

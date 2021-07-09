@@ -32,11 +32,17 @@ object LibgdxPlayground : Game() {
 
     override fun create() {
         logger.info("Creating LibgdxPlayground...")
-        zirconApplication = LibgdxApplications.buildApplication(AppConfig.newBuilder()
+        zirconApplication = LibgdxApplications.buildApplication(
+            AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
-                .withSize(Size.create(screenWidth / TILESET.width,
-                        screenHeight / TILESET.height))
-                .build())
+                .withSize(
+                    Size.create(
+                        screenWidth / TILESET.width,
+                        screenHeight / TILESET.height
+                    )
+                )
+                .build()
+        )
         zirconApplication.start()
 
         val screen = ScreenBuilder.createScreenFor(zirconApplication.tileGrid)
@@ -72,25 +78,31 @@ object LibgdxPlayground : Game() {
         panel.addComponent(label)
         panel.addComponent(button)*/
 
-        screen.addComponent(Components.icon()
+        screen.addComponent(
+            Components.icon()
                 .withAlignment(positionalAlignment(2, 2))
-                .withIcon(Tile.newBuilder()
+                .withIcon(
+                    Tile.newBuilder()
                         .withName("Plate mail")
                         .withTileset(GraphicalTilesetResources.nethack16x16())
-                        .buildGraphicalTile())
+                        .buildGraphicalTile()
+                )
         )
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Label with icon")
-                .withAlignment(positionalAlignment(2, 1)))
+                .withAlignment(positionalAlignment(2, 1))
+        )
 
 
         screen.theme = theme
         screen.display()
 
         Gdx.input.inputProcessor = ZirconInputListener(
-                fontWidth = TILESET.width,
-                fontHeight = TILESET.height,
-                tileGrid = zirconApplication.tileGrid)
+            fontWidth = TILESET.width,
+            fontHeight = TILESET.height,
+            tileGrid = zirconApplication.tileGrid
+        )
     }
 
     override fun render() {

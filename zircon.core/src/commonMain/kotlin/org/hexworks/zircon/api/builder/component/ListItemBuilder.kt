@@ -11,17 +11,17 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class ListItemBuilder : ComponentWithTextBuilder<ListItem, ListItemBuilder>(
-        initialRenderer = DefaultListItemRenderer(),
-        initialText = "",
-        reservedSpace = 2
+    initialRenderer = DefaultListItemRenderer(),
+    initialText = "",
+    reservedSpace = 2
 ) {
 
     override fun build(): ListItem {
         val fixedText = text.withNewLinesStripped()
         return DefaultListItem(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = fixedText,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = fixedText,
         )
     }
 

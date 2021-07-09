@@ -15,9 +15,9 @@ class SelectorBuilderTest {
     @Test
     fun copyBuilder() {
         val builder = SelectorBuilder.newBuilder(10, listOf("a"))
-                .withCenteredText(false)
-                .withClickableLabel(true)
-                .withToStringMethod { s -> s + s }
+            .withCenteredText(false)
+            .withClickableLabel(true)
+            .withToStringMethod { s -> s + s }
 
         val builderCopy = builder.createCopy()
 
@@ -68,7 +68,8 @@ class SelectorBuilderTest {
 
     @Test
     fun toStringMethod() {
-        val multiSelect = SelectorBuilder.newBuilder(10, listOf(TestClass(5))).withToStringMethod(TestClass::bigger).withCenteredText(false).build() as DefaultSelector
+        val multiSelect = SelectorBuilder.newBuilder(10, listOf(TestClass(5))).withToStringMethod(TestClass::bigger)
+            .withCenteredText(false).build() as DefaultSelector
         val label = getLabel(multiSelect)
         assertThat(label.text).isEqualTo("500")
     }
@@ -84,15 +85,18 @@ class SelectorBuilderTest {
     }
 
     private fun checkComponentClasses(clickable: Boolean, expectedNumberOfButtons: Int, expectedNumberOfLabels: Int) {
-        val multiSelect = SelectorBuilder.newBuilder(10, listOf("one", "two", "three")).withClickableLabel(clickable).build() as DefaultSelector
+        val multiSelect = SelectorBuilder.newBuilder(10, listOf("one", "two", "three")).withClickableLabel(clickable)
+            .build() as DefaultSelector
 
         val components = multiSelect.root.children.map { it::class }
-        assertThat(components.filter { it.isSubclassOf(Button::class) }).`as`("${if (clickable) "C" else "Unc"}lickable MultiSelect should have $expectedNumberOfButtons Buttons").hasSize(expectedNumberOfButtons)
-        assertThat(components.filter { it.isSubclassOf(Label::class) }).`as`("${if (clickable) "C" else "Unc"}lickable MultiSelect should have $expectedNumberOfLabels Labels").hasSize(expectedNumberOfLabels)
+        assertThat(components.filter { it.isSubclassOf(Button::class) }).`as`("${if (clickable) "C" else "Unc"}lickable MultiSelect should have $expectedNumberOfButtons Buttons")
+            .hasSize(expectedNumberOfButtons)
+        assertThat(components.filter { it.isSubclassOf(Label::class) }).`as`("${if (clickable) "C" else "Unc"}lickable MultiSelect should have $expectedNumberOfLabels Labels")
+            .hasSize(expectedNumberOfLabels)
     }
 
     private fun getLabel(multiSelect: DefaultSelector<out Any>) =
-            multiSelect.root.children.first { it is Label } as Label
+        multiSelect.root.children.first { it is Label } as Label
 
     private data class TestClass(val number: Int) {
         fun bigger() = "${number}00"

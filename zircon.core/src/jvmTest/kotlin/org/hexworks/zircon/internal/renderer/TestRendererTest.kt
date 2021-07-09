@@ -28,18 +28,22 @@ class TestRendererTest {
         val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(text.length + 2, 4)).build()
         val testRenderer = TestRenderer(graphics).apply {
             withComponentContainer {
-                addComponent(Components.textBox(text.length)
-                    .withDecorations(box(boxType = BoxType.TOP_BOTTOM_DOUBLE))
-                    .addParagraph(text, withNewLine = false)
-                    .build())
+                addComponent(
+                    Components.textBox(text.length)
+                        .withDecorations(box(boxType = BoxType.TOP_BOTTOM_DOUBLE))
+                        .addParagraph(text, withNewLine = false)
+                        .build()
+                )
             }
         }
         testRenderer.render()
-        assertThat(graphics.convertCharacterTilesToString()).isEqualTo("""
+        assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
+            """
             ╒════════════╕
             │Hello Zircon│
             │            │
             ╘════════════╛
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 }

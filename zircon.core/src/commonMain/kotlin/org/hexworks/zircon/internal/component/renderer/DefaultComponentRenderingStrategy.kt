@@ -14,25 +14,25 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
-        /**
-         * The [ComponentRenderer] which will be used to render
-         * the *content* of this [Component].
-         */
-        val componentRenderer: ComponentRenderer<in T>,
-        /**
-         * The [ComponentDecorationRenderer]s this [Component] has.
-         */
-        val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
-        /**
-         * The [ComponentPostProcessor]s this [Component] has.
-         */
-        val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf())
-    : ComponentRenderingStrategy<T> {
+    /**
+     * The [ComponentRenderer] which will be used to render
+     * the *content* of this [Component].
+     */
+    val componentRenderer: ComponentRenderer<in T>,
+    /**
+     * The [ComponentDecorationRenderer]s this [Component] has.
+     */
+    val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
+    /**
+     * The [ComponentPostProcessor]s this [Component] has.
+     */
+    val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()
+) : ComponentRenderingStrategy<T> {
 
     override val contentPosition: Position = decorationRenderers.asSequence()
-            .map {
-                it.offset
-            }.fold(Position.defaultPosition(), Position::plus)
+        .map {
+            it.offset
+        }.fold(Position.defaultPosition(), Position::plus)
 
     override fun render(component: T, graphics: TileGraphics) {
         if (component.isHidden.not()) {
@@ -42,14 +42,17 @@ class DefaultComponentRenderingStrategy<T : Component>(
             val graphicsCopy = graphics.createCopy()
 
             val componentArea = graphicsCopy.toSubTileGraphics(Rect.create(
-                    position = decorationRenderers
-                            .map { it.offset }.fold(Position.zero(), Position::plus),
-                    size = graphicsCopy.size - decorationRenderers
-                            .map { it.occupiedSize }.fold(Size.zero(), Size::plus)))
+                position = decorationRenderers
+                    .map { it.offset }.fold(Position.zero(), Position::plus),
+                size = graphicsCopy.size - decorationRenderers
+                    .map { it.occupiedSize }.fold(Size.zero(), Size::plus)
+            )
+            )
 
             componentRenderer.render(
-                    tileGraphics = componentArea,
-                    context = ComponentRenderContext(component))
+                tileGraphics = componentArea,
+                context = ComponentRenderContext(component)
+            )
 
             decorationRenderers.forEach { renderer ->
                 val bounds = Rect.create(currentOffset, currentSize)

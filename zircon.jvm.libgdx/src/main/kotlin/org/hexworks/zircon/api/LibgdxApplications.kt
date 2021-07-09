@@ -14,8 +14,10 @@ object LibgdxApplications {
      */
     @JvmStatic
     @JvmOverloads
-    fun buildApplication(appConfig: AppConfig = AppConfig.defaultConfiguration(),
-                         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()): LibgdxApplication {
+    fun buildApplication(
+        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
+    ): LibgdxApplication {
         return makeLibgdxGame(appConfig, libgdxConfig).libgdxApplication
     }
 
@@ -24,8 +26,10 @@ object LibgdxApplications {
      */
     @JvmStatic
     @JvmOverloads
-    fun startApplication(appConfig: AppConfig = AppConfig.defaultConfiguration(),
-                         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()): LibgdxApplication {
+    fun startApplication(
+        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
+    ): LibgdxApplication {
         with(makeLibgdxGame(appConfig, libgdxConfig)) {
             start()
             return this.libgdxApplication
@@ -57,8 +61,10 @@ object LibgdxApplications {
      */
     @JvmStatic
     @JvmOverloads
-    fun startTileGrid(appConfig: AppConfig = AppConfig.defaultConfiguration(),
-                      libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()): TileGrid {
+    fun startTileGrid(
+        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
+    ): TileGrid {
         val maxTries = 10
         var currentTryCount = 0
         val game = makeLibgdxGame(appConfig, libgdxConfig)
@@ -88,8 +94,10 @@ object LibgdxApplications {
      * title, width and height, and foregroundFPS respectively.
      */
     @JvmStatic
-    private fun makeLibgdxGame(appConfig: AppConfig = AppConfig.defaultConfiguration(),
-                               libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()): LibgdxGame {
+    private fun makeLibgdxGame(
+        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
+    ): LibgdxGame {
         libgdxConfig.title = appConfig.title
         libgdxConfig.width = appConfig.size.width * appConfig.defaultTileset.width
         libgdxConfig.height = appConfig.size.height * appConfig.defaultTileset.height

@@ -7,8 +7,8 @@ import org.hexworks.cobalt.datatypes.Maybe
  * which is empty if `idx` is out of bounds.
  */
 fun <T> List<T>.getIfPresent(idx: Int) =
-        if (idx >= size) {
-            Maybe.empty()
-        } else {
-            Maybe.of(get(idx))
-        }
+    if (idx >= size) {
+        Maybe.empty()
+    } else {
+        Maybe.of(get(idx))
+    }

@@ -6,10 +6,10 @@
     </appender>
 
     <root level="info">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="org.hexworks.zircon" level="warn" />
-    <logger name="org.hexworks.cobalt" level="warn" />
+    <logger name="org.hexworks.zircon" level="warn"/>
+    <logger name="org.hexworks.cobalt" level="warn"/>
 
 </configuration>

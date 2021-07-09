@@ -20,8 +20,7 @@ import java.io.InputStream
 import javax.imageio.ImageIO
 
 @Suppress("unused")
-class Java2DGraphicTileset(private val resource: TilesetResource)
-    : Tileset<Graphics2D> {
+class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Graphics2D> {
 
     override val id: UUID = resource.id
     override val targetType = Graphics2D::class
@@ -54,19 +53,20 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
             val (name, _, char) = tileData
             val cleanName = name.toLowerCase().trim()
             tileData.tags = tileData.tags
-                    .plus(cleanName.split(" ").map { it }.toSet())
+                .plus(cleanName.split(" ").map { it }.toSet())
             if (char == ' ') {
                 tileData.char = cleanName.first()
             }
             tileData.x = i.rem(imageData.tilesPerRow)
             tileData.y = i.div(imageData.tilesPerRow)
             tileData.name to GraphicTextureMetadata(
-                    name = tileData.name,
-                    tags = tileData.tags,
-                    x = tileData.x,
-                    y = tileData.y,
-                    width = resource.width,
-                    height = resource.height)
+                name = tileData.name,
+                tags = tileData.tags,
+                x = tileData.x,
+                y = tileData.y,
+                width = resource.width,
+                height = resource.height
+            )
         }.toMap()
     }
 
@@ -82,34 +82,45 @@ class Java2DGraphicTileset(private val resource: TilesetResource)
         tile as? GraphicalTile ?: throw IllegalArgumentException("Wrong tile type")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
-                    width = width,
-                    height = height,
-                    texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
+                width = width,
+                height = height,
+                texture = source.getSubimage(meta.x * width, meta.y * height, width, height)
+            )
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }
 
-    data class TileInfo(var name: String,
-                        var size: Int,
-                        var files: List<TileFile>) {
-        constructor() : this(name = "",
-                size = 0,
-                files = listOf())
+    data class TileInfo(
+        var name: String,
+        var size: Int,
+        var files: List<TileFile>
+    ) {
+        constructor() : this(
+            name = "",
+            size = 0,
+            files = listOf()
+        )
     }
 
-    data class TileFile(var name: String,
-                        var tilesPerRow: Int,
-                        var tiles: List<TileData>) {
-        constructor() : this(name = "",
-                tilesPerRow = 0,
-                tiles = listOf())
+    data class TileFile(
+        var name: String,
+        var tilesPerRow: Int,
+        var tiles: List<TileData>
+    ) {
+        constructor() : this(
+            name = "",
+            tilesPerRow = 0,
+            tiles = listOf()
+        )
     }
 
-    data class TileData(var name: String,
-                        var tags: Set<String> = setOf(),
-                        var char: Char = ' ',
-                        var description: String = "",
-                        var x: Int = -1,
-                        var y: Int = -1) {
+    data class TileData(
+        var name: String,
+        var tags: Set<String> = setOf(),
+        var char: Char = ' ',
+        var description: String = "",
+        var x: Int = -1,
+        var y: Int = -1
+    ) {
         constructor() : this(name = "")
 
     }

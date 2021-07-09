@@ -14,15 +14,17 @@ import org.junit.Test
 
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class ComponentIntegrationTestBase(
-        val theme: ColorTheme = DEFAULT_THEME_CYBERPUNK,
-        val size: Size = DEFAULT_SIZE_60X30,
-        val tileset: TilesetResource = DEFAULT_TILESET_WANDERLUST,
-        val tileGrid: TileGrid = VirtualApplications.startTileGrid(
-                appConfig = AppConfigBuilder.newBuilder()
-                        .withDefaultTileset(tileset)
-                        .withSize(size)
-                        .build()),
-        val screen: Screen = ScreenBuilder.createScreenFor(tileGrid)) {
+    val theme: ColorTheme = DEFAULT_THEME_CYBERPUNK,
+    val size: Size = DEFAULT_SIZE_60X30,
+    val tileset: TilesetResource = DEFAULT_TILESET_WANDERLUST,
+    val tileGrid: TileGrid = VirtualApplications.startTileGrid(
+        appConfig = AppConfigBuilder.newBuilder()
+            .withDefaultTileset(tileset)
+            .withSize(size)
+            .build()
+    ),
+    val screen: Screen = ScreenBuilder.createScreenFor(tileGrid)
+) {
 
 
     @Test

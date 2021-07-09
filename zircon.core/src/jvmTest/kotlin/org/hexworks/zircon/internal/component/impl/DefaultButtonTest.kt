@@ -34,42 +34,55 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.accentColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withActiveStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.accentColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .withMouseOverStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withActiveStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withDisabledStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultButtonRenderer())
-        graphics =  DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
+        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
         target = DefaultButton(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_15X1,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<Button>),
-                initialText = TEXT)
+            componentMetadata = ComponentMetadata(
+                size = SIZE_15X1,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<Button>
+            ),
+            initialText = TEXT
+        )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
 
@@ -78,10 +91,12 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
         TEXT.forEachIndexed { i, char ->
             println("idx: $i")
             assertThat(graphics.getTileAt(Position.create(i, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .withCharacter(char)
-                            .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
-                            .build())
+                .isEqualTo(
+                    TileBuilder.newBuilder()
+                        .withCharacter(char)
+                        .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
+                        .build()
+                )
         }
     }
 
@@ -113,8 +128,9 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     @Test
     fun shouldProperlyHandleMousePress() {
         target.mouseEntered(
-                event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            phase = UIEventPhase.TARGET
+        )
         target.activated()
 
         assertThat(target.componentState).isEqualTo(ACTIVE)
@@ -125,8 +141,9 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
         target.focusGiven()
         target.activated()
         target.mouseReleased(
-                event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
     }

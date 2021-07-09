@@ -22,7 +22,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * to interact with them in a more meaningful manner.
  */
 interface InternalComponent :
-        Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
+    Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
     var root: Maybe<RootContainer>
     val rootValue: ObservableValue<Maybe<RootContainer>>

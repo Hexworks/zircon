@@ -14,62 +14,75 @@ class DefaultMovableTest {
     @Before
     fun setUp() {
         target = DefaultMovable(
-                size = TARGET_SIZE,
-                position = Position.defaultPosition())
+            size = TARGET_SIZE,
+            position = Position.defaultPosition()
+        )
     }
 
     @Test
     fun shouldContainPositionWhenThereIsNoOffsetAndSizeIsBiggerThanPos() {
         assertThat(target.containsPosition(Position.defaultPosition()))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
-        assertThat(target.containsPosition(target.position
-                        .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))))
-                .isFalse()
+        assertThat(
+            target.containsPosition(
+                target.position
+                    .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))
+            )
+        )
+            .isFalse()
     }
 
     @Test
     fun shouldKnowItsSizeCorrectly() {
         assertThat(target.size)
-                .isEqualTo(TARGET_SIZE)
+            .isEqualTo(TARGET_SIZE)
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
         assertThat(target.intersects(DefaultMovable(TARGET_SIZE)))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
-        assertThat(target.intersects(LayerBuilder.newBuilder()
-                .withOffset(NON_INTERSECTING_OFFSET)
-                .build()))
-                .isFalse()
+        assertThat(
+            target.intersects(
+                LayerBuilder.newBuilder()
+                    .withOffset(NON_INTERSECTING_OFFSET)
+                    .build()
+            )
+        )
+            .isFalse()
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
-        assertThat(target.intersects(LayerBuilder.newBuilder()
-                .withOffset(INTERSECTION_OFFSET)
-                .withSize(Size.one())
-                .build()))
-                .isTrue()
+        assertThat(
+            target.intersects(
+                LayerBuilder.newBuilder()
+                    .withOffset(INTERSECTION_OFFSET)
+                    .withSize(Size.one())
+                    .build()
+            )
+        )
+            .isTrue()
     }
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
         assertThat(target.containsBoundable(DefaultMovable(Size.one())))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
         assertThat(target.containsBoundable(DefaultMovable(Size.create(100, 100))))
-                .isFalse()
+            .isFalse()
     }
 
     companion object {

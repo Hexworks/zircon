@@ -25,6 +25,6 @@ class Java2DNoOpTransformerTest {
         val WIDTH = 10
         val HEIGHT = 10
         val CHAR = Tile.newBuilder()
-                .build()
+            .build()
     }
 }

@@ -13,9 +13,9 @@ import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
 abstract class BaseApplication(
-        private val config: AppConfig,
-        override val tileGrid: TileGrid,
-        private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val config: AppConfig,
+    override val tileGrid: TileGrid,
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 ) : Application {
 
     abstract val renderer: Renderer

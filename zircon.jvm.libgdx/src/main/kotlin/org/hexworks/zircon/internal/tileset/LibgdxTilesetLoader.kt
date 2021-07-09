@@ -21,7 +21,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<SpriteBatch> {
         return tilesetCache.getOrPut(resource.id) {
             LOADERS[resource.getLoaderKey()]?.invoke(resource)
-                    ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
+                ?: throw IllegalArgumentException("Unknown tile type '${resource.tileType}', can't use ${resource.getLoaderKey()}.")
         }
     }
 
@@ -37,20 +37,23 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
         fun TilesetResource.getLoaderKey() = "${this.tileType.name}-${this.tilesetType.name}"
 
         private val LOADERS: Map<String, (TilesetResource) -> Tileset<SpriteBatch>> = mapOf(
-                "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
-                    LibgdxCP437Tileset(
-                            path = resource.path,
-                            width = resource.width,
-                            height = resource.height)
-                },
-                "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
-                    LibgdxGraphicalTileset(
-                            resource = resource)
-                },
-                "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
-                    LibgdxMonospaceFontTileset(
-                            resource = resource)
-                }
+            "$CHARACTER_TILE-$CP437_TILESET" to { resource: TilesetResource ->
+                LibgdxCP437Tileset(
+                    path = resource.path,
+                    width = resource.width,
+                    height = resource.height
+                )
+            },
+            "$GRAPHIC_TILE-$GRAPHIC_TILESET" to { resource: TilesetResource ->
+                LibgdxGraphicalTileset(
+                    resource = resource
+                )
+            },
+            "$CHARACTER_TILE-$TRUE_TYPE_FONT" to { resource: TilesetResource ->
+                LibgdxMonospaceFontTileset(
+                    resource = resource
+                )
+            }
         )
     }
 }

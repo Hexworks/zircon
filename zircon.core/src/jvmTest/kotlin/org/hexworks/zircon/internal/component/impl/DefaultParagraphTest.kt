@@ -26,26 +26,31 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultParagraphRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE).build()
         target = DefaultParagraph(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE,
-                        relativePosition = POSITION,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<Paragraph>),
-                initialText = TEXT)
+            componentMetadata = ComponentMetadata(
+                size = SIZE,
+                relativePosition = POSITION,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<Paragraph>
+            ),
+            initialText = TEXT
+        )
     }
 
     @Test

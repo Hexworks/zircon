@@ -21,8 +21,7 @@ import org.yaml.snakeyaml.constructor.Constructor
 import java.io.File
 import java.io.InputStream
 
-class LibgdxGraphicalTileset(private val resource: TilesetResource)
-    : Tileset<SpriteBatch> {
+class LibgdxGraphicalTileset(private val resource: TilesetResource) : Tileset<SpriteBatch> {
 
     override val id: UUID = resource.id
     override val targetType = SpriteBatch::class
@@ -59,19 +58,20 @@ class LibgdxGraphicalTileset(private val resource: TilesetResource)
             val (name, _, char) = tileData
             val cleanName = name.toLowerCase().trim()
             tileData.tags = tileData.tags
-                    .plus(cleanName.split(" ").map { it }.toSet())
+                .plus(cleanName.split(" ").map { it }.toSet())
             if (char == ' ') {
                 tileData.char = cleanName.first()
             }
             tileData.x = i.rem(imageData.tilesPerRow)
             tileData.y = i.div(imageData.tilesPerRow)
             tileData.name to GraphicTextureMetadata(
-                    name = tileData.name,
-                    tags = tileData.tags,
-                    x = tileData.x,
-                    y = tileData.y,
-                    width = resource.width,
-                    height = resource.height)
+                name = tileData.name,
+                tags = tileData.tags,
+                x = tileData.x,
+                y = tileData.y,
+                width = resource.width,
+                height = resource.height
+            )
         }.toMap()
     }
 
@@ -91,34 +91,44 @@ class LibgdxGraphicalTileset(private val resource: TilesetResource)
         tile as? GraphicalTile ?: throw IllegalArgumentException("Wrong tile type, ${tile.tileType.name}")
         return metadata[tile.name]?.let { meta ->
             DefaultTileTexture(
-                    width = width,
-                    height = height,
-                    texture = source.apply { setRegion(meta.x * width, meta.y * height, width, height) })
+                width = width,
+                height = height,
+                texture = source.apply { setRegion(meta.x * width, meta.y * height, width, height) })
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }
 
-    data class TileInfo(var name: String,
-                        var size: Int,
-                        var files: List<TileFile>) {
-        constructor() : this(name = "",
-                size = 0,
-                files = listOf())
+    data class TileInfo(
+        var name: String,
+        var size: Int,
+        var files: List<TileFile>
+    ) {
+        constructor() : this(
+            name = "",
+            size = 0,
+            files = listOf()
+        )
     }
 
-    data class TileFile(var name: String,
-                        var tilesPerRow: Int,
-                        var tiles: List<TileData>) {
-        constructor() : this(name = "",
-                tilesPerRow = 0,
-                tiles = listOf())
+    data class TileFile(
+        var name: String,
+        var tilesPerRow: Int,
+        var tiles: List<TileData>
+    ) {
+        constructor() : this(
+            name = "",
+            tilesPerRow = 0,
+            tiles = listOf()
+        )
     }
 
-    data class TileData(var name: String,
-                        var tags: Set<String> = setOf(),
-                        var char: Char = ' ',
-                        var description: String = "",
-                        var x: Int = -1,
-                        var y: Int = -1) {
+    data class TileData(
+        var name: String,
+        var tags: Set<String> = setOf(),
+        var char: Char = ' ',
+        var description: String = "",
+        var x: Int = -1,
+        var y: Int = -1
+    ) {
         constructor() : this(name = "")
 
     }

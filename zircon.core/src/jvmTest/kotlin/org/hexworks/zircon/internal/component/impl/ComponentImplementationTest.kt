@@ -28,8 +28,10 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
 
     @Test
     open fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.focusGiven()
         rendererStub.clear()
         target.activated()
@@ -39,19 +41,25 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
 
     @Test
     open fun When_a_highlighted_component_without_focus_is_no_longer_hovered_Then_it_becomes_default() {
-        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         rendererStub.clear()
-        target.mouseExited(event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseExited(
+            event = MouseEvent(MOUSE_EXITED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(DEFAULT)
     }
 
     @Test
     open fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         rendererStub.clear()
         target.activated()
 
@@ -64,8 +72,9 @@ abstract class ComponentImplementationTest<T : InternalComponent> : CommonCompon
         target.focusGiven()
         rendererStub.clear()
         target.mouseEntered(
-                event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
 
         assertThat(target.componentState).isEqualTo(HIGHLIGHTED)
     }

@@ -33,23 +33,23 @@ class ComponentsLayerableTest {
     @Before
     fun setUp() {
         rootContainer = DefaultRootContainer(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = Position.zero(),
-                        size = SIZE_4X2,
-                        tileset = CP437TilesetResources.bisasam16x16(),
-                        ComponentStyleSet.defaultStyleSet(),
-                        theme = ColorThemes.adriftInDreams()
-                ),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = RootContainerRenderer()
-                )
+            componentMetadata = ComponentMetadata(
+                relativePosition = Position.zero(),
+                size = SIZE_4X2,
+                tileset = CP437TilesetResources.bisasam16x16(),
+                ComponentStyleSet.defaultStyleSet(),
+                theme = ColorThemes.adriftInDreams()
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = RootContainerRenderer()
+            )
         )
         componentContainer = DefaultComponentContainer(rootContainer)
         layerable = ThreadSafeLayerable(SIZE_4X2)
         target = ComponentsLayerable(
-                componentContainer = componentContainer,
-                layerable = layerable
+            componentContainer = componentContainer,
+            layerable = layerable
         )
     }
 
@@ -59,8 +59,8 @@ class ComponentsLayerableTest {
         layerable.addLayer(layer)
 
         assertEquals(
-                expected = listOf<Renderable>(rootContainer, layer),
-                actual = target.renderables.toList()
+            expected = listOf<Renderable>(rootContainer, layer),
+            actual = target.renderables.toList()
         )
     }
 

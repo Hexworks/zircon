@@ -9,11 +9,15 @@ object VirtualBenchmark {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        Benchmark().execute(VirtualApplications.startTileGrid(AppConfigBuilder.newBuilder()
-                .withSize(BENCHMARK_SIZE)
-                .withDefaultTileset(BENCHMARK_TILESET)
-                .withDebugMode(true)
-                .build()))
+        Benchmark().execute(
+            VirtualApplications.startTileGrid(
+                AppConfigBuilder.newBuilder()
+                    .withSize(BENCHMARK_SIZE)
+                    .withDefaultTileset(BENCHMARK_TILESET)
+                    .withDebugMode(true)
+                    .build()
+            )
+        )
     }
 
 }

@@ -40,11 +40,14 @@ class TileColorTest {
 
     @Test
     fun shouldProperlyCreateFromRedGreenBlueWhenCreateFromIsCalled() {
-        assertThat(TileColor.create(
+        assertThat(
+            TileColor.create(
                 red = EXPECTED_RESULT_COLOR.red,
                 green = EXPECTED_RESULT_COLOR.green,
-                blue = EXPECTED_RESULT_COLOR.blue))
-                .isEqualTo(EXPECTED_RESULT_COLOR)
+                blue = EXPECTED_RESULT_COLOR.blue
+            )
+        )
+            .isEqualTo(EXPECTED_RESULT_COLOR)
     }
 
     companion object {

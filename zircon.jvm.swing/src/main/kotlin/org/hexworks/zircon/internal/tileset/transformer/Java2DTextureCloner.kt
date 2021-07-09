@@ -11,14 +11,14 @@ class Java2DTextureCloner : TextureTransformer<BufferedImage> {
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val txt = texture.texture
         return DefaultTileTexture(
-                width = txt.width,
-                height = txt.height,
-                texture = BufferedImage(txt.width, txt.height, BufferedImage.TRANSLUCENT).let { clone ->
-                    clone.graphics.apply {
-                        drawImage(txt, 0, 0, null)
-                        dispose()
-                    }
-                    clone
-                })
+            width = txt.width,
+            height = txt.height,
+            texture = BufferedImage(txt.width, txt.height, BufferedImage.TRANSLUCENT).let { clone ->
+                clone.graphics.apply {
+                    drawImage(txt, 0, 0, null)
+                    dispose()
+                }
+                clone
+            })
     }
 }

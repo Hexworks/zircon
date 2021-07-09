@@ -27,7 +27,7 @@ import kotlin.jvm.JvmSynthetic
  */
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
 abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
-        initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>
 ) : ComponentBuilder<T, U> {
 
     override var name: String = ""
@@ -95,8 +95,8 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     override val title: String
         get() = this.decorations
-                .filterIsInstance<BoxDecorationRenderer>()
-                .firstOrNull()?.title ?: ""
+            .filterIsInstance<BoxDecorationRenderer>()
+            .firstOrNull()?.title ?: ""
 
     override var componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
@@ -137,24 +137,24 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     protected var postProcessors: List<ComponentPostProcessor<T>> = listOf()
 
     protected var props: CommonComponentProperties<T> = CommonComponentProperties(
-            componentRenderer = initialRenderer
+        componentRenderer = initialRenderer
     )
         private set
 
     protected fun createRenderingStrategy() = DefaultComponentRenderingStrategy(
-            decorationRenderers = decorations,
-            componentRenderer = componentRenderer as ComponentRenderer<T>,
-            componentPostProcessors = postProcessors
+        decorationRenderers = decorations,
+        componentRenderer = componentRenderer as ComponentRenderer<T>,
+        componentPostProcessors = postProcessors
     )
 
     protected open fun createMetadata() = ComponentMetadata(
-            relativePosition = position,
-            size = size,
-            tileset = tileset,
-            componentStyleSet = componentStyleSet,
-            theme = colorTheme,
-            updateOnAttach = updateOnAttach,
-            name = name
+        relativePosition = position,
+        size = size,
+        tileset = tileset,
+        componentStyleSet = componentStyleSet,
+        theme = colorTheme,
+        updateOnAttach = updateOnAttach,
+        name = name
     )
 
     protected fun fixContentSizeFor(length: Int) {

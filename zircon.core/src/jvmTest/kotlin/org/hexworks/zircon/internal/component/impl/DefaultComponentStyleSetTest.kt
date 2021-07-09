@@ -16,12 +16,12 @@ class DefaultComponentStyleSetTest {
     @Before
     fun setUp() {
         target = ComponentStyleSetBuilder.newBuilder()
-                .withActiveStyle(ACTIVE_STYLE)
-                .withFocusedStyle(FOCUSED_STYLE)
-                .withDefaultStyle(DEFAULT_STYLE)
-                .withDisabledStyle(DISABLED_STYLE)
-                .withMouseOverStyle(MOUSE_OVER_STYLE)
-                .build()
+            .withActiveStyle(ACTIVE_STYLE)
+            .withFocusedStyle(FOCUSED_STYLE)
+            .withDefaultStyle(DEFAULT_STYLE)
+            .withDisabledStyle(DISABLED_STYLE)
+            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .build()
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -32,14 +32,14 @@ class DefaultComponentStyleSetTest {
     @Test
     fun shouldProperlyUseDefaultForUnsetStyles() {
         val styles = ComponentStyleSetBuilder.newBuilder()
-                .withActiveStyle(ACTIVE_STYLE)
-                .withFocusedStyle(FOCUSED_STYLE)
-                .withDefaultStyle(DEFAULT_STYLE)
-                .withMouseOverStyle(MOUSE_OVER_STYLE)
-                .build()
+            .withActiveStyle(ACTIVE_STYLE)
+            .withFocusedStyle(FOCUSED_STYLE)
+            .withDefaultStyle(DEFAULT_STYLE)
+            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .build()
 
         assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
-                .isEqualTo(DEFAULT_STYLE)
+            .isEqualTo(DEFAULT_STYLE)
     }
 
     @Test
@@ -50,25 +50,25 @@ class DefaultComponentStyleSetTest {
 
     companion object {
         val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(ANSITileColor.RED)
-                .withBackgroundColor(ANSITileColor.BLACK)
-                .build()
+            .withForegroundColor(ANSITileColor.RED)
+            .withBackgroundColor(ANSITileColor.BLACK)
+            .build()
         val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.WHITE)
-                .build()
+            .withForegroundColor(ANSITileColor.GREEN)
+            .withBackgroundColor(ANSITileColor.WHITE)
+            .build()
         val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(ANSITileColor.YELLOW)
-                .withBackgroundColor(ANSITileColor.BLUE)
-                .build()
+            .withForegroundColor(ANSITileColor.YELLOW)
+            .withBackgroundColor(ANSITileColor.BLUE)
+            .build()
         val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(ANSITileColor.BLACK)
-                .withBackgroundColor(ANSITileColor.MAGENTA)
-                .build()
+            .withForegroundColor(ANSITileColor.BLACK)
+            .withBackgroundColor(ANSITileColor.MAGENTA)
+            .build()
         val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-                .withForegroundColor(ANSITileColor.MAGENTA)
-                .withBackgroundColor(ANSITileColor.GREEN)
-                .build()
+            .withForegroundColor(ANSITileColor.MAGENTA)
+            .withBackgroundColor(ANSITileColor.GREEN)
+            .build()
     }
 
 }

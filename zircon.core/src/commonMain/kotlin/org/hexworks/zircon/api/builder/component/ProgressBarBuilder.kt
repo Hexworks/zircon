@@ -43,19 +43,19 @@ class ProgressBarBuilder : BaseComponentBuilder<ProgressBar, ProgressBarBuilder>
 
     override fun build(): ProgressBar {
         return DefaultProgressBar(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                range = range,
-                numberOfSteps = numberOfSteps,
-                displayPercentValueOfProgress = displayPercentValueOfProgress,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            range = range,
+            numberOfSteps = numberOfSteps,
+            displayPercentValueOfProgress = displayPercentValueOfProgress,
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withRange(range)
-            .withNumberOfSteps(numberOfSteps)
-            .withDisplayPercentValueOfProgress(displayPercentValueOfProgress)
+        .withProps(props.copy())
+        .withRange(range)
+        .withNumberOfSteps(numberOfSteps)
+        .withDisplayPercentValueOfProgress(displayPercentValueOfProgress)
 
     companion object {
 

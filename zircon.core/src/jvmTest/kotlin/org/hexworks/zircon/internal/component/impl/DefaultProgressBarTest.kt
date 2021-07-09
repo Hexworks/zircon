@@ -28,28 +28,32 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultProgressBarRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10X1).build()
         target = DefaultProgressBar(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        size = SIZE_10X1,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<ProgressBar>),
-                numberOfSteps = STEPS,
-                range = RANGE,
-                displayPercentValueOfProgress = false
+            componentMetadata = ComponentMetadata(
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                size = SIZE_10X1,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<ProgressBar>
+            ),
+            numberOfSteps = STEPS,
+            range = RANGE,
+            displayPercentValueOfProgress = false
         )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
@@ -61,17 +65,19 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         val offset = target.contentOffset.x
         val css = target.currentStyle
         val invertedStyleSet = css
-                .withBackgroundColor(css.foregroundColor)
-                .withForegroundColor(css.backgroundColor)
+            .withBackgroundColor(css.foregroundColor)
+            .withForegroundColor(css.backgroundColor)
 
         rendererStub.render(graphics, ComponentRenderContext(target))
 
         (0 until PROGRESS_BAR_SIZE_5).forEachIndexed { i, _ ->
             assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .withCharacter(' ')
-                            .withStyleSet(invertedStyleSet)
-                            .build())
+                .isEqualTo(
+                    TileBuilder.newBuilder()
+                        .withCharacter(' ')
+                        .withStyleSet(invertedStyleSet)
+                        .build()
+                )
         }
     }
 
@@ -80,9 +86,9 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         target.progress = PROGRESS_50_PERCENT
         val state = target.getProgressBarState()
         assertThat(state.currentProgressInPercent)
-                .isEqualTo(EXPECTED_PROGRESS_50_PERCENT)
+            .isEqualTo(EXPECTED_PROGRESS_50_PERCENT)
         assertThat(state.currentProgression)
-                .isEqualTo(PROGRESS_BAR_SIZE_5)
+            .isEqualTo(PROGRESS_BAR_SIZE_5)
     }
 
     companion object {

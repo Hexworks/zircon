@@ -27,8 +27,8 @@ class DefaultGraphicalTileTest {
         val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.createCopy())
-                .isEqualTo(target)
-                .isNotSameAs(target)
+            .isEqualTo(target)
+            .isNotSameAs(target)
     }
 
     @Test
@@ -72,7 +72,7 @@ class DefaultGraphicalTileTest {
         val target = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.withName(otherName))
-                .isEqualTo(Tile.createGraphicTile(otherName, TAGS))
+            .isEqualTo(Tile.createGraphicTile(otherName, TAGS))
     }
 
     @Test
@@ -81,7 +81,7 @@ class DefaultGraphicalTileTest {
         val target = Tile.createGraphicTile(NAME, TAGS)
 
         assertThat(target.withTags(otherTags))
-                .isEqualTo(Tile.createGraphicTile(NAME, otherTags))
+            .isEqualTo(Tile.createGraphicTile(NAME, otherTags))
     }
 
     @Test

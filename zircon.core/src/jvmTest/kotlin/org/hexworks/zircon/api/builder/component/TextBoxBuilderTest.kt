@@ -23,13 +23,15 @@ class TextBoxBuilderTest : ComponentBuilderTest<TextBox, TextBoxBuilder>() {
     @Test
     fun shouldProperlySizeProvidedParagraphBuilder() {
         val textBox = target
-                .addParagraph(ParagraphBuilder.newBuilder()
-                        .withText("This is a test paragraph"),
-                        true)
-                .build()
+            .addParagraph(
+                ParagraphBuilder.newBuilder()
+                    .withText("This is a test paragraph"),
+                true
+            )
+            .build()
 
         assertThat(textBox.size)
-                .isEqualTo(Size.create(20, 3))
+            .isEqualTo(Size.create(20, 3))
 
 
     }

@@ -28,19 +28,25 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .build())
-                .withDisabledStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .build()
+            )
+            .withDisabledStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
@@ -48,14 +54,17 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_40x10).build()
         target = DefaultLogArea(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_40x10,
-                        relativePosition = POSITION_4_5,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<LogArea>))
+            componentMetadata = ComponentMetadata(
+                size = SIZE_40x10,
+                relativePosition = POSITION_4_5,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<LogArea>
+            )
+        )
     }
 
     @Test
@@ -116,9 +125,9 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         const val ALTERNATE_TEXT = "This is my other log row"
 
         fun testComponent() = Components.button()
-                .withDecorations()
-                .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
-                .withText("Button")
-                .build() as InternalComponent
+            .withDecorations()
+            .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
+            .withText("Button")
+            .build() as InternalComponent
     }
 }

@@ -9,10 +9,12 @@ import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import javax.swing.JFrame
 
-class SwingFrame(val tileGrid: InternalTileGrid,
-                 config: AppConfig,
-                 canvas: Canvas = Canvas(),
-                 app: Application) : JFrame() {
+class SwingFrame(
+    val tileGrid: InternalTileGrid,
+    config: AppConfig,
+    canvas: Canvas = Canvas(),
+    app: Application
+) : JFrame() {
 
     init {
         title = config.title
@@ -27,9 +29,10 @@ class SwingFrame(val tileGrid: InternalTileGrid,
     }
 
     val renderer: SwingCanvasRenderer = SwingCanvasRenderer(
-            canvas = canvas,
-            frame = this,
-            tileGrid = tileGrid,
-            config = config,
-            app = app)
+        canvas = canvas,
+        frame = this,
+        tileGrid = tileGrid,
+        config = config,
+        app = app
+    )
 }

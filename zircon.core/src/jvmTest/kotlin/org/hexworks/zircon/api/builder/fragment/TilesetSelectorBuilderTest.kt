@@ -12,11 +12,12 @@ class TilesetSelectorBuilderTest {
     @Test
     fun `all tilesets need to have the correct size`() {
         listOf(
-                CP437TilesetResources.acorn8X16(),
-                CP437TilesetResources.anikki16x16(),
-                CP437TilesetResources.bisasam24x24(),
-                CP437TilesetResources.rexPaint8x8())
-                .forEach { checkTileset(it) }
+            CP437TilesetResources.acorn8X16(),
+            CP437TilesetResources.anikki16x16(),
+            CP437TilesetResources.bisasam24x24(),
+            CP437TilesetResources.rexPaint8x8()
+        )
+            .forEach { checkTileset(it) }
     }
 
     private fun checkTileset(tileset: TilesetResource) {
@@ -25,8 +26,8 @@ class TilesetSelectorBuilderTest {
         val testComponent = Components.label().withText("Hello World").withTileset(tileset).build()
 
         val tilesetSelector = Fragments.tilesetSelector(testComponent.size.width, tileset)
-                .withTilesetOverrides(testComponent)
-                .build()
+            .withTilesetOverrides(testComponent)
+            .build()
 
         assertThat(tilesetSelector.values).allMatch {
             it.width == expectedWidth && it.height == expectedHeight

@@ -12,13 +12,14 @@ class DefaultShapeTest {
     @Test
     fun shouldProperlyOffsetShape() {
         assertThat(LINE_SHAPE.offsetToDefaultPosition())
-                .containsExactlyInAnyOrder(TRANSFORMED_POS_0, TRANSFORMED_POS_1)
+            .containsExactlyInAnyOrder(TRANSFORMED_POS_0, TRANSFORMED_POS_1)
     }
 
     @Test
     fun shouldProperlyAddTwoShapes() {
         assertThat(LINE_SHAPE + OTHER_SHAPE).containsExactlyInAnyOrder(
-                POS_0, POS_1, POS_2)
+            POS_0, POS_1, POS_2
+        )
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -31,13 +32,13 @@ class DefaultShapeTest {
         val result = LINE_SHAPE.toTileGraphics(CHAR, TILESET)
 
         assertThat(result.getTileAt(Position.create(0, 0)).get())
-                .isEqualTo(CHAR)
+            .isEqualTo(CHAR)
         assertThat(result.getTileAt(Position.create(1, 0)).get())
-                .isEqualTo(Tile.empty())
+            .isEqualTo(Tile.empty())
         assertThat(result.getTileAt(Position.create(0, 1)).get())
-                .isEqualTo(Tile.empty())
+            .isEqualTo(Tile.empty())
         assertThat(result.getTileAt(Position.create(1, 1)).get())
-                .isEqualTo(CHAR)
+            .isEqualTo(CHAR)
 
     }
 

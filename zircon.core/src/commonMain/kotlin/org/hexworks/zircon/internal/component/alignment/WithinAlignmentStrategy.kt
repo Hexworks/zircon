@@ -13,8 +13,8 @@ import org.hexworks.zircon.api.data.Size
  * called on [other].
  */
 data class WithinAlignmentStrategy(
-        private val other: Boundable,
-        private val alignmentType: ComponentAlignment
+    private val other: Boundable,
+    private val alignmentType: ComponentAlignment
 ) : AlignmentStrategy {
 
     override fun calculatePosition(size: Size): Position {

@@ -35,8 +35,8 @@ object RunTimeStats {
     }
 
     class Stat(
-            val name: String,
-            private val measurementLimit: Long = 500
+        val name: String,
+        private val measurementLimit: Long = 500
     ) {
 
         var measurementCount = 0L
@@ -54,7 +54,7 @@ object RunTimeStats {
 
         override fun toString(): String {
             val avgTimeNs = measurements.fold(BigDecimal("0"), BigDecimal::plus)
-                    .div(BigDecimal("${measurements.size}"))
+                .div(BigDecimal("${measurements.size}"))
             val ms = avgTimeNs.toDouble() / 1000 / 1000
             return "Stats: name='$name', " +
                     "avgTimeMs=$ms, " +

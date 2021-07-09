@@ -38,39 +38,50 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.accentColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .withMouseOverStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withFocusedStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .withActiveStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(DEFAULT_THEME.accentColor)
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.accentColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .withMouseOverStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withFocusedStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .withActiveStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(DEFAULT_THEME.accentColor)
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultToggleButtonRenderer())
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
         target = DefaultToggleButton(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_15X1,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub as ComponentRenderer<ToggleButton>),
-                initialText = TEXT,
-                initialSelected = false)
+            componentMetadata = ComponentMetadata(
+                size = SIZE_15X1,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub as ComponentRenderer<ToggleButton>
+            ),
+            initialText = TEXT,
+            initialSelected = false
+        )
         rendererStub.render(graphics, ComponentRenderContext(target))
     }
 
@@ -78,7 +89,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     fun shouldProperlyAssignStyleSetForUnselectedState() {
         target.selectedProperty.value = false
         assertThat(target.componentState)
-                .isEqualTo(UNSELECTED_ACTION)
+            .isEqualTo(UNSELECTED_ACTION)
     }
 
     @Test
@@ -86,10 +97,12 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         val offset = target.contentOffset.x + DefaultToggleButtonRenderer.DECORATION_WIDTH
         TEXT.forEachIndexed { i, char ->
             assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
-                    .isEqualTo(TileBuilder.newBuilder()
-                            .withCharacter(char)
-                            .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
-                            .build())
+                .isEqualTo(
+                    TileBuilder.newBuilder()
+                        .withCharacter(char)
+                        .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
+                        .build()
+                )
         }
     }
 
@@ -130,8 +143,10 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
 
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         rendererStub.clear()
         target.activated()
 
@@ -140,8 +155,10 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
 
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
-        target.mouseEntered(event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
-                phase = UIEventPhase.TARGET)
+        target.mouseEntered(
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            phase = UIEventPhase.TARGET
+        )
         target.focusGiven()
         rendererStub.clear()
         target.activated()

@@ -56,35 +56,35 @@ class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilde
         }
         if (centeredDialog) {
             component.moveTo(
-                    Position.create(
-                            x = (size.width - component.size.width) / 2,
-                            y = (size.height - component.size.height) / 2
-                    )
+                Position.create(
+                    x = (size.width - component.size.width) / 2,
+                    y = (size.height - component.size.height) / 2
+                )
             )
         }
         val componentRenderer = DefaultComponentRenderingStrategy(
-                decorationRenderers = decorations,
-                componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>
+            decorationRenderers = decorations,
+            componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>
         )
         val modal = DefaultModal<T>(
-                darkenPercent = darkenPercent,
-                // TODO: document this (updateOnAttach is needed as we don't want the modal to have the empty theme
-                // TODO: of the ModalComponentContainer)
-                componentMetadata = createMetadata().copy(updateOnAttach = false),
-                renderingStrategy = componentRenderer
+            darkenPercent = darkenPercent,
+            // TODO: document this (updateOnAttach is needed as we don't want the modal to have the empty theme
+            // TODO: of the ModalComponentContainer)
+            componentMetadata = createMetadata().copy(updateOnAttach = false),
+            renderingStrategy = componentRenderer
         )
         modal.addComponent(component)
         return modal
     }
 
     override fun createCopy() = newBuilder<T>()
-            .withProps(props.copy())
-            .withCenteredDialog(centeredDialog).apply {
-                contentComponent?.let { component ->
-                    withComponent(component)
-                }
-            }.withDarkenPercent(darkenPercent)
-            .withParentSize(size)
+        .withProps(props.copy())
+        .withCenteredDialog(centeredDialog).apply {
+            contentComponent?.let { component ->
+                withComponent(component)
+            }
+        }.withDarkenPercent(darkenPercent)
+        .withParentSize(size)
 
     companion object {
 

@@ -18,10 +18,13 @@ class DefaultStyleSetTest {
     @Test
     fun shouldBuildProperCacheKey() {
         val result = StyleSetBuilder.newBuilder()
-                .withBackgroundColor(ANSITileColor.WHITE)
-                .withForegroundColor(TileColor.fromString("#aabbcc"))
-                .withModifiers(Modifiers.crossedOut(), BorderBuilder.newBuilder().withBorderPositions(BorderPosition.TOP).build())
-                .build().cacheKey
+            .withBackgroundColor(ANSITileColor.WHITE)
+            .withForegroundColor(TileColor.fromString("#aabbcc"))
+            .withModifiers(
+                Modifiers.crossedOut(),
+                BorderBuilder.newBuilder().withBorderPositions(BorderPosition.TOP).build()
+            )
+            .build().cacheKey
         assertThat(result).isEqualTo("StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=192,g=192,b=192,a=255),m=[Modifier.CrossedOut,Modifier.Border(t=SOLID,bp=[TOP])])")
     }
 

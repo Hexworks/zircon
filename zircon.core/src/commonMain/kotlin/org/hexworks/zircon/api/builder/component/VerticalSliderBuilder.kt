@@ -21,24 +21,24 @@ class VerticalSliderBuilder : SliderBuilder<Slider, VerticalSliderBuilder>(Verti
         set(value) {
             require(value in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
             preferredContentSize = Size.create(
-                    width = 1,
-                    height = value + 1
+                width = 1,
+                height = value + 1
             )
             field = value
         }
 
     override fun build(): Slider = DefaultVerticalSlider(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            minValue = minValue,
-            maxValue = maxValue,
-            numberOfSteps = numberOfSteps,
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
+        minValue = minValue,
+        maxValue = maxValue,
+        numberOfSteps = numberOfSteps,
     )
 
     override fun createCopy() = newBuilder().withProps(props.copy())
-            .withMinValue(minValue)
-            .withMaxValue(maxValue)
-            .withNumberOfSteps(numberOfSteps)
+        .withMinValue(minValue)
+        .withMaxValue(maxValue)
+        .withNumberOfSteps(numberOfSteps)
 
     companion object {
 

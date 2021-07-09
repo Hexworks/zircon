@@ -13,21 +13,21 @@ import kotlin.jvm.JvmStatic
  */
 @ZirconDsl
 class HorizontalScrollBarBuilder :
-        ScrollBarBuilder<ScrollBar, HorizontalScrollBarBuilder>(HorizontalScrollBarRenderer()) {
+    ScrollBarBuilder<ScrollBar, HorizontalScrollBarBuilder>(HorizontalScrollBarRenderer()) {
 
     override fun build(): ScrollBar = DefaultHorizontalScrollBar(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            minValue = 0,
-            maxValue = numberOfScrollableItems,
-            itemsShownAtOnce = size.width,
-            numberOfSteps = size.width,
+        componentMetadata = createMetadata(),
+        renderingStrategy = createRenderingStrategy(),
+        minValue = 0,
+        maxValue = numberOfScrollableItems,
+        itemsShownAtOnce = size.width,
+        numberOfSteps = size.width,
     )
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withItemsShownAtOnce(itemsShownAtOnce)
-            .withNumberOfScrollableItems(numberOfScrollableItems)
+        .withProps(props.copy())
+        .withItemsShownAtOnce(itemsShownAtOnce)
+        .withNumberOfScrollableItems(numberOfScrollableItems)
 
     companion object {
 

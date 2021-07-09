@@ -49,31 +49,38 @@ class LibgdxTest : ApplicationAdapter() {
     private var layers: List<Layer> = (0..layerCount).map {
 
         val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-                .withSize(layerSize)
-                .withTileset(tileset)
-                .build()
+            .withSize(layerSize)
+            .withTileset(tileset)
+            .build()
         layerSize.fetchPositions().forEach {
             imageLayer.draw(filler, it)
         }
 
         val layer = LayerBuilder.newBuilder()
-                .withOffset(Position.create(
-                        x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)))
-                .withTileGraphics(imageLayer)
-                .build()
+            .withOffset(
+                Position.create(
+                    x = random.nextInt(terminalWidth - layerWidth),
+                    y = random.nextInt(terminalHeight - layerHeight)
+                )
+            )
+            .withTileGraphics(imageLayer)
+            .build()
 
         tileGrid.addLayer(layer)
         layer
     }
 
     private val chars = listOf('a', 'b')
-    private val styles = listOf(DefaultStyleSet(
+    private val styles = listOf(
+        DefaultStyleSet(
             foregroundColor = ANSITileColor.RED,
-            backgroundColor = ANSITileColor.GREEN),
-            DefaultStyleSet(
-                    foregroundColor = ANSITileColor.MAGENTA,
-                    backgroundColor = ANSITileColor.YELLOW))
+            backgroundColor = ANSITileColor.GREEN
+        ),
+        DefaultStyleSet(
+            foregroundColor = ANSITileColor.MAGENTA,
+            backgroundColor = ANSITileColor.YELLOW
+        )
+    )
 
     private var currIdx = 0
     private var loopCount = 0
@@ -83,24 +90,29 @@ class LibgdxTest : ApplicationAdapter() {
         viewport.update(screenWidth.toInt(), screenHeight.toInt())
         viewport.apply()
         println(camera.viewportHeight)
-        LibgdxApplications.startTileGrid(AppConfig.newBuilder()
+        LibgdxApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(terminalWidth, terminalHeight))
-                .build())
+                .build()
+        )
         renderer.create()
     }
 
     override fun render() {
         RunTimeStats.addTimedStatFor("debug.render.time") {
             val tile = Tile.newBuilder()
-                    .withCharacter(chars[currIdx])
-                    .withStyleSet(styles[currIdx])
-                    .build()
+                .withCharacter(chars[currIdx])
+                .withStyleSet(styles[currIdx])
+                .build()
             fillGrid(tileGrid, tile)
             layers.forEach {
-                it.asInternalLayer().moveTo(Position.create(
+                it.asInternalLayer().moveTo(
+                    Position.create(
                         x = random.nextInt(terminalWidth - layerWidth),
-                        y = random.nextInt(terminalHeight - layerHeight)))
+                        y = random.nextInt(terminalHeight - layerHeight)
+                    )
+                )
             }
             currIdx = if (currIdx == 0) 1 else 0
             loopCount++

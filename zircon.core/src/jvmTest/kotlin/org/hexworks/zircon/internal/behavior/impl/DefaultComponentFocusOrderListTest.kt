@@ -27,13 +27,16 @@ class DefaultComponentFocusOrderListTest {
     fun setUp() {
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
-                componentMetadata = ComponentMetadata(
-                        relativePosition = Position.zero(),
-                        size = Size.create(100, 100),
-                        tileset = CP437TilesetResources.aduDhabi16x16(),
-                        componentStyleSet = ComponentStyleSet.defaultStyleSet()),
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub))
+            componentMetadata = ComponentMetadata(
+                relativePosition = Position.zero(),
+                size = Size.create(100, 100),
+                tileset = CP437TilesetResources.aduDhabi16x16(),
+                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+            ),
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                componentRenderer = rendererStub
+            )
+        )
         target = DefaultComponentFocusOrderList(root)
     }
 
@@ -74,8 +77,8 @@ class DefaultComponentFocusOrderListTest {
 
         val button0 = Components.button().build() as InternalComponent
         val button1 = Components.button()
-                .withPosition(Position.bottomLeftOf(button0))
-                .build() as InternalComponent
+            .withPosition(Position.bottomLeftOf(button0))
+            .build() as InternalComponent
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -89,8 +92,8 @@ class DefaultComponentFocusOrderListTest {
 
         val button0 = Components.button().build() as InternalComponent
         val button1 = Components.button()
-                .withPosition(Position.bottomLeftOf(button0))
-                .build() as InternalComponent
+            .withPosition(Position.bottomLeftOf(button0))
+            .build() as InternalComponent
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -104,8 +107,8 @@ class DefaultComponentFocusOrderListTest {
 
         val button0 = Components.button().build() as InternalComponent
         val button1 = Components.button()
-                .withPosition(Position.bottomLeftOf(button0))
-                .build() as InternalComponent
+            .withPosition(Position.bottomLeftOf(button0))
+            .build() as InternalComponent
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -119,8 +122,8 @@ class DefaultComponentFocusOrderListTest {
 
         val button0 = Components.button().build() as InternalComponent
         val button1 = Components.button()
-                .withPosition(Position.bottomLeftOf(button0))
-                .build() as InternalComponent
+            .withPosition(Position.bottomLeftOf(button0))
+            .build() as InternalComponent
 
         root.addComponents(button0, button1)
         target.refreshFocusables()

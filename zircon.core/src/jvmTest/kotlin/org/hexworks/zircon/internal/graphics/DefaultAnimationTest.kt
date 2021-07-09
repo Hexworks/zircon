@@ -19,8 +19,9 @@ class DefaultAnimationTest {
     @Test
     fun shouldProperlyBuildFromResource() {
         val builder = AnimationResource.loadAnimationFromStream(
-                zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
-                tileset = BuiltInCP437TilesetResource.BISASAM_16X16)
+            zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
+            tileset = BuiltInCP437TilesetResource.BISASAM_16X16
+        )
         (0 until EXPECTED_LENGTH).forEach { _ ->
             builder.addPosition(Position.defaultPosition())
         }

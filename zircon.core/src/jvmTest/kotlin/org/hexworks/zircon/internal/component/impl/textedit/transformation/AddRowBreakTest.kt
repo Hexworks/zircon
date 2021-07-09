@@ -19,12 +19,13 @@ class AddRowBreakTest {
         target.applyTo(buffer)
 
         assertThat(buffer.textBuffer)
-                .containsExactly(
-                        mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK),
-                        mutableListOf(OTHER_CHAR),
-                        mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR))
+            .containsExactly(
+                mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK),
+                mutableListOf(OTHER_CHAR),
+                mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)
+            )
         assertThat(buffer.cursor)
-                .isEqualTo(cursor.withRelativeRow(1).withRelativeColumn(-2))
+            .isEqualTo(cursor.withRelativeRow(1).withRelativeColumn(-2))
 
     }
 
@@ -39,10 +40,11 @@ class AddRowBreakTest {
         target.applyTo(buffer)
 
         assertThat(buffer.textBuffer)
-                .containsExactly(
-                        mutableListOf(),
-                        mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK, OTHER_CHAR),
-                        mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR))
+            .containsExactly(
+                mutableListOf(),
+                mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK, OTHER_CHAR),
+                mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)
+            )
 
         assertThat(buffer.cursor).isEqualTo(cursor.withRelativeRow(1))
 
@@ -59,13 +61,15 @@ class AddRowBreakTest {
         target.applyTo(buffer)
 
         assertThat(buffer.textBuffer)
-                .containsExactly(
-                        mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK, OTHER_CHAR),
-                        mutableListOf(),
-                        mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR))
+            .containsExactly(
+                mutableListOf(OTHER_CHAR, CHAR_BEFORE_LINE_BREAK, OTHER_CHAR),
+                mutableListOf(),
+                mutableListOf(OTHER_CHAR, OTHER_CHAR, OTHER_CHAR)
+            )
 
         assertThat(buffer.cursor).isEqualTo(
-                cursor.withRelativeRow(1).withRelativeColumn(-cursor.colIdx))
+            cursor.withRelativeRow(1).withRelativeColumn(-cursor.colIdx)
+        )
 
     }
 
@@ -74,8 +78,9 @@ class AddRowBreakTest {
         const val CHAR_BEFORE_LINE_BREAK = 'x'
 
         fun generateBufferFor(cursor: Cursor) = DefaultEditableTextBuffer(
-                source = "$OTHER_CHAR$CHAR_BEFORE_LINE_BREAK$OTHER_CHAR" + SystemUtils.getLineSeparator() +
-                        "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
-                cursor = cursor)
+            source = "$OTHER_CHAR$CHAR_BEFORE_LINE_BREAK$OTHER_CHAR" + SystemUtils.getLineSeparator() +
+                    "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
+            cursor = cursor
+        )
     }
 }

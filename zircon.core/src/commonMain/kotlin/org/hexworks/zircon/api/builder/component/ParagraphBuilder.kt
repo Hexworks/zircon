@@ -12,8 +12,8 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class ParagraphBuilder : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
-        initialRenderer = DefaultParagraphRenderer(),
-        initialText = ""
+    initialRenderer = DefaultParagraphRenderer(),
+    initialText = ""
 ) {
 
     var textWrap: TextWrap = TextWrap.WORD_WRAP
@@ -39,16 +39,16 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
             listOf()
         }
         return DefaultParagraph(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withText(text)
-            .withTypingEffect(typingEffectSpeedInMs)
+        .withProps(props.copy())
+        .withText(text)
+        .withTypingEffect(typingEffectSpeedInMs)
 
     companion object {
 

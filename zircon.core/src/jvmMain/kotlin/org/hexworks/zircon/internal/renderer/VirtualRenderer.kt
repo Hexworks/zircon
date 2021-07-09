@@ -9,7 +9,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 
 @Suppress("UNCHECKED_CAST", "UNUSED_VARIABLE", "unused")
 class VirtualRenderer(
-        private val tileGrid: InternalTileGrid
+    private val tileGrid: InternalTileGrid
 ) : Renderer, Closeable by tileGrid {
 
     val config = RuntimeConfig.config
@@ -31,9 +31,9 @@ class VirtualRenderer(
         tileGrid.renderables.forEach { renderable ->
             if (!renderable.isHidden) {
                 val tg = FastTileGraphics(
-                        initialSize = renderable.size,
-                        initialTileset = renderable.tileset,
-                        initialTiles = mapOf()
+                    initialSize = renderable.size,
+                    initialTileset = renderable.tileset,
+                    initialTiles = mapOf()
                 )
                 renderable.render(tg)
                 renderTiles(tg)

@@ -50,10 +50,13 @@ class SizeTest {
 
     @Test
     fun shouldCreateNewSizeWithProperXLengthWhenWithXLengthIsCalled() {
-        assertThat(Size.create(
+        assertThat(
+            Size.create(
                 width = Int.MAX_VALUE,
-                height = EXPECTED_ROW).withWidth(EXPECTED_COL))
-                .isEqualTo(EXPECTED_TERMINAL_SIZE)
+                height = EXPECTED_ROW
+            ).withWidth(EXPECTED_COL)
+        )
+            .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
@@ -63,44 +66,59 @@ class SizeTest {
 
     @Test
     fun shouldCreateNewSizeWithProperRelativeXLengthWhenWithRelativeXLengthIsCalled() {
-        assertThat(Size.create(
+        assertThat(
+            Size.create(
                 width = EXPECTED_COL - 1,
-                height = EXPECTED_ROW).withRelativeWidth(1))
-                .isEqualTo(EXPECTED_TERMINAL_SIZE)
+                height = EXPECTED_ROW
+            ).withRelativeWidth(1)
+        )
+            .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldCreateNewSizeWithProperYLengthWhenWithYLengthIsCalled() {
-        assertThat(Size.create(
+        assertThat(
+            Size.create(
                 width = EXPECTED_COL,
-                height = Int.MAX_VALUE).withHeight(EXPECTED_ROW))
-                .isEqualTo(EXPECTED_TERMINAL_SIZE)
+                height = Int.MAX_VALUE
+            ).withHeight(EXPECTED_ROW)
+        )
+            .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldCreateNewSizeWithProperRelativeYLengthWhenWithRelativeYLengthIsCalled() {
-        assertThat(Size.create(
+        assertThat(
+            Size.create(
                 width = EXPECTED_COL,
-                height = EXPECTED_ROW - 1).withRelativeHeight(1))
-                .isEqualTo(EXPECTED_TERMINAL_SIZE)
+                height = EXPECTED_ROW - 1
+            ).withRelativeHeight(1)
+        )
+            .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldCreateNewSizeWithProperRelativesWhenWithRelativeIsCalled() {
-        assertThat(Size.create(
+        assertThat(
+            Size.create(
                 width = EXPECTED_COL - 1,
-                height = EXPECTED_ROW - 1).withRelative(Size.create(1, 1)))
-                .isEqualTo(EXPECTED_TERMINAL_SIZE)
+                height = EXPECTED_ROW - 1
+            ).withRelative(Size.create(1, 1))
+        )
+            .isEqualTo(EXPECTED_TERMINAL_SIZE)
     }
 
     @Test
     fun shouldFetchPositionsInCorrectIterationOrder() {
         assertThat(Size.create(2, 2).fetchPositions().toList())
-                .isEqualTo(listOf(
-                        Position.create(x = 0, y = 0),
-                        Position.create(x = 1, y = 0),
-                        Position.create(x = 0, y = 1),
-                        Position.create(x = 1, y = 1)))
+            .isEqualTo(
+                listOf(
+                    Position.create(x = 0, y = 0),
+                    Position.create(x = 1, y = 0),
+                    Position.create(x = 0, y = 1),
+                    Position.create(x = 1, y = 1)
+                )
+            )
     }
 
     @Test
@@ -156,8 +174,16 @@ class SizeTest {
     fun shouldProperlyFetchBoundingBoxPositions() {
         val target = Size.create(3, 3)
         assertThat(target.fetchBoundingBoxPositions())
-                .containsExactlyInAnyOrder(Position.create(0, 0), Position.create(1, 0), Position.create(2, 0),
-                        Position.create(0, 1), Position.create(2, 1), Position.create(0, 2), Position.create(1, 2), Position.create(2, 2))
+            .containsExactlyInAnyOrder(
+                Position.create(0, 0),
+                Position.create(1, 0),
+                Position.create(2, 0),
+                Position.create(0, 1),
+                Position.create(2, 1),
+                Position.create(0, 2),
+                Position.create(1, 2),
+                Position.create(2, 2)
+            )
     }
 
     @Test
@@ -183,14 +209,15 @@ class SizeTest {
     @Test
     fun withShouldReturnProperResult() {
         assertThat(Size.create(1, 2).with(Size.create(2, 3)))
-                .isEqualTo(Size.create(2, 3))
+            .isEqualTo(Size.create(2, 3))
     }
 
     companion object {
         const val EXPECTED_COL = 5
         const val EXPECTED_ROW = 5
         val EXPECTED_TERMINAL_SIZE = Size.create(
-                width = EXPECTED_COL,
-                height = EXPECTED_ROW)
+            width = EXPECTED_COL,
+            height = EXPECTED_ROW
+        )
     }
 }

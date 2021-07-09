@@ -25,8 +25,8 @@ import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
 class Java2DCP437Tileset(
-        private val resource: TilesetResource,
-        private val source: BufferedImage
+    private val resource: TilesetResource,
+    private val source: BufferedImage
 ) : Tileset<Graphics2D> {
 
     override val id: UUID = UUIDFactory.randomUUID()
@@ -36,14 +36,15 @@ class Java2DCP437Tileset(
         get() = resource.height
 
     private val lookup = CP437TileMetadataLoader(
-            width = resource.width,
-            height = resource.height)
+        width = resource.width,
+        height = resource.height
+    )
 
     private val cache = Caffeine.newBuilder()
-            .initialCapacity(100)
-            .maximumSize(5000)
-            .expireAfterAccess(1, TimeUnit.MINUTES)
-            .build<String, TileTexture<BufferedImage>>()
+        .initialCapacity(100)
+        .maximumSize(5000)
+        .expireAfterAccess(1, TimeUnit.MINUTES)
+        .build<String, TileTexture<BufferedImage>>()
 
     override val targetType = Graphics2D::class
 
@@ -72,9 +73,10 @@ class Java2DCP437Tileset(
             maybeRegion
         } else {
             var image: TileTexture<BufferedImage> = DefaultTileTexture(
-                    width = width,
-                    height = height,
-                    texture = source.getSubimage(meta.x * width, meta.y * height, width, height))
+                width = width,
+                height = height,
+                texture = source.getSubimage(meta.x * width, meta.y * height, width, height)
+            )
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)
             }
@@ -88,19 +90,19 @@ class Java2DCP437Tileset(
     }
 
     private fun applyDebugModifiers(
-            image: TileTexture<BufferedImage>,
-            tile: Tile,
-            position: Position
+        image: TileTexture<BufferedImage>,
+        tile: Tile,
+        position: Position
     ): TileTexture<BufferedImage> {
         val config = RuntimeConfig.config
         var result = image
         if (config.debugMode && config.debugConfig.displayGrid) {
             result = TEXTURE_TRANSFORMER_LOOKUP.getValue(Border::class)
-                    .transform(image, tile.withAddedModifiers(GRID_BORDER))
+                .transform(image, tile.withAddedModifiers(GRID_BORDER))
         }
         if (config.debugMode && config.debugConfig.displayCoordinates) {
             result = TEXTURE_TRANSFORMER_LOOKUP.getValue(TileCoordinate::class)
-                    .transform(image, tile.withAddedModifiers(TileCoordinate(position)))
+                .transform(image, tile.withAddedModifiers(TileCoordinate(position)))
         }
         return result
     }
@@ -108,17 +110,18 @@ class Java2DCP437Tileset(
     companion object {
 
         private val GRID_BORDER = Border.newBuilder()
-                .withBorderColor(ANSITileColor.BRIGHT_MAGENTA)
-                .withBorderWidth(1)
-                .withBorderType(BorderType.SOLID)
-                .build()
+            .withBorderColor(ANSITileColor.BRIGHT_MAGENTA)
+            .withBorderWidth(1)
+            .withBorderType(BorderType.SOLID)
+            .build()
 
         private val TILE_INITIALIZERS = listOf(
-                Java2DTextureCloner(),
-                Java2DTextureColorizer(),
+            Java2DTextureCloner(),
+            Java2DTextureColorizer(),
         )
 
-        val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> = mapOf(
+        val TEXTURE_TRANSFORMER_LOOKUP: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>> =
+            mapOf(
                 SimpleModifiers.Underline::class to Java2DUnderlineTransformer(),
                 SimpleModifiers.VerticalFlip::class to Java2DVerticalFlipper(),
                 SimpleModifiers.Blink::class to Java2DNoOpTransformer(),
@@ -129,7 +132,7 @@ class Java2DCP437Tileset(
                 Border::class to Java2DBorderTransformer(),
                 Crop::class to Java2DCropTransformer(),
                 TileCoordinate::class to Java2DTileCoordinateTransformer()
-        ).toMap()
+            ).toMap()
 
     }
 }

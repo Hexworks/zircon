@@ -16,8 +16,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.imageio.ImageIO
 
-class Java2DImageDictionaryTileset(resource: TilesetResource)
-    : Tileset<Graphics2D> {
+class Java2DImageDictionaryTileset(resource: TilesetResource) : Tileset<Graphics2D> {
 
     override val id = UUIDFactory.randomUUID()
     override val targetType = Graphics2D::class
@@ -25,10 +24,10 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
     override val height = 1
 
     private val cache = Caffeine.newBuilder()
-            .initialCapacity(100)
-            .maximumSize(5000)
-            .expireAfterAccess(1, TimeUnit.MINUTES)
-            .build<String, TileTexture<BufferedImage>>()
+        .initialCapacity(100)
+        .maximumSize(5000)
+        .expireAfterAccess(1, TimeUnit.MINUTES)
+        .build<String, TileTexture<BufferedImage>>()
 
     private val images = File(resource.path).listFiles().map {
         it.name to it
@@ -57,9 +56,10 @@ class Java2DImageDictionaryTileset(resource: TilesetResource)
         } else {
             val texture = ImageIO.read(file)
             val image = DefaultTileTexture(
-                    width = texture.width,
-                    height = texture.height,
-                    texture = texture)
+                width = texture.width,
+                height = texture.height,
+                texture = texture
+            )
             cache.put(tile.name, image)
             image
         }

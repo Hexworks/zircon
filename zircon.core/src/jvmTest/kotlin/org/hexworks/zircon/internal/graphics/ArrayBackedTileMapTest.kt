@@ -16,8 +16,8 @@ class ArrayBackedTileMapTest {
     fun setUp() {
         val arr = arrayOfNulls<Map.Entry<Position, Tile>>(SIZE_2X3.width * SIZE_2X3.height)
         target = ArrayBackedTileMap(
-                dimensions = SIZE_2X3,
-                arr = arr
+            dimensions = SIZE_2X3,
+            arr = arr
         )
         arr[3] = Entry(FILLED_POSITION_1_1, FILLER)
         arr[5] = Entry(FILLED_POSITION_1_2, FILLER)
@@ -26,32 +26,32 @@ class ArrayBackedTileMapTest {
     @Test
     fun When_accessing_entries_Then_proper_entries_should_be_returned() {
         assertEquals(
-                expected = listOf(FILLED_POSITION_1_1 to FILLER, FILLED_POSITION_1_2 to FILLER),
-                actual = target.entries.map { it.key to it.value }
+            expected = listOf(FILLED_POSITION_1_1 to FILLER, FILLED_POSITION_1_2 to FILLER),
+            actual = target.entries.map { it.key to it.value }
         )
     }
 
     @Test
     fun When_accessing_keys_Then_proper_keys_should_be_returned() {
         assertEquals(
-                expected = listOf(FILLED_POSITION_1_1, FILLED_POSITION_1_2),
-                actual = target.entries.map { it.key }
+            expected = listOf(FILLED_POSITION_1_1, FILLED_POSITION_1_2),
+            actual = target.entries.map { it.key }
         )
     }
 
     @Test
     fun When_accessing_values_Then_proper_values_should_be_returned() {
         assertEquals(
-                expected = listOf(FILLER, FILLER),
-                actual = target.entries.map { it.value }
+            expected = listOf(FILLER, FILLER),
+            actual = target.entries.map { it.value }
         )
     }
 
     @Test
     fun When_accessing_size_Then_the_proper_size_should_be_returned() {
         assertEquals(
-                expected = SIZE_2X3.width * SIZE_2X3.height,
-                actual = target.size
+            expected = SIZE_2X3.width * SIZE_2X3.height,
+            actual = target.size
         )
     }
 
@@ -82,17 +82,19 @@ class ArrayBackedTileMapTest {
 
     @Test
     fun When_checking_if_is_empty_when_empty_Then_it_should_return_true() {
-        assertFalse(ArrayBackedTileMap(
+        assertFalse(
+            ArrayBackedTileMap(
                 dimensions = SIZE_2X3,
                 arr = arrayOfNulls(SIZE_2X3.width * SIZE_2X3.height)
-        ).isEmpty())
+            ).isEmpty()
+        )
     }
 
     @Test
     fun When_trying_to_get_value_when_present_Then_it_should_be_returned() {
         assertEquals(
-                expected = FILLER,
-                actual = target[FILLED_POSITION_1_1]
+            expected = FILLER,
+            actual = target[FILLED_POSITION_1_1]
         )
     }
 
@@ -100,8 +102,8 @@ class ArrayBackedTileMapTest {
     fun When_trying_to_create_copy_Then_a_proper_copy_should_be_created() {
         val arr = arrayOfNulls<Map.Entry<Position, Tile>>(SIZE_2X3.width * SIZE_2X3.height)
         target = ArrayBackedTileMap(
-                dimensions = SIZE_2X3,
-                arr = arr
+            dimensions = SIZE_2X3,
+            arr = arr
         )
         val copy = target.createCopy()
         arr[0] = Entry(Position.zero(), FILLER)

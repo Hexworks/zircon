@@ -10,8 +10,8 @@ class PersistentTileGraphicsTest : TileGraphicsTest() {
     @BeforeTest
     override fun setUp() {
         target = PersistentTileGraphics(
-                initialSize = SIZE_OF_3X3,
-                initialTileset = TILESET
+            initialSize = SIZE_OF_3X3,
+            initialTileset = TILESET
         )
     }
 

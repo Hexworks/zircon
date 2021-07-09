@@ -10,15 +10,15 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class LabelBuilder : ComponentWithTextBuilder<Label, LabelBuilder>(
-        initialRenderer = DefaultLabelRenderer(),
-        initialText = ""
+    initialRenderer = DefaultLabelRenderer(),
+    initialText = ""
 ) {
 
     override fun build(): Label {
         return DefaultLabel(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
         )
     }
 

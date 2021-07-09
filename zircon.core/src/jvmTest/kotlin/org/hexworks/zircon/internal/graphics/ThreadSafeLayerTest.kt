@@ -21,8 +21,9 @@ class ThreadSafeLayerTest {
     @Before
     fun setUp() {
         target = ThreadSafeLayer(
-                initialPosition = OFFSET,
-                initialContents = EMPTY_TILE_IMAGE)
+            initialPosition = OFFSET,
+            initialContents = EMPTY_TILE_IMAGE
+        )
 
     }
 
@@ -30,8 +31,8 @@ class ThreadSafeLayerTest {
     fun Given_a_thread_safe_layer_When_modifying_a_tile_Then_its_state_changes() {
 
         val tile = Tile.defaultTile().withCharacter('x')
-                .withBackgroundColor(RED)
-                .withForegroundColor(BLUE)
+            .withBackgroundColor(RED)
+            .withForegroundColor(BLUE)
         target.draw(tile, Position.offset1x1())
 
         assertThat(target.tiles.toMap()).isEqualTo(mapOf(Position.offset1x1() to tile))
@@ -42,70 +43,70 @@ class ThreadSafeLayerTest {
         val expectedOffset = Position.defaultPosition()
         target.moveTo(expectedOffset)
         assertThat(target.position)
-                .isEqualTo(expectedOffset)
+            .isEqualTo(expectedOffset)
     }
 
     @Test
     fun shouldIntersectIntersectingBoundable() {
         assertThat(target.intersects(INTERSECTING_BOUNDABLE))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotIntersectNonIntersectingBoundable() {
         assertThat(target.intersects(NON_INTERSECTING_BOUNDABLE))
-                .isFalse()
+            .isFalse()
     }
 
     @Test
     fun shouldContainContainedPosition() {
         assertThat(target.containsPosition(CONTAINED_POSITION))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotContainNonContainedPosition() {
         assertThat(target.containsPosition(NON_CONTAINED_POSITION))
-                .isFalse()
+            .isFalse()
     }
 
     @Test
     fun shouldContainContainedBoundable() {
         assertThat(target.containsBoundable(target))
-                .isTrue()
+            .isTrue()
     }
 
     @Test
     fun shouldNotContainNonContainedBoundable() {
         assertThat(target.containsBoundable(NON_CONTAINED_BOUNDABLE))
-                .isFalse()
+            .isFalse()
     }
 
     @Test
     fun shouldProperlySetChar() {
         target.draw(CHAR, CONTAINED_POSITION)
         assertThat(target.getTileAt(CONTAINED_POSITION).get())
-                .isEqualTo(CHAR)
+            .isEqualTo(CHAR)
     }
 
     companion object {
         private val TILESET = CP437TilesetResources.cla18x18()
         val CHAR = TileBuilder.newBuilder()
-                .withCharacter('x')
-                .build()
+            .withCharacter('x')
+            .build()
         val SIZE = Size.create(10, 10)
         val EMPTY_TILE_IMAGE = TileGraphicsBuilder.newBuilder()
-                .withSize(SIZE)
-                .withTileset(TILESET)
-                .build()
+            .withSize(SIZE)
+            .withTileset(TILESET)
+            .build()
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))
         val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.one()))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
-                .withRelativeX(-1)
-                .withRelativeY(-1)
+            .withRelativeX(-1)
+            .withRelativeY(-1)
     }
 
 }

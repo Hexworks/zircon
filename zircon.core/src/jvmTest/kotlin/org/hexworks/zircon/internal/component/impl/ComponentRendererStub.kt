@@ -6,7 +6,8 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class ComponentRendererStub<T : Component>(
-        private val actualRenderer: ComponentRenderer<T> = NoOpGenericRenderer()) : ComponentRenderer<T> {
+    private val actualRenderer: ComponentRenderer<T> = NoOpGenericRenderer()
+) : ComponentRenderer<T> {
 
     val renderings = mutableListOf<Pair<TileGraphics, ComponentRenderContext<T>>>()
 

@@ -11,7 +11,8 @@ object ImageLoader {
 
     fun readImage(resource: TilesetResource): BufferedImage {
         return if (isJarResource(resource)) {
-            val res = this::class.java.getResource(resource.path) ?: error("Can't find resource in jar: ${resource.path}")
+            val res =
+                this::class.java.getResource(resource.path) ?: error("Can't find resource in jar: ${resource.path}")
             ImageIO.read(res)
         } else {
             ImageIO.read(File(resource.path))
@@ -27,5 +28,5 @@ object ImageLoader {
     }
 
     private fun isJarResource(resource: TilesetResource) =
-            resource.tilesetSourceType == TilesetSourceType.JAR
+        resource.tilesetSourceType == TilesetSourceType.JAR
 }

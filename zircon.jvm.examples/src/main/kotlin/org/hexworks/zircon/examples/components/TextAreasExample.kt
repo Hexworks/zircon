@@ -25,94 +25,106 @@ object TextAreasExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
         val panel = Components.panel()
-                .withDecorations(box())
-                .withPreferredSize(28, 28)
-                .withPosition(31, 1)
-                .build()
+            .withDecorations(box())
+            .withPreferredSize(28, 28)
+            .withPosition(31, 1)
+            .build()
         screen.addComponent(panel)
 
-        screen.addComponent(Components.textArea()
+        screen.addComponent(
+            Components.textArea()
                 .withText("Some text")
                 .withPreferredSize(13, 5)
-                .withPosition(2, 2))
-        panel.addComponent(Components.textArea()
+                .withPosition(2, 2)
+        )
+        panel.addComponent(
+            Components.textArea()
                 .withText("Some text")
                 .withPreferredSize(13, 5)
-                .withPosition(2, 2))
+                .withPosition(2, 2)
+        )
 
-        screen.addComponent(Components.textArea()
+        screen.addComponent(
+            Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withPreferredSize(13, 7)
-                .withPosition(2, 8))
-        panel.addComponent(Components.textArea()
+                .withPosition(2, 8)
+        )
+        panel.addComponent(
+            Components.textArea()
                 .withText("Some other text")
                 .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
                 .withPreferredSize(13, 7)
-                .withPosition(2, 8))
+                .withPosition(2, 8)
+        )
 
-        screen.addComponent(Components.label()
+        screen.addComponent(
+            Components.label()
                 .withText("Numbers only!")
                 .withDecorations(box())
-                .withAlignment(positionalAlignment(Position.create(2, 17))))
+                .withAlignment(positionalAlignment(Position.create(2, 17)))
+        )
 
         val boundLabel = Components.label()
-                .withText("")
-                .withSize(Size.create(13, 3))
-                .withDecorations(box())
-                .withPosition(2, 27)
-                .build()
+            .withText("")
+            .withSize(Size.create(13, 3))
+            .withDecorations(box())
+            .withPosition(2, 27)
+            .build()
 
         val numLabel = Components.label()
-                .withText("Also 256 Max!")
-                .withDecorations()
-                .withPosition(2, 25)
-                .build()
+            .withText("Also 256 Max!")
+            .withDecorations()
+            .withPosition(2, 25)
+            .build()
 
         val hbox = Components.hbox()
-                .withPreferredSize(18, 4)
-                .withSpacing(0)
-                .withPosition(2, 20)
-                .withDecorations(box(), shadow())
-                .build()
+            .withPreferredSize(18, 4)
+            .withSpacing(0)
+            .withPosition(2, 20)
+            .withDecorations(box(), shadow())
+            .build()
 
         val numberInput = Components.horizontalNumberInput(13)
-                .withInitialValue(0)
-                .withMinValue(14)
-                .withMaxValue(256)
-                .withDecorations()
-                .build()
+            .withInitialValue(0)
+            .withMinValue(14)
+            .withMaxValue(256)
+            .withDecorations()
+            .build()
 
         boundLabel.textProperty.updateFrom(numberInput.currentValueProperty) {
             it.toString()
         }
 
         val decrementButton = Components.button()
-                .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-                .withPreferredSize(1, 1)
-                .withDecorations()
-                .build().apply {
-                    processComponentEvents(ComponentEventType.ACTIVATED) {
-                        numberInput.decrementCurrentValue()
-                    }
+            .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
+            .withPreferredSize(1, 1)
+            .withDecorations()
+            .build().apply {
+                processComponentEvents(ComponentEventType.ACTIVATED) {
+                    numberInput.decrementCurrentValue()
                 }
+            }
         val incrementButton = Components.button()
-                .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-                .withPreferredSize(1, 1)
-                .withDecorations()
-                .build().apply {
-                    processComponentEvents(ComponentEventType.ACTIVATED) {
-                        numberInput.incrementCurrentValue()
-                    }
+            .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
+            .withPreferredSize(1, 1)
+            .withDecorations()
+            .build().apply {
+                processComponentEvents(ComponentEventType.ACTIVATED) {
+                    numberInput.incrementCurrentValue()
                 }
+            }
         hbox.addComponent(decrementButton)
         hbox.addComponent(numberInput)
         hbox.addComponent(incrementButton)

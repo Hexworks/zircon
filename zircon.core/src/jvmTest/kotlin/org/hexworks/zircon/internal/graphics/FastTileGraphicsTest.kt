@@ -10,8 +10,8 @@ class FastTileGraphicsTest : TileGraphicsTest() {
     @BeforeTest
     override fun setUp() {
         target = FastTileGraphics(
-                initialSize = SIZE_OF_3X3,
-                initialTileset = TILESET
+            initialSize = SIZE_OF_3X3,
+            initialTileset = TILESET
         )
     }
 

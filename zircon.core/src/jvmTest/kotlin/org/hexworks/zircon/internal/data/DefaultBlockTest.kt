@@ -14,9 +14,9 @@ class DefaultBlockTest {
         val top = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder().build())
 
         val target = BlockBuilder.newBuilder<Tile>()
-                .withEmptyTile(Tile.empty())
-                .withTop(top)
-                .build()
+            .withEmptyTile(Tile.empty())
+            .withTop(top)
+            .build()
 
         assertThat(target.top).isEqualTo(top)
     }
@@ -26,9 +26,9 @@ class DefaultBlockTest {
         val top = Tile.createCharacterTile('x', StyleSetBuilder.newBuilder().build())
 
         val target = BlockBuilder.newBuilder<Tile>()
-                .withEmptyTile(Tile.empty())
-                .withTop(top)
-                .build()
+            .withEmptyTile(Tile.empty())
+            .withTop(top)
+            .build()
 
         assertThat(target.isEmpty()).isFalse()
     }
@@ -36,8 +36,8 @@ class DefaultBlockTest {
     @Test
     fun emptyBlockShouldNotBeEmpty() {
         val target = BlockBuilder.newBuilder<Tile>()
-                .withEmptyTile(Tile.empty())
-                .build()
+            .withEmptyTile(Tile.empty())
+            .build()
 
         assertThat(target.isEmpty()).isTrue()
     }

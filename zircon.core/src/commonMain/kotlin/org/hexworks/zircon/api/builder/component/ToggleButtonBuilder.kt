@@ -10,9 +10,9 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton, ToggleButtonBuilder>(
-        initialRenderer = DefaultToggleButtonRenderer(),
-        initialText = "",
-        reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH
+    initialRenderer = DefaultToggleButtonRenderer(),
+    initialText = "",
+    reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH
 ) {
 
     var isSelected: Boolean = false
@@ -23,17 +23,17 @@ class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton, ToggleButtonB
 
     override fun build(): ToggleButton {
         return DefaultToggleButton(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
-                initialSelected = isSelected,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialText = text,
+            initialSelected = isSelected,
         )
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withText(text)
-            .withIsSelected(isSelected)
+        .withProps(props.copy())
+        .withText(text)
+        .withIsSelected(isSelected)
 
     companion object {
 

@@ -38,9 +38,9 @@ class ThreadSafeLayerableTest {
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_Then_it_is_not_present() {
         val layer = LayerBuilder.newBuilder()
-                .withSize(Size.one())
-                .withOffset(Position.zero())
-                .build()
+            .withSize(Size.one())
+            .withOffset(Position.zero())
+            .build()
 
         target.addLayer(layer)
         target.removeLayer(layer)
@@ -51,9 +51,9 @@ class ThreadSafeLayerableTest {
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_with_the_handle_Then_it_is_not_present() {
         val layer = LayerBuilder.newBuilder()
-                .withSize(Size.one())
-                .withOffset(Position.zero())
-                .build()
+            .withSize(Size.one())
+            .withOffset(Position.zero())
+            .build()
 
         target.addLayer(layer).removeLayer()
 
@@ -247,18 +247,18 @@ class ThreadSafeLayerableTest {
 
     private fun buildTile(char: Char): CharacterTile {
         return Tile.defaultTile()
-                .withCharacter(char)
-                .withBackgroundColor(RED)
-                .withForegroundColor(GREEN)
+            .withCharacter(char)
+            .withBackgroundColor(RED)
+            .withForegroundColor(GREEN)
     }
 
     private fun buildLayer(char: Char = ' '): InternalLayer {
         return LayerBuilder.newBuilder()
-                .withSize(Size.one())
-                .withOffset(Position.zero())
-                .build().asInternalLayer().apply {
-                    fill(Tile.defaultTile().withCharacter(char))
-                }
+            .withSize(Size.one())
+            .withOffset(Position.zero())
+            .build().asInternalLayer().apply {
+                fill(Tile.defaultTile().withCharacter(char))
+            }
     }
 
     companion object {

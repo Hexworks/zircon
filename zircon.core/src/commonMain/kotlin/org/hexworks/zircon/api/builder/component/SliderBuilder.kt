@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 
 abstract class SliderBuilder<T : Slider, B : BaseComponentBuilder<T, B>>(
-        initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>
 ) : BaseComponentBuilder<T, B>(initialRenderer) {
 
     var minValue: Int = 0

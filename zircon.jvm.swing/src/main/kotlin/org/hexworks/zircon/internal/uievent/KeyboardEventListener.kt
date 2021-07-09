@@ -42,12 +42,13 @@ class KeyboardEventListener : KeyListener {
         val shiftDown = e.modifiersEx and InputEvent.SHIFT_DOWN_MASK != 0
 
         return KeyboardEvent(
-                type = type,
-                key = "$keyChar",
-                code = KeyCode.findByCode(keyCode),
-                ctrlDown = ctrlDown,
-                altDown = altDown,
-                metaDown = metaDown,
-                shiftDown = shiftDown)
+            type = type,
+            key = "$keyChar",
+            code = KeyCode.findByCode(keyCode),
+            ctrlDown = ctrlDown,
+            altDown = altDown,
+            metaDown = metaDown,
+            shiftDown = shiftDown
+        )
     }
 }

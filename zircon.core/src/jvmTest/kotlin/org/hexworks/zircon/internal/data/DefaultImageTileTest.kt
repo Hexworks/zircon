@@ -26,8 +26,8 @@ class DefaultImageTileTest {
         val target: ImageTile = Tile.createImageTile(NAME, TILESET)
 
         assertThat(target.createCopy())
-                .isEqualTo(target)
-                .isNotSameAs(target)
+            .isEqualTo(target)
+            .isNotSameAs(target)
     }
 
     @Test
@@ -71,7 +71,7 @@ class DefaultImageTileTest {
         val target = Tile.createImageTile(NAME, TILESET)
 
         assertThat(target.withName(otherName))
-                .isEqualTo(Tile.createImageTile(otherName, TILESET))
+            .isEqualTo(Tile.createImageTile(otherName, TILESET))
     }
 
     @Test
@@ -80,7 +80,7 @@ class DefaultImageTileTest {
         val target = Tile.createImageTile(NAME, TILESET)
 
         assertThat(target.withTileset(otherTileset))
-                .isEqualTo(Tile.createImageTile(NAME, otherTileset))
+            .isEqualTo(Tile.createImageTile(NAME, otherTileset))
     }
 
     @Test

@@ -20,29 +20,29 @@ class DefaultTab(
 ) : Tab {
 
     override val tabButton = Components.radioButton()
-            .withText(text)
-            .withKey(key)
-            .withPreferredSize(width, 3)
-            .withComponentStyleSet(ComponentStyleSet.defaultStyleSet())
-            .withRendererFunction { graphics, ctx ->
-                graphics.drawText(text, ctx.currentStyle)
-            }.withDecorations(ComponentDecorations.box(renderingMode = INTERACTIVE))
+        .withText(text)
+        .withKey(key)
+        .withPreferredSize(width, 3)
+        .withComponentStyleSet(ComponentStyleSet.defaultStyleSet())
+        .withRendererFunction { graphics, ctx ->
+            graphics.drawText(text, ctx.currentStyle)
+        }.withDecorations(ComponentDecorations.box(renderingMode = INTERACTIVE))
         .build()
 
     private val label = Components.label()
-            .withText(text)
-            .withPreferredSize(width, 3)
-            .withRendererFunction { graphics, ctx ->
-                val theme = ctx.theme
-                val style = StyleSet.create(
-                        foregroundColor = theme.primaryForegroundColor,
-                        backgroundColor = theme.primaryBackgroundColor
-                )
-                val filler = Tile.defaultTile().withStyle(style)
-                graphics.fill(filler)
-                graphics.drawText(text, style, Position.offset1x1())
-            }
-            .build()
+        .withText(text)
+        .withPreferredSize(width, 3)
+        .withRendererFunction { graphics, ctx ->
+            val theme = ctx.theme
+            val style = StyleSet.create(
+                foregroundColor = theme.primaryForegroundColor,
+                backgroundColor = theme.primaryBackgroundColor
+            )
+            val filler = Tile.defaultTile().withStyle(style)
+            graphics.fill(filler)
+            graphics.drawText(text, style, Position.offset1x1())
+        }
+        .build()
 
     override val root = Components.panel()
         .withSize(tabButton.size)

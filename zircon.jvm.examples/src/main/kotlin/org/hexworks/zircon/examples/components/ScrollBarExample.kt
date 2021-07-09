@@ -23,17 +23,19 @@ object ScrollBarExample {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
         val panel = Components.panel()
-                .withDecorations(box(title = "Scrollbar on panel"), shadow())
-                .withPreferredSize(Size.create(30, 28))
-                .withAlignment(positionalAlignment(29, 1))
-                .build()
+            .withDecorations(box(title = "Scrollbar on panel"), shadow())
+            .withPreferredSize(Size.create(30, 28))
+            .withAlignment(positionalAlignment(29, 1))
+            .build()
         screen.addComponent(panel)
 
 
@@ -52,28 +54,28 @@ object ScrollBarExample {
         panel.addFragment(scrollFragment)
 
         val scrollbar2 = Components.horizontalScrollbar()
-                .withPreferredSize(20, 1)
-                .withNumberOfScrollableItems(200)
-                .withDecorations()
-                .withAlignment(positionalAlignment(1, 23))
-                .build()
+            .withPreferredSize(20, 1)
+            .withNumberOfScrollableItems(200)
+            .withDecorations()
+            .withAlignment(positionalAlignment(1, 23))
+            .build()
         panel.addComponent(scrollbar2)
         val numberInput = Components.horizontalNumberInput(3)
-                .withInitialValue(200)
-                .withMinValue(0)
-                .withMaxValue(500)
-                .withAlignment(positionalAlignment(1, 22))
-                .build()
+            .withInitialValue(200)
+            .withMinValue(0)
+            .withMaxValue(500)
+            .withAlignment(positionalAlignment(1, 22))
+            .build()
         panel.addComponent(numberInput)
 
         numberInput.currentValueProperty.onChange {
             scrollbar2.resizeScrollBar(it.newValue)
         }
         val label2 = Components.label()
-                .withText("Resize Me!")
-                .withDecorations()
-                .withAlignment(positionalAlignment(1, 21))
-                .build()
+            .withText("Resize Me!")
+            .withDecorations()
+            .withAlignment(positionalAlignment(1, 21))
+            .build()
         panel.addComponent(label2)
 
         screen.display()

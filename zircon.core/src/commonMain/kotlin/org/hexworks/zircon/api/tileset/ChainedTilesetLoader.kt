@@ -9,18 +9,18 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Whether a [TilesetLoader] is able to load a [TilesetResource] is dependent on [TilesetLoader.canLoadResource].
  */
 class ChainedTilesetLoader<T : Any>(
-        private val loaderA: TilesetLoader<T>,
-        private val loaderB: TilesetLoader<T>
+    private val loaderA: TilesetLoader<T>,
+    private val loaderB: TilesetLoader<T>
 ) : TilesetLoader<T> {
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<T> =
-            when {
-                loaderA.canLoadResource(resource) -> loaderA.loadTilesetFrom(resource)
-                loaderB.canLoadResource(resource) -> loaderB.loadTilesetFrom(resource)
-                else -> throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.")
-            }
+        when {
+            loaderA.canLoadResource(resource) -> loaderA.loadTilesetFrom(resource)
+            loaderB.canLoadResource(resource) -> loaderB.loadTilesetFrom(resource)
+            else -> throw IllegalArgumentException("Unknown tile type '${resource.tileType}'.")
+        }
 
     override fun canLoadResource(resource: TilesetResource): Boolean =
-            loaderA.canLoadResource(resource) || loaderB.canLoadResource(resource)
+        loaderA.canLoadResource(resource) || loaderB.canLoadResource(resource)
 
     companion object {
         /**
@@ -31,7 +31,12 @@ class ChainedTilesetLoader<T : Any>(
             return when (tilesetLoaders.size) {
                 0 -> throw IllegalArgumentException("tilesetLoaders cannot be empty")
                 1 -> tilesetLoaders.first()
-                else -> tilesetLoaders.reduceRight { right: TilesetLoader<T>, acc: TilesetLoader<T> -> ChainedTilesetLoader(right, acc) }
+                else -> tilesetLoaders.reduceRight { right: TilesetLoader<T>, acc: TilesetLoader<T> ->
+                    ChainedTilesetLoader(
+                        right,
+                        acc
+                    )
+                }
             }
         }
     }

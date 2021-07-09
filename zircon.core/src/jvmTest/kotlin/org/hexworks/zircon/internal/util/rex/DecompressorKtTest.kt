@@ -8,8 +8,9 @@ class DecompressorKtTest {
     fun test() {
         val tempFolder = createTempDir()
         unZipIt(
-                zipSource = this.javaClass.getResourceAsStream("/graphical_tilesets/nethack_16x16.zip"),
-                outputFolder = tempFolder)
+            zipSource = this.javaClass.getResourceAsStream("/graphical_tilesets/nethack_16x16.zip"),
+            outputFolder = tempFolder
+        )
     }
 
 

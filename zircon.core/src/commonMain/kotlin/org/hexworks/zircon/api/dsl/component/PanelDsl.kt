@@ -9,13 +9,13 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Panel] using the component builder DSL and returns it.
  */
 fun buildPanel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
-        .apply(init)
-        .build()
+    .apply(init)
+    .build()
 
 /**
  * Creates a new [Panel] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Panel].
  */
 fun <T : BaseContainerBuilder<*, *>> T.panel(
-        init: PanelBuilder.() -> Unit
+    init: PanelBuilder.() -> Unit
 ): Panel = buildChildFor(this, PanelBuilder(), init)

@@ -23,21 +23,21 @@ class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
 
     override fun build(): ComponentStyleSet {
         val styles = mutableMapOf(
-                ComponentState.DEFAULT to defaultStyle,
-                ComponentState.HIGHLIGHTED to highlightedStyle,
-                ComponentState.ACTIVE to activeStyle,
-                ComponentState.DISABLED to disabledStyle,
-                ComponentState.FOCUSED to focusedStyle
+            ComponentState.DEFAULT to defaultStyle,
+            ComponentState.HIGHLIGHTED to highlightedStyle,
+            ComponentState.ACTIVE to activeStyle,
+            ComponentState.DISABLED to disabledStyle,
+            ComponentState.FOCUSED to focusedStyle
         )
         ComponentState.values()
-                .filterNot { it == ComponentState.DEFAULT }
-                .forEach {
-                    // this means that they didn't change the value
-                    // so we'll use whatever they set for default
-                    if (styles[it] === StyleSet.defaultStyle()) {
-                        styles[it] = styles[ComponentState.DEFAULT]!!
-                    }
+            .filterNot { it == ComponentState.DEFAULT }
+            .forEach {
+                // this means that they didn't change the value
+                // so we'll use whatever they set for default
+                if (styles[it] === StyleSet.defaultStyle()) {
+                    styles[it] = styles[ComponentState.DEFAULT]!!
                 }
+            }
         return DefaultComponentStyleSet(styles)
     }
 
@@ -67,11 +67,11 @@ class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
     }
 
     override fun createCopy() = newBuilder()
-            .withDisabledStyle(disabledStyle)
-            .withFocusedStyle(focusedStyle)
-            .withActiveStyle(activeStyle)
-            .withDefaultStyle(defaultStyle)
-            .withHighlightedStyle(highlightedStyle)
+        .withDisabledStyle(disabledStyle)
+        .withFocusedStyle(focusedStyle)
+        .withActiveStyle(activeStyle)
+        .withDefaultStyle(defaultStyle)
+        .withHighlightedStyle(highlightedStyle)
 
     companion object {
 

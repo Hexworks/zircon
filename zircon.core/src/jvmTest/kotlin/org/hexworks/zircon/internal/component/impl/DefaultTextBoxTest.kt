@@ -21,11 +21,13 @@ class DefaultTextBoxTest : ComponentImplementationTest<DefaultTextBox>() {
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
-                .withDefaultStyle(StyleSetBuilder.newBuilder()
-                        .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                        .withBackgroundColor(TileColor.transparent())
-                        .build())
-                .build()
+            .withDefaultStyle(
+                StyleSetBuilder.newBuilder()
+                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
+                    .withBackgroundColor(TileColor.transparent())
+                    .build()
+            )
+            .build()
 
     @Before
     override fun setUp() {
@@ -33,9 +35,11 @@ class DefaultTextBoxTest : ComponentImplementationTest<DefaultTextBox>() {
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         target = DefaultTextBox(
-                componentMetadata = COMMON_COMPONENT_METADATA,
-                renderingStrategy = DefaultComponentRenderingStrategy(
-                        componentRenderer = rendererStub as ComponentRenderer<TextBox>))
+            componentMetadata = COMMON_COMPONENT_METADATA,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                componentRenderer = rendererStub as ComponentRenderer<TextBox>
+            )
+        )
     }
 
 }

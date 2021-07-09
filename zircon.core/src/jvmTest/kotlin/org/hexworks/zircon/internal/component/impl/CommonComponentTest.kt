@@ -44,17 +44,18 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
     val COMPONENT_STYLES = ComponentStyleSet.defaultStyleSet()
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
-            relativePosition = POSITION_2_3,
-            size = SIZE_3_4,
-            tileset = TILESET_REX_PAINT_20X20,
-            componentStyleSet = COMPONENT_STYLES)
+        relativePosition = POSITION_2_3,
+        size = SIZE_3_4,
+        tileset = TILESET_REX_PAINT_20X20,
+        componentStyleSet = COMPONENT_STYLES
+    )
 
     abstract fun setUp()
 
     @Test
     fun shouldUseProperTileset() {
         assertThat(target.tileset.id)
-                .isEqualTo(TILESET_REX_PAINT_20X20.id)
+            .isEqualTo(TILESET_REX_PAINT_20X20.id)
     }
 
     @Test
@@ -62,7 +63,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         val newTileset = BuiltInCP437TilesetResource.TAFFER_20X20
         target.tileset = newTileset
         assertThat(target.tileset.id)
-                .isEqualTo(newTileset.id)
+            .isEqualTo(newTileset.id)
     }
 
     @Test(expected = ValueValidationFailedException::class)
@@ -74,10 +75,13 @@ abstract class CommonComponentTest<T : InternalComponent> {
     open fun shouldProperlyHandleKeyStroked() {
         rendererStub.clear()
 
-        target.keyPressed(KeyboardEvent(
+        target.keyPressed(
+            KeyboardEvent(
                 type = KEY_PRESSED,
                 key = "x",
-                code = KeyCode.KEY_X), TARGET)
+                code = KeyCode.KEY_X
+            ), TARGET
+        )
 
         //TODO: assert?
     }
@@ -95,8 +99,9 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedUp(
-                event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero()),
+            phase = TARGET
+        )
     }
 
     @Test
@@ -104,8 +109,9 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedDown(
-                event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero()),
+            phase = TARGET
+        )
     }
 
     @Test
@@ -113,8 +119,9 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseDragged(
-                event = MouseEvent(MOUSE_DRAGGED, 1, Position.zero()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_DRAGGED, 1, Position.zero()),
+            phase = TARGET
+        )
     }
 
     @Test
@@ -122,8 +129,9 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseMoved(
-                event = MouseEvent(MOUSE_MOVED, 1, Position.zero()),
-                phase = TARGET)
+            event = MouseEvent(MOUSE_MOVED, 1, Position.zero()),
+            phase = TARGET
+        )
     }
 
 
@@ -136,9 +144,10 @@ abstract class CommonComponentTest<T : InternalComponent> {
         }
 
         val keyboardEvent = KeyboardEvent(
-                type = KEY_PRESSED,
-                key = "x",
-                code = KeyCode.KEY_X)
+            type = KEY_PRESSED,
+            key = "x",
+            code = KeyCode.KEY_X
+        )
 
         target.process(keyboardEvent, TARGET)
 
@@ -154,9 +163,10 @@ abstract class CommonComponentTest<T : InternalComponent> {
         }
 
         val event = MouseEvent(
-                type = MOUSE_PRESSED,
-                button = 1,
-                position = Position.defaultPosition())
+            type = MOUSE_PRESSED,
+            button = 1,
+            position = Position.defaultPosition()
+        )
 
         target.process(event, TARGET)
 

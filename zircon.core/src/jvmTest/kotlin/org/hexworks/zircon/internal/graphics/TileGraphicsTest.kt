@@ -21,8 +21,8 @@ abstract class TileGraphicsTest {
     @Test
     fun When_getting_size_Then_it_should_return_the_proper_size() {
         assertEquals(
-                expected = SIZE_OF_3X3,
-                actual = target.size
+            expected = SIZE_OF_3X3,
+            actual = target.size
         )
     }
 
@@ -35,8 +35,8 @@ abstract class TileGraphicsTest {
         target.clear()
 
         assertEquals(
-                expected = mapOf(),
-                actual = target.tiles.toMap()
+            expected = mapOf(),
+            actual = target.tiles.toMap()
         )
     }
 
@@ -45,16 +45,16 @@ abstract class TileGraphicsTest {
         target.draw(FILLER, FILLED_POS)
 
         assertEquals(
-                expected = FILLER,
-                actual = target.getTileAt(FILLED_POS).get()
+            expected = FILLER,
+            actual = target.getTileAt(FILLED_POS).get()
         )
     }
 
     @Test
     fun When_it_is_empty_Then_getting_a_tile_should_return_the_empty_tile() {
         assertEquals(
-                expected = Tile.empty(),
-                actual = target.getTileAt(FILLED_POS).get()
+            expected = Tile.empty(),
+            actual = target.getTileAt(FILLED_POS).get()
         )
     }
 
@@ -86,8 +86,8 @@ abstract class TileGraphicsTest {
         target.draw(FILLER, Position.offset1x1())
 
         assertEquals(
-                expected = FILLER,
-                actual = target.getTileAt(Position.offset1x1()).get()
+            expected = FILLER,
+            actual = target.getTileAt(Position.offset1x1()).get()
         )
     }
 
@@ -96,8 +96,8 @@ abstract class TileGraphicsTest {
         target.draw(FILLER, FILLED_POS)
 
         assertEquals(
-                expected = mapOf(FILLED_POS to FILLER),
-                actual = target.state.tiles.toMap()
+            expected = mapOf(FILLED_POS to FILLER),
+            actual = target.state.tiles.toMap()
         )
 
     }
@@ -105,18 +105,19 @@ abstract class TileGraphicsTest {
     @Test
     fun When_drawing_other_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = TileGraphicsBuilder.newBuilder()
-                .withSize(Size.create(2, 2))
-                .buildPersistent()
-                .apply {
-                    fill(FILLER)
-                }
+            .withSize(Size.create(2, 2))
+            .buildPersistent()
+            .apply {
+                fill(FILLER)
+            }
         target.draw(other, pos(1, 1))
 
         assertEquals(
-                actual = target.tiles.toMap(),
-                expected = mapOf(
-                        pos(1, 1) to FILLER, pos(2, 1) to FILLER,
-                        pos(1, 2) to FILLER, pos(2, 2) to FILLER)
+            actual = target.tiles.toMap(),
+            expected = mapOf(
+                pos(1, 1) to FILLER, pos(2, 1) to FILLER,
+                pos(1, 2) to FILLER, pos(2, 2) to FILLER
+            )
         )
 
     }
@@ -124,32 +125,32 @@ abstract class TileGraphicsTest {
     @Test
     fun When_drawing_onto_other_tile_graphics_Then_it_should_properly_be_drawn() {
         val other = TileGraphicsBuilder.newBuilder()
-                .withSize(Size.create(2, 2))
-                .build()
-                .apply {
-                    fill(FILLER)
-                }
+            .withSize(Size.create(2, 2))
+            .build()
+            .apply {
+                fill(FILLER)
+            }
         target.draw(other, pos(2, 2))
 
         assertEquals(
-                expected = mapOf(pos(2, 2) to FILLER),
-                actual = target.tiles.toMap()
+            expected = mapOf(pos(2, 2) to FILLER),
+            actual = target.tiles.toMap()
         )
     }
 
     @Test
     fun When_drawing_overflowing_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = TileGraphicsBuilder.newBuilder()
-                .withSize(Size.create(2, 2))
-                .buildPersistent()
-                .apply {
-                    fill(FILLER)
-                }
+            .withSize(Size.create(2, 2))
+            .buildPersistent()
+            .apply {
+                fill(FILLER)
+            }
         target.draw(other, pos(2, 2))
 
         assertEquals(
-                expected = mapOf(pos(2, 2) to FILLER),
-                actual = target.tiles.toMap()
+            expected = mapOf(pos(2, 2) to FILLER),
+            actual = target.tiles.toMap()
         )
     }
 
@@ -160,8 +161,8 @@ abstract class TileGraphicsTest {
         target.tileset = tileset
 
         assertEquals(
-                expected = tileset,
-                actual = target.tileset
+            expected = tileset,
+            actual = target.tileset
         )
     }
 
@@ -173,11 +174,13 @@ abstract class TileGraphicsTest {
         val result = target.toResized(Size.create(4, 4), FILLER)
 
         assertEquals(
-                expected = listOf('x', 'x', 'x', 'a',
-                        'x', 'x', 'x', 'a',
-                        'x', 'x', 'x', 'a',
-                        'a', 'a', 'a', 'a'),
-                actual = result.fetchCharacters()
+            expected = listOf(
+                'x', 'x', 'x', 'a',
+                'x', 'x', 'x', 'a',
+                'x', 'x', 'x', 'a',
+                'a', 'a', 'a', 'a'
+            ),
+            actual = result.fetchCharacters()
         )
     }
 
@@ -188,11 +191,13 @@ abstract class TileGraphicsTest {
         val result = target.toResized(Size.create(4, 4))
 
         assertEquals(
-                expected = listOf('x', 'x', 'x', ' ',
-                        'x', 'x', 'x', ' ',
-                        'x', 'x', 'x', ' ',
-                        ' ', ' ', ' ', ' '),
-                actual = result.fetchCharacters()
+            expected = listOf(
+                'x', 'x', 'x', ' ',
+                'x', 'x', 'x', ' ',
+                'x', 'x', 'x', ' ',
+                ' ', ' ', ' ', ' '
+            ),
+            actual = result.fetchCharacters()
         )
     }
 
@@ -203,8 +208,8 @@ abstract class TileGraphicsTest {
         val result = target.toResized(Size.create(2, 2))
 
         assertEquals(
-                expected = listOf(tile, tile, tile, tile),
-                actual = result.tiles.values
+            expected = listOf(tile, tile, tile, tile),
+            actual = result.tiles.values
         )
     }
 
@@ -214,21 +219,21 @@ abstract class TileGraphicsTest {
         target.fill(FILLER)
         val old = FILLER.styleSet
         val new = StyleSet.defaultStyle()
-                .withForegroundColor(ANSITileColor.GREEN)
-                .withBackgroundColor(ANSITileColor.YELLOW)
+            .withForegroundColor(ANSITileColor.GREEN)
+            .withBackgroundColor(ANSITileColor.YELLOW)
 
         target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.one()))
-                .applyStyle(new)
+            .applyStyle(new)
 
         assertEquals(
-                expected = listOf(
-                        old, old, old,
-                        old, new, old,
-                        old, old, old
-                ),
-                actual = target.size.fetchPositions().map {
-                    target.getTileAt(it).get().styleSet
-                }
+            expected = listOf(
+                old, old, old,
+                old, new, old,
+                old, old, old
+            ),
+            actual = target.size.fetchPositions().map {
+                target.getTileAt(it).get().styleSet
+            }
         )
     }
 
@@ -241,9 +246,11 @@ abstract class TileGraphicsTest {
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
-        return listOf(Position.create(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
-                Position.create(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
-                Position.create(Int.MAX_VALUE, Int.MAX_VALUE))
+        return listOf(
+            Position.create(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
+            Position.create(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
+            Position.create(Int.MAX_VALUE, Int.MAX_VALUE)
+        )
     }
 
     private fun pos(x: Int, y: Int) = Position.create(x, y)
@@ -253,8 +260,8 @@ abstract class TileGraphicsTest {
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
         val FILLER: CharacterTile = TileBuilder.newBuilder()
-                .withCharacter('a')
-                .buildCharacterTile()
+            .withCharacter('a')
+            .buildCharacterTile()
 
     }
 }

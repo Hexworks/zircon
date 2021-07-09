@@ -35,10 +35,12 @@ object ModalExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
@@ -53,56 +55,61 @@ object ModalExample {
     private fun openModal(screen: Screen, level: Int = 1) {
 
         val modalPanel = Components.panel()
-                .withSize(Size.create(30, 20))
-                .withDecorations(box(title = "Modal level: $level"), shadow())
-                .build()
+            .withSize(Size.create(30, 20))
+            .withDecorations(box(title = "Modal level: $level"), shadow())
+            .build()
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
-                .withComponent(modalPanel)
-                .withParentSize(screen.size)
-                .build().apply {
-                    handleKeyboardEvents(KEY_PRESSED) { event, _ ->
-                        if (event.code == KeyCode.KEY_C) {
-                            logger.info("Closed by pressing C")
-                            close(EmptyModalResult)
-                            Processed
-                        } else Pass
-                    }
+            .withComponent(modalPanel)
+            .withParentSize(screen.size)
+            .build().apply {
+                handleKeyboardEvents(KEY_PRESSED) { event, _ ->
+                    if (event.code == KeyCode.KEY_C) {
+                        logger.info("Closed by pressing C")
+                        close(EmptyModalResult)
+                        Processed
+                    } else Pass
                 }
+            }
 
         val closeButton = Components.button()
-                .withText("Close")
-                .withAlignment(alignmentWithin(modalPanel, BOTTOM_RIGHT))
-                .build().apply {
-                    handleComponentEvents(ACTIVATED) {
-                        logger.info("Closed by activating the button")
-                        modal.close(EmptyModalResult)
-                        Processed
-                    }
+            .withText("Close")
+            .withAlignment(alignmentWithin(modalPanel, BOTTOM_RIGHT))
+            .build().apply {
+                handleComponentEvents(ACTIVATED) {
+                    logger.info("Closed by activating the button")
+                    modal.close(EmptyModalResult)
+                    Processed
                 }
+            }
 
-        modalPanel.addComponent(createOpenAnotherButton(
+        modalPanel.addComponent(
+            createOpenAnotherButton(
                 screen = screen,
                 position = closeButton.position.withX(0),
-                level = level + 1))
+                level = level + 1
+            )
+        )
         modalPanel.addComponent(closeButton)
         modal.theme = theme
         screen.openModal(modal)
     }
 
-    private fun createOpenAnotherButton(screen: Screen,
-                                        position: Position = Position.zero(),
-                                        level: Int = 1): Button {
+    private fun createOpenAnotherButton(
+        screen: Screen,
+        position: Position = Position.zero(),
+        level: Int = 1
+    ): Button {
         return Components.button()
-                .withText("Open another")
-                .withPosition(position)
-                .build().apply {
-                    handleComponentEvents(ACTIVATED) {
-                        logger.info("Opening another modal")
-                        openModal(screen, level)
-                        Processed
-                    }
+            .withText("Open another")
+            .withPosition(position)
+            .build().apply {
+                handleComponentEvents(ACTIVATED) {
+                    logger.info("Opening another modal")
+                    openModal(screen, level)
+                    Processed
                 }
+            }
     }
 
 }

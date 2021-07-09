@@ -23,85 +23,104 @@ object PanelsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
+        val tileGrid = SwingApplications.startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withSize(Size.create(60, 30))
-                .build())
+                .build()
+        )
 
         val screen = Screen.create(tileGrid)
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(box(title = "No Render"))
                 .withPreferredSize(18, 5)
                 .withComponentRenderer(NoOpComponentRenderer())
-                .withAlignment(positionalAlignment(1, 1)))
+                .withAlignment(positionalAlignment(1, 1))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(shadow())
                 .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(1, 8)))
+                .withAlignment(positionalAlignment(1, 8))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(box(), shadow())
                 .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(1, 15)))
+                .withAlignment(positionalAlignment(1, 15))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(box(boxType = BoxType.DOUBLE))
                 .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(1, 22)))
+                .withAlignment(positionalAlignment(1, 22))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(box(boxType = BoxType.BASIC))
                 .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(21, 1)))
+                .withAlignment(positionalAlignment(21, 1))
+        )
 
         val disabledPanel = Components.panel()
-                .withDecorations(box(title = "Disabled"))
-                .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(21, 8))
-                .build()
+            .withDecorations(box(title = "Disabled"))
+            .withPreferredSize(18, 5)
+            .withAlignment(positionalAlignment(21, 8))
+            .build()
 
         screen.addComponent(disabledPanel)
 
         disabledPanel.isDisabled = true
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withDecorations(
-                        halfBlock(),
-                        shadow())
+                    halfBlock(),
+                    shadow()
+                )
                 .withPreferredSize(18, 5)
-                .withAlignment(positionalAlignment(21, 15)))
+                .withAlignment(positionalAlignment(21, 15))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withPreferredSize(18, 5)
                 .withDecorations(box(title = "Wombat", boxType = BoxType.TOP_BOTTOM_DOUBLE))
-                .withAlignment(positionalAlignment(21, 22)))
+                .withAlignment(positionalAlignment(21, 22))
+        )
 
-        screen.addComponent(Components.panel()
+        screen.addComponent(
+            Components.panel()
                 .withPreferredSize(18, 5)
                 .withDecorations(box(boxType = BoxType.LEFT_RIGHT_DOUBLE))
-                .withAlignment(positionalAlignment(41, 1)))
+                .withAlignment(positionalAlignment(41, 1))
+        )
 
         val panel = Components.panel()
-                .withSize(Size.create(18, 19))
-                .withDecorations(box(title = "Parent"))
-                .withAlignment(positionalAlignment(41, 8))
-                .build()
+            .withSize(Size.create(18, 19))
+            .withDecorations(box(title = "Parent"))
+            .withAlignment(positionalAlignment(41, 8))
+            .build()
 
         screen.addComponent(panel)
 
         val nested0 = Components.panel()
-                .withPreferredSize(14, 15)
-                .withAlignment(positionalAlignment(1, 1))
-                .withDecorations(box(title = "Nested 0", boxType = BoxType.DOUBLE))
-                .build()
+            .withPreferredSize(14, 15)
+            .withAlignment(positionalAlignment(1, 1))
+            .withDecorations(box(title = "Nested 0", boxType = BoxType.DOUBLE))
+            .build()
 
         val nested1 = Components.panel()
-                .withPreferredSize(10, 11)
-                .withAlignment(positionalAlignment(1, 1))
-                .withDecorations(box(title = "Nested 1", boxType = BoxType.DOUBLE))
-                .build()
+            .withPreferredSize(10, 11)
+            .withAlignment(positionalAlignment(1, 1))
+            .withDecorations(box(title = "Nested 1", boxType = BoxType.DOUBLE))
+            .build()
 
         panel.addComponent(nested0)
         nested0.addComponent(nested1)

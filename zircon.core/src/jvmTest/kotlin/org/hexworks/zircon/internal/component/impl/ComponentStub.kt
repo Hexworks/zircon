@@ -27,13 +27,13 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
-        override val position: Position,
-        override val size: Size,
-        override var tileset: TilesetResource = BuiltInCP437TilesetResource.REX_PAINT_20X20,
-        override val relativePosition: Position = position,
-        override val contentOffset: Position = position,
-        override val contentSize: Size = size,
-        override val id: UUID = UUIDFactory.randomUUID(),
+    override val position: Position,
+    override val size: Size,
+    override var tileset: TilesetResource = BuiltInCP437TilesetResource.REX_PAINT_20X20,
+    override val relativePosition: Position = position,
+    override val contentOffset: Position = position,
+    override val contentSize: Size = size,
+    override val id: UUID = UUIDFactory.randomUUID(),
 ) : InternalComponent {
 
     override val disabledProperty: Property<Boolean> = false.toProperty()
@@ -84,7 +84,8 @@ class ComponentStub(
 
     override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    override val componentStyleSetProperty: Property<ComponentStyleSet> = createPropertyFrom(ComponentStyleSet.defaultStyleSet())
+    override val componentStyleSetProperty: Property<ComponentStyleSet> =
+        createPropertyFrom(ComponentStyleSet.defaultStyleSet())
     override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
     override val width: Int
@@ -119,27 +120,45 @@ class ComponentStub(
         error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun handleMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+    override fun handleMouseEvents(
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         error("not implemented")
     }
 
-    override fun processMouseEvents(eventType: MouseEventType, handler: (event: MouseEvent, phase: UIEventPhase) -> Unit): Subscription {
+    override fun processMouseEvents(
+        eventType: MouseEventType,
+        handler: (event: MouseEvent, phase: UIEventPhase) -> Unit
+    ): Subscription {
         error("not implemented")
     }
 
-    override fun handleKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse): Subscription {
+    override fun handleKeyboardEvents(
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
+    ): Subscription {
         error("not implemented")
     }
 
-    override fun processKeyboardEvents(eventType: KeyboardEventType, handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit): Subscription {
+    override fun processKeyboardEvents(
+        eventType: KeyboardEventType,
+        handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit
+    ): Subscription {
         error("not implemented")
     }
 
-    override fun handleComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> UIEventResponse): Subscription {
+    override fun handleComponentEvents(
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> UIEventResponse
+    ): Subscription {
         error("not implemented")
     }
 
-    override fun processComponentEvents(eventType: ComponentEventType, handler: (event: ComponentEvent) -> Unit): Subscription {
+    override fun processComponentEvents(
+        eventType: ComponentEventType,
+        handler: (event: ComponentEvent) -> Unit
+    ): Subscription {
         error("not implemented")
     }
 

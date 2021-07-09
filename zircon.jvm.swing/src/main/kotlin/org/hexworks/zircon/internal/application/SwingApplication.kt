@@ -7,10 +7,11 @@ import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.impl.SwingFrame
 
 class SwingApplication(
-        private val config: AppConfig,
-        override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
-                initialTileset = config.defaultTileset,
-                initialSize = config.size)
+    private val config: AppConfig,
+    override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
+        initialTileset = config.defaultTileset,
+        initialSize = config.size
+    )
 ) : BaseApplication(config, tileGrid) {
 
     init {
@@ -18,9 +19,9 @@ class SwingApplication(
     }
 
     override val renderer = SwingFrame(
-            tileGrid = tileGrid,
-            config = config,
-            app = this
+        tileGrid = tileGrid,
+        config = config,
+        app = this
     ).renderer
 
     companion object {

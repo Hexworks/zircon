@@ -15,8 +15,9 @@ class Java2DVerticalFlipper : TextureTransformer<BufferedImage> {
         val tx = AffineTransform.getScaleInstance(1.0, -1.0)
         tx.translate(0.0, -txt.height.toDouble())
         return DefaultTileTexture(
-                width = txt.width,
-                height = txt.height,
-                texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(txt, null))
+            width = txt.width,
+            height = txt.height,
+            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(txt, null)
+        )
     }
 }

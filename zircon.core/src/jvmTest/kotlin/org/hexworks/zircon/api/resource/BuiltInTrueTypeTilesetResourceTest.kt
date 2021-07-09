@@ -17,8 +17,9 @@ class BuiltInTrueTypeTilesetResourceTest {
         BuiltInTrueTypeFontResource.values().forEach {
             val fr = it.toTilesetResource(20)
             val f = Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    this::class.java.getResourceAsStream(fr.path))
+                Font.TRUETYPE_FONT,
+                this::class.java.getResourceAsStream(fr.path)
+            )
             val ge = GraphicsEnvironment.getLocalGraphicsEnvironment()
             ge.registerFont(f)
 

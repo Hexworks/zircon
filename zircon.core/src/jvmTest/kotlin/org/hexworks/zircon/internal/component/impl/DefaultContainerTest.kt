@@ -41,48 +41,51 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         componentStub = ComponentStub(COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
         rendererStub = ComponentRendererStub()
         target = DefaultContainer(
-                componentMetadata = ComponentMetadata(
-                        size = SIZE_4x4,
-                        relativePosition = POSITION_2_3,
-                        componentStyleSet = COMPONENT_STYLES,
-                        tileset = TILESET_REX_PAINT_20X20),
-                renderer = DefaultComponentRenderingStrategy(
-                        decorationRenderers = listOf(),
-                        componentRenderer = rendererStub))
+            componentMetadata = ComponentMetadata(
+                size = SIZE_4x4,
+                relativePosition = POSITION_2_3,
+                componentStyleSet = COMPONENT_STYLES,
+                tileset = TILESET_REX_PAINT_20X20
+            ),
+            renderer = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = rendererStub
+            )
+        )
     }
 
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
-                .withSize(40, 25)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withSize(40, 25)
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel = PanelBuilder.newBuilder()
-                .withDecorations(box(title = "Panel"))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withPreferredSize(32, 16)
-                .withAlignment(positionalAlignment(1, 1))
-                .build() as InternalContainer
+            .withDecorations(box(title = "Panel"))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withPreferredSize(32, 16)
+            .withAlignment(positionalAlignment(1, 1))
+            .build() as InternalContainer
         val panelHeader = HeaderBuilder.newBuilder()
-                .withAlignment(positionalAlignment(Position.create(1, 0)))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withText("Header")
-                .build() as InternalComponent
+            .withAlignment(positionalAlignment(Position.create(1, 0)))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withText("Header")
+            .build() as InternalComponent
 
         val innerPanelHeader = HeaderBuilder.newBuilder()
-                .withAlignment(positionalAlignment(1, 0))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withText("Header2")
-                .build() as InternalComponent
+            .withAlignment(positionalAlignment(1, 0))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withText("Header2")
+            .build() as InternalComponent
         val innerPanel = PanelBuilder.newBuilder()
-                .withDecorations(box(title = "Panel2"))
-                .withPreferredSize(16, 10)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(1, 2))
-                .build() as InternalContainer
+            .withDecorations(box(title = "Panel2"))
+            .withPreferredSize(16, 10)
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withAlignment(positionalAlignment(1, 2))
+            .build() as InternalContainer
 
         assertThat(panel.isAttached).isFalse()
         assertThat(panelHeader.isAttached).isFalse()
@@ -113,28 +116,28 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
         val grid = TileGridBuilder.newBuilder()
-                .withSize(40, 25)
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withSize(40, 25)
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
-                .withDecorations(box(title = "Panel"))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withPreferredSize(32, 16)
-                .withAlignment(positionalAlignment(Position.offset1x1()))
-                .build() as InternalContainer
+            .withDecorations(box(title = "Panel"))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withPreferredSize(32, 16)
+            .withAlignment(positionalAlignment(Position.offset1x1()))
+            .build() as InternalContainer
         val panel1 = PanelBuilder.newBuilder()
-                .withDecorations(box(title = "Panel2"))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withPreferredSize(16, 10)
-                .withAlignment(positionalAlignment(1, 1))
-                .build() as InternalContainer
+            .withDecorations(box(title = "Panel2"))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withPreferredSize(16, 10)
+            .withAlignment(positionalAlignment(1, 1))
+            .build() as InternalContainer
         val header0 = HeaderBuilder.newBuilder()
-                .withAlignment(positionalAlignment(1, 0))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withText("Header")
-                .build() as InternalComponent
+            .withAlignment(positionalAlignment(1, 0))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withText("Header")
+            .build() as InternalComponent
 
         screen.addComponent(panel0)
 
@@ -155,10 +158,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
         AppConfig.newBuilder().disableBetaFeatures().build()
-        target.addComponent(LabelBuilder.newBuilder()
+        target.addComponent(
+            LabelBuilder.newBuilder()
                 .withText("foo")
                 .withTileset(badTileset)
-                .build())
+                .build()
+        )
     }
 
     @Test
@@ -171,15 +176,15 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         AppConfig.newBuilder().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
         val comp = LabelBuilder.newBuilder()
-                .withAlignment(positionalAlignment(pos))
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withText("text")
-                .build()
+            .withAlignment(positionalAlignment(pos))
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withText("text")
+            .build()
         val otherComp = LabelBuilder.newBuilder()
-                .withAlignment(positionalAlignment(pos.withRelativeX(1)))
-                .withText("text")
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .build()
+            .withAlignment(positionalAlignment(pos.withRelativeX(1)))
+            .withText("text")
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .build()
         target.addComponent(comp)
         target.addComponent(otherComp)
     }
@@ -196,26 +201,30 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToAddAComponentWhichIntersectsWithOtherComponents() {
-        target.addComponent(LabelBuilder.newBuilder()
+        target.addComponent(
+            LabelBuilder.newBuilder()
                 .withAlignment(positionalAlignment(Position.zero()))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("foo")
-                .build())
+                .build()
+        )
 
-        target.addComponent(LabelBuilder.newBuilder()
+        target.addComponent(
+            LabelBuilder.newBuilder()
                 .withAlignment(positionalAlignment(Position.create(1, 0)))
                 .withTileset(TILESET_REX_PAINT_20X20)
                 .withText("foo")
-                .build())
+                .build()
+        )
     }
 
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
         val comp = LabelBuilder.newBuilder()
-                .withText("x")
-                .withTileset(TILESET_REX_PAINT_20X20)
-                .withAlignment(positionalAlignment(Position.defaultPosition()))
-                .build() as InternalComponent
+            .withText("x")
+            .withTileset(TILESET_REX_PAINT_20X20)
+            .withAlignment(positionalAlignment(Position.defaultPosition()))
+            .build() as InternalComponent
         val handle = target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
         Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
@@ -235,7 +244,11 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     fun shouldProperlyReturnToString() {
         println(target.toString())
         assertThat(target.toString())
-                .isEqualTo("DefaultContainer(id=${target.id.toString().substring(0, 4)}, absolutePosition=(2,3), relativePosition=(2,3), size=(4X4), state=DEFAULT, disabled=false)")
+            .isEqualTo(
+                "DefaultContainer(id=${
+                    target.id.toString().substring(0, 4)
+                }, absolutePosition=(2,3), relativePosition=(2,3), size=(4X4), state=DEFAULT, disabled=false)"
+            )
     }
 
     companion object {

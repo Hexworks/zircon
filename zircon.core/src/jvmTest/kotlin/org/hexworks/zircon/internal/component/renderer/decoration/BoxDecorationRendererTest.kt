@@ -36,55 +36,71 @@ class BoxDecorationRendererTest(
         @Parameterized.Parameters(name = "{index}: {0}")
         @JvmStatic
         fun data() = listOf(
-            arrayOf("Default parameters", box(), """
+            arrayOf(
+                "Default parameters", box(), """
                 ┌──────────┐
                 │          │
                 │          │
                 └──────────┘
-            """),
-            arrayOf("With title", box(title = "Foo"), """
+            """
+            ),
+            arrayOf(
+                "With title", box(title = "Foo"), """
                 ┌┤Foo├─────┐
                 │          │
                 │          │
                 └──────────┘
-            """),
-            arrayOf("With title, right-aligned", box(title = "Foo", titleAlignment = TOP_RIGHT), """
+            """
+            ),
+            arrayOf(
+                "With title, right-aligned", box(title = "Foo", titleAlignment = TOP_RIGHT), """
                 ┌─────┤Foo├┐
                 │          │
                 │          │
                 └──────────┘
-            """),
+            """
+            ),
             // Titlebar is even-sized width, but title is odd-sized, so we're off by half, rounding to the left.
-            arrayOf("With title, center-aligned, approx center", box(title = "Foo", titleAlignment = TOP_CENTER), """
+            arrayOf(
+                "With title, center-aligned, approx center", box(title = "Foo", titleAlignment = TOP_CENTER), """
                 ┌──┤Foo├───┐
                 │          │
                 │          │
                 └──────────┘
-            """),
-            arrayOf("With title, center-aligned, exact center", box(title = "Food", titleAlignment = TOP_CENTER), """
+            """
+            ),
+            arrayOf(
+                "With title, center-aligned, exact center", box(title = "Food", titleAlignment = TOP_CENTER), """
                 ┌──┤Food├──┐
                 │          │
                 │          │
                 └──────────┘
-            """),
-                arrayOf("With title, bottom left-aligned", box(title = "Foo", titleAlignment = BOTTOM_LEFT), """
+            """
+            ),
+            arrayOf(
+                "With title, bottom left-aligned", box(title = "Foo", titleAlignment = BOTTOM_LEFT), """
                 ┌──────────┐
                 │          │
                 │          │
                 └┤Foo├─────┘
-            """),
-                arrayOf("With title, bottom right-aligned", box(title = "Foo", titleAlignment = BOTTOM_RIGHT), """
+            """
+            ),
+            arrayOf(
+                "With title, bottom right-aligned", box(title = "Foo", titleAlignment = BOTTOM_RIGHT), """
                 ┌──────────┐
                 │          │
                 │          │
                 └─────┤Foo├┘
-            """),
-                arrayOf("With title, bottom center-aligned", box(title = "Foo", titleAlignment = BOTTOM_CENTER), """
+            """
+            ),
+            arrayOf(
+                "With title, bottom center-aligned", box(title = "Foo", titleAlignment = BOTTOM_CENTER), """
                 ┌──────────┐
                 │          │
                 │          │
                 └──┤Foo├───┘
-            """)
+            """
+            )
         )
     }
 }

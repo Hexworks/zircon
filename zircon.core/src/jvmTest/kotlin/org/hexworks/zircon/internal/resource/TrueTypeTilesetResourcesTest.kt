@@ -10,14 +10,14 @@ class TrueTypeTilesetResourcesTest {
     @Test
     fun shouldContainAllFonts() {
         val fontCount = TrueTypeFontResources::class.members
-                .filter { it.isFinal }
-                .filter { it.parameters.size == 2 }
-                .map { accessor ->
-                    assertThat(accessor.call(TrueTypeFontResources, 20))
-                            .describedAs("Font: ${accessor.name}")
-                            .isInstanceOf(TilesetResource::class.java)
-                    1
-                }.fold(0, Int::plus)
+            .filter { it.isFinal }
+            .filter { it.parameters.size == 2 }
+            .map { accessor ->
+                assertThat(accessor.call(TrueTypeFontResources, 20))
+                    .describedAs("Font: ${accessor.name}")
+                    .isInstanceOf(TilesetResource::class.java)
+                1
+            }.fold(0, Int::plus)
 
         assertThat(fontCount).isEqualTo(ENUM_FONTS.size)
     }

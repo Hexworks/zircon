@@ -34,7 +34,9 @@ object AwtFontUtils {
         return font.getStringBounds("W", getFontRenderContext()).height.toInt()
     }
 
-    private fun getFontRenderContext() = FontRenderContext(null,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
-            RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT)
+    private fun getFontRenderContext() = FontRenderContext(
+        null,
+        RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
+        RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT
+    )
 }

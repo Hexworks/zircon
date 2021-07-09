@@ -9,11 +9,15 @@ object SwingBenchmark {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        Benchmark().execute(SwingApplications.startTileGrid(AppConfigBuilder.newBuilder()
-                .withSize(BENCHMARK_SIZE)
-                .withDefaultTileset(BENCHMARK_TILESET)
-                .withDebugMode(true)
-                .build()))
+        Benchmark().execute(
+            SwingApplications.startTileGrid(
+                AppConfigBuilder.newBuilder()
+                    .withSize(BENCHMARK_SIZE)
+                    .withDefaultTileset(BENCHMARK_TILESET)
+                    .withDebugMode(true)
+                    .build()
+            )
+        )
 
     }
 }
