@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.ComponentStyleSets
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Icon
@@ -13,11 +13,11 @@ class DefaultIcon(
     initialIcon: Tile,
     renderingStrategy: ComponentRenderingStrategy<Icon>
 ) : Icon, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 
-    override val iconProperty = createPropertyFrom(initialIcon)
+    override val iconProperty = initialIcon.toProperty()
     override var icon: Tile by iconProperty.asDelegate()
 
     override fun acceptsFocus() = false

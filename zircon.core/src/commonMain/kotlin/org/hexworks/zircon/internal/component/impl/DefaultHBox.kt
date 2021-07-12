@@ -23,7 +23,7 @@ open class DefaultHBox(
     private val spacing: Int,
     renderingStrategy: ComponentRenderingStrategy<HBox>
 ) : HBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
     TitleOverride by TitleOverride.create(initialTitle) {

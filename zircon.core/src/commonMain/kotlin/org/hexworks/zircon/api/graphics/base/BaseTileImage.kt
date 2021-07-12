@@ -107,7 +107,7 @@ abstract class BaseTileImage : TileImage {
             .map { it + offset }
             .intersect(this.size.fetchPositions())
             .forEach { pos ->
-                getTileAt(pos).map { tile ->
+                getTileAtOrNull(pos)?.let { tile ->
                     newTiles = newTiles.put(pos - offset, tile)
                 }
             }

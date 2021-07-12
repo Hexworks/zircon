@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
+import org.hexworks.zircon.internal.util.orElse
 
 class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumberInput> {
 
@@ -15,13 +16,9 @@ class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumb
         val tileTemplate = Tile.createCharacterTile(' ', context.currentStyle)
         tileGraphics.size.fetchPositions().forEach { pos ->
             val invertedPos = Position.create(pos.y, pos.x)
-            component.textBuffer().getCharAt(invertedPos).fold(
-                whenEmpty = {
-                    tileGraphics.draw(tileTemplate, pos)
-                },
-                whenPresent = { char ->
-                    tileGraphics.draw(tileTemplate.withCharacter(char), pos)
-                })
+            component.textBuffer().getCharAtOrNull(invertedPos)?.let { char ->
+                tileGraphics.draw(tileTemplate.withCharacter(char), pos)
+            }.orElse { tileGraphics.draw(tileTemplate, pos) }
         }
     }
 }

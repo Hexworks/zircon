@@ -23,7 +23,7 @@ class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
             initialIcon = iconTile
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy()).withIcon(iconTile)

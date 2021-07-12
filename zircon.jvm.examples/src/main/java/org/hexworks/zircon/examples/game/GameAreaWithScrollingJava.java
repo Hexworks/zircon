@@ -4,14 +4,27 @@ import kotlin.Unit;
 import org.hexworks.cobalt.core.behavior.DisposedByHand;
 import org.hexworks.cobalt.databinding.api.extension.Properties;
 import org.hexworks.cobalt.databinding.api.property.Property;
-import org.hexworks.zircon.api.*;
+import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.ColorThemes;
+import org.hexworks.zircon.api.Components;
+import org.hexworks.zircon.api.DrawSurfaces;
+import org.hexworks.zircon.api.GameComponents;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.color.ColorInterpolator;
 import org.hexworks.zircon.api.color.TileColor;
-import org.hexworks.zircon.api.component.*;
 import org.hexworks.zircon.api.component.Button;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Panel;
-import org.hexworks.zircon.api.data.*;
+import org.hexworks.zircon.api.component.RadioButton;
+import org.hexworks.zircon.api.component.RadioButtonGroup;
+import org.hexworks.zircon.api.component.VBox;
+import org.hexworks.zircon.api.data.Block;
+import org.hexworks.zircon.api.data.Position;
+import org.hexworks.zircon.api.data.Position3D;
+import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.data.Size3D;
+import org.hexworks.zircon.api.data.Tile;
 import org.hexworks.zircon.api.game.GameArea;
 import org.hexworks.zircon.api.game.ProjectionMode;
 import org.hexworks.zircon.api.graphics.BoxType;
@@ -61,10 +74,9 @@ public class GameAreaWithScrollingJava {
                 .withDefaultTileset(TILESET)
                 .withSize(GRID_SIZE)
                 .withDebugMode(true)
-                .enableBetaFeatures()
                 .build()));
 
-        final Property<ProjectionMode> projectionProperty = Properties.createPropertyFrom(PROJECTION_MODE, (value) -> true);
+        final Property<ProjectionMode> projectionProperty = Properties.toProperty(PROJECTION_MODE, (oldValue, newValue) -> true);
 
         Panel actions = Components.panel()
                 .withSize(20, 5)

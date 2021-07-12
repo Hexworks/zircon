@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples.other
 
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
@@ -28,7 +28,7 @@ object InCP437WeTrust {
 
     private val symbolsMap: Map<Char, String> =
         Symbols::class.declaredMemberProperties.associate { it.getter.call() as Char to it.name }
-    private val currentSymbol = createPropertyFrom(' ')
+    private val currentSymbol = ' '.toProperty()
 
     @JvmStatic
     fun main(args: Array<String>) {

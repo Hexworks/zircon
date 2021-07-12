@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -57,8 +58,8 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
             componentMetadata = ComponentMetadata(
                 size = SIZE_40x10,
                 relativePosition = POSITION_4_5,
-                componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET_REX_PAINT_20X20
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),

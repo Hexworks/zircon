@@ -23,7 +23,7 @@ class DefaultVBox(
     private val spacing: Int,
     renderingStrategy: ComponentRenderingStrategy<VBox>
 ) : VBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
     TitleOverride by TitleOverride.create(initialTitle) {

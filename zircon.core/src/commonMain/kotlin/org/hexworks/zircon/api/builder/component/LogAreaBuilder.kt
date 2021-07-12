@@ -21,7 +21,7 @@ class LogAreaBuilder : BaseComponentBuilder<LogArea, LogAreaBuilder>(DefaultLogA
         return DefaultLogArea(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

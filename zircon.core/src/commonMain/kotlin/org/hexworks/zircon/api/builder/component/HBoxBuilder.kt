@@ -33,7 +33,7 @@ class HBoxBuilder : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer(
                 spacing = spacing,
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
-        }
+        }.attachListeners()
     }
 
     override fun createCopy() = newBuilder()

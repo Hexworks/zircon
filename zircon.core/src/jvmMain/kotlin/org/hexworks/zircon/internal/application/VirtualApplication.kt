@@ -7,11 +7,8 @@ import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.VirtualRenderer
 
 class VirtualApplication(
-    private val config: AppConfig,
-    override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(
-        initialTileset = config.defaultTileset,
-        initialSize = config.size
-    )
+    config: AppConfig,
+    override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(config)
 ) : BaseApplication(config, tileGrid) {
 
     override val renderer = VirtualRenderer(tileGrid)

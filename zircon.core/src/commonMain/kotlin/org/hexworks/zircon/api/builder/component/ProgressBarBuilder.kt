@@ -48,7 +48,7 @@ class ProgressBarBuilder : BaseComponentBuilder<ProgressBar, ProgressBarBuilder>
             range = range,
             numberOfSteps = numberOfSteps,
             displayPercentValueOfProgress = displayPercentValueOfProgress,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

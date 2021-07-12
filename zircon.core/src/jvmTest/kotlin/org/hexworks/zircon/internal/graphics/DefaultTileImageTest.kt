@@ -53,8 +53,7 @@ class DefaultTileImageTest {
 
         assertThat(result.tiles.toMap()).isEqualTo(
             mapOf(
-                Position.create(0, 0) to FILLER_TILE_A,
-                Position.create(1, 0) to Tile.empty()
+                Position.create(0, 0) to FILLER_TILE_A
             )
         )
     }
@@ -113,8 +112,7 @@ class DefaultTileImageTest {
 
         assertThat(result.tiles.toMap()).isEqualTo(
             mapOf(
-                Position.create(0, 0) to FILLER_TILE_A,
-                Position.create(1, 0) to Tile.empty()
+                Position.create(0, 0) to FILLER_TILE_A
             )
         )
     }
@@ -178,9 +176,11 @@ class DefaultTileImageTest {
                 Position.create(0, 0) to FILLER_TILE_A,
                 Position.create(1, 0) to FILLER_TILE_A,
                 Position.create(2, 0) to FILLER_TILE_A,
+
                 Position.create(0, 1) to FILLER_TILE_A,
                 Position.create(1, 1) to FILLER_TILE_A,
                 // 2, 1 empty
+
                 Position.create(0, 2) to FILLER_TILE_A,
                 Position.create(1, 2) to FILLER_TILE_A,
                 Position.create(2, 2) to FILLER_TILE_A

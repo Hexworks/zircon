@@ -13,7 +13,7 @@ class DefaultParagraph(
     initialText: String,
     renderingStrategy: ComponentRenderingStrategy<Paragraph>
 ) : Paragraph, TextOverride by TextOverride.create(initialText), DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

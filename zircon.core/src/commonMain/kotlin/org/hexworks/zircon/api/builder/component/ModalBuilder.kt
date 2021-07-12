@@ -21,10 +21,9 @@ class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilde
     var darkenPercent: Double = 0.0
     var centeredDialog: Boolean = false
     var contentComponent: Component? = null
+    var onClosed: (T) -> Unit = {}
 
-    fun withParentSize(size: Size) = also {
-        super.withSize(size)
-    }
+    private var shouldCloseWith: T? = null
 
     @JvmOverloads
     fun withCenteredDialog(centeredDialog: Boolean = true) = also {
@@ -39,20 +38,35 @@ class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilde
         this.darkenPercent = percentage
     }
 
-    override fun withSize(size: Size): Nothing {
-        throw UnsupportedOperationException("Can't set the Size of a Modal by hand, use withParentSize instead.")
+    fun withOnClosed(onClosed: (T) -> Unit) = also {
+        this.onClosed = onClosed
+    }
+
+    fun close(result: T) {
+        shouldCloseWith = result
+    }
+
+    @Deprecated("Use withPreferredSize instead", replaceWith = ReplaceWith("withPreferredSize(size)"))
+    fun withParentSize(size: Size) = also {
+        super.withPreferredSize(size)
     }
 
     override fun build(): Modal<T> {
-        require(size.isUnknown.not()) {
+        require(tileset.isNotUnknown) {
+            "Since a Modal has no parent it must have its own tileset"
+        }
+        require(colorTheme.isNotUnknown || componentStyleSet.isNotUnknown) {
+            "Since a Modal has no parent it must have its own color theme or component style set"
+        }
+        require(size.isNotUnknown) {
             "Can't build a modal without knowing the size of the parent."
         }
         require(contentComponent != null) {
             "Can't build a modal without a content component."
         }
         val component = contentComponent!!
-        require(component.size <= size) {
-            "Can't build a modal which has a component which is bigger than the modal."
+        require(size.toRect().containsBoundable(component.rect)) {
+            "The component $component doesn't fit within the modal of size $size."
         }
         if (centeredDialog) {
             component.moveTo(
@@ -62,19 +76,22 @@ class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilde
                 )
             )
         }
-        val componentRenderer = DefaultComponentRenderingStrategy(
+        val modalRenderer = DefaultComponentRenderingStrategy(
             decorationRenderers = decorations,
             componentRenderer = componentRenderer as ComponentRenderer<Modal<out ModalResult>>
         )
         val modal = DefaultModal<T>(
             darkenPercent = darkenPercent,
-            // TODO: document this (updateOnAttach is needed as we don't want the modal to have the empty theme
-            // TODO: of the ModalComponentContainer)
-            componentMetadata = createMetadata().copy(updateOnAttach = false),
-            renderingStrategy = componentRenderer
+            componentMetadata = createMetadata(),
+            renderingStrategy = modalRenderer
         )
         modal.addComponent(component)
-        return modal
+        return modal.apply {
+            onClosed(onClosed)
+            shouldCloseWith?.let { result ->
+                close(result)
+            }
+        }
     }
 
     override fun createCopy() = newBuilder<T>()
@@ -84,7 +101,7 @@ class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilde
                 withComponent(component)
             }
         }.withDarkenPercent(darkenPercent)
-        .withParentSize(size)
+        .withPreferredSize(size)
 
     companion object {
 

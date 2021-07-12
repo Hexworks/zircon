@@ -44,19 +44,19 @@ class VerticalScrollableList<T>(
     private var topItemIdx: Int = 0
 
     override val root = Components.hbox()
-        .withSize(size)
+        .withPreferredSize(size)
         .withPosition(position)
         .withSpacing(0)
         .build()
 
     private val scrollPanel = Components.vbox()
-        .withSize(size.withRelativeWidth(-1))
+        .withPreferredSize(size.withRelativeWidth(-1))
         .withDecorations()
         .withSpacing(0)
         .build()
 
     private val scrollBarVbox = Components.vbox()
-        .withSize(size.withWidth(1))
+        .withPreferredSize(size.withWidth(1))
         .withDecorations()
         .withSpacing(0)
         .build()
@@ -118,7 +118,7 @@ class VerticalScrollableList<T>(
             while (labelIdx > labels.lastIndex) {
                 labels.add(Components.label()
                     .withDecorations()
-                    .withSize(scrollPanel.contentSize.withHeight(1))
+                    .withPreferredSize(scrollPanel.contentSize.withHeight(1))
                     .build()
                     .also { label ->
                         scrollPanel.addComponent(label)

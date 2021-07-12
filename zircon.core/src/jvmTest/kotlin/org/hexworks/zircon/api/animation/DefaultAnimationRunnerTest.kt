@@ -3,6 +3,8 @@ package org.hexworks.zircon.api.animation
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Position
@@ -10,7 +12,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
@@ -87,14 +88,16 @@ class DefaultAnimationRunnerTest {
 //                }
 //        whenever(animationMock.hasNextFrame()).thenReturn(false)
 
-        val tileGrid = TileGridBuilder.newBuilder()
-            .withSize(Size.create(50, 50))
-            .withTileset(BuiltInCP437TilesetResource.ADU_DHABI_16X16)
-            .build()
+        val grid = TileGridBuilder.newBuilder(
+            AppConfig.newBuilder()
+                .withSize(50, 50)
+                .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
+                .build()
+        ).build()
 
         val result = target.start(animationMock)
 
-        target.updateAnimations(System.currentTimeMillis() + 1000, tileGrid)
+        target.updateAnimations(System.currentTimeMillis() + 1000, grid)
 
         assertThat(result.isFinished).isTrue()
     }

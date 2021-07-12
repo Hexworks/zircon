@@ -1,61 +1,66 @@
 package org.hexworks.zircon.examples.fragments
 
-
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.examples.base.Defaults
+import org.hexworks.zircon.api.dsl.component.buildHbox
+import org.hexworks.zircon.examples.base.ComponentExampleKotlin
+import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 import org.hexworks.zircon.examples.components.ButtonsExampleKotlin
-import org.hexworks.zircon.examples.components.CheckBoxesExampleJava
-import org.hexworks.zircon.examples.components.ToggleButtonsExampleJava
-import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.examples.components.DataBindingExampleKotlin
+import org.hexworks.zircon.examples.components.MarginExampleKotlin
 import org.hexworks.zircon.internal.fragment.impl.DefaultVerticalTabBar
 
-object VerticalTabBarExample {
+class VerticalTabBarExample : OneColumnComponentExampleKotlin() {
 
-    private val tileset = CP437TilesetResources.taffer20x20()
-    private val size = Defaults.GRID_SIZE + Size.create(12, 2)
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            VerticalTabBarExample().show("Vertical Tab Bar")
+        }
+    }
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-
-        val screen = SwingApplications.startTileGrid(
-            AppConfig.newBuilder()
-                .withDefaultTileset(tileset)
-                .withSize(size)
-                .withDebugMode(true)
-                .build()
-        ).toScreen()
-
-        val contentSize = screen.size - Size.create(2, 2)
-
-        val content = Components.panel()
-            .withSize(contentSize)
-            .withPosition(1, 1)
-            .withComponentRenderer(NoOpComponentRenderer())
-            .build()
-
-        content.addFragment(
+    override fun build(box: VBox) {
+        val contentSize = box.contentSize.withRelativeWidth(-10)
+        val barSize = box.contentSize.withWidth(10)
+        box.addFragment(
             DefaultVerticalTabBar(
-                contentSize = contentSize.withRelativeWidth(-10),
-                barSize = contentSize.withWidth(10),
+                contentSize = contentSize,
+                barSize = barSize,
                 defaultSelected = "Buttons",
                 tabs = mapOf(
-                    "Buttons" to ButtonsExampleKotlin().createExampleContainer(screen, "Buttons"),
-                    "CheckBoxes" to CheckBoxesExampleJava().createExampleContainer(screen, "CheckBoxes"),
-                    "ToggleBtns" to ToggleButtonsExampleJava().createExampleContainer(screen, "ToggleBtns")
+                    buildTab(
+                        label = "Buttons",
+                        name = "Buttons Tab",
+                        size = contentSize,
+                        example = ButtonsExampleKotlin()
+                    ),
+                    buildTab(
+                        label = "Bindings",
+                        name = "Bindings Tab",
+                        size = contentSize,
+                        example = DataBindingExampleKotlin()
+                    ),
+                    buildTab(
+                        label = "Margins",
+                        name = "Margins Tab",
+                        size = contentSize,
+                        example = MarginExampleKotlin()
+                    )
                 )
             )
         )
+    }
 
-        screen.addComponent(content)
-        screen.display()
-        screen.theme = ColorThemes.amigaOs()
-
+    private fun buildTab(
+        label: String,
+        name: String,
+        size: Size,
+        example: ComponentExampleKotlin
+    ) = label to buildHbox {
+        this.name = name
+        preferredSize = size
+    }.apply {
+        example.addExamples(this)
     }
 
 }

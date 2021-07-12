@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.dsl.component.plus
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderPosition.*
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 

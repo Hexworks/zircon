@@ -18,7 +18,7 @@ class DefaultProgressBar(
     override val numberOfSteps: Int,
     override val displayPercentValueOfProgress: Boolean
 ) : ProgressBar, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

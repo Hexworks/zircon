@@ -5,7 +5,6 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -85,7 +84,7 @@ class ComponentStub(
     override var isHidden: Boolean by hiddenProperty.asDelegate()
 
     override val componentStyleSetProperty: Property<ComponentStyleSet> =
-        createPropertyFrom(ComponentStyleSet.defaultStyleSet())
+        ComponentStyleSet.defaultStyleSet().toProperty()
     override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
     override val width: Int
@@ -173,8 +172,8 @@ class ComponentStub(
         error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override val isClosed: ObservableValue<Boolean>
-        get() = error("not implemented")
+    override val closedValue: ObservableValue<Boolean>
+        get() = TODO("Not yet implemented")
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.theme = colorTheme

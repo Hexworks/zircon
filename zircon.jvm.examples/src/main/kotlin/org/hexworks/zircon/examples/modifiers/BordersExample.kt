@@ -1,4 +1,4 @@
-package org.hexworks.zircon.examples.components
+package org.hexworks.zircon.examples.modifiers
 
 
 import org.hexworks.zircon.api.CP437TilesetResources

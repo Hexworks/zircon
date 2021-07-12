@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Components
@@ -28,7 +28,7 @@ class DefaultRadioButtonGroup(
 
     private val buttons = mutableMapOf<String, Pair<GroupAttachedComponent, Subscription>>()
 
-    override val selectedButtonProperty = createPropertyFrom(Maybe.empty<RadioButton>())
+    override val selectedButtonProperty = Maybe.empty<RadioButton>().toProperty()
     override var selectedButton: Maybe<RadioButton> by selectedButtonProperty.asDelegate()
 
     @Synchronized

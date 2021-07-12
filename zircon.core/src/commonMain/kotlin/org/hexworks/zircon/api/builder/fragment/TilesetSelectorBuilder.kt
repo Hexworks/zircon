@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.Component
@@ -17,6 +18,7 @@ class TilesetSelectorBuilder private constructor(
     tileset: TilesetResource
 ) : SelectorBuilder<TilesetResource>(width, TilesetResources.allTextTilesetsCompatibleWith(tileset)) {
 
+    private var tilesetProperties = listOf<Property<TilesetResource>>()
     private var tilesetOverrides = listOf<TilesetOverride>()
     private var groups = listOf<Group<out Component>>()
 
@@ -30,6 +32,10 @@ class TilesetSelectorBuilder private constructor(
      */
     fun withTilesetOverrides(vararg tilesetOverrides: TilesetOverride) = also {
         this.tilesetOverrides = tilesetOverrides.toList()
+    }
+
+    fun withTilesetProperties(vararg tilesetProperties: Property<TilesetResource>) = also {
+        this.tilesetProperties = tilesetProperties.toList()
     }
 
     /**
@@ -46,6 +52,9 @@ class TilesetSelectorBuilder private constructor(
         }
         groups.forEach {
             it.tilesetProperty.updateFrom(selectedValue)
+        }
+        tilesetProperties.forEach {
+            it.updateFrom(selectedValue)
         }
     }
 

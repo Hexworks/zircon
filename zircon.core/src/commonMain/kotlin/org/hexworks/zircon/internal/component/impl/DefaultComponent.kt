@@ -4,11 +4,9 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
@@ -17,11 +15,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
-import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
-import org.hexworks.zircon.api.component.data.ComponentState.DISABLED
-import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
-import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
+import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -30,25 +24,12 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventSource
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.ACTIVATED
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.DEACTIVATED
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_GIVEN
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_TAKEN
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_ENTERED
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_EXITED
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_RELEASED
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -58,12 +39,12 @@ import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
-    componentMetadata: ComponentMetadata,
+    metadata: ComponentMetadata,
     private val renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
     private val movable: Movable = DefaultMovable(
-        position = componentMetadata.relativePosition,
-        size = componentMetadata.size
+        position = metadata.relativePosition,
+        size = metadata.size
     )
 ) : InternalComponent,
     ComponentEventSource by uiEventProcessor,
@@ -72,74 +53,57 @@ abstract class DefaultComponent(
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    // Identifiable
     final override val id: UUID = UUID.randomUUID()
+    final override val name: String = metadata.name
 
-    final override val name: String = componentMetadata.name
-
-    // Hideable
-    final override val hiddenProperty = createPropertyFrom(false)
-    final override var isHidden: Boolean by hiddenProperty.asDelegate()
-
-    // TilesetOverride
-    final override val tilesetProperty = componentMetadata.tileset.toProperty { newValue ->
-        tileset.isCompatibleWith(newValue)
-    }
-    override var tileset: TilesetResource by tilesetProperty.asDelegate()
-
-    // Component
+    // component state and position
     final override val rootValue = Maybe.empty<RootContainer>().toProperty()
     final override var root: Maybe<RootContainer> by rootValue.asDelegate()
-
     final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
     final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
-
     final override val hasFocusValue = false.toProperty()
     final override val hasFocus: Boolean by hasFocusValue.asDelegate()
-
     final override val absolutePosition: Position
         get() = position
-    final override var relativePosition: Position = componentMetadata.relativePosition
+    final override var relativePosition: Position = metadata.relativePosition
         private set
     final override val relativeBounds: Rect
         get() = rect.withPosition(relativePosition)
     final override val contentOffset: Position by lazy { renderer.contentPosition }
     final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
-
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
 
-    final override val componentStyleSetProperty = createPropertyFrom(componentMetadata.componentStyleSet)
-    final override var componentStyleSet: ComponentStyleSet
-        get() = styleOverride.orElse(themeStyle)
-        @Synchronized
-        set(value) {
-            componentStyleSetProperty.value = value
-            styleOverride = Maybe.of(value)
-        }
-
     override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
-    // ComponentProperties
-    final override val disabledProperty = false.toProperty()
-    final override var isDisabled: Boolean by disabledProperty.asDelegate()
-
-    final override val themeProperty = RuntimeConfig.config.defaultColorTheme.toProperty()
+    // Common properties
+    final override val themeProperty = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
-    final override val updateOnAttach = componentMetadata.updateOnAttach
+    final override val componentStyleSetProperty = metadata.componentStyleSetProperty
+    final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
-    private var styleOverride = Maybe.ofNullable(
-        if (componentMetadata.componentStyleSet.isDefault) {
-            null
-        } else componentMetadata.componentStyleSet
-    )
-    private var themeStyle = componentMetadata.componentStyleSet
+    final override val tilesetProperty = metadata.tileset.toProperty { oldValue, newValue ->
+        oldValue isCompatibleWith newValue
+    }.apply {
+        bind(metadata.tilesetProperty)
+    }
+    override var tileset: TilesetResource by tilesetProperty.asDelegate()
+
+    final override val hiddenProperty = metadata.hiddenProperty
+    final override var isHidden: Boolean by hiddenProperty.asDelegate()
+
+    final override val disabledProperty = metadata.disabledProperty
+    final override var isDisabled: Boolean by disabledProperty.asDelegate()
+
+
+    // Misc
+    final override val updateOnAttach = metadata.updateOnAttach
 
     init {
-        disabledProperty.onChange {
-            componentState = if (it.newValue) {
+        val updateState: (Boolean) -> Unit = {
+            componentState = if (it) {
                 logger.debug("Component disabled. Applying disabled style.")
                 DISABLED
             } else {
@@ -147,14 +111,28 @@ abstract class DefaultComponent(
                 DEFAULT
             }
         }
+        val updateTheme: (ColorTheme) -> Unit = {
+            if (it.isNotUnknown) {
+                componentStyleSet = convertColorTheme(it)
+            }
+        }
+        val updateStyle: (ComponentStyleSet) -> Unit = {
+            if (it.isNotUnknown) {
+                componentStyleSet = it
+            }
+        }
+        disabledProperty.onChange {
+            updateState(it.newValue)
+        }
         themeProperty.onChange {
-            themeStyle = convertColorTheme(it.newValue)
+            updateTheme(it.newValue)
         }
         componentStyleSetProperty.onChange {
-            styleOverride = Maybe.of(it.newValue) // TODO: add regression test for this line!
+            updateStyle(it.newValue)
         }
-        componentMetadata.theme?.let { theme ->
-            this.theme = theme
+        updateState(isDisabled)
+        if(componentStyleSet.isUnknown) {
+            updateTheme(theme)
         }
     }
 
@@ -251,22 +229,6 @@ abstract class DefaultComponent(
     override fun deactivated() = whenEnabledRespondWith {
         updateComponentState(DEACTIVATED)
         Processed
-    }
-
-    final override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
-        return processComponentEvents(ComponentEventType.ACTIVATED, fn)
-    }
-
-    final override fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
-        return processComponentEvents(ComponentEventType.DEACTIVATED, fn)
-    }
-
-    final override fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
-        return processComponentEvents(ComponentEventType.FOCUS_GIVEN, fn)
-    }
-
-    final override fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
-        return processComponentEvents(ComponentEventType.FOCUS_TAKEN, fn)
     }
 
     override fun toString(): String {

@@ -2,7 +2,7 @@
 
 package org.hexworks.zircon.api
 
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
@@ -47,7 +47,7 @@ object ComponentDecorations {
         titleAlignment: Alignment = Alignment.TOP_LEFT
     ): ComponentDecorationRenderer = BoxDecorationRenderer(
         boxType = boxType,
-        titleProperty = createPropertyFrom(title),
+        titleProperty = title.toProperty(),
         renderingMode = renderingMode,
         titleAlignment = titleAlignment
     )

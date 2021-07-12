@@ -45,7 +45,7 @@ class DefaultTab(
         .build()
 
     override val root = Components.panel()
-        .withSize(tabButton.size)
+        .withPreferredSize(tabButton.size)
         .withComponentRenderer(NoOpComponentRenderer())
         .build()
 

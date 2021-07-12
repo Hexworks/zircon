@@ -26,12 +26,12 @@ abstract class ComponentIntegrationTestBase(
     val screen: Screen = ScreenBuilder.createScreenFor(tileGrid)
 ) {
 
-
     @Test
     fun shouldProperlyWorkWithComponent() {
+        screen.tileset = tileset
+        screen.theme = theme
         buildScreenContent(screen)
         screen.display()
-        screen.theme = theme
     }
 
 

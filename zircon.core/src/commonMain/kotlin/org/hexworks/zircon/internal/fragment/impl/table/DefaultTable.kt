@@ -54,7 +54,7 @@ class DefaultTable<M : Any>(
     override val root: VBox = Components
         .vbox()
         .withSpacing(0)
-        .withSize(size)
+        .withPreferredSize(size)
         .build()
 
     private val currentRows: MutableList<AttachedComponent> = mutableListOf()
@@ -65,7 +65,7 @@ class DefaultTable<M : Any>(
         val headerRow = headerRow()
         dataPanel = Components
             .vbox()
-            .withSize(size.withRelativeHeight(-headerRow.height))
+            .withPreferredSize(size.withRelativeHeight(-headerRow.height))
             .withSpacing(rowSpacing)
             .build()
         root

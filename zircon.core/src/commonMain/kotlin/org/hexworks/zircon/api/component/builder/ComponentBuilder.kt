@@ -1,16 +1,11 @@
 package org.hexworks.zircon.api.component.builder
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.ComponentAlignments.alignmentAround
 import org.hexworks.zircon.api.ComponentAlignments.alignmentWithin
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.AlignmentStrategy
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentAlignment
-import org.hexworks.zircon.api.component.ComponentProperties
-import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -20,19 +15,23 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 
 @Suppress("UNCHECKED_CAST")
-interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T> {
-
-    var name: String
-    var position: Position
-    var alignment: AlignmentStrategy
-    var colorTheme: ColorTheme?
+interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<T>, ComponentEventSource {
 
     /**
-     * Shorthand for `decorations = listOf(decoration)`
+     * The name of this component. Not mandatory, but if present it will
+     * be used for debug purposes.
      */
-    var decoration: ComponentDecorationRenderer?
+    var name: String
+
+    /**
+     * This [AlignmentStrategy] will be used then the component
+     * is aligned within its parent.
+     */
+    var alignment: AlignmentStrategy
 
     /**
      * Sets the decorations that should be used for the component.
@@ -41,18 +40,51 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     var decorations: List<ComponentDecorationRenderer>
 
     /**
-     * Returns the [title] or an empty string if it is not present.
+     * Sets whether the component's properties should be updated
+     * when it is attached to a parent or not.
      */
-    val title: String
-    var componentStyleSet: ComponentStyleSet
-    var tileset: TilesetResource
     var updateOnAttach: Boolean
+
+    /**
+     * The renderer which will be used to render the resulting component.
+     */
     var componentRenderer: ComponentRenderer<out T>
-    var renderFunction: (TileGraphics, ComponentRenderContext<T>) -> Unit
+
+    /**
+     * The [Size] allocated for the whole component.
+     * **Note that** only one of [preferredSize] and [preferredContentSize]
+     * can be set at any given time.
+     * Encompasses the [contentSize] and the [occupiedSize].
+     */
     var preferredSize: Size
+
+    /**
+     * The [Size] allocated for the **contents** of the resulting component.
+     * **Note that** only one of [preferredSize] and [preferredContentSize]
+     * can be set at any given time.
+     * This doesn't contain [occupiedSize].
+     */
     var preferredContentSize: Size
 
-    val contentSize: Size
+    // common properties
+    var colorTheme: ColorTheme
+    var componentStyleSet: ComponentStyleSet
+    var tileset: TilesetResource
+    var isDisabled: Boolean
+    var isHidden: Boolean
+
+    val colorThemeProperty: Property<ColorTheme>
+    val componentStyleSetProperty: Property<ComponentStyleSet>
+    val tilesetProperty: Property<TilesetResource>
+    val disabledProperty: Property<Boolean>
+    val hiddenProperty: Property<Boolean>
+
+
+    // calculated fields
+    val title: String
+        get() = this.decorations
+            .filterIsInstance<BoxDecorationRenderer>()
+            .firstOrNull()?.title ?: ""
 
     val contentWidth: Int
         get() = contentSize.width
@@ -60,15 +92,72 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     val contentHeight: Int
         get() = contentSize.height
 
+    var position: Position
+        get() = alignment.calculatePosition(size)
+        set(value) {
+            alignment = positionalAlignment(value)
+        }
+
     /**
-     * The final [Size] of the [Component] that is being built. Size is calculated this way:
+     * The final content [Size] of the [Component] that is being built.
+     * Content size is calculated this way:
+     * - If [preferredContentSize] is set it will be used
+     * - If [preferredSize] is set it will be [preferredSize] - [occupiedSize]
+     * - If neither one of those are set it defaults to [Size.one]
+     */
+    val contentSize: Size
+        get() = if (preferredSize.isUnknown) {
+            if (preferredContentSize.isUnknown) {
+                Size.one()
+            } else preferredContentSize
+        } else preferredSize - decorations.occupiedSize
+
+    /**
+     * The final [Size] of the [Component] that is being built.
+     * Size is calculated this way:
      * - If [preferredSize] is set it will be used
-     * - If [preferredSize] is not set but [preferredContentSize] is set, then it will be calculated
-     *   based on [preferredContentSize] and the size of the [decorations]
-     * - If neither one of those are set size will be calculated based on [contentSize] and the size
-     *   of [decorations]
+     * - If [preferredContentSize] is set it will be [preferredContentSize] + [occupiedSize]
+     * - If neither one of those are set it defaults to [contentSize] + [occupiedSize]
      */
     val size: Size
+        get() = if (preferredSize.isUnknown) {
+            if (preferredContentSize.isUnknown) {
+                contentSize + decorations.occupiedSize
+            } else preferredContentSize + decorations.occupiedSize
+        } else preferredSize
+
+    /**
+     * Shorthand for `decorations = listOf(decoration)`
+     */
+    var decoration: ComponentDecorationRenderer?
+        get() = decorations.first()
+        set(value) {
+            value?.let {
+                decorations = listOf(value)
+            }
+        }
+
+    /**
+     * Shorthand for [componentRenderer] that uses function syntax.
+     */
+    var renderFunction: (TileGraphics, ComponentRenderContext<T>) -> Unit
+        get() = { g, c -> componentRenderer.render(g, c as ComponentRenderContext<Nothing>) }
+        set(value) {
+            componentRenderer = object : ComponentRenderer<T> {
+                override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<T>) {
+                    value(tileGraphics, context)
+                }
+            }
+        }
+
+    /**
+     * The [Size] that's occupied by [decorations].
+     */
+    val List<ComponentDecorationRenderer>.occupiedSize
+        get() = this.map { it.occupiedSize }.fold(Size.zero(), Size::plus)
+
+    // These functions are necessary for Java users who can't use the
+    // Kotlin DSL
 
     fun withName(name: String): U {
         this.name = name
@@ -145,18 +234,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     }
 
     /**
-     * Sets the [Size] of the resulting [Component].
-     */
-    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(size)"))
-    fun withSize(size: Size): U = withPreferredSize(size)
-
-    /**
-     * Sets the [Size] of the resulting [Component].
-     */
-    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(width, height)"))
-    fun withSize(width: Int, height: Int): U = withSize(Size.create(width, height))
-
-    /**
      * Sets the preferred [Size] of the resulting [Component].
      * The preferred size contains the content and the decorations.
      */
@@ -164,11 +241,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
         preferredSize = size
         return this as U
     }
-
-    /**
-     * Shorthand for [withPreferredSize].
-     */
-    fun withPreferredSize(width: Int, height: Int): U = withPreferredSize(Size.create(width, height))
 
     /**
      * Sets the preferred content [Size] of the resulting [Component].
@@ -179,7 +251,11 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
         return this as U
     }
 
-    fun withPreferredContentSize(width: Int, height: Int): U = withPreferredSize(Size.create(width, height))
+    // DERIVED FUNCTIONS
+
+    fun withPreferredSize(width: Int, height: Int): U = withPreferredSize(Size.create(width, height))
+
+    fun withPreferredContentSize(width: Int, height: Int): U = withPreferredContentSize(Size.create(width, height))
 
     /**
      * Aligns the resulting [Component] positionally, relative to its parent.
@@ -216,5 +292,17 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      */
     fun withAlignmentAround(component: Component, alignment: ComponentAlignment): U =
         withAlignment(alignmentAround(component, alignment))
+
+    /**
+     * Sets the [Size] of the resulting [Component].
+     */
+    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(size)"))
+    fun withSize(size: Size): U = withPreferredSize(size)
+
+    /**
+     * Sets the [Size] of the resulting [Component].
+     */
+    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(width, height)"))
+    fun withSize(width: Int, height: Int): U = withSize(Size.create(width, height))
 
 }

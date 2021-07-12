@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.Binding
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -22,11 +22,11 @@ class DefaultGroup<T : Component>(
 
     private val componentBindings: ComponentBindings = mutableMapOf()
 
-    override val disabledProperty = createPropertyFrom(initialIsDisabled)
-    override val hiddenProperty = createPropertyFrom(initialIsHidden)
-    override val themeProperty = createPropertyFrom(initialTheme)
-    override val tilesetProperty = createPropertyFrom(initialTileset) {
-        it.isCompatibleWith(initialTileset)
+    override val disabledProperty = initialIsDisabled.toProperty()
+    override val hiddenProperty = initialIsHidden.toProperty()
+    override val themeProperty = initialTheme.toProperty()
+    override val tilesetProperty = initialTileset.toProperty { oldValue, newValue ->
+        oldValue isCompatibleWith newValue
     }
 
     override var isDisabled: Boolean by disabledProperty.asDelegate()

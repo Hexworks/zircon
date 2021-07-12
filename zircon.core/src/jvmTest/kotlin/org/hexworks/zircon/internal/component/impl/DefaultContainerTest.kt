@@ -1,7 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.component.HeaderBuilder
 import org.hexworks.zircon.api.builder.component.LabelBuilder
@@ -12,8 +15,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -41,11 +42,11 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         componentStub = ComponentStub(COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
         rendererStub = ComponentRendererStub()
         target = DefaultContainer(
-            componentMetadata = ComponentMetadata(
+            metadata = ComponentMetadata(
                 size = SIZE_4x4,
                 relativePosition = POSITION_2_3,
-                componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET_REX_PAINT_20X20
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
             renderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
@@ -56,10 +57,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
-        val grid = TileGridBuilder.newBuilder()
-            .withSize(40, 25)
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val grid = TileGridBuilder.newBuilder(
+            AppConfig.newBuilder()
+                .withSize(40, 25)
+                .withDefaultTileset(TILESET_REX_PAINT_20X20)
+                .build()
+        ).build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -115,10 +118,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
-        val grid = TileGridBuilder.newBuilder()
-            .withSize(40, 25)
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val grid = TileGridBuilder.newBuilder(
+            AppConfig.newBuilder()
+                .withSize(40, 25)
+                .withDefaultTileset(TILESET_REX_PAINT_20X20)
+                .build()
+        ).build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
@@ -157,7 +162,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldThrowExceptionIfComponentWithUnsupportedFontSizeIsAdded() {
-        AppConfig.newBuilder().disableBetaFeatures().build()
         target.addComponent(
             LabelBuilder.newBuilder()
                 .withText("foo")
@@ -173,7 +177,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIntersectsWithAnother() {
-        AppConfig.newBuilder().disableBetaFeatures().build()
         val pos = Position.create(1, 1)
         val comp = LabelBuilder.newBuilder()
             .withAlignment(positionalAlignment(pos))
@@ -236,8 +239,8 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     }
 
     @Test
-    fun shouldReturnEmptyStylesWhenThemeApplied() {
-        assertThat(target.convertColorTheme(DEFAULT_THEME)).isEqualTo(ComponentStyleSet.empty())
+    fun shouldReturnUnknownStylesWhenThemeApplied() {
+        assertThat(target.convertColorTheme(DEFAULT_THEME)).isSameAs(ComponentStyleSet.unknown())
     }
 
     @Test

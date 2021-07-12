@@ -35,7 +35,7 @@ class VBoxBuilder : BaseContainerBuilder<VBox, VBoxBuilder>(
                 spacing = spacing
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
-        }
+        }.attachListeners()
     }
 
     override fun createCopy() = newBuilder()

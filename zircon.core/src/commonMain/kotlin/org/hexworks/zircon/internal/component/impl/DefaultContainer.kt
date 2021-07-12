@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -25,10 +24,10 @@ import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(
-    componentMetadata: ComponentMetadata,
+    metadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = metadata,
     renderer = renderer
 ) {
 
@@ -74,7 +73,7 @@ open class DefaultContainer(
 
     final override fun asInternalComponent(): InternalContainer = this
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.unknown()
 
     override fun acceptsFocus() = false
 
@@ -93,10 +92,10 @@ open class DefaultContainer(
             "Component $component is already attached to a parent. Please detach it first."
         }
         val originalRect = component.rect
+        tileset.checkCompatibilityWith(component.tileset)
         component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
         if (RuntimeConfig.config.shouldCheckBounds()) {
             val contentBounds = contentSize.toRect()
-            tileset.checkCompatibilityWith(component.tileset)
             require(contentBounds.containsBoundable(originalRect)) {
                 "Adding out of bounds component $component " +
                         "with bounds $originalRect to the container $this " +

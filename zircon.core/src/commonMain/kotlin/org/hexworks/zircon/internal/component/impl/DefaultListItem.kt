@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ListItem
@@ -10,13 +11,13 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 
 class DefaultListItem(
     componentMetadata: ComponentMetadata,
-    initialText: String,
+    textProperty: Property<String>,
     renderingStrategy: ComponentRenderingStrategy<ListItem>
 ) : ListItem, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
-    TextOverride by TextOverride.create(initialText) {
+    TextOverride by TextOverride.create(textProperty) {
 
     override fun acceptsFocus() = false
 

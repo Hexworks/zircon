@@ -39,7 +39,7 @@ object TextAreasExample {
             .withPreferredSize(28, 28)
             .withPosition(31, 1)
             .build()
-        screen.addComponent(panel)
+            screen.addComponent(panel)
 
         screen.addComponent(
             Components.textArea()

@@ -48,11 +48,12 @@ data class AppConfig(
      * Default is `true`
      */
     val isClipboardAvailable: Boolean = true,
+
     /**
      * The tileset to be used when no tileset is specified for the [Application].
      * Default is [CP437TilesetResources.wanderlust16x16]
      */
-    val defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
+    val defaultTileset: TilesetResource = CP437TilesetResources.rogueYun16x16(),
     /**
      * The default graphical tileset to be used when no graphical tileset is specified.
      * Default is [GraphicalTilesetResources.nethack16x16]
@@ -62,7 +63,7 @@ data class AppConfig(
      * The default [ColorTheme] to be used when no color theme is specified.
      * Default is [ColorThemes.defaultTheme]
      */
-    val defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
+    val defaultColorTheme: ColorTheme = ColorThemes.gamebookers(),
     /**
      * Can be used to switch debug mode on or off.
      * Default is `false`.

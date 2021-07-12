@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Maybes
 import org.hexworks.zircon.api.application.CursorStyle
@@ -36,7 +37,7 @@ class LibgdxRenderer(
     private val debug: Boolean = false
 ) : Renderer {
 
-    override val isClosed = false.toProperty()
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     private val config = RuntimeConfig.config
     private var maybeBatch: Maybe<SpriteBatch> = Maybes.empty()
@@ -78,7 +79,7 @@ class LibgdxRenderer(
     }
 
     override fun close() {
-        isClosed.value = true
+        closedValue.value = true
         maybeBatch.map(SpriteBatch::dispose)
     }
 

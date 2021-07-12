@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Components
@@ -25,7 +24,7 @@ class DefaultSelector<T : Any>(
     override val valuesProperty: ListProperty<T> = initialValues.toProperty()
     override val values: List<T> by valuesProperty.asDelegate()
 
-    private val indexProperty = createPropertyFrom(values.indexOf(defaultSelected))
+    private val indexProperty = values.indexOf(defaultSelected).toProperty()
 
     override val selectedValue: ObservableValue<T> = indexProperty.bindTransform {
         values[it]
@@ -49,7 +48,7 @@ class DefaultSelector<T : Any>(
         addComponent(leftButton)
 
         if (clickable) {
-            addComponent(Components.button().withDecorations().withSize(labelSize).build().apply {
+            addComponent(Components.button().withDecorations().withPreferredSize(labelSize).build().apply {
                 initLabel()
                 processComponentEvents(ComponentEventType.ACTIVATED) {
                     showNextValue()
@@ -57,7 +56,7 @@ class DefaultSelector<T : Any>(
             })
         } else {
             addComponent(Components.label()
-                .withSize(labelSize)
+                .withPreferredSize(labelSize)
                 .build().apply {
                     initLabel()
                 })
