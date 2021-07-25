@@ -1,38 +1,42 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.CharacterTileStrings
-import org.hexworks.zircon.api.ComponentDecorations
-import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.dsl.component.buildLabel
+import org.hexworks.zircon.api.dsl.component.buildPanel
+import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 class DefaultTab(
-    text: String,
+    label: String,
     key: String,
-    width: Int = text.length + 2
+    width: Int = label.length + 2
 ) : Tab {
 
-    override val tabButton = Components.radioButton()
-        .withText(text)
-        .withKey(key)
-        .withPreferredSize(width, 3)
-        .withComponentStyleSet(ComponentStyleSet.defaultStyleSet())
-        .withRendererFunction { graphics, ctx ->
-            graphics.drawText(text, ctx.currentStyle)
-        }.withDecorations(ComponentDecorations.box(renderingMode = INTERACTIVE))
-        .build()
+    override val tabButton = buildRadioButton {
+        text = label
+        this.key = key
+        preferredSize = Size.create(width, 3)
+        componentStyleSet = ComponentStyleSet.defaultStyleSet()
+        renderFunction = { graphics, ctx ->
+            graphics.drawText(label, ctx.currentStyle)
+        }
+        decoration = box(renderingMode = INTERACTIVE)
+    }
 
-    private val label = Components.label()
-        .withText(text)
-        .withPreferredSize(width, 3)
-        .withRendererFunction { graphics, ctx ->
+    private val label = buildLabel {
+        text = label
+        preferredSize = Size.create(width, 3)
+        renderFunction = { graphics, ctx ->
             val theme = ctx.theme
             val style = StyleSet.create(
                 foregroundColor = theme.primaryForegroundColor,
@@ -40,14 +44,14 @@ class DefaultTab(
             )
             val filler = Tile.defaultTile().withStyle(style)
             graphics.fill(filler)
-            graphics.drawText(text, style, Position.offset1x1())
+            graphics.drawText(label, style, Position.offset1x1())
         }
-        .build()
+    }
 
-    override val root = Components.panel()
-        .withPreferredSize(tabButton.size)
-        .withComponentRenderer(NoOpComponentRenderer())
-        .build()
+    override val root = buildPanel {
+        preferredSize = tabButton.size
+        componentRenderer = NoOpComponentRenderer()
+    }
 
     private var currentAttachment: AttachedComponent = root.addComponent(tabButton)
 
@@ -58,7 +62,7 @@ class DefaultTab(
                 moveTo(Position.defaultPosition())
             }
             currentAttachment = if (isSelected) {
-                root.addComponent(label)
+                root.addComponent(this.label)
             } else {
                 root.addComponent(tabButton)
             }

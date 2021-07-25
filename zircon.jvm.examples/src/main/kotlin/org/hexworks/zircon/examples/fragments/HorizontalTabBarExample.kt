@@ -8,22 +8,24 @@ import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 import org.hexworks.zircon.examples.components.ButtonsExampleKotlin
 import org.hexworks.zircon.examples.components.DataBindingExampleKotlin
 import org.hexworks.zircon.examples.components.MarginExampleKotlin
+import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 import org.hexworks.zircon.internal.fragment.impl.DefaultVerticalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabMetadata
+import kotlin.math.sign
 
-class VerticalTabBarExample : OneColumnComponentExampleKotlin() {
+class HorizontalTabBarExample : OneColumnComponentExampleKotlin() {
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            VerticalTabBarExample().show("Vertical Tab Bar")
+            HorizontalTabBarExample().show("Vertical Tab Bar")
         }
     }
 
     override fun build(box: VBox) {
-        val tabContentSize = box.contentSize.withRelativeWidth(-10)
+        val tabContentSize = box.contentSize.withRelativeHeight(-3)
         box.addFragment(
-            DefaultVerticalTabBar(
+            DefaultHorizontalTabBar(
                 size = box.contentSize,
                 tabWidth = 10,
                 defaultSelected = "buttons",

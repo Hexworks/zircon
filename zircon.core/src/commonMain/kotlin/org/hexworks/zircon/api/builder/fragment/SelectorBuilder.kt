@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.component.HBoxBuilder
 import org.hexworks.zircon.api.data.Position
@@ -8,18 +10,15 @@ import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 import kotlin.jvm.JvmStatic
 
-/**
- * Builder for a [Selector].
- */
+// TODO: remove open once subclasses are removed
 open class SelectorBuilder<T : Any>(
     val width: Int,
-    val values: List<T>,
+    private val valuesProperty: ListProperty<T>,
     private val boxBuilder: HBoxBuilder = HBoxBuilder().withPreferredSize(width, 1)
-) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>,
-    Builder<Selector<T>> {
+) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>, Builder<Selector<T>> {
 
     init {
-        require(values.isNotEmpty()) {
+        require(valuesProperty.isNotEmpty()) {
             "No values supplied."
         }
         require(width >= 3) {
@@ -27,38 +26,68 @@ open class SelectorBuilder<T : Any>(
         }
     }
 
-    private var centeredText = true
-    private var toStringMethod: (T) -> String = Any::toString
-    private var clickable: Boolean = false
-    private var defaultSelected = values.first()
-
     /**
      * Whether the text on the label should be centered.
      */
-    fun withCenteredText(centerText: Boolean) = also {
-        this.centeredText = centerText
-    }
+    var centeredText = true
 
     /**
      * The method to use for the label text if not ::toString
      */
-    fun withToStringMethod(function: (T) -> String) = also {
-        this.toStringMethod = function
-    }
+    var toStringMethod: (T) -> String = Any::toString
 
     /**
      * When set to true the center component, showing the text, will be an undecorated button that also invokes the
      * callback (else it is just a simple label).
      */
+    var clickableLabel: Boolean = false
+
+    /**
+     * The value that should be selected by default.
+     */
+    var defaultSelected = valuesProperty.first()
+        set(value) {
+            require(valuesProperty.contains(value)) {
+                "values doesn't contain the supplied value ($value)"
+            }
+        }
+
+    val values: List<T>
+        get() = valuesProperty.value
+
+    fun withCenteredText(centerText: Boolean) = also {
+        this.centeredText = centerText
+    }
+
+    fun withToStringMethod(function: (T) -> String) = also {
+        this.toStringMethod = function
+    }
+
     fun withClickableLabel(clickable: Boolean) = also {
-        this.clickable = clickable
+        this.clickableLabel = clickable
     }
 
     fun withDefaultSelected(item: T) = also {
-        require(values.contains(item)) {
-            "The provided default selected item ($item) is not present in values (${values.joinToString()})."
-        }
         this.defaultSelected = item
+    }
+
+    override fun build(): Selector<T> {
+        return DefaultSelector(
+            parent = boxBuilder.build(),
+            valuesProperty = valuesProperty,
+            defaultSelected = defaultSelected,
+            centeredText = centeredText,
+            toStringMethod = toStringMethod,
+            clickable = clickableLabel
+        )
+    }
+
+    override fun createCopy(): Builder<Selector<T>> {
+        return newBuilder(width, valuesProperty)
+            .withCenteredText(centeredText)
+            .withToStringMethod(toStringMethod)
+            .withClickableLabel(clickableLabel)
+            .withPosition(boxBuilder.position)
     }
 
     final override fun withPosition(position: Position) = also {
@@ -67,26 +96,9 @@ open class SelectorBuilder<T : Any>(
 
     final override fun withPosition(x: Int, y: Int) = withPosition(Position.create(x, y))
 
-    override fun build(): Selector<T> {
-        return DefaultSelector(
-            parent = boxBuilder.build(),
-            initialValues = values,
-            defaultSelected = defaultSelected,
-            centeredText = centeredText,
-            toStringMethod = toStringMethod,
-            clickable = clickable
-        )
-    }
-
-    override fun createCopy(): Builder<Selector<T>> {
-        return newBuilder(width, values)
-            .withCenteredText(centeredText)
-            .withToStringMethod(toStringMethod)
-            .withClickableLabel(clickable)
-            .withPosition(boxBuilder.position)
-    }
 
     companion object {
+
         /**
          * Creates a builder to configure and build a [Selector].
          *
@@ -95,7 +107,17 @@ open class SelectorBuilder<T : Any>(
          * @param N The type of the values
          */
         @JvmStatic
-        fun <N : Any> newBuilder(width: Int, values: List<N>) = SelectorBuilder(width, values)
+        fun <N : Any> newBuilder(width: Int, values: List<N>) = SelectorBuilder(width, values.toProperty())
+
+        /**
+         * Creates a builder to configure and build a [Selector].
+         *
+         * @param width The width this [Selector] can take in its parent component (height will be 1).
+         * @param values The values to cycle through
+         * @param N The type of the values
+         */
+        @JvmStatic
+        fun <N : Any> newBuilder(width: Int, values: ListProperty<N>) = SelectorBuilder(width, values)
     }
 
 }

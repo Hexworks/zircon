@@ -15,13 +15,12 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 class DefaultSelector<T : Any>(
     parent: HBox,
     defaultSelected: T,
-    initialValues: Iterable<T>,
+    override val valuesProperty: ListProperty<T>,
     private val centeredText: Boolean = true,
     private val toStringMethod: (T) -> String = Any::toString,
     clickable: Boolean = false
 ) : Selector<T> {
 
-    override val valuesProperty: ListProperty<T> = initialValues.toProperty()
     override val values: List<T> by valuesProperty.asDelegate()
 
     private val indexProperty = values.indexOf(defaultSelected).toProperty()

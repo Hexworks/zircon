@@ -20,11 +20,11 @@ open class TableColumn<M : Any, V : Any, C : Component>(
      */
     val name: String,
     /**
-     * The width of this column. The component created by [componentCreator] may not be wider than this.
+     * The width of this column. The component created by [componentProvider] may not be wider than this.
      */
     val width: Int,
-    private val valueAccessor: (M) -> V,
-    private val componentCreator: (V) -> C
+    private val valueProvider: (M) -> V,
+    private val componentProvider: (V) -> C
 ) {
     /**
      * The [Component] that should be used as the column's header. It must have a width of [width] and a height
@@ -37,7 +37,7 @@ open class TableColumn<M : Any, V : Any, C : Component>(
             .build()
 
     fun newCell(rowElement: M): C =
-        componentCreator(
-            valueAccessor(rowElement)
+        componentProvider(
+            valueProvider(rowElement)
         )
 }

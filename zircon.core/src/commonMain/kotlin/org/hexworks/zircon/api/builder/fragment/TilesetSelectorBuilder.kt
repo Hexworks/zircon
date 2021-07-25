@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.Builder
@@ -13,10 +15,17 @@ import kotlin.jvm.JvmStatic
 /**
  * Builder for a [Selector] to change the tileset of multiple [TilesetOverride]s or [Group]s at runtime.
  */
+@Deprecated("This class is redundant, use a regular Selector instead")
 class TilesetSelectorBuilder private constructor(
     width: Int,
-    tileset: TilesetResource
-) : SelectorBuilder<TilesetResource>(width, TilesetResources.allTextTilesetsCompatibleWith(tileset)) {
+    tileset: TilesetResource,
+    valuesProperty: ListProperty<TilesetResource> = TilesetResources
+        .allTextTilesetsCompatibleWith(tileset)
+        .toProperty()
+) : SelectorBuilder<TilesetResource>(
+    width = width,
+    valuesProperty = valuesProperty
+) {
 
     private var tilesetProperties = listOf<Property<TilesetResource>>()
     private var tilesetOverrides = listOf<TilesetOverride>()

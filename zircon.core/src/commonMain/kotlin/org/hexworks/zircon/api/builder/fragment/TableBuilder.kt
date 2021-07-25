@@ -4,7 +4,7 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.fragment.table.Table
+import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.table.DefaultTable
 import org.hexworks.zircon.api.fragment.table.TableColumn

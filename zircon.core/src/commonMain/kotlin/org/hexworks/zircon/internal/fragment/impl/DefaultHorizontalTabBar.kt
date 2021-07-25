@@ -2,20 +2,15 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.component.AttachedComponent
-import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.Panel
-import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildHbox
-import org.hexworks.zircon.api.dsl.component.panel
-import org.hexworks.zircon.api.dsl.component.vbox
+import org.hexworks.zircon.api.dsl.component.*
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-class DefaultVerticalTabBar(
+class DefaultHorizontalTabBar(
     size: Size,
     tabWidth: Int,
     defaultSelected: String,
@@ -23,12 +18,11 @@ class DefaultVerticalTabBar(
 ) : TabBar {
 
     init {
-        val sizeTooSmallMsg = "Can't create a tab bar that's smaller than 3x3"
         require(size > Size.create(3, 3)) {
-            sizeTooSmallMsg
+            "Can't create a tab bar that's smaller than 3x3"
         }
-        require(tabWidth >= 3) {
-            sizeTooSmallMsg
+        require(tabWidth * tabs.size <= size.width) {
+            "There is not enough space to display all the tabs"
         }
         val tabKeys = tabs.map { it.key }.toSet()
         require(tabKeys.contains(defaultSelected)) {
@@ -39,7 +33,7 @@ class DefaultVerticalTabBar(
         }
     }
 
-    private lateinit var tabBar: VBox
+    private lateinit var tabBar: HBox
     private lateinit var content: Panel
 
     private var currentContent: AttachedComponent? = null
@@ -59,19 +53,19 @@ class DefaultVerticalTabBar(
         val content: Component
     )
 
-    override val root: Component = buildHbox {
+    override val root: Component = buildVbox {
         preferredSize = size
         componentRenderer = NoOpComponentRenderer()
 
-        tabBar = vbox {
-            preferredSize = Size.create(tabWidth, size.height)
-            decoration = margin(1, 0)
+        tabBar = hbox {
+            preferredSize = Size.create(size.width, 3)
+            decoration = margin(0, 1)
             componentRenderer = NoOpComponentRenderer()
             childrenToAdd = lookup.map { it.value.tab.root }
         }
 
         content = panel {
-            preferredSize = size.withRelativeWidth(-tabWidth)
+            preferredSize = size.withRelativeHeight(3)
         }
 
         group.selectedButtonProperty.onChange { (_, newValue) ->

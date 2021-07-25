@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.fragment.table.Table
+import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
