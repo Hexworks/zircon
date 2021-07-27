@@ -101,6 +101,10 @@ class ModalComponentContainer(
         return mainContainer.addComponent(component)
     }
 
+    override fun detachAllComponents(): List<Component> {
+        return mainContainer.detachAllComponents()
+    }
+
     @Synchronized
     fun addModal(modal: Modal<out ModalResult>) {
         val previousContainer = containerStack.fetchLast()

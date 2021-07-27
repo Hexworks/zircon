@@ -134,5 +134,18 @@ object ComponentDecorations {
         left = x
     )
 
+    /**
+     * Can be used to explicitly state that a [Component] has no decorations. This is useful
+     * when a [Component] has decorations by default.
+     */
+    @Beta
+    @JvmStatic
+    fun noDecoration(): ComponentDecorationRenderer = MarginDecorationRenderer(
+        top = 0,
+        right = 0,
+        bottom = 0,
+        left = 0
+    )
+
 
 }

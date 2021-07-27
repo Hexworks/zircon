@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
@@ -17,6 +18,7 @@ class MenuBar(
     private val screen: Screen,
     private val menuElements: List<MenuBarItem>,
     theme: ColorTheme,
+    tileset: TilesetResource,
     private val spacing: Int = 1,
     width: Int = menuElements.minSize(spacing).width,
 ) : Fragment {
@@ -55,8 +57,9 @@ class MenuBar(
                 val modal = ModalBuilder.newBuilder<MenuSelection>()
                     .withCenteredDialog(false)
                     .withComponent(menuItems)
-                    .withParentSize(screen.size)
+                    .withPreferredSize(screen.size)
                     .withColorTheme(theme)
+                    .withTileset(tileset)
                     .withDarkenPercent(0.0)
                     .build()
 

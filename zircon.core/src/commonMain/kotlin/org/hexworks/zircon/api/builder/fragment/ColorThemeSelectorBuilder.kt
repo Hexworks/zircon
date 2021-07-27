@@ -59,7 +59,7 @@ class ColorThemeSelectorBuilder(
         }
     }
 
-    override fun createCopy(): Builder<Selector<ColorTheme>> = super.createCopy().apply {
+    override fun createCopy() = super.createCopy().apply {
         withThemeOverrides(*themeOverrides.toTypedArray())
         withGroups(*groups.toTypedArray())
     }

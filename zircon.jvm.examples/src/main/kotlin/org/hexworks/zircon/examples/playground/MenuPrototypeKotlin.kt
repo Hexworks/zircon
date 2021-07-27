@@ -3,6 +3,7 @@ package org.hexworks.zircon.examples.playground
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.extensions.toScreen
 
@@ -55,7 +56,8 @@ object MenuPrototypeKotlin {
             spacing = 1,
             width = screen.width,
             screen = screen,
-            theme = ColorThemes.arc()
+            theme = ColorThemes.arc(),
+            tileset = screen.tileset
         )
 
         screen.addFragment(menuBar)

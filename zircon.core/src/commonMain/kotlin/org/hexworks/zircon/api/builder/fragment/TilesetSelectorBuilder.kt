@@ -67,7 +67,7 @@ class TilesetSelectorBuilder private constructor(
         }
     }
 
-    override fun createCopy(): Builder<Selector<TilesetResource>> = super.createCopy().apply {
+    override fun createCopy() = super.createCopy().apply {
         withTilesetOverrides(*tilesetOverrides.toTypedArray())
         withGroups(*groups.toTypedArray())
     }

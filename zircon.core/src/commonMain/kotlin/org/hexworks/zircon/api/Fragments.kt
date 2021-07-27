@@ -25,7 +25,13 @@ object Fragments {
      * Creates a [SelectorBuilder] to create [Selector]s.
      */
     @JvmStatic
-    fun <M : Any> selector(width: Int, values: List<M>) = SelectorBuilder.newBuilder(width, values)
+    fun <T : Any> selector(width: Int, values: List<T>): Nothing = SelectorBuilder.newBuilder(width, values)
+
+    /**
+     * Creates a [SelectorBuilder] to create [Selector]s.
+     */
+    @JvmStatic
+    fun <T : Any> selector() = SelectorBuilder.newBuilder<T>()
 
     /**
      * Creates a new [TableBuilder] to build a [org.hexworks.zircon.api.fragment.Table] with its [TableColumns].
@@ -34,7 +40,7 @@ object Fragments {
      * generally recommended to directly pass an [ObservableList] to the table fragment.
      */
     @Beta
-    fun <M : Any> table(data: List<M>): TableBuilder<M> = table(data.toProperty())
+    fun <T : Any> table(data: List<T>): TableBuilder<T> = table(data.toProperty())
 
     /**
      * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
@@ -43,7 +49,7 @@ object Fragments {
      * in the list will be reflected in the UI.
      */
     @Beta
-    fun <M : Any> table(data: ObservableList<M>): TableBuilder<M> = TableBuilder(data)
+    fun <T : Any> table(data: ObservableList<T>): TableBuilder<T> = TableBuilder(data)
 
     /**
      * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [TilesetResource]s.

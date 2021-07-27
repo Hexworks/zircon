@@ -35,7 +35,6 @@ import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
-import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -64,6 +63,9 @@ abstract class DefaultComponent(
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
     final override val hasFocusValue = false.toProperty()
     final override val hasFocus: Boolean by hasFocusValue.asDelegate()
+
+    // positioning
+    final override val originalPosition: Position = metadata.relativePosition
     final override val absolutePosition: Position
         get() = position
     final override var relativePosition: Position = metadata.relativePosition
@@ -72,10 +74,9 @@ abstract class DefaultComponent(
         get() = rect.withPosition(relativePosition)
     final override val contentOffset: Position by lazy { renderer.contentPosition }
     final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
+
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
-
-    override val children: ObservableList<InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
     // Common properties
     final override val themeProperty = metadata.themeProperty
@@ -84,9 +85,9 @@ abstract class DefaultComponent(
     final override val componentStyleSetProperty = metadata.componentStyleSetProperty
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
-    final override val tilesetProperty = metadata.tileset.toProperty { oldValue, newValue ->
+    final override val tilesetProperty = metadata.tileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
-    }.apply {
+    }).apply {
         bind(metadata.tilesetProperty)
     }
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
@@ -100,6 +101,7 @@ abstract class DefaultComponent(
 
     // Misc
     final override val updateOnAttach = metadata.updateOnAttach
+    override val children: ObservableList<out InternalComponent> = persistentListOf<InternalComponent>().toProperty()
 
     init {
         val updateState: (Boolean) -> Unit = {
@@ -131,7 +133,7 @@ abstract class DefaultComponent(
             updateStyle(it.newValue)
         }
         updateState(isDisabled)
-        if(componentStyleSet.isUnknown) {
+        if (componentStyleSet.isUnknown) {
             updateTheme(theme)
         }
     }
@@ -155,6 +157,12 @@ abstract class DefaultComponent(
         movable.moveTo(position)
         relativePosition += diff
         return true
+    }
+
+    override fun resetState() {
+        clearFocus()
+        componentState = DEFAULT
+        moveTo(originalPosition)
     }
 
     override fun moveBy(position: Position) = moveTo(this.position + position)

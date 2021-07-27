@@ -26,9 +26,9 @@ abstract class BaseTileGraphics(
     initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
 
-    final override val tilesetProperty = initialTileset.toProperty { oldValue, newValue ->
+    final override val tilesetProperty = initialTileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
-    }
+    })
 
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 

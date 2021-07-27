@@ -16,25 +16,25 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-class DefaultTab(
-    label: String,
+class DefaultTab internal constructor(
     key: String,
-    width: Int = label.length + 2
+    initialText: String,
+    width: Int,
 ) : Tab {
 
     override val tabButton = buildRadioButton {
-        text = label
+        text = initialText
         this.key = key
         preferredSize = Size.create(width, 3)
         componentStyleSet = ComponentStyleSet.defaultStyleSet()
         renderFunction = { graphics, ctx ->
-            graphics.drawText(label, ctx.currentStyle)
+            graphics.drawText(ctx.component.text, ctx.currentStyle)
         }
         decoration = box(renderingMode = INTERACTIVE)
     }
 
     private val label = buildLabel {
-        text = label
+        text = initialText
         preferredSize = Size.create(width, 3)
         renderFunction = { graphics, ctx ->
             val theme = ctx.theme
@@ -44,7 +44,7 @@ class DefaultTab(
             )
             val filler = Tile.defaultTile().withStyle(style)
             graphics.fill(filler)
-            graphics.drawText(label, style, Position.offset1x1())
+            graphics.drawText(ctx.component.text, style, Position.offset1x1())
         }
     }
 

@@ -4,16 +4,20 @@ import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.behavior.TextOverride
+import org.hexworks.zircon.api.ComponentDecorations.noDecoration
+import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.component.buildHbox
+import org.hexworks.zircon.api.dsl.component.button
+import org.hexworks.zircon.api.dsl.component.label
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.uievent.ComponentEventType
 
-class DefaultSelector<T : Any>(
-    parent: HBox,
+class DefaultSelector<T : Any> internal constructor(
+    position: Position,
+    width: Int,
     defaultSelected: T,
     override val valuesProperty: ListProperty<T>,
     private val centeredText: Boolean = true,
@@ -25,48 +29,54 @@ class DefaultSelector<T : Any>(
 
     private val indexProperty = values.indexOf(defaultSelected).toProperty()
 
+
     override val selectedValue: ObservableValue<T> = indexProperty.bindTransform {
         values[it]
     }
     override val selected: T
         get() = selectedValue.value
 
-    private val rightButton =
-        Components.button().withText(Symbols.ARROW_RIGHT.toString()).withDecorations().build().apply {
-            processComponentEvents(ComponentEventType.ACTIVATED) { showNextValue() }
+    private lateinit var leftButton: Button
+    private lateinit var rightButton: Button
+
+    private val labelSize: Size = Size.create(width - 2, 1)
+
+    override val root: HBox = buildHbox {
+        preferredSize = Size.create(width, 1)
+        this.position = position
+        leftButton = button {
+            +Symbols.ARROW_LEFT.toString()
+            decoration = noDecoration()
+            onActivated {
+                showPrevValue()
+            }
         }
-
-    private val leftButton =
-        Components.button().withText(Symbols.ARROW_LEFT.toString()).withDecorations().build().apply {
-            processComponentEvents(ComponentEventType.ACTIVATED) { showPrevValue() }
-        }
-
-    private val labelSize = Size.create(parent.contentSize.width - (leftButton.width + rightButton.width), 1)
-
-    override val root = parent.apply {
-        addComponent(leftButton)
 
         if (clickable) {
-            addComponent(Components.button().withDecorations().withPreferredSize(labelSize).build().apply {
-                initLabel()
-                processComponentEvents(ComponentEventType.ACTIVATED) {
+            button {
+                decoration = noDecoration()
+                preferredSize = labelSize
+                +fetchLabelBy(0)
+                textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
+                onActivated {
                     showNextValue()
                 }
-            })
+            }
         } else {
-            addComponent(Components.label()
-                .withPreferredSize(labelSize)
-                .build().apply {
-                    initLabel()
-                })
+            label {
+                preferredSize = labelSize
+                +fetchLabelBy(0)
+                textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
+            }
         }
 
-        addComponent(rightButton)
-    }
-
-    private fun TextOverride.initLabel() {
-        text = fetchLabelBy(0)
-        textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
+        rightButton = button {
+            +Symbols.ARROW_RIGHT.toString()
+            decoration = noDecoration()
+            onActivated {
+                showNextValue()
+            }
+        }
     }
 
     private fun setValue(to: Int) {

@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.fragment.impl.table
+package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList

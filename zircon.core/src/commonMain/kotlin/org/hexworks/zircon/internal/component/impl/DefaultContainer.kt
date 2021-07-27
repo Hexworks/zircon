@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -31,8 +32,8 @@ open class DefaultContainer(
     renderer = renderer
 ) {
 
-    final override val children: ObservableList<InternalComponent> by lazy {
-        persistentListOf<InternalComponent>().toProperty()
+    final override val children: ObservableList<InternalAttachedComponent> by lazy {
+        persistentListOf<InternalAttachedComponent>().toProperty()
     }
 
     // TODO: refactor this so that recursive changes are not necessary
@@ -57,7 +58,7 @@ open class DefaultContainer(
         val ic = checkIfCanAdd(component)
         val attachment = DefaultAttachedComponent(ic, this)
 
-        children.add(ic)
+        children.add(attachment)
 
         Zircon.eventBus.publish(
             event = ComponentAdded(
@@ -70,6 +71,8 @@ open class DefaultContainer(
 
         return attachment
     }
+
+    override fun detachAllComponents() = children.map { it.detach() }
 
     final override fun asInternalComponent(): InternalContainer = this
 
@@ -93,21 +96,25 @@ open class DefaultContainer(
         }
         val originalRect = component.rect
         tileset.checkCompatibilityWith(component.tileset)
-        component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
+        val newPosition = component.absolutePosition + contentOffset + absolutePosition
         if (RuntimeConfig.config.shouldCheckBounds()) {
             val contentBounds = contentSize.toRect()
-            require(contentBounds.containsBoundable(originalRect)) {
-                "Adding out of bounds component $component " +
-                        "with bounds $originalRect to the container $this " +
-                        "with content bounds $contentBounds is not allowed."
+            if (contentBounds.containsBoundable(originalRect).not()) {
+                error(
+                    """Adding out of bounds component $component with bounds $originalRect 
+                        |to the container $this with content bounds $contentBounds
+                        | is not allowed.""".trimMargin()
+                )
             }
-            children.firstOrNull { it.intersects(component) }?.let {
+            val newRect = originalRect.withPosition(newPosition)
+            children.firstOrNull { it.intersects(newRect) }?.let {
                 throw IllegalArgumentException(
-                    "You can't add a component to a container which intersects with other components. " +
-                            "$it is intersecting with $component."
+                    """You can't add a component to a container which intersects with other components.
+                        | $newRect is intersecting with $component.""".trimMargin()
                 )
             }
         }
+        component.moveTo(newPosition)
         return component
     }
 
@@ -147,7 +154,7 @@ open class DefaultContainer(
         @Synchronized
         override fun detach(): Component {
             component.parent = Maybe.empty()
-            this@DefaultContainer.children.remove(component)
+            this@DefaultContainer.children.remove(this)
             component.resetState()
             Zircon.eventBus.publish(
                 event = ComponentRemoved(

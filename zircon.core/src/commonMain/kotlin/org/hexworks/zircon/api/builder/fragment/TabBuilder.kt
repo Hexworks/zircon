@@ -1,39 +1,70 @@
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Tab
-import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
-import org.hexworks.zircon.internal.fragment.impl.TabMetadata
+import org.hexworks.zircon.internal.fragment.impl.DefaultTab
+import org.hexworks.zircon.internal.fragment.impl.TabData
 
-class TabBuilder: FragmentBuilder<Tab, TabBuilder>, Builder<Tab> {
+@ZirconDsl
+class TabBuilder private constructor(
+    var key: String? = null,
+    var label: String? = null,
+    var content: Component? = null,
+    @JvmSynthetic
+    internal var width: Int? = null,
+) : FragmentBuilder<TabData, TabBuilder>, Builder<TabData> {
 
-    var size: Size = Size.unknown()
-    var tabWidth: Int = 3
-    var defaultSelected: String? = null
-    var tabs: List<TabMetadata> = listOf()
+    private val calculatedWidth: Int
+        get() = label?.length?.plus(2) ?: 3
+
+    fun withKey(key: String) = also {
+        this.key = key
+    }
+
+    fun withLabel(label: String) = also {
+        this.label = label
+    }
 
     override fun withPosition(position: Position): TabBuilder {
-        TODO("not implemented")
+        error("Can't set the position of a tab")
     }
 
-    override fun withPosition(x: Int, y: Int): TabBuilder {
-        TODO("not implemented")
-    }
+    override fun createCopy() = TabBuilder(
+        key = key,
+        label = label,
+        width = width,
+        content = content
+    )
 
-    override fun createCopy(): Builder<TabBar> {
-        TODO("not implemented")
-    }
-
-    override fun build(): TabBar {
-        return DefaultHorizontalTabBar(
-            size = size,
-            tabWidth = tabWidth,
-            defaultSelected = defaultSelected ?: tabs.first().key,
-            tabs = tabs
+    override fun build(): TabData {
+        require(key != null && key!!.isNotBlank()) {
+            "A Tab must have a non-blank key."
+        }
+        require(content != null) {
+            "A tab must have content to show when clicked"
+        }
+        require(label !== null) {
+            "A tab must have a label"
+        }
+        return TabData(
+            tab = DefaultTab(
+                key = key!!,
+                initialText = label!!,
+                width = width ?: calculatedWidth
+            ),
+            content = content!!
         )
     }
+
+    companion object {
+
+        @JvmStatic
+        fun newBuilder(): TabBuilder = TabBuilder()
+    }
+
 }

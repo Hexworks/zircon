@@ -25,9 +25,9 @@ class DefaultGroup<T : Component>(
     override val disabledProperty = initialIsDisabled.toProperty()
     override val hiddenProperty = initialIsHidden.toProperty()
     override val themeProperty = initialTheme.toProperty()
-    override val tilesetProperty = initialTileset.toProperty { oldValue, newValue ->
+    override val tilesetProperty = initialTileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
-    }
+    })
 
     override var isDisabled: Boolean by disabledProperty.asDelegate()
     override var isHidden: Boolean by hiddenProperty.asDelegate()
