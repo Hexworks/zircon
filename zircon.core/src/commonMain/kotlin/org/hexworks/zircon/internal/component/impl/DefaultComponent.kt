@@ -35,6 +35,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
+import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -269,7 +270,9 @@ abstract class DefaultComponent(
         COMPONENT_STATE_TRANSITIONS[key]?.let {
             logger.debug("Component state was updated to state $it.")
             componentState = it
-        } ?: logger.debug("There was no corresponding key, no update happened.")
+        } ?: run {
+            logger.debug("There was no corresponding key, no update happened.")
+        }
     }
 
     enum class EventType {
@@ -308,7 +311,10 @@ abstract class DefaultComponent(
             ComponentStateKey(ACTIVE, true, FOCUS_TAKEN) to DEFAULT,
             // this happens when a component is removed when clicked in a HBox and
             // the next (to its right) component gets realigned
-            ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED
+            ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED,
+            // these happen when a modal window is opened when a button is clicked
+            ComponentStateKey(HIGHLIGHTED, true, FOCUS_TAKEN) to DEFAULT,
+            ComponentStateKey(HIGHLIGHTED, false, DEACTIVATED) to DEFAULT,
         )
     }
 }

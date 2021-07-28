@@ -31,7 +31,7 @@ data class FadeIn(
         }
         return if (currentStep == steps) {
             if (glowOnFinalStep)
-                tile.withModifiers(Glow()).asCharacterTile().get()
+                tile.withModifiers(Glow()).asCharacterTileOrNull()!!
             else
                 tile
         } else {

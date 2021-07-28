@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package org.hexworks.zircon.api.uievent
 
 import org.hexworks.cobalt.datatypes.Maybe

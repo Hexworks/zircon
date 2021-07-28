@@ -32,9 +32,11 @@ open class DefaultContainer(
     renderer = renderer
 ) {
 
-    final override val children: ObservableList<InternalAttachedComponent> by lazy {
-        persistentListOf<InternalAttachedComponent>().toProperty()
+    final override val children: ObservableList<InternalComponent> by lazy {
+        persistentListOf<InternalComponent>().toProperty()
     }
+
+    private val attachments = mutableListOf<AttachedComponent>()
 
     // TODO: refactor this so that recursive changes are not necessary
     @Synchronized
@@ -58,7 +60,8 @@ open class DefaultContainer(
         val ic = checkIfCanAdd(component)
         val attachment = DefaultAttachedComponent(ic, this)
 
-        children.add(attachment)
+        children.add(ic)
+        attachments.add(attachment)
 
         Zircon.eventBus.publish(
             event = ComponentAdded(
@@ -72,7 +75,7 @@ open class DefaultContainer(
         return attachment
     }
 
-    override fun detachAllComponents() = children.map { it.detach() }
+    override fun detachAllComponents() = attachments.map { it.detach() }
 
     final override fun asInternalComponent(): InternalContainer = this
 
@@ -99,12 +102,10 @@ open class DefaultContainer(
         val newPosition = component.absolutePosition + contentOffset + absolutePosition
         if (RuntimeConfig.config.shouldCheckBounds()) {
             val contentBounds = contentSize.toRect()
-            if (contentBounds.containsBoundable(originalRect).not()) {
-                error(
-                    """Adding out of bounds component $component with bounds $originalRect 
+            require(contentBounds.containsBoundable(originalRect)) {
+                """Adding out of bounds component $component 
                         |to the container $this with content bounds $contentBounds
                         | is not allowed.""".trimMargin()
-                )
             }
             val newRect = originalRect.withPosition(newPosition)
             children.firstOrNull { it.intersects(newRect) }?.let {
@@ -154,7 +155,8 @@ open class DefaultContainer(
         @Synchronized
         override fun detach(): Component {
             component.parent = Maybe.empty()
-            this@DefaultContainer.children.remove(this)
+            this@DefaultContainer.children.remove(component)
+            this@DefaultContainer.attachments.remove(this)
             component.resetState()
             Zircon.eventBus.publish(
                 event = ComponentRemoved(

@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.Paragraph

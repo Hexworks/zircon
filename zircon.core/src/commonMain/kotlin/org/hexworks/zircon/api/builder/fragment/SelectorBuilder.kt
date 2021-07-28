@@ -35,8 +35,18 @@ open class SelectorBuilder<T : Any> internal constructor(
     var defaultSelected: T? = null,
 ) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>, Builder<Selector<T>> {
 
+    var valueList: List<T>
+        get() = valuesProperty.value
+        set(value) {
+            valuesProperty = value.toProperty()
+        }
+
     fun withWidth(width: Int) = also {
         this.width = width
+    }
+
+    fun withValueList(values: List<T>) = also {
+        this.valuesProperty = values.toProperty()
     }
 
     fun withValues(valuesProperty: ListProperty<T>) = also {

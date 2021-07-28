@@ -12,5 +12,5 @@ import org.hexworks.zircon.api.component.Container
  * to interact with them in a more meaningful manner.
  */
 interface InternalContainer : Container, InternalComponent {
-    override val children: ObservableList<InternalAttachedComponent>
+    override val children: ObservableList<InternalComponent>
 }

@@ -75,6 +75,8 @@ class ComponentStub(
 
     override val children: ObservableList<InternalComponent>
         get() = persistentListOf<InternalComponent>().toProperty()
+    override val originalPosition: Position
+        get() = TODO("Not yet implemented")
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
     override val componentStateValue: ObservableValue<ComponentState>
         get() = error("not implemented")
@@ -101,6 +103,10 @@ class ComponentStub(
 
     override fun clearCustomStyle() {
 
+    }
+
+    override fun resetState() {
+        TODO("Not yet implemented")
     }
 
     override fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
