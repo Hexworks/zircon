@@ -4,11 +4,17 @@ import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.component.buildHbox
+import org.hexworks.zircon.api.dsl.component.buildVbox
+import org.hexworks.zircon.api.dsl.component.hbox
+import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.table.TableColumn
 import org.hexworks.zircon.api.uievent.MouseEventType
@@ -18,26 +24,17 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 /**
  * The **internal** default implementation of [Table].
  */
-class DefaultTable<M : Any>(
-    private val data: ObservableList<M>,
-    private val columns: List<TableColumn<M, *, *>>,
+class DefaultTable<M : Any> internal constructor(
+    position: Position,
     /**
      * The height this fragment will use. Keep in mind that the first row will be used as header row.
      */
-    fragmentHeight: Int,
+    height: Int,
+    private val data: ObservableList<M>,
+    private val columns: List<TableColumn<M, *, *>>,
     private val rowSpacing: Int = 0,
     private val colSpacing: Int = 0
 ) : Table<M> {
-
-    init {
-        require(columns.isNotEmpty()) {
-            "A table must have at least one column."
-        }
-        val minHeight = 2
-        require(fragmentHeight >= minHeight) {
-            "A table requires a height of at least $minHeight."
-        }
-    }
 
     private val selectedElements: ListProperty<M> = emptyList<M>().toProperty()
 
@@ -46,70 +43,50 @@ class DefaultTable<M : Any>(
     override val selectedRows: List<M>
         get() = selectedRowsValue.value
 
-    override val size: Size = Size.create(
-        width = columns.sumBy { it.width } + ((columns.size - 1) * colSpacing),
-        height = fragmentHeight
-    )
+    private val width: Int = columns.sumOf { it.width } + ((columns.size - 1) * colSpacing)
 
-    override val root: VBox = Components
-        .vbox()
-        .withSpacing(0)
-        .withPreferredSize(size)
-        .build()
+    private lateinit var dataPanel: VBox
 
-    private val currentRows: MutableList<AttachedComponent> = mutableListOf()
+    override val root = buildVbox {
+        val size = Size.create(
+            width = width,
+            height = height
+        )
+        preferredSize = size
+        this.position = position
 
-    private val dataPanel: VBox
+        addHeaderRow(size.width)
+        dataPanel = vbox {
+            preferredSize = size.withRelativeHeight(-1)
+            spacing = rowSpacing
+        }
+    }
 
     init {
-        val headerRow = headerRow()
-        dataPanel = Components
-            .vbox()
-            .withPreferredSize(size.withRelativeHeight(-headerRow.height))
-            .withSpacing(rowSpacing)
-            .build()
-        root
-            .addComponents(
-                headerRow,
-                dataPanel
-            )
         reloadData()
         data.onChange { reloadData() }
     }
 
     private fun reloadData() {
-        currentRows.forEach { it.detach() }
-        currentRows.clear()
+        dataPanel.detachAllComponents()
         dataPanel.apply {
             // TODO: Improve this loop to not loop over all elements
-            val modelIterator = data.listIterator()
-            val firstRow: Component? = if (modelIterator.hasNext()) {
-                newRowFor(modelIterator.next())
-                    .also { currentRows.add(addComponent(it)) }
-            } else {
-                null
-            }
-            var neededHeight = firstRow?.height ?: 0
-            var remainingHeight = contentSize.height - neededHeight
-            while (remainingHeight >= neededHeight && modelIterator.hasNext()) {
-                val newRow = newRowFor(modelIterator.next())
-                currentRows.add(addComponent(newRow))
-                neededHeight = newRow.height + rowSpacing
-                remainingHeight -= neededHeight
+            val elementCount = minOf(data.size, height)
+            for (i in 0 until elementCount) {
+                addComponent(newRowFor(data[i]))
             }
         }
     }
 
     private fun newRowFor(model: M): Component {
         val cells: List<Component> = columns
-            .map { it.newCell(model) }
+            .map { column -> column.newCell(model) }
         val rowHeight = cells.maxOf { it.height }
-        val row = Components
-            .hbox()
-            .withSpacing(colSpacing)
-            .withPreferredSize(size.width, rowHeight)
-            .build()
-        cells.forEach { row.addComponent(it) }
+        val row = buildHbox {
+            spacing = colSpacing
+            preferredSize = Size.create(width, rowHeight)
+        }
+        cells.forEach(row::addComponent)
         row.handleMouseEvents(MouseEventType.MOUSE_CLICKED) { _, phase ->
             // allow for the cells to implement custom mouse event handling
             if (phase == UIEventPhase.BUBBLE) {
@@ -123,20 +100,12 @@ class DefaultTable<M : Any>(
         return row
     }
 
-    /**
-     * Builds the [HBox] containing the column headers.
-     */
-    private fun headerRow(): HBox {
-        return Components
-            .hbox()
-            .withPreferredSize(size.width, 1)
-            .withSpacing(colSpacing)
-            .build()
-            .apply {
-                columns
-                    .forEach { column ->
-                        addComponent(column.header)
-                    }
-            }
+    private fun VBoxBuilder.addHeaderRow(width: Int) = hbox {
+        preferredSize = Size.create(width, 1)
+        spacing = colSpacing
+        columns.forEach { column ->
+            withAddedChildren(column.header)
+        }
     }
+
 }

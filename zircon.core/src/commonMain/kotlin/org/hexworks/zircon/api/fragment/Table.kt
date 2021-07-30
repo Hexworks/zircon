@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.fragment
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.fragment.table.TableColumn
 
 /**
  * A table fragment displays data in rows. Each row contains several cells. How a cell is displayed depends
@@ -26,9 +26,4 @@ interface Table<M : Any> : Fragment {
      * The elements of the table that are currently selected as [ObservableList].
      */
     val selectedRowsValue: ObservableList<M>
-
-    /**
-     * The size this table consumes based on its configured height and column definition.
-     */
-    val size: Size
 }

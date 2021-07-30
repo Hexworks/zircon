@@ -1,9 +1,5 @@
 package org.hexworks.zircon.examples.fragments.table
 
-import org.hexworks.cobalt.databinding.api.binding.bindTransform
-import org.hexworks.cobalt.databinding.api.collection.ListProperty
-import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.data.TileBuilder

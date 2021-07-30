@@ -44,12 +44,9 @@ object Fragments {
 
     /**
      * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
-     *
-     * @param data an [ObservableList] containing the data to display in the resulting table. Changes
-     * in the list will be reflected in the UI.
      */
     @Beta
-    fun <T : Any> table(data: ObservableList<T>): TableBuilder<T> = TableBuilder(data)
+    fun <T : Any> table(): TableBuilder<T> = TableBuilder.newBuilder()
 
     /**
      * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [TilesetResource]s.
