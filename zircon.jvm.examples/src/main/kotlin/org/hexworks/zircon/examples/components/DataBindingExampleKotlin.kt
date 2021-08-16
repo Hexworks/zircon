@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.dsl.component.radioButton
 import org.hexworks.zircon.api.dsl.component.radioButtonGroup
 import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.graphics.BoxType
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 
 class DataBindingExampleKotlin : OneColumnComponentExampleKotlin() {

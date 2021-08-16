@@ -25,7 +25,7 @@ interface TileColor : Cacheable {
         get() = alpha == 255
 
     /**
-     * Returns a new [TileColor] which is desturated by the [DEFAULT_FACTOR] (.7).
+     * Returns a new [TileColor] which is desaturated by the [DEFAULT_FACTOR] (.7).
      */
     fun desaturate(): TileColor = desaturate(defaultFactor())
 

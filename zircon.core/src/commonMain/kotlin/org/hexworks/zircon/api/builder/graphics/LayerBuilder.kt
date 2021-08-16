@@ -20,7 +20,7 @@ import kotlin.jvm.JvmStatic
  * - offset: [Position.defaultPosition()]
  * - has no text image by default
  */
-data class LayerBuilder(
+class LayerBuilder private constructor(
     private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
     private var size: Size = Size.defaultGridSize(),
     private var offset: Position = Position.defaultPosition(),
@@ -98,7 +98,13 @@ data class LayerBuilder(
         if (filler != Tile.empty()) fill(filler)
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = LayerBuilder(
+        tileset = tileset,
+        size = size,
+        offset = offset,
+        tileGraphics = tileGraphics.map { it.createCopy() },
+        filler = filler
+    )
 
     companion object {
 

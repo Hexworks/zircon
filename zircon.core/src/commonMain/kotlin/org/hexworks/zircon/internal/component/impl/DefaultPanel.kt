@@ -6,12 +6,12 @@ import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 
-open class DefaultPanel(
+open class DefaultPanel internal constructor(
     componentMetadata: ComponentMetadata,
     initialTitle: String,
     renderingStrategy: ComponentRenderingStrategy<Panel>
 ) : Panel, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ), TitleOverride by TitleOverride.create(initialTitle) {
 

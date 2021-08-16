@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
-class DefaultHorizontalSlider(
+class DefaultHorizontalSlider internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<Slider>,
     minValue: Int,

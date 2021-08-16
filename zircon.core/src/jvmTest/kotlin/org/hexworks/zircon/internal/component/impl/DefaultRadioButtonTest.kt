@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -70,8 +71,8 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
             componentMetadata = ComponentMetadata(
                 size = SIZE_20X1,
                 relativePosition = POSITION_2_3,
-                componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET_REX_PAINT_20X20
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),

@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
+class VerticalNumberInputBuilder private constructor() : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
     initialRenderer = DefaultVerticalNumberInputRenderer()
 ) {
 
@@ -26,7 +26,7 @@ class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput, VerticalNumbe
         initialValue = initialValue,
         minValue = minValue,
         maxValue = maxValue,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder()
         .withProps(props.copy())

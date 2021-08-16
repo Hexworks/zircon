@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [ToggleButton] using the component builder DSL and returns it.
  */
 fun buildToggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
-    ToggleButtonBuilder().apply(init).build()
+    ToggleButtonBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [ToggleButton] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildToggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
  */
 fun <T : BaseContainerBuilder<*, *>> T.toggleButton(
     init: ToggleButtonBuilder.() -> Unit
-): ToggleButton = buildChildFor(this, ToggleButtonBuilder(), init)
+): ToggleButton = buildChildFor(this, ToggleButtonBuilder.newBuilder(), init)

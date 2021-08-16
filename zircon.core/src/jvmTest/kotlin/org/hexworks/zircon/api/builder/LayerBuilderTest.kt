@@ -14,7 +14,7 @@ class LayerBuilderTest {
 
     @Before
     fun setUp() {
-        target = LayerBuilder()
+        target = LayerBuilder.newBuilder()
     }
 
     @Test

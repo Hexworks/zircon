@@ -16,12 +16,11 @@ import kotlin.jvm.JvmStatic
  * - Default [Size] is `ONE` (1x1).
  * - Default `filler` is an `EMPTY` character
  */
-@Suppress("ArrayInDataClass")
-data class TileImageBuilder(
+class TileImageBuilder private constructor(
     private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
     private var filler: Tile = Tile.empty(),
     private var size: Size = Size.one(),
-    private val tiles: MutableMap<Position, Tile> = mutableMapOf()
+    private var tiles: MutableMap<Position, Tile> = mutableMapOf()
 ) : Builder<TileImage> {
 
     /**
@@ -74,7 +73,12 @@ data class TileImageBuilder(
         ).withFiller(filler)
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = TileImageBuilder(
+        tileset = tileset,
+        filler = filler,
+        size = size,
+        tiles = tiles.toMutableMap(),
+    )
 
     companion object {
 

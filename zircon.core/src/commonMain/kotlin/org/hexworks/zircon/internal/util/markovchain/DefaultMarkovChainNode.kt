@@ -1,12 +1,13 @@
-package org.hexworks.zircon.api.util.markovchain
+package org.hexworks.zircon.internal.util.markovchain
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import kotlin.random.Random
 
 @Suppress("DataClassPrivateConstructor")
-class DefaultMarkovChainNode<T : Any>(
+class DefaultMarkovChainNode<T : Any> internal constructor(
     private val data: T? = null,
     private val random: Random = Random(5234321)
 ) : MarkovChainNode<T> {

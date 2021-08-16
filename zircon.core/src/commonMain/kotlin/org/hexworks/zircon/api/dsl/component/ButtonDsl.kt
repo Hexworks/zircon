@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Button] using the component builder DSL and returns it.
  */
 fun buildButton(init: ButtonBuilder.() -> Unit): Button =
-    ButtonBuilder().apply(init).build()
+    ButtonBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [Button] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildButton(init: ButtonBuilder.() -> Unit): Button =
  */
 fun <T : BaseContainerBuilder<*, *>> T.button(
     init: ButtonBuilder.() -> Unit
-): Button = buildChildFor(this, ButtonBuilder(), init)
+): Button = buildChildFor(this, ButtonBuilder.newBuilder(), init)

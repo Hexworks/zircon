@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.dsl.component.buildPanel
 import org.hexworks.zircon.api.dsl.component.button
 import org.hexworks.zircon.api.dsl.component.panel
 import org.hexworks.zircon.api.dsl.component.plus
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 import kotlin.concurrent.thread
 

@@ -9,9 +9,10 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class HorizontalNumberInputBuilder : NumberInputBuilder<NumberInput, HorizontalNumberInputBuilder>(
-    initialRenderer = DefaultNumberInputRenderer()
-) {
+class HorizontalNumberInputBuilder private constructor() :
+    NumberInputBuilder<NumberInput, HorizontalNumberInputBuilder>(
+        initialRenderer = DefaultNumberInputRenderer()
+    ) {
 
     override fun calculateContentSize(): Size {
         val length = this.maxValue.toString().length + 1
@@ -26,7 +27,7 @@ class HorizontalNumberInputBuilder : NumberInputBuilder<NumberInput, HorizontalN
         initialValue = initialValue,
         minValue = minValue,
         maxValue = maxValue,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder()
         .withProps(props.copy())

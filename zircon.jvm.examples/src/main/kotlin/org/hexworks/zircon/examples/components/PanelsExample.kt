@@ -103,7 +103,7 @@ object PanelsExample {
         )
 
         val panel = Components.panel()
-            .withSize(Size.create(18, 19))
+            .withPreferredSize(Size.create(18, 19))
             .withDecorations(box(title = "Parent"))
             .withAlignment(positionalAlignment(41, 8))
             .build()

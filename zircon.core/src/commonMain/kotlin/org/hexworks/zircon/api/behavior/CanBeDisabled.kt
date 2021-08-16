@@ -9,10 +9,10 @@ import kotlin.jvm.JvmStatic
  * this means that when it is disabled it can't be interacted with (click, press, etc).
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface CanBeDisabled : Disablable {
+interface CanBeDisabled {
 
-    override var isDisabled: Boolean
-    override val disabledProperty: Property<Boolean>
+    var isDisabled: Boolean
+    val disabledProperty: Property<Boolean>
 
     companion object {
 

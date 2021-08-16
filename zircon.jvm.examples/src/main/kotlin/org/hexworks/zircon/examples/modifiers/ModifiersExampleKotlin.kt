@@ -50,10 +50,10 @@ object ModifiersExampleKotlin {
     }
 
     private fun randomTile() = Tile.createCharacterTile(
-        'x', StyleSet.create(
-            foregroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)],
+        'x', StyleSet.newBuilder().apply {
+            foregroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]
             backgroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]
-        )
+        }.build()
     )
 }
 

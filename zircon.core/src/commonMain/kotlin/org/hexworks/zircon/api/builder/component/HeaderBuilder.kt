@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class HeaderBuilder : ComponentWithTextBuilder<Header, HeaderBuilder>(
+class HeaderBuilder private constructor() : ComponentWithTextBuilder<Header, HeaderBuilder>(
     initialRenderer = DefaultHeaderRenderer(),
     initialText = ""
 ) {
@@ -18,8 +18,8 @@ class HeaderBuilder : ComponentWithTextBuilder<Header, HeaderBuilder>(
         return DefaultHeader(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-            initialText = text,
-        )
+            textProperty = fixedTextProperty,
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy()).withText(text)

@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultBox
 import kotlin.jvm.JvmStatic
 
-data class BoxBuilder(
+class BoxBuilder private constructor(
     private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
     private var size: Size = Size.create(3, 3),
     private var style: StyleSet = StyleSet.defaultStyle(),
@@ -50,7 +50,12 @@ data class BoxBuilder(
         tileset = tileset
     )
 
-    override fun createCopy() = copy()
+    override fun createCopy() = BoxBuilder(
+        tileset = tileset,
+        size = size,
+        style = style,
+        boxType = boxType
+    )
 
     companion object {
 

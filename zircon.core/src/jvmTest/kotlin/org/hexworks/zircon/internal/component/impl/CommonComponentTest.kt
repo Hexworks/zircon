@@ -1,15 +1,14 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
@@ -46,8 +45,8 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
         relativePosition = POSITION_2_3,
         size = SIZE_3_4,
-        tileset = TILESET_REX_PAINT_20X20,
-        componentStyleSet = COMPONENT_STYLES
+        tilesetProperty = TILESET_REX_PAINT_20X20.toProperty(),
+        componentStyleSetProperty = COMPONENT_STYLES.toProperty()
     )
 
     abstract fun setUp()

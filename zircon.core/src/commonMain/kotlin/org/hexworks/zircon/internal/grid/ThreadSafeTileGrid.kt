@@ -6,6 +6,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
@@ -32,12 +33,11 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import kotlin.jvm.Synchronized
 
 class ThreadSafeTileGrid(
-    initialTileset: TilesetResource,
-    initialSize: Size,
-    override var layerable: InternalLayerable = buildLayerable(initialSize),
+    override val config: AppConfig,
+    override var layerable: InternalLayerable = buildLayerable(config.size),
     override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
     override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
-        initialCursorSpace = initialSize
+        initialCursorSpace = config.size
     ),
     private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalTileGrid,
@@ -46,7 +46,7 @@ class ThreadSafeTileGrid(
     ViewContainer by ViewContainer.create() {
 
     init {
-        initializeLayerable(initialSize, initialTileset)
+        initializeLayerable(config)
     }
 
     override var backend: Layer = layerable.getLayerAtOrNull(0)!!
@@ -65,8 +65,6 @@ class ThreadSafeTileGrid(
 
     override val tilesetProperty: Property<TilesetResource>
         get() = backend.tilesetProperty
-
-    override val isClosed = false.toProperty()
 
     override val layers: ObservableList<out InternalLayer>
         get() = layerable.layers
@@ -98,9 +96,8 @@ class ThreadSafeTileGrid(
     override val isCursorAtTheLastRow: Boolean
         get() = cursorHandler.isCursorAtTheLastRow
 
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position)
-    }
+    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closed: Boolean by closedValue.asDelegate()
 
     override fun getTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)
@@ -127,7 +124,7 @@ class ThreadSafeTileGrid(
     @Synchronized
     override fun close() {
         animationHandler.close()
-        isClosed.value = true
+        closedValue.value = true
     }
 
     @Synchronized
@@ -150,8 +147,8 @@ class ThreadSafeTileGrid(
     override fun clear() {
         backend.clear()
         layerable = buildLayerable(size)
-        initializeLayerable(size, tileset)
-        backend = layerable.getLayerAt(0).get()
+        initializeLayerable(config)
+        backend = layerable.getLayerAtOrNull(0)!!
     }
 
     // ANIMATION HANDLER
@@ -212,8 +209,6 @@ class ThreadSafeTileGrid(
 
     // LAYERABLE
 
-    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
-
     override fun getLayerAtOrNull(level: Int): LayerHandle? = layerable.getLayerAtOrNull(level)
 
     override fun addLayer(layer: Layer) = layerable.addLayer(layer)
@@ -230,13 +225,19 @@ class ThreadSafeTileGrid(
         cursorPosition = cursorPosition.withRelativeY(1).withX(0)
     }
 
-    private fun initializeLayerable(initialSize: Size, initialTileset: TilesetResource) {
+    private fun initializeLayerable(config: AppConfig) {
         layerable.addLayer(
             Layer.newBuilder()
-                .withSize(initialSize)
-                .withTileset(initialTileset)
+                .withSize(config.size)
+                .withTileset(config.defaultTileset)
                 .build()
         )
+    }
+
+    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
+
+    override fun getTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position)
     }
 
 }

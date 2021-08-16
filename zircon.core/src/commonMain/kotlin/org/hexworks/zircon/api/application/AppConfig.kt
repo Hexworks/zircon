@@ -17,118 +17,116 @@ import kotlin.jvm.JvmStatic
  * Object that encapsulates the configuration parameters for an [Application].
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
- *
- * Typically you'll want to construct this using [AppConfigBuilder], not AppConfig's constructor.
  */
-@Suppress("ArrayInDataClass")
-data class AppConfig(
+class AppConfig internal constructor(
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).
      * Default is `500`
      */
-    val blinkLengthInMilliSeconds: Long = 500,
+    val blinkLengthInMilliSeconds: Long,
     /**
      * The [CursorStyle] to be used when the cursor is displayed.
      * Default is [CursorStyle.FIXED_BACKGROUND].
      */
-    val cursorStyle: CursorStyle = CursorStyle.FIXED_BACKGROUND,
+    val cursorStyle: CursorStyle,
     /**
      * The [TileColor] to be used when drawing a cursor.
      * Default is [TileColor.defaultForegroundColor()] (black).
      */
-    val cursorColor: TileColor = TileColor.defaultForegroundColor(),
+    val cursorColor: TileColor,
     /**
      * Controls whether the cursor should be blinking when rendered.
      * Default is `false`
      */
-    val isCursorBlinking: Boolean = false,
+    val isCursorBlinking: Boolean,
     /**
      * Can be used to control the availability of the clipboard.
      * Default is `true`
      */
-    val isClipboardAvailable: Boolean = true,
+    val isClipboardAvailable: Boolean,
+
     /**
      * The tileset to be used when no tileset is specified for the [Application].
      * Default is [CP437TilesetResources.wanderlust16x16]
      */
-    val defaultTileset: TilesetResource = CP437TilesetResources.wanderlust16x16(),
+    val defaultTileset: TilesetResource,
     /**
      * The default graphical tileset to be used when no graphical tileset is specified.
      * Default is [GraphicalTilesetResources.nethack16x16]
      */
-    val defaultGraphicalTileset: TilesetResource = GraphicalTilesetResources.nethack16x16(),
+    val defaultGraphicalTileset: TilesetResource,
     /**
      * The default [ColorTheme] to be used when no color theme is specified.
      * Default is [ColorThemes.defaultTheme]
      */
-    val defaultColorTheme: ColorTheme = ColorThemes.defaultTheme(),
+    val defaultColorTheme: ColorTheme,
     /**
      * Can be used to switch debug mode on or off.
      * Default is `false`.
      */
-    val debugMode: Boolean = false,
+    val debugMode: Boolean,
     /**
      * Controls the [Size] of the resulting tile grid when the [Application]
      * is started.
      * Default is `80x40`
      */
-    val size: Size = Size.create(80, 40),
+    val size: Size,
     /**
      * Controls if the [Application] will be full screen or not.
      * Default is `false`
      */
-    val fullScreen: Boolean = false,
+    val fullScreen: Boolean,
     /**
      * Controls if the [Application] will be borderless or not.
      * Default is `false`
      */
-    val borderless: Boolean = false,
+    val borderless: Boolean,
     /**
      * Sets the title of the application window.
      * Default is `"Zircon Application"`
      */
-    val title: String = "Zircon Application",
+    val title: String,
     /**
      * Sets the fps limit of the resulting [Application].
      * Default is `60`
      */
-    val fpsLimit: Int = 60,
+    val fpsLimit: Int,
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
      * By default all settings are `false`.
      */
-    val debugConfig: DebugConfig = DebugConfig.defaultConfig(),
+    val debugConfig: DebugConfig,
     /**
      * Determines the [CloseBehavior] when the application windows is closed.
      * Default is [CloseBehavior.EXIT_ON_CLOSE]
      * @see CloseBehavior
      */
-    val closeBehavior: CloseBehavior = CloseBehavior.EXIT_ON_CLOSE,
+    val closeBehavior: CloseBehavior,
     /**
      * Determines the [ShortcutsConfig] to be used for built-in shortcuts.
      * @see ShortcutsConfig for defaults
      */
-    val shortcutsConfig: ShortcutsConfig = ShortcutsConfig(),
+    val shortcutsConfig: ShortcutsConfig,
     /**
      * If set [iconData] contains the bytes of the icon image that will
      * be used in the application window.
      */
-    val iconData: ByteArray? = null,
+    val iconData: ByteArray?,
     /**
      * If set [iconPath] will contain the path of the resource that points
      * to an icon image that will be used in the application window.
      */
-    val iconPath: String? = null,
+    val iconPath: String?,
     /**
      * If set, contains custom properties that plugin authors can set and access.
      */
-    internal val customProperties: Map<AppConfigKey<*>, Any> = emptyMap(),
+    internal val customProperties: Map<AppConfigKey<*>, Any>,
     /**
      * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    val tilesetLoaders: List<TilesetLoader<*>> = emptyList()
+    val tilesetLoaders: List<TilesetLoader<*>>
 ) {
 
     /**
@@ -168,10 +166,10 @@ data class AppConfig(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = AppConfigBuilder()
+        fun newBuilder() = AppConfigBuilder.newBuilder()
 
         @JvmStatic
-        fun defaultConfiguration() = AppConfig()
+        fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 
     }
 }

@@ -23,15 +23,7 @@ object Components {
      * @see NumberInput
      */
     @JvmStatic
-    fun horizontalNumberInput(width: Int) = HorizontalNumberInputBuilder.newBuilder(width)
-
-
-    /**
-     * Creates a new [VerticalNumberInputBuilder] for building vertical [NumberInput] components.
-     * @see NumberInput
-     */
-    @JvmStatic
-    fun verticalNumberInput(height: Int) = VerticalNumberInputBuilder.newBuilder(height)
+    fun horizontalNumberInput() = HorizontalNumberInputBuilder.newBuilder()
 
     /**
      * Creates a new [LogAreaBuilder] for building [LogArea] components.
@@ -182,5 +174,16 @@ object Components {
     @JvmStatic
     fun <T : Component> group() = GroupBuilder.newBuilder<T>()
 
+    @Deprecated("Width is not necessary anymore", ReplaceWith("horizontalNumberInput()"))
+    @JvmStatic
+    fun horizontalNumberInput(width: Int) = HorizontalNumberInputBuilder.newBuilder(width)
+
+    /**
+     * Creates a new [VerticalNumberInputBuilder] for building vertical [NumberInput] components.
+     * @see NumberInput
+     */
+    @Deprecated("Width is not necessary anymore", ReplaceWith("verticalNumberInput()"))
+    @JvmStatic
+    fun verticalNumberInput(height: Int) = VerticalNumberInputBuilder.newBuilder(height)
 
 }

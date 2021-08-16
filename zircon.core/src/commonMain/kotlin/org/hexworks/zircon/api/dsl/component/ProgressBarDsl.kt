@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [ProgressBar] using the component builder DSL and returns it.
  */
 fun buildProgressBar(init: ProgressBarBuilder.() -> Unit): ProgressBar =
-    ProgressBarBuilder().apply(init).build()
+    ProgressBarBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [ProgressBar] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildProgressBar(init: ProgressBarBuilder.() -> Unit): ProgressBar =
  */
 fun <T : BaseContainerBuilder<*, *>> T.progressBar(
     init: ProgressBarBuilder.() -> Unit
-): ProgressBar = buildChildFor(this, ProgressBarBuilder(), init)
+): ProgressBar = buildChildFor(this, ProgressBarBuilder.newBuilder(), init)

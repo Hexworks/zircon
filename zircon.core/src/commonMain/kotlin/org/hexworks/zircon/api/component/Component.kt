@@ -102,40 +102,5 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
 
     fun resetState()
 
-    /**
-     * Adds a listener to this [Component] that will be called whenever
-     * this [Component] is activated.
-     * @see ComponentState.ACTIVE
-     * @return a [Subscription] that can be used to cancel this listener
-     */
-    fun onActivated(fn: (ComponentEvent) -> Unit): Subscription
-
-    /**
-     * Adds a listener to this [Component] that will be called whenever
-     * this [Component] is deactivated.
-     * @see ComponentState.DEFAULT
-     * @see ComponentState.FOCUSED
-     * @return a [Subscription] that can be used to cancel this listener
-     */
-    fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription
-
-    /**
-     * Adds a listener to this [Component] that will be called whenever
-     * this [Component] gains focus.
-     * @see ComponentState.FOCUSED
-     * @see Component.hasFocus
-     * @return a [Subscription] that can be used to cancel this listener
-     */
-    fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription
-
-    /**
-     * Adds a listener to this [Component] that will be called whenever
-     * this [Component] loses focus.
-     * @see ComponentState.FOCUSED
-     * @see Component.hasFocus
-     * @return a [Subscription] that can be used to cancel this listener
-     */
-    fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription
-
     companion object
 }

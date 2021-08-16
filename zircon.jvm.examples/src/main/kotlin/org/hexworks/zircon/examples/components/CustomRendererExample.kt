@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 
 class CustomRendererExample : OneColumnComponentExampleKotlin() {
@@ -26,7 +27,7 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
     override fun build(box: VBox) {
 
         val logArea = logArea()
-            .withSize(box.size)
+            .withPreferredSize(box.size)
             .withDecorations(box())
             .build()
 

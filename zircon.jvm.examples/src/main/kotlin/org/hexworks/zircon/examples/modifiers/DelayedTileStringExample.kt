@@ -31,7 +31,7 @@ object DelayedTileStringExample {
 
         val panel = Components.panel()
             .withDecorations(box())
-            .withSize(Size.create(48, 20))
+            .withPreferredSize(Size.create(48, 20))
             .build()
 
         screen.addComponent(panel)

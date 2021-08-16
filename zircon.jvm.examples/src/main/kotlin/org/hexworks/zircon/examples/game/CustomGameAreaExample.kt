@@ -37,7 +37,6 @@ object CustomGameAreaExample {
         val tileGrid = SwingApplications.startTileGrid(
             AppConfig.newBuilder()
                 .withSize(VISIBLE_SIZE.to2DSize())
-                .enableBetaFeatures()
                 .build()
         )
 
@@ -45,7 +44,7 @@ object CustomGameAreaExample {
 
         screen.addComponent(
             Components.label()
-                .withSize(VISIBLE_SIZE.to2DSize())
+                .withPreferredSize(VISIBLE_SIZE.to2DSize())
                 .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
                 .build()
         )

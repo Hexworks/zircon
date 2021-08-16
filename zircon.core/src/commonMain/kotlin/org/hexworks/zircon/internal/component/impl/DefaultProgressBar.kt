@@ -11,14 +11,14 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-class DefaultProgressBar(
+class DefaultProgressBar internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<ProgressBar>,
     override val range: Int,
     override val numberOfSteps: Int,
     override val displayPercentValueOfProgress: Boolean
 ) : ProgressBar, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

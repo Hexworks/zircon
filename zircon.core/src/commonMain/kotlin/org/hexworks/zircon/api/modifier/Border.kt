@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 import kotlin.jvm.JvmStatic
 
-data class Border(
+data class Border internal constructor(
     val borderType: BorderType,
     val borderColor: TileColor,
     val borderWidth: Int,
@@ -24,7 +24,7 @@ data class Border(
     companion object {
 
         @JvmStatic
-        fun newBuilder() = BorderBuilder()
+        fun newBuilder() = BorderBuilder.newBuilder()
     }
 
 }

@@ -7,11 +7,11 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
-class DefaultTextBox(
+class DefaultTextBox internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<TextBox>
 ) : TextBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

@@ -28,7 +28,7 @@ object GameComponents {
      * Creates a new [GameAreaBuilder].
      */
     @JvmStatic
-    fun <T : Tile, B : Block<T>> newGameAreaBuilder() = GameAreaBuilder<T, B>()
+    fun <T : Tile, B : Block<T>> newGameAreaBuilder() = GameAreaBuilder.newBuilder<T, B>()
 
     @JvmStatic
     @JvmOverloads

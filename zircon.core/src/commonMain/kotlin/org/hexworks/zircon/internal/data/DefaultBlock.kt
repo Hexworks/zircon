@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.base.BaseBlock
 
-class DefaultBlock<T : Tile>(
+class DefaultBlock<T : Tile> internal constructor(
     emptyTile: T,
     initialTiles: PersistentMap<BlockTileType, T>
 ) : BaseBlock<T>(emptyTile, initialTiles) {

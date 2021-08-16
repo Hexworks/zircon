@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.base.BaseGameArea
 
-class DefaultGameArea<T : Tile, B : Block<T>>(
+class DefaultGameArea<T : Tile, B : Block<T>> internal constructor(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D,
     initialVisibleOffset: Position3D,

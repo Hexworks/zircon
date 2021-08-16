@@ -13,7 +13,7 @@ fun injectStringAsKeyboardEvents(string: String, tileGrid: InternalTileGrid): UI
                 KeyboardEvent(
                     type = type,
                     key = "$char",
-                    code = KeyCode.findByCode(char.toInt())
+                    code = KeyCode.findByCode(char.code)
                 ), UIEventPhase.TARGET
             )
         }

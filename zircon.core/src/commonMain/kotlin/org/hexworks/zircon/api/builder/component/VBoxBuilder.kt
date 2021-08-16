@@ -11,8 +11,8 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class VBoxBuilder : BaseContainerBuilder<VBox, VBoxBuilder>(
-        DefaultVBoxRenderer()
+class VBoxBuilder private constructor() : BaseContainerBuilder<VBox, VBoxBuilder>(
+    initialRenderer = DefaultVBoxRenderer()
 ) {
 
     var spacing: Int = 0
@@ -29,19 +29,19 @@ class VBoxBuilder : BaseContainerBuilder<VBox, VBoxBuilder>(
 
     override fun build(): VBox {
         return DefaultVBox(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialTitle = title,
-                spacing = spacing
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialTitle = title,
+            spacing = spacing
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
-        }
+        }.attachListeners()
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withSpacing(spacing)
-            .withChildren(*childrenToAdd.toTypedArray())
+        .withProps(props.copy())
+        .withSpacing(spacing)
+        .withChildren(*childrenToAdd.toTypedArray())
 
     @Suppress("DuplicatedCode")
     override fun calculateContentSize(): Size {
@@ -51,11 +51,11 @@ class VBoxBuilder : BaseContainerBuilder<VBox, VBoxBuilder>(
         var height = 0
         var maxWidth = 0
         childrenToAdd
-                .map { it.size }
-                .forEach {
-                    height += it.height
-                    maxWidth = max(maxWidth, it.width)
-                }
+            .map { it.size }
+            .forEach {
+                height += it.height
+                maxWidth = max(maxWidth, it.width)
+            }
         if (spacing > 0) {
             height += childrenToAdd.size * spacing - 1
         }

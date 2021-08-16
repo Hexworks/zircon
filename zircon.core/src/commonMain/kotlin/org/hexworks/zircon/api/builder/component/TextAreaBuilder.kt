@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.TextArea
+import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
@@ -9,17 +10,26 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class TextAreaBuilder : ComponentWithTextBuilder<TextArea, TextAreaBuilder>(
+class TextAreaBuilder private constructor() : BaseComponentBuilder<TextArea, TextAreaBuilder>(
     initialRenderer = DefaultTextAreaRenderer(),
-    initialText = ""
 ) {
+
+    var text: String = ""
+
+    /**
+     * Sets the [text] for the component that is being built and returns the builder.
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun withText(text: String) = also {
+        this.text = text
+    }
 
     override fun build(): TextArea {
         return DefaultTextArea(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
             initialText = text,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

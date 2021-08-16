@@ -55,13 +55,17 @@ object ModalExample {
     private fun openModal(screen: Screen, level: Int = 1) {
 
         val modalPanel = Components.panel()
-            .withSize(Size.create(30, 20))
+            .withPreferredSize(Size.create(30, 20))
             .withDecorations(box(title = "Modal level: $level"), shadow())
             .build()
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
             .withComponent(modalPanel)
-            .withParentSize(screen.size)
+            .withPreferredSize(screen.size)
+            .withColorTheme(screen.theme)
+            .withTileset(screen.tileset)
+            .withDarkenPercent(.1)
+            .withCenteredDialog(true)
             .build().apply {
                 handleKeyboardEvents(KEY_PRESSED) { event, _ ->
                     if (event.code == KeyCode.KEY_C) {
@@ -76,10 +80,9 @@ object ModalExample {
             .withText("Close")
             .withAlignment(alignmentWithin(modalPanel, BOTTOM_RIGHT))
             .build().apply {
-                handleComponentEvents(ACTIVATED) {
+                onActivated {
                     logger.info("Closed by activating the button")
                     modal.close(EmptyModalResult)
-                    Processed
                 }
             }
 

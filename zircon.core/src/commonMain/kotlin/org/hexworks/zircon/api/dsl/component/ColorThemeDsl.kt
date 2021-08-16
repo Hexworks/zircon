@@ -7,4 +7,4 @@ import org.hexworks.zircon.api.component.ColorTheme
  * Creates a new [ColorTheme] using the component builder DSL and returns it.
  */
 fun colorTheme(init: ColorThemeBuilder.() -> Unit): ColorTheme =
-    ColorThemeBuilder().apply(init).build()
+    ColorThemeBuilder.newBuilder().apply(init).build()

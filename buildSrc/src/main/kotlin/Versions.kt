@@ -1,9 +1,11 @@
+@file:Suppress("SpellCheckingInspection")
+
 object Versions {
 
-    const val kotlinxCoroutinesVersion = "1.3.9"
-    const val kotlinxCollectionsImmutableVersion = "0.3.3"
+    const val kotlinxCoroutinesVersion = "1.5.0"
+    const val kotlinxCollectionsImmutableVersion = "0.3.4"
 
-    const val cobaltVersion = "2020.0.19-PREVIEW"
+    const val cobaltVersion = "2021.1.0-RELEASE"
 
     const val caffeineVersion = "2.5.4"
     const val snakeyamlVersion = "1.18"

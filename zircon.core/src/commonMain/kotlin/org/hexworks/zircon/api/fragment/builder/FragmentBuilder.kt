@@ -20,5 +20,5 @@ interface FragmentBuilder<T, U : FragmentBuilder<T, U>> : Builder<T> {
      * Aligns the resulting [Component] positionally, relative to its parent.
      * Same as calling `withAlignment(positionalAlignment(x, y))`
      */
-    fun withPosition(x: Int, y: Int): U
+    fun withPosition(x: Int, y: Int): U = withPosition(Position.create(x, y))
 }

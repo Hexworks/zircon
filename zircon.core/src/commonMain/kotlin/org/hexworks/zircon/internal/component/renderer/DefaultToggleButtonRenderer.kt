@@ -31,29 +31,29 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
         val toggledBackground = ANSITileColor.GRAY.withAlpha(0)
         val unToggledBackground = ANSITileColor.GRAY.withAlpha(0)
         val bar = Tile.createCharacterTile(
-            Symbols.SINGLE_LINE_HORIZONTAL, StyleSet.create(
-                foregroundColor = theme.secondaryForegroundColor,
+            Symbols.SINGLE_LINE_HORIZONTAL, StyleSet.newBuilder().apply {
+                foregroundColor = theme.secondaryForegroundColor
                 backgroundColor = if (isToggled) toggledBackground else unToggledBackground
-            )
+            }.build()
         )
         if (isToggled) {
             tileGraphics.draw(bar, Position.create(0, 0))
             tileGraphics.draw(
                 tile = Tile.createCharacterTile(
-                    Symbols.TRIPLE_BAR, StyleSet.create(
-                        foregroundColor = theme.accentColor,
+                    Symbols.TRIPLE_BAR, StyleSet.newBuilder().apply {
+                        foregroundColor = theme.accentColor
                         backgroundColor = toggledBackground
-                    )
+                    }.build()
                 ),
                 drawPosition = Position.create(1, 0)
             )
         } else {
             tileGraphics.draw(
                 tile = Tile.createCharacterTile(
-                    Symbols.TRIPLE_BAR, StyleSet.create(
-                        foregroundColor = theme.primaryForegroundColor,
+                    Symbols.TRIPLE_BAR, StyleSet.newBuilder().apply {
+                        foregroundColor = theme.primaryForegroundColor
                         backgroundColor = unToggledBackground
-                    )
+                    }.build()
                 ),
                 drawPosition = Position.create(0, 0)
             )

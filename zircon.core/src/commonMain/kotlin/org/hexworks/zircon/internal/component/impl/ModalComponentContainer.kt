@@ -4,19 +4,20 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.graphics.Renderable
 import kotlin.jvm.Synchronized
@@ -100,12 +101,17 @@ class ModalComponentContainer(
         return mainContainer.addComponent(component)
     }
 
+    override fun detachAllComponents(): List<Component> {
+        return mainContainer.detachAllComponents()
+    }
+
     @Synchronized
     fun addModal(modal: Modal<out ModalResult>) {
         val previousContainer = containerStack.fetchLast()
         previousContainer.deactivate()
         val modalContainer = buildContainer(
-            metadata = metadata
+            metadata = metadata,
+            rootRenderer = NoOpComponentRenderer()
         )
         containerStack.add(modalContainer)
         modal.onClosed {
@@ -135,18 +141,21 @@ class ModalComponentContainer(
 
     companion object {
 
-        private fun buildContainer(metadata: ComponentMetadata): InternalComponentContainer {
+        private fun buildContainer(
+            metadata: ComponentMetadata,
+            rootRenderer: ComponentRenderer<in RootContainer> = RootContainerRenderer()
+        ): InternalComponentContainer {
             val renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
-                componentRenderer = RootContainerRenderer()
+                componentRenderer = rootRenderer
             )
             val container = DefaultComponentContainer(
                 root = DefaultRootContainer(
-                    componentMetadata = metadata,
+                    metadata = metadata,
                     renderingStrategy = renderingStrategy
                 )
             )
-            container.theme = ColorThemes.empty()
+            container.theme = metadata.theme
             return container
         }
     }

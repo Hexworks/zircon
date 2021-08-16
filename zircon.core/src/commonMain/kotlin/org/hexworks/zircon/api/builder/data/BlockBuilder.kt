@@ -14,14 +14,14 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  * Has no [Tile]s for either sides by default.
  * Setting an [emptyTile] is **mandatory** and has no default.
  */
-@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-data class BlockBuilder<T : Tile>(
-    private var emptyTile: Maybe<T> = Maybe.empty(),
+@Suppress("UNCHECKED_CAST")
+class BlockBuilder<T : Tile> private constructor(
+    private var emptyTile: T? = null,
     private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
 ) : Builder<Block<T>> {
 
     fun withEmptyTile(tile: T) = also {
-        this.emptyTile = Maybe.of(tile)
+        this.emptyTile = tile
     }
 
     fun withTop(top: T) = also {
@@ -69,16 +69,17 @@ data class BlockBuilder<T : Tile>(
     }
 
     override fun build(): Block<T> {
-        require(emptyTile.isPresent) {
+        requireNotNull(emptyTile) {
             "Can't build block: no empty tile supplied."
         }
         return DefaultBlock(
-            emptyTile = emptyTile.get(),
+            emptyTile = emptyTile!!,
             initialTiles = tiles.toPersistentMap()
         )
     }
 
-    override fun createCopy() = copy(
+    override fun createCopy() = BlockBuilder(
+        emptyTile = emptyTile,
         tiles = tiles.toMutableMap()
     )
 

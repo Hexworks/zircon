@@ -8,7 +8,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
-class DefaultHorizontalNumberInput(
+class DefaultHorizontalNumberInput internal constructor(
     initialValue: Int,
     minValue: Int,
     maxValue: Int,

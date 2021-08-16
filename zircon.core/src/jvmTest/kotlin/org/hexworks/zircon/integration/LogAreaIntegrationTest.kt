@@ -15,7 +15,7 @@ class LogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(7
 
         screen.addComponent(panel)
         val logArea = Components.logArea()
-            .withSize(Size.create(58, 23))
+            .withPreferredSize(Size.create(58, 23))
             .build()
 
         logArea.addParagraph("This is a simple log row")

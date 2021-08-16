@@ -12,17 +12,18 @@ import org.hexworks.zircon.internal.component.modal.DefaultModal
 class DefaultModalRenderer<T : ModalResult> : ComponentRenderer<DefaultModal<T>> {
 
     override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultModal<T>>) {
-        tileGraphics.fill(
-            Tile.defaultTile().withStyle(
-                StyleSetBuilder.newBuilder()
-                    .withBackgroundColor(
-                        TileColor.create(
-                            0, 0, 0,
-                            alpha = 255.0.times(context.component.darkenPercent).toInt()
-                        )
+        val filler = Tile.defaultTile().withStyle(
+            StyleSetBuilder.newBuilder()
+                .withBackgroundColor(
+                    TileColor.create(
+                        0, 0, 0,
+                        alpha = 255.0.times(context.component.darkenPercent).toInt()
                     )
-                    .build()
-            )
+                )
+                .build()
         )
+        if (filler.isNotEmpty) {
+            tileGraphics.fill(filler)
+        }
     }
 }

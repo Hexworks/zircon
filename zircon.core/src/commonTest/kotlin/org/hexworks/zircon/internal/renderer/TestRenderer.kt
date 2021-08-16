@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.data.Size
@@ -26,11 +27,10 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  * @sample org.hexworks.zircon.internal.renderer.TestRendererTest.tinyExample
  */
 class TestRenderer(
+    config: AppConfig,
     private val tileGraphics: TileGraphics,
-    tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-    gridSize: Size = Size.defaultGridSize()
 ) : UIEventDispatcher, Renderer, Clearable {
-    private val tileGrid: TileGrid = ThreadSafeTileGrid(tileset, gridSize)
+    private val tileGrid: TileGrid = ThreadSafeTileGrid(config)
     private val mainView = object : BaseView(tileGrid) {}
     private val closedValueProperty: Property<Boolean> = false.toProperty()
     override val closedValue: ObservableValue<Boolean> get() = closedValueProperty
@@ -74,6 +74,4 @@ class TestRenderer(
             closedValueProperty.value = true
         }
     }
-
-    override val isClosed: ObservableValue<Boolean> get() = closedValue
 }

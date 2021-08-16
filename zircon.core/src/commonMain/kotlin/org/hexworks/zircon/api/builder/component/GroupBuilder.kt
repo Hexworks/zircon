@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-class GroupBuilder<T : Component> : Builder<Group<T>> {
+class GroupBuilder<T : Component> private constructor() : Builder<Group<T>> {
 
     var isDisabled: Boolean = false
     var isHidden: Boolean = false

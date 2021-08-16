@@ -2,6 +2,7 @@
 
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.builder.component.ColorThemeBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -55,6 +56,12 @@ interface ColorTheme {
      */
     val accentColor: TileColor
 
+    val isUnknown: Boolean
+        get() = this === UNKNOWN
+
+    val isNotUnknown: Boolean
+        get() = isUnknown.not()
+
     @Deprecated(
         message = "contains a typo, use toInteractiveStyle instead",
         replaceWith = ReplaceWith("this.toInteractiveStyle()")
@@ -72,7 +79,7 @@ interface ColorTheme {
                 .withBackgroundColor(TileColor.transparent())
                 .build()
         )
-        .withMouseOverStyle(
+        .withHighlightedStyle(
             StyleSetBuilder.newBuilder()
                 .withForegroundColor(secondaryForegroundColor)
                 .withBackgroundColor(accentColor)
@@ -154,4 +161,14 @@ interface ColorTheme {
                 .build()
         )
         .build()
+
+    companion object {
+
+        private val UNKNOWN = ColorThemeBuilder.newBuilder()
+            .withName("unknown")
+            .build()
+
+        fun unknown() = UNKNOWN
+
+    }
 }

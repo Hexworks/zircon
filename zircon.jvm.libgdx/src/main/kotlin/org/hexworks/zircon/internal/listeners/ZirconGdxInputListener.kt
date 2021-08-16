@@ -98,10 +98,10 @@ class ZirconInputListener(
     }
 
     private fun createKeyboardEvent(keyCode: KeyCode, type: KeyboardEventType): KeyboardEvent {
-        val keyChar = keyCode.toChar()
+        val keyChar = keyCode.toCharOrNull()
         return KeyboardEvent(
             type = type,
-            key = "${keyChar.orElse(' ')}",
+            key = "$keyChar",
             code = keyCode,
             ctrlDown = ctrlPressed,
             altDown = altPressed,

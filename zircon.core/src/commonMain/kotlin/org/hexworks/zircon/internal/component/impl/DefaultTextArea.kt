@@ -32,14 +32,14 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
 @Suppress("DuplicatedCode")
-class DefaultTextArea constructor(
+class DefaultTextArea internal constructor(
     initialText: String,
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<TextArea>
 ) : TextArea,
     Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
     DefaultComponent(
-        componentMetadata = componentMetadata,
+        metadata = componentMetadata,
         renderer = renderingStrategy
     ) {
 

@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.tileset
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
@@ -14,7 +15,7 @@ import org.hexworks.zircon.internal.resource.TilesetType.*
 @Suppress("UNCHECKED_CAST")
 class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
 
-    override val isClosed = false.toProperty()
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     private val tilesetCache = mutableMapOf<UUID, Tileset<SpriteBatch>>()
 
@@ -29,7 +30,7 @@ class LibgdxTilesetLoader : TilesetLoader<SpriteBatch>, Closeable {
         resource.id in tilesetCache || resource.getLoaderKey() in LOADERS
 
     override fun close() {
-        isClosed.value = true
+        closedValue.value = true
         tilesetCache.clear()
     }
 
