@@ -47,7 +47,7 @@ public class LayersExample {
     }
 
     private static void addOverlayAt(TileGrid tileGrid, Position offset, Size size, TileColor color) {
-        tileGrid.addLayer(new LayerBuilder()
+        tileGrid.addLayer(LayerBuilder.newBuilder()
                 .withOffset(offset)
                 .withSize(size)
                 .withFiller(Tile.newBuilder()

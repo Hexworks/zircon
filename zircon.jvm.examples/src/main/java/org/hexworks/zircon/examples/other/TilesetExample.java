@@ -83,7 +83,7 @@ public class TilesetExample {
         final int charCount = RANDOM_CHARS.length;
         final int ansiCount = ANSITileColor.values().length;
 
-        final Layer overlay = new LayerBuilder()
+        final Layer overlay = LayerBuilder.newBuilder()
                 .withSize(tileGrid.getSize())
                 .withFiller(Tile.empty().withBackgroundColor(TileColor.create(0, 0, 0, 50)))
                 .build();

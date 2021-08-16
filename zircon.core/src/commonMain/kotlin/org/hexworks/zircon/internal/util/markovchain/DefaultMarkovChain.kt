@@ -1,6 +1,11 @@
-package org.hexworks.zircon.api.util.markovchain
+package org.hexworks.zircon.internal.util.markovchain
 
-class DefaultMarkovChain<T : Any>(private val firstNode: MarkovChainNode<T>) : MarkovChain<T> {
+import org.hexworks.zircon.api.util.markovchain.MarkovChain
+import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
+
+class DefaultMarkovChain<T : Any> internal constructor(
+    private val firstNode: MarkovChainNode<T>
+) : MarkovChain<T> {
 
     private var current: MarkovChainNode<T> = firstNode
 

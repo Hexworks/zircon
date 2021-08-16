@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Icon] using the component builder DSL and returns it.
  */
 fun buildIcon(init: IconBuilder.() -> Unit): Icon =
-    IconBuilder().apply(init).build()
+    IconBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [Icon] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildIcon(init: IconBuilder.() -> Unit): Icon =
  */
 fun <T : BaseContainerBuilder<*, *>> T.icon(
     init: IconBuilder.() -> Unit
-): Icon = buildChildFor(this, IconBuilder(), init)
+): Icon = buildChildFor(this, IconBuilder.newBuilder(), init)

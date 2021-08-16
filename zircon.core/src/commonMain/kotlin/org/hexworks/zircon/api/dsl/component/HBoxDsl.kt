@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [HBox] using the component builder DSL and returns it.
  */
 fun buildHbox(init: HBoxBuilder.() -> Unit): HBox =
-    HBoxBuilder().apply(init).build()
+    HBoxBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [HBox] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildHbox(init: HBoxBuilder.() -> Unit): HBox =
  */
 fun <T : BaseContainerBuilder<*, *>> T.hbox(
     init: HBoxBuilder.() -> Unit
-): HBox = buildChildFor(this, HBoxBuilder(), init)
+): HBox = buildChildFor(this, HBoxBuilder.newBuilder(), init)

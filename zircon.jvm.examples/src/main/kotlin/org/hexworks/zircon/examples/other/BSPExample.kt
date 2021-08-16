@@ -6,7 +6,13 @@ import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.screen.Screen
@@ -27,7 +33,6 @@ object BSPExample {
         val tileGrid = SwingApplications.startTileGrid(
             AppConfig.newBuilder()
                 .withSize(Size.create(ACTUAL_SIZE.xLength + 1, ACTUAL_SIZE.yLength + 1))
-                .enableBetaFeatures()
                 .build()
         )
 

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -25,17 +25,17 @@ abstract class BaseSlider(
     componentMetadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<Slider>
 ) : Slider, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderer
 ) {
 
     private val range: Int = maxValue - minValue
     protected val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
-    final override val currentValueProperty = createPropertyFrom(minValue)
+    final override val currentValueProperty = minValue.toProperty()
     override var currentValue: Int by currentValueProperty.asDelegate()
 
-    final override val currentStepProperty = createPropertyFrom(0)
+    final override val currentStepProperty = 0.toProperty()
     override var currentStep: Int by currentStepProperty.asDelegate()
 
     init {
@@ -154,7 +154,7 @@ abstract class BaseSlider(
                 .withBackgroundColor(TileColor.transparent())
                 .build()
         )
-        .withMouseOverStyle(
+        .withHighlightedStyle(
             StyleSetBuilder.newBuilder()
                 .withForegroundColor(colorTheme.primaryBackgroundColor)
                 .withBackgroundColor(colorTheme.accentColor)

@@ -40,7 +40,7 @@ object ComponentAlignmentExample {
 
         val panel = Components.panel()
             .withDecorations(box(title = "Component alignment test"), shadow())
-            .withSize(Size.create(30, 15))
+            .withPreferredSize(Size.create(30, 15))
             .withAlignmentWithin(screen, CENTER)
             .build()
         screen.addComponent(panel)

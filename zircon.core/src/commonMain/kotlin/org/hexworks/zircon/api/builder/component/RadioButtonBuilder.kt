@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton, RadioButtonBuilder>(
+class RadioButtonBuilder private constructor() : ComponentWithTextBuilder<RadioButton, RadioButtonBuilder>(
     initialRenderer = DefaultRadioButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
@@ -30,7 +30,7 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton, RadioButtonBuil
             renderingStrategy = createRenderingStrategy(),
             initialText = text,
             key = key,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

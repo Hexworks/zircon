@@ -94,11 +94,12 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.
          */
         @JvmStatic
-        fun newBuilder() = StyleSetBuilder()
+        fun newBuilder() = StyleSetBuilder.newBuilder()
 
         /**
          * Creates a new [StyleSet].
          */
+        @Deprecated("use the builder instead")
         @JvmStatic
         fun create(
             foregroundColor: TileColor,

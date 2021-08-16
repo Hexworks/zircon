@@ -17,19 +17,22 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
-class DefaultVBox(
+class DefaultVBox internal constructor(
     componentMetadata: ComponentMetadata,
     initialTitle: String,
     private val spacing: Int,
     renderingStrategy: ComponentRenderingStrategy<VBox>
 ) : VBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
     TitleOverride by TitleOverride.create(initialTitle) {
 
     private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()
+
+    override val remainingSpace: Int
+        get() = availableSpace.height
 
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {

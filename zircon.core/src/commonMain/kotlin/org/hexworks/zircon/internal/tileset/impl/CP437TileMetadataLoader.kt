@@ -1,10 +1,9 @@
-package org.hexworks.zircon.api.tileset.impl
+package org.hexworks.zircon.internal.tileset.impl
 
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TextureMetadata
 import org.hexworks.zircon.api.tileset.TileMetadataLoader
-import org.hexworks.zircon.internal.tileset.impl.CP437TextureMetadata
 
 class CP437TileMetadataLoader(
     private val width: Int,

@@ -13,8 +13,11 @@ import kotlin.jvm.JvmStatic
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface ComponentStyleSet {
 
-    val isDefault
-        get() = this == defaultStyleSet()
+    val isUnknown: Boolean
+        get() = this === UNKNOWN
+
+    val isNotUnknown: Boolean
+        get() = isUnknown.not()
 
     /**
      * Returns the [StyleSet] for the given `state`.
@@ -23,11 +26,13 @@ interface ComponentStyleSet {
 
     companion object {
 
+        private val UNKNOWN = newBuilder().build()
+
         /**
          * Creates a new [ComponentStyleSetBuilder] for creating styles.
          */
         @JvmStatic
-        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder()
+        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder.newBuilder()
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]
@@ -44,6 +49,9 @@ interface ComponentStyleSet {
         fun empty() = ComponentStyleSetBuilder.newBuilder()
             .withDefaultStyle(StyleSet.empty())
             .build()
+
+        @JvmStatic
+        fun unknown() = UNKNOWN
 
     }
 }

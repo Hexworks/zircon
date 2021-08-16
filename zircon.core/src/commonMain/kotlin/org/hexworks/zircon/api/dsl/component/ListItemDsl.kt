@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [ListItem] using the component builder DSL and returns it.
  */
 fun buildListItem(init: ListItemBuilder.() -> Unit): ListItem =
-    ListItemBuilder().apply(init).build()
+    ListItemBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [ListItem] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildListItem(init: ListItemBuilder.() -> Unit): ListItem =
  */
 fun <T : BaseContainerBuilder<*, *>> T.listItem(
     init: ListItemBuilder.() -> Unit
-): ListItem = buildChildFor(this, ListItemBuilder(), init)
+): ListItem = buildChildFor(this, ListItemBuilder.newBuilder(), init)

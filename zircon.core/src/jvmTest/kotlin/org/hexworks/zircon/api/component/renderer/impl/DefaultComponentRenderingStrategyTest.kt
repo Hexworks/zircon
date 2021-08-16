@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.component.renderer.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
@@ -56,13 +57,8 @@ class DefaultComponentRenderingStrategyTest {
         )
 
         val btn = DefaultButton(
-            componentMetadata = ComponentMetadata(
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                relativePosition = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
-            ),
-            initialText = "qux",
+            componentMetadata = ComponentMetadata(size),
+            textProperty = "qux".toProperty(),
             renderingStrategy = target
         )
 
@@ -90,13 +86,8 @@ class DefaultComponentRenderingStrategyTest {
         )
 
         val btn = DefaultButton(
-            componentMetadata = ComponentMetadata(
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                relativePosition = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
-            ),
-            initialText = "qux",
+            componentMetadata = ComponentMetadata(size),
+            textProperty = "qux".toProperty(),
             renderingStrategy = target
         )
 
@@ -119,13 +110,8 @@ class DefaultComponentRenderingStrategyTest {
             }
 
         val label = DefaultLabel(
-            componentMetadata = ComponentMetadata(
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                relativePosition = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
-            ),
-            initialText = "Long text",
+            componentMetadata = ComponentMetadata(size),
+            textProperty = "Long text".toProperty(),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
                 componentRenderer = DefaultLabelRenderer() as ComponentRenderer<Label>
@@ -152,13 +138,8 @@ class DefaultComponentRenderingStrategyTest {
             }
 
         val button = DefaultButton(
-            componentMetadata = ComponentMetadata(
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                relativePosition = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
-            ),
-            initialText = "foo",
+            componentMetadata = ComponentMetadata(size),
+            textProperty = "foo".toProperty(),
             renderingStrategy = target
         )
 
@@ -182,13 +163,8 @@ class DefaultComponentRenderingStrategyTest {
             .build()
 
         val button = DefaultButton(
-            componentMetadata = ComponentMetadata(
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                size = size,
-                relativePosition = Position.defaultPosition(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
-            ),
-            initialText = "bar",
+            componentMetadata = ComponentMetadata(size),
+            textProperty = "bar".toProperty(),
             renderingStrategy = target
         )
 
@@ -201,4 +177,11 @@ class DefaultComponentRenderingStrategyTest {
             ' ', '░', '░', '░'
         )
     }
+
+    private fun ComponentMetadata(size: Size) = ComponentMetadata(
+        size = size,
+        relativePosition = Position.defaultPosition(),
+        tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),
+        componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty()
+    )
 }

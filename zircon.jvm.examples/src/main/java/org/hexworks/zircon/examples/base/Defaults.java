@@ -42,7 +42,6 @@ public class Defaults {
     public static TileGrid startTileGrid() {
         return SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
-                .enableBetaFeatures()
                 .withSize(GRID_SIZE)
                 .build());
     }
@@ -50,7 +49,6 @@ public class Defaults {
     public static TileGrid startTileGrid(TilesetResource tileset) {
         return SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
-                .enableBetaFeatures()
                 .withSize(GRID_SIZE)
                 .build());
     }

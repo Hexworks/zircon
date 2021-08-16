@@ -13,7 +13,7 @@ import kotlin.jvm.JvmStatic
  * - a simple border
  * - on all sides (top, right, bottom, left)
  */
-data class BorderBuilder(
+class BorderBuilder private constructor(
     private var borderType: BorderType = BorderType.SOLID,
     private var borderColor: TileColor = TileColor.defaultForegroundColor(),
     private var borderWidth: Int = 2,
@@ -47,7 +47,12 @@ data class BorderBuilder(
         borderPositions = borderPositions
     )
 
-    override fun createCopy() = copy(borderPositions = borderPositions.toSet())
+    override fun createCopy() = BorderBuilder(
+        borderType = borderType,
+        borderColor = borderColor,
+        borderPositions = borderPositions,
+        borderWidth = borderWidth
+    )
 
 
     companion object {

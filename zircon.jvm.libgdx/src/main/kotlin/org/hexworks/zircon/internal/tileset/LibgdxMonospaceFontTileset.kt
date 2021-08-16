@@ -71,7 +71,7 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource) : Tilese
     }
 
     private fun fetchTextureForTile(tile: Tile): TileTexture<TextureRegion> {
-        val glyph = font.data.getGlyph(tile.asCharacterTile().get().character)
+        val glyph = font.data.getGlyph(tile.asCharacterTileOrNull()!!.character)
         val page = font.getRegion(glyph.page)
         val tr = TextureRegion(page.texture, glyph.u, glyph.v, glyph.u2, glyph.v2)
 

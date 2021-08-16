@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.component.LabelBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -38,11 +39,11 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         componentStub = ComponentStub(DefaultContainerTest.COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
         rendererStub = ComponentRendererStub()
         target = object : DefaultComponent(
-            componentMetadata = ComponentMetadata(
+            metadata = ComponentMetadata(
                 size = DefaultContainerTest.SIZE_4x4,
                 relativePosition = POSITION_2_3,
-                componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET_REX_PAINT_20X20
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
             renderer = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),

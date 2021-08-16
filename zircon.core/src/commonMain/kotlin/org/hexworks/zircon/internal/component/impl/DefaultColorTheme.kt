@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 
-data class DefaultColorTheme(
+data class DefaultColorTheme internal constructor(
     override val name: String,
     override val primaryForegroundColor: TileColor,
     override val secondaryForegroundColor: TileColor,

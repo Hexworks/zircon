@@ -13,7 +13,7 @@ object ComponentStyleSets {
      * Creates a new [ComponentStyleSetBuilder].
      */
     @JvmStatic
-    fun newBuilder() = ComponentStyleSetBuilder()
+    fun newBuilder() = ComponentStyleSetBuilder.newBuilder()
 
     /**
      * Returns the default [ComponentStyleSet] which uses the

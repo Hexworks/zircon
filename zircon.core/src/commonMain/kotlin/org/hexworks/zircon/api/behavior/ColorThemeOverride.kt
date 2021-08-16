@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
  */
 // TODO: mention in the release notes that HasColorTheme + ColorThemeOverride was created
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface ColorThemeOverride : Themeable, HasColorTheme {
+interface ColorThemeOverride : HasColorTheme {
 
     /**
      * The (mutable) [ColorTheme].
@@ -23,7 +23,7 @@ interface ColorThemeOverride : Themeable, HasColorTheme {
      *
      * @see Property
      */
-    override val themeProperty: Property<ColorTheme>
+    val themeProperty: Property<ColorTheme>
 
     companion object {
 

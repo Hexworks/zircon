@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [RadioButton] using the component builder DSL and returns it.
  */
 fun buildRadioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
-    RadioButtonBuilder().apply(init).build()
+    RadioButtonBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [RadioButton] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildRadioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
  */
 fun <T : BaseContainerBuilder<*, *>> T.radioButton(
     init: RadioButtonBuilder.() -> Unit
-): RadioButton = buildChildFor(this, RadioButtonBuilder(), init)
+): RadioButton = buildChildFor(this, RadioButtonBuilder.newBuilder(), init)

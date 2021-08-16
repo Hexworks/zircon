@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Paragraph] using the component builder DSL and returns it.
  */
 fun buildParagraph(init: ParagraphBuilder.() -> Unit): Paragraph =
-    ParagraphBuilder().apply(init).build()
+    ParagraphBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [Paragraph] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildParagraph(init: ParagraphBuilder.() -> Unit): Paragraph =
  */
 fun <T : BaseContainerBuilder<*, *>> T.paragraph(
     init: ParagraphBuilder.() -> Unit
-): Paragraph = buildChildFor(this, ParagraphBuilder(), init)
+): Paragraph = buildChildFor(this, ParagraphBuilder.newBuilder(), init)

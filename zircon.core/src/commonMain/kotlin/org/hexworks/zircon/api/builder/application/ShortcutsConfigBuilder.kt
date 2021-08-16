@@ -2,36 +2,76 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.application.ShortcutsConfig
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
+import org.hexworks.zircon.api.uievent.KeyboardEventType
 import kotlin.jvm.JvmStatic
 
 /**
  * [Builder] for creating [ShortcutsConfig]s.
  */
-@Suppress("KDocUnresolvedReference")
-data class ShortcutsConfigBuilder(
-    private var shortcutsConfig: ShortcutsConfig = ShortcutsConfig.defaultConfig()
+class ShortcutsConfigBuilder private constructor(
+    /**
+     * Default is `<Space>` press.
+     */
+    var activateFocused: KeyboardEventMatcher = KeyboardEventMatcher(
+        type = KeyboardEventType.KEY_PRESSED,
+        code = KeyCode.SPACE
+    ),
+    /**
+     * Default is `<Space>` release.
+     */
+    var deactivateActivated: KeyboardEventMatcher = KeyboardEventMatcher(
+        type = KeyboardEventType.KEY_RELEASED,
+        code = KeyCode.SPACE
+    ),
+    /**
+     * Default is `<Tab>` press.
+     */
+    var focusNext: KeyboardEventMatcher = KeyboardEventMatcher(
+        type = KeyboardEventType.KEY_PRESSED,
+        code = KeyCode.TAB,
+        shiftDown = false
+    ),
+    /**
+     * Default is `<Shift>`+`<Tab>` press.
+     */
+    var focusPrevious: KeyboardEventMatcher = KeyboardEventMatcher(
+        type = KeyboardEventType.KEY_PRESSED,
+        code = KeyCode.TAB,
+        shiftDown = true
+    )
 ) : Builder<ShortcutsConfig> {
 
     fun withActivateFocused(activateFocused: KeyboardEventMatcher) = also {
-        shortcutsConfig = shortcutsConfig.copy(activateFocused = activateFocused)
+        this.activateFocused = activateFocused
     }
 
     fun withDeactivateActivated(deactivateActivated: KeyboardEventMatcher) = also {
-        shortcutsConfig = shortcutsConfig.copy(deactivateActivated = deactivateActivated)
+        this.deactivateActivated = deactivateActivated
     }
 
     fun withFocusNext(focusNext: KeyboardEventMatcher) = also {
-        shortcutsConfig = shortcutsConfig.copy(focusNext = focusNext)
+        this.focusNext = focusNext
     }
 
     fun withFocusPrevious(focusPrevious: KeyboardEventMatcher) = also {
-        shortcutsConfig = shortcutsConfig.copy(focusPrevious = focusPrevious)
+        this.focusPrevious = focusPrevious
     }
 
-    override fun build() = shortcutsConfig
+    override fun build() = ShortcutsConfig(
+        activateFocused = activateFocused,
+        deactivateActivated = deactivateActivated,
+        focusNext =focusNext,
+        focusPrevious = focusPrevious
+    )
 
-    override fun createCopy() = copy()
+    override fun createCopy() = ShortcutsConfigBuilder(
+        activateFocused = activateFocused,
+        deactivateActivated = deactivateActivated,
+        focusNext =focusNext,
+        focusPrevious = focusPrevious
+    )
 
     companion object {
 

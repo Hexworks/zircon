@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples.other
 
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.internal.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.api.uievent.MouseEventType
 import java.util.*
 import kotlin.reflect.full.declaredMemberProperties
@@ -28,7 +28,7 @@ object InCP437WeTrust {
 
     private val symbolsMap: Map<Char, String> =
         Symbols::class.declaredMemberProperties.associate { it.getter.call() as Char to it.name }
-    private val currentSymbol = createPropertyFrom(' ')
+    private val currentSymbol = ' '.toProperty()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -45,9 +45,9 @@ object InCP437WeTrust {
         val loader = CP437TileMetadataLoader(16, 16)
 
         val cp437panel = Components.panel()
-            .withSize(Size.create(19, 18))
+            .withPreferredSize(Size.create(19, 18))
             .withDecorations(box(BoxType.SINGLE), shadow())
-            .withRendererFunction { tileGraphics, _ ->
+            .withComponentRenderer { tileGraphics, _ ->
                 loader.fetchMetadata().forEach { (char, meta) ->
                     tileGraphics.draw(
                         tile = Tile.defaultTile()

@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.component.data
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.component.data.CommonComponentProperties
 import org.junit.Test
+import kotlin.reflect.jvm.internal.impl.renderer.DescriptorRenderer
 
 class CommonComponentPropertiesTest {
 
@@ -14,13 +14,9 @@ class CommonComponentPropertiesTest {
     fun shouldHaveProperDefaults() {
         val result = CommonComponentProperties<Component>()
 
-        val componentStyleSet: ComponentStyleSet = ComponentStyleSet.defaultStyleSet()
-        val tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-        val decorationRenderers: List<ComponentDecorationRenderer> = listOf()
-
-        assertThat(result.componentStyleSet).isEqualTo(componentStyleSet)
-        assertThat(result.tileset).isEqualTo(tileset)
-        assertThat(result.decorationRenderers).isEqualTo(decorationRenderers)
+        assertThat(result.componentStyleSet).isSameAs(ComponentStyleSet.unknown())
+        assertThat(result.tileset).isSameAs(TilesetResource.unknown())
+        assertThat(result.decorationRenderers).isEqualTo(listOf<DescriptorRenderer>())
 
     }
 

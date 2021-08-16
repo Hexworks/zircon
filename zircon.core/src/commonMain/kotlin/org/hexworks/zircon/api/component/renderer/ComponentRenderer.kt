@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 /**
  * A [ComponentRenderer] is responsible for rendering a component's contents onto a [TileGraphics].
  */
-interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>> {
+fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>> {
 
     /**
      * Fills this [TileGraphics] with the given [text] and [style].

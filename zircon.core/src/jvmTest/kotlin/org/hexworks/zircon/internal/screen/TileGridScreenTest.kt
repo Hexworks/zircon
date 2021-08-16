@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
-
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
@@ -17,7 +16,6 @@ import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
 
 @Suppress("TestFunctionName", "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class TileGridScreenTest {
@@ -28,12 +26,11 @@ class TileGridScreenTest {
 
     @Before
     fun setUp() {
-        AppConfig.newBuilder().enableBetaFeatures().build()
         tileset = FONT
-        grid = ThreadSafeTileGrid(
-            initialTileset = tileset,
-            initialSize = SIZE
-        )
+        grid = ThreadSafeTileGrid(AppConfig.newBuilder()
+            .withDefaultTileset(tileset)
+            .withSize(SIZE)
+            .build())
         target = TileGridScreen(grid)
     }
 

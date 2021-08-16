@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.dsl.component.buildPanel
 import org.hexworks.zircon.api.dsl.component.buildVbox
 import org.hexworks.zircon.api.dsl.component.button
 import org.hexworks.zircon.api.dsl.component.plus
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
@@ -48,18 +49,18 @@ class ButtonsExampleKotlin : TwoColumnComponentExampleKotlin() {
             }
 
             button {
-                +"Click Me"
+                +"Hide Me"
                 decoration = side()
-            }.apply {
                 onActivated {
                     isHidden = true
                 }
             }
 
             button {
-                +"Disabled"
-            }.apply {
-                isDisabled = true
+                +"Disable Me"
+                onActivated {
+                    isDisabled = true
+                }
             }
         })
     }

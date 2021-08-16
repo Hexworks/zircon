@@ -160,7 +160,7 @@ interface Tile : Cacheable, StyleSet {
          * Creates a new [TileBuilder] for creating [Tile]s.
          */
         @JvmStatic
-        fun newBuilder() = TileBuilder()
+        fun newBuilder() = TileBuilder.newBuilder()
 
         /**
          * Creates a new [CharacterTile].

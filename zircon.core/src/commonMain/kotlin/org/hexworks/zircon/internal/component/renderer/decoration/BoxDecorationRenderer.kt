@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 
 data class BoxDecorationRenderer(
     val boxType: BoxType = BoxType.SINGLE,
-    private val titleProperty: Property<String> = createPropertyFrom(""),
+    private val titleProperty: Property<String> = "".toProperty(),
     private val renderingMode: RenderingMode = NON_INTERACTIVE,
     private val titleAlignment: Alignment = Alignment.TOP_LEFT
 ) : ComponentDecorationRenderer {

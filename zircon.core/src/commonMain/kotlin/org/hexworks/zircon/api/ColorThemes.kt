@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 object ColorThemes {
 
     @JvmStatic
-    fun newBuilder() = ColorThemeBuilder()
+    fun newBuilder() = ColorThemeBuilder.newBuilder()
 
     /**
      * The empty theme has transparent colors for all colors.

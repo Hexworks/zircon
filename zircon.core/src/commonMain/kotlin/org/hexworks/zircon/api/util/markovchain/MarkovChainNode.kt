@@ -2,7 +2,9 @@ package org.hexworks.zircon.api.util.markovchain
 
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.internal.behavior.Identifiable
+import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChainNode
 import kotlin.random.Random
+import kotlin.jvm.JvmStatic
 
 /**
  * Represents a markov chain node.
@@ -36,10 +38,13 @@ interface MarkovChainNode<T : Any> : Identifiable {
 
     companion object {
 
+        @JvmStatic
         fun <T : Any> create(): MarkovChainNode<T> = DefaultMarkovChainNode()
 
+        @JvmStatic
         fun <T : Any> create(data: T): MarkovChainNode<T> = DefaultMarkovChainNode(data)
 
+        @JvmStatic
         fun <T : Any> create(data: T, seed: Long): MarkovChainNode<T> = DefaultMarkovChainNode(data, Random(seed))
     }
 }

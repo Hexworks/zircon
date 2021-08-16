@@ -1,10 +1,11 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
@@ -13,7 +14,14 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
@@ -33,10 +41,9 @@ import kotlin.jvm.Synchronized
 class TileGridScreen(
     private val tileGrid: InternalTileGrid,
     private val componentContainer: ModalComponentContainer =
-        buildComponentContainer(tileGrid.size, tileGrid.tileset),
+        buildComponentContainer(tileGrid.size, tileGrid.tileset, tileGrid.config.defaultColorTheme),
     private val bufferGrid: InternalTileGrid = ThreadSafeTileGrid(
-        initialSize = tileGrid.size,
-        initialTileset = tileGrid.tileset,
+        config = tileGrid.config,
         layerable = ComponentsLayerable(
             componentContainer = componentContainer,
             layerable = ThreadSafeLayerable(
@@ -48,6 +55,10 @@ class TileGridScreen(
 ) : InternalScreen,
     InternalTileGrid by bufferGrid,
     InternalComponentContainer by componentContainer {
+
+    init {
+        println()
+    }
 
     override val renderables: List<Renderable>
         get() = bufferGrid.renderables
@@ -69,7 +80,7 @@ class TileGridScreen(
                 LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
                 deactivate()
             }
-        }.disposeWhen(isClosed)
+        }.disposeWhen(closedValue)
     }
 
     // note that events / event listeners on the screen itself are only handled
@@ -157,14 +168,15 @@ class TileGridScreen(
 
         private fun buildComponentContainer(
             initialSize: Size,
-            initialTileset: TilesetResource
+            initialTileset: TilesetResource,
+            initialTheme: ColorTheme
         ): ModalComponentContainer {
             val metadata = ComponentMetadata(
-                size = initialSize,
                 relativePosition = Position.defaultPosition(),
-                tileset = initialTileset,
-                componentStyleSet = ComponentStyleSet.defaultStyleSet(),
-                name = "Modal Component Container"
+                size = initialSize,
+                name = "Modal Component Container",
+                tilesetProperty = initialTileset.toProperty(),
+                themeProperty = initialTheme.toProperty()
             )
             return ModalComponentContainer(
                 metadata = metadata

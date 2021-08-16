@@ -18,10 +18,10 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 
 class DefaultRootContainer(
-    componentMetadata: ComponentMetadata,
+    metadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<RootContainer>
 ) : RootContainer, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = metadata,
     renderer = renderingStrategy
 ) {
 

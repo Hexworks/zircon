@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 class DefaultComponentRenderingStrategy<T : Component>(
@@ -41,12 +42,13 @@ class DefaultComponentRenderingStrategy<T : Component>(
 
             val graphicsCopy = graphics.createCopy()
 
-            val componentArea = graphicsCopy.toSubTileGraphics(Rect.create(
-                position = decorationRenderers
-                    .map { it.offset }.fold(Position.zero(), Position::plus),
-                size = graphicsCopy.size - decorationRenderers
-                    .map { it.occupiedSize }.fold(Size.zero(), Size::plus)
-            )
+            val componentArea = graphicsCopy.toSubTileGraphics(
+                Rect.create(
+                    position = decorationRenderers
+                        .map { it.offset }.fold(Position.zero(), Position::plus),
+                    size = graphicsCopy.size - decorationRenderers
+                        .map { it.occupiedSize }.fold(Size.zero(), Size::plus)
+                )
             )
 
             componentRenderer.render(
@@ -66,7 +68,7 @@ class DefaultComponentRenderingStrategy<T : Component>(
             }
 
             graphics.transform { position, _ ->
-                graphicsCopy.getTileAt(position).get()
+                graphicsCopy.getTileAtOrNull(position) ?: Tile.empty()
             }
         }
     }

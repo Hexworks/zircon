@@ -32,7 +32,7 @@ fun <T : BaseContainerBuilder<*, *>> T.textBox(
 fun TextBoxBuilder.paragraph(
     withNewLine: Boolean = true,
     init: ParagraphBuilder.() -> Unit
-) = addParagraph(ParagraphBuilder().apply(init).build(), withNewLine)
+) = addParagraph(ParagraphBuilder.newBuilder().apply(init).build(), withNewLine)
 
 /**
  * Creates a new [Header] using the component builder DSL, adds it to the
@@ -41,7 +41,7 @@ fun TextBoxBuilder.paragraph(
 fun TextBoxBuilder.header(
     withNewLine: Boolean = true,
     init: HeaderBuilder.() -> Unit
-) = addHeader(HeaderBuilder().apply(init).build(), withNewLine)
+) = addHeader(HeaderBuilder.newBuilder().apply(init).build(), withNewLine)
 
 /**
  * Creates a new [ListItem] using the component builder DSL, adds it to the
@@ -50,4 +50,4 @@ fun TextBoxBuilder.header(
 fun TextBoxBuilder.listItem(
     withNewLine: Boolean = true,
     init: ListItemBuilder.() -> Unit
-) = addListItem(ListItemBuilder().apply(init).build(), withNewLine)
+) = addListItem(ListItemBuilder.newBuilder().apply(init).build(), withNewLine)

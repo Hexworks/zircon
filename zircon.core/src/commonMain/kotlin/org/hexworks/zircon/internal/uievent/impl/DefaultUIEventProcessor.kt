@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.behavior.DisposeState
 import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.*
@@ -15,10 +16,10 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
 
     private val logger = LoggerFactory.getLogger(this::class)
     private var listeners = persistentHashMapOf<UIEventType, PersistentList<InputEventSubscription>>()
-    override val isClosed = false.toProperty()
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     override fun close() {
-        isClosed.value = true
+        closedValue.value = true
         listeners.flatMap { it.value }.forEach {
             it.dispose()
         }
@@ -129,7 +130,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
     private fun checkClosed() {
-        if (isClosed.value) throw IllegalStateException("This UIEventProcessor is closed.")
+        if (closed) throw IllegalStateException("This UIEventProcessor is closed.")
     }
 
     inner class InputEventSubscription(

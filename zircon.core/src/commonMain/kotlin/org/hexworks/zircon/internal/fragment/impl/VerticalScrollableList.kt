@@ -37,26 +37,30 @@ class VerticalScrollableList<T>(
     /** If set, use this instead of the default [ComponentRenderer] for the [ScrollBar] created internally. */
     private val scrollbarRenderer: ComponentRenderer<ScrollBar>? = null
 ) : ScrollableList<T> {
-    /** Reusable list of labels we display in the main scroll panel. */
+    /**
+     *  Reusable list of labels we display in the main scroll panel.
+     */
     private val labels = mutableListOf<Label>()
 
-    /** Index in [items] of the top item we're showing in the main scroll panel. */
+    /**
+     * Index in [items] of the top item we're showing in the main scroll panel.
+     */
     private var topItemIdx: Int = 0
 
     override val root = Components.hbox()
-        .withSize(size)
+        .withPreferredSize(size)
         .withPosition(position)
         .withSpacing(0)
         .build()
 
     private val scrollPanel = Components.vbox()
-        .withSize(size.withRelativeWidth(-1))
+        .withPreferredSize(size.withRelativeWidth(-1))
         .withDecorations()
         .withSpacing(0)
         .build()
 
     private val scrollBarVbox = Components.vbox()
-        .withSize(size.withWidth(1))
+        .withPreferredSize(size.withWidth(1))
         .withDecorations()
         .withSpacing(0)
         .build()
@@ -118,7 +122,7 @@ class VerticalScrollableList<T>(
             while (labelIdx > labels.lastIndex) {
                 labels.add(Components.label()
                     .withDecorations()
-                    .withSize(scrollPanel.contentSize.withHeight(1))
+                    .withPreferredSize(scrollPanel.contentSize.withHeight(1))
                     .build()
                     .also { label ->
                         scrollPanel.addComponent(label)

@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton, ToggleButtonBuilder>(
+class ToggleButtonBuilder private constructor() : ComponentWithTextBuilder<ToggleButton, ToggleButtonBuilder>(
     initialRenderer = DefaultToggleButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH
@@ -25,9 +25,9 @@ class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton, ToggleButtonB
         return DefaultToggleButton(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-            initialText = text,
+            textProperty = fixedTextProperty,
             initialSelected = isSelected,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

@@ -1,64 +1,59 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.component.Button
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.fragment.VerticalTabBar
+import org.hexworks.zircon.api.dsl.component.buildHbox
+import org.hexworks.zircon.api.dsl.component.panel
+import org.hexworks.zircon.api.dsl.component.vbox
+import org.hexworks.zircon.api.fragment.Tab
+import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-class DefaultVerticalTabBar(
-    contentSize: Size,
-    barSize: Size,
+class DefaultVerticalTabBar internal constructor(
+    size: Size,
+    tabWidth: Int,
     defaultSelected: String,
-    private val tabs: Map<String, Component>
-) : VerticalTabBar {
+    tabs: List<TabData>
+) : TabBar {
 
-    override val root = Components.hbox()
-        .withComponentRenderer(NoOpComponentRenderer())
-        .withSize(contentSize.withRelativeWidth(barSize.width))
-        .build()
+    private lateinit var tabBar: VBox
+    private lateinit var content: Panel
 
-    private lateinit var currentTab: Button
-
-    init {
-        val bar = Components.vbox()
-            .withComponentRenderer(NoOpComponentRenderer())
-            .withSize(barSize)
-            .build().apply { root.addComponent(this) }
-
-        var contentArea = createContentArea(contentSize)
-        var contentAttachment = root.addComponent(contentArea)
-
-        tabs.forEach { (tab, content) ->
-            val btn = Components.button()
-                .withText(tab)
-                .withDecorations()
-                .build()
-            bar.addComponent(btn).onActivated {
-                contentAttachment.detach()
-                contentAttachment = root.addComponent(createContentArea(contentSize))
-                content.moveTo(Position.zero())
-                contentArea.addComponent(content)
-                currentTab.isDisabled = false
-                currentTab = btn
-                btn.isDisabled = true
-            }
-            if (defaultSelected == tab) {
-                btn.isDisabled = true
-                contentArea.addComponent(content)
-                currentTab = btn
-            }
-        }
+    private var currentContent: AttachedComponent? = null
+    private val group = Components.radioButtonGroup().build()
+    private val lookup = tabs.associate { (tab, content) ->
+        group.addComponent(tab.tabButton)
+        tab.key to TabData(tab, content)
     }
 
-    private fun createContentArea(size: Size) = Components.panel()
-        .withRendererFunction { tileGraphics, ctx ->
-            val bg = ctx.component.theme.primaryBackgroundColor.withAlpha(25)
-            tileGraphics.fill(Tile.empty().withBackgroundColor(bg))
+    override val root: Component = buildHbox {
+        preferredSize = size
+        componentRenderer = NoOpComponentRenderer()
+
+        tabBar = vbox {
+            preferredSize = Size.create(tabWidth, size.height)
+            decoration = margin(1, 0)
+            componentRenderer = NoOpComponentRenderer()
+            childrenToAdd = lookup.map { it.value.tab.root }
         }
-        .withSize(size)
-        .build()
+
+        content = panel {
+            preferredSize = size.withRelativeWidth(-tabWidth)
+        }
+
+        group.selectedButtonProperty.onChange { (_, newValue) ->
+            newValue.map { button ->
+                currentContent?.detach()?.moveTo(Position.defaultPosition())
+                currentContent = content.addComponent(lookup.getValue(button.key).content)
+            }
+        }
+        lookup.getValue(defaultSelected).tab.isSelected = true
+    }
+
 }

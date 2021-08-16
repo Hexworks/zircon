@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.data.GridPosition
@@ -30,12 +31,14 @@ private val tileset = CP437TilesetResources.wanderlust16x16()
 private const val screenWidth = 1920f
 private const val screenHeight = 1080f
 
-class LibgdxTest : ApplicationAdapter() {
+class LibgdxTest(
+    config: AppConfig
+) : ApplicationAdapter() {
 
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(screenWidth, screenHeight, camera)
 
-    private val tileGrid: InternalTileGrid = ThreadSafeTileGrid(tileset, size)
+    private val tileGrid: InternalTileGrid = ThreadSafeTileGrid(config)
     private val renderer = LibgdxRenderer(grid = tileGrid)
 
     private val random = Random()
@@ -72,14 +75,14 @@ class LibgdxTest : ApplicationAdapter() {
 
     private val chars = listOf('a', 'b')
     private val styles = listOf(
-        DefaultStyleSet(
-            foregroundColor = ANSITileColor.RED,
+        StyleSet.newBuilder().apply {
+            foregroundColor = ANSITileColor.RED
             backgroundColor = ANSITileColor.GREEN
-        ),
-        DefaultStyleSet(
-            foregroundColor = ANSITileColor.MAGENTA,
+        }.build(),
+        StyleSet.newBuilder().apply {
+            foregroundColor = ANSITileColor.MAGENTA
             backgroundColor = ANSITileColor.YELLOW
-        )
+        }.build()
     )
 
     private var currIdx = 0
@@ -139,7 +142,7 @@ object GdxLauncher {
         cfg.title = "LibGDX Test"
         cfg.height = size.height * tileset.height
         cfg.width = size.width * tileset.width
-        LwjglApplication(LibgdxTest(), cfg)
+        LwjglApplication(LibgdxTest(AppConfig.defaultConfiguration()), cfg)
     }
 }
 

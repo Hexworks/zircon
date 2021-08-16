@@ -45,7 +45,7 @@ object GroupExample {
             .build()
 
         val group = Components.group<Component>()
-            .withTheme(ColorThemes.capturedByPirates())
+            .withTheme(ColorThemes.amigaOs())
             .withTileset(CP437TilesetResources.rexPaint16x16())
             .build()
 
@@ -54,7 +54,7 @@ object GroupExample {
             .withAlignmentWithin(screen, BOTTOM_CENTER)
             .withColorTheme(ColorThemes.cyberpunk())
             .build().apply {
-                processComponentEvents(ACTIVATED) {
+                onActivated {
                     group.addComponents(leftPanel, rightPanel)
                 }
             }

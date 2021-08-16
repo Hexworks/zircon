@@ -8,10 +8,10 @@ import kotlin.jvm.JvmStatic
  * Represents an object which can be visually hidden (invisible).
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface CanBeHidden : Hideable {
+interface CanBeHidden {
 
-    override var isHidden: Boolean
-    override val hiddenProperty: Property<Boolean>
+    var isHidden: Boolean
+    val hiddenProperty: Property<Boolean>
 
     companion object {
 

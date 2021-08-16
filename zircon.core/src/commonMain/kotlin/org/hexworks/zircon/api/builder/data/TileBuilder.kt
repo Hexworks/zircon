@@ -23,7 +23,7 @@ import org.hexworks.zircon.internal.data.DefaultImageTile
  * @see [org.hexworks.zircon.api.color.TileColor] to check default colors.
  */
 @Suppress("UNCHECKED_CAST")
-data class TileBuilder(
+class TileBuilder private constructor(
     private var character: Char = ' ',
     private var name: String = " ",
     private var tags: Set<String> = setOf(),
@@ -106,7 +106,13 @@ data class TileBuilder(
         )
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = TileBuilder(
+        character = character,
+        name = name,
+        tags = tags,
+        styleSet = styleSet,
+        tileset = tileset
+    )
 
     companion object {
 

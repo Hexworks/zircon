@@ -53,7 +53,7 @@ public class GameMockupExample {
                 .withDefaultTileset(TILESET)
                 .withSize(gridSize)
                 .withDebugMode(true)
-                .fullScreen()
+                .withFullScreen(true)
                 .build());
 
         // ==========

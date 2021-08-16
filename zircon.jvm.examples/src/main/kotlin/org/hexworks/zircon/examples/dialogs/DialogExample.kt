@@ -21,13 +21,6 @@ object DialogExample {
     private val tileset = CP437TilesetResources.taffer20x20()
     private val theme = ColorThemes.adriftInDreams()
 
-    class TestFragment : Fragment {
-        override val root = Components.panel()
-            .withPreferredSize(23, 13)
-            .withColorTheme(theme)
-            .build()
-    }
-
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -46,12 +39,19 @@ object DialogExample {
             .build()
 
 
-        panel.addFragment(TestFragment())
+        panel.addComponent(
+            Components.panel()
+                .withPreferredSize(23, 13)
+                .withColorTheme(theme)
+                .build()
+        )
 
         val modal = ModalBuilder.newBuilder<EmptyModalResult>()
             .withCenteredDialog(true)
-            .withParentSize(screen.size)
+            .withPreferredSize(screen.size)
+            // Note that a modal *must* have its own theme and tileset
             .withColorTheme(theme)
+            .withTileset(screen.tileset)
             .withComponent(panel)
             .build()
 

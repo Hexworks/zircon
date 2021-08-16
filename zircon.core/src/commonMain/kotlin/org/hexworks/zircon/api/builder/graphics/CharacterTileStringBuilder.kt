@@ -19,7 +19,7 @@ import kotlin.jvm.JvmStatic
  * - `text` is **mandatory**
  */
 @Suppress("ArrayInDataClass")
-data class CharacterTileStringBuilder(
+class CharacterTileStringBuilder private constructor(
     private var text: String = NO_VALUE,
     private var textWrap: TextWrap = WRAP,
     private var size: Size = Size.unknown(),
@@ -84,7 +84,14 @@ data class CharacterTileStringBuilder(
             textWrap = textWrap)
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = CharacterTileStringBuilder(
+        text = text,
+        textWrap = textWrap,
+        size = size,
+        modifiers = modifiers.toMutableSet(),
+        foregroundColor = foregroundColor,
+        backgroundColor = backgroundColor
+    )
 
 
     companion object {

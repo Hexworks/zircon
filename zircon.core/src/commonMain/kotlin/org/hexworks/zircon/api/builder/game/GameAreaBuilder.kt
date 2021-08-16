@@ -11,14 +11,11 @@ import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.internal.game.impl.DefaultGameArea
+import kotlin.jvm.JvmStatic
 
-/**
- * Note that this class is in **BETA**!
- * It's API is subject to change!
- */
 @Beta
-@Suppress("unused", "MemberVisibilityCanBePrivate", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
-data class GameAreaBuilder<T : Tile, B : Block<T>>(
+@Suppress("unused", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
+class GameAreaBuilder<T : Tile, B : Block<T>> private constructor(
     private var actualSize: Size3D = Size3D.one(),
     private var visibleSize: Size3D = Size3D.one(),
     private var visibleOffset: Position3D = Position3D.defaultPosition(),
@@ -61,12 +58,18 @@ data class GameAreaBuilder<T : Tile, B : Block<T>>(
         )
     }
 
-    override fun createCopy() = copy(
-        blocks = blocks.toMutableMap()
+    override fun createCopy() = GameAreaBuilder(
+        actualSize = actualSize,
+        visibleSize = visibleSize,
+        visibleOffset = visibleOffset,
+        blocks = blocks.toMutableMap(),
+        projectionMode = projectionMode,
+        filters = filters.toMutableList()
     )
 
     companion object {
 
+        @JvmStatic
         fun <T : Tile, B : Block<T>> newBuilder(): GameAreaBuilder<T, B> {
             return GameAreaBuilder()
         }

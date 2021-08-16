@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
@@ -20,7 +20,7 @@ import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.Synchronized
 
-open class ThreadSafeLayer(
+open class ThreadSafeLayer internal constructor(
     initialPosition: Position,
     initialContents: TileGraphics,
     private val movable: Movable = DefaultMovable(
@@ -45,15 +45,11 @@ open class ThreadSafeLayer(
     final override val rect: Rect
         get() = movable.rect
 
-    final override val hiddenProperty = createPropertyFrom(false)
+    final override val hiddenProperty = false.toProperty()
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
     override fun asInternalLayer() = this
 
-    @Synchronized
-    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position - this.position)
-    }
 
     @Synchronized
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
@@ -159,6 +155,11 @@ open class ThreadSafeLayer(
             .withTiles(tiles)
             .build()
             .toString()
+    }
+
+    @Synchronized
+    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position - this.position)
     }
 
 }

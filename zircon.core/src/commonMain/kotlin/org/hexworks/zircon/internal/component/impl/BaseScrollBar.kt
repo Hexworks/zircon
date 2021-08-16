@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.core.extensions.abbreviate
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -28,17 +28,17 @@ abstract class BaseScrollBar(
     componentMetadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<ScrollBar>
 ) : ScrollBar, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderer
 ) {
 
     private var range: Int = maxValue - minValue
     protected var valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
-    final override val currentValueProperty = createPropertyFrom(minValue)
+    final override val currentValueProperty = minValue.toProperty()
     final override var currentValue: Int by currentValueProperty.asDelegate()
 
-    final override val currentStepProperty = createPropertyFrom(minValue)
+    final override val currentStepProperty = minValue.toProperty()
     final override var currentStep: Int by currentStepProperty.asDelegate()
 
     override var barSizeInSteps = (itemsShownAtOnce / valuePerStep).roundToInt()
@@ -201,7 +201,7 @@ abstract class BaseScrollBar(
                 .withBackgroundColor(TileColor.transparent())
                 .build()
         )
-        .withMouseOverStyle(
+        .withHighlightedStyle(
             StyleSetBuilder.newBuilder()
                 .withForegroundColor(colorTheme.primaryBackgroundColor)
                 .withBackgroundColor(colorTheme.accentColor)

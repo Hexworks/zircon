@@ -8,12 +8,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
-class DefaultParagraph(
+class DefaultParagraph internal constructor(
     componentMetadata: ComponentMetadata,
     initialText: String,
     renderingStrategy: ComponentRenderingStrategy<Paragraph>
 ) : Paragraph, TextOverride by TextOverride.create(initialText), DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

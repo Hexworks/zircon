@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
 fun buildVerticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
-    VerticalSliderBuilder().apply(init).build()
+    VerticalSliderBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [Slider] using the component builder DSL, adds it to the
@@ -16,4 +16,4 @@ fun buildVerticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
  */
 fun <T : BaseContainerBuilder<*, *>> T.verticalSlider(
     init: VerticalSliderBuilder.() -> Unit
-): Slider = buildChildFor(this, VerticalSliderBuilder(), init)
+): Slider = buildChildFor(this, VerticalSliderBuilder.newBuilder(), init)

@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
@@ -12,31 +14,24 @@ import kotlin.jvm.JvmStatic
 /**
  * Builder for a [Selector] to change the theme of multiple [ColorThemeOverride]s or [Group]s at runtime.
  */
+@Deprecated("This class is redundant, use a regular Selector instead")
 @Suppress("MemberVisibilityCanBePrivate")
 class ColorThemeSelectorBuilder(
     width: Int,
-    theme: ColorTheme
-) : SelectorBuilder<ColorTheme>(width, ColorThemeResource.values()
-    .sortedBy { it.name }
-    .map { it.getTheme() }) {
+    theme: ColorTheme,
+    valuesProperty: ListProperty<ColorTheme> = ColorThemeResource.values()
+        .sortedBy { it.name }
+        .map { it.getTheme() }.toProperty()
+) : SelectorBuilder<ColorTheme>(
+    width = width,
+    valuesProperty = valuesProperty
+) {
 
     private var themeOverrides = listOf<ColorThemeOverride>()
     private var groups = listOf<Group<out Component>>()
 
     init {
         withDefaultSelected(theme)
-    }
-
-    /**
-     * Sets the given [themeOverrides] to be updated whenever the underlying [Selector]'s
-     * [Selector.selectedValue] changes.
-     */
-    @Deprecated(
-        message = "Themeable was renamed to ThemeOverride",
-        replaceWith = ReplaceWith("this.withThemeOverrides(*themeOverrides)")
-    )
-    fun withThemeables(vararg themeOverrides: ColorThemeOverride) = also {
-        this.themeOverrides = themeOverrides.toList()
     }
 
     /**
@@ -64,7 +59,7 @@ class ColorThemeSelectorBuilder(
         }
     }
 
-    override fun createCopy(): Builder<Selector<ColorTheme>> = super.createCopy().apply {
+    override fun createCopy() = super.createCopy().apply {
         withThemeOverrides(*themeOverrides.toTypedArray())
         withGroups(*groups.toTypedArray())
     }

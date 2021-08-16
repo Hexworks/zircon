@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 fun buildHorizontalNumberInput(
     init: HorizontalNumberInputBuilder.() -> Unit
 ): NumberInput =
-    HorizontalNumberInputBuilder().apply(init).build()
+    HorizontalNumberInputBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [NumberInput] using the component builder DSL, adds it to the
@@ -19,4 +19,4 @@ fun buildHorizontalNumberInput(
  */
 fun <T : BaseContainerBuilder<*, *>> T.horizontalNumberInput(
     init: HorizontalNumberInputBuilder.() -> Unit
-): NumberInput = buildChildFor(this, HorizontalNumberInputBuilder(), init)
+): NumberInput = buildChildFor(this, HorizontalNumberInputBuilder.newBuilder(), init)

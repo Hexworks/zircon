@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.behavior.impl.DefaultTextOverride
 import kotlin.jvm.JvmStatic
@@ -9,12 +10,12 @@ import kotlin.jvm.JvmStatic
  */
 // TODO: mention in the release notes that HasText + TextOverride was created
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface TextOverride : TextHolder {
+interface TextOverride {
 
     /**
      * The (mutable) [text].
      */
-    override var text: String
+    var text: String
 
     /**
      * A [Property] that wraps the [text] and offers data binding and
@@ -22,7 +23,7 @@ interface TextOverride : TextHolder {
      *
      * @see Property
      */
-    override val textProperty: Property<String>
+    val textProperty: Property<String>
 
     companion object {
 
@@ -30,7 +31,13 @@ interface TextOverride : TextHolder {
          * Creates a new [TextOverride] with the default value of `""` for [text].
          */
         @JvmStatic
-        fun create(initialText: String = ""): TextOverride = DefaultTextOverride(initialText)
+        fun create(initialText: String = ""): TextOverride = DefaultTextOverride(initialText.toProperty())
+
+        /**
+         * Creates a new [TextOverride] from a [Property].
+         */
+        @JvmStatic
+        fun create(property: Property<String>): TextOverride = DefaultTextOverride(property)
     }
 
 }

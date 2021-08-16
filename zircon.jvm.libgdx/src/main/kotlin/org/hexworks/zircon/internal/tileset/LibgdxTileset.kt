@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.internal.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.transformer.LibgdxTextureCloner
 import java.util.concurrent.TimeUnit

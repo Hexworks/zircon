@@ -32,7 +32,7 @@ class HalfBlockDecorationRenderer(
             .withCharacter(Symbols.LOWER_HALF_BLOCK)
             .withBackgroundColor(TileColor.transparent())
             .withForegroundColor(style.foregroundColor)
-            .asCharacterTile().get()
+            .asCharacterTileOrNull()!!
 
         LineFactory.buildLine(topLeft, topRight).positions
             .drop(1)
@@ -76,7 +76,7 @@ class HalfBlockDecorationRenderer(
             .withModifiers(cropRight)
             .withBackgroundColor(TileColor.transparent())
             .withForegroundColor(style.foregroundColor)
-            .asCharacterTile().get()
+            .asCharacterTileOrNull()!!
 
         val topRightTile = topLeftTile
             .withModifiers(cropLeft)

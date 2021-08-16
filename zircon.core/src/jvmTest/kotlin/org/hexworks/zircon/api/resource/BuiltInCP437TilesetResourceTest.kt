@@ -18,8 +18,8 @@ class BuiltInCP437TilesetResourceTest {
 
     @Test
     fun shouldProperlyConvertCpToUnicode() {
-        assertThat(CP437Utils.convertCp437toUnicode(1).toInt())
-            .isEqualTo(Symbols.FACE_WHITE.toInt())
+        assertThat(CP437Utils.convertCp437toUnicode(1).code)
+            .isEqualTo(Symbols.FACE_WHITE.code)
     }
 
     @Test

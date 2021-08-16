@@ -15,4 +15,5 @@ class ComponentRenderContext<out T : Component>(val component: T) : RenderContex
 
     val theme: ColorTheme
         get() = component.theme
+
 }

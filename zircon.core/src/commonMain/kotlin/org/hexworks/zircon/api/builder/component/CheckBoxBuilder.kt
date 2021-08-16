@@ -10,13 +10,13 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox, CheckBoxBuilder>(
+class CheckBoxBuilder private constructor() : ComponentWithTextBuilder<CheckBox, CheckBoxBuilder>(
     initialRenderer = DefaultCheckBoxRenderer(),
     initialText = "",
     reservedSpace = DefaultCheckBoxRenderer.DECORATION_WIDTH
 ) {
 
-    var labelAlignment: CheckBoxAlignment = CheckBoxAlignment.LEFT
+    var labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT
 
     fun withLabelAlignment(labelAlignment: CheckBoxAlignment) = also {
         this.labelAlignment = labelAlignment
@@ -26,9 +26,9 @@ class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox, CheckBoxBuilder>(
         return DefaultCheckBox(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-            initialText = text,
+            textProperty = fixedTextProperty,
             labelAlignment = labelAlignment,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

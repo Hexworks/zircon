@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.base.BaseTileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 
-class DefaultTileImage(
+class DefaultTileImage internal constructor(
     override val size: Size,
     override val tileset: TilesetResource,
     initialTiles: Map<Position, Tile> = mapOf()

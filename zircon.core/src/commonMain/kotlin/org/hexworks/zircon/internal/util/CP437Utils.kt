@@ -288,7 +288,7 @@ object CP437Utils {
      * Fetches the cp437 index of a [Char].
      */
     fun fetchCP437IndexForChar(char: Char): Int {
-        return UNICODE_TO_CP437_LOOKUP[char.toInt()]
+        return UNICODE_TO_CP437_LOOKUP[char.code]
             ?: throw IllegalArgumentException(
                 "No CP437 character found for char: '$char'. " +
                         "Did you try to use a character which has no Code Page 437 representation?"

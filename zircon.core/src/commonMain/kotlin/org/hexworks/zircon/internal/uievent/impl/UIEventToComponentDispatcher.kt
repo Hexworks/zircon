@@ -40,6 +40,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
+import org.hexworks.zircon.internal.util.orElse
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmSynthetic
@@ -321,8 +322,8 @@ private fun mouseExitedComponent(
         event.type in setOf(MOUSE_MOVED, MOUSE_DRAGGED) &&
         event.position != lastMousePosition
     ) {
-        root.fetchComponentByPosition(event.position).map { currentComponent ->
+        root.fetchComponentByPositionOrNull(event.position)?.let { currentComponent ->
             lastHoveredComponent.id != currentComponent.id
-        }.orElse(false)
+        }.orElse { false }
     } else false
 }

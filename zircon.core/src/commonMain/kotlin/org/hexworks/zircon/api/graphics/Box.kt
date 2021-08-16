@@ -11,6 +11,6 @@ interface Box : TileGraphics {
     companion object {
 
         @JvmStatic
-        fun newBuilder() = BoxBuilder()
+        fun newBuilder() = BoxBuilder.newBuilder()
     }
 }

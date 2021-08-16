@@ -1,97 +1,92 @@
 package org.hexworks.zircon.examples.base
 
-import org.hexworks.zircon.api.Components.hbox
-import org.hexworks.zircon.api.Components.header
-import org.hexworks.zircon.api.Components.label
-import org.hexworks.zircon.api.Components.panel
-import org.hexworks.zircon.api.Components.vbox
-import org.hexworks.zircon.api.Fragments
+import org.hexworks.zircon.api.Fragments.colorThemeSelector
 import org.hexworks.zircon.api.Fragments.tilesetSelector
 import org.hexworks.zircon.api.SwingApplications.startTileGrid
-import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
-import org.hexworks.zircon.api.builder.component.VBoxBuilder
-import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
-import org.hexworks.zircon.api.data.Position.Companion.offset1x1
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size.Companion.create
+import org.hexworks.zircon.api.dsl.component.buildVbox
+import org.hexworks.zircon.api.dsl.component.hbox
+import org.hexworks.zircon.api.dsl.component.header
+import org.hexworks.zircon.api.dsl.component.label
+import org.hexworks.zircon.api.dsl.component.vbox
+import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.screen.Screen.Companion.create
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-abstract class ComponentExampleKotlin(
-    private val size: Size = GRID_SIZE
-) {
+abstract class ComponentExampleKotlin {
 
     /**
      * Creates the container for the examples.
      */
-    fun createExampleContainer(screen: Screen, title: String): VBox {
+    fun createExampleContainer(screen: Screen, title: String) = buildVbox {
+        val container = this
+        val size = screen.size
+        preferredSize = size
+        spacing = 1
+        componentRenderer = NoOpComponentRenderer()
+        tileset = screen.tileset
 
-        val container = vbox()
-            .withPreferredSize(size)
-            .withSpacing(1)
-            .withComponentRenderer(NoOpComponentRenderer())
-            .withTileset(DEFAULT_TILESET)
-            .build()
+        hbox {
+            name = "Heading"
+            preferredSize = Size.create(size.width, 5)
 
-        val heading = hbox()
-            .withPreferredSize(size.width, 5)
-            .build()
+            header {
+                +title
+                preferredSize = Size.create(size.width / 2, 1)
+            }
 
-        val controls = vbox()
-            .withPreferredSize(size.width / 2, 5)
-            .build()
+            vbox {
+                name = "Controls"
+                preferredSize = Size.create(size.width / 2, 5)
 
-        controls.addComponent(label().withText("Pick a theme"))
+                label { +"Pick a theme" }
+                withAddedChildren(
+                    colorThemeSelector(preferredSize.width - 4, screen.theme)
+                        .withThemeOverrides(screen)
+                        .build().root
+                )
 
-        controls.addFragment(
-            Fragments.colorThemeSelector(controls.width - 4, DEFAULT_THEME)
-                .withThemeOverrides(screen)
-                .build()
-        )
+                label { }
 
-        controls.addComponent(label())
+                label { +"Pick a tileset" }
 
-        controls.addComponent(label().withText("Pick a tileset"))
-        val tilesetSelector = tilesetSelector(controls.width - 4, DEFAULT_TILESET)
-            .withTilesetOverrides(container)
-            .build()
-        controls.addFragment(tilesetSelector)
-        heading.addComponents(
-            header().withText(title).withPreferredSize(size.width / 2, 1).build(),
-            controls
-        )
-        val exampleArea = hbox()
-            .withComponentRenderer(NoOpComponentRenderer())
-            .withPreferredSize(size.width, size.height - 6)
-            .build()
-        addExamples(exampleArea)
-        container.addComponents(heading, exampleArea)
-        return container
+                withAddedChildren(
+                    tilesetSelector(preferredSize.width - 4, screen.tileset)
+                        .withTilesetProperties(container.tilesetProperty)
+                        .build().root
+                )
+            }
+        }
+
+        hbox {
+            name = "Example Area"
+            componentRenderer = NoOpComponentRenderer()
+            preferredSize = Size.create(size.width, size.height - 6)
+        }.apply {
+            addExamples(this)
+        }
     }
 
     /**
      * Shows this example with the given title on the screen.
      */
-    fun show(title: String) {
-        val tileGrid = startTileGrid(
-            newBuilder()
+    fun show(
+        title: String,
+        size: Size = GRID_SIZE
+    ) {
+        startTileGrid(
+            AppConfig.newBuilder()
                 .withDefaultTileset(DEFAULT_TILESET)
-                .withSize(size.plus(create(2, 2)))
+                .withSize(size)
                 .build()
-        )
-        val screen = create(tileGrid)
-        val container: Container = panel()
-            .withPreferredSize(size)
-            .withPosition(offset1x1())
-            .withComponentRenderer(NoOpComponentRenderer())
-            .build()
-        container.addComponent(createExampleContainer(screen, title))
-        screen.addComponent(container)
-        screen.display()
-        screen.theme = DEFAULT_THEME
+        ).toScreen().apply {
+            theme = DEFAULT_THEME
+            addComponent(createExampleContainer(this, title))
+            display()
+        }
     }
 
     /**

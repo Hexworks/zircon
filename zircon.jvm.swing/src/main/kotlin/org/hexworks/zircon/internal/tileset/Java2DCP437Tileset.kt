@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.internal.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.modifier.TileCoordinate
 import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE

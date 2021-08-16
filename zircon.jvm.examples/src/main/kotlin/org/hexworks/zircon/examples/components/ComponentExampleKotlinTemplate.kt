@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.TwoColumnComponentExampleKotlin
 
 class ComponentExampleKotlinTemplate : TwoColumnComponentExampleKotlin() {

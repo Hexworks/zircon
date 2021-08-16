@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
@@ -8,6 +9,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
@@ -31,6 +33,17 @@ interface InternalComponent :
     val parentProperty: Property<Maybe<InternalContainer>>
     val hasParent: ObservableValue<Boolean>
 
+    /**
+     * The immediate child [Component]s of this [Component] (if any).
+     */
+    val children: ObservableList<out InternalComponent>
+
+    /**
+     * The position that was set when the component was originally built. This might have changed during the
+     * lifetime of the component, especially if it was added to a parent.
+     */
+    val originalPosition: Position
+
     val isAttached: Boolean
         get() = parent.isPresent
     val isAttachedToRoot: Boolean
@@ -45,17 +58,8 @@ interface InternalComponent :
     override var componentState: ComponentState
 
     /**
-     * The immediate child [Component]s of this [Component].
-     */
-    val children: ObservableList<InternalComponent>
-
-    /**
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
      */
     fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
-    override fun resetState() {
-        clearFocus()
-        componentState = ComponentState.DEFAULT
-    }
 }

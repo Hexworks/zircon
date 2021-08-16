@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -39,11 +40,11 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
-            componentMetadata = ComponentMetadata(
+            metadata = ComponentMetadata(
                 relativePosition = POSITION_2_3,
                 size = SIZE_3_4,
-                tileset = TILESET_REX_PAINT_20X20,
-                componentStyleSet = COMPONENT_STYLES
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty(),
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub

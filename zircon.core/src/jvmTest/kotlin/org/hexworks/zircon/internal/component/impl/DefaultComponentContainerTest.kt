@@ -1,11 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ComponentDecorations
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.component.PanelBuilder
@@ -14,11 +11,16 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
+import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
@@ -38,11 +40,11 @@ class DefaultComponentContainerTest {
     fun setUp() {
         target = DefaultComponentContainer(
             DefaultRootContainer(
-                componentMetadata = ComponentMetadata(
+                metadata = ComponentMetadata(
                     relativePosition = Position.defaultPosition(),
                     size = SIZE,
-                    tileset = TILESET,
-                    componentStyleSet = buildStyles()
+                    tilesetProperty = TILESET.toProperty(),
+                    componentStyleSetProperty = buildStyles().toProperty()
                 ),
                 renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = listOf(),

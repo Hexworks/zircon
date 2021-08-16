@@ -9,12 +9,12 @@ import kotlin.jvm.JvmStatic
  */
 // TODO: mention in the release notes that TitleHolder + TitleOverride was created
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-interface TitleOverride : TitleHolder {
+interface TitleOverride {
 
     /**
      * The (mutable) title.
      */
-    override var title: String
+    var title: String
 
     /**
      * A [Property] that wraps the [title] and offers data binding and
@@ -22,7 +22,7 @@ interface TitleOverride : TitleHolder {
      *
      * @see Property
      */
-    override val titleProperty: Property<String>
+    val titleProperty: Property<String>
 
     companion object {
 

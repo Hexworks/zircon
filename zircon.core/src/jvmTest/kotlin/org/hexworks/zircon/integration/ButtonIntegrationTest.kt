@@ -16,7 +16,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
     override fun buildScreenContent(screen: Screen) {
         val panel = Components.panel()
             .withDecorations(box(title = "Buttons on panel"), shadow())
-            .withSize(Size.create(30, 28))
+            .withPreferredSize(Size.create(30, 28))
             .withAlignment(positionalAlignment(29, 1))
             .build()
         screen.addComponent(panel)

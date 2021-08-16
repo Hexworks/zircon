@@ -14,12 +14,12 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 import kotlin.jvm.Synchronized
 
-open class DefaultModal<T : ModalResult>(
+open class DefaultModal<T : ModalResult> internal constructor(
     componentMetadata: ComponentMetadata,
     override val darkenPercent: Double,
     renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
 ) : Modal<T>, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ), Observable<T> by DefaultObservable() {
 

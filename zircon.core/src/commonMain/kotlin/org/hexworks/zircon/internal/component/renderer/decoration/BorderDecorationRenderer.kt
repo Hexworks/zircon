@@ -63,7 +63,7 @@ data class BorderDecorationRenderer(
         val bottomRightPos = size.fetchBottomRightPosition()
 
         if (drawTop.or(drawLeft)) {
-            tileGraphics.getTileAt(topLeftPos).map { char: Tile ->
+            tileGraphics.getTileAtOrNull(topLeftPos)?.let { char: Tile ->
                 tileGraphics.draw(
                     char
                         .withModifiers(
@@ -77,7 +77,7 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawTop.or(drawRight)) {
-            tileGraphics.getTileAt(topRightPos).map { char ->
+            tileGraphics.getTileAtOrNull(topRightPos)?.let { char ->
                 tileGraphics.draw(
                     char
                         .withModifiers(
@@ -91,7 +91,7 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawLeft.or(drawBottom)) {
-            tileGraphics.getTileAt(bottomLeftPos).map { char ->
+            tileGraphics.getTileAtOrNull(bottomLeftPos)?.let { char ->
                 tileGraphics.draw(
                     char
                         .withModifiers(
@@ -105,7 +105,7 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawRight.or(drawBottom)) {
-            tileGraphics.getTileAt(bottomRightPos).map { char ->
+            tileGraphics.getTileAtOrNull(bottomRightPos)?.let { char ->
                 tileGraphics.draw(
                     char
                         .withModifiers(
@@ -124,7 +124,7 @@ data class BorderDecorationRenderer(
                 horizontalLine.positions.forEach {
                     if (drawTop) {
                         val topOffset = it.withRelativeX(1)
-                        tileGraphics.getTileAt(topOffset).map { char ->
+                        tileGraphics.getTileAtOrNull(topOffset)?.let { char ->
                             tileGraphics.draw(
                                 char
                                     .withModifiers(
@@ -140,7 +140,7 @@ data class BorderDecorationRenderer(
                     if (drawBottom) {
                         val bottomOffset = it.withRelativeX(1)
                             .withRelativeY(size.height - 1)
-                        tileGraphics.getTileAt(bottomOffset).map { char ->
+                        tileGraphics.getTileAtOrNull(bottomOffset)?.let { char ->
                             tileGraphics.draw(
                                 char
                                     .withModifiers(
@@ -162,7 +162,7 @@ data class BorderDecorationRenderer(
                 verticalLine.positions.forEach {
                     if (drawLeft) {
                         val leftOffset = it.withRelativeY(1)
-                        tileGraphics.getTileAt(leftOffset).map { char ->
+                        tileGraphics.getTileAtOrNull(leftOffset)?.let { char ->
                             tileGraphics.draw(
                                 char
                                     .withModifiers(
@@ -178,7 +178,7 @@ data class BorderDecorationRenderer(
                     if (drawRight) {
                         val rightOffset = it.withRelativeY(1)
                             .withRelativeX(size.width - 1)
-                        tileGraphics.getTileAt(rightOffset).map { char ->
+                        tileGraphics.getTileAtOrNull(rightOffset)?.let { char ->
                             tileGraphics.draw(
                                 char
                                     .withModifiers(

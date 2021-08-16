@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.util.markovchain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChain
+import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChainNode
 import org.junit.Before
 import org.junit.Test
 

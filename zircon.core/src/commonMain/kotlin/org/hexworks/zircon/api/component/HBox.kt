@@ -11,4 +11,9 @@ import org.hexworks.zircon.api.behavior.TitleOverride
  * @see ComponentDecorations
  * @see Container
  */
-interface HBox : Container, TitleOverride
+interface HBox : Container, TitleOverride {
+    /**
+     * The remaining (horizontal) space that's left in this component.
+     */
+    val remainingSpace: Int
+}

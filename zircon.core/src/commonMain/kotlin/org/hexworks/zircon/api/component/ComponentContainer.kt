@@ -49,4 +49,9 @@ interface ComponentContainer : ColorThemeOverride {
      */
     fun addFragments(vararg fragments: Fragment): List<AttachedComponent> = fragments.map(::addFragment)
 
+    /**
+     * Detaches all child components and returns them.
+     */
+    fun detachAllComponents(): List<Component>
+
 }

@@ -5,9 +5,11 @@ import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.GraphicalTilesetResources.nethack16x16
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile.Companion.newBuilder
 import org.hexworks.zircon.api.dsl.component.buildHbox
+import org.hexworks.zircon.api.dsl.component.button
 import org.hexworks.zircon.api.dsl.component.checkBox
 import org.hexworks.zircon.api.dsl.component.hbox
 import org.hexworks.zircon.api.dsl.component.header
@@ -21,15 +23,19 @@ import org.hexworks.zircon.api.dsl.component.plus
 import org.hexworks.zircon.api.dsl.component.progressBar
 import org.hexworks.zircon.api.dsl.component.radioButton
 import org.hexworks.zircon.api.dsl.component.radioButtonGroup
+import org.hexworks.zircon.api.dsl.component.textArea
 import org.hexworks.zircon.api.dsl.component.textBox
+import org.hexworks.zircon.api.dsl.component.toggleButton
 import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.dsl.component.verticalNumberInput
 import org.hexworks.zircon.api.dsl.component.verticalSlider
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.DEFAULT_TILESET
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 import kotlin.concurrent.thread
+import kotlin.jvm.JvmStatic
 
 class AllComponentsExampleKotlin : OneColumnComponentExampleKotlin() {
 
@@ -114,56 +120,144 @@ class AllComponentsExampleKotlin : OneColumnComponentExampleKotlin() {
                     spacing = 1
                     decoration = margin(1, 0, 0, 0)
 
-                    verticalNumberInput {
-                        initialValue = 15
-                        minValue = 1
-                        maxValue = 100
-                        decoration = box()
-                    }
-                    horizontalNumberInput {
-                        initialValue = 5
-                        minValue = 1
-                        maxValue = 100
-                        decoration = box()
+                    hbox {
+                        decoration = box(title = "Only numbers")
+                        spacing = 1
+                        verticalNumberInput {
+                            initialValue = 5
+                            minValue = 1
+                            maxValue = 10
+                            decorations = box() + margin(1)
+                        }
+                        horizontalNumberInput {
+                            initialValue = 5
+                            minValue = 1
+                            maxValue = 1000
+                            decorations = box() + margin(1)
+                        }
                     }
                     vbox {
                         name = "Radio box"
-                        decoration = box(title = "Tonight")
+                        decoration = box(title = "Plans for tonight")
 
                         val a = radioButton {
-                            +"Stay home?"
+                            +"Sleep"
                             key = "a"
                         }
                         val b = radioButton {
-                            +"Or go out"
+                            +"Go to the bar"
                             key = "b"
                         }
 
+                        val c = radioButton {
+                            +"Visit a friend"
+                            key = "c"
+                        }
+
+                        val d = radioButton {
+                            +"Drink beer"
+                            key = "d"
+                        }
+
+                        val e = radioButton {
+                            +"Don't do anything"
+                            key = "e"
+                        }
+
+                        val f = radioButton {
+                            +"Count all the clouds"
+                            key = "f"
+                        }
+
+                        val g = radioButton {
+                            +"watch movies"
+                            key = "g"
+                        }
+
                         radioButtonGroup {
-                            radioButtons = a + b
+                            radioButtons = a + b + c + d + e + f + g
                         }
                     }
                 }
 
                 hbox {
                     spacing = 1
-                    verticalSlider {
-                        minValue = 1
-                        maxValue = 100
-                        numberOfSteps = 3
-                        decoration = box()
-                    }
-                    horizontalSlider {
-                        minValue = 1
-                        maxValue = 100
-                        numberOfSteps = 3
-                        decoration = box()
+                    hbox {
+                        spacing = 1
+                        decoration = box(title = "Sliders")
+                        verticalSlider {
+                            minValue = 1
+                            maxValue = 100
+                            numberOfSteps = 3
+                            decorations = box() + margin(1)
+                        }
+                        horizontalSlider {
+                            minValue = 1
+                            maxValue = 100
+                            numberOfSteps = 4
+                            decorations = box() + margin(1)
+                        }
                     }
                     vbox {
                         name = "Chores"
                         decoration = box(title = "Chores")
                         checkBox { +"Hoovering" }
                         checkBox { +"Mopping" }
+                        checkBox { +"Start the dishwasher" }
+                        checkBox { +"Do the washing up" }
+                        checkBox { +"Take down the trash" }
+                        checkBox { +"Dusting" }
+                        checkBox { +"Buy detergent" }
+                        checkBox { +"Clean the toilet" }
+                    }
+                }
+
+                hbox {
+                    spacing = 1
+
+                    textArea {
+                        decoration = box(title = "Description")
+                        preferredSize = Size.create(17, 8)
+                    }
+
+                    vbox {
+                        decoration = box(title = "Settings")
+
+                        toggleButton { +"Mipmapping" }
+                        toggleButton { +"Antialias" }
+                        toggleButton { +"Film grain" }
+                        toggleButton { +"Motion blur" }
+                        toggleButton { +"Display FPS " }
+                        toggleButton { +"God rays" }
+                        toggleButton { +"Chromatic aberration " }
+                    }
+                }
+
+                vbox {
+                    header { +"Delete everything?" }
+                }
+                hbox {
+                    spacing = 1
+
+                    button {
+                        +"Sure"
+                        decorations = box(
+                            boxType = BoxType.DOUBLE,
+                            renderingMode = INTERACTIVE
+                        ) + margin(1)
+                        onActivated {
+                            println("Deleting everything...")
+                        }
+                    }
+                    button {
+                        +"Yes"
+                        decorations = box(
+                            boxType = BoxType.DOUBLE,
+                            renderingMode = INTERACTIVE
+                        ) + margin(1)
+                        onActivated {
+                            println("Deleting everything...")
+                        }
                     }
                 }
             }

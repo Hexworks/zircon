@@ -127,7 +127,7 @@ class ObliqueCityWithScrollingKotlin {
                 gameArea.dispose()
             }
             val gamePanel = panel()
-                .withSize(screen.size)
+                .withPreferredSize(screen.size)
                 .withComponentRenderer(
                     newGameAreaComponentRenderer(
                         gameArea = gameArea,

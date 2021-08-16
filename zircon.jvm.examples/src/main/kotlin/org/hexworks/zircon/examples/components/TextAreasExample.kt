@@ -39,7 +39,7 @@ object TextAreasExample {
             .withPreferredSize(28, 28)
             .withPosition(31, 1)
             .build()
-        screen.addComponent(panel)
+            screen.addComponent(panel)
 
         screen.addComponent(
             Components.textArea()
@@ -78,7 +78,7 @@ object TextAreasExample {
 
         val boundLabel = Components.label()
             .withText("")
-            .withSize(Size.create(13, 3))
+            .withPreferredSize(Size.create(13, 3))
             .withDecorations(box())
             .withPosition(2, 27)
             .build()
