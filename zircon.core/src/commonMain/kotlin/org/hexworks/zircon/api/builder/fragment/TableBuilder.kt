@@ -4,14 +4,18 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.dsl.component.buildIcon
 import org.hexworks.zircon.api.dsl.component.buildLabel
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTable
 import org.hexworks.zircon.internal.fragment.impl.TableColumn
@@ -26,6 +30,8 @@ class TableBuilder<T : Any> private constructor(
     var rowSpacing: Int = 0,
     var colSpacing: Int = 0,
     var position: Position = Position.zero(),
+    var addHeader: Boolean = true,
+    var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer(),
 ) : FragmentBuilder<Table<T>, TableBuilder<T>> {
 
     override fun build(): Table<T> {
@@ -48,7 +54,9 @@ class TableBuilder<T : Any> private constructor(
             data = data ?: error("A table must have an observable list of data associated with its columns"),
             columns = columns,
             rowSpacing = rowSpacing,
-            colSpacing = colSpacing
+            colSpacing = colSpacing,
+            addHeader = addHeader,
+            selectedRowRenderer = selectedRowRenderer
         )
     }
 
@@ -66,9 +74,12 @@ class TableBuilder<T : Any> private constructor(
     fun TableBuilder<T>.textColumn(init: TableColumnBuilder<T, String, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder.newBuilder<T, String, Label>()
             .apply(init)
-            .also {
-                it.cellRenderer = {
-                    buildLabel { +it }
+            .also { builder ->
+                builder.cellRenderer = {
+                    buildLabel {
+                        +it
+                        preferredSize = Size.create(builder.width, 1)
+                    }
                 }
             }
             .build()
@@ -84,9 +95,12 @@ class TableBuilder<T : Any> private constructor(
     fun TableBuilder<T>.numberColumn(init: TableColumnBuilder<T, Number, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder.newBuilder<T, Number, Label>()
             .apply(init)
-            .also {
-                it.cellRenderer = { number ->
-                    buildLabel { number.toString() }
+            .also { builder ->
+                builder.cellRenderer = { number ->
+                    buildLabel {
+                        +number.toString()
+                        preferredSize = Size.create(builder.width, 1)
+                    }
                 }
             }
             .build()
@@ -101,10 +115,11 @@ class TableBuilder<T : Any> private constructor(
     fun TableBuilder<T>.observableTextColumn(init: TableColumnBuilder<T, ObservableValue<String>, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder.newBuilder<T, ObservableValue<String>, Label>()
             .apply(init)
-            .also {
-                it.cellRenderer = { value ->
+            .also { builder ->
+                builder.cellRenderer = { value ->
                     buildLabel {
                         textProperty.updateFrom(value)
+                        preferredSize = Size.create(builder.width, 1)
                     }
                 }
             }
@@ -151,6 +166,14 @@ class TableBuilder<T : Any> private constructor(
         colSpacing = spacing
     }
 
+    fun withAddHeader(addHeader: Boolean) = also {
+        this.addHeader = addHeader
+    }
+
+    fun withSelectedRowRenderer(rowRenderer: ComponentRenderer<HBox>) = also {
+        this.selectedRowRenderer = rowRenderer
+    }
+
     override fun withPosition(position: Position): TableBuilder<T> = also {
         this.position = position
     }
@@ -161,7 +184,9 @@ class TableBuilder<T : Any> private constructor(
         height = height,
         rowSpacing = rowSpacing,
         colSpacing = colSpacing,
-        position = position
+        position = position,
+        addHeader = addHeader,
+        selectedRowRenderer = selectedRowRenderer
     )
 
     companion object {

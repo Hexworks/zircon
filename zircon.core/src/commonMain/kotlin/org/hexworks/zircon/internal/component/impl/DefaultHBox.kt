@@ -31,6 +31,9 @@ open class DefaultHBox(
     private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()
 
+    override val remainingSpace: Int
+        get() = availableSpace.width
+
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         require(component is InternalComponent) {

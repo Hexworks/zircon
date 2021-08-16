@@ -140,14 +140,11 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
     /**
      * Shorthand for [componentRenderer] that uses function syntax.
      */
+    @Deprecated("Use lambdas instead (since fun interface upgrade)")
     var renderFunction: (TileGraphics, ComponentRenderContext<T>) -> Unit
         get() = { g, c -> componentRenderer.render(g, c as ComponentRenderContext<Nothing>) }
         set(value) {
-            componentRenderer = object : ComponentRenderer<T> {
-                override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<T>) {
-                    value(tileGraphics, context)
-                }
-            }
+            componentRenderer = ComponentRenderer { tileGraphics, context -> value(tileGraphics, context) }
         }
 
     /**

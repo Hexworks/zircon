@@ -5,7 +5,9 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.component.VBoxBuilder
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.component.buildHbox
@@ -16,23 +18,28 @@ import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.jvm.Synchronized
 
 /**
  * The **internal** default implementation of [Table].
  */
+@Suppress("UNCHECKED_CAST")
 class DefaultTable<M : Any> internal constructor(
     position: Position,
     /**
      * The height this fragment will use. Keep in mind that the first row will be used as header row.
      */
     height: Int,
+    private val addHeader: Boolean,
     private val data: ObservableList<M>,
     private val columns: List<TableColumn<M, *, *>>,
     private val rowSpacing: Int = 0,
-    private val colSpacing: Int = 0
+    private val colSpacing: Int = 0,
+    private val selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer()
 ) : Table<M> {
 
+    private val dataPanelHeight = if (addHeader) height - 1 else height
     private val selectedElements: ListProperty<M> = emptyList<M>().toProperty()
 
     override val selectedRowsValue: ObservableList<M> = selectedElements
@@ -52,9 +59,11 @@ class DefaultTable<M : Any> internal constructor(
         preferredSize = size
         this.position = position
 
-        addHeaderRow(size.width)
+        if (addHeader) {
+            addHeaderRow(size.width)
+        }
         dataPanel = vbox {
-            preferredSize = size.withRelativeHeight(-1)
+            preferredSize = Size.create(width, dataPanelHeight)
             spacing = rowSpacing
         }
     }
@@ -71,7 +80,7 @@ class DefaultTable<M : Any> internal constructor(
         dataPanel.detachAllComponents()
         dataPanel.apply {
             // TODO: Improve this loop to not loop over all elements
-            val elementCount = minOf(data.size, height)
+            val elementCount = minOf(data.size, dataPanelHeight)
             for (i in 0 until elementCount) {
                 addComponent(newRowFor(data[i]))
             }
@@ -80,12 +89,18 @@ class DefaultTable<M : Any> internal constructor(
 
     @Synchronized
     private fun newRowFor(model: M): Component {
-        val cells: List<Component> = columns
-            .map { column -> column.renderCellFor(model) }
+        val cells: List<Component> = columns.map { column -> column.renderCellFor(model) }
         val rowHeight = cells.maxOf { it.height }
         val row = buildHbox {
             spacing = colSpacing
             preferredSize = Size.create(width, rowHeight)
+            val defaultRenderer: ComponentRenderer<HBox> = componentRenderer as ComponentRenderer<HBox>
+            componentRenderer = ComponentRenderer { tileGraphics, context ->
+                if (selectedElements.contains(model)) {
+                    selectedRowRenderer.render(tileGraphics, context)
+                } else defaultRenderer.render(tileGraphics, context)
+            }
+
         }
         cells.forEach(row::addComponent)
         row.handleMouseEvents(MouseEventType.MOUSE_CLICKED) { _, phase ->
