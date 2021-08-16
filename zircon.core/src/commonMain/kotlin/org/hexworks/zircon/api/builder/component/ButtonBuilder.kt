@@ -11,8 +11,8 @@ import kotlin.jvm.JvmStatic
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 class ButtonBuilder : ComponentWithTextBuilder<Button, ButtonBuilder>(
-        initialRenderer = DefaultButtonRenderer(),
-        initialText = ""
+    initialRenderer = DefaultButtonRenderer(),
+    initialText = ""
 ) {
 
     init {
@@ -21,10 +21,10 @@ class ButtonBuilder : ComponentWithTextBuilder<Button, ButtonBuilder>(
 
     override fun build(): Button {
         return DefaultButton(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialText = text,
-        )
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            textProperty = fixedTextProperty,
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy()).withText(text)

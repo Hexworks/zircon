@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
@@ -11,14 +12,14 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 @Suppress("DuplicatedCode")
 class DefaultToggleButton(
     componentMetadata: ComponentMetadata,
-    initialText: String,
+    textProperty: Property<String>,
     initialSelected: Boolean,
     renderingStrategy: ComponentRenderingStrategy<ToggleButton>
 ) : ToggleButton, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
-    TextOverride by TextOverride.create(initialText),
+    TextOverride by TextOverride.create(textProperty),
     Selectable by Selectable.create(initialSelected) {
 
     override fun activated() = whenEnabledRespondWith {

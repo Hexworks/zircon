@@ -10,8 +10,6 @@ import org.hexworks.zircon.api.component.RadioButton
  * usually). Whenever the [Tab] is [Selectable.isSelected] the block of content becomes visible
  * and the [Tab] will display a label instead of the button. Deselecting a [Tab] usually happens
  * when another [Tab] becomes selected.
- * @see HorizontalTabBar
- * @see VerticalTabBar
  */
 interface Tab : Fragment {
 
@@ -22,7 +20,6 @@ interface Tab : Fragment {
         set(value) {
             tabButton.isSelected = value
         }
-
 
     val key: String
         get() = tabButton.key

@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
@@ -17,7 +18,7 @@ import java.awt.Graphics2D
 @Suppress("UNCHECKED_CAST")
 class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
 
-    override val isClosed = false.toProperty()
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     private val tilesetCache = mutableMapOf<UUID, Tileset<Graphics2D>>()
 
@@ -32,7 +33,7 @@ class SwingTilesetLoader : TilesetLoader<Graphics2D>, Closeable {
         resource.id in tilesetCache || resource.getLoaderKey() in LOADERS
 
     override fun close() {
-        isClosed.value = true
+        closedValue.value = true
         tilesetCache.clear()
     }
 

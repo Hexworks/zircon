@@ -16,3 +16,5 @@ typealias RenderSequence = Sequence<Pair<Position3D, BlockTileType>>
 fun AnyGameAreaState.isPositionVisible(position3D: Position3D): Boolean {
     return visibleSize.containsPosition(position3D - visibleOffset)
 }
+
+fun <T : Any> T?.orElse(other: () -> T): T = this ?: other()

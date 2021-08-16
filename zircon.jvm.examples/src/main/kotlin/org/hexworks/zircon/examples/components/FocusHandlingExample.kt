@@ -28,7 +28,7 @@ object FocusHandlingExample {
 
         val textArea = Components.textArea()
             .withText("Test focusing on me\nby clicking the\nbuttons.")
-            .withSize(Size.create(20, 5))
+            .withPreferredSize(Size.create(20, 5))
             .withPosition(Position.create(2, 2))
             .build()
 

@@ -22,7 +22,7 @@ class HorizontalScrollBarBuilder :
         maxValue = numberOfScrollableItems,
         itemsShownAtOnce = size.width,
         numberOfSteps = size.width,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder()
         .withProps(props.copy())

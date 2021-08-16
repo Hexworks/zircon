@@ -11,7 +11,7 @@ class DefaultTextBox(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<TextBox>
 ) : TextBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

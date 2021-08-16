@@ -25,9 +25,9 @@ class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton, ToggleButtonB
         return DefaultToggleButton(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-            initialText = text,
+            textProperty = fixedTextProperty,
             initialSelected = isSelected,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

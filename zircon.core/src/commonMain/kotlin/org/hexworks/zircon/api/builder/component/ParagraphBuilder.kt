@@ -33,7 +33,7 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
     }
 
     override fun build(): Paragraph {
-        postProcessors = postProcessors + if (typingEffectSpeedInMs > 0) {
+        props.postProcessors = props.postProcessors + if (typingEffectSpeedInMs > 0) {
             listOf(TypingEffectPostProcessor(typingEffectSpeedInMs))
         } else {
             listOf()
@@ -42,7 +42,7 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
             initialText = text,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

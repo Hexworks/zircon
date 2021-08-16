@@ -33,7 +33,7 @@ class VerticalSliderBuilder : SliderBuilder<Slider, VerticalSliderBuilder>(Verti
         minValue = minValue,
         maxValue = maxValue,
         numberOfSteps = numberOfSteps,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder().withProps(props.copy())
         .withMinValue(minValue)

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
@@ -9,7 +10,6 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
@@ -44,7 +44,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
                     .withBackgroundColor(TileColor.transparent())
                     .build()
             )
-            .withMouseOverStyle(
+            .withHighlightedStyle(
                 StyleSetBuilder.newBuilder()
                     .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
                     .withBackgroundColor(DEFAULT_THEME.accentColor)
@@ -72,14 +72,14 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
             componentMetadata = ComponentMetadata(
                 size = SIZE_15X1,
                 relativePosition = POSITION_2_3,
-                componentStyleSet = COMPONENT_STYLES,
-                tileset = TILESET_REX_PAINT_20X20
+                componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
+                tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
                 componentRenderer = rendererStub as ComponentRenderer<ToggleButton>
             ),
-            initialText = TEXT,
+            textProperty = TEXT.toProperty(),
             initialSelected = false
         )
         rendererStub.render(graphics, ComponentRenderContext(target))

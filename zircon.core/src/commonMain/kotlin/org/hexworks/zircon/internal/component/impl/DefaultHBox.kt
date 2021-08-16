@@ -23,13 +23,16 @@ open class DefaultHBox(
     private val spacing: Int,
     renderingStrategy: ComponentRenderingStrategy<HBox>
 ) : HBox, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
     TitleOverride by TitleOverride.create(initialTitle) {
 
     private var filledUntil = Position.create(0, 0)
     private var availableSpace = contentSize.toRect()
+
+    override val remainingSpace: Int
+        get() = availableSpace.width
 
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {

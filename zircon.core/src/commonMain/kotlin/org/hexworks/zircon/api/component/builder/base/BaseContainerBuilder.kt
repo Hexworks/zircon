@@ -41,11 +41,13 @@ abstract class BaseContainerBuilder<T : Container, U : ComponentBuilder<T, U>>(
     override fun createMetadata() = ComponentMetadata(
         relativePosition = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,
-        tileset = tileset,
-        componentStyleSet = componentStyleSet,
-        theme = colorTheme,
+        name = name,
         updateOnAttach = updateOnAttach,
-        name = name
+        themeProperty = colorThemeProperty,
+        componentStyleSetProperty = componentStyleSetProperty,
+        tilesetProperty = tilesetProperty,
+        hiddenProperty = hiddenProperty,
+        disabledProperty = disabledProperty
     )
 
     private fun hasNoExplicitSize() = preferredContentSize.isUnknown && preferredSize.isUnknown

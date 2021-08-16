@@ -30,7 +30,7 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton, RadioButtonBuil
             renderingStrategy = createRenderingStrategy(),
             initialText = text,
             key = key,
-        )
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder()

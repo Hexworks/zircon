@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
-import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -26,6 +26,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Inser
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.util.orElse
 
 //TODO: Finish minValue impl. and bug fixing
 abstract class BaseNumberInput(
@@ -35,7 +36,7 @@ abstract class BaseNumberInput(
     componentMetadata: ComponentMetadata,
     protected val renderingStrategy: ComponentRenderingStrategy<NumberInput>
 ) : NumberInput, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 
@@ -56,7 +57,7 @@ abstract class BaseNumberInput(
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
-    final override val currentValueProperty = createPropertyFrom(initialValue)
+    final override val currentValueProperty = initialValue.toProperty()
     final override var currentValue: Int by currentValueProperty.asDelegate()
 
     init {
@@ -166,11 +167,9 @@ abstract class BaseNumberInput(
             }
             _textBuffer.applyTransformation(InsertCharacter(char))
         } else {
-            if (_textBuffer.getCharAt(_textBuffer.cursor.position).isPresent) {
+            _textBuffer.getCharAtOrNull(_textBuffer.cursor.position)?.let {
                 _textBuffer.applyTransformation(DeleteCharacter(DEL))
-            } else {
-                _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-            }
+            }.orElse { _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
             checkAndAddChar(char)
         }
     }

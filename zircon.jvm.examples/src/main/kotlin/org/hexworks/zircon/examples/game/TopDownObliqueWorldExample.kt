@@ -5,6 +5,7 @@ package org.hexworks.zircon.examples.game
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.Shapes
@@ -17,7 +18,6 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
@@ -42,7 +42,6 @@ object TopDownObliqueWorldExample {
         val screen = Screen.create(
             SwingApplications.startTileGrid(
                 AppConfig.newBuilder()
-                    .enableBetaFeatures()
                     .withDefaultTileset(CP437TilesetResources.rexPaint20x20())
                     .withDebugMode(true)
                     .build()

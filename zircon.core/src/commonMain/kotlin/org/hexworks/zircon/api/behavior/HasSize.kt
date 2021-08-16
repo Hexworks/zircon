@@ -5,13 +5,13 @@ import org.hexworks.zircon.api.data.Size
 /**
  * Represents an object which has bounds (eg: [size])
  */
-interface HasSize : Sizeable {
+interface HasSize {
 
-    override val size: Size
+    val size: Size
 
-    override val width: Int
+    val width: Int
         get() = size.width
 
-    override val height: Int
+    val height: Int
         get() = size.height
 }

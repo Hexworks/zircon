@@ -26,7 +26,7 @@ class HorizontalNumberInputBuilder : NumberInputBuilder<NumberInput, HorizontalN
         initialValue = initialValue,
         minValue = minValue,
         maxValue = maxValue,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder()
         .withProps(props.copy())

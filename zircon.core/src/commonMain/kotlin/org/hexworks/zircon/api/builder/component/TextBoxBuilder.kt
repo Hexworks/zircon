@@ -12,8 +12,8 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.DefaultTextBox
 import org.hexworks.zircon.internal.component.renderer.DefaultTextBoxRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 
 @Suppress("UNCHECKED_CAST")
@@ -184,7 +184,7 @@ class TextBoxBuilder private constructor(
         require(component.height == 1) {
             "An inline Component can only have a height of 1."
         }
-        require(tileset.size == component.tileset.size) {
+        require(tileset isCompatibleWith component.tileset) {
             "Trying to add component with incompatible tileset size '${component.tileset.size}' to" +
                     "container with tileset size: '${tileset.size}'!"
         }
@@ -233,7 +233,7 @@ class TextBoxBuilder private constructor(
             components.forEach {
                 textBox.addComponent(it)
             }
-        }
+        }.attachListeners()
     }
 
     override fun createCopy() = TextBoxBuilder(

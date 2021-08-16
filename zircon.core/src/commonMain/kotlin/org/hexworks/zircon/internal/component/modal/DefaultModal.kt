@@ -19,7 +19,7 @@ open class DefaultModal<T : ModalResult>(
     override val darkenPercent: Double,
     renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
 ) : Modal<T>, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ), Observable<T> by DefaultObservable() {
 

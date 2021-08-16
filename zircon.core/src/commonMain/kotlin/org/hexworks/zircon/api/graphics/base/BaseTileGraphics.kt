@@ -13,6 +13,7 @@ import org.hexworks.zircon.api.graphics.*
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.InternalTileGraphics
+import org.hexworks.zircon.internal.util.orElse
 
 /**
  * This base class for [TileGraphics] can be re-used by complex image classes like layers,
@@ -25,9 +26,9 @@ abstract class BaseTileGraphics(
     initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
 
-    final override val tilesetProperty = initialTileset.toProperty { newValue ->
-        tileset.isCompatibleWith(newValue)
-    }
+    final override val tilesetProperty = initialTileset.toProperty(validator = { oldValue, newValue ->
+        oldValue isCompatibleWith newValue
+    })
 
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
@@ -78,8 +79,8 @@ abstract class BaseTileGraphics(
         return (0 until height).joinToString("") { y ->
             (0 until width).joinToString("") { x ->
                 (currTiles[Position.create(x, y)] ?: Tile.defaultTile())
-                    .asCharacterTile()
-                    .orElse(Tile.defaultTile())
+                    .asCharacterTileOrNull()
+                    .orElse { Tile.defaultTile() }
                     .character.toString()
             }.plus("\n")
         }.trim()
@@ -131,7 +132,7 @@ abstract class BaseTileGraphics(
         val (tiles, _, size) = state
         val newTiles = mutableMapOf<Position, Tile>()
         size.fetchPositions().forEach { pos ->
-            newTiles[pos] = transformer(pos, tiles.getOrElse(pos) { Tile.defaultTile() })
+            newTiles[pos] = transformer(pos, tiles.getOrElse(pos) { Tile.empty() })
         }
         draw(newTiles)
     }

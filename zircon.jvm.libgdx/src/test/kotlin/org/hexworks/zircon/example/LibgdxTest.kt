@@ -30,12 +30,14 @@ private val tileset = CP437TilesetResources.wanderlust16x16()
 private const val screenWidth = 1920f
 private const val screenHeight = 1080f
 
-class LibgdxTest : ApplicationAdapter() {
+class LibgdxTest(
+    config: AppConfig
+) : ApplicationAdapter() {
 
     private val camera = OrthographicCamera()
     private val viewport = ExtendViewport(screenWidth, screenHeight, camera)
 
-    private val tileGrid: InternalTileGrid = ThreadSafeTileGrid(tileset, size)
+    private val tileGrid: InternalTileGrid = ThreadSafeTileGrid(config)
     private val renderer = LibgdxRenderer(grid = tileGrid)
 
     private val random = Random()
@@ -139,7 +141,7 @@ object GdxLauncher {
         cfg.title = "LibGDX Test"
         cfg.height = size.height * tileset.height
         cfg.width = size.width * tileset.width
-        LwjglApplication(LibgdxTest(), cfg)
+        LwjglApplication(LibgdxTest(AppConfig.defaultConfiguration()), cfg)
     }
 }
 

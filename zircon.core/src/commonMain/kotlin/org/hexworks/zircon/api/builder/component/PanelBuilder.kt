@@ -19,7 +19,7 @@ class PanelBuilder : BaseContainerBuilder<Panel, PanelBuilder>(DefaultPanelRende
             initialTitle = title,
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
-        }
+        }.attachListeners()
     }
 
     override fun createCopy() = newBuilder()

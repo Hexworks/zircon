@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.CloseBehavior
@@ -40,7 +41,7 @@ class SwingCanvasRenderer(
     private val app: Application
 ) : Renderer {
 
-    override val isClosed = false.toProperty()
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     private var blinkOn = true
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
@@ -120,8 +121,8 @@ class SwingCanvasRenderer(
     }
 
     override fun close() {
-        if (!isClosed.value) {
-            isClosed.value = true
+        if (!closed) {
+            closedValue.value = true
             tileGrid.close()
             frame.dispose()
         }
@@ -141,7 +142,7 @@ class SwingCanvasRenderer(
             fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
             drawTiles(this)
             if (shouldDrawCursor()) {
-                tileGrid.getTileAt(tileGrid.cursorPosition).map { it ->
+                tileGrid.getTileAtOrNull(tileGrid.cursorPosition)?.let { it ->
                     drawCursor(this, it, tileGrid.cursorPosition)
                 }
             }
@@ -161,7 +162,8 @@ class SwingCanvasRenderer(
                 val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
                 for (j in toRender.size - 1 downTo 0) {
                     val tile = toRender[j]
-                    tiles.add(0, tile to tile.finalTileset(layer))
+                    val tileset = tile.finalTileset(layer)
+                    tiles.add(0, tile to tileset)
                     if (tile.isOpaque) {
                         break@tiles
                     }

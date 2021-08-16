@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
@@ -29,6 +30,8 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
      * The [InternalCursorHandler] this [InternalTileGrid] currently uses.
      */
     var cursorHandler: InternalCursorHandler
+
+    val config: AppConfig
 
     /**
      * Starts delegating all actions to the given [tileGrid].

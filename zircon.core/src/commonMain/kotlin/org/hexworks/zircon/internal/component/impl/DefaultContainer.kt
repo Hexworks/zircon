@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -25,16 +25,18 @@ import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(
-    componentMetadata: ComponentMetadata,
+    metadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = metadata,
     renderer = renderer
 ) {
 
     final override val children: ObservableList<InternalComponent> by lazy {
         persistentListOf<InternalComponent>().toProperty()
     }
+
+    private val attachments = mutableListOf<AttachedComponent>()
 
     // TODO: refactor this so that recursive changes are not necessary
     @Synchronized
@@ -59,6 +61,7 @@ open class DefaultContainer(
         val attachment = DefaultAttachedComponent(ic, this)
 
         children.add(ic)
+        attachments.add(attachment)
 
         Zircon.eventBus.publish(
             event = ComponentAdded(
@@ -72,9 +75,13 @@ open class DefaultContainer(
         return attachment
     }
 
+    // TODO: test detachment
+    @Synchronized
+    override fun detachAllComponents() = attachments.toList().map { it.detach() }
+
     final override fun asInternalComponent(): InternalContainer = this
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.unknown()
 
     override fun acceptsFocus() = false
 
@@ -93,22 +100,24 @@ open class DefaultContainer(
             "Component $component is already attached to a parent. Please detach it first."
         }
         val originalRect = component.rect
-        component.moveTo(component.absolutePosition + contentOffset + absolutePosition)
+        tileset.checkCompatibilityWith(component.tileset)
+        val newPosition = component.absolutePosition + contentOffset + absolutePosition
         if (RuntimeConfig.config.shouldCheckBounds()) {
             val contentBounds = contentSize.toRect()
-            tileset.checkCompatibilityWith(component.tileset)
             require(contentBounds.containsBoundable(originalRect)) {
-                "Adding out of bounds component $component " +
-                        "with bounds $originalRect to the container $this " +
-                        "with content bounds $contentBounds is not allowed."
+                """Adding out of bounds component $component 
+                        |to the container $this with content bounds $contentBounds
+                        | is not allowed.""".trimMargin()
             }
-            children.firstOrNull { it.intersects(component) }?.let {
+            val newRect = originalRect.withPosition(newPosition)
+            children.firstOrNull { it.intersects(newRect) }?.let {
                 throw IllegalArgumentException(
-                    "You can't add a component to a container which intersects with other components. " +
-                            "$it is intersecting with $component."
+                    """You can't add a component to a container which intersects with other components.
+                        | $newRect is intersecting with $component.""".trimMargin()
                 )
             }
         }
+        component.moveTo(newPosition)
         return component
     }
 
@@ -149,6 +158,7 @@ open class DefaultContainer(
         override fun detach(): Component {
             component.parent = Maybe.empty()
             this@DefaultContainer.children.remove(component)
+            this@DefaultContainer.attachments.remove(this)
             component.resetState()
             Zircon.eventBus.publish(
                 event = ComponentRemoved(

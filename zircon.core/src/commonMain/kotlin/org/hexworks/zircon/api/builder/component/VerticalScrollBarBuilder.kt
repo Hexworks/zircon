@@ -22,7 +22,7 @@ class VerticalScrollBarBuilder :
         maxValue = numberOfScrollableItems,
         itemsShownAtOnce = itemsShownAtOnce,
         numberOfSteps = size.height,
-    )
+    ).attachListeners()
 
     override fun createCopy() = newBuilder()
         .withProps(props.copy())

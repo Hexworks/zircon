@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples.fragments
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.component.ComponentAlignment
@@ -27,8 +28,8 @@ object SelectorExample {
         val leftPanel =
             Components.panel().withPreferredSize(20, 40).withAlignmentWithin(screen, ComponentAlignment.LEFT_CENTER)
                 .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Try them!")).build().also {
-                screen.addComponent(it)
-            }
+                    screen.addComponent(it)
+                }
 
         val fragmentsList = Components.vbox()
             .withPreferredSize(leftPanel.contentSize.width, 20)
@@ -41,21 +42,30 @@ object SelectorExample {
         val logArea =
             Components.logArea().withPreferredSize(40, 40).withAlignmentWithin(screen, ComponentAlignment.RIGHT_CENTER)
                 .withDecorations(ComponentDecorations.box(BoxType.TOP_BOTTOM_DOUBLE, "Logs")).build().also {
-                screen.addComponent(it)
-            }
+                    screen.addComponent(it)
+                }
 
         val width = fragmentsList.contentSize.width
 
         fragmentsList.addFragment(
-            Fragments.selector(width, listOf("Centered", "strings", "as", "values")).build()
+            Fragments.selector<String>()
+                .withWidth(width)
+                .withValues(listOf("Centered", "strings", "as", "values").toProperty()).build()
         )
 
         fragmentsList.addFragment(
-            Fragments.selector(width, listOf("Strings", "left", "aligned")).withCenteredText(false).build()
+            Fragments.selector<String>()
+                .withWidth(width)
+                .withValues(listOf("Strings", "left", "aligned").toProperty())
+                .withCenteredText(false)
+                .build()
         )
 
         fragmentsList.addFragment(
-            Fragments.selector(width, listOf("Long", "values", "get", "truncated and that's it")).build()
+            Fragments.selector<String>()
+                .withWidth(width)
+                .withValues(listOf("Long", "values", "get", "truncated and that's it").toProperty())
+                .build()
         )
 
         // This is a special form of MultiSelect
@@ -64,24 +74,31 @@ object SelectorExample {
         )
 
         fragmentsList.addFragment(
-            Fragments.selector(width, listOf(2, 4, 8, 16, 32)).build().apply {
-                selectedValue.onChange { (oldValue, newValue) ->
-                    logArea.addParagraph("Changed value from $oldValue to $newValue", true)
+            Fragments.selector<Int>()
+                .withWidth(width)
+                .withValues(listOf(2, 4, 8, 16, 32).toProperty())
+                .build().apply {
+                    selectedValue.onChange { (oldValue, newValue) ->
+                        logArea.addParagraph("Changed value from $oldValue to $newValue", true)
+                    }
                 }
-            }
         )
 
         fragmentsList.addFragment(
-            Fragments.selector(width, listOf("Click", "me!")).withClickableLabel(true).build().apply {
-                selectedValue.onChange { (oldValue, newValue) ->
-                    val text = if (oldValue == newValue) {
-                        "You clicked the label!"
-                    } else {
-                        "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
+            Fragments.selector<String>()
+                .withWidth(width)
+                .withValues(listOf("Click", "me!").toProperty())
+                .withClickableLabel(true)
+                .build().apply {
+                    selectedValue.onChange { (oldValue, newValue) ->
+                        val text = if (oldValue == newValue) {
+                            "You clicked the label!"
+                        } else {
+                            "You changed from '$oldValue' to '$newValue'. Try clicking the label!"
+                        }
+                        logArea.addParagraph(text, true)
                     }
-                    logArea.addParagraph(text, true)
                 }
-            }
         )
 
         screen.display()

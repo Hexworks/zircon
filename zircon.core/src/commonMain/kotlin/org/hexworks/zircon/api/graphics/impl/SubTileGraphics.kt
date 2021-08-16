@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics.impl
 
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.converter.IsomorphicConverter
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
@@ -48,9 +49,15 @@ class SubTileGraphics(
 
     override val tilesetProperty = object : Property<TilesetResource> {
 
+        override val id: UUID
+            get() = backend.tilesetProperty.id
+
         override var value: TilesetResource
             get() = backend.tileset
             set(_) {}
+
+        override val name: String
+            get() = "Property"
 
         override fun bind(other: Property<TilesetResource>, updateWhenBound: Boolean): Binding<TilesetResource> {
             restrictOperation()

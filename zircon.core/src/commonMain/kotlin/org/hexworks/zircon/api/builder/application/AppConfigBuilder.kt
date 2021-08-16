@@ -10,6 +10,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
+
 /**
  * This *builder* class can be used to build [AppConfig] instances. This builder
  * has sensible default values so
@@ -20,7 +21,7 @@ data class AppConfigBuilder(
 ) : Builder<AppConfig> {
 
     /**
-     * Sets the [debugConfig] to be used when [debugMode] is `true`.
+     * Sets the [debugConfig] to be used when debugMode is `true`.
      * @see DebugConfigBuilder
      * @see DebugConfig
      * @see AppConfig.debugMode
@@ -224,33 +225,6 @@ data class AppConfigBuilder(
             tilesetLoaders = loaders.toList()
         )
     }
-
-    @Deprecated("This will be removed in the next version, as the behavior is inconsistent.")
-    fun withFullScreen(screenWidth: Int, screenHeight: Int) = also {
-        throw UnsupportedOperationException("Unstable api, use withFullScreen(true) instead")
-    }
-
-    @Deprecated(
-        message = "Use withBorderless instead",
-        replaceWith = ReplaceWith("this.withBorderless(true)")
-    )
-    fun borderless() = withBorderless(true)
-
-    @Deprecated("This feature will be removed in the next release, look at the debug features instead.")
-    fun enableBetaFeatures() = this
-
-    @Deprecated("This feature will be removed in the next release, look at the debug features instead.")
-    fun disableBetaFeatures() = this
-
-    @Deprecated(message = "use withFullScreen instead", ReplaceWith("this.withFullScreen(true)"))
-    fun fullScreen() = withFullScreen(true)
-
-    @Deprecated(
-        message = "use withFullScreen instead",
-        replaceWith = ReplaceWith("this.withFullScreen(screenWidth, screenHeight)")
-    )
-    fun fullScreen(screenWidth: Int, screenHeight: Int) = withFullScreen(screenWidth, screenHeight)
-
 
     override fun build(): AppConfig {
         return config.also {

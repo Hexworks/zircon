@@ -1,9 +1,12 @@
-package org.hexworks.zircon.api.fragment.table
+package org.hexworks.zircon.api.fragment
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
+import org.hexworks.zircon.api.component.renderer.RenderContextKey
 import org.hexworks.zircon.api.data.Size
+import kotlin.jvm.JvmField
+
 
 /**
  * A table fragment displays data in rows. Each row contains several cells. How a cell is displayed depends
@@ -17,6 +20,9 @@ import org.hexworks.zircon.api.data.Size
  */
 @Beta
 interface Table<M : Any> : Fragment {
+
+    val size: Size
+
     /**
      * The elements of the table that are currently selected.
      */
@@ -27,8 +33,11 @@ interface Table<M : Any> : Fragment {
      */
     val selectedRowsValue: ObservableList<M>
 
-    /**
-     * The size this table consumes based on its configured height and column definition.
-     */
-    val size: Size
+    companion object {
+        @JvmField
+        val ROW_SELECTED_KEY = object : RenderContextKey<Boolean> {
+            override fun getDefaultValue() = false
+        }
+    }
+
 }

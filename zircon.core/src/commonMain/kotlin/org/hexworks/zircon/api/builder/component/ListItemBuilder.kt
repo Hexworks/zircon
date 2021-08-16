@@ -17,12 +17,11 @@ class ListItemBuilder : ComponentWithTextBuilder<ListItem, ListItemBuilder>(
 ) {
 
     override fun build(): ListItem {
-        val fixedText = text.withNewLinesStripped()
         return DefaultListItem(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
-            initialText = fixedText,
-        )
+            textProperty = fixedTextProperty,
+        ).attachListeners()
     }
 
     override fun createCopy() = newBuilder().withProps(props.copy()).withText(text)

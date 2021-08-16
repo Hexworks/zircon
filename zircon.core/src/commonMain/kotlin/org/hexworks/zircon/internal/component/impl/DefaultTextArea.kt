@@ -39,7 +39,7 @@ class DefaultTextArea constructor(
 ) : TextArea,
     Scrollable by DefaultScrollable(componentMetadata.size, componentMetadata.size),
     DefaultComponent(
-        componentMetadata = componentMetadata,
+        metadata = componentMetadata,
         renderer = renderingStrategy
     ) {
 

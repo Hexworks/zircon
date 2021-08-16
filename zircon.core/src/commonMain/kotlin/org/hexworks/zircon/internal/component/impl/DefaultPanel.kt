@@ -11,7 +11,7 @@ open class DefaultPanel(
     initialTitle: String,
     renderingStrategy: ComponentRenderingStrategy<Panel>
 ) : Panel, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ), TitleOverride by TitleOverride.create(initialTitle) {
 

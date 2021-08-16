@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.CheckBox
@@ -20,15 +21,15 @@ import kotlin.jvm.Synchronized
 @Suppress("DuplicatedCode")
 class DefaultCheckBox(
     componentMetadata: ComponentMetadata,
-    initialText: String,
+    textProperty: Property<String>,
     override val labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT,
     renderingStrategy: ComponentRenderingStrategy<CheckBox>
 ) : CheckBox, DefaultComponent(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ),
     Selectable by Selectable.create(),
-    TextOverride by TextOverride.create(initialText) {
+    TextOverride by TextOverride.create(textProperty) {
 
     override var checkBoxState = UNCHECKED
         private set

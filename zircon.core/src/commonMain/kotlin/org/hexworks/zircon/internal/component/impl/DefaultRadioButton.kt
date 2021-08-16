@@ -22,7 +22,7 @@ class DefaultRadioButton(
     TextOverride by TextOverride.create(initialText),
     Selectable by Selectable.create(),
     DefaultComponent(
-        componentMetadata = componentMetadata,
+        metadata = componentMetadata,
         renderer = renderingStrategy
     ) {
 

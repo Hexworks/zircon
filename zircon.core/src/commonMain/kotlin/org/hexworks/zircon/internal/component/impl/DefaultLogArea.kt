@@ -14,7 +14,7 @@ class DefaultLogArea constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<LogArea>
 ) : LogArea, DefaultContainer(
-    componentMetadata = componentMetadata,
+    metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
 

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -27,11 +28,11 @@ class DefaultComponentFocusOrderListTest {
     fun setUp() {
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
-            componentMetadata = ComponentMetadata(
+            metadata = ComponentMetadata(
                 relativePosition = Position.zero(),
                 size = Size.create(100, 100),
-                tileset = CP437TilesetResources.aduDhabi16x16(),
-                componentStyleSet = ComponentStyleSet.defaultStyleSet()
+                tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),
+                componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub
