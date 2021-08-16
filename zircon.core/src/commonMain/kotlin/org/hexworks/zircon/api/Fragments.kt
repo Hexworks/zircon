@@ -45,15 +45,6 @@ object Fragments {
     fun <T : Any> selector() = SelectorBuilder.newBuilder<T>()
 
     /**
-     * Creates a new [TableBuilder] to build a [org.hexworks.zircon.api.fragment.Table] with its [TableColumns].
-     *
-     * @param data a simple list that will be converted to an [ObservableList] and passed to [table]. It is
-     * generally recommended to directly pass an [ObservableList] to the table fragment.
-     */
-    @Beta
-    fun <T : Any> table(data: List<T>): TableBuilder<T> = table(data.toProperty())
-
-    /**
      * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
      */
     @Beta
