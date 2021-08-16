@@ -1,19 +1,21 @@
 package org.hexworks.zircon.examples.fragments.table
 
+import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.HBox
-import org.hexworks.zircon.api.component.Icon
-import org.hexworks.zircon.api.component.Label
-import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.Table
-import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.component.*
+import org.hexworks.zircon.api.dsl.fragment.buildTable
 
 /**
  * This example shows the usage of the table fragment.
@@ -21,12 +23,43 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 object TableExample {
 
     private val theme = ColorThemes.zenburnVanilla()
-
-    private val data: ListProperty<Person> = 2.randomPersons().toProperty()
+    private val persons = 2.randomPersons().toProperty()
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val tableFragment: Table<Person> = buildTable()
+
+
+        val tableFragment = buildTable<Person> {
+            // TODO: Use an observable list and add UI elements to add/remove elements
+            data = persons
+            height = 20
+            colSpacing = 1
+            rowSpacing = 1
+            textColumn {
+                name = "First name"
+                width = 14
+                valueProvider = Person::firstName
+            }
+            textColumn {
+                name = "Last name"
+                width = 14
+                valueProvider = Person::lastName
+            }
+            numberColumn {
+                name = "Age"
+                width = 3
+                valueProvider = Person::age
+            }
+            iconColumn {
+                name = "Height"
+                valueProvider = Person::heightIcon
+            }
+            observableTextColumn {
+                name = "Wage"
+                width = 8
+                valueProvider = Person::formattedWage
+            }
+        }
 
         val selectionPanel = buildSelectionPanel(tableFragment)
 
@@ -47,137 +80,93 @@ object TableExample {
     }
 
     /**
-     * The core of this example. This method shows how to build a [Table] using [Fragments.table] and
-     * [TableColumns].
-     */
-    private fun buildTable(): Table<Person> =
-        Fragments
-            // TODO: Use an observable list and add UI elements to add/remove elements
-            .table(data)
-            .withHeight(20)
-            .withColumnSpacing(1)
-            .withRowSpacing(0)
-            .withColumns(
-                TableColumns
-                    .textColumn("First name", 14, Person::firstName),
-                TableColumns
-                    .textColumn("Last name", 14, Person::lastName),
-                TableColumns
-                    .textColumn("Age", 3, Person::age),
-                TableColumns
-                    .icon("Height", Person::height) { height -> iconFor(height) },
-                TableColumns
-                    .textColumnObservable("Wage", 8) { it.wage.bindTransform { wage -> wage.formatWage() } }
-            )
-            .build()
-
-    /**
      * Builds the right panel displaying the currently selected person.
      */
-    private fun buildSelectionPanel(tableFragment: Table<Person>): VBox {
-        return Components
-            .vbox()
-            .withPreferredSize(25, tableFragment.size.height)
-            .withSpacing(1)
-            .withDecorations(ComponentDecorations.box(BoxType.SINGLE))
-            .withPosition(Position.topRightOf(tableFragment.root))
-            .build()
-            .apply {
-                val personObs: ObservableValue<Person> =
-                    tableFragment
-                        .selectedRowsValue.bindTransform {
-                            it.firstOrNull() ?: Person(
-                                "None",
-                                "Selected",
-                                0,
-                                Height.SHORT,
-                                50000.toProperty()
-                            )
-                        }
-                addComponents(
-                    Components
-                        .header()
-                        .withText("Selected person:")
-                        .build(),
-                    personObs.asLabel(contentSize.width, Person::firstName),
-                    personObs.asLabel(contentSize.width, Person::lastName),
-                    heightPanel(contentSize.width, personObs),
-                    personObs
-                        .asLabel(contentSize.width) { wage.value.formatWage() }
-                        .apply {
-                            personObs.onChange {
-                                textProperty.updateFrom(personObs.value.wage.bindTransform { wage ->
-                                    wage.formatWage()
-                                })
-                                textProperty.updateFrom(personObs.value.wage.bindTransform { it.formatWage() })
-                            }
-                        },
-                    Components
-                        .button()
-                        .withText("shuffle")
-                        .build()
-                        .apply {
-                            processComponentEvents(ComponentEventType.ACTIVATED) {
-                                val newWage = randomWage()
-                                val p = personObs.value
-                                p.wage.updateValue(newWage)
-                            }
-                        },
-                    Components
-                        .horizontalNumberInput(contentSize.width)
-                        .withMaxValue(Person.MAX_WAGE)
-                        .withMinValue(Person.MIN_WAGE)
-                        .build()
-                        .apply {
-                            currentValue = personObs.value.wage.value
-                            currentValueProperty.bindTransform { personObs.value.wage.updateValue(it) }
-                        },
-                    Components
-                        .button()
-                        .withSize(contentSize.withHeight(1))
-                        .build()
-                        .apply {
-                            textProperty.updateFrom(personObs.bindTransform { "Delete ${it.firstName} ${it.lastName}" })
-                            processComponentEvents(ComponentEventType.ACTIVATED) {
-                                data.remove(personObs.value)
-                            }
-                        },
-                    Components
-                        .hbox()
-                        .withSpacing(1)
-                        .withSize(contentSize.withHeight(1))
-                        .build()
-                        .apply {
-                            addComponents(
-                                Components
-                                    .button()
-                                    .withText("+")
-                                    .build()
-                                    .apply {
-                                        processComponentEvents(ComponentEventType.ACTIVATED) {
-                                            data.add(randomPerson())
-                                        }
-                                    },
-                                Components
-                                    .label()
-                                    .withText("random Person")
-                                    .build(),
-                                Components
-                                    .button()
-                                    .withText("-")
-                                    .build()
-                                    .apply {
-                                        processComponentEvents(ComponentEventType.ACTIVATED) {
-                                            if (data.isNotEmpty()) {
-                                                data.removeAt(data.lastIndex)
-                                            }
-                                        }
-                                    }
-                            )
-                        }
+    private fun buildSelectionPanel(tableFragment: Table<Person>) = buildVbox {
+
+        preferredSize = Size.create(25, tableFragment.size.height)
+        spacing = 1
+        decoration = box()
+        position = Position.topRightOf(tableFragment.root)
+
+        val panelContentSize = contentSize
+
+        val personValue = tableFragment
+            .selectedRowsValue
+            .bindTransform {
+                it.firstOrNull() ?: Person(
+                    "None",
+                    "Selected",
+                    0,
+                    Height.SHORT,
+                    50000.toProperty()
                 )
             }
+
+        header {
+            text = "Selected person:"
+        }
+
+        withChildren(
+            personValue.asLabel(contentSize.width, Person::firstName),
+            personValue.asLabel(contentSize.width, Person::lastName),
+            heightPanel(contentSize.width, personValue),
+        )
+
+        label {
+            preferredSize = Size.create(contentSize.width, 1)
+            textProperty.updateFrom(personValue.value.formattedWage)
+        }
+
+        button {
+            +"shuffle"
+            onActivated {
+                val newWage = randomWage()
+                personValue.value.wage.updateValue(newWage)
+            }
+        }
+
+        horizontalNumberInput {
+            preferredSize = Size.create(contentSize.width, 1)
+            maxValue = Person.MAX_WAGE
+            minValue = Person.MIN_WAGE
+        }.apply {
+            currentValue = personValue.value.wage.value
+            currentValueProperty.bindTransform { personValue.value.wage.updateValue(it) }
+        }
+
+        button {
+            preferredSize = contentSize.withHeight(1)
+            textProperty.updateFrom(personValue.bindTransform { "Delete ${it.firstName} ${it.lastName}" })
+            onActivated {
+                persons.remove(personValue.value)
+            }
+        }
+
+        hbox {
+            spacing = 1
+            preferredSize = panelContentSize.withHeight(1)
+
+            button {
+                +"+"
+                onActivated {
+                    persons.add(randomPerson())
+                }
+            }
+
+            label { +"random Person" }
+
+            button {
+                +"-"
+                onActivated {
+                    if (persons.isNotEmpty()) {
+                        persons.removeAt(persons.lastIndex)
+                    }
+                }
+            }
+        }
     }
+
 
     private fun heightPanel(width: Int, person: ObservableValue<Person>): HBox =
         Components
@@ -189,9 +178,9 @@ object TableExample {
                 addComponents(
                     Components
                         .icon()
-                        .withIcon(person.value.height.icon)
+                        .withIcon(person.value.heightIcon)
                         .build()
-                        .apply { iconProperty.updateFrom(person.bindTransform { it.height.icon }) },
+                        .apply { iconProperty.updateFrom(person.bindTransform { it.heightIcon }) },
                     Components.label()
                         .withPreferredSize(width - 2, 1)
                         .withText(person.value.height.name)
@@ -200,43 +189,9 @@ object TableExample {
                 )
             }
 
-    private fun <T : Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String): Label =
-        Components
-            .label()
-            .withPreferredSize(width, 1)
-            .build()
-            .apply {
-                textProperty.updateFrom(bindTransform(labelText), true)
-            }
-
-    private fun iconFor(height: Height): Icon =
-        Components
-            .icon()
-            .withIcon(height.icon)
-            .withColorTheme(theme)
-            .build()
-
-    private val Height.icon
-        get() = TileBuilder
-            .newBuilder()
-            .withForegroundColor(
-                when (this) {
-                    Height.TALL -> ANSITileColor.BLUE
-                    Height.SHORT -> ANSITileColor.RED
-                }
-            )
-            .withBackgroundColor(ANSITileColor.WHITE)
-            .withCharacter(
-                when (this) {
-                    Height.TALL -> Symbols.TRIANGLE_UP_POINTING_BLACK
-                    Height.SHORT -> Symbols.TRIANGLE_DOWN_POINTING_BLACK
-                }
-            )
-            .buildCharacterTile()
-
-    private fun Int.formatWage(): String {
-        val thousands = this / 1000
-        val remainder = this % 1000
-        return "$thousands,${remainder.toString().padStart(3, '0')} $"
+    private fun <T : Any> ObservableValue<T>.asLabel(width: Int, labelText: T.() -> String) = buildLabel {
+        preferredSize = Size.create(width, 1)
+        textProperty.updateFrom(bindTransform(labelText), true)
     }
+
 }

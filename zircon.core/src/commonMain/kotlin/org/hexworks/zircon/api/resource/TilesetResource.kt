@@ -72,6 +72,8 @@ interface TilesetResource : Identifiable {
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val id: UUID
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
+
+            override fun toString() = "UNKNOWN"
         }
 
         @JvmStatic

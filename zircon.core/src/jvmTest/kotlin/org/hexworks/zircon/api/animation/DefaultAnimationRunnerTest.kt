@@ -88,12 +88,12 @@ class DefaultAnimationRunnerTest {
 //                }
 //        whenever(animationMock.hasNextFrame()).thenReturn(false)
 
-        val grid = TileGridBuilder.newBuilder(
-            AppConfig.newBuilder()
+        val grid = TileGridBuilder.newBuilder()
+            .withConfig(AppConfig.newBuilder()
                 .withSize(50, 50)
                 .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
-                .build()
-        ).build()
+                .build())
+            .build()
 
         val result = target.start(animationMock)
 

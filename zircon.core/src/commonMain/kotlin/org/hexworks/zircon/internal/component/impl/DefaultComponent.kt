@@ -89,7 +89,7 @@ abstract class DefaultComponent(
     final override val tilesetProperty = metadata.tileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
     }).apply {
-        bind(metadata.tilesetProperty)
+        updateFrom(metadata.tilesetProperty)
     }
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 

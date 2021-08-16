@@ -57,12 +57,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
-        val grid = TileGridBuilder.newBuilder(
-            AppConfig.newBuilder()
+        val grid = TileGridBuilder.newBuilder()
+            .withConfig(AppConfig.newBuilder()
                 .withSize(40, 25)
                 .withDefaultTileset(TILESET_REX_PAINT_20X20)
-                .build()
-        ).build()
+                .build())
+            .build()
 
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -118,12 +118,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
-        val grid = TileGridBuilder.newBuilder(
-            AppConfig.newBuilder()
+        val grid = TileGridBuilder.newBuilder()
+            .withConfig(AppConfig.newBuilder()
                 .withSize(40, 25)
                 .withDefaultTileset(TILESET_REX_PAINT_20X20)
-                .build()
-        ).build()
+                .build())
+            .build()
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()

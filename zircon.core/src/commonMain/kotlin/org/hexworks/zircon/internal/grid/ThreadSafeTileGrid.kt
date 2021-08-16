@@ -99,10 +99,6 @@ class ThreadSafeTileGrid(
     override val closedValue: Property<Boolean> = false.toProperty()
     override val closed: Boolean by closedValue.asDelegate()
 
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position)
-    }
-
     override fun getTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)
     }
@@ -152,7 +148,7 @@ class ThreadSafeTileGrid(
         backend.clear()
         layerable = buildLayerable(size)
         initializeLayerable(config)
-        backend = layerable.getLayerAt(0).get()
+        backend = layerable.getLayerAtOrNull(0)!!
     }
 
     // ANIMATION HANDLER
@@ -213,8 +209,6 @@ class ThreadSafeTileGrid(
 
     // LAYERABLE
 
-    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
-
     override fun getLayerAtOrNull(level: Int): LayerHandle? = layerable.getLayerAtOrNull(level)
 
     override fun addLayer(layer: Layer) = layerable.addLayer(layer)
@@ -238,6 +232,12 @@ class ThreadSafeTileGrid(
                 .withTileset(config.defaultTileset)
                 .build()
         )
+    }
+
+    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
+
+    override fun getTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position)
     }
 
 }

@@ -75,7 +75,9 @@ open class DefaultContainer(
         return attachment
     }
 
-    override fun detachAllComponents() = attachments.map { it.detach() }
+    // TODO: test detachment
+    @Synchronized
+    override fun detachAllComponents() = attachments.toList().map { it.detach() }
 
     final override fun asInternalComponent(): InternalContainer = this
 

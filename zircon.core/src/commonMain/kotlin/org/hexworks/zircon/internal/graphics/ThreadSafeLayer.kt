@@ -50,10 +50,6 @@ open class ThreadSafeLayer(
 
     override fun asInternalLayer() = this
 
-    @Synchronized
-    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position - this.position)
-    }
 
     @Synchronized
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
@@ -159,6 +155,11 @@ open class ThreadSafeLayer(
             .withTiles(tiles)
             .build()
             .toString()
+    }
+
+    @Synchronized
+    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
+        return backend.getTileAt(position - this.position)
     }
 
 }

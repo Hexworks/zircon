@@ -15,21 +15,13 @@ import kotlin.jvm.JvmOverloads
 /**
  * Builds [TileGrid]s.
  */
-open class TileGridBuilder(
-    private val config: AppConfig
+class TileGridBuilder private constructor(
+    var config: AppConfig = AppConfig.defaultConfiguration()
 ) : Builder<TileGrid> {
 
-    @Deprecated("obsolete", ReplaceWith("n/a"))
-    fun withSize(size: Size): TileGridBuilder = error("use withConfig instead")
-
-    @Deprecated("obsolete", ReplaceWith("n/a"))
-    fun withSize(width: Int, height: Int): TileGridBuilder = error("use withConfig instead")
-
-    /**
-     * Sets a tileset for this [TileGrid].
-     */
-    @Deprecated("obsolete", ReplaceWith("n/a"))
-    fun withTileset(tileset: TilesetResource): TileGridBuilder = error("use withConfig instead")
+    fun withConfig(config: AppConfig) = also {
+        this.config = config
+    }
 
     /**
      * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
@@ -40,7 +32,9 @@ open class TileGridBuilder(
         return ThreadSafeTileGrid(config)
     }
 
-    override fun createCopy(): TileGridBuilder = TileGridBuilder(config)
+    override fun createCopy(): TileGridBuilder = TileGridBuilder(
+        config = config
+    )
 
     companion object {
 
@@ -48,7 +42,10 @@ open class TileGridBuilder(
          * Creates a new [TileGridBuilder].
          */
         @JvmStatic
-        @JvmOverloads
-        fun newBuilder(config: AppConfig = AppConfig.defaultConfiguration()) = TileGridBuilder(config)
+        fun newBuilder() = TileGridBuilder()
+
+        @Deprecated("We don't pass mandatory parameters anymore. Use the function without a parameter instead.")
+        @JvmStatic
+        fun newBuilder(config: AppConfig) = TileGridBuilder()
     }
 }
