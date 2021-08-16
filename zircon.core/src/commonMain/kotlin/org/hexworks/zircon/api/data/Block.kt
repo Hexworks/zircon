@@ -82,7 +82,7 @@ interface Block<T : Tile> : Copiable<Block<T>> {
     companion object {
 
         @JvmStatic
-        fun <T : Tile> newBuilder() = BlockBuilder<T>()
+        fun <T : Tile> newBuilder() = BlockBuilder.newBuilder<T>()
 
         @JvmStatic
         fun <T : Tile> create(emptyTile: T): Block<T> {

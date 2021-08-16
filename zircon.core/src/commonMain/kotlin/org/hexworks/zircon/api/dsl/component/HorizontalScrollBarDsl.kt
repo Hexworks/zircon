@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  */
 fun buildHorizontalScrollBar(
     init: HorizontalScrollBarBuilder.() -> Unit
-): ScrollBar = HorizontalScrollBarBuilder().apply(init).build()
+): ScrollBar = HorizontalScrollBarBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [ScrollBar] using the component builder DSL, adds it to the
@@ -18,4 +18,4 @@ fun buildHorizontalScrollBar(
  */
 fun <T : BaseContainerBuilder<*, *>> T.horizontalScrollBar(
     init: HorizontalScrollBarBuilder.() -> Unit
-): ScrollBar = buildChildFor(this, HorizontalScrollBarBuilder(), init)
+): ScrollBar = buildChildFor(this, HorizontalScrollBarBuilder.newBuilder(), init)

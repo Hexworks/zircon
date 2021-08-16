@@ -12,7 +12,10 @@ import kotlin.jvm.JvmStatic
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
  */
 @ZirconDsl
-class ProgressBarBuilder : BaseComponentBuilder<ProgressBar, ProgressBarBuilder>(DefaultProgressBarRenderer()) {
+class ProgressBarBuilder private constructor() :
+    BaseComponentBuilder<ProgressBar, ProgressBarBuilder>(
+        initialRenderer = DefaultProgressBarRenderer()
+    ) {
 
     var range: Int = 100
         set(value) {

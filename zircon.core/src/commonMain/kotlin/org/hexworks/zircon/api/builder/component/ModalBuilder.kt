@@ -16,7 +16,8 @@ import kotlin.jvm.JvmOverloads
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ModalBuilder<T : ModalResult> : BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
+class ModalBuilder<T : ModalResult> private constructor() :
+    BaseComponentBuilder<Modal<T>, ModalBuilder<T>>(DefaultModalRenderer()) {
 
     var darkenPercent: Double = 0.0
     var centeredDialog: Boolean = false

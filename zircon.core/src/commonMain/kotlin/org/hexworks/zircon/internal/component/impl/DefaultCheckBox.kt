@@ -19,7 +19,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 import kotlin.jvm.Synchronized
 
 @Suppress("DuplicatedCode")
-class DefaultCheckBox(
+class DefaultCheckBox internal constructor(
     componentMetadata: ComponentMetadata,
     textProperty: Property<String>,
     override val labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT,

@@ -6,32 +6,31 @@ import kotlin.jvm.JvmStatic
 /**
  * Contains the configuration to be used when debug mode is enabled.
  */
-data class DebugConfig(
+class DebugConfig internal constructor(
     /**
      * If `true` a grid will be displayed around the tiles.
      */
-    val displayGrid: Boolean = false,
+    val displayGrid: Boolean,
     /**
      * If `true` it will draw the positions of the individual tiles on the tiles
      */
-    val displayCoordinates: Boolean = false,
+    val displayCoordinates: Boolean,
     /**
      * If `true` log messages will appear detailing the FPS characteristics
      */
-    val displayFps: Boolean = false,
-    // TODO: mention new feature in release
+    val displayFps: Boolean,
     /**
      * if `true` no bounds check will be performed when adding/moving components
      */
-    val relaxBoundsCheck: Boolean = false
+    val relaxBoundsCheck: Boolean
 ) {
 
     companion object {
 
         @JvmStatic
-        fun newBuilder() = DebugConfigBuilder()
+        fun newBuilder() = DebugConfigBuilder.newBuilder()
 
         @JvmStatic
-        fun defaultConfig() = DebugConfig()
+        fun defaultConfig() = DebugConfigBuilder.newBuilder().build()
     }
 }

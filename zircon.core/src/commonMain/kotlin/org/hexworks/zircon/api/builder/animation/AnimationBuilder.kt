@@ -10,8 +10,8 @@ import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 
 @Beta
-@Suppress("DataClassPrivateConstructor", "UNCHECKED_CAST", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
-data class AnimationBuilder private constructor(
+@Suppress("UNCHECKED_CAST", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
+class AnimationBuilder private constructor(
     private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
     private val positions: MutableList<Position> = mutableListOf(),
     private var tick: Long = 1000L / DEFAULT_FPS,
@@ -98,7 +98,7 @@ data class AnimationBuilder private constructor(
         )
     }
 
-    override fun createCopy() = copy(
+    override fun createCopy() = AnimationBuilder(
         frames = frames
             .asSequence()
             .map { frame ->
@@ -110,7 +110,10 @@ data class AnimationBuilder private constructor(
                     repeatCount = frame.repeatCount)
             }
             .toMutableList(),
-        positions = positions.toMutableList())
+        positions = positions.toMutableList(),
+        tick = tick,
+        uniqueFrameCount = uniqueFrameCount
+    )
 
     private fun recalculateFrameCountAndLength() {
         totalFrameCount = frames.asSequence()
@@ -125,10 +128,7 @@ data class AnimationBuilder private constructor(
         /**
          * Creates a new [AnimationBuilder] to build [Animation]s.
          */
-        fun newBuilder(): AnimationBuilder {
-            return AnimationBuilder()
-        }
-
+        fun newBuilder() = AnimationBuilder()
 
         private const val DEFAULT_FPS = 15L
 

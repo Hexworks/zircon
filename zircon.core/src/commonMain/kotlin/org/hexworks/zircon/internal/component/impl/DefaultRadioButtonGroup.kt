@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
 import kotlin.jvm.Synchronized
 
-class DefaultRadioButtonGroup(
+class DefaultRadioButtonGroup internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,

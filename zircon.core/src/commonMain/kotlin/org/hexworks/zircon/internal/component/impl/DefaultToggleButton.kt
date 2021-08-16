@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 
 @Suppress("DuplicatedCode")
-class DefaultToggleButton(
+class DefaultToggleButton internal constructor(
     componentMetadata: ComponentMetadata,
     textProperty: Property<String>,
     initialSelected: Boolean,

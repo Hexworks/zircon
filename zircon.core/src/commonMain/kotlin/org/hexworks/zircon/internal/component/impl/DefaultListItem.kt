@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
-class DefaultListItem(
+class DefaultListItem internal constructor(
     componentMetadata: ComponentMetadata,
     textProperty: Property<String>,
     renderingStrategy: ComponentRenderingStrategy<ListItem>

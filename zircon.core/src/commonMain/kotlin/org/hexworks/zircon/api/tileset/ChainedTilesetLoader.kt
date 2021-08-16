@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.tileset
 
 import org.hexworks.zircon.api.resource.TilesetResource
+import kotlin.jvm.JvmStatic
 
 /**
  * A higher-order [TilesetLoader] that will try to load a resource using [loaderA], and if it can't, tries [loaderB].
@@ -8,7 +9,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  *
  * Whether a [TilesetLoader] is able to load a [TilesetResource] is dependent on [TilesetLoader.canLoadResource].
  */
-class ChainedTilesetLoader<T : Any>(
+class ChainedTilesetLoader<T : Any> private constructor(
     private val loaderA: TilesetLoader<T>,
     private val loaderB: TilesetLoader<T>
 ) : TilesetLoader<T> {
@@ -27,6 +28,7 @@ class ChainedTilesetLoader<T : Any>(
          * Constructs a new [TilesetLoader] that will check each [TilesetLoader] given, in order, until it finds one
          * that can load the given resource.
          */
+        @JvmStatic
         fun <T : Any> inOrder(tilesetLoaders: List<TilesetLoader<T>>): TilesetLoader<T> {
             return when (tilesetLoaders.size) {
                 0 -> throw IllegalArgumentException("tilesetLoaders cannot be empty")
@@ -39,5 +41,8 @@ class ChainedTilesetLoader<T : Any>(
                 }
             }
         }
+
+        @JvmStatic
+        fun <T : Any> inOrder(vararg tilesetLoaders: TilesetLoader<T>) = inOrder(tilesetLoaders.toList())
     }
 }

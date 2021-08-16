@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -27,7 +28,7 @@ class DefaultTab internal constructor(
         this.key = key
         preferredSize = Size.create(width, 3)
         componentStyleSet = ComponentStyleSet.defaultStyleSet()
-        renderFunction = { graphics, ctx ->
+        componentRenderer = ComponentRenderer { graphics, ctx ->
             graphics.drawText(ctx.component.text, ctx.currentStyle)
         }
         decoration = box(renderingMode = INTERACTIVE)
@@ -36,12 +37,12 @@ class DefaultTab internal constructor(
     private val label = buildLabel {
         text = initialText
         preferredSize = Size.create(width, 3)
-        renderFunction = { graphics, ctx ->
+        componentRenderer = ComponentRenderer { graphics, ctx ->
             val theme = ctx.theme
-            val style = StyleSet.create(
-                foregroundColor = theme.primaryForegroundColor,
-                backgroundColor = theme.primaryBackgroundColor
-            )
+            val style = StyleSet.newBuilder()
+                .withBackgroundColor(theme.primaryBackgroundColor)
+                .withForegroundColor(theme.primaryForegroundColor)
+                .build()
             val filler = Tile.defaultTile().withStyle(style)
             graphics.fill(filler)
             graphics.drawText(ctx.component.text, style, Position.offset1x1())

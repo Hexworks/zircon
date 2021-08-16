@@ -37,10 +37,14 @@ class VerticalScrollableList<T>(
     /** If set, use this instead of the default [ComponentRenderer] for the [ScrollBar] created internally. */
     private val scrollbarRenderer: ComponentRenderer<ScrollBar>? = null
 ) : ScrollableList<T> {
-    /** Reusable list of labels we display in the main scroll panel. */
+    /**
+     *  Reusable list of labels we display in the main scroll panel.
+     */
     private val labels = mutableListOf<Label>()
 
-    /** Index in [items] of the top item we're showing in the main scroll panel. */
+    /**
+     * Index in [items] of the top item we're showing in the main scroll panel.
+     */
     private var topItemIdx: Int = 0
 
     override val root = Components.hbox()

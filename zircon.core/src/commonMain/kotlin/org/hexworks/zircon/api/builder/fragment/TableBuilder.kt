@@ -34,32 +34,6 @@ class TableBuilder<T : Any> private constructor(
     var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer(),
 ) : FragmentBuilder<Table<T>, TableBuilder<T>> {
 
-    override fun build(): Table<T> {
-        val minHeight = 2
-        require(height >= minHeight) {
-            "A table requires a height of at least $minHeight."
-        }
-        require(columns.isNotEmpty()) {
-            "A table must have at least one column."
-        }
-        require(rowSpacing >= 0) {
-            "Row spacing must be greater than equal to 0. Current value is $rowSpacing"
-        }
-        require(colSpacing >= 0) {
-            "Col spacing must be greater than equal to 0. Current value is $colSpacing"
-        }
-        return DefaultTable(
-            position = position,
-            height = height,
-            data = data ?: error("A table must have an observable list of data associated with its columns"),
-            columns = columns,
-            rowSpacing = rowSpacing,
-            colSpacing = colSpacing,
-            addHeader = addHeader,
-            selectedRowRenderer = selectedRowRenderer
-        )
-    }
-
     fun <V : Any, C : Component> TableBuilder<T>.column(init: TableColumnBuilder<T, V, C>.() -> Unit) {
         columns = columns + TableColumnBuilder.newBuilder<T, V, C>().apply(init).build()
     }
@@ -172,6 +146,32 @@ class TableBuilder<T : Any> private constructor(
 
     fun withSelectedRowRenderer(rowRenderer: ComponentRenderer<HBox>) = also {
         this.selectedRowRenderer = rowRenderer
+    }
+
+    override fun build(): Table<T> {
+        val minHeight = 2
+        require(height >= minHeight) {
+            "A table requires a height of at least $minHeight."
+        }
+        require(columns.isNotEmpty()) {
+            "A table must have at least one column."
+        }
+        require(rowSpacing >= 0) {
+            "Row spacing must be greater than equal to 0. Current value is $rowSpacing"
+        }
+        require(colSpacing >= 0) {
+            "Col spacing must be greater than equal to 0. Current value is $colSpacing"
+        }
+        return DefaultTable(
+            position = position,
+            height = height,
+            data = data ?: error("A table must have an observable list of data associated with its columns"),
+            columns = columns,
+            rowSpacing = rowSpacing,
+            colSpacing = colSpacing,
+            addHeader = addHeader,
+            selectedRowRenderer = selectedRowRenderer
+        )
     }
 
     override fun withPosition(position: Position): TableBuilder<T> = also {

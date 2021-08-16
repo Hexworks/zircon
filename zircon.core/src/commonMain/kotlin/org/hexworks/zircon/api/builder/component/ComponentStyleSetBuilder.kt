@@ -13,13 +13,13 @@ import kotlin.jvm.JvmStatic
  * They will be used accordingly when the component's state changes.
  */
 @ZirconDsl
-class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
-
-    var defaultStyle: StyleSet = StyleSet.defaultStyle()
-    var highlightedStyle: StyleSet = StyleSet.defaultStyle()
-    var activeStyle: StyleSet = StyleSet.defaultStyle()
-    var disabledStyle: StyleSet = StyleSet.defaultStyle()
+class ComponentStyleSetBuilder private constructor(
+    var defaultStyle: StyleSet = StyleSet.defaultStyle(),
+    var highlightedStyle: StyleSet = StyleSet.defaultStyle(),
+    var activeStyle: StyleSet = StyleSet.defaultStyle(),
+    var disabledStyle: StyleSet = StyleSet.defaultStyle(),
     var focusedStyle: StyleSet = StyleSet.defaultStyle()
+) : Builder<ComponentStyleSet> {
 
     override fun build(): ComponentStyleSet {
         val styles = mutableMapOf(
@@ -66,12 +66,13 @@ class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
         focusedStyle = styleSet
     }
 
-    override fun createCopy() = newBuilder()
-        .withDisabledStyle(disabledStyle)
-        .withFocusedStyle(focusedStyle)
-        .withActiveStyle(activeStyle)
-        .withDefaultStyle(defaultStyle)
-        .withHighlightedStyle(highlightedStyle)
+    override fun createCopy() = ComponentStyleSetBuilder(
+        defaultStyle = defaultStyle,
+        highlightedStyle = highlightedStyle,
+        activeStyle = activeStyle,
+        disabledStyle = disabledStyle,
+        focusedStyle = focusedStyle
+    )
 
     companion object {
 

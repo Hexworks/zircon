@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.component.InternalGroup
 import org.hexworks.zircon.internal.extensions.disposeAll
 import kotlin.jvm.Synchronized
 
-class DefaultGroup<T : Component>(
+class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,

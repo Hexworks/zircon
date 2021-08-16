@@ -52,19 +52,18 @@ class Benchmark {
 
         val tiles = listOf(
             Tile.newBuilder().withCharacter('a').withStyleSet(
-                StyleSet.create(
-                    foregroundColor = ANSITileColor.YELLOW,
+                StyleSet.newBuilder().apply {
+                    foregroundColor = ANSITileColor.YELLOW
                     backgroundColor = ANSITileColor.BLUE
-                )
+                }.build()
             )
                 .buildCharacterTile(),
             Tile.newBuilder().withCharacter('b').withStyleSet(
-                StyleSet.create(
-                    foregroundColor = ANSITileColor.GREEN,
+                StyleSet.newBuilder().apply {
+                    foregroundColor = ANSITileColor.GREEN
                     backgroundColor = ANSITileColor.RED
-                )
-            )
-                .buildCharacterTile()
+                }.build()
+            ).buildCharacterTile()
         )
 
         grid.fill(tiles[0])

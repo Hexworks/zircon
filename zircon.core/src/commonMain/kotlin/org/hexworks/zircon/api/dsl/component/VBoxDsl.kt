@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [VBox] using the component builder DSL and returns it.
  */
 fun buildVbox(init: VBoxBuilder.() -> Unit): VBox =
-    VBoxBuilder().apply(init).build()
+    VBoxBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [VBox] using the component builder DSL, adds it to the
@@ -16,4 +16,4 @@ fun buildVbox(init: VBoxBuilder.() -> Unit): VBox =
  */
 fun <T : BaseContainerBuilder<*, *>> T.vbox(
     init: VBoxBuilder.() -> Unit
-): VBox = buildChildFor(this, VBoxBuilder(), init)
+): VBox = buildChildFor(this, VBoxBuilder.newBuilder(), init)

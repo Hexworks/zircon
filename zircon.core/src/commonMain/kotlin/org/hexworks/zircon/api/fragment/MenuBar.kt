@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.fragment
 
 import org.hexworks.cobalt.events.api.CallbackResult
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.fragment.menu.MenuSelection
 
@@ -10,6 +11,7 @@ import org.hexworks.zircon.api.fragment.menu.MenuSelection
  * the screen horizontally) that open a modal with additional selection options
  * when clicked.
  */
+@Beta
 interface MenuBar<T : Any> : Fragment {
 
     /**

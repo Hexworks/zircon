@@ -10,7 +10,9 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class PanelBuilder : BaseContainerBuilder<Panel, PanelBuilder>(DefaultPanelRenderer()) {
+class PanelBuilder private constructor() : BaseContainerBuilder<Panel, PanelBuilder>(
+    initialRenderer = DefaultPanelRenderer()
+) {
 
     override fun build(): Panel {
         return DefaultPanel(

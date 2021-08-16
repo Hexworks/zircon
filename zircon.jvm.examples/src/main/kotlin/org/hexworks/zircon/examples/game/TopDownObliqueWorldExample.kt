@@ -49,7 +49,7 @@ object TopDownObliqueWorldExample {
         )
 
         val panel = Components.panel()
-            .withSize(screen.size)
+            .withPreferredSize(screen.size)
             .withDecorations(box(boxType = BoxType.DOUBLE, title = "World"))
             .build()
 

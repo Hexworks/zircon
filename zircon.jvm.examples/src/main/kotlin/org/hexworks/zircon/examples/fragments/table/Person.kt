@@ -40,7 +40,7 @@ data class Person(
             .buildCharacterTile()
 
     companion object {
-        val MIN_WAGE = 10000
-        val MAX_WAGE = 90500
+        const val MIN_WAGE = 10000
+        const val MAX_WAGE = 90500
     }
 }

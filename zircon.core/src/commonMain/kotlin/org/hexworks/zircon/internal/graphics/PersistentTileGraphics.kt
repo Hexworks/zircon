@@ -17,7 +17,7 @@ import kotlin.jvm.Synchronized
  * operations are being performed. Use this implementation if you want
  * to read / write from multiple threads.
  */
-class PersistentTileGraphics(
+class PersistentTileGraphics internal constructor(
     initialSize: Size,
     initialTileset: TilesetResource,
     initialTiles: PersistentMap<Position, Tile> = persistentHashMapOf()

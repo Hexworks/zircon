@@ -1,13 +1,16 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.component.AttachedComponent
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.*
-import org.hexworks.zircon.api.fragment.Tab
+import org.hexworks.zircon.api.dsl.component.buildVbox
+import org.hexworks.zircon.api.dsl.component.hbox
+import org.hexworks.zircon.api.dsl.component.panel
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 

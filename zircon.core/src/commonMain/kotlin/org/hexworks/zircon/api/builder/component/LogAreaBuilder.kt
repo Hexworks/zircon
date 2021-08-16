@@ -9,7 +9,9 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class LogAreaBuilder : BaseComponentBuilder<LogArea, LogAreaBuilder>(DefaultLogAreaRenderer()) {
+class LogAreaBuilder private constructor() : BaseComponentBuilder<LogArea, LogAreaBuilder>(
+    initialRenderer = DefaultLogAreaRenderer()
+) {
 
     var logRowHistorySize: Int = 100
 

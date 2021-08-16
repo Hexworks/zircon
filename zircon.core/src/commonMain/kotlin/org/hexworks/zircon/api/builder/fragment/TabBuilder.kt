@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
@@ -10,6 +11,7 @@ import org.hexworks.zircon.internal.fragment.impl.TabData
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
+@Beta
 @ZirconDsl
 class TabBuilder private constructor(
     var key: String? = null,
@@ -30,17 +32,6 @@ class TabBuilder private constructor(
         this.label = label
     }
 
-    override fun withPosition(position: Position): TabBuilder {
-        error("Can't set the position of a tab")
-    }
-
-    override fun createCopy() = TabBuilder(
-        key = key,
-        label = label,
-        width = width,
-        content = content
-    )
-
     override fun build(): TabData {
         require(key != null && key!!.isNotBlank()) {
             "A Tab must have a non-blank key."
@@ -60,6 +51,18 @@ class TabBuilder private constructor(
             content = content!!
         )
     }
+
+    override fun createCopy() = TabBuilder(
+        key = key,
+        label = label,
+        width = width,
+        content = content
+    )
+
+    override fun withPosition(position: Position): TabBuilder {
+        error("Can't set the position of a tab")
+    }
+
 
     companion object {
 

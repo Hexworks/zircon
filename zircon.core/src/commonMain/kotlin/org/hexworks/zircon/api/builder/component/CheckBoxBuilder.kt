@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox, CheckBoxBuilder>(
+class CheckBoxBuilder private constructor() : ComponentWithTextBuilder<CheckBox, CheckBoxBuilder>(
     initialRenderer = DefaultCheckBoxRenderer(),
     initialText = "",
     reservedSpace = DefaultCheckBoxRenderer.DECORATION_WIDTH

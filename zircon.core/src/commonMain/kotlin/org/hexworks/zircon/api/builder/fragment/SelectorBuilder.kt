@@ -73,7 +73,6 @@ open class SelectorBuilder<T : Any> internal constructor(
         this.position = position
     }
 
-
     override fun build(): Selector<T> {
         defaultSelected?.let {
             require(valuesProperty.contains(it)) {
@@ -99,8 +98,6 @@ open class SelectorBuilder<T : Any> internal constructor(
         )
     }
 
-    private fun calculateWidth() = valuesProperty.value.maxOf { toStringMethod(it).length } + 2
-
     override fun createCopy() = SelectorBuilder(
         width = width,
         position = position,
@@ -111,6 +108,8 @@ open class SelectorBuilder<T : Any> internal constructor(
         defaultSelected = defaultSelected
     )
 
+    private fun calculateWidth() = valuesProperty.value.maxOf { toStringMethod(it).length } + 2
+
     companion object {
 
         /**
@@ -120,6 +119,7 @@ open class SelectorBuilder<T : Any> internal constructor(
         @JvmStatic
         fun <T : Any> newBuilder(): SelectorBuilder<T> = SelectorBuilder()
 
+        @Suppress("UNUSED_PARAMETER")
         @JvmStatic
         @Deprecated("use newBuilder() without parameters", replaceWith = ReplaceWith("newBuilder()"))
         fun <T : Any> newBuilder(width: Int, values: List<T>): Nothing = error("Use the method without parameters")

@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ListItemBuilder : ComponentWithTextBuilder<ListItem, ListItemBuilder>(
+class ListItemBuilder private constructor() : ComponentWithTextBuilder<ListItem, ListItemBuilder>(
     initialRenderer = DefaultListItemRenderer(),
     initialText = "",
     reservedSpace = 2
@@ -24,7 +24,9 @@ class ListItemBuilder : ComponentWithTextBuilder<ListItem, ListItemBuilder>(
         ).attachListeners()
     }
 
-    override fun createCopy() = newBuilder().withProps(props.copy()).withText(text)
+    override fun createCopy() = newBuilder()
+        .withProps(props.copy())
+        .withText(text)
 
     companion object {
 

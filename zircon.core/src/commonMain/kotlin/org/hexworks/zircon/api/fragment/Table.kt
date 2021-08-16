@@ -3,9 +3,7 @@ package org.hexworks.zircon.api.fragment
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.component.renderer.RenderContextKey
 import org.hexworks.zircon.api.data.Size
-import kotlin.jvm.JvmField
 
 
 /**
@@ -32,12 +30,5 @@ interface Table<M : Any> : Fragment {
      * The elements of the table that are currently selected as [ObservableList].
      */
     val selectedRowsValue: ObservableList<M>
-
-    companion object {
-        @JvmField
-        val ROW_SELECTED_KEY = object : RenderContextKey<Boolean> {
-            override fun getDefaultValue() = false
-        }
-    }
 
 }

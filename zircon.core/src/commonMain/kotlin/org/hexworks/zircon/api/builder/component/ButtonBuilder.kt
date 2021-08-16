@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ButtonBuilder : ComponentWithTextBuilder<Button, ButtonBuilder>(
+class ButtonBuilder private constructor() : ComponentWithTextBuilder<Button, ButtonBuilder>(
     initialRenderer = DefaultButtonRenderer(),
     initialText = ""
 ) {

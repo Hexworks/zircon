@@ -78,7 +78,7 @@ object TextAreasExample {
 
         val boundLabel = Components.label()
             .withText("")
-            .withSize(Size.create(13, 3))
+            .withPreferredSize(Size.create(13, 3))
             .withDecorations(box())
             .withPosition(2, 27)
             .build()

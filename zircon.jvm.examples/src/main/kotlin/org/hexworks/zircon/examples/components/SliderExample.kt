@@ -39,7 +39,7 @@ object SliderExample {
         val screen = Screen.create(tileGrid)
         val panel = Components.panel()
             .withDecorations(box(title = "Slider on panel"), shadow())
-            .withSize(Size.create(30, 28))
+            .withPreferredSize(Size.create(30, 28))
             .withAlignment(positionalAlignment(29, 1))
             .build()
         screen.addComponent(panel)

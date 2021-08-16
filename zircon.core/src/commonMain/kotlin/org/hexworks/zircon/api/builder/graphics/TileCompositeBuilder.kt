@@ -14,7 +14,7 @@ import kotlin.jvm.JvmStatic
  * - Default [Size] is `ONE` (1x1).
  */
 @Suppress("ArrayInDataClass")
-data class TileCompositeBuilder(
+class TileCompositeBuilder private constructor(
     private var size: Size = Size.one(),
     private var tiles: MutableMap<Position, Tile> = mutableMapOf()
 ) : Builder<TileComposite> {
@@ -60,7 +60,10 @@ data class TileCompositeBuilder(
         return DefaultTileComposite(tiles.toMap(), size)
     }
 
-    override fun createCopy() = copy()
+    override fun createCopy() = TileCompositeBuilder(
+        size = size,
+        tiles = tiles.toMutableMap()
+    )
 
     companion object {
 

@@ -151,7 +151,7 @@ object GameComponentExample {
 
         val gameComponent = Components.label()
             .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
-            .withSize(panel.contentSize)
+            .withPreferredSize(panel.contentSize)
             .build()
 
         panel.addComponent(gameComponent)

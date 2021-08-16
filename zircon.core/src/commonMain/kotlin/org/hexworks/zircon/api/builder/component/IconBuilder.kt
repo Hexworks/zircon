@@ -12,7 +12,9 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class IconBuilder : BaseComponentBuilder<Icon, IconBuilder>(DefaultIconRenderer()) {
+class IconBuilder private constructor() : BaseComponentBuilder<Icon, IconBuilder>(
+    initialRenderer = DefaultIconRenderer()
+) {
 
     var iconProperty: Property<Tile> = Tile.empty().toProperty()
     var iconTile: Tile

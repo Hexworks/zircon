@@ -8,14 +8,14 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-class ColorThemeBuilder : Builder<ColorTheme> {
-
-    var name: String = "anonymous"
-    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
-    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
-    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
-    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
+class ColorThemeBuilder private constructor(
+    var name: String = "anonymous",
+    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
+    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
     var accentColor: TileColor = TileColor.defaultForegroundColor()
+) : Builder<ColorTheme> {
 
     fun withName(name: String) = also {
         this.name = name
@@ -50,12 +50,14 @@ class ColorThemeBuilder : Builder<ColorTheme> {
         accentColor = accentColor
     )
 
-    override fun createCopy() = newBuilder()
-        .withPrimaryForegroundColor(primaryForegroundColor)
-        .withPrimaryBackgroundColor(primaryBackgroundColor)
-        .withSecondaryForegroundColor(secondaryForegroundColor)
-        .withSecondaryBackgroundColor(secondaryBackgroundColor)
-        .withAccentColor(accentColor)
+    override fun createCopy() = ColorThemeBuilder(
+        name = name,
+        primaryForegroundColor = primaryForegroundColor,
+        primaryBackgroundColor = primaryBackgroundColor,
+        secondaryForegroundColor = secondaryForegroundColor,
+        secondaryBackgroundColor = secondaryBackgroundColor,
+        accentColor = accentColor
+    )
 
 
     companion object {

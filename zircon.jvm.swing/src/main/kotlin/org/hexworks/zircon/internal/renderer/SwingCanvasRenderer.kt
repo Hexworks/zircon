@@ -191,7 +191,6 @@ class SwingCanvasRenderer(
             val tg = FastTileGraphics(
                 initialSize = renderable.size,
                 initialTileset = renderable.tileset,
-                initialTiles = emptyMap()
             )
             if (!renderable.isHidden) {
                 renderable.render(tg)

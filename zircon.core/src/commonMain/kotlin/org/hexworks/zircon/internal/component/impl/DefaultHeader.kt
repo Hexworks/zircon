@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
-class DefaultHeader(
+class DefaultHeader internal constructor(
     componentMetadata: ComponentMetadata,
     textProperty: Property<String>,
     renderingStrategy: ComponentRenderingStrategy<Header>

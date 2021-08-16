@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.fragment.TableColumn
  * @param C type of the [Component] used to represent each cell
  */
 @Beta
-class TableColumn<T : Any, V : Any, C : Component>(
+class TableColumn<T : Any, V : Any, C : Component> internal constructor(
     override val name: String,
     override val width: Int,
     private val valueProvider: (T) -> V,

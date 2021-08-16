@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
  * Creates a new [CheckBox] using the component builder DSL and returns it.
  */
 fun buildCheckBox(init: CheckBoxBuilder.() -> Unit): CheckBox =
-    CheckBoxBuilder().apply(init).build()
+    CheckBoxBuilder.newBuilder().apply(init).build()
 
 /**
  * Creates a new [CheckBox] using the component builder DSL, adds it to the
@@ -17,4 +17,4 @@ fun buildCheckBox(init: CheckBoxBuilder.() -> Unit): CheckBox =
  */
 fun <T : BaseContainerBuilder<*, *>> T.checkBox(
     init: CheckBoxBuilder.() -> Unit
-): CheckBox = buildChildFor(this, CheckBoxBuilder(), init)
+): CheckBox = buildChildFor(this, CheckBoxBuilder.newBuilder(), init)

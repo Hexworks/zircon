@@ -12,13 +12,13 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
-
-    var isDisabled: Boolean = false
-    var isHidden: Boolean = false
-    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+class RadioButtonGroupBuilder private constructor(
+    var isDisabled: Boolean = false,
+    var isHidden: Boolean = false,
+    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme,
+    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
     var radioButtons: List<RadioButton> = listOf()
+) : Builder<RadioButtonGroup> {
 
     fun withIsDisabled(isDisabled: Boolean) = also {
         this.isDisabled = isDisabled
@@ -53,13 +53,13 @@ class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
         addComponents(*radioButtons.toTypedArray())
     }
 
-    override fun createCopy() = newBuilder()
-        .withIsDisabled(isDisabled)
-        .withIsHidden(isHidden)
-        .withTheme(theme)
-        .withTileset(tileset)
-        .withRadioButtons(*radioButtons.toTypedArray())
-
+    override fun createCopy() = RadioButtonGroupBuilder(
+        isDisabled = isDisabled,
+        isHidden = isHidden,
+        theme = theme,
+        tileset = tileset,
+        radioButtons = radioButtons.toList()
+    )
 
     companion object {
 

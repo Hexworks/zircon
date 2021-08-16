@@ -35,7 +35,7 @@ class ChainedTilesetLoaderTest {
         whenever(loaderA.canLoadResource(any())).thenReturn(true)
         whenever(loaderA.loadTilesetFrom(any())).thenReturn(mockTileset)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThat(chained.loadTilesetFrom(mockTilesetResource)).isSameAs(mockTileset)
         }
 
@@ -51,7 +51,7 @@ class ChainedTilesetLoaderTest {
         whenever(loaderB.canLoadResource(any())).thenReturn(true)
         whenever(loaderB.loadTilesetFrom(any())).thenReturn(mockTileset)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThat(chained.loadTilesetFrom(mockTilesetResource)).isSameAs(mockTileset)
         }
 
@@ -68,7 +68,7 @@ class ChainedTilesetLoaderTest {
         whenever(loaderA.canLoadResource(any())).thenReturn(false)
         whenever(loaderB.canLoadResource(any())).thenReturn(false)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThatThrownBy {
                 chained.loadTilesetFrom(mockTilesetResource)
             }
@@ -85,7 +85,7 @@ class ChainedTilesetLoaderTest {
         val mockTilesetResource = mock<TilesetResource>()
         whenever(loaderA.canLoadResource(any())).thenReturn(true)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThat(chained.canLoadResource(mockTilesetResource)).isTrue()
         }
 
@@ -98,7 +98,7 @@ class ChainedTilesetLoaderTest {
         whenever(loaderA.canLoadResource(any())).thenReturn(false)
         whenever(loaderB.canLoadResource(any())).thenReturn(true)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThat(chained.canLoadResource(mockTilesetResource)).isTrue()
         }
 
@@ -114,7 +114,7 @@ class ChainedTilesetLoaderTest {
         whenever(loaderA.canLoadResource(any())).thenReturn(false)
         whenever(loaderB.canLoadResource(any())).thenReturn(false)
 
-        ChainedTilesetLoader(loaderA, loaderB).also { chained ->
+        ChainedTilesetLoader.inOrder(loaderA, loaderB).also { chained ->
             assertThat(chained.canLoadResource(mockTilesetResource)).isFalse()
         }
 

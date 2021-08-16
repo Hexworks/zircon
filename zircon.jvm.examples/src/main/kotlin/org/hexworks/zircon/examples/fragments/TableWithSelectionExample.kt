@@ -1,4 +1,4 @@
-package org.hexworks.zircon.examples.fragments.table
+package org.hexworks.zircon.examples.fragments
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
@@ -14,6 +14,8 @@ import org.hexworks.zircon.api.dsl.component.*
 import org.hexworks.zircon.api.dsl.fragment.buildTable
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
+import org.hexworks.zircon.examples.fragments.table.*
+import org.hexworks.zircon.examples.fragments.table.randomWage
 
 class TableWithSelectionExample : OneColumnComponentExampleKotlin() {
 

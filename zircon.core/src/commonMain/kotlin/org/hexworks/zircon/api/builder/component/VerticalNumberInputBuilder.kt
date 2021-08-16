@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
+class VerticalNumberInputBuilder private constructor() : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
     initialRenderer = DefaultVerticalNumberInputRenderer()
 ) {
 

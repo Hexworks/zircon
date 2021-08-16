@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 import kotlin.jvm.Synchronized
 
-class DefaultLogArea constructor(
+class DefaultLogArea internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<LogArea>
 ) : LogArea, DefaultContainer(

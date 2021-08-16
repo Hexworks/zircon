@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.LineFactory
 
-class DefaultBox(
+class DefaultBox internal constructor(
     size: Size,
     styleSet: StyleSet,
     override val boxType: BoxType,

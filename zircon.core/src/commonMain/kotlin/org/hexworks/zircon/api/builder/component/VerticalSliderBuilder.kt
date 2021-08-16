@@ -15,7 +15,8 @@ import kotlin.jvm.JvmStatic
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-class VerticalSliderBuilder : SliderBuilder<Slider, VerticalSliderBuilder>(VerticalSliderRenderer()) {
+class VerticalSliderBuilder private constructor() :
+    SliderBuilder<Slider, VerticalSliderBuilder>(VerticalSliderRenderer()) {
 
     override var numberOfSteps: Int = 10
         set(value) {
@@ -35,7 +36,8 @@ class VerticalSliderBuilder : SliderBuilder<Slider, VerticalSliderBuilder>(Verti
         numberOfSteps = numberOfSteps,
     ).attachListeners()
 
-    override fun createCopy() = newBuilder().withProps(props.copy())
+    override fun createCopy() = newBuilder()
+        .withProps(props.copy())
         .withMinValue(minValue)
         .withMaxValue(maxValue)
         .withNumberOfSteps(numberOfSteps)

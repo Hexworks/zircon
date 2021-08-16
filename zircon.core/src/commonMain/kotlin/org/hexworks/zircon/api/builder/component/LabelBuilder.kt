@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class LabelBuilder : ComponentWithTextBuilder<Label, LabelBuilder>(
+class LabelBuilder private constructor() : ComponentWithTextBuilder<Label, LabelBuilder>(
     initialRenderer = DefaultLabelRenderer(),
     initialText = ""
 ) {

@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.tileset.impl.CP437TileMetadataLoader
+import org.hexworks.zircon.internal.tileset.impl.CP437TileMetadataLoader
 import org.hexworks.zircon.api.uievent.MouseEventType
 import java.util.*
 import kotlin.reflect.full.declaredMemberProperties
@@ -45,9 +45,9 @@ object InCP437WeTrust {
         val loader = CP437TileMetadataLoader(16, 16)
 
         val cp437panel = Components.panel()
-            .withSize(Size.create(19, 18))
+            .withPreferredSize(Size.create(19, 18))
             .withDecorations(box(BoxType.SINGLE), shadow())
-            .withRendererFunction { tileGraphics, _ ->
+            .withComponentRenderer { tileGraphics, _ ->
                 loader.fetchMetadata().forEach { (char, meta) ->
                     tileGraphics.draw(
                         tile = Tile.defaultTile()

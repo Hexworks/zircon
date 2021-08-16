@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.fragment
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.Fragment
@@ -11,6 +12,7 @@ import org.hexworks.zircon.api.component.RadioButton
  * and the [Tab] will display a label instead of the button. Deselecting a [Tab] usually happens
  * when another [Tab] becomes selected.
  */
+@Beta
 interface Tab : Fragment {
 
     val tabButton: RadioButton

@@ -8,29 +8,54 @@ import kotlin.jvm.JvmStatic
  * Builder for [DebugConfig]s.
  * @see DebugConfig for defaults
  */
-data class DebugConfigBuilder(
-    var debugConfig: DebugConfig = DebugConfig.defaultConfig()
+class DebugConfigBuilder private constructor(
+    /**
+     * If `true` a grid will be displayed around the tiles.
+     */
+    var displayGrid: Boolean = false,
+    /**
+     * If `true` it will draw the positions of the individual tiles on the tiles
+     */
+    var displayCoordinates: Boolean = false,
+    /**
+     * If `true` log messages will appear detailing the FPS characteristics
+     */
+    var displayFps: Boolean = false,
+    /**
+     * if `true` no bounds check will be performed when adding/moving components
+     */
+    var relaxBoundsCheck: Boolean = false
 ) : Builder<DebugConfig> {
 
     fun withRelaxBoundsCheck(relaxBoundsCheck: Boolean) = also {
-        debugConfig = debugConfig.copy(relaxBoundsCheck = relaxBoundsCheck)
+        this.relaxBoundsCheck = relaxBoundsCheck
     }
 
     fun withDisplayGrid(displayGrid: Boolean) = also {
-        debugConfig = debugConfig.copy(displayGrid = displayGrid)
+        this.displayGrid = displayGrid
     }
 
     fun withDisplayCoordinates(displayCoordinates: Boolean) = also {
-        debugConfig = debugConfig.copy(displayCoordinates = displayCoordinates)
+        this.displayCoordinates = displayCoordinates
     }
 
     fun withDisplayFps(displayFps: Boolean) = also {
-        debugConfig = debugConfig.copy(displayFps = displayFps)
+        this.displayFps = displayFps
     }
 
-    override fun build() = debugConfig
+    override fun build() = DebugConfig(
+        displayGrid = displayGrid,
+        displayCoordinates = displayCoordinates,
+        displayFps = displayFps,
+        relaxBoundsCheck = relaxBoundsCheck
+    )
 
-    override fun createCopy() = copy()
+    override fun createCopy() = DebugConfigBuilder(
+        displayGrid = displayGrid,
+        displayCoordinates = displayCoordinates,
+        displayFps = displayFps,
+        relaxBoundsCheck = relaxBoundsCheck
+    )
 
     companion object {
 

@@ -1,12 +1,15 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.fragment.menu.DropdownMenu
 import org.hexworks.zircon.api.fragment.menu.DropdownMenuItem
 import org.hexworks.zircon.internal.dsl.ZirconDsl
+import kotlin.jvm.JvmStatic
 
+@Beta
 @ZirconDsl
-class DropdownMenuBuilder<T : Any>(
+class DropdownMenuBuilder<T : Any> private constructor(
     var label: String = "",
     internal var children: List<DropdownMenuItem<T>> = listOf()
 ) : Builder<DropdownMenu<T>> {
@@ -28,5 +31,12 @@ class DropdownMenuBuilder<T : Any>(
             children = children
         )
     }
+
+    companion object {
+
+        @JvmStatic
+        fun <T: Any> newBuilder() = DropdownMenuBuilder<T>()
+    }
+
 
 }

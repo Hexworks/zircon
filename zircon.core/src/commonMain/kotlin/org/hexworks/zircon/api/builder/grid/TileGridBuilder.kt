@@ -44,6 +44,7 @@ class TileGridBuilder private constructor(
         @JvmStatic
         fun newBuilder() = TileGridBuilder()
 
+        @Suppress("UNUSED_PARAMETER")
         @Deprecated("We don't pass mandatory parameters anymore. Use the function without a parameter instead.")
         @JvmStatic
         fun newBuilder(config: AppConfig) = TileGridBuilder()

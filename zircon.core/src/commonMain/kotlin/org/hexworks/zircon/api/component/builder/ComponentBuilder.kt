@@ -225,6 +225,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * Creates a [ComponentRenderer] for the resulting [Component] using the
      * given component renderer [fn].
      */
+    @Deprecated("use the SAM fun interface instead")
     fun withRendererFunction(fn: (TileGraphics, ComponentRenderContext<T>) -> Unit): U {
         this.renderFunction = fn
         return this as U

@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileString(
+data class DefaultCharacterTileString internal constructor(
     override val characterTiles: List<CharacterTile>,
     override val size: Size,
     private val textWrap: TextWrap

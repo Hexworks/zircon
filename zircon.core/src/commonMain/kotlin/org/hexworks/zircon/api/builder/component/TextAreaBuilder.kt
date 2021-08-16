@@ -10,7 +10,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class TextAreaBuilder : BaseComponentBuilder<TextArea, TextAreaBuilder>(
+class TextAreaBuilder private constructor() : BaseComponentBuilder<TextArea, TextAreaBuilder>(
     initialRenderer = DefaultTextAreaRenderer(),
 ) {
 

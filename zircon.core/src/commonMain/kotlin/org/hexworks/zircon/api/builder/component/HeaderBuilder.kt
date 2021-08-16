@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class HeaderBuilder : ComponentWithTextBuilder<Header, HeaderBuilder>(
+class HeaderBuilder private constructor() : ComponentWithTextBuilder<Header, HeaderBuilder>(
     initialRenderer = DefaultHeaderRenderer(),
     initialText = ""
 ) {

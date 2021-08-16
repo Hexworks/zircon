@@ -32,7 +32,7 @@ interface ComponentStyleSet {
          * Creates a new [ComponentStyleSetBuilder] for creating styles.
          */
         @JvmStatic
-        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder()
+        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder.newBuilder()
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]

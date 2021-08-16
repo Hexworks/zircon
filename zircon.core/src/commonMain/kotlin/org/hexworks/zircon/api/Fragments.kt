@@ -2,8 +2,6 @@
 
 package org.hexworks.zircon.api
 
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.fragment.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Fragment
@@ -23,20 +21,30 @@ object Fragments {
     /**
      * Creates a [VerticalTabBarBuilder] to create [TabBar]s.
      */
+    @Beta
     @JvmStatic
     fun verticalTabBar() = VerticalTabBarBuilder.newBuilder()
 
     /**
      * Creates a [HorizontalTabBarBuilder] to create [TabBar]s.
      */
+    @Beta
     @JvmStatic
     fun horizontalTabBar() = HorizontalTabBarBuilder.newBuilder()
 
     /**
      * Creates a [MenuBarBuilder] to create [MenuBar]s.
      */
+    @Beta
     @JvmStatic
     fun <T: Any> menuBar() = MenuBarBuilder.newBuilder<T>()
+
+    /**
+     * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
+     */
+    @Beta
+    @JvmStatic
+    fun <T : Any> table(): TableBuilder<T> = TableBuilder.newBuilder()
 
     /**
      * Creates a [SelectorBuilder] to create [Selector]s.
@@ -44,11 +52,6 @@ object Fragments {
     @JvmStatic
     fun <T : Any> selector() = SelectorBuilder.newBuilder<T>()
 
-    /**
-     * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
-     */
-    @Beta
-    fun <T : Any> table(): TableBuilder<T> = TableBuilder.newBuilder()
 
     /**
      * Creates a [SelectorBuilder] to create [Selector]s.

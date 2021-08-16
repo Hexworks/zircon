@@ -11,14 +11,14 @@ import kotlin.jvm.JvmName
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
 fun <T : ModalResult> buildModal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
-    ModalBuilder<T>().apply(init).build()
+    ModalBuilder.newBuilder<T>().apply(init).build()
 
 /**
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
 @JvmName("buildModalWithNoResult")
 fun buildModal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModalResult> =
-    ModalBuilder<EmptyModalResult>().apply(init).build()
+    ModalBuilder.newBuilder<EmptyModalResult>().apply(init).build()
 
 /**
  * Creates a new [Modal] using the component builder DSL, adds it to the
@@ -26,7 +26,7 @@ fun buildModal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModa
  */
 fun <T : BaseContainerBuilder<*, *>, M : ModalResult> T.modal(
     init: ModalBuilder<M>.() -> Unit
-): Modal<M> = buildChildFor(this, ModalBuilder(), init)
+): Modal<M> = buildChildFor(this, ModalBuilder.newBuilder(), init)
 
 /**
  * Creates a new [Modal] with [EmptyModalResult] using the component builder DSL,
@@ -35,4 +35,4 @@ fun <T : BaseContainerBuilder<*, *>, M : ModalResult> T.modal(
 @JvmName("modalWithNoResult")
 fun <T : BaseContainerBuilder<*, *>> T.modal(
     init: ModalBuilder<EmptyModalResult>.() -> Unit
-): Modal<EmptyModalResult> = buildChildFor(this, ModalBuilder(), init)
+): Modal<EmptyModalResult> = buildChildFor(this, ModalBuilder.newBuilder(), init)

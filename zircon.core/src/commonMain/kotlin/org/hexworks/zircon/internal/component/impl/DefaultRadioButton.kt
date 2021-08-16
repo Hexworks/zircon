@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 
-class DefaultRadioButton(
+class DefaultRadioButton internal constructor(
     componentMetadata: ComponentMetadata,
     initialText: String,
     override val key: String,

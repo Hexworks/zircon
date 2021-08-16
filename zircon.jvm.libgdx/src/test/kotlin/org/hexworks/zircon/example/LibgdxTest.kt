@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.data.GridPosition
@@ -74,14 +75,14 @@ class LibgdxTest(
 
     private val chars = listOf('a', 'b')
     private val styles = listOf(
-        DefaultStyleSet(
-            foregroundColor = ANSITileColor.RED,
+        StyleSet.newBuilder().apply {
+            foregroundColor = ANSITileColor.RED
             backgroundColor = ANSITileColor.GREEN
-        ),
-        DefaultStyleSet(
-            foregroundColor = ANSITileColor.MAGENTA,
+        }.build(),
+        StyleSet.newBuilder().apply {
+            foregroundColor = ANSITileColor.MAGENTA
             backgroundColor = ANSITileColor.YELLOW
-        )
+        }.build()
     )
 
     private var currIdx = 0

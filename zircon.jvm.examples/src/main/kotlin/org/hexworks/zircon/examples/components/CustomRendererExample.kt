@@ -27,7 +27,7 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
     override fun build(box: VBox) {
 
         val logArea = logArea()
-            .withSize(box.size)
+            .withPreferredSize(box.size)
             .withDecorations(box())
             .build()
 

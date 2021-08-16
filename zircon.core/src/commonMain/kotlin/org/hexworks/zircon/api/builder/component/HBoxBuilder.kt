@@ -11,7 +11,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class HBoxBuilder : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer()) {
+class HBoxBuilder private constructor() : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer()) {
 
     var spacing: Int = 0
         set(value) {
@@ -27,19 +27,19 @@ class HBoxBuilder : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer(
 
     override fun build(): HBox {
         return DefaultHBox(
-                componentMetadata = createMetadata(),
-                renderingStrategy = createRenderingStrategy(),
-                initialTitle = title,
-                spacing = spacing,
+            componentMetadata = createMetadata(),
+            renderingStrategy = createRenderingStrategy(),
+            initialTitle = title,
+            spacing = spacing,
         ).apply {
             addComponents(*childrenToAdd.toTypedArray())
         }.attachListeners()
     }
 
     override fun createCopy() = newBuilder()
-            .withProps(props.copy())
-            .withSpacing(spacing)
-            .withChildren(*childrenToAdd.toTypedArray())
+        .withProps(props.copy())
+        .withSpacing(spacing)
+        .withChildren(*childrenToAdd.toTypedArray())
 
     @Suppress("DuplicatedCode")
     override fun calculateContentSize(): Size {
@@ -49,11 +49,11 @@ class HBoxBuilder : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer(
         var width = 0
         var maxHeight = 0
         childrenToAdd
-                .map { it.size }
-                .forEach {
-                    width += it.width
-                    maxHeight = max(maxHeight, it.height)
-                }
+            .map { it.size }
+            .forEach {
+                width += it.width
+                maxHeight = max(maxHeight, it.height)
+            }
         if (spacing > 0) {
             width += childrenToAdd.size * spacing - 1
         }

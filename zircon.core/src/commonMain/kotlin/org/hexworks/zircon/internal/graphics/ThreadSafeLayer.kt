@@ -20,7 +20,7 @@ import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.Synchronized
 
-open class ThreadSafeLayer(
+open class ThreadSafeLayer internal constructor(
     initialPosition: Position,
     initialContents: TileGraphics,
     private val movable: Movable = DefaultMovable(

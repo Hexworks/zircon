@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet.Companion.newBuilder
 import org.hexworks.zircon.api.component.VBox
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.StyleSet.Companion.create
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
@@ -24,9 +25,18 @@ class ComponentStyleSetExampleKotlin : OneColumnComponentExampleKotlin() {
         @JvmStatic
         fun main(args: Array<String>) {
             val css = newBuilder()
-                .withDefaultStyle(create(CYAN, BLACK, HashSet()))
-                .withActiveStyle(create(CYAN, BLACK, HashSet()))
-                .withFocusedStyle(create(RED, BLACK, HashSet()))
+                .withDefaultStyle(StyleSet.newBuilder().apply {
+                    foregroundColor = CYAN
+                    backgroundColor = BLACK
+                }.build())
+                .withActiveStyle(StyleSet.newBuilder().apply {
+                    foregroundColor = CYAN
+                    backgroundColor = BLACK
+                }.build())
+                .withFocusedStyle(StyleSet.newBuilder().apply {
+                    foregroundColor = RED
+                    backgroundColor = BLACK
+                }.build())
                 .build()
 
             ComponentStyleSetExampleKotlin().apply {

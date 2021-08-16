@@ -51,6 +51,6 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
     companion object {
 
         @JvmStatic
-        fun newBuilder() = LayerBuilder()
+        fun newBuilder() = LayerBuilder.newBuilder()
     }
 }

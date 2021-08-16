@@ -17,7 +17,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
-class DefaultVBox(
+class DefaultVBox internal constructor(
     componentMetadata: ComponentMetadata,
     initialTitle: String,
     private val spacing: Int,

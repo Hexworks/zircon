@@ -10,7 +10,6 @@ import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
 import org.hexworks.zircon.examples.components.ButtonsExampleKotlin
 import org.hexworks.zircon.examples.components.DataBindingExampleKotlin
 import org.hexworks.zircon.examples.components.MarginExampleKotlin
-import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 
 class HorizontalTabBarExample : OneColumnComponentExampleKotlin() {
 
@@ -22,34 +21,31 @@ class HorizontalTabBarExample : OneColumnComponentExampleKotlin() {
     }
 
     override fun build(box: VBox) {
-        val tabContentSize = box.contentSize.withRelativeHeight(-3)
         box.addFragment(
             buildHorizontalTabBar {
                 size = box.contentSize
                 defaultSelected = "buttons"
+                val tabContentSize = box.contentSize.withRelativeHeight(-3)
                 tab {
                     key = "buttons"
                     label = "Buttons"
-                    size = tabContentSize
-                    content = ButtonsExampleKotlin().wrapWithHbox()
+                    content = ButtonsExampleKotlin().wrap(tabContentSize)
                 }
                 tab {
                     key = "bindings"
                     label = "Bindings"
-                    size = tabContentSize
-                    content = DataBindingExampleKotlin().wrapWithHbox()
+                    content = DataBindingExampleKotlin().wrap(tabContentSize)
                 }
                 tab {
                     key = "margins"
                     label = "Margins"
-                    size = tabContentSize
-                    content = MarginExampleKotlin().wrapWithHbox()
+                    content = MarginExampleKotlin().wrap(tabContentSize)
                 }
             }
         )
     }
 
-    private fun ComponentExampleKotlin.wrapWithHbox(): HBox {
+    private fun ComponentExampleKotlin.wrap(size: Size): HBox {
         val example = this
         return buildHbox {
             preferredSize = size

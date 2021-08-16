@@ -17,9 +17,9 @@ enum class KeyCode(
      * thus we have no information about it.
      */
     UNKNOWN(-1),
-    ENTER('\n'.toInt()),
-    BACKSPACE('\b'.toInt()),
-    TAB('\t'.toInt()),
+    ENTER('\n'.code),
+    BACKSPACE('\b'.code),
+    TAB('\t'.code),
     CANCEL(0x03),
     CLEAR(0x0C),
     SHIFT(0x10),

@@ -53,7 +53,7 @@ object ScrollingLogAreaExample {
 
         val logArea = Components.logArea()
             .withDecorations(box(title = "Log"))
-            .withSize(Size.create(60, 25))
+            .withPreferredSize(Size.create(60, 25))
             .build()
         screen.addComponent(logArea)
 

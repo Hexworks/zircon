@@ -15,7 +15,9 @@ import kotlin.jvm.JvmStatic
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-class HorizontalSliderBuilder : SliderBuilder<Slider, HorizontalSliderBuilder>(HorizontalSliderRenderer()) {
+class HorizontalSliderBuilder private constructor() : SliderBuilder<Slider, HorizontalSliderBuilder>(
+    initialRenderer = HorizontalSliderRenderer()
+) {
 
     override var numberOfSteps: Int = 10
         set(value) {

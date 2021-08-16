@@ -12,7 +12,7 @@ import kotlin.jvm.JvmStatic
  * - [numberOfScrollableItems]: `100`
  */
 @ZirconDsl
-class VerticalScrollBarBuilder :
+class VerticalScrollBarBuilder private constructor() :
     ScrollBarBuilder<ScrollBar, VerticalScrollBarBuilder>(VerticalScrollBarRenderer()) {
 
     override fun build(): ScrollBar = DefaultVerticalScrollBar(

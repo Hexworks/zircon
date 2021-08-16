@@ -20,12 +20,12 @@ import kotlin.jvm.JvmStatic
  * - Default `filler` is an `EMPTY` character
  */
 @Suppress("ArrayInDataClass")
-data class TileGraphicsBuilder(
-    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-    private var size: Size = Size.one(),
-    private var style: StyleSet = StyleSet.defaultStyle(),
-    private val tiles: MutableMap<Position, Tile> = mutableMapOf(),
-    private var filler: Tile = Tile.empty()
+class TileGraphicsBuilder private constructor(
+    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
+    var size: Size = Size.one(),
+    var style: StyleSet = StyleSet.defaultStyle(),
+    var tiles: Map<Position, Tile> = mapOf(),
+    var filler: Tile = Tile.empty()
 ) : Builder<TileGraphics> {
 
     fun withTileset(tileset: TilesetResource) = also {
@@ -60,7 +60,7 @@ data class TileGraphicsBuilder(
      */
     fun withTile(position: Position, tile: Tile) = also {
         if (size.containsPosition(position)) {
-            tiles[position] = tile
+            tiles = tiles + (position to tile)
         }
     }
 
@@ -68,8 +68,7 @@ data class TileGraphicsBuilder(
      * Sets the given [tiles] to be used for the new [TileGraphics].
      */
     fun withTiles(tiles: Map<Position, Tile>) = also {
-        this.tiles.clear()
-        this.tiles.putAll(tiles)
+        this.tiles = this.tiles + tiles
     }
 
     /**
@@ -83,8 +82,12 @@ data class TileGraphicsBuilder(
         if (hasToFill()) fill(filler)
     }
 
-    override fun createCopy() = copy(
-        tiles = tiles.toMutableMap()
+    override fun createCopy() = TileGraphicsBuilder(
+        tileset = tileset,
+        size = size,
+        style = style,
+        tiles = tiles.toMutableMap(),
+        filler = filler
     )
 
     /**

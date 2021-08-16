@@ -11,7 +11,7 @@ import kotlin.jvm.JvmStatic
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ParagraphBuilder : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
+class ParagraphBuilder private constructor() : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
     initialRenderer = DefaultParagraphRenderer(),
     initialText = ""
 ) {
