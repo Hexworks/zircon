@@ -12,8 +12,8 @@ object KotlinPlayground {
     fun main(args: Array<String>) {
 
         val screen = SwingApplications.startTileGrid().toScreen()
-        val label = buildLabel {  }
-        screen.addComponent(label)
+        screen.display()
+        screen.addComponent(buildLabel { +"foo" })
 
     }
 

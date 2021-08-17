@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.grid.TileGrid
@@ -16,9 +17,10 @@ object LibgdxApplications {
     @JvmOverloads
     fun buildApplication(
         appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create(),
         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
     ): LibgdxApplication {
-        return makeLibgdxGame(appConfig, libgdxConfig).libgdxApplication
+        return makeLibgdxGame(appConfig, eventBus, libgdxConfig).libgdxApplication
     }
 
     /**
@@ -27,10 +29,11 @@ object LibgdxApplications {
     @JvmStatic
     @JvmOverloads
     fun startApplication(
-        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        config: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create(),
         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
     ): LibgdxApplication {
-        with(makeLibgdxGame(appConfig, libgdxConfig)) {
+        with(makeLibgdxGame(config, eventBus, libgdxConfig)) {
             start()
             return this.libgdxApplication
         }
@@ -41,8 +44,11 @@ object LibgdxApplications {
      */
     @JvmStatic
     @JvmOverloads
-    fun buildRawApplication(appConfig: AppConfig = AppConfig.defaultConfiguration()): LibgdxApplication {
-        return LibgdxApplication(appConfig)
+    fun buildRawApplication(
+        config: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create()
+    ): LibgdxApplication {
+        return LibgdxApplication(config, eventBus)
     }
 
     /**
@@ -50,8 +56,11 @@ object LibgdxApplications {
      */
     @JvmStatic
     @JvmOverloads
-    fun startRawApplication(appConfig: AppConfig = AppConfig.defaultConfiguration()): LibgdxApplication {
-        return LibgdxApplication(appConfig).also {
+    fun startRawApplication(
+        config: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create()
+    ): LibgdxApplication {
+        return LibgdxApplication(config, eventBus).also {
             it.start()
         }
     }
@@ -63,11 +72,12 @@ object LibgdxApplications {
     @JvmOverloads
     fun startTileGrid(
         appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create(),
         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
     ): TileGrid {
         val maxTries = 10
         var currentTryCount = 0
-        val game = makeLibgdxGame(appConfig, libgdxConfig)
+        val game = makeLibgdxGame(appConfig, eventBus, libgdxConfig)
         game.start()
         var notInitialized = true
         while (notInitialized) {
@@ -96,6 +106,7 @@ object LibgdxApplications {
     @JvmStatic
     private fun makeLibgdxGame(
         appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus,
         libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
     ): LibgdxGame {
         libgdxConfig.title = appConfig.title
@@ -103,6 +114,6 @@ object LibgdxApplications {
         libgdxConfig.height = appConfig.size.height * appConfig.defaultTileset.height
         libgdxConfig.foregroundFPS = appConfig.fpsLimit
         libgdxConfig.useGL30 = false
-        return LibgdxGame.build(appConfig, libgdxConfig)
+        return LibgdxGame.build(appConfig, eventBus, libgdxConfig)
     }
 }

@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.datatypes.Maybe
@@ -26,6 +25,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 interface InternalComponent :
     Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
+    // TODO: refactor this to use ? instead of Maybe
     var root: Maybe<RootContainer>
     val rootValue: ObservableValue<Maybe<RootContainer>>
 
@@ -37,6 +37,12 @@ interface InternalComponent :
      * The immediate child [Component]s of this [Component] (if any).
      */
     val children: ObservableList<out InternalComponent>
+
+    /**
+     * Contains `this` component and all of its descendants
+     */
+    val flattenedTree: Collection<InternalComponent>
+        get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.flattenedTree }
 
     /**
      * The position that was set when the component was originally built. This might have changed during the
@@ -61,5 +67,14 @@ interface InternalComponent :
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
      */
     fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
+
+    /**
+     * Runs [fn] only if this [Component] [isAttachedToRoot] or it **is** a root.
+     */
+    fun whenConnectedToRoot(fn: (root: RootContainer) -> Unit) {
+        if (isAttachedToRoot || this is RootContainer) {
+            fn(root.get())
+        }
+    }
 
 }

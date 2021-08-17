@@ -1,10 +1,12 @@
 package org.hexworks.zircon.internal.uievent.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +39,11 @@ class UIEventToComponentDispatcherTest {
 
     @Before
     fun setUp() {
+        val eventBus = EventBus.create()
+        val eventScope = ZirconScope()
         whenever(rootMock.calculatePathTo(anyOrNull())).thenReturn(listOf(rootMock))
+        whenever(rootMock.eventScope).thenReturn(eventScope)
+        whenever(rootMock.eventBus).thenReturn(eventBus)
         target = UIEventToComponentDispatcher(rootMock, focusOrderListMock)
     }
 

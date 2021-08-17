@@ -13,9 +13,6 @@ object ScreenBuilder {
      */
     @JvmStatic
     fun createScreenFor(tileGrid: TileGrid): Screen {
-        require(tileGrid is InternalTileGrid) {
-            "The supplied TileGrid is not an instance of InternalTileGrid."
-        }
-        return TileGridScreen(tileGrid)
+        return TileGridScreen(tileGrid.asInternal())
     }
 }

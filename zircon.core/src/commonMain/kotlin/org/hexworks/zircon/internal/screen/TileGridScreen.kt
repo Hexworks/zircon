@@ -5,6 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
@@ -22,7 +23,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.Zircon
+import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
@@ -41,7 +42,12 @@ import kotlin.jvm.Synchronized
 class TileGridScreen(
     private val tileGrid: InternalTileGrid,
     private val componentContainer: ModalComponentContainer =
-        buildComponentContainer(tileGrid.size, tileGrid.tileset, tileGrid.config.defaultColorTheme),
+        buildComponentContainer(
+            initialSize = tileGrid.size,
+            initialTileset = tileGrid.tileset,
+            initialTheme = tileGrid.config.defaultColorTheme,
+            application = tileGrid.application
+        ),
     private val bufferGrid: InternalTileGrid = ThreadSafeTileGrid(
         config = tileGrid.config,
         layerable = ComponentsLayerable(
@@ -56,24 +62,24 @@ class TileGridScreen(
     InternalTileGrid by bufferGrid,
     InternalComponentContainer by componentContainer {
 
-    init {
-        println()
-    }
-
     override val renderables: List<Renderable>
         get() = bufferGrid.renderables
 
     // we make this random because we don't know which one is the active
-    // yet and we only need this to determine whether this Screen is the active
+    // yet, and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
     private var activeScreenId = UUIDFactory.randomUUID()
-
     private val id = UUIDFactory.randomUUID()
+
+    override val application: InternalApplication = tileGrid.application.asInternal()
+
+    private val eventBus = application.eventBus
+    private val eventScope = application.eventScope
 
     val root = componentContainer.flattenedTree.first()
 
     init {
-        Zircon.eventBus.simpleSubscribeTo<ScreenSwitch>(ZirconScope) { (screenId) ->
+        eventBus.simpleSubscribeTo<ScreenSwitch>(eventScope) { (screenId) ->
             LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
             activeScreenId = screenId
             if (id != activeScreenId && isActive.value) {
@@ -123,9 +129,9 @@ class TileGridScreen(
     @Synchronized
     override fun display() {
         if (activeScreenId != id) {
-            Zircon.eventBus.publish(
+            eventBus.publish(
                 event = ScreenSwitch(id, this),
-                eventScope = ZirconScope
+                eventScope = eventScope
             )
             activate()
             MouseEventType.values().forEach { eventType ->
@@ -138,11 +144,11 @@ class TileGridScreen(
                     process(event, phase)
                 }.keepWhile(isActive)
             }
-            Zircon.eventBus.simpleSubscribeTo<RequestCursorAt>(ZirconScope) { (position) ->
+            eventBus.simpleSubscribeTo<RequestCursorAt>(eventScope) { (position) ->
                 tileGrid.isCursorVisible = true
                 tileGrid.cursorPosition = position
             }.keepWhile(isActive)
-            Zircon.eventBus.simpleSubscribeTo<HideCursor>(ZirconScope) {
+            eventBus.simpleSubscribeTo<HideCursor>(eventScope) {
                 tileGrid.isCursorVisible = false
             }.keepWhile(isActive)
             tileGrid.delegateTo(bufferGrid)
@@ -169,7 +175,8 @@ class TileGridScreen(
         private fun buildComponentContainer(
             initialSize: Size,
             initialTileset: TilesetResource,
-            initialTheme: ColorTheme
+            initialTheme: ColorTheme,
+            application: Application
         ): ModalComponentContainer {
             val metadata = ComponentMetadata(
                 relativePosition = Position.defaultPosition(),
@@ -179,7 +186,8 @@ class TileGridScreen(
                 themeProperty = initialTheme.toProperty()
             )
             return ModalComponentContainer(
-                metadata = metadata
+                metadata = metadata,
+                application = application
             )
         }
     }

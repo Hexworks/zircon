@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
@@ -8,6 +9,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
@@ -28,9 +30,11 @@ class ComponentsLayerableTest {
     lateinit var layerable: InternalLayerable
     lateinit var rootContainer: RootContainer
     lateinit var target: ComponentsLayerable
+    lateinit var application: InternalApplication
 
     @Before
     fun setUp() {
+        application = ApplicationStub()
         rootContainer = DefaultRootContainer(
             metadata = ComponentMetadata(
                 relativePosition = Position.zero(),
@@ -42,7 +46,8 @@ class ComponentsLayerableTest {
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
                 componentRenderer = RootContainerRenderer()
-            )
+            ),
+            application = application
         )
         componentContainer = DefaultComponentContainer(rootContainer)
         layerable = ThreadSafeLayerable(SIZE_4X2)

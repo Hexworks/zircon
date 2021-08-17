@@ -19,7 +19,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 
 object TextAreasExample {
 
-    private val theme = ColorThemes.arc()
+    private val theme = ColorThemes.gamebookers()
     private val tileset = TrueTypeFontResources.kaypro(16)
 
     @JvmStatic
