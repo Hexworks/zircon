@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.application
 
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.internal.application.InternalApplication
 
 /**
  * An [Application] enhances a [TileGrid] with continuous rendering,
@@ -49,4 +50,9 @@ interface Application {
      * block the rendering. Very fast is `<1ms`.
      */
     fun afterRender(listener: (RenderData) -> Unit): Subscription
+
+    /**
+     * Exposes the internal API of this [Application].
+     */
+    fun asInternal(): InternalApplication
 }

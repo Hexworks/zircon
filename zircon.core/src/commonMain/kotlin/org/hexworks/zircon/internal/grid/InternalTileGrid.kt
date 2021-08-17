@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.grid
 
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
@@ -34,14 +35,21 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
     val config: AppConfig
 
     /**
+     * Holds a reference to the [Application] that contains this [TileGrid].
+     */
+    val application: Application
+
+    /**
      * Starts delegating all actions to the given [tileGrid].
      */
     fun delegateTo(tileGrid: InternalTileGrid)
 
     /**
-     * Stops delegating actions to an other [TileGrid].
+     * Stops delegating actions to another [TileGrid].
      * Has no effect if no such delegation was present.
      */
     fun reset()
+
+    override fun asInternal() = this
 
 }

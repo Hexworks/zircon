@@ -13,14 +13,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
@@ -51,27 +49,28 @@ open class DefaultContainer(
 
     /**
      * Note that this method can be overridden we'd like to advise against if it is possible.
-     * The logic is complex and you can easily get into a sorry state where the implementation
+     * The logic is complex, and you can easily get into a sorry state where the implementation
      * doesn't make sense. If you really need to override this please call `super.addComponent`
      * and let Zircon do the heavy lifting for you.
      */
     @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         val ic = checkIfCanAdd(component)
-        val attachment = DefaultAttachedComponent(ic, this)
-
+        val parent = this
+        val attachment = DefaultAttachedComponent(ic, parent)
         children.add(ic)
         attachments.add(attachment)
-
-        Zircon.eventBus.publish(
-            event = ComponentAdded(
-                parent = this,
-                component = component.asInternalComponent(),
-                emitter = this
-            ),
-            eventScope = ZirconScope
-        )
-
+        root.map { root ->
+            ic.flattenedTree.forEach { it.root = Maybe.of(root) }
+            root.eventBus.publish(
+                event = ComponentAdded(
+                    parent = parent,
+                    component = ic,
+                    emitter = ic
+                ),
+                eventScope = root.eventScope
+            )
+        }
         return attachment
     }
 
@@ -156,18 +155,22 @@ open class DefaultContainer(
 
         @Synchronized
         override fun detach(): Component {
+            val attachment = this
             component.parent = Maybe.empty()
             this@DefaultContainer.children.remove(component)
-            this@DefaultContainer.attachments.remove(this)
+            this@DefaultContainer.attachments.remove(attachment)
             component.resetState()
-            Zircon.eventBus.publish(
-                event = ComponentRemoved(
-                    parent = parentContainer,
-                    component = component,
-                    emitter = this
-                ),
-                eventScope = ZirconScope
-            )
+            component.root.map { root ->
+                component.flattenedTree.forEach { it.root = Maybe.empty() }
+                root.eventBus.publish(
+                    event = ComponentRemoved(
+                        parent = parentContainer,
+                        component = component,
+                        emitter = attachment
+                    ),
+                    eventScope = root.eventScope
+                )
+            }
             return component
         }
     }

@@ -10,11 +10,9 @@ import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.jvm.Synchronized
 
 class DefaultVBox internal constructor(
@@ -46,11 +44,13 @@ class DefaultVBox internal constructor(
         filledUntil = filledUntil.withRelativeY(finalHeight)
         availableSpace = availableSpace.withRelativeHeight(-finalHeight)
 
-        Zircon.eventBus.subscribeTo<ComponentRemoved>(ZirconScope) { (_, removedComponent) ->
-            if (removedComponent == component) {
-                reorganizeComponents(component)
-                DisposeSubscription
-            } else KeepSubscription
+        whenConnectedToRoot { root ->
+            root.eventBus.subscribeTo<ComponentRemoved>(root.eventScope) { (_, removedComponent) ->
+                if (removedComponent == component) {
+                    reorganizeComponents(component)
+                    DisposeSubscription
+                } else KeepSubscription
+            }
         }
 
         return super<DefaultContainer>.addComponent(component)

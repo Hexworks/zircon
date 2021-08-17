@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -24,6 +25,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     override lateinit var target: RootContainer
     override lateinit var graphics: TileGraphics
 
+    private lateinit var applicationStub: ApplicationStub
+
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
             .withDefaultStyle(
@@ -36,6 +39,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     @Before
     override fun setUp() {
+        applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
         graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
@@ -48,7 +52,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub
-            )
+            ),
+            application = applicationStub
         )
     }
 

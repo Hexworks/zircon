@@ -94,7 +94,7 @@ object ZirconLogoExample {
             .setPositionForAll(Position.zero())
             .build()
 
-        screen.theme = ColorThemes.gamebookers()
+        screen.theme = ColorThemes.empty()
         screen.display()
 
         screen.start(anim)

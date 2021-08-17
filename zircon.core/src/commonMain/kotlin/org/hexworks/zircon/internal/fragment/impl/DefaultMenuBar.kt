@@ -3,11 +3,8 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.events.api.*
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.component.buildButton
@@ -20,7 +17,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.internal.Zircon
 
 @Beta
 class DefaultMenuBar<T : Any> internal constructor(
@@ -40,6 +36,9 @@ class DefaultMenuBar<T : Any> internal constructor(
         this.tileset = tileset
         this.spacing = spacing
     }
+
+    private val eventBus = screen.asInternal().application.asInternal().eventBus
+    private val eventScope = screen.asInternal().application.asInternal().eventScope
 
     init {
         menuElements.forEach { dropdownMenu ->
@@ -81,11 +80,12 @@ class DefaultMenuBar<T : Any> internal constructor(
                 }
 
                 modal.onClosed {
-                    Zircon.eventBus.publish(
-                        ItemSelectionEvent(
+                    eventBus.publish(
+                        event = ItemSelectionEvent(
                             emitter = this,
                             menuSelection = it
-                        )
+                        ),
+                        eventScope = eventScope
                     )
                 }
 
@@ -107,7 +107,7 @@ class DefaultMenuBar<T : Any> internal constructor(
 
     override fun onMenuItemSelected(
         handler: (menuSelection: MenuSelection<T>) -> CallbackResult
-    ): Subscription = Zircon.eventBus.simpleSubscribeTo<ItemSelectionEvent<T>> {
+    ): Subscription = eventBus.simpleSubscribeTo<ItemSelectionEvent<T>>(eventScope) {
         handler(it.menuSelection)
     }
 

@@ -2,18 +2,31 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.events.api.EventBus
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
+import org.hexworks.zircon.internal.event.ZirconScope
 
 interface RootContainer : InternalContainer {
 
     // the Root Container is always attached
     override val isAttached: Boolean
         get() = true
+
+    // since the RootContainer is always attached it is safe
+    // to add a reference to the corresponding Application
+    val application: Application
+
+    val eventBus: EventBus
+        get() = application.asInternal().eventBus
+
+    val eventScope: ZirconScope
+        get() = application.asInternal().eventScope
 
     /**
      * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].

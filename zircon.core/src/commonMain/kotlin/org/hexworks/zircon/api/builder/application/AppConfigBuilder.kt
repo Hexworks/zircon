@@ -96,7 +96,7 @@ class AppConfigBuilder private constructor(
     var fpsLimit: Int = 60,
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
-     * By default all settings are `false`.
+     * By default, all settings are `false`.
      */
     var debugConfig: DebugConfig = DebugConfig.defaultConfig(),
     /**
