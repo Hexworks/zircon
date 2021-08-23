@@ -19,6 +19,8 @@ class Java2DTextureCloner : TextureTransformer<BufferedImage> {
                     dispose()
                 }
                 clone
-            })
+            },
+            cacheKey = tile.cacheKey
+        )
     }
 }

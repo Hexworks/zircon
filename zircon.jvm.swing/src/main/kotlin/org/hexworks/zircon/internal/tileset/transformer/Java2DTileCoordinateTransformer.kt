@@ -29,7 +29,8 @@ class Java2DTileCoordinateTransformer : TextureTransformer<BufferedImage> {
                     return DefaultTileTexture(
                         width = texture.width,
                         height = texture.height,
-                        texture = txt
+                        texture = txt,
+                        cacheKey = tile.cacheKey
                     )
                 }
             }

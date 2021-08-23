@@ -45,9 +45,7 @@ class MonospaceAwtFontTileset(private val resource: TilesetResource) : Tileset<G
 
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val s = tile.asCharacterTileOrNull()!!.character.toString()
-
         val fm = surface.getFontMetrics(font)
-
         val x = position.x * width
         val y = position.y * height
 

@@ -93,7 +93,9 @@ class LibgdxGraphicalTileset(private val resource: TilesetResource) : Tileset<Sp
             DefaultTileTexture(
                 width = width,
                 height = height,
-                texture = source.apply { setRegion(meta.x * width, meta.y * height, width, height) })
+                texture = source.apply { setRegion(meta.x * width, meta.y * height, width, height) },
+                cacheKey = tile.cacheKey
+            )
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }
 

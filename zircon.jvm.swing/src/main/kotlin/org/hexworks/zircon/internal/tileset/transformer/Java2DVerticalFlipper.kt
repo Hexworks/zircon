@@ -17,7 +17,8 @@ class Java2DVerticalFlipper : TextureTransformer<BufferedImage> {
         return DefaultTileTexture(
             width = txt.width,
             height = txt.height,
-            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(txt, null)
+            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(txt, null),
+            cacheKey = tile.cacheKey
         )
     }
 }

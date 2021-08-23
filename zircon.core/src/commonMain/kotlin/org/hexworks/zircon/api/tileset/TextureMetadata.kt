@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.tileset
 import org.hexworks.zircon.api.data.Tile
 
 /**
- * Metadata about a [TileTexture], like its position (x, y) in a [Tileset].
+ * Holds the details of a [TileTexture] (position, dimensions).
  */
 interface TextureMetadata<T : Tile> {
     val x: Int

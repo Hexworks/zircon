@@ -9,9 +9,13 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TilesetType
 import kotlin.jvm.JvmStatic
+import kotlin.reflect.KClass
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].
@@ -94,7 +98,7 @@ class AppConfig internal constructor(
     val fpsLimit: Int,
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
-     * By default all settings are `false`.
+     * By default, all settings are `false`.
      */
     val debugConfig: DebugConfig,
     /**
@@ -126,7 +130,7 @@ class AppConfig internal constructor(
      * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    val tilesetLoaders: List<TilesetLoader<*>>
+    val tilesetLoaders: Map<Pair<TileType, TilesetType>, TilesetFactory<*>>
 ) {
 
     /**
@@ -172,4 +176,9 @@ class AppConfig internal constructor(
         fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(type: KClass<T>): Map<Pair<TileType, TilesetType>, TilesetFactory<T>> {
+    return this.filterValues { it.targetType == type } as Map<Pair<TileType, TilesetType>, TilesetFactory<T>>
 }

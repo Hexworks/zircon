@@ -17,7 +17,8 @@ class Java2DHorizontalFlipper : TextureTransformer<BufferedImage> {
         return DefaultTileTexture(
             width = texture.width,
             height = texture.height,
-            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null)
+            texture = AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR).filter(backend, null),
+            cacheKey = tile.cacheKey
         )
 
     }

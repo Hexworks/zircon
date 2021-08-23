@@ -12,7 +12,8 @@ class LibgdxTextureCloner : TextureTransformer<TextureRegion> {
         return DefaultTileTexture(
             width = texture.width,
             height = texture.height,
-            texture = TextureRegion(texture.texture)
+            texture = TextureRegion(texture.texture),
+            cacheKey = tile.cacheKey
         )
     }
 }

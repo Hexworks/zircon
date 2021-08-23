@@ -7,15 +7,18 @@ import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.reflect.KClass
 
 /**
- * Handles the textures of a tileset, and provides
- * functionality to render them on a surface.
+ * A [Tileset] contains the textures of a tileset that can be drawn on the screen.
+ * Each tileset has a [targetType] that specifies the object type which will be used
+ * when [drawTile] is called. For example in case of Swing [targetType] will be
+ * a `Graphics2D` object.
+ * @param S the class of the surface that we'll draw upon (Graphics2D for Swing for example)
  */
-interface Tileset<T : Any> : Identifiable {
+interface Tileset<S : Any> : Identifiable {
 
     /**
-     * The type of the target surface the textures are drawn.
+     * The type of the target surface the textures are drawn upon.
      */
-    val targetType: KClass<T>
+    val targetType: KClass<S>
 
     /**
      * The width of a texture in pixels.
@@ -38,5 +41,5 @@ interface Tileset<T : Any> : Identifiable {
      * given `position`. Does nothing if the `tile` is not
      * supported by this [Tileset].
      */
-    fun drawTile(tile: Tile, surface: T, position: Position)
+    fun drawTile(tile: Tile, surface: S, position: Position)
 }

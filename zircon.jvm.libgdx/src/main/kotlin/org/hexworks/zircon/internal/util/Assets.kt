@@ -20,6 +20,6 @@ object Assets {
     }
 
     fun getCP437TextureDescriptor(tilesetName: String): AssetDescriptor<Texture> {
-        return AssetDescriptor<Texture>(tilesetName.substring(1), Texture::class.java)
+        return AssetDescriptor(tilesetName.substring(1), Texture::class.java)
     }
 }
