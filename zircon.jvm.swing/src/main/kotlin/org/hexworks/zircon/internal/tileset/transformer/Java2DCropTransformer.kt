@@ -19,7 +19,8 @@ class Java2DCropTransformer : TextureTransformer<BufferedImage> {
         return DefaultTileTexture(
             width = txt.width,
             height = txt.height,
-            texture = newImage
+            texture = newImage,
+            cacheKey = tile.cacheKey
         )
     }
 }

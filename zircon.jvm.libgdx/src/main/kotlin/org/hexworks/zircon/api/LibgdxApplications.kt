@@ -1,12 +1,26 @@
 package org.hexworks.zircon.api
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.dsl.tileset.buildTilesetFactory
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TilesetFactory
+import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.application.LibgdxGame
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType.*
+import org.hexworks.zircon.internal.resource.TilesetType
+import org.hexworks.zircon.internal.resource.TilesetType.*
+import org.hexworks.zircon.internal.tileset.LibgdxCP437Tileset
+import org.hexworks.zircon.internal.tileset.LibgdxGraphicalTileset
+import org.hexworks.zircon.internal.tileset.LibgdxMonospaceFontTileset
+import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
+import java.awt.Graphics2D
 
 object LibgdxApplications {
 
@@ -116,4 +130,42 @@ object LibgdxApplications {
         libgdxConfig.useGL30 = false
         return LibgdxGame.build(appConfig, eventBus, libgdxConfig)
     }
+
+    @JvmStatic
+    fun defaultTilesetLoader(): TilesetLoader<SpriteBatch> = DefaultTilesetLoader(DEFAULT_FACTORIES)
+
+    internal val DEFAULT_FACTORIES: Map<Pair<TileType, TilesetType>, TilesetFactory<SpriteBatch>> =
+        listOf<TilesetFactory<SpriteBatch>>(
+            buildTilesetFactory {
+                targetType = SpriteBatch::class
+                supportedTileType = CHARACTER_TILE
+                supportedTilesetType = CP437Tileset
+                factoryFunction = { resource: TilesetResource ->
+                    LibgdxCP437Tileset(
+                        resource = resource,
+                        path = resource.path,
+                    )
+                }
+            },
+            buildTilesetFactory {
+                targetType = SpriteBatch::class
+                supportedTileType = CHARACTER_TILE
+                supportedTilesetType = TrueTypeFont
+                factoryFunction = { resource: TilesetResource ->
+                    LibgdxGraphicalTileset(
+                        resource = resource
+                    )
+                }
+            },
+            buildTilesetFactory {
+                targetType = SpriteBatch::class
+                supportedTileType = GRAPHICAL_TILE
+                supportedTilesetType = GraphicalTileset
+                factoryFunction = { resource: TilesetResource ->
+                    LibgdxMonospaceFontTileset(
+                        resource = resource
+                    )
+                }
+            }
+        ).associateBy { it.supportedTileType to it.supportedTilesetType }
 }

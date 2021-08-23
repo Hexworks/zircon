@@ -84,7 +84,8 @@ class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Grap
             DefaultTileTexture(
                 width = width,
                 height = height,
-                texture = source.getSubimage(meta.x * width, meta.y * height, width, height)
+                texture = source.getSubimage(meta.x * width, meta.y * height, width, height),
+                cacheKey = tile.cacheKey
             )
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }

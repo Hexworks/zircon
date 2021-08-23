@@ -23,7 +23,13 @@ interface Cache<T> {
     /**
      * Caches the given object and then returns it.
      */
+    @Deprecated("T is already cacheable and has a key", replaceWith = ReplaceWith("store(obj)"))
     fun store(key: String, obj: T): T
+
+    /**
+     * Caches the given object and then returns it.
+     */
+    fun store(obj: T): T
 
     companion object {
 

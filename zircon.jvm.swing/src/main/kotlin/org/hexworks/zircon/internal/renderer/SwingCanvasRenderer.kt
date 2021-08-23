@@ -2,10 +2,8 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.application.CloseBehavior
-import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.SwingApplications
+import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -14,12 +12,11 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.tileset.ChainedTilesetLoader
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.tileset.SwingTilesetLoader
+import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
@@ -47,11 +44,9 @@ class SwingCanvasRenderer(
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
     private var lastBlink: Long = lastRender
 
-    private val tilesetLoader: TilesetLoader<Graphics2D> =
-        ChainedTilesetLoader.inOrder(
-            config.tilesetLoaders as List<TilesetLoader<Graphics2D>>
-                    + SwingTilesetLoader()
-        )
+    private val tilesetLoader: TilesetLoader<Graphics2D> = DefaultTilesetLoader(
+        SwingApplications.DEFAULT_FACTORIES + config.tilesetLoaders.filterByType(Graphics2D::class)
+    )
     private val keyboardEventListener = KeyboardEventListener()
     private val mouseEventListener = object : MouseEventListener(
         fontWidth = tileGrid.tileset.width,

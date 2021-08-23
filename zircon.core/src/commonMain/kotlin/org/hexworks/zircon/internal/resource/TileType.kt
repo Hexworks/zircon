@@ -11,13 +11,22 @@ enum class TileType {
      */
     CHARACTER_TILE,
 
-    /**
-     * Represents a [Tile] that contains some graphics.
-     */
+    @Deprecated("Typo in name. Use GRAPHICAL_TILE instead", replaceWith = ReplaceWith("GRAPHICAL_TILE"))
     GRAPHIC_TILE,
 
     /**
-     * Represents a [Tile] that contains some an image. There is an important
+     * Represents a [Tile] that contains graphics.
+     * The difference between [GRAPHICAL_TILE] and [IMAGE_TILE] is that
+     * - [GRAPHICAL_TILE]s are part of a tileset
+     * - [IMAGE_TILE]s contain images loaded individually from a path
+     */
+    GRAPHICAL_TILE,
+
+    /**
+     * Represents a [Tile] that contains some an image.
+     * The difference between [GRAPHICAL_TILE] and [IMAGE_TILE] is that
+     * - [GRAPHICAL_TILE]s are part of a tileset
+     * - [IMAGE_TILE]s contain images loaded individually from a path
      */
     IMAGE_TILE
 }

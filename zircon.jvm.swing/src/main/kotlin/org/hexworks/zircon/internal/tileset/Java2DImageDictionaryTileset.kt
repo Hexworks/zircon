@@ -58,7 +58,8 @@ class Java2DImageDictionaryTileset(resource: TilesetResource) : Tileset<Graphics
             val image = DefaultTileTexture(
                 width = texture.width,
                 height = texture.height,
-                texture = texture
+                texture = texture,
+                cacheKey = tile.cacheKey
             )
             cache.put(tile.name, image)
             image

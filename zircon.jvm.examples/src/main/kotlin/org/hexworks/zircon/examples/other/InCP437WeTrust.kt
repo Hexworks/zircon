@@ -48,7 +48,7 @@ object InCP437WeTrust {
             .withPreferredSize(Size.create(19, 18))
             .withDecorations(box(BoxType.SINGLE), shadow())
             .withComponentRenderer { tileGraphics, _ ->
-                loader.fetchMetadata().forEach { (char, meta) ->
+                loader.cp437Metadata.forEach { (char, meta) ->
                     tileGraphics.draw(
                         tile = Tile.defaultTile()
                             .withCharacter(char)
@@ -62,7 +62,7 @@ object InCP437WeTrust {
                 processMouseEvents(MouseEventType.MOUSE_MOVED) { event, _ ->
                     val mousePos = event.position - (contentOffset + position)
                     loader
-                        .fetchMetadata()
+                        .cp437Metadata
                         .values
                         .filter { it.x == mousePos.x && it.y == mousePos.y }
                         .map { it.character }

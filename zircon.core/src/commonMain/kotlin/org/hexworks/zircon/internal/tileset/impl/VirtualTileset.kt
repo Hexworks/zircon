@@ -25,7 +25,8 @@ class VirtualTileset : Tileset<Char> {
         return DefaultTileTexture(
             width = width,
             height = height,
-            texture = tile.asCharacterTileOrNull()?.character!!
+            texture = tile.asCharacterTileOrNull()?.character!!,
+            cacheKey = tile.cacheKey
         )
     }
 

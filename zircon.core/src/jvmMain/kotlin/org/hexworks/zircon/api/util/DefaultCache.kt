@@ -29,4 +29,9 @@ class DefaultCache<R : Cacheable>(
         backend.put(key, obj)
         return obj
     }
+
+    override fun store(obj: R): R {
+        backend.put(obj.cacheKey, obj)
+        return obj
+    }
 }

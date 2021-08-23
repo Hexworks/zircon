@@ -49,7 +49,8 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     return DefaultTileTexture(
                         width = txt.width,
                         height = txt.height,
-                        texture = result
+                        texture = result,
+                        cacheKey = tile.cacheKey
                     )
                 }
             }
@@ -76,7 +77,8 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
         return DefaultTileTexture(
             width = texture.width,
             height = texture.height,
-            texture = image
+            texture = image,
+            cacheKey = tile.cacheKey
         )
     }
 }

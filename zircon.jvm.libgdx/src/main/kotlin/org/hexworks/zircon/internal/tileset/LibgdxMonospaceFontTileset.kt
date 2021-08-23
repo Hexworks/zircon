@@ -80,7 +80,8 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource) : Tilese
             height = height,
             xOffset = glyph.xoffset,
             yOffset = glyph.yoffset,
-            texture = tr
+            texture = tr,
+            cacheKey = tile.cacheKey
         )
     }
 
@@ -89,6 +90,7 @@ class LibgdxMonospaceFontTileset(private val resource: TilesetResource) : Tilese
         override val height: Int,
         val xOffset: Int,
         val yOffset: Int,
-        override val texture: T
+        override val texture: T,
+        override val cacheKey: String
     ) : TileTexture<T>
 }
