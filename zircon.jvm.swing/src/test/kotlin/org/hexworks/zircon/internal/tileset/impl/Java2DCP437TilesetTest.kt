@@ -9,7 +9,7 @@ import org.junit.Test
 @Ignore
 class Java2DCP437TilesetTest {
 
-    val target = SwingApplications.defaultTilesetLoader().loadTilesetFrom(CP437TilesetResources.wanderlust16x16())
+    val target = SwingApplications.createTilesetLoader().loadTilesetFrom(CP437TilesetResources.wanderlust16x16())
 
     @Test
     fun shouldProperlyReportSize() {

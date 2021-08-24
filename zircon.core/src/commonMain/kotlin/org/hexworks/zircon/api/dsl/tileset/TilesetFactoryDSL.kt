@@ -8,3 +8,4 @@ import org.hexworks.zircon.api.tileset.TilesetFactory
  */
 fun <S : Any> buildTilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit): TilesetFactory<S> =
     TilesetFactoryBuilder.newBuilder<S>().apply(init).build()
+

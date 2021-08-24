@@ -3,11 +3,11 @@ package org.hexworks.zircon.internal.tileset.transformer
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.tileset.transformer.Java2DTextureTransformer
 import java.awt.Color
 import java.awt.image.BufferedImage
 
-class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
+class Java2DTextureColorizer : Java2DTextureTransformer() {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val r = tile.foregroundColor.red.toFloat() / 255
@@ -39,5 +39,5 @@ class Java2DTextureColorizer : TextureTransformer<BufferedImage> {
 /**
  * Extension for easy conversion between [TileColor] and awt [Color].
  */
-fun TileColor.toAWTColor(): java.awt.Color = Color(red, green, blue, alpha)
+fun TileColor.toAWTColor(): Color = Color(red, green, blue, alpha)
 

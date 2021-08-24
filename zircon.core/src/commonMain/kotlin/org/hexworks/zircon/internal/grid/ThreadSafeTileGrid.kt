@@ -7,7 +7,6 @@ import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
@@ -23,6 +22,7 @@ import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationRunner
+import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -52,7 +52,7 @@ class ThreadSafeTileGrid(
 
     // Note that this is passed in right after creation
     // the lateinit is necessary because Application also has a reference to the grid
-    override lateinit var application: Application
+    override lateinit var application: InternalApplication
 
     override var backend: Layer = layerable.getLayerAtOrNull(0)!!
 

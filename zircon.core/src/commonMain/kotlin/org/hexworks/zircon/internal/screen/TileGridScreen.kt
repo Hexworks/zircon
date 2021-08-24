@@ -71,7 +71,7 @@ class TileGridScreen(
     private var activeScreenId = UUIDFactory.randomUUID()
     private val id = UUIDFactory.randomUUID()
 
-    override val application: InternalApplication = tileGrid.application.asInternal()
+    override var application: InternalApplication = tileGrid.application.asInternal()
 
     private val eventBus = application.eventBus
     private val eventScope = application.eventScope

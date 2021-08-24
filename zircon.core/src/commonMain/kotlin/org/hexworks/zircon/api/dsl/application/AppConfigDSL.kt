@@ -2,11 +2,9 @@ package org.hexworks.zircon.api.dsl.application
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.DebugConfig
+import org.hexworks.zircon.api.application.ModifierSupport
 import org.hexworks.zircon.api.application.ShortcutsConfig
-import org.hexworks.zircon.api.builder.application.AppConfigBuilder
-import org.hexworks.zircon.api.builder.application.DebugConfigBuilder
-import org.hexworks.zircon.api.builder.application.ShortcutsConfigBuilder
-import org.hexworks.zircon.api.builder.application.TilesetFactoryBuilder
+import org.hexworks.zircon.api.builder.application.*
 import org.hexworks.zircon.api.tileset.TilesetFactory
 
 /**
@@ -18,6 +16,12 @@ fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig =
 fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit): TilesetFactory<S> {
     return TilesetFactoryBuilder.newBuilder<S>().apply(init).build().apply {
         withTilesetFactories(this)
+    }
+}
+
+fun <T : Any> AppConfigBuilder.modifierSupport(init: ModifierSupportBuilder<T>.() -> Unit): ModifierSupport<T> {
+    return ModifierSupportBuilder.newBuilder<T>().apply(init).build().apply {
+        withModifierSupports(this)
     }
 }
 

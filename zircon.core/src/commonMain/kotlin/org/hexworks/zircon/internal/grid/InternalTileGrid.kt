@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.animation.InternalAnimationRunner
+import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
@@ -35,9 +36,11 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
     val config: AppConfig
 
     /**
-     * Holds a reference to the [Application] that contains this [TileGrid].
+     * Holds a reference to the [Application] that uses this [TileGrid].
+     * Note that you can write this variable, but it is something you should
+     * only do if you know what you're doing.
      */
-    val application: Application
+    var application: InternalApplication
 
     /**
      * Starts delegating all actions to the given [tileGrid].

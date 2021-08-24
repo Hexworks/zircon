@@ -23,7 +23,7 @@ public class SavingScreenshotsExample {
         final Graphics2D graphics = image.createGraphics();
 
         // you load the tileset you want
-        TilesetLoader<Graphics2D> loader = SwingApplications.defaultTilesetLoader();
+        TilesetLoader<Graphics2D> loader = SwingApplications.createTilesetLoader();
         final Tileset<Graphics2D> tileset = loader.loadTilesetFrom(CP437TilesetResources.rexPaint20x20());
 
         // you draw tiles on the image using the graphics

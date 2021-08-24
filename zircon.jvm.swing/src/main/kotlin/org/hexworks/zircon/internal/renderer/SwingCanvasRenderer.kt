@@ -2,8 +2,11 @@ package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.SwingApplications
-import org.hexworks.zircon.api.application.*
+import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.CloseBehavior
+import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -14,9 +17,11 @@ import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.behavior.Observable
+import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
+import org.hexworks.zircon.internal.impl.SwingFrame
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
@@ -30,13 +35,15 @@ import java.awt.image.BufferStrategy
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
-class SwingCanvasRenderer(
-    private val canvas: Canvas,
-    private val frame: JFrame,
+class SwingCanvasRenderer private constructor(
     private val tileGrid: InternalTileGrid,
-    private val config: AppConfig,
-    private val app: Application
-) : Renderer {
+    private val tilesetLoader: TilesetLoader<Graphics2D>,
+    private val canvas: Canvas = Canvas(),
+    private val frame: JFrame = SwingFrame(
+        tileGrid = tileGrid,
+        canvas = canvas
+    ),
+) : Renderer, Observable<SwingCanvasRenderer> by DefaultObservable() {
 
     override val closedValue: Property<Boolean> = false.toProperty()
 
@@ -44,9 +51,7 @@ class SwingCanvasRenderer(
     private var lastRender: Long = SystemUtils.getCurrentTimeMs()
     private var lastBlink: Long = lastRender
 
-    private val tilesetLoader: TilesetLoader<Graphics2D> = DefaultTilesetLoader(
-        SwingApplications.DEFAULT_FACTORIES + config.tilesetLoaders.filterByType(Graphics2D::class)
-    )
+    private val config = tileGrid.config
     private val keyboardEventListener = KeyboardEventListener()
     private val mouseEventListener = object : MouseEventListener(
         fontWidth = tileGrid.tileset.width,
@@ -60,59 +65,111 @@ class SwingCanvasRenderer(
 
     private val gridPositions = tileGrid.size.fetchPositions().toList()
 
+    /**
+     * Adds a callback [fn] that will be called whenever the frame where the contents
+     * of the [tileGrid] are rendered is closed.
+     */
+    fun onFrameClosed(fn: (SwingCanvasRenderer) -> Unit): Subscription {
+        return addObserver(fn)
+    }
+
     override fun create() {
-        if (config.fullScreen) {
-            frame.extendedState = JFrame.MAXIMIZED_BOTH
-        }
-        if (config.borderless) {
-            frame.isUndecorated = true
-        }
-
-        frame.isResizable = false
-        frame.addWindowStateListener {
-            if (it.newState == Frame.NORMAL) {
-                render()
+        if (closed.not()) {
+            // display settings
+            if (config.fullScreen) {
+                frame.extendedState = JFrame.MAXIMIZED_BOTH
             }
-        }
+            if (config.borderless) {
+                frame.isUndecorated = true
+            }
 
-        canvas.preferredSize = Dimension(
-            tileGrid.widthInPixels,
-            tileGrid.heightInPixels
-        )
-        canvas.minimumSize = Dimension(tileGrid.tileset.width, tileGrid.tileset.height)
-        canvas.isFocusable = true
-        canvas.requestFocusInWindow()
-        canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-        canvas.addKeyListener(keyboardEventListener)
-        canvas.addMouseListener(mouseEventListener)
-        canvas.addMouseMotionListener(mouseEventListener)
-        canvas.addMouseWheelListener(mouseEventListener)
-        canvas.addHierarchyListener { e ->
-            if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
-                if (!e.changed.isDisplayable) {
-                    close()
+            // no resize
+            frame.isResizable = false
+
+            // rendering
+            frame.addWindowStateListener {
+                if (it.newState == Frame.NORMAL) {
+                    render()
                 }
             }
-        }
 
-        frame.defaultCloseOperation = when (config.closeBehavior) {
-            CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
-            CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
-        }
+            // dimensions
+            canvas.preferredSize = Dimension(
+                tileGrid.widthInPixels,
+                tileGrid.heightInPixels
+            )
+            canvas.minimumSize = Dimension(tileGrid.tileset.width, tileGrid.tileset.height)
 
-        frame.addWindowListener(object : WindowAdapter() {
-            override fun windowClosing(windowEvent: WindowEvent?) {
-                app.stop()
+            // input listeners
+            canvas.addKeyListener(keyboardEventListener)
+            canvas.addMouseListener(mouseEventListener)
+            canvas.addMouseMotionListener(mouseEventListener)
+            canvas.addMouseWheelListener(mouseEventListener)
+
+            // window closed
+            canvas.addHierarchyListener { e ->
+                if (e.changeFlags == HierarchyEvent.DISPLAYABILITY_CHANGED.toLong()) {
+                    if (!e.changed.isDisplayable) {
+                        close()
+                    }
+                }
             }
-        })
-        frame.pack()
-        frame.isVisible = true
-        frame.setLocationRelativeTo(null)
 
-        // buffering
-        canvas.createBufferStrategy(2)
-        initializeBufferStrategy()
+            // close behavior
+            frame.defaultCloseOperation = when (config.closeBehavior) {
+                CloseBehavior.DO_NOTHING_ON_CLOSE -> JFrame.DO_NOTHING_ON_CLOSE
+                CloseBehavior.EXIT_ON_CLOSE -> JFrame.EXIT_ON_CLOSE
+            }
+
+            // app stop callback
+            frame.addWindowListener(object : WindowAdapter() {
+                override fun windowClosing(windowEvent: WindowEvent?) {
+                    notifyObservers(this@SwingCanvasRenderer)
+                }
+            })
+
+            // focus settings
+            canvas.isFocusable = true
+            canvas.requestFocusInWindow()
+            canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+            canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+
+            // display
+            frame.pack()
+            frame.isVisible = true
+            frame.setLocationRelativeTo(null)
+
+            // buffering
+            canvas.createBufferStrategy(2)
+            initializeBufferStrategy()
+        }
+    }
+
+    override fun render() {
+        if (closed.not()) {
+            val now = SystemUtils.getCurrentTimeMs()
+
+            processInputEvents()
+            tileGrid.updateAnimations(now, tileGrid)
+
+            val bs: BufferStrategy = canvas.bufferStrategy // this is a regular Swing Canvas object
+            handleBlink(now)
+
+            canvas.bufferStrategy.drawGraphics.configure().apply {
+                color = Color.BLACK
+                fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
+                drawTiles(this)
+                if (shouldDrawCursor()) {
+                    tileGrid.getTileAtOrNull(tileGrid.cursorPosition)?.let { it ->
+                        drawCursor(this, it, tileGrid.cursorPosition)
+                    }
+                }
+                dispose()
+            }
+
+            bs.show()
+            lastRender = now
+        }
     }
 
     override fun close() {
@@ -121,31 +178,6 @@ class SwingCanvasRenderer(
             tileGrid.close()
             frame.dispose()
         }
-    }
-
-    override fun render() {
-        val now = SystemUtils.getCurrentTimeMs()
-
-        processInputEvents()
-        tileGrid.updateAnimations(now, tileGrid)
-
-        val bs: BufferStrategy = canvas.bufferStrategy // this is a regular Swing Canvas object
-        handleBlink(now)
-
-        canvas.bufferStrategy.drawGraphics.configure().apply {
-            color = Color.BLACK
-            fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
-            drawTiles(this)
-            if (shouldDrawCursor()) {
-                tileGrid.getTileAtOrNull(tileGrid.cursorPosition)?.let { it ->
-                    drawCursor(this, it, tileGrid.cursorPosition)
-                }
-            }
-            dispose()
-        }
-
-        bs.show()
-        lastRender = now
     }
 
     private fun drawTiles(graphics: Graphics2D) {
@@ -291,6 +323,18 @@ class SwingCanvasRenderer(
         }
     }
 
+    companion object {
+
+        fun create(
+            tileGrid: InternalTileGrid,
+            tilesetLoader: TilesetLoader<Graphics2D>,
+            canvas: Canvas = Canvas(),
+        ): SwingCanvasRenderer = SwingCanvasRenderer(
+            tileGrid = tileGrid,
+            tilesetLoader = tilesetLoader,
+            canvas = canvas
+        )
+    }
 }
 
 private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource {
