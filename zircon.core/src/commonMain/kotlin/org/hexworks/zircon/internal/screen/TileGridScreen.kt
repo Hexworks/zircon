@@ -71,7 +71,11 @@ class TileGridScreen(
     private var activeScreenId = UUIDFactory.randomUUID()
     private val id = UUIDFactory.randomUUID()
 
-    override var application: InternalApplication = tileGrid.application.asInternal()
+    override var application: InternalApplication
+        get() = tileGrid.application.asInternal()
+        set(value) {
+            tileGrid.application = value
+        }
 
     private val eventBus = application.eventBus
     private val eventScope = application.eventScope
@@ -88,6 +92,8 @@ class TileGridScreen(
             }
         }.disposeWhen(closedValue)
     }
+
+    override fun asInternal(): InternalScreen = this
 
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
