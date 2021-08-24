@@ -8,6 +8,8 @@ import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 
 class LibgdxTextureCloner : TextureTransformer<TextureRegion> {
 
+    override val targetType = TextureRegion::class
+
     override fun transform(texture: TileTexture<TextureRegion>, tile: Tile): TileTexture<TextureRegion> {
         return DefaultTileTexture(
             width = texture.width,

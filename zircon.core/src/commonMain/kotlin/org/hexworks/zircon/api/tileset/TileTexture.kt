@@ -15,4 +15,5 @@ interface TileTexture<out T> : Cacheable {
      * The actual texture.
      */
     val texture: T
+
 }

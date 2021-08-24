@@ -7,6 +7,10 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.VirtualRenderer
 
+/**
+ * A [VirtualApplication] will not draw anything on a screen, it can be used as a headless implementation
+ * of [Application] for testing purposes.
+ */
 class VirtualApplication(
     config: AppConfig,
     eventBus: EventBus,

@@ -20,9 +20,12 @@ class TilesetFactoryBuilder<S : Any> private constructor(
 
 ) : Builder<TilesetFactory<S>> {
 
-    override fun createCopy(): Builder<TilesetFactory<S>> {
-        TODO("not implemented")
-    }
+    override fun createCopy() = TilesetFactoryBuilder(
+        targetType = targetType,
+        supportedTileType = supportedTileType,
+        supportedTilesetType = supportedTilesetType,
+        factoryFunction = factoryFunction
+    )
 
     override fun build(): TilesetFactory<S> {
         requireNotNull(targetType) {

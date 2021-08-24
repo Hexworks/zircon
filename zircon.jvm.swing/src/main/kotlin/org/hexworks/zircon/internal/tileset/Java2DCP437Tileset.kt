@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.tileset
 
+import org.hexworks.zircon.api.application.ModifierSupport
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -22,11 +23,13 @@ import kotlin.reflect.KClass
 class Java2DCP437Tileset(
     resource: TilesetResource,
     private val source: BufferedImage,
-    private val textureTransformers: Map<KClass<out TextureTransformModifier>, TextureTransformer<BufferedImage>>
+    modifierSupports: Map<KClass<out TextureTransformModifier>,ModifierSupport<BufferedImage>>
 ) : BaseCP437Tileset<Graphics2D, BufferedImage>(
     resource = resource,
     targetType = Graphics2D::class
 ) {
+
+    private val transformers = modifierSupports.mapValues { it.value.transformer }
 
     override fun drawTile(tile: Tile, surface: Graphics2D, position: Position) {
         val texture = fetchTextureForTile(tile, position)
@@ -50,7 +53,7 @@ class Java2DCP437Tileset(
             image = it.transform(image, tile)
         }
         tile.modifiers.filterIsInstance<TextureTransformModifier>().forEach {
-            image = textureTransformers[it::class]?.transform(image, tile) ?: image
+            image = transformers[it::class]?.transform(image, tile) ?: image
         }
         image = applyDebugModifiers(image, tile, position)
         return image
@@ -63,11 +66,11 @@ class Java2DCP437Tileset(
     ): TileTexture<BufferedImage> {
         val config = RuntimeConfig.config
         var result = image
-        val border = textureTransformers[Border::class]
+        val border = transformers[Border::class]
         if (config.debugMode && config.debugConfig.displayGrid && border != null) {
             result = border.transform(image, tile.withAddedModifiers(GRID_BORDER))
         }
-        val tileCoordinate = textureTransformers[TileCoordinate::class]
+        val tileCoordinate = transformers[TileCoordinate::class]
         if (config.debugMode && config.debugConfig.displayCoordinates && tileCoordinate != null) {
             result = tileCoordinate.transform(image, tile.withAddedModifiers(TileCoordinate(position)))
         }
