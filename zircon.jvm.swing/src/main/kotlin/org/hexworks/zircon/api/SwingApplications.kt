@@ -48,9 +48,7 @@ object SwingApplications {
         eventBus = eventBus,
         tileGrid = tileGrid.asInternal(),
         renderer = renderer
-    ).apply {
-        tileGrid.asInternal().application = this
-    }
+    )
 
     /**
      * Builds a new [Application] using the given parameters and calls [Application.start] on it.

@@ -69,7 +69,7 @@ class ObliqueCityWithScrollingKotlin {
             .withForegroundColor(fromString("#2a373e"))
             .buildCharacterTile()
 
-        private val GAME_AREA_SIZE = Size3D.create(100, 100, 10)
+        private val GAME_AREA_SIZE = Size3D.create(200, 200, 10)
         private val FILLER = GRASS_TILE
         private val RANDOM = Random(3248351)
 
