@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.api.view.ViewContainer
+import org.hexworks.zircon.internal.grid.InternalTileGrid
 
 /**
  * The [TileGrid] is the most fundamental interface in Zircon.
@@ -41,4 +42,8 @@ interface TileGrid : AnimationRunner, Clearable, Closeable, DrawSurface, Layerab
     val heightInPixels: Int
         get() = tileset.height * height
 
+    /**
+     * Exposes the internal API of this [TileGrid]
+     */
+    fun asInternal(): InternalTileGrid
 }

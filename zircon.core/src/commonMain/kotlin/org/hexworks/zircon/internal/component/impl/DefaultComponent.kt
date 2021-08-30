@@ -25,14 +25,12 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 import kotlin.jvm.Synchronized
@@ -183,18 +181,22 @@ abstract class DefaultComponent(
     }
 
     final override fun requestFocus(): Boolean {
-        Zircon.eventBus.publish(
-            event = RequestFocusFor(this, this),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = RequestFocusFor(this, this),
+                eventScope = root.eventScope
+            )
+        }
         return hasFocusValue.value
     }
 
     final override fun clearFocus() {
-        Zircon.eventBus.publish(
-            event = ClearFocus(this, this),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = ClearFocus(this, this),
+                eventScope = root.eventScope
+            )
+        }
     }
 
     override fun focusGiven() = whenEnabled {

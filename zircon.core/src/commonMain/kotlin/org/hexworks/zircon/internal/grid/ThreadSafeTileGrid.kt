@@ -22,6 +22,7 @@ import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationRunner
+import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
@@ -48,6 +49,10 @@ class ThreadSafeTileGrid(
     init {
         initializeLayerable(config)
     }
+
+    // Note that this is passed in right after creation
+    // the lateinit is necessary because Application also has a reference to the grid
+    override lateinit var application: InternalApplication
 
     override var backend: Layer = layerable.getLayerAtOrNull(0)!!
 

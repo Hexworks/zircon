@@ -2,19 +2,27 @@ package org.hexworks.zircon.internal.application
 
 import com.badlogic.gdx.utils.Disposable
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
 class LibgdxApplication(
-    config: AppConfig,
-    override val tileGrid: InternalTileGrid = ThreadSafeTileGrid(config)
-) : Disposable, Application {
+    override val config: AppConfig,
+    override val eventBus: EventBus,
+    override val tileGrid: ThreadSafeTileGrid = ThreadSafeTileGrid(config),
+    override val eventScope: ZirconScope = ZirconScope()
+) : Disposable, InternalApplication {
+
+    init {
+        tileGrid.application = this
+    }
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -71,9 +79,14 @@ class LibgdxApplication(
         listener(it.newValue)
     }
 
+    override fun asInternal(): InternalApplication = this
+
     companion object {
-        fun create(appConfig: AppConfig = AppConfig.defaultConfiguration()): Application {
-            return LibgdxApplication(appConfig)
+        fun create(
+            config: AppConfig = AppConfig.defaultConfiguration(),
+            eventBus: EventBus = EventBus.create()
+        ): Application {
+            return LibgdxApplication(config, eventBus)
         }
     }
 }

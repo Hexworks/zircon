@@ -26,7 +26,7 @@ class TileGridBuilder private constructor(
     /**
      * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
      */
-    fun buildScreen(): Screen = TileGridScreen(build() as InternalTileGrid)
+    fun buildScreen(): Screen = TileGridScreen(build().asInternal())
 
     override fun build(): TileGrid {
         return ThreadSafeTileGrid(config)

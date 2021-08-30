@@ -31,7 +31,6 @@ import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
@@ -60,13 +59,13 @@ class UIEventToComponentDispatcher(
     private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig
 
     init {
-        Zircon.eventBus.simpleSubscribeTo<RequestFocusFor>(ZirconScope) { (component) ->
+        root.eventBus.simpleSubscribeTo<RequestFocusFor>(root.eventScope) { (component) ->
             require(component is InternalComponent) {
                 "Only InternalComponents can be focused."
             }
             focusComponent(component)
         }
-        Zircon.eventBus.simpleSubscribeTo<ClearFocus>(ZirconScope) { (component) ->
+        root.eventBus.simpleSubscribeTo<ClearFocus>(root.eventScope) { (component) ->
             if (focusOrderList.isFocused(component as InternalComponent)) {
                 focusComponent(root)
             }

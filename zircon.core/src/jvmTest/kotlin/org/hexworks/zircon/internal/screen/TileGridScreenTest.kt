@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
@@ -31,6 +32,7 @@ class TileGridScreenTest {
             .withDefaultTileset(tileset)
             .withSize(SIZE)
             .build())
+        grid.application = ApplicationStub()
         target = TileGridScreen(grid)
     }
 

@@ -10,8 +10,8 @@ internal enum class BuiltInGraphicalTilesetResource(
     override val height: Int,
     private val fileName: String = "${tilesetName}_${width}x$height.zip",
     override val id: UUID = UUIDFactory.randomUUID(),
-    override val tileType: TileType = TileType.GRAPHIC_TILE,
-    override val tilesetType: TilesetType = TilesetType.GRAPHIC_TILESET,
+    override val tileType: TileType = TileType.GRAPHICAL_TILE,
+    override val tilesetType: TilesetType = TilesetType.GraphicalTileset,
     override val path: String = "/graphical_tilesets/$fileName",
     override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR
 ) : TilesetResource {

@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.TextUtils
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
@@ -25,7 +24,6 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Delet
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.util.orElse
 
 //TODO: Finish minValue impl. and bug fixing
@@ -120,10 +118,12 @@ abstract class BaseNumberInput(
         text = textBeforeModifications
         computeNumberValue()
         componentState = ComponentState.DEFAULT
-        Zircon.eventBus.publish(
-            event = ZirconEvent.HideCursor(this),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = ZirconEvent.HideCursor(this),
+                eventScope = root.eventScope
+            )
+        }
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

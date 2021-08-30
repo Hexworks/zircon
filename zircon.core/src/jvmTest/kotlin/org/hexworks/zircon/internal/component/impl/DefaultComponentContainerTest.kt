@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.ButtonBuilder
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -35,9 +36,11 @@ import kotlin.contracts.ExperimentalContracts
 class DefaultComponentContainerTest {
 
     lateinit var target: DefaultComponentContainer
+    lateinit var applicationStub: ApplicationStub
 
     @Before
     fun setUp() {
+        applicationStub = ApplicationStub()
         target = DefaultComponentContainer(
             DefaultRootContainer(
                 metadata = ComponentMetadata(
@@ -49,7 +52,8 @@ class DefaultComponentContainerTest {
                 renderingStrategy = DefaultComponentRenderingStrategy(
                     decorationRenderers = listOf(),
                     componentRenderer = RootContainerRenderer()
-                )
+                ),
+                application = applicationStub
             )
         )
     }

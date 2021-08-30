@@ -67,7 +67,6 @@ object ScrollingLogAreaExample {
             logArea.addParagraph(
                 texts[random.nextInt(texts.size)],
                 withNewLine = false,
-                withTypingEffectSpeedInMs = 100
             )
         }
     }

@@ -6,13 +6,15 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 
 class LibgdxGame(
-    private val appConfig: AppConfig,
+    appConfig: AppConfig,
+    eventBus: EventBus,
     private val libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration(),
     private var started: Boolean = false
 ) : Game() {
@@ -23,7 +25,7 @@ class LibgdxGame(
 
     private lateinit var batch: SpriteBatch
 
-    val libgdxApplication = LibgdxApplication(appConfig)
+    val libgdxApplication = LibgdxApplication(appConfig, eventBus)
 
     fun start() {
         if (!started) {
@@ -62,11 +64,13 @@ class LibgdxGame(
     }
 
     companion object {
+
         fun build(
             appConfig: AppConfig = AppConfig.defaultConfiguration(),
+            eventBus: EventBus = EventBus.create(),
             libgdxConfig: LwjglApplicationConfiguration = LwjglApplicationConfiguration()
         ): LibgdxGame {
-            return LibgdxGame(appConfig, libgdxConfig)
+            return LibgdxGame(appConfig, eventBus, libgdxConfig)
         }
     }
 

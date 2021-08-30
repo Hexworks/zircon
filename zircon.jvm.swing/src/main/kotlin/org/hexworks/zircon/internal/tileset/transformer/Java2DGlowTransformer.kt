@@ -3,14 +3,14 @@ package org.hexworks.zircon.internal.tileset.transformer
 import com.jhlabs.image.GaussianFilter
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Glow
-import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.tileset.transformer.Java2DTextureTransformer
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
+class Java2DGlowTransformer : Java2DTextureTransformer() {
 
     val cloner = Java2DTextureCloner()
 
@@ -49,7 +49,8 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
                     return DefaultTileTexture(
                         width = txt.width,
                         height = txt.height,
-                        texture = result
+                        texture = result,
+                        cacheKey = tile.cacheKey
                     )
                 }
             }
@@ -76,7 +77,8 @@ class Java2DGlowTransformer : TextureTransformer<BufferedImage> {
         return DefaultTileTexture(
             width = texture.width,
             height = texture.height,
-            texture = image
+            texture = image,
+            cacheKey = tile.cacheKey
         )
     }
 }

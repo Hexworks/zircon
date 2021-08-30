@@ -14,4 +14,6 @@ class NoOpCache<T> : Cache<T> {
 
     override fun store(key: String, obj: T): T = obj
 
+    override fun store(obj: T): T = obj
+
 }

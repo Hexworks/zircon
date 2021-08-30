@@ -4,10 +4,11 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.resource.TileType.GRAPHIC_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
 import org.hexworks.zircon.internal.util.rex.unZipIt
@@ -33,7 +34,7 @@ class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Grap
     private val source: BufferedImage
 
     init {
-        require(resource.tileType == GRAPHIC_TILE) {
+        require(resource.tileType == GRAPHICAL_TILE) {
             "Can't use a ${resource.tileType.name}-based TilesetResource for" +
                     " a GraphicTile-based tileset."
         }
@@ -84,7 +85,8 @@ class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Grap
             DefaultTileTexture(
                 width = width,
                 height = height,
-                texture = source.getSubimage(meta.x * width, meta.y * height, width, height)
+                texture = source.getSubimage(meta.x * width, meta.y * height, width, height),
+                cacheKey = tile.cacheKey
             )
         } ?: throw NoSuchElementException("No texture with name '${tile.name}'.")
     }

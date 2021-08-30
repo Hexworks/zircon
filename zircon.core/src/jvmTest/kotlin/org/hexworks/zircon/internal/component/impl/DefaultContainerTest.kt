@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.application.AppConfig
@@ -16,12 +17,12 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
+import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -58,11 +59,15 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = TileGridBuilder.newBuilder()
-            .withConfig(AppConfig.newBuilder()
-                .withSize(40, 25)
-                .withDefaultTileset(TILESET_REX_PAINT_20X20)
-                .build())
-            .build()
+            .withConfig(
+                AppConfig.newBuilder()
+                    .withSize(40, 25)
+                    .withDefaultTileset(TILESET_REX_PAINT_20X20)
+                    .build()
+            )
+            .build() as ThreadSafeTileGrid
+
+        grid.application = ApplicationStub()
 
         val screen = ScreenBuilder.createScreenFor(grid)
 
@@ -118,12 +123,16 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
-        val grid = TileGridBuilder.newBuilder()
-            .withConfig(AppConfig.newBuilder()
-                .withSize(40, 25)
-                .withDefaultTileset(TILESET_REX_PAINT_20X20)
-                .build())
-            .build()
+        val grid: ThreadSafeTileGrid = TileGridBuilder.newBuilder()
+            .withConfig(
+                AppConfig.newBuilder()
+                    .withSize(40, 25)
+                    .withDefaultTileset(TILESET_REX_PAINT_20X20)
+                    .build()
+            )
+            .build() as ThreadSafeTileGrid
+        grid.application = ApplicationStub()
+
         val screen = ScreenBuilder.createScreenFor(grid)
 
         val panel0 = PanelBuilder.newBuilder()
@@ -223,14 +232,28 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
+        val applicationStub = ApplicationStub()
+        val root = DefaultRootContainer(
+            metadata = ComponentMetadata(
+                relativePosition = Position.defaultPosition(),
+                size = Size.create(50, 50),
+            ),
+            application = applicationStub,
+            renderingStrategy = DefaultComponentRenderingStrategy(
+                decorationRenderers = listOf(),
+                componentRenderer = RootContainerRenderer()
+            )
+        )
         val comp = LabelBuilder.newBuilder()
             .withText("x")
             .withTileset(TILESET_REX_PAINT_20X20)
             .withAlignment(positionalAlignment(Position.defaultPosition()))
             .build() as InternalComponent
+        root.addComponent(target)
+
         val handle = target.addComponent(comp)
         val removalHappened = AtomicBoolean(false)
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.ComponentRemoved>(ZirconScope) {
+        root.eventBus.simpleSubscribeTo<ComponentRemoved>(root.eventScope) {
             removalHappened.set(true)
         }
 

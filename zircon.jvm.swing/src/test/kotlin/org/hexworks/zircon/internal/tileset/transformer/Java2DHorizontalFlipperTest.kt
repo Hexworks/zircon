@@ -19,7 +19,7 @@ class Java2DHorizontalFlipperTest {
     @Test
     fun shouldProperlyRun() {
         val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB)
-        target.transform(DefaultTileTexture(WIDTH, HEIGHT, image), CHAR)
+        target.transform(DefaultTileTexture(WIDTH, HEIGHT, image, CHAR.toString()), CHAR)
     }
 
     companion object {

@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.tileset.transformer
 
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.tileset.transformer.Java2DTextureTransformer
 import org.hexworks.zircon.internal.modifier.TileCoordinate
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Color
@@ -13,7 +13,7 @@ import java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON
 import java.awt.image.BufferedImage
 
 
-class Java2DTileCoordinateTransformer : TextureTransformer<BufferedImage> {
+class Java2DTileCoordinateTransformer : Java2DTextureTransformer() {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val pos = tile.modifiers.filterIsInstance(TileCoordinate::class.java).first().position
@@ -29,7 +29,8 @@ class Java2DTileCoordinateTransformer : TextureTransformer<BufferedImage> {
                     return DefaultTileTexture(
                         width = texture.width,
                         height = texture.height,
-                        texture = txt
+                        texture = txt,
+                        cacheKey = tile.cacheKey
                     )
                 }
             }

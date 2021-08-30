@@ -5,11 +5,13 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.jvm.JvmStatic
 
 /**
  * [Builder] for creating [ShortcutsConfig]s.
  */
+@ZirconDsl
 class ShortcutsConfigBuilder private constructor(
     /**
      * Default is `<Space>` press.
