@@ -29,15 +29,15 @@ public class StatsPanelExample {
 
         final VBox panel = Components.vbox()
                 .withDecorations(box(BoxType.SINGLE, "Sel Darkstrom"), shadow())
-                .withSize(20, 20)
+                .withPreferredSize(20, 22)
                 .withAlignmentWithin(screen, ComponentAlignment.CENTER)
                 .build();
 
-        panel.addComponent(Components.label().withSize(1, 1)); // spacer
+        panel.addComponent(Components.label().withPreferredSize(1, 1)); // spacer
         panel.addComponent(Components.header().withText("Stats"));
 
         HBox attack = Components.hbox()
-                .withSize(panel.getContentSize().getWidth(), 1)
+                .withPreferredSize(panel.getContentSize().getWidth(), 1)
                 .build();
         attack.addComponent(Components.icon().withIcon(Tile.newBuilder()
                 .withName("Short sword")
@@ -47,7 +47,7 @@ public class StatsPanelExample {
         panel.addComponent(attack);
 
         HBox defense = Components.hbox()
-                .withSize(panel.getContentSize().getWidth(), 1)
+                .withPreferredSize(panel.getContentSize().getWidth(), 1)
                 .build();
         defense.addComponent(Components.icon()
                 .withIcon(Tile.newBuilder()
