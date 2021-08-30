@@ -12,7 +12,7 @@ import static org.hexworks.zircon.api.Functions.fromConsumer;
 public class ButtonsExampleJava extends TwoColumnComponentExampleJava {
 
     public static void main(String[] args) {
-        new BordersExampleJava().show("Buttons Example");
+        new ButtonsExampleJava().show("Buttons Example");
     }
 
     @Override
