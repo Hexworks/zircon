@@ -47,6 +47,7 @@ object InCP437WeTrust {
         val cp437panel = Components.panel()
             .withPreferredSize(Size.create(19, 18))
             .withDecorations(box(BoxType.SINGLE), shadow())
+            .withTileset(startingTileset)
             .withComponentRenderer { tileGraphics, _ ->
                 loader.cp437Metadata.forEach { (char, meta) ->
                     tileGraphics.draw(
