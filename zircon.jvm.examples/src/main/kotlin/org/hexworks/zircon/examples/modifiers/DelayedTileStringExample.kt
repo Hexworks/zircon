@@ -36,13 +36,13 @@ object DelayedTileStringExample {
 
         screen.addComponent(panel)
 
-        val myText = "This is a very long string I'd like to add with a typrewriter effect"
+        val myText = "This is a very long string I'd like to add with a typewriter effect"
 
         panel.addComponent(
             Components.textBox(panel.contentSize.width)
                 .addParagraph(
                     text = myText,
-                    withTypingEffectSpeedInMs = 20
+                    withTypingEffectSpeedInMs = 200
                 )
         )
 
