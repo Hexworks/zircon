@@ -13,7 +13,7 @@ public class HexworksSkullExampleJava {
 
     public static void main(String[] args) {
 
-        Screen screen = displayScreen(ColorThemes.defaultTheme());
+        Screen screen = displayScreen(ColorThemes.empty());
 
         screen.start(hexworksSkull(
                 Position.create(screen.getWidth() / 2 - 6, screen.getHeight() / 2 - 12),

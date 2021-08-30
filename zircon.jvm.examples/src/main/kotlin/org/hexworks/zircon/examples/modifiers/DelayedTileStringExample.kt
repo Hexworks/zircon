@@ -42,7 +42,7 @@ object DelayedTileStringExample {
             Components.textBox(panel.contentSize.width)
                 .addParagraph(
                     text = myText,
-                    withTypingEffectSpeedInMs = 200
+                    withTypingEffectSpeedInMs = 20
                 )
         )
 
