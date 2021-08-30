@@ -7,6 +7,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 
+/**
+ * Contains all the possible events that Zircon uses internally.
+ */
 sealed class ZirconEvent : Event {
 
     /**

@@ -8,12 +8,19 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.modifier.TextureTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.renderer.Renderer
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TilesetType
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
+import kotlin.reflect.KClass
 
 
 /**
@@ -21,6 +28,8 @@ import kotlin.jvm.JvmStatic
  * has sensible default values so
  * @see AppConfig for all the default values.
  */
+@Suppress("unused")
+@ZirconDsl
 class AppConfigBuilder private constructor(
     /**
      * The amount of time (in milliseconds) that should pass before the next
@@ -96,7 +105,7 @@ class AppConfigBuilder private constructor(
     var fpsLimit: Int = 60,
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
-     * By default all settings are `false`.
+     * By default, all settings are `false`.
      */
     var debugConfig: DebugConfig = DebugConfig.defaultConfig(),
     /**
@@ -125,10 +134,15 @@ class AppConfigBuilder private constructor(
      */
     var customProperties: Map<AppConfigKey<*>, Any> = emptyMap(),
     /**
-     * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
+     * If set [tilesetFactories] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    var tilesetLoaders: List<TilesetLoader<*>> = emptyList()
+    var tilesetFactories: Map<Pair<TileType, TilesetType>, TilesetFactory<*>> = mapOf(),
+    /**
+     * If set [modifierSupports] will contain the list of [TextureTransformer]s to try to use
+     * before using the default [TextureTransformer] of the [Renderer].
+     */
+    var modifierSupports: Map<KClass<out TextureTransformModifier>, ModifierSupport<*>> = mapOf()
 ) : Builder<AppConfig> {
 
     fun withDebugConfig(debugConfig: DebugConfig) = also {
@@ -233,14 +247,22 @@ class AppConfigBuilder private constructor(
     }
 
     /**
-     * Sets the additional tileset loaders that should be attempted before falling back to the default
-     * tileset loader the renderer uses.
-     *
-     * **Order matters.** Loaders earlier in the list will be attempted first.
+     * Sets custom [TilesetFactory] objects that will be used by the tileset loader. There can be only one
+     * [TilesetFactory] for a combination of [TileType] + [TilesetType]
      */
-    fun withTilesetLoaders(vararg tilesetLoaders: TilesetLoader<*>) = also {
-        this.tilesetLoaders = tilesetLoaders.toList()
+    fun withTilesetFactories(vararg tilesetFactories: TilesetFactory<*>) = also {
+        this.tilesetFactories =
+            this.tilesetFactories + tilesetFactories.associateBy { it.supportedTileType to it.supportedTilesetType }
     }
+
+    /**
+     * Sets custom [TilesetFactory] objects that will be used by the tileset loader. There can be only one
+     * [TilesetFactory] for a combination of [TileType] + [TilesetType]
+     */
+    fun withModifierSupports(vararg modifierSupports: ModifierSupport<*>) =
+        also {
+            this.modifierSupports = this.modifierSupports + modifierSupports.associateBy { it.modifierType }
+        }
 
     override fun build() = AppConfig(
         blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
@@ -263,7 +285,8 @@ class AppConfigBuilder private constructor(
         iconData = iconData,
         iconPath = iconPath,
         customProperties = customProperties,
-        tilesetLoaders = tilesetLoaders
+        tilesetLoaders = tilesetFactories,
+        modifierSupports = modifierSupports
     ).also {
         RuntimeConfig.config = it
     }
@@ -289,7 +312,8 @@ class AppConfigBuilder private constructor(
         iconData = iconData,
         iconPath = iconPath,
         customProperties = customProperties,
-        tilesetLoaders = tilesetLoaders
+        tilesetFactories = tilesetFactories,
+        modifierSupports = modifierSupports
     )
 
     companion object {

@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.behavior.impl.DefaultComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -55,10 +54,10 @@ class DefaultComponentContainer(
         logger.debug("Activating component container.")
         isActive.value = true
         refreshFocusables()
-        Zircon.eventBus.simpleSubscribeTo<ComponentAdded>(ZirconScope) {
+        root.eventBus.simpleSubscribeTo<ComponentAdded>(root.eventScope) {
             refreshFocusables()
         }.keepWhile(isActive)
-        Zircon.eventBus.simpleSubscribeTo<ComponentRemoved>(ZirconScope) {
+        root.eventBus.simpleSubscribeTo<ComponentRemoved>(root.eventScope) {
             refreshFocusables()
         }.keepWhile(isActive)
     }

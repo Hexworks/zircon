@@ -16,14 +16,8 @@ interface TilesetResource : Identifiable {
 
     val tileType: TileType
     val tilesetType: TilesetType
-
-    /**
-     * A "strongly-typed" field to identify tilesets to be loaded by custom tileset loaders.
-     *
-     * For example, a tileset loader designed for Tiled might use a subtype of `TILED`.
-     */
-    val tilesetSubtype: String? get() = null
     val tilesetSourceType: TilesetSourceType
+
     val width: Int
     val height: Int
     val path: String
@@ -43,6 +37,9 @@ interface TilesetResource : Identifiable {
         }
     }
 
+    /**
+     * This function will throw an exception if [other] is not compatible with this tileset.
+     */
     fun checkCompatibilityWith(other: TilesetResource) {
         require(isCompatibleWith(other)) {
             "The supplied tileset: $other is not compatible with this: $this."
@@ -57,6 +54,10 @@ interface TilesetResource : Identifiable {
 
     companion object {
 
+        /**
+         * The UNKNOWN tileset resource is an implementation of the
+         * [Null Object Pattern](https://en.wikipedia.org/wiki/Null_object_pattern).
+         */
         object UNKNOWN : TilesetResource {
             override val tileType: TileType
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")

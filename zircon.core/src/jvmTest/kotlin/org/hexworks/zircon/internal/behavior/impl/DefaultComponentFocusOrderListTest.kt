@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -21,11 +22,13 @@ import org.junit.Test
 class DefaultComponentFocusOrderListTest {
 
     lateinit var rendererStub: ComponentRendererStub<RootContainer>
+    lateinit var applicationStub: ApplicationStub
     lateinit var root: RootContainer
     lateinit var target: DefaultComponentFocusOrderList
 
     @Before
     fun setUp() {
+        applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
             metadata = ComponentMetadata(
@@ -36,7 +39,8 @@ class DefaultComponentFocusOrderListTest {
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub
-            )
+            ),
+            application = applicationStub
         )
         target = DefaultComponentFocusOrderList(root)
     }

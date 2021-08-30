@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -30,8 +31,10 @@ import kotlin.jvm.Synchronized
  */
 class ModalComponentContainer(
     private val metadata: ComponentMetadata,
+    private val application: Application,
     private val mainContainer: InternalComponentContainer = buildContainer(
-        metadata = metadata
+        metadata = metadata,
+        application = application
     )
 ) : InternalComponentContainer {
 
@@ -111,6 +114,7 @@ class ModalComponentContainer(
         previousContainer.deactivate()
         val modalContainer = buildContainer(
             metadata = metadata,
+            application = application,
             rootRenderer = NoOpComponentRenderer()
         )
         containerStack.add(modalContainer)
@@ -143,7 +147,8 @@ class ModalComponentContainer(
 
         private fun buildContainer(
             metadata: ComponentMetadata,
-            rootRenderer: ComponentRenderer<in RootContainer> = RootContainerRenderer()
+            application: Application,
+            rootRenderer: ComponentRenderer<in RootContainer> = RootContainerRenderer(),
         ): InternalComponentContainer {
             val renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
@@ -152,7 +157,8 @@ class ModalComponentContainer(
             val container = DefaultComponentContainer(
                 root = DefaultRootContainer(
                     metadata = metadata,
-                    renderingStrategy = renderingStrategy
+                    application = application,
+                    renderingStrategy = renderingStrategy,
                 )
             )
             container.theme = metadata.theme

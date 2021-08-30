@@ -1,13 +1,12 @@
 package org.hexworks.zircon.examples.other;
 
 import org.hexworks.zircon.api.CP437TilesetResources;
+import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.color.ANSITileColor;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Tile;
-import org.hexworks.zircon.api.screen.Screen;
 import org.hexworks.zircon.api.tileset.Tileset;
-import org.hexworks.zircon.examples.base.Defaults;
-import org.hexworks.zircon.internal.tileset.SwingTilesetLoader;
+import org.hexworks.zircon.api.tileset.TilesetLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,7 +23,7 @@ public class SavingScreenshotsExample {
         final Graphics2D graphics = image.createGraphics();
 
         // you load the tileset you want
-        SwingTilesetLoader loader = new SwingTilesetLoader();
+        TilesetLoader<Graphics2D> loader = SwingApplications.createTilesetLoader();
         final Tileset<Graphics2D> tileset = loader.loadTilesetFrom(CP437TilesetResources.rexPaint20x20());
 
         // you draw tiles on the image using the graphics

@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.tileset.transformer
 
 import org.hexworks.zircon.api.tileset.TileTexture
-import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.tileset.transformer.Java2DTextureTransformer
 import java.awt.image.BufferedImage
 
-class Java2DTextureCloner : TextureTransformer<BufferedImage> {
+class Java2DTextureCloner : Java2DTextureTransformer() {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         val txt = texture.texture
@@ -19,6 +19,8 @@ class Java2DTextureCloner : TextureTransformer<BufferedImage> {
                     dispose()
                 }
                 clone
-            })
+            },
+            cacheKey = tile.cacheKey
+        )
     }
 }

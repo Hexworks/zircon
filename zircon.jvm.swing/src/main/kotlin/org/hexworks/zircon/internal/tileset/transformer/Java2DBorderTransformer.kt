@@ -1,17 +1,19 @@
 package org.hexworks.zircon.internal.tileset.transformer
 
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition.*
 import org.hexworks.zircon.api.modifier.BorderType
 import org.hexworks.zircon.api.modifier.BorderType.*
-import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.modifier.TextureTransformModifier
 import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.tileset.transformer.Java2DTextureTransformer
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 
-class Java2DBorderTransformer : TextureTransformer<BufferedImage> {
+class Java2DBorderTransformer : Java2DTextureTransformer() {
 
     override fun transform(texture: TileTexture<BufferedImage>, tile: Tile): TileTexture<BufferedImage> {
         return texture.also {

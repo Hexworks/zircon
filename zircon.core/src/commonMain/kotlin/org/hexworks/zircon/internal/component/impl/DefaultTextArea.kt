@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.util.TextUtils
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.DOWN
@@ -28,7 +27,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Delet
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 import kotlin.math.min
 
 @Suppress("DuplicatedCode")
@@ -85,10 +84,12 @@ class DefaultTextArea internal constructor(
     }
 
     override fun focusTaken() = whenEnabled {
-        Zircon.eventBus.publish(
-            event = ZirconEvent.HideCursor(this),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = ZirconEvent.HideCursor(this),
+                eventScope = root.eventScope
+            )
+        }
         super.focusTaken()
     }
 
@@ -169,13 +170,15 @@ class DefaultTextArea internal constructor(
             .minus(visibleOffset)
         pos = pos.withX(min(pos.x, contentSize.width))
         pos = pos.withY(min(pos.y, contentSize.height))
-        Zircon.eventBus.publish(
-            event = ZirconEvent.RequestCursorAt(
-                position = pos.withRelative(position + contentOffset),
-                emitter = this
-            ),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = RequestCursorAt(
+                    position = pos.withRelative(position + contentOffset),
+                    emitter = this
+                ),
+                eventScope = root.eventScope
+            )
+        }
     }
 
     private fun refreshVirtualSpaceSize() {

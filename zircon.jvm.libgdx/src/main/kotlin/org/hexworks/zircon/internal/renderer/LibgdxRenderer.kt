@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.zircon.api.Maybes
+import org.hexworks.zircon.api.LibgdxApplications
 import org.hexworks.zircon.api.application.CursorStyle
+import org.hexworks.zircon.api.application.filterByType
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
@@ -20,7 +20,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.tileset.ChainedTilesetLoader
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.RunTimeStats
@@ -28,7 +27,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.tileset.LibgdxTilesetLoader
+import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 
 
 @Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
@@ -40,13 +39,11 @@ class LibgdxRenderer(
     override val closedValue: Property<Boolean> = false.toProperty()
 
     private val config = RuntimeConfig.config
-    private var maybeBatch: Maybe<SpriteBatch> = Maybes.empty()
+    private var maybeBatch: SpriteBatch? = null
     private lateinit var cursorRenderer: ShapeRenderer
-    private val tilesetLoader: TilesetLoader<SpriteBatch> =
-        ChainedTilesetLoader.inOrder(
-            config.tilesetLoaders as List<TilesetLoader<SpriteBatch>>
-                    + LibgdxTilesetLoader()
-        )
+    private val tilesetLoader: TilesetLoader<SpriteBatch> = DefaultTilesetLoader(
+        LibgdxApplications.DEFAULT_FACTORIES + config.tilesetLoaders.filterByType(SpriteBatch::class)
+    )
     private var blinkOn = true
     private var timeSinceLastBlink: Float = 0f
 
@@ -55,11 +52,11 @@ class LibgdxRenderer(
     private var backgroundHeight: Int = 0
 
     override fun create() {
-        maybeBatch = Maybes.of(SpriteBatch().apply {
+        maybeBatch = SpriteBatch().apply {
             val camera = OrthographicCamera()
             camera.setToOrtho(true)
             projectionMatrix = camera.combined
-        })
+        }
         cursorRenderer = ShapeRenderer()
         val whitePixmap = Pixmap(grid.widthInPixels, grid.heightInPixels, Pixmap.Format.RGBA8888)
         whitePixmap.setColor(Color.WHITE)
@@ -80,13 +77,13 @@ class LibgdxRenderer(
 
     override fun close() {
         closedValue.value = true
-        maybeBatch.map(SpriteBatch::dispose)
+        maybeBatch?.let(SpriteBatch::dispose)
     }
 
     private fun doRender(delta: Float) {
         handleBlink(delta)
 
-        maybeBatch.map { batch ->
+        maybeBatch?.let { batch ->
             batch.begin()
             val tilesToRender = mutableMapOf<Position, MutableList<Pair<Tile, TilesetResource>>>()
             val renderables = grid.renderables

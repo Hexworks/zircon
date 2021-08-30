@@ -3,18 +3,16 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.component.ComponentContainer
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.UIEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.internal.behavior.RenderableContainer
-import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
@@ -30,7 +28,9 @@ class TestRenderer(
     config: AppConfig,
     private val tileGraphics: TileGraphics,
 ) : UIEventDispatcher, Renderer, Clearable {
-    private val tileGrid: TileGrid = ThreadSafeTileGrid(config)
+    private val tileGrid: TileGrid = ThreadSafeTileGrid(config).apply {
+        application = ApplicationStub()
+    }
     private val mainView = object : BaseView(tileGrid) {}
     private val closedValueProperty: Property<Boolean> = false.toProperty()
     override val closedValue: ObservableValue<Boolean> get() = closedValueProperty

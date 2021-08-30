@@ -8,10 +8,17 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.modifier.TextureTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.tileset.TextureTransformer
+import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
+import org.hexworks.zircon.internal.resource.TileType
+import org.hexworks.zircon.internal.resource.TilesetType
+import kotlin.reflect.KClass
 import kotlin.jvm.JvmStatic
+import kotlin.jvm.JvmName
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].
@@ -94,7 +101,7 @@ class AppConfig internal constructor(
     val fpsLimit: Int,
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
-     * By default all settings are `false`.
+     * By default, all settings are `false`.
      */
     val debugConfig: DebugConfig,
     /**
@@ -119,14 +126,19 @@ class AppConfig internal constructor(
      */
     val iconPath: String?,
     /**
-     * If set, contains custom properties that plugin authors can set and access.
-     */
-    internal val customProperties: Map<AppConfigKey<*>, Any>,
-    /**
      * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    val tilesetLoaders: List<TilesetLoader<*>>
+    val tilesetLoaders: Map<Pair<TileType, TilesetType>, TilesetFactory<*>>,
+    /**
+     * If set [modifierSupports] will contain the list of [TextureTransformer]s to try to use
+     * before using the default [TextureTransformer] of the [Renderer].
+     */
+    var modifierSupports: Map<KClass<out TextureTransformModifier>, ModifierSupport<*>>,
+    /**
+     * If set, contains custom properties that plugin authors can set and access.
+     */
+    internal val customProperties: Map<AppConfigKey<*>, Any>,
 ) {
 
     /**
@@ -172,4 +184,15 @@ class AppConfig internal constructor(
         fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 
     }
+}
+
+@JvmName("filterTilesetFactoriesByType")
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(type: KClass<T>): Map<Pair<TileType, TilesetType>, TilesetFactory<T>> {
+    return this.filterValues { it.targetType == type } as Map<Pair<TileType, TilesetType>, TilesetFactory<T>>
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> Map<KClass<out TextureTransformModifier>, ModifierSupport<*>>.filterByType(type: KClass<T>): Map<KClass<out TextureTransformModifier>, ModifierSupport<T>> {
+    return this.filterValues { it.targetType == type } as Map<KClass<out TextureTransformModifier>, ModifierSupport<T>>
 }

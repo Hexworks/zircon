@@ -19,7 +19,6 @@ import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent
@@ -203,29 +202,18 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     @Test
     fun shouldProperlyGiveFocus() {
         target.convertColorTheme(DEFAULT_THEME)
-        var cursorVisible = false
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.RequestCursorAt>(ZirconScope) {
-            cursorVisible = true
-        }
-
         target.focusGiven()
 
         assertThat(target.componentState)
             .isEqualTo(FOCUSED)
-        assertThat(cursorVisible).isTrue()
     }
 
     @Test
     fun shouldProperlyTakeFocus() {
-        var cursorHidden = false
-        Zircon.eventBus.simpleSubscribeTo<ZirconEvent.HideCursor>(ZirconScope) {
-            cursorHidden = true
-        }
         target.focusTaken()
 
         assertThat(target.componentState)
             .isEqualTo(DEFAULT)
-        assertThat(cursorHidden).isTrue()
     }
 
     @Test

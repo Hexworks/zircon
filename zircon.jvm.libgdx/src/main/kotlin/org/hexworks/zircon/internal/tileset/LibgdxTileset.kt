@@ -85,7 +85,8 @@ class LibgdxTileset(
             var image: TileTexture<TextureRegion> = DefaultTileTexture(
                 width = width,
                 height = height,
-                texture = tr
+                texture = tr,
+                cacheKey = tile.cacheKey
             )
             TILE_INITIALIZERS.forEach {
                 image = it.transform(image, fixedTile)

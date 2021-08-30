@@ -3,20 +3,23 @@ package org.hexworks.zircon.internal.application
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
 abstract class BaseApplication(
-    private val config: AppConfig,
-    override val tileGrid: TileGrid,
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-) : Application {
+    final override val config: AppConfig,
+    final override val tileGrid: TileGrid,
+    final override val eventBus: EventBus,
+    final override val eventScope: ZirconScope = ZirconScope(),
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+) : InternalApplication {
 
     abstract val renderer: Renderer
 
@@ -37,7 +40,7 @@ abstract class BaseApplication(
     private lateinit var renderLoop: Job
 
     init {
-        scope.launch {
+        coroutineScope.launch {
             for (cmd in channel) {
                 cmd.fn()
             }
@@ -91,7 +94,7 @@ abstract class BaseApplication(
             renderLoop.cancel()
             renderer.close()
             tileGrid.close()
-            scope.cancel()
+            coroutineScope.cancel()
             channel.close()
         }
     }
@@ -104,7 +107,9 @@ abstract class BaseApplication(
         listener(it.newValue)
     }
 
-    private fun executeCommand(fn: suspend () -> Unit): Job = scope.launch {
+    override fun asInternal() = this
+
+    private fun executeCommand(fn: suspend () -> Unit): Job = coroutineScope.launch {
         channel.send(Command(fn))
     }
 

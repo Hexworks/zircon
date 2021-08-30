@@ -4,9 +4,7 @@ import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.Zircon
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import kotlin.math.min
 
 class DefaultVerticalNumberInput internal constructor(
@@ -26,12 +24,14 @@ class DefaultVerticalNumberInput internal constructor(
         pos = pos.withX(min(pos.x, contentSize.height))
         pos = pos.withY(0)
         val invertedPosition = Position.create(pos.y, pos.x)
-        Zircon.eventBus.publish(
-            event = ZirconEvent.RequestCursorAt(
-                position = invertedPosition.withRelative(relativePosition + contentOffset),
-                emitter = this
-            ),
-            eventScope = ZirconScope
-        )
+        whenConnectedToRoot { root ->
+            root.eventBus.publish(
+                event = ZirconEvent.RequestCursorAt(
+                    position = invertedPosition.withRelative(relativePosition + contentOffset),
+                    emitter = this
+                ),
+                eventScope = root.eventScope
+            )
+        }
     }
 }
