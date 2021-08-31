@@ -1,8 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.events.api.DisposeSubscription
-import org.hexworks.cobalt.events.api.KeepSubscription
-import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -12,7 +9,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import kotlin.jvm.Synchronized
 
 open class DefaultHBox(
@@ -43,17 +39,16 @@ open class DefaultHBox(
         component.moveRightBy(filledUntil.x + finalSpacing)
         filledUntil = filledUntil.withRelativeX(finalWidth)
         availableSpace = availableSpace.withRelativeWidth(-finalWidth)
+        return HBoxAttachmentDecorator(super<DefaultContainer>.addComponent(component))
+    }
 
-        whenConnectedToRoot { root ->
-            root.eventBus.subscribeTo<ComponentRemoved>(root.eventScope) { (_, removedComponent) ->
-                if (removedComponent == component) {
-                    reorganizeComponents(component)
-                    DisposeSubscription
-                } else KeepSubscription
-            }
+    private inner class HBoxAttachmentDecorator(
+        val attachedComponent: InternalAttachedComponent
+    ) : InternalAttachedComponent by attachedComponent {
+        override fun detach(): Component {
+            reorganizeComponents(attachedComponent.component)
+            return attachedComponent.detach()
         }
-
-        return super<DefaultContainer>.addComponent(component)
     }
 
     private fun reorganizeComponents(component: Component) {
@@ -61,7 +56,7 @@ open class DefaultHBox(
         val delta = width + if (children.isEmpty()) 0 else spacing
         val x = component.position.x
         children.filter {
-            it.position.x >= x
+            it.position.x > x
         }.forEach {
             it.moveLeftBy(delta)
         }

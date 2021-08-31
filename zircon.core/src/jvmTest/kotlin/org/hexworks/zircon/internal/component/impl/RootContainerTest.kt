@@ -98,7 +98,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label = Components.label()
             .withPosition(pos)
-            .withSize(Size.one())
+            .withPreferredSize(Size.one())
             .withTileset(TILESET_REX_PAINT_20X20)
             .build()
 
@@ -127,13 +127,13 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label0 = Components.label()
             .withPosition(label0Pos)
-            .withSize(Size.one())
+            .withPreferredSize(Size.one())
             .withTileset(TILESET_REX_PAINT_20X20)
             .build()
 
         val label1 = Components.label()
             .withPosition(label1Pos)
-            .withSize(Size.one())
+            .withPreferredSize(Size.one())
             .withTileset(TILESET_REX_PAINT_20X20)
             .build()
 
@@ -163,7 +163,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label = Components.label()
             .withPosition(Position.offset1x1())
-            .withSize(Size.one())
+            .withPreferredSize(Size.one())
             .withTileset(TILESET_REX_PAINT_20X20)
             .build().asInternalComponent()
 

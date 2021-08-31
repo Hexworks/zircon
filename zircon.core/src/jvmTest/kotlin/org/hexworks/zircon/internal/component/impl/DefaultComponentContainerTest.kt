@@ -69,13 +69,11 @@ class DefaultComponentContainerTest {
         assertThat(target.flattenedTree).hasSize(1) // root is always there
     }
 
-    // TODO: wtf is the problem with this?
-    @Ignore
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
         target.addComponent(
             PanelBuilder.newBuilder()
-                .withSize(Size.create(999, 999))
+                .withPreferredSize(Size.create(999, 999))
                 .build()
         )
     }

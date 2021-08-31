@@ -20,7 +20,6 @@ class GameAreaBuilder<T : Tile, B : Block<T>> private constructor(
     private var visibleSize: Size3D = Size3D.one(),
     private var visibleOffset: Position3D = Position3D.defaultPosition(),
     private var blocks: MutableMap<Position3D, B> = mutableMapOf(),
-    private var projectionMode: ProjectionMode = ProjectionMode.TOP_DOWN,
     private val filters: MutableList<GameAreaTileFilter> = mutableListOf()
 ) : Builder<GameArea<T, B>> {
 
@@ -38,10 +37,6 @@ class GameAreaBuilder<T : Tile, B : Block<T>> private constructor(
         if (actualSize.containsPosition(position3D)) {
             blocks[position3D] = block
         }
-    }
-
-    fun withProjectionMode(projectionMode: ProjectionMode) = also {
-        this.projectionMode = projectionMode
     }
 
     fun withFilter(filter: GameAreaTileFilter) = also {
@@ -63,7 +58,6 @@ class GameAreaBuilder<T : Tile, B : Block<T>> private constructor(
         visibleSize = visibleSize,
         visibleOffset = visibleOffset,
         blocks = blocks.toMutableMap(),
-        projectionMode = projectionMode,
         filters = filters.toMutableList()
     )
 

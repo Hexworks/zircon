@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.util.BSPTree
@@ -40,7 +41,7 @@ object BSPExample {
 
         screen.addComponent(
             Components.label()
-                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea, ProjectionMode.TOP_DOWN))
                 .withPreferredSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
                 .build()
         )

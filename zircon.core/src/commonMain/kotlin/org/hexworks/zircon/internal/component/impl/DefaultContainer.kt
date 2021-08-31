@@ -36,7 +36,6 @@ open class DefaultContainer(
 
     private val attachments = mutableListOf<AttachedComponent>()
 
-    // TODO: refactor this so that recursive changes are not necessary
     @Synchronized
     final override fun moveTo(position: Position): Boolean {
         val diff = position - this.position

@@ -153,8 +153,9 @@ class AppConfig internal constructor(
      *
      * **Note that** you probably don't need to call this API.
      *
-     * TODO: this should have been the getOrNull variant, but now we can't modify it otherwise it would break the API
+     * TODO: we're going to deprecate this, then re-introduce it in the next release
      */
+    @Deprecated("Use getOrNull instead", replaceWith = ReplaceWith("getOrNull(key)"))
     operator fun <T : Any> get(key: AppConfigKey<T>): Maybe<T> {
         val value: Any? = customProperties[key]
         // This is actually a safe cast because of the way `withProperty` is defined.
@@ -163,8 +164,8 @@ class AppConfig internal constructor(
     }
 
     /**
-     * Retrieve a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
-     * never set, returns an empty [Maybe].
+     * Retrieves a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * never set, this returns `null`.
      *
      * **Note that** you probably don't need to call this API.
      */
@@ -173,6 +174,16 @@ class AppConfig internal constructor(
         // This is actually a safe cast because of the way `withProperty` is defined.
         @Suppress("UNCHECKED_CAST")
         return value as T?
+    }
+
+    /**
+     * Retrieves a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * never set, this returns the result of calling `orElse`.
+     *
+     * **Note that** you probably don't need to call this API.
+     */
+    fun <T : Any> getOrElse(key: AppConfigKey<T>, orElse: (key: AppConfigKey<T>) -> T): T {
+        return getOrNull(key) ?: orElse(key)
     }
 
     companion object {

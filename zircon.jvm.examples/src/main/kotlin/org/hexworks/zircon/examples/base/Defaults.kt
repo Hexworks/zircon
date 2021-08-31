@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.application.AppConfig.Companion.newBuilder
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size.Companion.create
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -30,17 +31,17 @@ val TILESETS: List<TilesetResource> = BuiltInCP437TilesetResource.values()
 
 fun displayScreen(
     theme: ColorTheme = DEFAULT_THEME,
-    tileset: TilesetResource = DEFAULT_TILESET
+    tileset: TilesetResource = DEFAULT_TILESET,
+    size: Size = GRID_SIZE
 ) = SwingApplications.startTileGrid(
     newBuilder()
         .withDefaultTileset(tileset)
-        .withSize(GRID_SIZE)
+        .withSize(size)
         .build()
-)
-    .toScreen().apply {
-        this.theme = theme
-        display()
-    }
+).toScreen().apply {
+    this.theme = theme
+    display()
+}
 
 fun startTileGrid(
     theme: ColorTheme = DEFAULT_THEME,
