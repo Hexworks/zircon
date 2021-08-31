@@ -126,13 +126,13 @@ class ZirconInputListener(
         return true
     }
 
-    override fun scrolled(amount: Int): Boolean {
-        val actionType = if (amount > 0) {
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        val actionType = if (amountY > 0) {
             MouseEventType.MOUSE_WHEEL_ROTATED_DOWN
         } else {
             MouseEventType.MOUSE_WHEEL_ROTATED_UP
         }
-        (0..amount).forEach {
+        (0..amountY.toInt()).forEach {
             processMouseEvent(actionType, 0, 0, NOBUTTON)
         }
         return true
