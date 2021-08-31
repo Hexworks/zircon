@@ -39,4 +39,12 @@ interface TileComposite : HasSize {
             null
         }
     }
+
+    /**
+     * Returns the [Tile] stored at a particular position or calls [orElse]
+     * if there is no such [Tile].
+     */
+    fun getTileAtOrElse(position: Position, orElse: (Position) -> Tile): Tile {
+        return getTileAtOrNull(position) ?: orElse(position)
+    }
 }
