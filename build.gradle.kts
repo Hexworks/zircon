@@ -57,4 +57,5 @@ tasks {
         outputDirectory.set(docsDir.resolve("${project.version}-JAVA"))
         finalizedBy(renameModulesToIndex, generateDocsIndexTask)
     }
+
 }
