@@ -25,7 +25,6 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 interface InternalComponent :
     Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
-    // TODO: refactor this to use ? instead of Maybe
     var root: Maybe<RootContainer>
     val rootValue: ObservableValue<Maybe<RootContainer>>
 

@@ -81,8 +81,6 @@ abstract class CommonComponentTest<T : InternalComponent> {
                 code = KeyCode.KEY_X
             ), TARGET
         )
-
-        //TODO: assert?
     }
 
     @Test

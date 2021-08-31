@@ -43,17 +43,16 @@ class DefaultVBox internal constructor(
         component.moveDownBy(filledUntil.y + finalSpacing)
         filledUntil = filledUntil.withRelativeY(finalHeight)
         availableSpace = availableSpace.withRelativeHeight(-finalHeight)
+        return VBoxAttachmentDecorator(super<DefaultContainer>.addComponent(component))
+    }
 
-        whenConnectedToRoot { root ->
-            root.eventBus.subscribeTo<ComponentRemoved>(root.eventScope) { (_, removedComponent) ->
-                if (removedComponent == component) {
-                    reorganizeComponents(component)
-                    DisposeSubscription
-                } else KeepSubscription
-            }
+    private inner class VBoxAttachmentDecorator(
+        val attachedComponent: InternalAttachedComponent
+    ) : InternalAttachedComponent by attachedComponent {
+        override fun detach(): Component {
+            reorganizeComponents(attachedComponent.component)
+            return attachedComponent.detach()
         }
-
-        return super<DefaultContainer>.addComponent(component)
     }
 
     private fun reorganizeComponents(component: Component) {
@@ -61,7 +60,7 @@ class DefaultVBox internal constructor(
         val delta = height + if (children.isEmpty()) 0 else spacing
         val y = component.position.y
         children.filter {
-            it.position.y >= y
+            it.position.y > y
         }.forEach {
             it.moveUpBy(delta)
         }

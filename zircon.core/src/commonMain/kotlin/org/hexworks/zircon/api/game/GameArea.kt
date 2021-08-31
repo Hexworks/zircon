@@ -18,8 +18,6 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
  * If it is no longer used it should be [dispose]d to free resources.
  */
-// TODO: document that `fetchBlocksAt` and `fetchBlocksAtLevel` were removed.
-// TODO: document that GameArea no longer implements TilesetOverride
 @Beta
 interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
 
@@ -47,6 +45,14 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
      * Returns the [Block] at the given [position] or `null` if no [Block] is present.
      */
     fun fetchBlockAtOrNull(position: Position3D): B?
+
+    /**
+     * Returns the [Block] at the given [position] if present or the result of calling
+     * [orElse] with [position] if not.
+     */
+    fun fetchBlockAtOrElse(position: Position3D, orElse: (position: Position3D) -> B): B {
+        return fetchBlockAtOrNull(position) ?: orElse(position)
+    }
 
     /**
      * Sets the [Block] at the given [position]. Has no effect

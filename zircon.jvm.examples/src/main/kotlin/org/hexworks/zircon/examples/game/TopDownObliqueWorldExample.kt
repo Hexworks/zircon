@@ -3,33 +3,18 @@
 package org.hexworks.zircon.examples.game
 
 
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.GameComponents
-import org.hexworks.zircon.api.Shapes
-import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.Block
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position3D
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.KeyCode.DOWN
-import org.hexworks.zircon.api.uievent.KeyCode.KEY_D
-import org.hexworks.zircon.api.uievent.KeyCode.KEY_U
-import org.hexworks.zircon.api.uievent.KeyCode.LEFT
-import org.hexworks.zircon.api.uievent.KeyCode.RIGHT
-import org.hexworks.zircon.api.uievent.KeyCode.UP
+import org.hexworks.zircon.api.uievent.KeyCode.*
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
@@ -55,16 +40,20 @@ object TopDownObliqueWorldExample {
 
         val ga = GameComponents.newGameAreaBuilder<Tile, Block<Tile>>()
             .withActualSize(WORLD_SIZE)
-            .withVisibleSize(panel.contentSize.to3DSize(VISIBLE_Z_LEVELS))
-            .withProjectionMode(ProjectionMode.TOP_DOWN_OBLIQUE_FRONT)
+            .withVisibleSize(panel.contentSize.toSize3D(VISIBLE_Z_LEVELS))
             .build()
         screen.onShutdown {
             ga.dispose()
         }
 
         val gc = Components.label()
-            .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(ga))
-            .withSize(panel.contentSize)
+            .withComponentRenderer(
+                GameComponents.newGameAreaComponentRenderer(
+                    ga,
+                    ProjectionMode.TOP_DOWN_OBLIQUE_FRONT
+                )
+            )
+            .withPreferredSize(panel.contentSize)
             .build()
 
         panel.addComponent(gc)
@@ -178,7 +167,7 @@ object TopDownObliqueWorldExample {
         val roofOffset = topLeft.withRelativeX(-1).withRelativeY(-1)
         val roofSize = size.withRelativeHeight(2).withRelativeWidth(2)
         repeat(size.width.coerceAtMost(size.height) / 2 + 1) { idx ->
-            Shapes.buildRectangle(roofOffset, roofSize.minus(Size.create(idx * 2, idx * 2))).positions.forEach {
+            Shapes.buildRectangle(Position.defaultPosition(), roofSize.minus(Size.create(idx * 2, idx * 2))).positions.forEach {
                 ga.setBlockAt(
                     it.plus(roofOffset)
                         .withRelativeX(idx)

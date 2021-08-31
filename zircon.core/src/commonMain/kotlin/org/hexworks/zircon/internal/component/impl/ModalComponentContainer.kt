@@ -71,7 +71,6 @@ class ModalComponentContainer(
             "Dispatching event $event. Last index in container stack: $lastIdx. Stack size is: ${containerStack.size}."
         }
         var result: UIEventResponse = Pass
-        // TODO: test this new mechanism
         while (lastIdx >= 0 && result == Pass) {
             val last = containerStack[lastIdx]
             result = last.dispatch(event)

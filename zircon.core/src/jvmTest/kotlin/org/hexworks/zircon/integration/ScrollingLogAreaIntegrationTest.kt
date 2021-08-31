@@ -1,7 +1,10 @@
 package org.hexworks.zircon.integration
 
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.screen.Screen
+import java.util.*
 
 @Suppress("unused")
 class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(70, 30)) {
@@ -33,28 +36,27 @@ class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size
         "Dig on the 'X' for buried treasure... ARRR!"
     )
 
-    // TODO: this deadlocks for some reason, figure out why!
     override fun buildScreenContent(screen: Screen) {
-//        val panel = Components.panel()
-//                .withDecorations(box(title = "Log"))
-//                .withSize(60, 25)
-//                .build()
-//
-//        screen.addComponent(panel)
-//        val logArea = Components.logArea()
-//                .withSize(Size.create(58, 23))
-//                .build()
-//        panel.addComponent(logArea)
-//
-//        screen.display()
-//        screen.theme = theme
-//
-//        val random = Random()
-//
-//        (0..40).forEach { _ ->
-//            Thread.sleep(random.nextInt(delayMs).toLong())
-//            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false)
-//        }
+        val panel = Components.panel()
+            .withDecorations(box(title = "Log"))
+            .withPreferredSize(60, 25)
+            .build()
+
+        screen.addComponent(panel)
+        val logArea = Components.logArea()
+            .withPreferredSize(Size.create(58, 23))
+            .build()
+        panel.addComponent(logArea)
+
+        screen.display()
+        screen.theme = theme
+
+        val random = Random()
+
+        (0..40).forEach { _ ->
+            Thread.sleep(random.nextInt(delayMs).toLong())
+            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false)
+        }
     }
 
 }

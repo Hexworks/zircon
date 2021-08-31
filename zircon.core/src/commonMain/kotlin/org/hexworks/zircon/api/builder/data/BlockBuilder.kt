@@ -52,7 +52,9 @@ class BlockBuilder<T : Tile> private constructor(
         tiles[CONTENT] = content
     }
 
-    // TODO: document addition of this method
+    /**
+     * Sets this [tile] on all sides.
+     */
     fun withTileOnAllSides(tile: T) = also {
         BlockTileType.values().forEach {
             tiles[it] = tile

@@ -42,7 +42,7 @@ object ProgressBarExample {
             .withNumberOfSteps(25)
             .withPosition(0, 5)
             .withDecorations(box())
-            .withSize(Size.create(25, 3))
+            .withPreferredSize(Size.create(25, 3))
             .build()
 
         val progressBarWithPercentValue = Components.progressBar()

@@ -3,6 +3,7 @@ package org.hexworks.zircon.examples.layers
 
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -26,7 +27,7 @@ object LayerTransformerExample {
             .build().apply {
                 fill(
                     Tile.newBuilder()
-                        .withBackgroundColor(RED)
+                        .withBackgroundColor(TileColor.transparent())
                         .withForegroundColor(GREEN)
                         .withCharacter('x')
                         .buildCharacterTile()
@@ -39,7 +40,7 @@ object LayerTransformerExample {
             .build().apply {
                 fill(
                     Tile.newBuilder()
-                        .withBackgroundColor(BLUE)
+                        .withBackgroundColor(TileColor.transparent())
                         .withForegroundColor(YELLOW)
                         .withCharacter('+')
                         .buildCharacterTile()

@@ -301,6 +301,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      * Sets the [Size] of the resulting [Component].
      */
     @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(width, height)"))
-    fun withSize(width: Int, height: Int): U = withSize(Size.create(width, height))
+    fun withSize(width: Int, height: Int): U = withPreferredSize(Size.create(width, height))
 
 }
