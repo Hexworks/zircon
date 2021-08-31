@@ -4,6 +4,9 @@ import Versions.gdxVersion
 import Versions.kotlinxCollectionsImmutableVersion
 import Versions.kotlinxCoroutinesVersion
 import Versions.logbackVersion
+import Versions.caffeineVersion
+import Versions.snakeyamlVersion
+import Versions.slf4jVersion
 
 object Libs {
 
@@ -14,9 +17,9 @@ object Libs {
 
     const val cobaltCore = "org.hexworks.cobalt:cobalt.core:$cobaltVersion"
 
-    const val caffeine = "com.github.ben-manes.caffeine:caffeine:${Versions.caffeineVersion}"
-    const val snakeYaml = "org.yaml:snakeyaml:${Versions.snakeyamlVersion}"
-    const val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4jVersion}"
+    const val caffeine = "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+    const val snakeYaml = "org.yaml:snakeyaml:$snakeyamlVersion"
+    const val slf4jApi = "org.slf4j:slf4j-api:$slf4jVersion"
 
     const val gdx = "com.badlogicgames.gdx:gdx:$gdxVersion"
     const val gdxFreetype = "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"

@@ -7,11 +7,11 @@ object Versions {
 
     const val cobaltVersion = "2021.1.0-RELEASE"
 
-    const val caffeineVersion = "2.5.4"
-    const val snakeyamlVersion = "1.18"
-    const val slf4jVersion = "1.7.25"
-    const val logbackVersion = "1.2.3"
-    const val gdxVersion = "1.9.8"
+    const val caffeineVersion = "3.0.3"
+    const val snakeyamlVersion = "1.29"
+    const val slf4jVersion = "1.7.32"
+    const val logbackVersion = "1.2.5"
+    const val gdxVersion = "1.10.0"
     const val filtersVersion = "2.0.235-1"
 
     const val junitVersion = "4.12"

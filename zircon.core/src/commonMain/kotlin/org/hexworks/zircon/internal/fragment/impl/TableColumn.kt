@@ -27,7 +27,7 @@ class TableColumn<T : Any, V : Any, C : Component> internal constructor(
      * The [Component] that can be used as the column's header.
      */
     override val header = buildHeader {
-        +name
+        +this@TableColumn.name
         preferredSize = Size.create(width, 1)
     }
 
