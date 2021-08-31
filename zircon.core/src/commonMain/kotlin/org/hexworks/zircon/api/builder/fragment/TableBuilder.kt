@@ -164,8 +164,8 @@ class TableBuilder<T : Any> private constructor(
         }
         return DefaultTable(
             position = position,
-            height = height,
             data = data ?: error("A table must have an observable list of data associated with its columns"),
+            height = data!!.size + 1,
             columns = columns,
             rowSpacing = rowSpacing,
             colSpacing = colSpacing,
@@ -181,7 +181,7 @@ class TableBuilder<T : Any> private constructor(
     override fun createCopy() = TableBuilder(
         data = data,
         columns = columns,
-        height = height,
+        height = (data?.size ?: 0) + 1,
         rowSpacing = rowSpacing,
         colSpacing = colSpacing,
         position = position,

@@ -16,7 +16,7 @@ class HorizontalTabBarExample : OneColumnComponentExampleKotlin() {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            HorizontalTabBarExample().show("Vertical Tab Bar")
+            HorizontalTabBarExample().show("Horizontal Tab Bar")
         }
     }
 
