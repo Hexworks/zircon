@@ -76,7 +76,7 @@ class ComponentStub(
     override val children: ObservableList<InternalComponent>
         get() = persistentListOf<InternalComponent>().toProperty()
     override val originalPosition: Position
-        get() = TODO("Not yet implemented")
+        get() = error("not implemented")
     override val relativeBounds: Rect = Rect.create(size = Size.zero())
     override val componentStateValue: ObservableValue<ComponentState>
         get() = error("not implemented")

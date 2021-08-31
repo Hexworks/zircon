@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
+import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.game.base.BaseGameArea
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
@@ -45,7 +46,7 @@ object CustomGameAreaExample {
         screen.addComponent(
             Components.label()
                 .withPreferredSize(VISIBLE_SIZE.to2DSize())
-                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea))
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea, ProjectionMode.TOP_DOWN))
                 .build()
         )
 

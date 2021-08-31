@@ -9,16 +9,21 @@ import org.hexworks.zircon.platform.factory.CacheFactory
  */
 interface Cache<T> {
 
-    /**
-     * Retrieves a tileset region by a `key` if present.
-     */
     @Deprecated("Use the orNull construct instead", ReplaceWith("retrieveIfPresentOrNull(key)"))
     fun retrieveIfPresent(key: String): Maybe<T>
 
     /**
-     * Retrieves a tileset region by a `key` if present.
+     * Retrieves a stored object by a [key] if present or returns `null` if not.
      */
     fun retrieveIfPresentOrNull(key: String): T?
+
+    /**
+     * Retrieves a stored object by a [key] if present or returns
+     * the result of calling [orElse] with the [key] if not.
+     */
+    fun retrieveIfPresentOrElse(key: String, orElse: (key: String) -> T): T {
+        return retrieveIfPresentOrNull(key) ?: orElse(key)
+    }
 
     /**
      * Caches the given object and then returns it.

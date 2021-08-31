@@ -39,7 +39,7 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T, U
 
     @Test
     open fun shouldProperlySetSize() {
-        target.withSize(SIZE_5X6)
+        target.withPreferredSize(SIZE_5X6)
 
         assertThat(target.size).isEqualTo(SIZE_5X6)
     }

@@ -31,7 +31,6 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
      */
     fun display()
 
-    // TODO: move this to a ModalHandler interface
     /**
      * Opens a new [Modal] window on top of the [Screen]. A modal window blocks access
      * to all [Component]s on this [Screen] and also stops component events until

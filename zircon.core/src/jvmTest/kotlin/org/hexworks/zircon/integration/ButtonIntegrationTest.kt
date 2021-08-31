@@ -33,7 +33,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
             .withText("Too long name for button")
             .withDecorations(box(), shadow())
             .withAlignment(positionalAlignment(1, 9))
-            .withSize(Size.create(10, 4))
+            .withPreferredSize(Size.create(10, 4))
         val overTheTopBtn = Components.button()
             .withText("Over the top button")
             .withDecorations(box(boxType = BoxType.DOUBLE), halfBlock(), shadow())

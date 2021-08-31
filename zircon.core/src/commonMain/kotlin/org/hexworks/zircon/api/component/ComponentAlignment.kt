@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.data.Size
  * Contains the possible alignment options for a [Boundable] object
  * relative to other [Boundable] objects.
  */
-// TODO: wouldn't BoundableAlignment be a better name?
 enum class ComponentAlignment(
     private val withinFn: (other: Rect, target: Size) -> Position,
     private val aroundFn: (other: Rect, target: Size) -> Position

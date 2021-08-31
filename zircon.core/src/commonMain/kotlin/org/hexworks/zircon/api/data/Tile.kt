@@ -107,6 +107,14 @@ interface Tile : Cacheable, StyleSet {
     fun asCharacterTileOrNull(): CharacterTile?
 
     /**
+     * Returns this [Tile] as a [CharacterTile] if possible or the
+     * result of calling [orElse] with `this` if it is not.
+     */
+    fun asCharacterTileOrElse(orElse: (Tile) -> CharacterTile): CharacterTile {
+        return asCharacterTileOrNull() ?: orElse(this)
+    }
+
+    /**
      * Returns this [Tile] as an [ImageTile] if possible.
      */
     @Deprecated("Use the orNull construct instead", ReplaceWith("asImageTileOrNull()"))
@@ -118,6 +126,14 @@ interface Tile : Cacheable, StyleSet {
     fun asImageTileOrNull(): ImageTile?
 
     /**
+     * Returns this [Tile] as a [ImageTile] if possible or the
+     * result of calling [orElse] with `this` if it is not.
+     */
+    fun asImageTileOrElse(orElse: (Tile) -> ImageTile): ImageTile {
+        return asImageTileOrNull() ?: orElse(this)
+    }
+
+    /**
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
     @Deprecated("Use the orNull construct instead", ReplaceWith("asGraphicalTileOrNull()"))
@@ -127,6 +143,14 @@ interface Tile : Cacheable, StyleSet {
      * Returns this [Tile] as a [GraphicalTile] if possible.
      */
     fun asGraphicalTileOrNull(): GraphicalTile?
+
+    /**
+     * Returns this [Tile] as a [GraphicalTile] if possible or the
+     * result of calling [orElse] with `this` if it is not.
+     */
+    fun asGraphicalTileOrElse(orElse: (Tile) -> GraphicalTile): GraphicalTile {
+        return asGraphicalTileOrNull() ?: orElse(this)
+    }
 
     /**
      * Creates a new [TileBuilder] preconfigured with the contents of

@@ -34,8 +34,16 @@ object GameComponents {
     @JvmOverloads
     fun <C : Component, T : Tile, B : Block<T>> newGameAreaComponentRenderer(
         gameArea: GameArea<T, B>,
-        projectionMode: ObservableValue<ProjectionMode> = ProjectionMode.TOP_DOWN.toProperty(),
+        projectionMode: ObservableValue<ProjectionMode>,
         fillerTile: Tile = Tile.defaultTile()
     ): ComponentRenderer<C> = GameAreaComponentRenderer(gameArea, projectionMode, fillerTile)
+
+    @JvmStatic
+    @JvmOverloads
+    fun <C : Component, T : Tile, B : Block<T>> newGameAreaComponentRenderer(
+        gameArea: GameArea<T, B>,
+        projectionMode: ProjectionMode,
+        fillerTile: Tile = Tile.defaultTile()
+    ): ComponentRenderer<C> = newGameAreaComponentRenderer(gameArea, projectionMode.toProperty(), fillerTile)
 
 }

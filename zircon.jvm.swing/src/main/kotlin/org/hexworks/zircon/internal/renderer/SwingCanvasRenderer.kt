@@ -160,9 +160,8 @@ class SwingCanvasRenderer private constructor(
                 fillRect(0, 0, tileGrid.widthInPixels, tileGrid.heightInPixels)
                 drawTiles(this)
                 if (shouldDrawCursor()) {
-                    tileGrid.getTileAtOrNull(tileGrid.cursorPosition)?.let { it ->
-                        drawCursor(this, it, tileGrid.cursorPosition)
-                    }
+                    val tile = tileGrid.getTileAtOrElse(tileGrid.cursorPosition) { Tile.empty() }
+                    drawCursor(this, tile, tileGrid.cursorPosition)
                 }
                 dispose()
             }

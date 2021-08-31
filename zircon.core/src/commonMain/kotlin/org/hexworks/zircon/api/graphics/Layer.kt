@@ -35,11 +35,20 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
     fun getAbsoluteTileAt(position: Position): Maybe<Tile>
 
     /**
-     * Same as [TileGraphics.getTileAt] but will consider the given [position]
+     * Same as [TileGraphics.getTileAtOrNull] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
     fun getAbsoluteTileAtOrNull(position: Position): Tile?
+
+    /**
+     * Same as [TileGraphics.getTileAtOrElse] but will consider the given [position]
+     * as an absolute position (the position is relative to the top left corner
+     * of the screen, not the top left corner of the [Layer]).
+     */
+    fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile {
+        return getAbsoluteTileAtOrNull(position) ?: orElse(position)
+    }
 
     /**
      * Same as [TileGraphics.draw] but will consider the given [position]
