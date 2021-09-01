@@ -28,7 +28,7 @@ public class LogAreaExampleJava extends OneColumnComponentExampleJava {
 
         LogArea logArea = logArea()
                 .withDecorations(box(BoxType.DOUBLE, "Log"))
-                .withSize(box.getContentSize().withRelativeHeight(-1))
+                .withPreferredSize(box.getContentSize().withRelativeHeight(-1))
                 .build();
 
         logArea.addParagraph("This is a simple log row", false, 0);
@@ -49,7 +49,10 @@ public class LogAreaExampleJava extends OneColumnComponentExampleJava {
 
         logArea.addNewRows(1);
         ComponentStyleSet paragraphStyleSet = ComponentStyleSet.newBuilder()
-                .withDefaultStyle(StyleSet.create(YELLOW, TileColor.defaultBackgroundColor(), new HashSet<>()))
+                .withDefaultStyle(StyleSet.newBuilder()
+                        .withForegroundColor(YELLOW)
+                        .withBackgroundColor(TileColor.defaultBackgroundColor())
+                        .build())
                 .build();
         logArea.addParagraph(ParagraphBuilder.newBuilder()
                 .withText("This is a long log row, which gets wrapped, since it is long with a different style")

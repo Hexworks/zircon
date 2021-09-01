@@ -40,7 +40,7 @@ public class ToggleButtonsExampleJava extends TwoColumnComponentExampleJava {
                 toggleButton()
                         .withText("Too long name for button")
                         .withDecorations(box(), shadow())
-                        .withSize(10, 4)
+                        .withPreferredSize(10, 4)
                         .build(),
                 toggleButton()
                         .withText("Half Block")

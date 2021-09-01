@@ -35,7 +35,7 @@ public class TestApp {
             Screen screen = getScreen();
 
             commandLine = Components.textArea()
-                    .withSize(tileGrid.getWidth(), 3)
+                    .withPreferredSize(tileGrid.getWidth(), 3)
                     .withDecorations(ComponentDecorations.box())
                     .withAlignmentWithin(screen, ComponentAlignment.BOTTOM_CENTER)
                     .build();

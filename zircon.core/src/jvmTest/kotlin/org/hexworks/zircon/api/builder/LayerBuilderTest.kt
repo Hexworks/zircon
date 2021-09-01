@@ -32,7 +32,7 @@ class LayerBuilderTest {
         assertThat(result.position)
             .isEqualTo(OFFSET)
 
-        assertThat(result.getTileAt(OFFSET).get())
+        assertThat(result.getTileAtOrNull(OFFSET))
             .isEqualTo(FILLER)
     }
 

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.util
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.behavior.Cacheable
 import java.util.concurrent.TimeUnit
 
@@ -17,17 +17,8 @@ class DefaultCache<R : Cacheable>(
         .expireAfterAccess(duration, timeUnit)
         .build<String, R>()
 
-    override fun retrieveIfPresent(key: String): Maybe<R> {
-        return Maybe.ofNullable(backend.getIfPresent(key))
-    }
-
     override fun retrieveIfPresentOrNull(key: String): R? {
         return backend.getIfPresent(key)
-    }
-
-    override fun store(key: String, obj: R): R {
-        backend.put(key, obj)
-        return obj
     }
 
     override fun store(obj: R): R {

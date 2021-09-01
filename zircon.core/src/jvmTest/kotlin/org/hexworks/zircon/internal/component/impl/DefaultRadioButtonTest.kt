@@ -43,7 +43,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
                     .withBackgroundColor(TileColor.transparent())
                     .build()
             )
-            .withMouseOverStyle(
+            .withHighlightedStyle(
                 StyleSetBuilder.newBuilder()
                     .withBackgroundColor(DEFAULT_THEME.accentColor)
                     .build()
@@ -93,7 +93,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.render(surface)
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            assertThat(surface.getTileAt(Position.create(i + offset, 0)).get())
+            assertThat(surface.getTileAtOrNull(Position.create(i + offset, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(char)
@@ -196,8 +196,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }
 
-    private fun getButtonChar() = graphics.getTileAt(Position.create(1, 0))
-        .get().asCharacterTile().get().character
+    private fun getButtonChar() = graphics.getTileAtOrNull(Position.create(1, 0))?.asCharacterTileOrNull()?.character
 
     companion object {
         val SIZE_20X1 = Size.create(20, 1)

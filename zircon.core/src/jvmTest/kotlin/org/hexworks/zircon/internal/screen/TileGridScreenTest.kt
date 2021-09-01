@@ -59,7 +59,7 @@ class TileGridScreenTest {
     @Test
     fun shouldBeDrawnWhenCharacterSet() {
         target.draw(CHAR, Position.offset1x1())
-        assertThat(target.getTileAt(Position.offset1x1()).get())
+        assertThat(target.getTileAtOrNull(Position.offset1x1())!!)
             .isEqualTo(CHAR)
 
     }
@@ -71,7 +71,7 @@ class TileGridScreenTest {
 
         target.clear()
 
-        assertThat(target.getTileAt(Position.offset1x1()))
+        assertThat(target.getTileAtOrNull(Position.offset1x1()))
             .isNotEqualTo(CHAR)
     }
 

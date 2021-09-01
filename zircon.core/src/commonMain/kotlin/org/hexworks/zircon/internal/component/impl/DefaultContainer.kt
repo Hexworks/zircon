@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -59,8 +59,8 @@ open class DefaultContainer(
         val attachment = DefaultAttachedComponent(ic, parent)
         children.add(ic)
         attachments.add(attachment)
-        root.map { root ->
-            ic.flattenedTree.forEach { it.root = Maybe.of(root) }
+        root?.let { root ->
+            ic.flattenedTree.forEach { it.root = root }
             root.eventBus.publish(
                 event = ComponentAdded(
                     parent = parent,
@@ -125,7 +125,7 @@ open class DefaultContainer(
     ) : InternalAttachedComponent, InternalComponent by component {
 
         init {
-            component.parent = Maybe.of(parentContainer)
+            component.parent = parentContainer
             component.disabledProperty
                 .updateFrom(
                     observable = parentContainer.disabledProperty,
@@ -155,12 +155,12 @@ open class DefaultContainer(
         @Synchronized
         override fun detach(): Component {
             val attachment = this
-            component.parent = Maybe.empty()
+            component.parent = null
             this@DefaultContainer.children.remove(component)
             this@DefaultContainer.attachments.remove(attachment)
             component.resetState()
-            component.root.map { root ->
-                component.flattenedTree.forEach { it.root = Maybe.empty() }
+            component.root?.let { root ->
+                component.flattenedTree.forEach { it.root = null }
                 root.eventBus.publish(
                     event = ComponentRemoved(
                         parent = parentContainer,

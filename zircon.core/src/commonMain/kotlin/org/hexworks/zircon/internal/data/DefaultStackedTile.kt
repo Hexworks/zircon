@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.data
 
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -77,8 +77,4 @@ data class DefaultStackedTile(
     override fun toBuilder(): TileBuilder {
         throw UnsupportedOperationException("This operation is not implemented yet")
     }
-
-    override fun asCharacterTile(): Maybe<CharacterTile> = top.asCharacterTile()
-    override fun asImageTile(): Maybe<ImageTile> = top.asImageTile()
-    override fun asGraphicTile(): Maybe<GraphicalTile> = top.asGraphicTile()
 }

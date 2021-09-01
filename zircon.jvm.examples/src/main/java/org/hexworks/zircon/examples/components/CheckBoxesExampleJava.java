@@ -40,7 +40,7 @@ public class CheckBoxesExampleJava extends TwoColumnComponentExampleJava {
                 checkBox()
                         .withText("Too long name")
                         .withDecorations(box(), shadow())
-                        .withSize(16, 4)
+                        .withPreferredSize(16, 4)
                         .build(),
                 checkBox()
                         .withText("Half block")

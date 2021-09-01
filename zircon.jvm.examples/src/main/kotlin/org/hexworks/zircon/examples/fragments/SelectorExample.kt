@@ -3,14 +3,17 @@ package org.hexworks.zircon.examples.fragments
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 object SelectorExample {
 
     private val theme = ColorThemes.letThemEatCake()
+    private val themes = ColorThemeResource.values().map { it.getTheme() }.toProperty()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -69,7 +72,15 @@ object SelectorExample {
 
         // This is a special form of MultiSelect
         fragmentsList.addFragment(
-            Fragments.colorThemeSelector(width, theme).withThemeOverrides(screen).build()
+            Fragments.selector<ColorTheme>()
+                .withWidth(width)
+                .withValues(themes)
+                .build().apply {
+                    screen.themeProperty.updateFrom(selectedValue)
+                    selectedValue.onChange { (oldValue, newValue) ->
+                        logArea.addParagraph("Changed value from $oldValue to $newValue", true)
+                    }
+                }
         )
 
         fragmentsList.addFragment(

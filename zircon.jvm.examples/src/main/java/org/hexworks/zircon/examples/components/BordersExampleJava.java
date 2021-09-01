@@ -85,12 +85,11 @@ public class BordersExampleJava extends OneColumnComponentExampleJava {
         );
 
         Panel panel = Components.panel()
-                .withSize(tiles.size(), 1)
-                .withRendererFunction((graphics, context) -> {
+                .withPreferredSize(tiles.size(), 1)
+                .withComponentRenderer((graphics, context) -> {
                     for (int i = 0; i < tiles.size(); i++) {
                         graphics.draw(tiles.get(i), Position.create(i, 0));
                     }
-                    return Unit.INSTANCE;
                 })
                 .build();
 

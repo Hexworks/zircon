@@ -27,16 +27,16 @@ public class ComponentStyleSetExampleJava extends OneColumnComponentExampleJava 
 
         Panel panel = panel()
                 .withDecorations(box(BoxType.SINGLE, "Buttons on panel"), shadow())
-                .withSize(30, 20)
+                .withPreferredSize(30, 20)
                 .withPosition(5, 5)
                 .build();
 
         box.addComponent(panel);
 
         ComponentStyleSet compStyleSet = ComponentStyleSet.newBuilder()
-                .withDefaultStyle(StyleSet.create(CYAN, BLACK, new HashSet<>()))
-                .withActiveStyle(StyleSet.create(CYAN, BLACK, new HashSet<>()))
-                .withFocusedStyle(StyleSet.create(RED, BLACK, new HashSet<>()))
+                .withDefaultStyle(StyleSet.newBuilder().withForegroundColor(CYAN).withBackgroundColor(BLACK).build())
+                .withActiveStyle(StyleSet.newBuilder().withForegroundColor(CYAN).withBackgroundColor(BLACK).build())
+                .withFocusedStyle(StyleSet.newBuilder().withForegroundColor(RED).withBackgroundColor(BLACK).build())
                 .build();
 
 

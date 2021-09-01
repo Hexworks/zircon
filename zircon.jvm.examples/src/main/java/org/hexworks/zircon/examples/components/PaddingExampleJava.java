@@ -24,34 +24,34 @@ public class PaddingExampleJava extends TwoColumnComponentExampleJava {
         int panelWidth = 26;
         int panelHeight = 8;
 
-        Panel p0 = panel().withSize(panelWidth, panelHeight)
+        Panel p0 = panel().withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(border())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();
 
         box.addComponent(p0);
         p0.addComponent(panel()
-                .withSize(panelWidth, panelHeight)
+                .withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(box(BoxType.SINGLE, "Padding 1"), margin(1)));
 
-        Panel p1 = panel().withSize(panelWidth, panelHeight)
+        Panel p1 = panel().withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(border())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();
 
         box.addComponent(p1);
         p1.addComponent(panel()
-                .withSize(panelWidth, panelHeight)
+                .withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(box(BoxType.SINGLE, "Padding 1, 2"), margin(1, 2)));
 
-        Panel p2 = panel().withSize(panelWidth, panelHeight)
+        Panel p2 = panel().withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(border())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();
 
         box.addComponent(p2);
         p2.addComponent(panel()
-                .withSize(panelWidth, panelHeight)
+                .withPreferredSize(panelWidth, panelHeight)
                 .withDecorations(box(BoxType.SINGLE, "Padding 0, 1, 2, 3"), margin(0, 1, 2, 3)));
     }
 

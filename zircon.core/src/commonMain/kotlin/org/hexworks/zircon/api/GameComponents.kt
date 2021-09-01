@@ -3,6 +3,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.builder.game.GameAreaBuilder
 import org.hexworks.zircon.api.component.Component

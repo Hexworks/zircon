@@ -96,7 +96,8 @@ object TextAreasExample {
             .withDecorations(box(), shadow())
             .build()
 
-        val numberInput = Components.horizontalNumberInput(13)
+        val numberInput = Components.horizontalNumberInput()
+            .withPreferredSize(13, 1)
             .withInitialValue(0)
             .withMinValue(14)
             .withMaxValue(256)

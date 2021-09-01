@@ -20,7 +20,7 @@ public abstract class OneColumnComponentExampleJava extends ComponentExampleJava
     @Override
     public final void addExamples(HBox exampleArea) {
         VBox box = vbox()
-                .withSize(exampleArea.getWidth(), exampleArea.getHeight())
+                .withPreferredSize(exampleArea.getWidth(), exampleArea.getHeight())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .withSpacing(1)
                 .build();

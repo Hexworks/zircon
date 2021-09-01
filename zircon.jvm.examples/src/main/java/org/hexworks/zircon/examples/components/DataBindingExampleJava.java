@@ -20,22 +20,22 @@ public class DataBindingExampleJava extends OneColumnComponentExampleJava {
     public void build(VBox box) {
 
         HBox columns = hbox()
-                .withSize(box.getContentSize())
+                .withPreferredSize(box.getContentSize())
                 .build();
         box.addComponents(columns);
 
         Size columnSize = columns.getContentSize().withWidth(columns.getWidth() / 2);
 
         VBox leftColumn = vbox()
-                .withSize(columnSize)
+                .withPreferredSize(columnSize)
                 .build();
 
         VBox rightColumn = vbox()
-                .withSize(columnSize)
+                .withPreferredSize(columnSize)
                 .build();
 
         VBox selectionBinding = vbox()
-                .withSize(columnSize.withHeight(4))
+                .withPreferredSize(columnSize.withHeight(4))
                 .withDecorations(box(SINGLE, "One-way Binding"))
                 .build();
         leftColumn.addComponent(selectionBinding);

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.game
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.CP437TilesetResources.rexPaint20x20
 import org.hexworks.zircon.api.ColorThemes.stormyGreen
@@ -97,7 +98,7 @@ class GameAreaWithScrollingKotlin {
                 }
             projections.addComponents(topDown, topDownOblique)
             val projectionProperty = projectionsGroup.selectedButtonProperty.bindTransform {
-                it.map { radioButton ->
+                it?.let { radioButton ->
                     ProjectionMode.valueOf(radioButton.key)
                 }.orElse(ProjectionMode.TOP_DOWN)
             }

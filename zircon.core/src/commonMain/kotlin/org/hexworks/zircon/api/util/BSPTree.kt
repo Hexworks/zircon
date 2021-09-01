@@ -1,26 +1,27 @@
 package org.hexworks.zircon.api.util
 
-import org.hexworks.cobalt.datatypes.Maybe
+
+import org.hexworks.cobalt.databinding.api.extension.fold
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import kotlin.jvm.JvmStatic
 import kotlin.random.Random
 
-class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
+class BSPTree(rec: Rect, var parent: BSPTree? = null) {
 
     var boundingBox = rec
-    var leftBSPTree = Maybe.empty<BSPTree>()
-    var rightBSPTree = Maybe.empty<BSPTree>()
+    var leftBSPTree: BSPTree? = null
+    var rightBSPTree: BSPTree? = null
 
-    private var room = Maybe.empty<Rect>()
+    private var room: Rect? = null
 
     init {
         if (boundingBox.width > minSize * 2 && boundingBox.height > minSize * 2) {
             var dir = Random.nextBoolean()
-            if (parent.isEmpty()) {
+            if (parent == null) {
                 dir = true
-            } else if (parent.isEmpty() || parent.get().parent.isEmpty()) {
+            } else if (parent == null || parent!!.parent == null) {
                 dir = false
             }
             var lenght = boundingBox.width
@@ -30,18 +31,18 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
             val splitPos = Random.nextInt(minSize, lenght - minSize)
             if (dir) {
                 val boundingBoxes = boundingBox.splitVertical(splitPos)
-                leftBSPTree = Maybe.of(BSPTree(boundingBoxes.first, Maybe.of(this)))
-                rightBSPTree = Maybe.of(BSPTree(boundingBoxes.second, Maybe.of(this)))
+                leftBSPTree = BSPTree(boundingBoxes.first, this)
+                rightBSPTree = BSPTree(boundingBoxes.second, this)
             } else {
                 val boundingBoxes = rec.splitHorizontal(splitPos)
-                leftBSPTree = Maybe.of(BSPTree(boundingBoxes.first, Maybe.of(this)))
-                rightBSPTree = Maybe.of(BSPTree(boundingBoxes.second, Maybe.of(this)))
+                leftBSPTree = BSPTree(boundingBoxes.first, this)
+                rightBSPTree = BSPTree(boundingBoxes.second, this)
             }
         }
     }
 
     fun createRooms(BSPTree: BSPTree = this) {
-        BSPTree.leftBSPTree.fold(whenEmpty = {
+        BSPTree.leftBSPTree.fold(whenNull = {
             val bb = BSPTree.boundingBox
             BSPTree.setRoom(
                 Rect.create(
@@ -49,11 +50,11 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
                     Size.create(bb.width - 1, bb.height - 1)
                 )
             )
-        }, whenPresent = {
-            BSPTree.rightBSPTree.map {
+        }, whenNotNull = {
+            BSPTree.rightBSPTree?.let {
                 createRooms(it)
             }
-            BSPTree.leftBSPTree.map {
+            BSPTree.leftBSPTree?.let {
                 createRooms(it)
             }
         })
@@ -64,11 +65,11 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
     }
 
     fun whenHasRoom(fn: (Rect) -> Unit) {
-        room.map(fn)
+        room?.let(fn)
     }
 
     fun setRoom(room: Rect) {
-        this.room = Maybe.of(room)
+        this.room = room
     }
 
     companion object {
@@ -93,13 +94,13 @@ class BSPTree(rec: Rect, var parent: Maybe<BSPTree> = Maybe.empty()) {
         }
 
         fun collectRooms(BSPTree: BSPTree, list: MutableList<BSPTree> = mutableListOf()) {
-            if (!BSPTree.leftBSPTree.isPresent) {
+            if (BSPTree.leftBSPTree != null) {
                 list.add(BSPTree)
             } else {
-                BSPTree.leftBSPTree.map {
+                BSPTree.leftBSPTree?.let {
                     collectRooms(it, list)
                 }
-                BSPTree.rightBSPTree.map {
+                BSPTree.rightBSPTree?.let {
                     collectRooms(it, list)
                 }
             }

@@ -24,7 +24,7 @@ public abstract class TwoColumnComponentExampleJava extends ComponentExampleJava
     @Override
     public final void addExamples(HBox exampleArea) {
         VBox leftBox = vbox()
-                .withSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
+                .withPreferredSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .withSpacing(1)
                 .build();
@@ -32,7 +32,7 @@ public abstract class TwoColumnComponentExampleJava extends ComponentExampleJava
         VBox rightBox = vbox()
                 .withDecorations(box(BoxType.SINGLE, "Within a Panel"), shadow())
                 .withSpacing(1)
-                .withSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
+                .withPreferredSize(exampleArea.getWidth() / 2, exampleArea.getHeight())
                 .build();
         rightBox.addComponent(Components.label().build());
 

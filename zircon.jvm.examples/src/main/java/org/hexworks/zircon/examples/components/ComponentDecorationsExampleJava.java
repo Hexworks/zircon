@@ -26,18 +26,18 @@ public class ComponentDecorationsExampleJava extends OneColumnComponentExampleJa
     @Override
     public void build(VBox box) {
         HBox columns = hbox()
-                .withSize(box.getContentSize())
+                .withPreferredSize(box.getContentSize())
                 .build();
         box.addComponent(columns);
         int half = columns.getContentSize().getWidth() / 2;
 
         VBox interactive = vbox()
-                .withSize(half, columns.getHeight())
+                .withPreferredSize(half, columns.getHeight())
                 .withSpacing(1)
                 .withDecorations(box(SINGLE, "Interactive"))
                 .build();
         VBox nonInteractive = vbox()
-                .withSize(half, columns.getHeight())
+                .withPreferredSize(half, columns.getHeight())
                 .withSpacing(1)
                 .withDecorations(box(SINGLE, "Non-Interactive"))
                 .build();

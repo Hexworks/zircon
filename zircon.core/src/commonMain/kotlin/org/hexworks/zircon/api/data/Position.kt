@@ -134,9 +134,6 @@ interface Position : Comparable<Position> {
      */
     fun toPosition3D(z: Int): Position3D
 
-    @Deprecated("This is a redundant function", ReplaceWith("this.toPosition3D(z)"))
-    fun to3DPosition(z: Int) = Position3D.from2DPosition(this, z)
-
     companion object {
 
         /**

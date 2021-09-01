@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.grid
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
@@ -238,13 +238,6 @@ class ThreadSafeTileGrid(
                 .build()
         )
     }
-
-    override fun getLayerAt(level: Int) = layerable.getLayerAt(level)
-
-    override fun getTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position)
-    }
-
 }
 
 private fun buildLayerable(initialSize: Size): ThreadSafeLayerable {

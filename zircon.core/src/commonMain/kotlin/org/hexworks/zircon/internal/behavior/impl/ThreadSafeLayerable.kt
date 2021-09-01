@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
@@ -24,10 +24,6 @@ class ThreadSafeLayerable(
         get() = layers
 
     private val listeners = mutableMapOf<UUID, Subscription>()
-
-    override fun getLayerAt(level: Int): Maybe<LayerHandle> {
-        return Maybe.ofNullable(DefaultLayerHandle(layers[level]))
-    }
 
     override fun getLayerAtOrNull(level: Int): LayerHandle? =
         layers.getOrNull(level)?.let { DefaultLayerHandle(it) }

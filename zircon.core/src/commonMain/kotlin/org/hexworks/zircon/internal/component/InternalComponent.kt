@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -25,11 +25,11 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 interface InternalComponent :
     Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
-    var root: Maybe<RootContainer>
-    val rootValue: ObservableValue<Maybe<RootContainer>>
+    var root: RootContainer?
+    val rootValue: ObservableValue<RootContainer?>
 
-    var parent: Maybe<InternalContainer>
-    val parentProperty: Property<Maybe<InternalContainer>>
+    var parent: InternalContainer?
+    val parentProperty: Property<InternalContainer?>
     val hasParent: ObservableValue<Boolean>
 
     /**
@@ -50,9 +50,9 @@ interface InternalComponent :
     val originalPosition: Position
 
     val isAttached: Boolean
-        get() = parent.isPresent
+        get() = parent != null
     val isAttachedToRoot: Boolean
-        get() = root.isPresent
+        get() = root != null
 
     /**
      * Tells whether the [Component]'s observable properties should be
@@ -72,7 +72,7 @@ interface InternalComponent :
      */
     fun whenConnectedToRoot(fn: (root: RootContainer) -> Unit) {
         if (isAttachedToRoot || this is RootContainer) {
-            fn(root.get())
+            root?.let(fn)
         }
     }
 

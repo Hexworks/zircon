@@ -3,7 +3,6 @@
 package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.core.behavior.Disposable
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
@@ -34,12 +33,6 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
      * block.
      */
     fun hasBlockAt(position: Position3D): Boolean
-
-    /**
-     * Returns the [Block] at the given `position` (if any).
-     */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("fetchBlockAtOrNull(position)"))
-    fun fetchBlockAt(position: Position3D): Maybe<B>
 
     /**
      * Returns the [Block] at the given [position] or `null` if no [Block] is present.

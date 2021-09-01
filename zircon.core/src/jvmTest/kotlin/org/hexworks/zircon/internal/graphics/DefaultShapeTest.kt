@@ -31,13 +31,13 @@ class DefaultShapeTest {
     fun shouldProperlyCreateTileGraphic() {
         val result = LINE_SHAPE.toTileGraphics(CHAR, TILESET)
 
-        assertThat(result.getTileAt(Position.create(0, 0)).get())
+        assertThat(result.getTileAtOrNull(Position.create(0, 0)))
             .isEqualTo(CHAR)
-        assertThat(result.getTileAt(Position.create(1, 0)).get())
-            .isEqualTo(Tile.empty())
-        assertThat(result.getTileAt(Position.create(0, 1)).get())
-            .isEqualTo(Tile.empty())
-        assertThat(result.getTileAt(Position.create(1, 1)).get())
+        assertThat(result.getTileAtOrNull(Position.create(1, 0)))
+            .isNull()
+        assertThat(result.getTileAtOrNull(Position.create(0, 1)))
+            .isNull()
+        assertThat(result.getTileAtOrNull(Position.create(1, 1)))
             .isEqualTo(CHAR)
 
     }

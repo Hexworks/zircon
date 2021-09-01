@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
-import org.hexworks.zircon.internal.util.orElse
 
 class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumberInput> {
 
@@ -18,7 +18,7 @@ class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumb
             val invertedPos = Position.create(pos.y, pos.x)
             component.textBuffer().getCharAtOrNull(invertedPos)?.let { char ->
                 tileGraphics.draw(tileTemplate.withCharacter(char), pos)
-            }.orElse { tileGraphics.draw(tileTemplate, pos) }
+            }.orElseGet { tileGraphics.draw(tileTemplate, pos) }
         }
     }
 }

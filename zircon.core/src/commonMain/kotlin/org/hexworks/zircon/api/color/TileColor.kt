@@ -138,12 +138,17 @@ interface TileColor : Cacheable {
          *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTileColor] color entry by
          *  parsing the tuples as Red, Green and Blue.
          */
+        @Suppress("DEPRECATION")
         @JvmStatic
         fun fromString(value: String): TileColor {
             value.trim { it <= ' ' }.let { cleanValue ->
                 try {
-                    return if (ANSITileColor.values().map { it.name }.contains(cleanValue.toUpperCase())) {
-                        ANSITileColor.valueOf(cleanValue.toUpperCase())
+                    val uc = cleanValue.toUpperCase()
+                    return if (ANSITileColor.values()
+                            .map { it.name }
+                            .contains(uc)
+                    ) {
+                        ANSITileColor.valueOf(uc)
                     } else {
                         val r = cleanValue.substring(1, 3).toInt(16)
                         val g = cleanValue.substring(3, 5).toInt(16)

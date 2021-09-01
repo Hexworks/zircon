@@ -64,7 +64,7 @@ class DefaultComponentRenderingStrategyTest {
 
         target.render(btn, graphics)
 
-        assertThat(graphics.tiles.values.map { it.asCharacterTile().get().character }).containsExactly(
+        assertThat(graphics.tiles.values.map { it.asCharacterTileOrNull()?.character }).containsExactly(
             '┌', '─', '─', '─', '─', '─', '┐', '_',
             '│', '[', 'q', 'u', 'x', ']', '│', '░',
             '└', '─', '─', '─', '─', '─', '┘', '░',
@@ -145,7 +145,7 @@ class DefaultComponentRenderingStrategyTest {
 
         target.render(button, graphics)
 
-        assertThat(graphics.tiles.values.map { it.asCharacterTile().get().character }).containsExactly(
+        assertThat(graphics.tiles.values.map { it.asCharacterTileOrNull()?.character }).containsExactly(
             '┌', '─', '─', '┐', '_',
             '│', 'f', 'o', '│', '░',
             '│', 'o', ' ', '│', '░',

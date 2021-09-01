@@ -4,6 +4,7 @@ import kotlin.Unit;
 import org.hexworks.cobalt.core.behavior.DisposedByHand;
 import org.hexworks.cobalt.databinding.api.extension.Properties;
 import org.hexworks.cobalt.databinding.api.property.Property;
+import org.hexworks.cobalt.databinding.api.value.ObservableValue;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
@@ -79,7 +80,7 @@ public class GameAreaWithScrollingJava {
         final Property<ProjectionMode> projectionProperty = Properties.toProperty(PROJECTION_MODE, (oldValue, newValue) -> true);
 
         Panel actions = Components.panel()
-                .withSize(20, 5)
+                .withPreferredSize(20, 5)
                 .withPosition(1, 1)
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Actions"))
                 .build();
@@ -91,7 +92,7 @@ public class GameAreaWithScrollingJava {
         }));
 
         VBox projections = Components.vbox()
-                .withSize(20, 4)
+                .withPreferredSize(20, 4)
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, "Projection Mode"))
                 .build();
         RadioButton topDown = Components.radioButton()
@@ -108,11 +109,11 @@ public class GameAreaWithScrollingJava {
         projectionsGroup.addComponent(topDownOblique);
         actions.addComponents(quit);
 
-        final Size3D visibleGameAreaSize = GRID_SIZE.minus(Size.create(2, 2)).to3DSize(5);
+        final Size3D visibleGameAreaSize = GRID_SIZE.minus(Size.create(2, 2)).toSize3D(5);
         final Size actualGameAreaSize = Size.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
         final GameArea gameArea = GameComponents.newGameAreaBuilder()
-                .withActualSize(actualGameAreaSize.to3DSize(LEVEL_COUNT))
+                .withActualSize(actualGameAreaSize.toSize3D(LEVEL_COUNT))
                 .withVisibleSize(visibleGameAreaSize)
                 .build();
         screen.onShutdown(() -> {
@@ -121,12 +122,8 @@ public class GameAreaWithScrollingJava {
         });
 
         final Panel gamePanel = Components.panel()
-                .withSize(screen.getSize())
-                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(
-                        gameArea,
-                        projectionProperty,
-                        FILLER
-                ))
+                .withPreferredSize(screen.getSize())
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea, projectionProperty, FILLER))
                 .withDecorations(box(BoxType.TOP_BOTTOM_DOUBLE, "Game Area with Scrolling"))
                 .build();
 
@@ -164,7 +161,7 @@ public class GameAreaWithScrollingJava {
                     .withRelativeY(-currSize);
             Size levelSize = Size.create(1 + currSize * 2, 1 + currSize * 2);
             levelSize.fetchPositions().forEach(position -> {
-                Position3D pos = position.plus(levelOffset).to3DPosition(currLevel.get());
+                Position3D pos = position.plus(levelOffset).toPosition3D(currLevel.get());
                 Tile top = wall.withForegroundColor(interpolator.getColorAtRatio(currPercent));
                 Tile front = top.withForegroundColor(top.getForegroundColor().darkenByPercent(.1));
                 gameArea.setBlockAt(

@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.components
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
+import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Size
@@ -77,7 +78,7 @@ class DataBindingExampleKotlin : OneColumnComponentExampleKotlin() {
                     radioButtons = r0 + r1 + r2
                 }.apply {
                     val binding = selectedButtonProperty.bindTransform {
-                        it.map { radio -> radio.text }.orElse("")
+                        it?.text.orElse("")
                     }
                     label.textProperty.updateFrom(binding)
                 }

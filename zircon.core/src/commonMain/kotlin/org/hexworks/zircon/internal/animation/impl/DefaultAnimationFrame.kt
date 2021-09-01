@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.animation.impl
 
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
@@ -24,7 +24,7 @@ data class DefaultAnimationFrame(
             layers.forEach { it.moveTo(value) }
         }
 
-    private var displayLayerable: Maybe<InternalLayerable> = Maybe.empty()
+    private var displayLayerable: InternalLayerable? = null
 
     override fun displayOn(layerable: Layerable) {
         layerable as? InternalLayerable ?: error(Layerable.WRONG_LAYER_TYPE_MSG)
@@ -33,7 +33,7 @@ data class DefaultAnimationFrame(
             "Can't add Animation to Layerable, because its layers are out of bounds."
         }
         remove()
-        this.displayLayerable = Maybe.of(layerable)
+        this.displayLayerable = layerable
         layers.forEach {
             it.moveTo(position)
             layerable.addLayer(it)
@@ -41,9 +41,9 @@ data class DefaultAnimationFrame(
     }
 
     override fun remove() {
-        displayLayerable.map { currDisplay ->
+        displayLayerable?.let { currDisplay ->
             layers.forEach { currDisplay.removeLayer(it) }
-            displayLayerable = Maybe.empty()
+            displayLayerable = null
         }
     }
 }

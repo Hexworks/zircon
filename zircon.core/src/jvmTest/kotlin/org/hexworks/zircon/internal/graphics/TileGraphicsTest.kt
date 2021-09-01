@@ -46,15 +46,15 @@ abstract class TileGraphicsTest {
 
         assertEquals(
             expected = FILLER,
-            actual = target.getTileAt(FILLED_POS).get()
+            actual = target.getTileAtOrNull(FILLED_POS)!!
         )
     }
 
     @Test
     fun When_it_is_empty_Then_getting_a_tile_should_return_the_empty_tile() {
         assertEquals(
-            expected = Tile.empty(),
-            actual = target.getTileAt(FILLED_POS).get()
+            expected = null,
+            actual = target.getTileAtOrNull(FILLED_POS)
         )
     }
 
@@ -63,7 +63,7 @@ abstract class TileGraphicsTest {
         fetchOutOfBoundsPositions().forEach {
             var ex: Exception? = null
             try {
-                target.getTileAt(it).get()
+                target.getTileAtOrNull(it)!!
             } catch (e: Exception) {
                 ex = e
             }
@@ -87,7 +87,7 @@ abstract class TileGraphicsTest {
 
         assertEquals(
             expected = FILLER,
-            actual = target.getTileAt(Position.offset1x1()).get()
+            actual = target.getTileAtOrNull(Position.offset1x1())!!
         )
     }
 
@@ -232,7 +232,7 @@ abstract class TileGraphicsTest {
                 old, old, old
             ),
             actual = target.size.fetchPositions().map {
-                target.getTileAt(it).get().styleSet
+                target.getTileAtOrNull(it)!!.styleSet
             }
         )
     }
@@ -240,9 +240,9 @@ abstract class TileGraphicsTest {
     private fun fetchTargetChars(): List<Tile> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getTileAt(Position.create(col, row)).get()
+                target.getTileAtOrNull(Position.create(col, row))
             }
-        }
+        }.filterNotNull()
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {

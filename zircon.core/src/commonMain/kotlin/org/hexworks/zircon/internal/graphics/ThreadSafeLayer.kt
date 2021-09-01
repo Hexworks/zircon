@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
@@ -54,6 +53,11 @@ open class ThreadSafeLayer internal constructor(
     @Synchronized
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)
+    }
+
+    @Synchronized
+    override fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile {
+        return getAbsoluteTileAtOrNull(position) ?: orElse(position)
     }
 
     @Synchronized
@@ -155,11 +159,6 @@ open class ThreadSafeLayer internal constructor(
             .withTiles(tiles)
             .build()
             .toString()
-    }
-
-    @Synchronized
-    final override fun getAbsoluteTileAt(position: Position): Maybe<Tile> {
-        return backend.getTileAt(position - this.position)
     }
 
 }

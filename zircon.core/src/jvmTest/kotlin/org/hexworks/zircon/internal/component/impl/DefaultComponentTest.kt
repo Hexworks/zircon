@@ -194,12 +194,12 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         val leafPos = Position.create(1, 2)
 
         val root = PanelBuilder.newBuilder()
-            .withSize(Size.create(10, 10))
+            .withPreferredSize(Size.create(10, 10))
             .withPosition(rootPos)
             .build()
 
         val parent = PanelBuilder.newBuilder()
-            .withSize(Size.create(7, 7))
+            .withPreferredSize(Size.create(7, 7))
             .withPosition(parentPos)
             .build()
 

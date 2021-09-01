@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.application
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.test.assertThat
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.junit.Test
@@ -36,8 +35,8 @@ class AppConfigTest {
     @Test
     fun propertyUnset() {
         val appConfig = AppConfigBuilder.newBuilder().build()
-        assertThat(appConfig[TestAppConfigKey])
-            .isEmpty()
+        assertThat(appConfig.getOrNull(TestAppConfigKey))
+            .isNull()
     }
 
     @Test
@@ -45,8 +44,8 @@ class AppConfigTest {
         val appConfig = AppConfigBuilder.newBuilder()
             .withProperty(TestAppConfigKey, "foo")
             .build()
-        assertThat(appConfig[TestAppConfigKey])
-            .hasValue("foo")
+        assertThat(appConfig.getOrNull(TestAppConfigKey))
+            .isEqualTo("foo")
     }
 
     @Test
@@ -55,8 +54,8 @@ class AppConfigTest {
             .withProperty(TestAppConfigKey, "foo")
             .withProperty(TestAppConfigKey, "bar")
             .build()
-        assertThat(appConfig[TestAppConfigKey])
-            .hasValue("bar")
+        assertThat(appConfig.getOrNull(TestAppConfigKey))
+            .isEqualTo("bar")
     }
 
     @Test
@@ -65,10 +64,10 @@ class AppConfigTest {
             .withProperty(TestAppConfigKey, "foo")
             .withProperty(TestAppConfigKey2, "bar")
             .build()
-        assertThat(appConfig[TestAppConfigKey])
-            .hasValue("foo")
-        assertThat(appConfig[TestAppConfigKey2])
-            .hasValue("bar")
+        assertThat(appConfig.getOrNull(TestAppConfigKey))
+            .isEqualTo("foo")
+        assertThat(appConfig.getOrNull(TestAppConfigKey2))
+            .isEqualTo("bar")
     }
 
     @Test
@@ -83,8 +82,8 @@ class AppConfigTest {
             .build()
 
         // Plugin internals
-        assertThat(appConfig[key])
-            .hasValue(42)
+        assertThat(appConfig.getOrNull(key))
+            .isEqualTo(42)
     }
 
     companion object {

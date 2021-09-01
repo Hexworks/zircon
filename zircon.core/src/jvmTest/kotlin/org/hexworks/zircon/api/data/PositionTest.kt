@@ -17,7 +17,7 @@ class PositionTest {
     fun setUp() {
         componentStub = PanelBuilder.newBuilder()
             .withPosition(COMPONENT_POSITION)
-            .withSize(COMPONENT_SIZE)
+            .withPreferredSize(COMPONENT_SIZE)
             .build()
     }
 

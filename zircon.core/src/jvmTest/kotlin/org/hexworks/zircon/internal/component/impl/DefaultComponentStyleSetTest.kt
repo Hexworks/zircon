@@ -20,7 +20,7 @@ class DefaultComponentStyleSetTest {
             .withFocusedStyle(FOCUSED_STYLE)
             .withDefaultStyle(DEFAULT_STYLE)
             .withDisabledStyle(DISABLED_STYLE)
-            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .withHighlightedStyle(MOUSE_OVER_STYLE)
             .build()
     }
 
@@ -35,7 +35,7 @@ class DefaultComponentStyleSetTest {
             .withActiveStyle(ACTIVE_STYLE)
             .withFocusedStyle(FOCUSED_STYLE)
             .withDefaultStyle(DEFAULT_STYLE)
-            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .withHighlightedStyle(MOUSE_OVER_STYLE)
             .build()
 
         assertThat(styles.fetchStyleFor(ComponentState.DISABLED))

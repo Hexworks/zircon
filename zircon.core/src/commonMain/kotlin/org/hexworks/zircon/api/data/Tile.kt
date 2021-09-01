@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.data
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -98,12 +97,6 @@ interface Tile : Cacheable, StyleSet {
     /**
      * Returns this [Tile] as a [CharacterTile] if possible.
      */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("asCharacterTileOrNull()"))
-    fun asCharacterTile(): Maybe<CharacterTile>
-
-    /**
-     * Returns this [Tile] as a [CharacterTile] if possible.
-     */
     fun asCharacterTileOrNull(): CharacterTile?
 
     /**
@@ -117,12 +110,6 @@ interface Tile : Cacheable, StyleSet {
     /**
      * Returns this [Tile] as an [ImageTile] if possible.
      */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("asImageTileOrNull()"))
-    fun asImageTile(): Maybe<ImageTile>
-
-    /**
-     * Returns this [Tile] as an [ImageTile] if possible.
-     */
     fun asImageTileOrNull(): ImageTile?
 
     /**
@@ -132,12 +119,6 @@ interface Tile : Cacheable, StyleSet {
     fun asImageTileOrElse(orElse: (Tile) -> ImageTile): ImageTile {
         return asImageTileOrNull() ?: orElse(this)
     }
-
-    /**
-     * Returns this [Tile] as a [GraphicalTile] if possible.
-     */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("asGraphicalTileOrNull()"))
-    fun asGraphicTile(): Maybe<GraphicalTile>
 
     /**
      * Returns this [Tile] as a [GraphicalTile] if possible.

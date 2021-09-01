@@ -9,26 +9,25 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 /**
  * A [ComponentRenderer] is responsible for rendering a component's contents onto a [TileGraphics].
  */
-fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>> {
+fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>>
 
-    /**
-     * Fills this [TileGraphics] with the given [text] and [style].
-     * Overwrites any existing content.
-     */
-    fun TileGraphics.fillWithText(
-        text: String,
-        style: StyleSet,
-        textWrap: TextWrap = TextWrap.WRAP
-    ) {
-        clear()
-        draw(
-            CharacterTileStrings
-                .newBuilder()
-                .withText(text)
-                .withSize(size)
-                .withTextWrap(textWrap)
-                .build()
-        )
-        applyStyle(style)
-    }
+/**
+ * Fills this [TileGraphics] with the given [text] and [style].
+ * Overwrites any existing content.
+ */
+fun TileGraphics.fillWithText(
+    text: String,
+    style: StyleSet,
+    textWrap: TextWrap = TextWrap.WRAP
+) {
+    clear()
+    draw(
+        CharacterTileStrings
+            .newBuilder()
+            .withText(text)
+            .withSize(size)
+            .withTextWrap(textWrap)
+            .build()
+    )
+    applyStyle(style)
 }

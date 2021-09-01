@@ -36,11 +36,6 @@ class VerticalNumberInputBuilder private constructor() : NumberInputBuilder<Numb
 
     companion object {
 
-        @Suppress("UNUSED_PARAMETER")
-        @Deprecated("Width is not necessary anymore", ReplaceWith("newBuilder()"))
-        @JvmStatic
-        fun newBuilder(height: Int) = VerticalNumberInputBuilder()
-
         @JvmStatic
         fun newBuilder() = VerticalNumberInputBuilder()
     }

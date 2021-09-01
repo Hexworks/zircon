@@ -2,15 +2,17 @@
 
 package org.hexworks.zircon.api
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.fragment.*
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.fragment.Selector
-import org.hexworks.zircon.api.fragment.Table
-import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.MenuBar
+import org.hexworks.zircon.api.fragment.Selector
+import org.hexworks.zircon.api.fragment.TabBar
+import org.hexworks.zircon.api.fragment.Table
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.jvm.JvmStatic
+import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
  * This *facade* object provides builders for the built-in [Fragment]s
@@ -37,7 +39,7 @@ object Fragments {
      */
     @Beta
     @JvmStatic
-    fun <T: Any> menuBar() = MenuBarBuilder.newBuilder<T>()
+    fun <T : Any> menuBar() = MenuBarBuilder.newBuilder<T>()
 
     /**
      * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
@@ -52,31 +54,4 @@ object Fragments {
     @JvmStatic
     fun <T : Any> selector() = SelectorBuilder.newBuilder<T>()
 
-
-    /**
-     * Creates a [SelectorBuilder] to create [Selector]s.
-     */
-    @Deprecated("Use the function without parameters instead.")
-    @JvmStatic
-    fun <T : Any> selector(width: Int, values: List<T>): Nothing = SelectorBuilder.newBuilder(width, values)
-
-    /**
-     * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [TilesetResource]s.
-     */
-    @Deprecated("This class is redundant, use a regular Selector instead")
-    @JvmStatic
-    fun tilesetSelector(
-        width: Int,
-        tileset: TilesetResource
-    ): TilesetSelectorBuilder = TilesetSelectorBuilder.newBuilder(width, tileset)
-
-    /**
-     * Creates a new [TilesetSelectorBuilder] to build [Selector]s for [ColorTheme]s.
-     */
-    @Deprecated("This class is redundant, use a regular Selector instead")
-    @JvmStatic
-    fun colorThemeSelector(
-        width: Int,
-        theme: ColorTheme
-    ): ColorThemeSelectorBuilder = ColorThemeSelectorBuilder.newBuilder(width, theme)
 }

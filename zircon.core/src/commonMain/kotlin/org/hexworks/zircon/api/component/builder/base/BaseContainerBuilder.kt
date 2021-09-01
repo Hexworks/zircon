@@ -33,11 +33,6 @@ abstract class BaseContainerBuilder<T : Container, U : ComponentBuilder<T, U>>(
         return this as U
     }
 
-    override fun withSize(size: Size): U {
-        preferredSize = size
-        return this as U
-    }
-
     override fun createMetadata() = ComponentMetadata(
         relativePosition = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,

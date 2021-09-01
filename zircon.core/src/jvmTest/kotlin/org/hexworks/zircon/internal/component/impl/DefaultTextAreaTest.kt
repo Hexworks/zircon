@@ -93,7 +93,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(
             event = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.RIGHT.toChar()}",
+                key = "${KeyCode.RIGHT.toCharOrNull()}",
                 code = KeyCode.RIGHT
             ),
             phase = TARGET
@@ -109,7 +109,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(
             event = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.RIGHT.toChar()}",
+                key = "${KeyCode.RIGHT.toCharOrNull()}",
                 code = KeyCode.RIGHT
             ),
             phase = TARGET
@@ -117,7 +117,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(
             event = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.RIGHT.toChar()}",
+                key = "${KeyCode.RIGHT.toCharOrNull()}",
                 code = KeyCode.RIGHT
             ),
             phase = TARGET
@@ -125,7 +125,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(
             event = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.LEFT.toChar()}",
+                key = "${KeyCode.LEFT.toCharOrNull()}",
                 code = KeyCode.LEFT
             ),
             phase = TARGET
@@ -141,7 +141,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(
             event = KeyboardEvent(
                 type = KeyboardEventType.KEY_PRESSED,
-                key = "${KeyCode.DOWN.toChar()}",
+                key = "${KeyCode.DOWN.toCharOrNull()}",
                 code = KeyCode.DOWN
             ),
             phase = TARGET
@@ -220,9 +220,9 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
         rendererStub.render(graphics, ComponentRenderContext(target))
-        val character = graphics.getTileAt(Position.defaultPosition())
+        val character = graphics.getTileAtOrNull(Position.defaultPosition())
 
-        assertThat(character.get().asCharacterTile().get().character)
+        assertThat(character?.asCharacterTileOrNull()?.character)
             .isEqualTo(UPDATE_TEXT)
     }
 
@@ -244,7 +244,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
 
         val DOWN = KeyboardEvent(
             type = KeyboardEventType.KEY_PRESSED,
-            key = "${KeyCode.DOWN.toChar()}",
+            key = "${KeyCode.DOWN.toCharOrNull()}",
             code = KeyCode.DOWN
         )
 

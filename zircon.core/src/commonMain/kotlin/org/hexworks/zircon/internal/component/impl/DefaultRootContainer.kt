@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -44,7 +44,7 @@ class DefaultRootContainer(
             componentTree.transformValue { items ->
                 val result = if (items.indexOf(component) > -1) {
                     val toRemove = component.flattenedTree
-                    toRemove.forEach { it.root = Maybe.empty() }
+                    toRemove.forEach { it.root = null }
                     items.removeAll(toRemove)
                 } else items
                 result
@@ -56,7 +56,7 @@ class DefaultRootContainer(
         val attachment = super<DefaultContainer>.addComponent(component)
         val ic = component.asInternalComponent()
         ic.flattenedTree.forEach {
-            it.root = Maybe.of(this)
+            it.root = this
         }
         eventBus.publish(
             event = ComponentAdded(
@@ -87,13 +87,6 @@ class DefaultRootContainer(
     override fun calculatePathTo(component: InternalComponent): List<InternalComponent> {
         return componentTree.filter { it.containsBoundable(component) }
     }
-
-    override fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent> =
-        if (this.containsPosition(absolutePosition).not()) {
-            Maybe.empty()
-        } else {
-            Maybe.of(componentTree.last { it.containsPosition(absolutePosition) })
-        }
 
     override fun fetchComponentByPositionOrNull(absolutePosition: Position): InternalComponent? =
         if (this.containsPosition(absolutePosition).not()) {

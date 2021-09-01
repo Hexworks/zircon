@@ -5,8 +5,9 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
@@ -55,11 +56,11 @@ abstract class DefaultComponent(
     final override val name: String = metadata.name
 
     // component state and position
-    final override val rootValue = Maybe.empty<RootContainer>().toProperty()
-    final override var root: Maybe<RootContainer> by rootValue.asDelegate()
-    final override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
-    final override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
-    final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it.isPresent }
+    final override val rootValue: Property<RootContainer?> = null.toProperty()
+    final override var root: RootContainer? by rootValue.asDelegate()
+    final override val parentProperty: Property<InternalContainer?> = null.toProperty()
+    final override var parent: InternalContainer? by parentProperty.asDelegate()
+    final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it != null }
     final override val hasFocusValue = false.toProperty()
     final override val hasFocus: Boolean by hasFocusValue.asDelegate()
 
@@ -146,7 +147,7 @@ abstract class DefaultComponent(
 
     @Synchronized
     override fun moveTo(position: Position): Boolean {
-        parent.map { parent ->
+        parent?.let { parent ->
             val newBounds = movable.rect.withPosition(position)
             require(parent.containsBoundable(newBounds)) {
                 "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."

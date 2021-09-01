@@ -5,8 +5,6 @@ import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.cobalt.core.behavior.DisposeState
 import org.hexworks.cobalt.core.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
@@ -61,8 +59,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     }
 
     override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)
-
-    override fun fetchBlockAt(position: Position3D) = Maybe.ofNullable(blocks[position])
 
     override fun fetchBlockAtOrNull(position: Position3D) = blocks[position]
 

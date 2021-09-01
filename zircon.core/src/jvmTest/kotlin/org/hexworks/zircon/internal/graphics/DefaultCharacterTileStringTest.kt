@@ -97,34 +97,27 @@ class DefaultCharacterTileStringTest {
         )
 
         assertThat(
-            surface.getTileAt(Position.create(0, 0))
-                .get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(0, 0))
+                ?.asCharacterTileOrNull()
+                ?.character
         )
             .isEqualTo('T')
         assertThat(
-            surface.getTileAt(Position.create(1, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(1, 0))
+                ?.asCharacterTileOrNull()
+                ?.character
         )
             .isEqualTo('E')
         assertThat(
-            surface.getTileAt(Position.create(0, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character
-        )
-            .isEqualTo(' ')
+            surface.getTileAtOrNull(Position.create(0, 1))
+                ?.asCharacterTileOrNull()
+                ?.character
+        ).isNull()
         assertThat(
-            surface.getTileAt(Position.create(1, 1)).get()
-                .asCharacterTile()
-                .get()
-                .character
-        )
-            .isEqualTo(' ')
+            surface.getTileAtOrNull(Position.create(1, 1))
+                ?.asCharacterTileOrNull()
+                ?.character
+        ).isNull()
     }
 
     @Test
@@ -141,34 +134,34 @@ class DefaultCharacterTileStringTest {
 
         // a and space should fit on the first line
         assertThat(
-            surface.getTileAt(Position.create(0, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(0, 0))
+                ?.asCharacterTileOrNull()
+
+                ?.character
         ).isEqualTo('a')
         assertThat(
-            surface.getTileAt(Position.create(1, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(1, 0))
+                ?.asCharacterTileOrNull()
+
+                ?.character
         ).isEqualTo('t')
         assertThat(
-            surface.getTileAt(Position.create(2, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(2, 0))
+                ?.asCharacterTileOrNull()
+
+                ?.character
         ).isEqualTo('e')
         assertThat(
-            surface.getTileAt(Position.create(3, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(3, 0))
+                ?.asCharacterTileOrNull()
+
+                ?.character
         ).isEqualTo('s')
         assertThat(
-            surface.getTileAt(Position.create(4, 0)).get()
-                .asCharacterTile()
-                .get()
-                .character
+            surface.getTileAtOrNull(Position.create(4, 0))
+                ?.asCharacterTileOrNull()
+
+                ?.character
         ).isEqualTo('t')
     }
 

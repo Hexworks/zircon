@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -24,7 +23,7 @@ class LayerBuilder private constructor(
     private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
     private var size: Size = Size.defaultGridSize(),
     private var offset: Position = Position.defaultPosition(),
-    private var tileGraphics: Maybe<TileGraphics> = Maybe.empty(),
+    private var tileGraphics: TileGraphics? = null,
     private var filler: Tile = Tile.empty()
 ) : Builder<Layer> {
 
@@ -69,7 +68,7 @@ class LayerBuilder private constructor(
      * Uses the given [TileGraphics] and converts it to a [Layer].
      */
     fun withTileGraphics(tileGraphics: TileGraphics) = also {
-        this.tileGraphics = Maybe.of(tileGraphics)
+        this.tileGraphics = tileGraphics
     }
 
     /**
@@ -81,12 +80,12 @@ class LayerBuilder private constructor(
         this.filler = filler
     }
 
-    override fun build(): Layer = if (tileGraphics.isPresent) {
+    override fun build(): Layer = tileGraphics?.let {
         ThreadSafeLayer(
             initialPosition = offset,
-            initialContents = tileGraphics.get()
+            initialContents = it
         )
-    } else {
+    } ?: run {
         ThreadSafeLayer(
             initialPosition = offset,
             initialContents = TileGraphicsBuilder.newBuilder()
@@ -102,7 +101,7 @@ class LayerBuilder private constructor(
         tileset = tileset,
         size = size,
         offset = offset,
-        tileGraphics = tileGraphics.map { it.createCopy() },
+        tileGraphics = tileGraphics?.createCopy(),
         filler = filler
     )
 
