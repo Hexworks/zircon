@@ -138,16 +138,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
         }
 
     /**
-     * Shorthand for [componentRenderer] that uses function syntax.
-     */
-    @Deprecated("Use lambdas instead (since fun interface upgrade)")
-    var renderFunction: (TileGraphics, ComponentRenderContext<T>) -> Unit
-        get() = { g, c -> componentRenderer.render(g, c as ComponentRenderContext<Nothing>) }
-        set(value) {
-            componentRenderer = ComponentRenderer { tileGraphics, context -> value(tileGraphics, context) }
-        }
-
-    /**
      * The [Size] that's occupied by [decorations].
      */
     val List<ComponentDecorationRenderer>.occupiedSize
@@ -163,7 +153,7 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
 
     /**
      * Sets if the [Component] should be updated when it is attached to a parent
-     * or not. By default the [Component]'s common properties ([ComponentProperties])
+     * or not. By default, the [Component]'s common properties ([ComponentProperties])
      * will be updated from its parent.
      */
     fun withUpdateOnAttach(updateOnAttach: Boolean): U {
@@ -218,16 +208,6 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      */
     fun withComponentRenderer(componentRenderer: ComponentRenderer<T>): U {
         this.componentRenderer = componentRenderer
-        return this as U
-    }
-
-    /**
-     * Creates a [ComponentRenderer] for the resulting [Component] using the
-     * given component renderer [fn].
-     */
-    @Deprecated("use the SAM fun interface instead")
-    fun withRendererFunction(fn: (TileGraphics, ComponentRenderContext<T>) -> Unit): U {
-        this.renderFunction = fn
         return this as U
     }
 
@@ -290,17 +270,5 @@ interface ComponentBuilder<T : Component, U : ComponentBuilder<T, U>> : Builder<
      */
     fun withAlignmentAround(component: Component, alignment: ComponentAlignment): U =
         withAlignment(alignmentAround(component, alignment))
-
-    /**
-     * Sets the [Size] of the resulting [Component].
-     */
-    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(size)"))
-    fun withSize(size: Size): U = withPreferredSize(size)
-
-    /**
-     * Sets the [Size] of the resulting [Component].
-     */
-    @Deprecated("The name is misleading, use preferred size instead", ReplaceWith("withPreferredSize(width, height)"))
-    fun withSize(width: Int, height: Int): U = withPreferredSize(Size.create(width, height))
 
 }

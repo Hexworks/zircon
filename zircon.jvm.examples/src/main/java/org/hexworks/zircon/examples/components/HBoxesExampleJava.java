@@ -35,10 +35,10 @@ public class HBoxesExampleJava extends OneColumnComponentExampleJava {
                 .withText("Add New Button")
                 .build();
 
-        HBox defaultBox = hbox().withSize(box.getSize().getWidth(), 3).build();
-        HBox boxedBox = hbox().withSize(box.getWidth(), 5).withDecorations(box(SINGLE, "Boxed HBox")).build();
-        HBox borderedBox = hbox().withSize(box.getWidth(), 5).withDecorations(border(Border.newBuilder().build())).build();
-        HBox shadowedBox = hbox().withSize(box.getWidth(), 5).withDecorations(shadow()).build();
+        HBox defaultBox = hbox().withPreferredSize(box.getSize().getWidth(), 3).build();
+        HBox boxedBox = hbox().withPreferredSize(box.getWidth(), 5).withDecorations(box(SINGLE, "Boxed HBox")).build();
+        HBox borderedBox = hbox().withPreferredSize(box.getWidth(), 5).withDecorations(border(Border.newBuilder().build())).build();
+        HBox shadowedBox = hbox().withPreferredSize(box.getWidth(), 5).withDecorations(shadow()).build();
 
         List<HBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
 
@@ -54,7 +54,7 @@ public class HBoxesExampleJava extends OneColumnComponentExampleJava {
     private void addButton(HBox box) {
         AttachedComponent attachment = box.addComponent(Components.button()
                 .withText(String.format("Remove: %d", count))
-                .withSize(12, 1)
+                .withPreferredSize(12, 1)
                 .build());
 
         attachment.onActivated(fromConsumer((componentEvent -> attachment.detach())));

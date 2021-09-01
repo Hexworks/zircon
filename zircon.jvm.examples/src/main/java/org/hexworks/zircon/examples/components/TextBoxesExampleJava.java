@@ -44,7 +44,7 @@ public class TextBoxesExampleJava extends TwoColumnComponentExampleJava {
     private void addButton(VBox box) {
         AttachedComponent attachment = box.addComponent(Components.button()
                 .withText(String.format("Remove: %d", count))
-                .withSize(12, 1)
+                .withPreferredSize(12, 1)
                 .build());
 
         attachment.onActivated(fromConsumer((componentEvent -> attachment.detach())));

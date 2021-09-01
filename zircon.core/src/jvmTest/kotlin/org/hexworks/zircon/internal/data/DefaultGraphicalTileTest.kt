@@ -35,7 +35,7 @@ class DefaultGraphicalTileTest {
     fun shouldProperlyReportTileType() {
         val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
 
-        assertThat(target.tileType).isEqualTo(TileType.GRAPHIC_TILE)
+        assertThat(target.tileType).isEqualTo(TileType.GRAPHICAL_TILE)
     }
 
     @Test

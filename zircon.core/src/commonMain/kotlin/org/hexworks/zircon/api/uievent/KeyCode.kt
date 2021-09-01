@@ -2,7 +2,6 @@
 
 package org.hexworks.zircon.api.uievent
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.util.TextUtils
 
 enum class KeyCode(
@@ -204,19 +203,6 @@ enum class KeyCode(
      */
     val isUnknown: Boolean
         get() = this == UNKNOWN
-
-    /**
-     * Converts this [KeyCode] to a [Char] if possible.
-     */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("toCharOrNull()"))
-    fun toChar(): Maybe<Char> {
-        val char = code.toChar()
-        return Maybe.ofNullable(
-            if (TextUtils.isPrintableCharacter(char)) {
-                char
-            } else null
-        )
-    }
 
     /**
      * Converts this [KeyCode] to a [Char] if possible.

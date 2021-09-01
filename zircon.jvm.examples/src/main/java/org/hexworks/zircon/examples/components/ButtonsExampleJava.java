@@ -40,7 +40,7 @@ public class ButtonsExampleJava extends TwoColumnComponentExampleJava {
                 button()
                         .withText("Too long name for button")
                         .withDecorations(box(), shadow())
-                        .withSize(10, 4)
+                        .withPreferredSize(10, 4)
                         .build(),
                 button()
                         .withText("Half Block")

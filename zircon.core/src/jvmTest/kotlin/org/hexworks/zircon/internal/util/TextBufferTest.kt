@@ -38,13 +38,13 @@ class TextBufferTest {
     @Test
     fun shouldReturnEmptyOptionalWhenRowIndexIsOutOfBounds() {
         val target = TextBuffer(EXPECTED_MULTI_LINE_TEXT)
-        assertThat(target.getRow(Int.MAX_VALUE).isPresent).isFalse()
+        assertThat(target.getRowOrNull(Int.MAX_VALUE) != null).isFalse()
     }
 
     @Test
     fun shouldReturnLineProperlyWhenLineExists() {
         val target = TextBuffer(VARIABLE_WIDTH_LINES)
-        assertThat(target.getRow(1).get().toString()).isEqualTo(LINE_1)
+        assertThat(target.getRowOrNull(1)!!.toString()).isEqualTo(LINE_1)
     }
 
     @Test
@@ -57,7 +57,7 @@ class TextBufferTest {
     fun shouldProperlyAddRowAt() {
         val target = TextBuffer(EXPECTED_MULTI_LINE_TEXT)
         target.addNewRowAt(1)
-        assertThat(target.getRow(1).get().toString()).isEqualTo("")
+        assertThat(target.getRowOrNull(1)!!.toString()).isEqualTo("")
     }
 
     @Test

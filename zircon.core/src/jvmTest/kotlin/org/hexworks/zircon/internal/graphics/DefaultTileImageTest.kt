@@ -32,19 +32,19 @@ class DefaultTileImageTest {
             .combineWith(other, Position.offset1x1())
             .toTileGraphics()
 
-        assertThat(IMAGE_3X3.getTileAt(FILLED_POS).get()).isEqualTo(FILLER_TILE_A)
+        assertThat(IMAGE_3X3.getTileAtOrNull(FILLED_POS)).isEqualTo(FILLER_TILE_A)
     }
 
     @Test
     fun shouldProperlyGetEmptyTile() {
-        assertThat(IMAGE_3X3.getTileAt(EMPTY_POS).get()).isEqualTo(Tile.empty())
+        assertThat(IMAGE_3X3.getTileAtOrNull(EMPTY_POS)).isNull()
     }
 
     @Test
     fun shouldProperlyCreateCopyWithTileAt() {
         val result = IMAGE_3X3.withTileAt(Position.offset1x1(), NEW_TILE_B)
 
-        assertThat(result.getTileAt(Position.offset1x1()).get()).isEqualTo(NEW_TILE_B)
+        assertThat(result.getTileAtOrNull(Position.offset1x1())).isEqualTo(NEW_TILE_B)
     }
 
     @Test
@@ -142,7 +142,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyWithStyle() {
-        val style = StyleSet.create(YELLOW, GREEN)
+        val style = StyleSet.newBuilder().withForegroundColor(YELLOW).withBackgroundColor(GREEN).build()
         val result = IMAGE_3X3.withFiller(FILLER_TILE_A).withStyle(style)
 
         assertThat(result.tiles.values.toSet()).containsExactly(

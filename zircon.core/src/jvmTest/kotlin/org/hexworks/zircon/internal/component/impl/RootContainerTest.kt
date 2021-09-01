@@ -104,12 +104,12 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         target.addComponent(label)
 
-        assertThat(target.fetchComponentByPosition(POSITION_2_3 + pos).get()).isEqualTo(label)
+        assertThat(target.fetchComponentByPositionOrNull(POSITION_2_3 + pos)).isEqualTo(label)
     }
 
     @Test
     fun Given_a_root_component_When_trying_to_fetch_out_of_bounds_component_Then_it_is_not_present() {
-        assertThat(target.fetchComponentByPosition(Position.create(Int.MAX_VALUE, Int.MAX_VALUE)).isPresent).isFalse()
+        assertThat(target.fetchComponentByPositionOrNull(Position.create(Int.MAX_VALUE, Int.MAX_VALUE))).isNull()
     }
 
     @Test
@@ -120,7 +120,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val panelPos = Position.create(1, 1)
 
         val panel = Components.panel()
-            .withSize(Size.create(2, 3))
+            .withPreferredSize(Size.create(2, 3))
             .withPosition(panelPos)
             .withTileset(TILESET_REX_PAINT_20X20)
             .build()
@@ -140,14 +140,14 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         panel.addComponents(label0, label1)
         target.addComponent(panel)
 
-        assertThat(target.fetchComponentByPosition(POSITION_2_3 + label0Pos + panelPos).get())
+        assertThat(target.fetchComponentByPositionOrNull(POSITION_2_3 + label0Pos + panelPos))
             .isEqualTo(label0)
     }
 
     @Test
     fun Given_an_empty_root_component_When_trying_to_fetch_self_Then_it_is_present() {
 
-        assertThat(target.fetchComponentByPosition(POSITION_2_3).get().id)
+        assertThat(target.fetchComponentByPositionOrNull(POSITION_2_3)?.id)
             .isEqualTo(target.id)
     }
 
@@ -156,7 +156,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     fun shouldProperlyCalculatePathFromRoot() {
 
         val panel = Components.panel()
-            .withSize(Size.create(2, 3))
+            .withPreferredSize(Size.create(2, 3))
             .withPosition(Position.offset1x1())
             .withTileset(TILESET_REX_PAINT_20X20)
             .build().asInternalComponent()

@@ -120,7 +120,7 @@ class LibgdxRenderer(
             batch.end()
             cursorRenderer.projectionMatrix = batch.projectionMatrix
             if (shouldDrawCursor()) {
-                grid.getTileAt(grid.cursorPosition).map { it ->
+                grid.getTileAtOrNull(grid.cursorPosition)?.let { it ->
                     drawCursor(cursorRenderer, it, grid.cursorPosition)
                 }
             }

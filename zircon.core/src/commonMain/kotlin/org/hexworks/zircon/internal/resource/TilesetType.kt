@@ -1,7 +1,5 @@
 package org.hexworks.zircon.internal.resource
 
-import kotlin.jvm.JvmField
-
 /**
  * Contains the tileset types supported by Zircon.
  */
@@ -30,37 +28,7 @@ sealed class TilesetType {
         val name: String
     ) : TilesetType()
 
-    companion object {
-        @Deprecated(
-            message = "TilesetType is now a sealed class.",
-            replaceWith = ReplaceWith(
-                expression = "CP437Tileset",
-                imports = ["org.hexworks.zircon.internal.resource.CP437Tileset"]
-            )
-        )
-        @JvmField
-        val CP437_TILESET = CP437Tileset
-
-        @Deprecated(
-            message = "TilesetType is now a sealed class.",
-            replaceWith = ReplaceWith(
-                expression = "TrueTypeFont",
-                imports = ["org.hexworks.zircon.internal.resource.TrueTypeFont"]
-            )
-        )
-        @JvmField
-        val TRUE_TYPE_FONT = TrueTypeFont
-
-        @Deprecated(
-            message = "TilesetType is now a sealed class.",
-            replaceWith = ReplaceWith(
-                expression = "GraphicalTileset",
-                imports = ["org.hexworks.zircon.internal.resource.GraphicalTileset"]
-            )
-        )
-        @JvmField
-        val GRAPHIC_TILESET = GraphicalTileset
-    }
+    companion object
 }
 
 

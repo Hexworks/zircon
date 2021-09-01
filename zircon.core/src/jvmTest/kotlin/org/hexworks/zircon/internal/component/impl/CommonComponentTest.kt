@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -134,9 +134,9 @@ abstract class CommonComponentTest<T : InternalComponent> {
 
     @Test
     open fun shouldProperlyHandleKeyboardEvents() {
-        var maybeEvent = Maybe.empty<KeyboardEvent>()
+        var maybeEvent: KeyboardEvent? = null
         target.handleKeyboardEvents(KEY_PRESSED) { event, _ ->
-            maybeEvent = Maybe.of(event)
+            maybeEvent = event
             Processed
         }
 
@@ -148,14 +148,14 @@ abstract class CommonComponentTest<T : InternalComponent> {
 
         target.process(keyboardEvent, TARGET)
 
-        assertThat(maybeEvent.get()).isEqualTo(keyboardEvent)
+        assertThat(maybeEvent).isEqualTo(keyboardEvent)
     }
 
     @Test
     open fun shouldProperlyHandleOnMouseEvent() {
-        var maybeEvent = Maybe.empty<MouseEvent>()
+        var maybeEvent: MouseEvent? = null
         target.handleMouseEvents(MOUSE_PRESSED) { event, _ ->
-            maybeEvent = Maybe.of(event)
+            maybeEvent = event
             Processed
         }
 
@@ -167,7 +167,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
 
         target.process(event, TARGET)
 
-        assertThat(maybeEvent.get()).isEqualTo(event)
+        assertThat(maybeEvent).isEqualTo(event)
     }
 
 

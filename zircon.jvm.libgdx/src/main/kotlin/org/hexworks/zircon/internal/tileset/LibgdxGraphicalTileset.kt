@@ -34,7 +34,7 @@ class LibgdxGraphicalTileset(private val resource: TilesetResource) : Tileset<Sp
     private val source: TextureRegion
 
     init {
-        require(resource.tileType == TileType.GRAPHIC_TILE) {
+        require(resource.tileType == TileType.GRAPHICAL_TILE) {
             "Can't use a ${resource.tileType.name}-based TilesetResource for" +
                     " a GraphicTile-based tileset."
         }

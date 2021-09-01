@@ -34,7 +34,7 @@ class DefaultRadioButtonGroupTest {
         btn.activated()
 
         assertThat(btn.isSelected).isTrue()
-        assertThat(target.selectedButton.get()).isEqualTo(btn)
+        assertThat(target.selectedButton).isEqualTo(btn)
     }
 
 
@@ -55,7 +55,7 @@ class DefaultRadioButtonGroupTest {
 
         assertThat(oldBtn.isSelected).isFalse()
         assertThat(newBtn.isSelected).isTrue()
-        assertThat(target.selectedButton.get()).isEqualTo(newBtn)
+        assertThat(target.selectedButton).isEqualTo(newBtn)
     }
 
 }

@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
 import org.hexworks.zircon.api.component.Button
@@ -18,7 +19,7 @@ import org.hexworks.zircon.api.graphics.Symbols
 class DefaultSelector<T : Any> internal constructor(
     position: Position,
     width: Int,
-    defaultSelected: T,
+    override val selectedValue: Property<T>,
     override val valuesProperty: ListProperty<T>,
     private val centeredText: Boolean = true,
     private val toStringMethod: (T) -> String = Any::toString,
@@ -27,12 +28,8 @@ class DefaultSelector<T : Any> internal constructor(
 
     override val values: List<T> by valuesProperty.asDelegate()
 
-    private val indexProperty = values.indexOf(defaultSelected).toProperty()
+    private val indexProperty = values.indexOf(selectedValue.value).toProperty()
 
-
-    override val selectedValue: ObservableValue<T> = indexProperty.bindTransform {
-        values[it]
-    }
     override val selected: T
         get() = selectedValue.value
 
@@ -40,6 +37,10 @@ class DefaultSelector<T : Any> internal constructor(
     private lateinit var rightButton: Button
 
     private val labelSize: Size = Size.create(width - 2, 1)
+
+    init {
+        selectedValue.updateFrom(indexProperty) { values[it] }
+    }
 
     override val root: HBox = buildHbox {
         preferredSize = Size.create(width, 1)

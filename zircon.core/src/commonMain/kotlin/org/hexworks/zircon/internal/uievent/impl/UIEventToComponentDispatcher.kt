@@ -1,45 +1,22 @@
 package org.hexworks.zircon.internal.uievent.impl
 
+import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.uievent.ComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
-import org.hexworks.zircon.api.uievent.ComponentEventType.DEACTIVATED
-import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_GIVEN
-import org.hexworks.zircon.api.uievent.ComponentEventType.FOCUS_TAKEN
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventType.*
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_DOWN
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_UP
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.PreventDefault
-import org.hexworks.zircon.api.uievent.StopPropagation
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
-import org.hexworks.zircon.api.uievent.UIEventPhase.CAPTURE
-import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.UIEventPhase.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
-import org.hexworks.zircon.internal.util.orElse
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmSynthetic
@@ -323,6 +300,6 @@ private fun mouseExitedComponent(
     ) {
         root.fetchComponentByPositionOrNull(event.position)?.let { currentComponent ->
             lastHoveredComponent.id != currentComponent.id
-        }.orElse { false }
+        }.orElse(false)
     } else false
 }

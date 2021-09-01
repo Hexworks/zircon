@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples.other
 
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GameComponents
 import org.hexworks.zircon.api.SwingApplications
@@ -41,7 +42,7 @@ object BSPExample {
 
         screen.addComponent(
             Components.label()
-                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea, ProjectionMode.TOP_DOWN))
+                .withComponentRenderer(GameComponents.newGameAreaComponentRenderer(gameArea, ProjectionMode.TOP_DOWN.toProperty()))
                 .withPreferredSize(VISIBLE_SIZE.xLength, VISIBLE_SIZE.yLength)
                 .build()
         )

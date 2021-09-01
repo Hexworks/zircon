@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
@@ -45,11 +44,6 @@ class ModalBuilder<T : ModalResult> private constructor() :
 
     fun close(result: T) {
         shouldCloseWith = result
-    }
-
-    @Deprecated("Use withPreferredSize instead", replaceWith = ReplaceWith("withPreferredSize(size)"))
-    fun withParentSize(size: Size) = also {
-        super.withPreferredSize(size)
     }
 
     override fun build(): Modal<T> {

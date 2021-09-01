@@ -2,7 +2,8 @@ package org.hexworks.zircon.internal.animation.impl
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-import org.hexworks.cobalt.datatypes.Maybe
+import org.hexworks.cobalt.databinding.api.extension.orElse
+
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
@@ -23,7 +24,7 @@ internal class DefaultAnimation(
     private var currentLoopCount = loopCount
     private val framesInOrder = mutableListOf<InternalAnimationFrame>()
 
-    private var currentFrame: Maybe<InternalAnimationFrame> = Maybe.empty()
+    private var currentFrame: InternalAnimationFrame? = null
 
     private val flattenedFrames = frames.flatMap { frame ->
         (0 until frame.repeatCount).map { frame }
@@ -41,9 +42,9 @@ internal class DefaultAnimation(
     override fun displayNextFrame(layerable: Layerable): Boolean {
         removeCurrentFrame()
         if (hasNextFrame()) {
-            currentFrame = Maybe.of(framesInOrder.removeAt(0))
+            currentFrame = framesInOrder.removeAt(0)
         }
-        return currentFrame.map { currentFrame ->
+        return currentFrame?.let { currentFrame ->
             if (framesInOrder.isEmpty()) {
                 currentLoopCount--
                 framesInOrder.addAll(flattenedFrames)
@@ -54,7 +55,7 @@ internal class DefaultAnimation(
     }
 
     override fun removeCurrentFrame() {
-        currentFrame.map(InternalAnimationFrame::remove)
+        currentFrame?.let(InternalAnimationFrame::remove)
     }
 
     private fun hasNextFrame() = infiniteLoop || currentLoopCount > 0

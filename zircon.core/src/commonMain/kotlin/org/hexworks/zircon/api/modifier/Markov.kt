@@ -17,7 +17,7 @@ data class Markov(
     override fun canTransform(tile: Tile) = tile is CharacterTile
 
     override fun transform(tile: CharacterTile): CharacterTile {
-        return chain.next().data().get()
+        return chain.next().data()
     }
 
 }

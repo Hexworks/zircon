@@ -126,14 +126,13 @@ class DefaultStackedTileTest {
     }
 
     private fun StackedTile.assertAsOtherTile(expectedCharTile: Tile) {
-        val charTile = asCharacterTile()
-        val imageTile = asImageTile()
-        val graphicTile = asGraphicTile()
-        assertTrue(imageTile.isEmpty(), "The stack should not be convertible to ${ImageTile::class}")
-        assertTrue(graphicTile.isEmpty(), "The stack should not be convertible to ${GraphicalTile::class}")
-        assertTrue(charTile.isPresent, "Stack should be convertible to ${CharacterTile::class}")
-        val actualCharTile = charTile.get()
-        assertEquals(expectedCharTile, actualCharTile, "Conversion to character tile should result in the top tile")
-        assertEquals(top, actualCharTile, "Conversion to character tile should result in the top tile")
+        val charTile = asCharacterTileOrNull()
+        val imageTile = asImageTileOrNull()
+        val graphicTile = asGraphicalTileOrNull()
+        assertTrue(imageTile == null, "The stack should not be convertible to ${ImageTile::class}")
+        assertTrue(graphicTile == null, "The stack should not be convertible to ${GraphicalTile::class}")
+        assertTrue(charTile != null, "Stack should be convertible to ${CharacterTile::class}")
+        assertEquals(expectedCharTile, charTile, "Conversion to character tile should result in the top tile")
+        assertEquals(top, charTile, "Conversion to character tile should result in the top tile")
     }
 }

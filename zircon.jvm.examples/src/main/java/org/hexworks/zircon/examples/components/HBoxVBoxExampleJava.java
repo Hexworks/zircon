@@ -21,50 +21,50 @@ public class HBoxVBoxExampleJava extends OneColumnComponentExampleJava {
         int contentWidth = 46;
 
         VBox table = Components.vbox()
-                .withSize(contentWidth + 2, 20)
+                .withPreferredSize(contentWidth + 2, 20)
                 .withAlignmentWithin(box, CENTER)
                 .withDecorations(box(BoxType.SINGLE, "Crew"))
                 .build();
 
         HBox headerRow = Components.hbox()
-                .withSize(contentWidth, 1)
+                .withPreferredSize(contentWidth, 1)
                 .build();
-        headerRow.addComponent(Components.header().withText("#").withSize(4, 1));
-        headerRow.addComponent(Components.header().withText("First Name").withSize(12, 1));
-        headerRow.addComponent(Components.header().withText("Last Name").withSize(12, 1));
-        headerRow.addComponent(Components.header().withText("Job").withSize(12, 1));
+        headerRow.addComponent(Components.header().withText("#").withPreferredSize(4, 1));
+        headerRow.addComponent(Components.header().withText("First Name").withPreferredSize(12, 1));
+        headerRow.addComponent(Components.header().withText("Last Name").withPreferredSize(12, 1));
+        headerRow.addComponent(Components.header().withText("Job").withPreferredSize(12, 1));
 
         HBox samLawrey = Components.hbox()
-                .withSize(contentWidth, 1)
+                .withPreferredSize(contentWidth, 1)
                 .build();
-        samLawrey.addComponent(Components.label().withText("0").withSize(4, 1));
-        samLawrey.addComponent(Components.label().withText("Sam").withSize(12, 1));
-        samLawrey.addComponent(Components.label().withText("Lawrey").withSize(12, 1));
-        samLawrey.addComponent(Components.label().withText("Stoneworker").withSize(12, 1));
+        samLawrey.addComponent(Components.label().withText("0").withPreferredSize(4, 1));
+        samLawrey.addComponent(Components.label().withText("Sam").withPreferredSize(12, 1));
+        samLawrey.addComponent(Components.label().withText("Lawrey").withPreferredSize(12, 1));
+        samLawrey.addComponent(Components.label().withText("Stoneworker").withPreferredSize(12, 1));
 
         HBox janeFisher = Components.hbox()
-                .withSize(contentWidth, 1)
+                .withPreferredSize(contentWidth, 1)
                 .build();
-        janeFisher.addComponent(Components.label().withText("1").withSize(4, 1));
-        janeFisher.addComponent(Components.label().withText("Jane").withSize(12, 1));
-        janeFisher.addComponent(Components.label().withText("Fisher").withSize(12, 1));
-        janeFisher.addComponent(Components.label().withText("Woodcutter").withSize(12, 1));
+        janeFisher.addComponent(Components.label().withText("1").withPreferredSize(4, 1));
+        janeFisher.addComponent(Components.label().withText("Jane").withPreferredSize(12, 1));
+        janeFisher.addComponent(Components.label().withText("Fisher").withPreferredSize(12, 1));
+        janeFisher.addComponent(Components.label().withText("Woodcutter").withPreferredSize(12, 1));
 
         HBox johnSmith = Components.hbox()
-                .withSize(contentWidth, 1)
+                .withPreferredSize(contentWidth, 1)
                 .build();
-        johnSmith.addComponent(Components.label().withText("2").withSize(4, 1));
-        johnSmith.addComponent(Components.label().withText("John").withSize(12, 1));
-        johnSmith.addComponent(Components.label().withText("Smith").withSize(12, 1));
-        johnSmith.addComponent(Components.label().withText("Mason").withSize(12, 1));
+        johnSmith.addComponent(Components.label().withText("2").withPreferredSize(4, 1));
+        johnSmith.addComponent(Components.label().withText("John").withPreferredSize(12, 1));
+        johnSmith.addComponent(Components.label().withText("Smith").withPreferredSize(12, 1));
+        johnSmith.addComponent(Components.label().withText("Mason").withPreferredSize(12, 1));
 
         HBox steveThrush = Components.hbox()
-                .withSize(contentWidth, 1)
+                .withPreferredSize(contentWidth, 1)
                 .build();
-        steveThrush.addComponent(Components.label().withText("3").withSize(4, 1));
-        steveThrush.addComponent(Components.label().withText("Steve").withSize(12, 1));
-        steveThrush.addComponent(Components.label().withText("Thrush").withSize(12, 1));
-        steveThrush.addComponent(Components.label().withText("Farmer").withSize(12, 1));
+        steveThrush.addComponent(Components.label().withText("3").withPreferredSize(4, 1));
+        steveThrush.addComponent(Components.label().withText("Steve").withPreferredSize(12, 1));
+        steveThrush.addComponent(Components.label().withText("Thrush").withPreferredSize(12, 1));
+        steveThrush.addComponent(Components.label().withText("Farmer").withPreferredSize(12, 1));
 
         table.addComponent(headerRow);
         table.addComponent(samLawrey);

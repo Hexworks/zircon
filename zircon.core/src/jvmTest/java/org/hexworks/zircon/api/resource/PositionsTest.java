@@ -22,7 +22,7 @@ public class PositionsTest {
     public void setUp() {
         componentStub = Components.label()
                 .withPosition(POSITION_2X3)
-                .withSize(SIZE_3X4)
+                .withPreferredSize(SIZE_3X4)
                 .build();
     }
 
@@ -88,7 +88,7 @@ public class PositionsTest {
 
     @Test
     public void shouldProperlyConvert2DTo3DPosition() {
-        assertThat(POSITION_2X3.to3DPosition(4)).isEqualTo(Position3D.create(2, 3, 4));
+        assertThat(POSITION_2X3.toPosition3D(4)).isEqualTo(Position3D.create(2, 3, 4));
     }
 
 }

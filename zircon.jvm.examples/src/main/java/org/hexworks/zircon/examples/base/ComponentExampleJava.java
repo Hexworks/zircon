@@ -1,16 +1,22 @@
 package org.hexworks.zircon.examples.base;
 
+import org.hexworks.cobalt.databinding.api.property.Property;
 import org.hexworks.zircon.api.Components;
 import org.hexworks.zircon.api.Fragments;
 import org.hexworks.zircon.api.SwingApplications;
 import org.hexworks.zircon.api.application.AppConfig;
+import org.hexworks.zircon.api.builder.fragment.SelectorBuilder;
+import org.hexworks.zircon.api.component.ColorTheme;
 import org.hexworks.zircon.api.component.Container;
 import org.hexworks.zircon.api.component.HBox;
 import org.hexworks.zircon.api.component.VBox;
 import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.data.Size;
+import org.hexworks.zircon.api.fragment.Selector;
 import org.hexworks.zircon.api.grid.TileGrid;
+import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.examples.extensions.SelectorExtensionsKt;
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer;
 
 import static org.hexworks.zircon.examples.base.Defaults.*;
@@ -33,39 +39,46 @@ public abstract class ComponentExampleJava {
     public final VBox createExampleContainer(Screen screen, String title) {
 
         VBox container = Components.vbox()
-                .withSize(gridSize)
+                .withPreferredSize(gridSize)
                 .withSpacing(1)
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();
 
         HBox heading = Components.hbox()
-                .withSize(gridSize.getWidth(), 5)
+                .withPreferredSize(gridSize.getWidth(), 5)
                 .build();
 
         VBox controls = Components.vbox()
-                .withSize(gridSize.getWidth() / 2, 5)
+                .withPreferredSize(gridSize.getWidth() / 2, 5)
                 .build();
 
         controls.addComponent(Components.label().withText("Pick a theme"));
 
-        controls.addFragment(Fragments.colorThemeSelector(controls.getWidth(), THEME.getTheme())
-                .withThemeOverrides(screen)
-                .build());
+        Selector<ColorTheme> themeSelector = SelectorExtensionsKt.colorThemeSelector(Fragments.INSTANCE)
+                .withWidth(controls.getWidth())
+                .withDefaultSelected(THEME.getTheme())
+                .build();
+
+        controls.addFragment(themeSelector);
 
         controls.addComponent(Components.label());
 
         controls.addComponent(Components.label().withText("Pick a tileset"));
-        controls.addFragment(Fragments.tilesetSelector(controls.getWidth(), TILESET)
-                .withTilesetOverrides(container)
-                .build());
+
+        final Selector<TilesetResource> tilesetSelector = SelectorExtensionsKt.tilesetSelector(Fragments.INSTANCE)
+                .withWidth(controls.getWidth())
+                .withDefaultSelected(TILESET)
+                .build();
+
+        controls.addFragment(tilesetSelector);
 
         heading.addComponents(
-                Components.header().withText(title).withSize(gridSize.getWidth() / 2, 1).build(),
+                Components.header().withText(title).withPreferredSize(gridSize.getWidth() / 2, 1).build(),
                 controls);
 
         HBox exampleArea = Components.hbox()
                 .withComponentRenderer(new NoOpComponentRenderer<>())
-                .withSize(gridSize.getWidth(), gridSize.getHeight() - 6)
+                .withPreferredSize(gridSize.getWidth(), gridSize.getHeight() - 6)
                 .build();
 
         addExamples(exampleArea);
@@ -86,7 +99,7 @@ public abstract class ComponentExampleJava {
         Screen screen = Screen.create(tileGrid);
 
         Container container = Components.panel()
-                .withSize(gridSize)
+                .withPreferredSize(gridSize)
                 .withPosition(Position.offset1x1())
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .build();

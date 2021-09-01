@@ -45,11 +45,6 @@ class ComponentStyleSetBuilder private constructor(
         defaultStyle = styleSet
     }
 
-    @Deprecated("use withHighlightedStyle instead", ReplaceWith("withHighlightedStyle(styleSet)"))
-    fun withMouseOverStyle(styleSet: StyleSet) = also {
-        withHighlightedStyle(styleSet)
-    }
-
     fun withHighlightedStyle(styleSet: StyleSet) = also {
         highlightedStyle = styleSet
     }

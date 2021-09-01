@@ -85,7 +85,7 @@ class ThreadSafeLayerTest {
     @Test
     fun shouldProperlySetChar() {
         target.draw(CHAR, CONTAINED_POSITION)
-        assertThat(target.getTileAt(CONTAINED_POSITION).get())
+        assertThat(target.getTileAtOrNull(CONTAINED_POSITION)!!)
             .isEqualTo(CHAR)
     }
 

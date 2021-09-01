@@ -96,23 +96,6 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
         @JvmStatic
         fun newBuilder() = StyleSetBuilder.newBuilder()
 
-        /**
-         * Creates a new [StyleSet].
-         */
-        @Deprecated("use the builder instead")
-        @JvmStatic
-        fun create(
-            foregroundColor: TileColor,
-            backgroundColor: TileColor,
-            modifiers: Set<Modifier> = setOf()
-        ): StyleSet {
-            return DefaultStyleSet(
-                foregroundColor = foregroundColor,
-                backgroundColor = backgroundColor,
-                modifiers = modifiers
-            )
-        }
-
         private val DEFAULT_STYLE = DefaultStyleSet(
             foregroundColor = TileColor.defaultForegroundColor(),
             backgroundColor = TileColor.defaultBackgroundColor(),

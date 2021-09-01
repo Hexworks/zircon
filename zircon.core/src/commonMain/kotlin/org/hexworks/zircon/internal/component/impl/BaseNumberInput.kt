@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
+import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
@@ -24,7 +25,6 @@ import org.hexworks.zircon.internal.component.impl.textedit.transformation.Delet
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
 import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.util.orElse
 
 //TODO: Finish minValue impl. and bug fixing
 abstract class BaseNumberInput(
@@ -169,7 +169,7 @@ abstract class BaseNumberInput(
         } else {
             _textBuffer.getCharAtOrNull(_textBuffer.cursor.position)?.let {
                 _textBuffer.applyTransformation(DeleteCharacter(DEL))
-            }.orElse { _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
+            }.orElseGet { _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
             checkAndAddChar(char)
         }
     }

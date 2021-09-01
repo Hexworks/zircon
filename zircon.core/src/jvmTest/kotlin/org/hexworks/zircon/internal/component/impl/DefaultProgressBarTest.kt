@@ -72,7 +72,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         rendererStub.render(graphics, ComponentRenderContext(target))
 
         (0 until PROGRESS_BAR_SIZE_5).forEachIndexed { i, _ ->
-            assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
+            assertThat(graphics.getTileAtOrNull(Position.create(i + offset, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(' ')

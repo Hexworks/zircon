@@ -3,16 +3,15 @@ package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.Components
-
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
-import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.screen.Screen
@@ -106,7 +105,8 @@ object SliderExample {
                     slider3.incrementCurrentValue()
                 }
             }
-        val numberInput = Components.horizontalNumberInput(3)
+        val numberInput = Components.horizontalNumberInput()
+            .withPreferredSize(3, 1)
             .withInitialValue(0)
             .withMaxValue(255)
             .withDecorations()

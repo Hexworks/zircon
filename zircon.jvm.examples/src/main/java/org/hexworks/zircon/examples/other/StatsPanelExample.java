@@ -58,7 +58,7 @@ public class StatsPanelExample {
                 .withText("Defense:4"));
         panel.addComponent(defense);
 
-        panel.addComponent(Components.label().withSize(1, 1));
+        panel.addComponent(Components.label().withPreferredSize(1, 1));
         panel.addComponent(Components.header().withText("Info"));
         panel.addComponent(Components.textBox(panel.getContentSize().getWidth())
                 .addParagraph("A short, sturdy creature fond of drink and industry.")

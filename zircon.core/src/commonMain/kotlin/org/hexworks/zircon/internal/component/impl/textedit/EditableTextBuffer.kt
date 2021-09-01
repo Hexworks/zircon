@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl.textedit
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
@@ -34,20 +33,17 @@ interface EditableTextBuffer {
 
     fun getSize() = textBuffer.size
 
-    @Deprecated("Use the orNull construct instead", ReplaceWith("getCharAtOrNull(position)"))
-    fun getCharAt(position: Position): Maybe<Char> =
-        if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
-            Maybe.empty()
-        } else {
-            Maybe.of(textBuffer[position.y][position.x])
-        }
-
     fun getCharAtOrNull(position: Position): Char? =
         if (position.y >= textBuffer.size || textBuffer[position.y].size <= position.x) {
             null
         } else {
             textBuffer[position.y][position.x]
         }
+
+    fun getCharAtOrElse(
+        position: Position,
+        other: (Position) -> Char
+    ): Char = getCharAtOrNull(position) ?: other(position)
 
     fun rowCount(): Int = textBuffer.size
 

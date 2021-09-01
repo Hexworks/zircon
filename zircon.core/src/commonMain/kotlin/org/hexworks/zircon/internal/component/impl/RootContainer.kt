@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.builder.Builder
@@ -35,9 +34,6 @@ interface RootContainer : InternalContainer {
     val componentTree: ObservableList<InternalComponent>
 
     fun calculatePathTo(component: InternalComponent): List<InternalComponent>
-
-    @Deprecated("Use the orNull construct instead", ReplaceWith("fetchComponentByPositionOrNull(absolutePosition)"))
-    fun fetchComponentByPosition(absolutePosition: Position): Maybe<out InternalComponent>
 
     fun fetchComponentByPositionOrNull(absolutePosition: Position): InternalComponent?
 

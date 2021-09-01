@@ -20,12 +20,12 @@ public class ComponentMoveExampleJava extends OneColumnComponentExampleJava {
     public void build(VBox box) {
 
         Panel panel = panel()
-                .withSize(20, 10)
+                .withPreferredSize(20, 10)
                 .withDecorations(box())
                 .build();
 
         Panel innerPanel = panel()
-                .withSize(10, 5)
+                .withPreferredSize(10, 5)
                 .withDecorations(box())
                 .build();
 

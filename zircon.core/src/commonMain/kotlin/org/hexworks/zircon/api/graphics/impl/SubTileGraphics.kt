@@ -74,7 +74,7 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun <U : Any> updateFrom(
+        override fun <U> updateFrom(
             observable: ObservableValue<U>,
             updateWhenBound: Boolean,
             converter: (U) -> TilesetResource
@@ -86,7 +86,7 @@ class SubTileGraphics(
             restrictOperation()
         }
 
-        override fun <S : Any> bind(
+        override fun <S> bind(
             other: Property<S>,
             updateWhenBound: Boolean,
             converter: IsomorphicConverter<S, TilesetResource>

@@ -73,7 +73,7 @@ public class GameMockupExample {
         Panel menuPanel = Components.panel()
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE))
                 .withPosition(menuPosition)
-                .withSize(Size.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
+                .withPreferredSize(Size.create(MAIN_MENU_PANEL_WIDTH, MAIN_MENU_PANEL_HEIGHT))
                 .build();
 
         Button newGameButton = Components.button()
@@ -118,13 +118,13 @@ public class GameMockupExample {
         optionsScreen.addComponent(applyButton);
 
         Panel difficultyPanel = Components.panel()
-                .withSize(Size.create((gridSize.getWidth() - PANEL_SPACING) / 3, 9))
+                .withPreferredSize(Size.create((gridSize.getWidth() - PANEL_SPACING) / 3, 9))
                 .withPosition(Position.create(PANEL_SPACING, PANEL_SPACING))
                 .withDecorations(box(BoxType.LEFT_RIGHT_DOUBLE, DIFFICULTY_LABEL))
                 .build();
 
         VBox difficultyBox = Components.vbox()
-                .withSize(difficultyPanel.getSize().minus(Size.create(2, 2)))
+                .withPreferredSize(difficultyPanel.getSize().minus(Size.create(2, 2)))
                 .build();
 
         RadioButtonGroup difficultyGroup = Components.radioButtonGroup().build();

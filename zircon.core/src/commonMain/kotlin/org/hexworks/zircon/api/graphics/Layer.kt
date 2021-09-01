@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CanBeHidden
 import org.hexworks.zircon.api.behavior.TilesetOverride
@@ -14,7 +13,7 @@ import kotlin.jvm.JvmStatic
 
 /**
  * A [Layer] is a [TileGraphics] which can be positioned and moved over a [TileGrid].
- * With [Layer]s one can create a quasi 3D effect (like top down oblique projections).
+ * With [Layer]s one can create a quasi 3D effect (like top-down oblique projections).
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
@@ -25,14 +24,6 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
      * Returns this [Layer] as an [InternalLayer] that represents Zircon's internal API.
      */
     fun asInternalLayer(): InternalLayer
-
-    /**
-     * Same as [TileGraphics.getTileAt] but will consider the given [position]
-     * as an absolute position (the position is relative to the top left corner
-     * of the screen, not the top left corner of the [Layer]).
-     */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("getAbsoluteTileAtOrNull(position)"))
-    fun getAbsoluteTileAt(position: Position): Maybe<Tile>
 
     /**
      * Same as [TileGraphics.getTileAtOrNull] but will consider the given [position]
@@ -46,9 +37,7 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
-    fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile {
-        return getAbsoluteTileAtOrNull(position) ?: orElse(position)
-    }
+    fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile
 
     /**
      * Same as [TileGraphics.draw] but will consider the given [position]

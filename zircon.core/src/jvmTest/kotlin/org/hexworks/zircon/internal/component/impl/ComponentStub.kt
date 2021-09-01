@@ -8,7 +8,7 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.component.ColorTheme
@@ -46,10 +46,10 @@ class ComponentStub(
     override val absolutePosition: Position
         get() = position
 
-    override var root: Maybe<RootContainer>
+    override var root: RootContainer?
         get() = error("not implemented")
         set(_) {}
-    override val rootValue: ObservableValue<Maybe<RootContainer>>
+    override val rootValue: ObservableValue<RootContainer?>
         get() = error("not implemented")
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
@@ -58,18 +58,18 @@ class ComponentStub(
     override val hasFocusValue: ObservableValue<Boolean>
         get() = false.toProperty()
 
-    override val parentProperty = Maybe.empty<InternalContainer>().toProperty()
+    override val parentProperty: Property<InternalContainer?> = null.toProperty()
     override var componentState: ComponentState
         get() = error("not implemented")
         set(_) {}
-    override var parent: Maybe<InternalContainer> by parentProperty.asDelegate()
-    override val hasParent = parentProperty.bindTransform { it.isPresent }
+    override var parent: InternalContainer? by parentProperty.asDelegate()
+    override val hasParent = parentProperty.bindTransform { it != null }
 
     override val rectValue: ObservableValue<Rect>
         get() = error("not implemented")
 
     override val isAttached: Boolean
-        get() = parent.isPresent
+        get() = parent != null
     override val updateOnAttach: Boolean
         get() = true
 

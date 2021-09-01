@@ -289,7 +289,7 @@ class DefaultComponentContainerTest {
             .withActiveStyle(ACTIVE_STYLE)
             .withDisabledStyle(DISABLED_STYLE)
             .withFocusedStyle(FOCUSED_STYLE)
-            .withMouseOverStyle(MOUSE_OVER_STYLE)
+            .withHighlightedStyle(MOUSE_OVER_STYLE)
             .build()
 
         val SPACE = KeyboardEvent(

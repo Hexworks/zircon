@@ -2,17 +2,15 @@ package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.component.HBoxBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 import kotlin.jvm.JvmStatic
 
-// TODO: remove open once subclasses are removed
-// TODO: make the constructor private once its descendants are removed
-open class SelectorBuilder<T : Any> internal constructor(
+class SelectorBuilder<T : Any> private constructor(
     var width: Int? = null,
     var position: Position = Position.zero(),
     var valuesProperty: ListProperty<T> = listOf<T>().toProperty(),
@@ -40,6 +38,8 @@ open class SelectorBuilder<T : Any> internal constructor(
         set(value) {
             valuesProperty = value.toProperty()
         }
+
+    val selectedProperty: Property<T?> = null.toProperty()
 
     fun withWidth(width: Int) = also {
         this.width = width
@@ -91,7 +91,7 @@ open class SelectorBuilder<T : Any> internal constructor(
             position = position,
             width = width ?: calculateWidth(),
             valuesProperty = valuesProperty,
-            defaultSelected = defaultSelected ?: valuesProperty.first(),
+            selectedValue = (defaultSelected ?: valuesProperty.first()).toProperty(),
             centeredText = centeredText,
             toStringMethod = toStringMethod,
             clickable = clickableLabel
@@ -112,20 +112,8 @@ open class SelectorBuilder<T : Any> internal constructor(
 
     companion object {
 
-        /**
-         * Creates a builder to configure and build a [Selector].
-         *
-         */
         @JvmStatic
         fun <T : Any> newBuilder(): SelectorBuilder<T> = SelectorBuilder()
-
-        @Suppress("UNUSED_PARAMETER")
-        @JvmStatic
-        @Deprecated("use newBuilder() without parameters", replaceWith = ReplaceWith("newBuilder()"))
-        fun <T : Any> newBuilder(width: Int, values: List<T>): Nothing = error("Use the method without parameters")
-
-        @JvmStatic
-        fun <N : Any> newBuilder(width: Int, values: ListProperty<N>): Nothing = newBuilder(width, values.value)
     }
 
 }

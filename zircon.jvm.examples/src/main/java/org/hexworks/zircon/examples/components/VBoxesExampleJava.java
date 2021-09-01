@@ -36,15 +36,15 @@ public class VBoxesExampleJava extends OneColumnComponentExampleJava {
                 .build();
 
         HBox container = hbox()
-                .withSize(box.getContentSize().minus(Size.create(1, 2)))
+                .withPreferredSize(box.getContentSize().minus(Size.create(1, 2)))
                 .withComponentRenderer(new NoOpComponentRenderer<>())
                 .withSpacing(1)
                 .build();
 
-        VBox defaultBox = vbox().withSize(container.getContentSize().withWidth(14)).build();
-        VBox boxedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(box(SINGLE, "Boxed VBox")).build();
-        VBox borderedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(border(Border.newBuilder().build())).build();
-        VBox shadowedBox = vbox().withSize(container.getContentSize().withWidth(14)).withDecorations(shadow()).build();
+        VBox defaultBox = vbox().withPreferredSize(container.getContentSize().withWidth(14)).build();
+        VBox boxedBox = vbox().withPreferredSize(container.getContentSize().withWidth(14)).withDecorations(box(SINGLE, "Boxed VBox")).build();
+        VBox borderedBox = vbox().withPreferredSize(container.getContentSize().withWidth(14)).withDecorations(border(Border.newBuilder().build())).build();
+        VBox shadowedBox = vbox().withPreferredSize(container.getContentSize().withWidth(14)).withDecorations(shadow()).build();
 
         List<VBox> buttonContainers = Arrays.asList(defaultBox, borderedBox, boxedBox, shadowedBox);
 
@@ -62,7 +62,7 @@ public class VBoxesExampleJava extends OneColumnComponentExampleJava {
     private void addButton(VBox box) {
         AttachedComponent attachment = box.addComponent(Components.button()
                 .withText(String.format("Remove: %d", count))
-                .withSize(12, 1)
+                .withPreferredSize(12, 1)
                 .build());
 
         attachment.onActivated(fromConsumer((componentEvent -> attachment.detach())));

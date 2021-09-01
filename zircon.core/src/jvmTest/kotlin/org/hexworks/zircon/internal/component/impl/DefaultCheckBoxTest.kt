@@ -91,7 +91,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     fun shouldProperlyAddCheckBoxText() {
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            assertThat(graphics.getTileAt(Position.create(i + offset, 0)).get())
+            assertThat(graphics.getTileAtOrNull(Position.create(i + offset, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(char)

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.graphics.base
 
+import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
@@ -13,7 +14,6 @@ import org.hexworks.zircon.api.graphics.*
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.InternalTileGraphics
-import org.hexworks.zircon.internal.util.orElse
 
 /**
  * This base class for [TileGraphics] can be re-used by complex image classes like layers,
@@ -80,7 +80,7 @@ abstract class BaseTileGraphics(
             (0 until width).joinToString("") { x ->
                 (currTiles[Position.create(x, y)] ?: Tile.defaultTile())
                     .asCharacterTileOrNull()
-                    .orElse { Tile.defaultTile() }
+                    .orElseGet { Tile.defaultTile() }
                     .character.toString()
             }.plus("\n")
         }.trim()

@@ -30,10 +30,6 @@ class TextBoxBuilder private constructor(
         preferredContentSize = initialPreferredContentSize
     }
 
-    override fun withSize(size: Size): TextBoxBuilder {
-        withPreferredSize(size)
-    }
-
     override fun withPreferredContentSize(size: Size): TextBoxBuilder {
         withPreferredSize(size)
     }

@@ -31,13 +31,13 @@ class REXLayerTest {
             'A',
             DefaultTileColor(85, 85, 85, 255),
             DefaultTileColor(170, 170, 170, 255),
-            layer.getTileAt(Position.create(0, 0)).get()
+            layer.getTileAtOrNull(Position.create(0, 0))!!
         )
         assertChar(
             'B',
             DefaultTileColor(35, 35, 35, 255),
             DefaultTileColor(133, 133, 133, 255),
-            layer.getTileAt(Position.create(1, 0)).get()
+            layer.getAbsoluteTileAtOrNull(Position.create(1, 0))!!
         )
     }
 
@@ -87,7 +87,7 @@ class REXLayerTest {
     }
 
     private fun assertChar(expChar: Char, expBgColor: DefaultTileColor, expFgColor: DefaultTileColor, textChar: Tile) {
-        assertThat(textChar.asCharacterTile().get().character).isEqualTo(expChar)
+        assertThat(textChar.asCharacterTileOrNull()!!.character).isEqualTo(expChar)
         assertThat(textChar.backgroundColor).isEqualTo(expBgColor)
         assertThat(textChar.foregroundColor).isEqualTo(expFgColor)
     }

@@ -24,19 +24,19 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
 
         HBox columns = hbox()
                 .withComponentRenderer(new NoOpComponentRenderer<>())
-                .withSize(box.getContentSize().withRelativeHeight(-1))
+                .withPreferredSize(box.getContentSize().withRelativeHeight(-1))
                 .build();
         box.addComponent(columns);
 
         int half = columns.getContentSize().getWidth() / 2;
 
         VBox leftColumn = vbox()
-                .withSize(columns.getContentSize().withWidth(half))
+                .withPreferredSize(columns.getContentSize().withWidth(half))
                 .withSpacing(1)
                 .withDecorations(box(TOP_BOTTOM_DOUBLE, "Content"))
                 .build();
         VBox rightColumn = vbox()
-                .withSize(columns.getContentSize().withWidth(half))
+                .withPreferredSize(columns.getContentSize().withWidth(half))
                 .withSpacing(1)
                 .withDecorations(box(TOP_BOTTOM_DOUBLE, "Interactions"))
                 .build();
@@ -47,7 +47,7 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
         leftColumn.addComponent(label().withText("This is a label"));
         leftColumn.addComponent(listItem().withText("A list item to read"));
         leftColumn.addComponent(paragraph()
-                .withSize(leftColumn.getContentSize().getWidth(), 3)
+                .withPreferredSize(leftColumn.getContentSize().getWidth(), 3)
                 .withText("And a multi-line paragraph which is very long."));
         if (Defaults.TILESET.getSize().getWidth() == 16) {
             leftColumn.addComponent(icon()
@@ -63,7 +63,7 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
                 .addParagraph("This is a paragraph which won't fit on one line."));
 
         VBox radioBox = vbox()
-                .withSize(columnWidth, 6)
+                .withPreferredSize(columnWidth, 6)
                 .withDecorations(box(), shadow())
                 .build();
 
@@ -88,18 +88,19 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
 
         rightColumn.addComponent(radioBox);
 
-        rightColumn.addComponent(horizontalNumberInput(columnWidth)
+        rightColumn.addComponent(horizontalNumberInput()
+                .withPreferredSize(columnWidth, 1)
                 .withInitialValue(5)
                 .withMinValue(1)
                 .withMaxValue(100)
-                .withSize(columnWidth, 3)
+                .withPreferredSize(columnWidth, 3)
                 .withDecorations(box()));
 
         ProgressBar progressBar = progressBar()
                 .withNumberOfSteps(100)
                 .withRange(100)
                 .withDisplayPercentValueOfProgress(true)
-                .withSize(columnWidth, 3)
+                .withPreferredSize(columnWidth, 3)
                 .withDecorations(box())
                 .build();
 
@@ -122,7 +123,7 @@ public class AllComponentsExampleJava extends OneColumnComponentExampleJava {
                 .withMinValue(1)
                 .withMaxValue(100)
                 .withNumberOfSteps(100)
-                .withSize(columnWidth, 3));
+                .withPreferredSize(columnWidth, 3));
 
         columns.addComponents(leftColumn, rightColumn);
 

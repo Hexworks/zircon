@@ -1,8 +1,10 @@
 package org.hexworks.zircon.api.graphics
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -65,7 +67,7 @@ class SubTileGraphicsTest {
         target.applyStyle(YELLOW_GREEN_STYLE)
 
         assertThat(backend.size.fetchPositions()
-            .map { backend.getTileAt(it).get().styleSet }).containsExactly(
+            .map { backend.getTileAtOrNull(it)?.styleSet }).containsExactly(
             BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE, BLUE_RED_STYLE,
             BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
             BLUE_RED_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, YELLOW_GREEN_STYLE, BLUE_RED_STYLE,
@@ -83,8 +85,8 @@ class SubTileGraphicsTest {
         result.fill(subFiller)
 
         val chars = backend.size.fetchPositions().map {
-            backend.getTileAt(it)
-                .map { tile -> tile.asCharacterTile().get().character }
+            backend.getTileAtOrNull(it)
+                ?.let { tile -> tile.asCharacterTileOrNull()?.character }
                 .orElse(' ')
         }
 
@@ -100,8 +102,8 @@ class SubTileGraphicsTest {
 
     companion object {
 
-        private val BLUE_RED_STYLE = StyleSet.create(ANSITileColor.BLUE, ANSITileColor.RED)
-        private val YELLOW_GREEN_STYLE = StyleSet.create(ANSITileColor.YELLOW, ANSITileColor.GREEN)
+        private val BLUE_RED_STYLE = StyleSet.newBuilder().withBackgroundColor(BLUE).withForegroundColor(RED).build()
+        private val YELLOW_GREEN_STYLE = StyleSet.newBuilder().withBackgroundColor(YELLOW).withForegroundColor(GREEN).build()
         private val BACKEND_SIZE_5X5 = Size.create(5, 5)
         private val FILLER_UNDERSCORE = Tile.defaultTile().withCharacter('_')
 

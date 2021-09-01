@@ -90,7 +90,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     fun shouldProperlyAddButtonText() {
         TEXT.forEachIndexed { i, char ->
             println("idx: $i")
-            assertThat(graphics.getTileAt(Position.create(i, 0)).get())
+            assertThat(graphics.getTileAtOrNull(Position.create(i, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(char)

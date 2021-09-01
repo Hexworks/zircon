@@ -37,11 +37,6 @@ class HorizontalNumberInputBuilder private constructor() :
 
     companion object {
 
-        @Suppress("UNUSED_PARAMETER")
-        @Deprecated("Width is not necessary anymore", ReplaceWith("newBuilder()"))
-        @JvmStatic
-        fun newBuilder(width: Int) = HorizontalNumberInputBuilder()
-
         @JvmStatic
         fun newBuilder() = HorizontalNumberInputBuilder()
     }

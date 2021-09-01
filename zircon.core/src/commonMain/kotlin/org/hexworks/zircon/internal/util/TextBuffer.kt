@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.util
 
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -21,14 +20,6 @@ class TextBuffer(text: String) {
 
     fun getSize() = currentText.size
 
-    @Deprecated("Use the orNull construct instead", ReplaceWith("getRowOrNull(row)"))
-    fun getRow(row: Int): Maybe<StringBuilder> =
-        if (row < currentText.size && row >= 0) {
-            Maybe.of(currentText[row])
-        } else {
-            Maybe.empty()
-        }
-
     fun getRowOrNull(row: Int): StringBuilder? =
         if (row < currentText.size && row >= 0) {
             currentText[row]
@@ -36,11 +27,11 @@ class TextBuffer(text: String) {
             null
         }
 
-    fun getCharAt(position: Position) =
+    fun getCharAtOrNull(position: Position): Char? =
         if (position.y >= currentText.size || currentText[position.y].length <= position.x) {
-            Maybe.empty()
+            null
         } else {
-            Maybe.of(currentText[position.y][position.x])
+            currentText[position.y][position.x]
         }
 
     fun getTextSection(position: Position, size: Size): List<String> {

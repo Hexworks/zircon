@@ -22,7 +22,7 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
         get() = setOf()
 
     override val tileType: TileType
-        get() = TileType.GRAPHIC_TILE
+        get() = TileType.GRAPHICAL_TILE
 
     override val styleSet: StyleSet
         get() = StyleSet.empty()

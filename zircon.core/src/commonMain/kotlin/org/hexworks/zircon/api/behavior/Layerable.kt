@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.LayerHandle
@@ -24,12 +23,6 @@ interface Layerable {
      * [Layerable] accepts is [Layerable.size] - [Layer.position] + [Layer.size]
      */
     val size: Size
-
-    /**
-     * Returns the [Layer] at the given [level] (if present).
-     */
-    @Deprecated("Use the orNull construct instead", ReplaceWith("getLayerAtOrNull(level)"))
-    fun getLayerAt(level: Int): Maybe<LayerHandle>
 
     /**
      * Returns the [Layer] at the given [level] (if present).

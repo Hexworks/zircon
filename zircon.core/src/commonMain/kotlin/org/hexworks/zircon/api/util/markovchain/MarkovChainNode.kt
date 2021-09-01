@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.util.markovchain
 
-import org.hexworks.cobalt.datatypes.Maybe
+
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChainNode
 import kotlin.random.Random
@@ -17,9 +17,10 @@ interface MarkovChainNode<T : Any> : Identifiable {
     fun next(): MarkovChainNode<T>
 
     /**
-     * Returns the satellite data stored in this node.
+     * Returns the satellite data stored in this node
+     * or an exception if it is not present.
      */
-    fun data(): Maybe<T>
+    fun data(): T
 
     /**
      * Returns the satellite data stored in this node.
