@@ -3,7 +3,7 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - build
+      - build:
           context:
             - SonarCloud
 jobs: # a collection of steps
