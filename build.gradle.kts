@@ -2,6 +2,7 @@ import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 plugins {
     id("org.jetbrains.dokka")
+    id("org.sonarqube") version "3.3"
 }
 
 allprojects {
@@ -13,6 +14,14 @@ allprojects {
     }
 }
 
+sonarqube {
+    properties {
+        property("sonar.projectKey", "Hexworks_zircon")
+        property("sonar.organization", "hexworks")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
 tasks {
     val docsDir = projectDir.resolve("docs")
 
@@ -20,12 +29,12 @@ tasks {
         doLast {
             logger.lifecycle("---=== Renaming -modules.html to index.html ===---")
             docsDir.listFiles()
-                    ?.filter { it.isDirectory }
-                    ?.forEach { dir ->
-                        dir.listFiles()
-                                ?.find { file -> file.name == "-modules.html" }
-                                ?.renameTo(File(dir, "index.html"))
-                    }
+                ?.filter { it.isDirectory }
+                ?.forEach { dir ->
+                    dir.listFiles()
+                        ?.find { file -> file.name == "-modules.html" }
+                        ?.renameTo(File(dir, "index.html"))
+                }
         }
     }
 
@@ -34,8 +43,8 @@ tasks {
             logger.lifecycle("---=== Generating index.html for docs ===---")
 
             val docsSubDirs = docsDir.listFiles()
-                    ?.filter { it.isDirectory }
-                    ?.joinToString("\n") { dir -> "<li><a href=\"${dir.name}\">${dir.name}</a></li>" }
+                ?.filter { it.isDirectory }
+                ?.joinToString("\n") { dir -> "<li><a href=\"${dir.name}\">${dir.name}</a></li>" }
 
             val html = """|<!doctype html><head><title>Choose a Version</title></head><body>
                 |<h1>Pick a Version</h1><ul>
