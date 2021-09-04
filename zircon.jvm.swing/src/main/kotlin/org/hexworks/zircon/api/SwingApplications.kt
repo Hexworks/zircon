@@ -21,8 +21,11 @@ import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.impl.SwingFrame
 import org.hexworks.zircon.internal.modifier.TileCoordinate
 import org.hexworks.zircon.internal.tileset.transformer.*
+import java.awt.Canvas
+import javax.swing.JFrame
 import kotlin.reflect.KClass
 
 object SwingApplications {
@@ -65,7 +68,7 @@ object SwingApplications {
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
         tileGrid: TileGrid = createTileGrid(config),
-        renderer: SwingCanvasRenderer = createRenderer(config, tileGrid)
+        renderer: SwingCanvasRenderer = createRenderer(config, tileGrid),
     ): Application = buildApplication(
         config = config,
         eventBus = eventBus,
@@ -137,6 +140,27 @@ object SwingApplications {
     fun createRenderer(
         config: AppConfig = AppConfig.defaultConfiguration(),
         tileGrid: TileGrid = createTileGrid(config),
+        /**
+         * The grid will be drawn on this [Canvas]. Use this parameter
+         * if you want to provide your own.
+         */
+        canvas: Canvas = Canvas(),
+        /**
+         * The [JFrame] that will display the [canvas]. Use this parameter
+         * if you want to provide your own.
+         */
+        frame: JFrame = SwingFrame(
+            tileGrid = tileGrid.asInternal(),
+            canvas = canvas
+        ),
+        /**
+         * If set to `false` initializations won't be run on [canvas] and [frame].
+         * This includes disabling focus traversal (between Swing components) and
+         * displaying and packing the [frame] itself.
+         * Set this to `false` if you want to handle these yourself. A typical example
+         * of this would be the case when you're using multiple [Application]s.
+         */
+        shouldInitializeSwingComponents: Boolean = true
     ): SwingCanvasRenderer = SwingCanvasRenderer.create(
         tileGrid = tileGrid.asInternal(),
         tilesetLoader = DefaultTilesetLoader(
@@ -144,6 +168,9 @@ object SwingApplications {
                 DEFAULT_MODIFIER_SUPPORTS
             ) + config.tilesetLoaders.filterByType(Graphics2D::class)
         ),
+        canvas = canvas,
+        frame = frame,
+        shouldInitializeSwingComponents = shouldInitializeSwingComponents
     )
 
     /**
