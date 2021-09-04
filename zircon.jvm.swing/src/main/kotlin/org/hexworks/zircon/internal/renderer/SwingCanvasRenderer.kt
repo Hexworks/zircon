@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.CloseBehavior
@@ -17,6 +18,7 @@ import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
@@ -27,23 +29,18 @@ import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
 import org.hexworks.zircon.platform.util.SystemUtils
 import java.awt.*
-import java.awt.event.HierarchyEvent
-import java.awt.event.MouseEvent
-import java.awt.event.WindowAdapter
-import java.awt.event.WindowEvent
+import java.awt.event.*
 import java.awt.image.BufferStrategy
 import javax.swing.JFrame
 
 @Suppress("UNCHECKED_CAST")
 class SwingCanvasRenderer private constructor(
-    private val tileGrid: InternalTileGrid,
-    private val tilesetLoader: TilesetLoader<Graphics2D>,
-    private val canvas: Canvas = Canvas(),
-    private val frame: JFrame = SwingFrame(
-        tileGrid = tileGrid,
-        canvas = canvas
-    ),
-) : Renderer, Observable<SwingCanvasRenderer> by DefaultObservable() {
+    val tileGrid: InternalTileGrid,
+    val tilesetLoader: TilesetLoader<Graphics2D>,
+    val canvas: Canvas,
+    val frame: JFrame,
+    val shouldInitializeSwingComponents: Boolean
+) : SwingRenderer, Observable<SwingCanvasRenderer> by DefaultObservable() {
 
     override val closedValue: Property<Boolean> = false.toProperty()
 
@@ -69,7 +66,7 @@ class SwingCanvasRenderer private constructor(
      * Adds a callback [fn] that will be called whenever the frame where the contents
      * of the [tileGrid] are rendered is closed.
      */
-    fun onFrameClosed(fn: (SwingCanvasRenderer) -> Unit): Subscription {
+    override fun onFrameClosed(fn: (SwingRenderer) -> Unit): Subscription {
         return addObserver(fn)
     }
 
@@ -130,14 +127,10 @@ class SwingCanvasRenderer private constructor(
 
             // focus settings
             canvas.isFocusable = true
-            canvas.requestFocusInWindow()
-            canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
-            canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
 
-            // display
-            frame.pack()
-            frame.isVisible = true
-            frame.setLocationRelativeTo(null)
+            if (shouldInitializeSwingComponents) {
+                initializeSwingComponents()
+            }
 
             // buffering
             canvas.createBufferStrategy(2)
@@ -322,16 +315,47 @@ class SwingCanvasRenderer private constructor(
         }
     }
 
+    private fun initializeSwingComponents() {
+        canvas.requestFocusInWindow()
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        canvas.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptySet<AWTKeyStroke>())
+        frame.pack()
+        frame.isVisible = true
+        frame.setLocationRelativeTo(null)
+    }
+
     companion object {
 
-        fun create(
+        /**
+         * Creates a [SwingCanvasRenderer].
+         */
+        internal fun create(
             tileGrid: InternalTileGrid,
             tilesetLoader: TilesetLoader<Graphics2D>,
-            canvas: Canvas = Canvas(),
+            /**
+             * The grid will be drawn on this [Canvas]. Use this parameter
+             * if you want to provide your own.
+             */
+            canvas: Canvas,
+            /**
+             * The [JFrame] that will display the [canvas]. Use this parameter
+             * if you want to provide your own.
+             */
+            frame: JFrame,
+            /**
+             * If set to `false` initializations won't be run on [canvas] and [frame].
+             * This includes disabling focus traversal (between Swing components) and
+             * displaying and packing the [frame] itself.
+             * Set this to `false` if you want to handle these yourself. A typical example
+             * of this would be the case when you're using multiple [Application]s.
+             */
+            shouldInitializeSwingComponents: Boolean
         ): SwingCanvasRenderer = SwingCanvasRenderer(
             tileGrid = tileGrid,
             tilesetLoader = tilesetLoader,
-            canvas = canvas
+            canvas = canvas,
+            frame = frame,
+            shouldInitializeSwingComponents = shouldInitializeSwingComponents
         )
     }
 }

@@ -11,16 +11,17 @@ import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.impl.SwingFrame
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.internal.renderer.SwingCanvasRenderer
+import org.hexworks.zircon.internal.renderer.SwingRenderer
 import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 import java.awt.Canvas
 import java.awt.Graphics2D
 import javax.swing.JFrame
 
-internal class SwingApplication(
+class SwingApplication(
     config: AppConfig,
     eventBus: EventBus,
     tileGrid: InternalTileGrid,
-    override val renderer: SwingCanvasRenderer
+    override val renderer: SwingRenderer
 ) : BaseApplication(config, tileGrid, eventBus) {
 
     init {
