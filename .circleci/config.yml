@@ -1,4 +1,11 @@
-version: 2.1 # use CircleCI 2.0
+version: 2.1
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build
+          context:
+            - SonarCloud
 jobs: # a collection of steps
   build:
     # Remove if parallelism is not desired
@@ -32,9 +39,3 @@ jobs: # a collection of steps
       - store_artifacts: # Upload test results for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: build/test-results/test
           when: always
-workflows:
-  version: 2
-  workflow:
-    jobs:
-      - build
-          context: SonarCloud
