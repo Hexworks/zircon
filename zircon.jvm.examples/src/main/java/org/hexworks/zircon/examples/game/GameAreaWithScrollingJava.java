@@ -4,7 +4,6 @@ import kotlin.Unit;
 import org.hexworks.cobalt.core.behavior.DisposedByHand;
 import org.hexworks.cobalt.databinding.api.extension.Properties;
 import org.hexworks.cobalt.databinding.api.property.Property;
-import org.hexworks.cobalt.databinding.api.value.ObservableValue;
 import org.hexworks.zircon.api.CP437TilesetResources;
 import org.hexworks.zircon.api.ColorThemes;
 import org.hexworks.zircon.api.Components;
@@ -63,12 +62,12 @@ public class GameAreaWithScrollingJava {
     private static final TileColor PYRAMID_TOP_COLOR = TileColor.fromString("#ecc987");
     private static final TileColor PYRAMID_BOTTOM_COLOR = TileColor.fromString("#a36431");
 
-    private static boolean HEADLESS = false;
+    private static boolean headless = false;
 
     public static void main(String[] args) {
 
         if (args.length > 0) {
-            HEADLESS = true;
+            headless = true;
         }
 
         final Screen screen = Screen.create(SwingApplications.startTileGrid(AppConfig.newBuilder()
@@ -112,7 +111,7 @@ public class GameAreaWithScrollingJava {
         final Size3D visibleGameAreaSize = GRID_SIZE.minus(Size.create(2, 2)).toSize3D(5);
         final Size actualGameAreaSize = Size.create(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-        final GameArea gameArea = GameComponents.newGameAreaBuilder()
+        final GameArea<Tile, Block<Tile>> gameArea = GameComponents.newGameAreaBuilder()
                 .withActualSize(actualGameAreaSize.toSize3D(LEVEL_COUNT))
                 .withVisibleSize(visibleGameAreaSize)
                 .build();
@@ -147,7 +146,7 @@ public class GameAreaWithScrollingJava {
         screen.display();
     }
 
-    private static void generatePyramid(int height, Position3D startPos, GameArea gameArea) {
+    private static void generatePyramid(int height, Position3D startPos, GameArea<Tile, Block<Tile>> gameArea) {
         double percent = 1.0 / (height + 1);
         Tile wall = Tile.newBuilder()
                 .withCharacter(Symbols.BLOCK_SOLID)
@@ -178,7 +177,7 @@ public class GameAreaWithScrollingJava {
 
     private static void enableMovement(final Screen screen, final GameArea<Tile, Block<Tile>> gameArea) {
         screen.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED, (event, phase) -> {
-            if (event.getCode().equals(KeyCode.ESCAPE) && !HEADLESS) {
+            if (event.getCode().equals(KeyCode.ESCAPE) && !headless) {
                 System.exit(0);
             } else {
                 if (event.getCode().equals(KeyCode.UP)) {

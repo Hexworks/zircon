@@ -44,7 +44,6 @@ fun displayScreen(
 }
 
 fun startTileGrid(
-    theme: ColorTheme = DEFAULT_THEME,
     tileset: TilesetResource = DEFAULT_TILESET
 ) = SwingApplications.startTileGrid(
     newBuilder()

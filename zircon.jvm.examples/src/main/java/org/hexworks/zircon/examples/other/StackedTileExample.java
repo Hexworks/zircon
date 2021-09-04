@@ -43,15 +43,15 @@ public class StackedTileExample {
     private static void createVsPush(TileGrid app, Position gridPosition) {
         CharacterTile circumflex = charTile(Symbols.CIRCUMFLEX, RED, TileColor.transparent());
         StackedTile stackedTile1 = stackXAndPlus();
-        StackedTile stackedTile2_created = StackedTile.create(
+        StackedTile stackedTile2Created = StackedTile.create(
                 stackedTile1,
                 circumflex
         );
 
-        StackedTile stackedTile2_pushed = stackedTile1
+        StackedTile stackedTile2Pushed = stackedTile1
                 .withPushedTile(circumflex);
-        app.draw(stackedTile2_created, gridPosition);
-        app.draw(stackedTile2_pushed, gridPosition.withRelativeY(1));
+        app.draw(stackedTile2Created, gridPosition);
+        app.draw(stackedTile2Pushed, gridPosition.withRelativeY(1));
     }
 
     private static void withBaseTile(TileGrid app, Position gridPosition) {
@@ -63,12 +63,12 @@ public class StackedTileExample {
 
     private static void graphicalStack(TileGrid app, Position gridPosition) {
         GraphicalTile werewolf = graphicalTile("Werewolf");
-        GraphicalTile giant_ant = graphicalTile("Fire ant");
+        GraphicalTile giantAnt = graphicalTile("Fire ant");
         StackedTile graphicalStack = StackedTile.create(
                 werewolf,
-                giant_ant
+                giantAnt
         );
-        drawAdditionAt(gridPosition, app, graphicalStack, werewolf, giant_ant);
+        drawAdditionAt(gridPosition, app, graphicalStack, werewolf, giantAnt);
     }
 
     private static void letsGoApeshit(TileGrid app, Position gridPosition) {

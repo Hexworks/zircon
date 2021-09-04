@@ -36,12 +36,12 @@ public class APrimerOnScreens {
                 .build();
         screen1.addComponent(prev);
 
-        next.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        next.handleComponentEvents(ComponentEventType.ACTIVATED, event -> {
             System.out.println("Switching to Screen 1");
             screen1.display();
             return UIEventResponse.preventDefault();
         });
-        prev.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        prev.handleComponentEvents(ComponentEventType.ACTIVATED, event -> {
             System.out.println("Switching to Screen 0");
             screen0.display();
             return UIEventResponse.processed();

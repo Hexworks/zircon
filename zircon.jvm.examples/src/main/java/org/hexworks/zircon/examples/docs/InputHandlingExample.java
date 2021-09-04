@@ -55,16 +55,14 @@ public class InputHandlingExample {
         // adding the component to the screen
 
         // when you handle events you need to return a response
-        button.handleComponentEvents(ACTIVATED, (event) -> {
+        button.handleComponentEvents(ACTIVATED, event -> {
             System.out.println("Skipped component event");
             return UIEventResponse.pass(); // pass means that you didn't handle the event
         });
 
         // when you process events you don't have to return a response, Zircon will treat
         // processors as if they were returning the `processed` response.
-        button.processComponentEvents(ACTIVATED, fromConsumer((event) -> {
-            System.out.println("Button pressed!");
-        }));
+        button.processComponentEvents(ACTIVATED, fromConsumer((event) -> System.out.println("Button pressed!")));
 
 
         // listens to mouse events

@@ -14,6 +14,6 @@ class ComponentExampleKotlinTemplate : TwoColumnComponentExampleKotlin() {
     }
 
     override fun build(box: VBox) {
-
+        TODO("Implement me")
     }
 }

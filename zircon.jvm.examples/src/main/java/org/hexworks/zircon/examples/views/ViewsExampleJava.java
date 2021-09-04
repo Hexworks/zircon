@@ -70,9 +70,9 @@ public class ViewsExampleJava {
         InitialView initial = new InitialView(tileGrid, theme);
         OtherView other = new OtherView(tileGrid, theme);
 
-        initial.dockOther.onActivated(Functions.fromConsumer((event) -> other.dock()));
+        initial.dockOther.onActivated(Functions.fromConsumer(event -> other.dock()));
 
-        other.dockInitial.onActivated(Functions.fromConsumer((event) -> other.replaceWith(initial)));
+        other.dockInitial.onActivated(Functions.fromConsumer(event -> other.replaceWith(initial)));
 
         initial.dock();
     }

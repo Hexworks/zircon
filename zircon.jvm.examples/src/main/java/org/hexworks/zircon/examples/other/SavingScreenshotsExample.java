@@ -19,7 +19,7 @@ public class SavingScreenshotsExample {
     public static void main(String[] args) throws IOException {
 
         // you create an image and the corresponding graphics
-        final BufferedImage image = new BufferedImage(800, 600, BufferedImage.TRANSLUCENT);
+        final BufferedImage image = new BufferedImage(800, 600, Transparency.TRANSLUCENT);
         final Graphics2D graphics = image.createGraphics();
 
         // you load the tileset you want

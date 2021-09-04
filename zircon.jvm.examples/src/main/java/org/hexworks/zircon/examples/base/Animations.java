@@ -7,14 +7,10 @@ import org.hexworks.zircon.api.data.Position;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.examples.animations.HexworksSkullExampleJava;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Animations {
-
-    public Lock l = new ReentrantLock();
 
     public static Animation hexworksSkull(Position position, TilesetResource tileset) {
         AnimationBuilder skull = AnimationResource.loadAnimationFromStream(

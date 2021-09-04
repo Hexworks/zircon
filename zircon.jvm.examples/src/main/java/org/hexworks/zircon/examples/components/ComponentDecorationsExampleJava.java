@@ -15,10 +15,6 @@ import static org.hexworks.zircon.api.graphics.BoxType.*;
 
 public class ComponentDecorationsExampleJava extends OneColumnComponentExampleJava {
 
-    private int count = 0;
-    private Random random = new Random();
-
-
     public static void main(String[] args) {
         new ComponentDecorationsExampleJava().show("Component Decorations Example");
     }

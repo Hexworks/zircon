@@ -21,12 +21,14 @@ public class ColorModel {
     public static final Color AQUA = new Color(0x00, 0xFF, 0xFF);
     public static final Color WHITE = new Color(0xFF, 0xFF, 0xFF);
 
-    public static final Color[] COLOR_ARRAY = {
+    private ColorModel() {}
+
+    protected static final Color[] COLOR_ARRAY = {
             BLACK, MAROON, GREEN, OLIVE, NAVY, PURPLE, TEAL, SILVER,
             GRAY, RED, LIME, YELLOW, BLUE, FUCHSIA, AQUA, WHITE
     };
 
-    public static final byte[] COLOR_ARRAY_RED_COMPONENTS = {
+    protected static final byte[] COLOR_ARRAY_RED_COMPONENTS = {
             (byte) COLOR_ARRAY[0].getRed(),
             (byte) COLOR_ARRAY[1].getRed(),
             (byte) COLOR_ARRAY[2].getRed(),
@@ -44,7 +46,7 @@ public class ColorModel {
             (byte) COLOR_ARRAY[14].getRed(),
             (byte) COLOR_ARRAY[15].getRed()
     };
-    public static final byte[] COLOR_ARRAY_GREEN_COMPONENTS = {
+    protected static final byte[] COLOR_ARRAY_GREEN_COMPONENTS = {
             (byte) COLOR_ARRAY[0].getGreen(),
             (byte) COLOR_ARRAY[1].getGreen(),
             (byte) COLOR_ARRAY[2].getGreen(),
@@ -62,7 +64,7 @@ public class ColorModel {
             (byte) COLOR_ARRAY[14].getGreen(),
             (byte) COLOR_ARRAY[15].getGreen()
     };
-    public static final byte[] COLOR_ARRAY_BLUE_COMPONENTS = {
+    protected static final byte[] COLOR_ARRAY_BLUE_COMPONENTS = {
             (byte) COLOR_ARRAY[0].getBlue(),
             (byte) COLOR_ARRAY[1].getBlue(),
             (byte) COLOR_ARRAY[2].getBlue(),
@@ -80,11 +82,4 @@ public class ColorModel {
             (byte) COLOR_ARRAY[14].getBlue(),
             (byte) COLOR_ARRAY[15].getBlue()
     };
-
-    public static final IndexColorModel INDEX_COLOR_MODEL = new IndexColorModel(
-            4, 16, /* 4bit color range, 16 unique colors */
-            COLOR_ARRAY_RED_COMPONENTS,
-            COLOR_ARRAY_GREEN_COMPONENTS,
-            COLOR_ARRAY_BLUE_COMPONENTS
-    );
 }

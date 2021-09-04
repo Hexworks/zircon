@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class Defaults {
 
-    public static TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
-    public static ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
+    public static final TilesetResource TILESET = CP437TilesetResources.rogueYun16x16();
+    public static final ColorThemeResource THEME = ColorThemeResource.GAMEBOOKERS;
 
-    private static Random RANDOM = new Random();
+    private static final Random RANDOM = new Random();
 
-    private static List<Integer> TILESET_SIZES = Collections.singletonList(16);
-    private static int TILESET_SIZE = TILESET_SIZES.get(RANDOM.nextInt(TILESET_SIZES.size()));
+    private static final List<Integer> TILESET_SIZES = Collections.singletonList(16);
+    private static final int TILESET_SIZE = TILESET_SIZES.get(RANDOM.nextInt(TILESET_SIZES.size()));
 
     public static List<TilesetResource> TILESETS = Arrays.stream(BuiltInCP437TilesetResource.values())
             .filter(tileset -> tileset.getWidth() == TILESET_SIZE && tileset.getHeight() == TILESET_SIZE)
@@ -38,6 +38,10 @@ public class Defaults {
     }
 
     public static Size GRID_SIZE = Size.create(60, 40);
+
+    private Defaults() {
+
+    }
 
     public static TileGrid startTileGrid() {
         return SwingApplications.startTileGrid(AppConfig.newBuilder()

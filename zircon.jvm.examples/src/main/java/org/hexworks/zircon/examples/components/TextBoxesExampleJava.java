@@ -40,15 +40,4 @@ public class TextBoxesExampleJava extends TwoColumnComponentExampleJava {
                 .withDecorations(box(), shadow())
                 .addParagraph("This is a paragraph which won't fit on one line."));
     }
-
-    private void addButton(VBox box) {
-        AttachedComponent attachment = box.addComponent(Components.button()
-                .withText(String.format("Remove: %d", count))
-                .withPreferredSize(12, 1)
-                .build());
-
-        attachment.onActivated(fromConsumer((componentEvent -> attachment.detach())));
-
-        count++;
-    }
 }

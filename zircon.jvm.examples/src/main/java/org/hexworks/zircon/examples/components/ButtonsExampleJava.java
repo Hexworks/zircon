@@ -21,9 +21,7 @@ public class ButtonsExampleJava extends TwoColumnComponentExampleJava {
                 .withText("Click Me")
                 .withDecorations(side())
                 .build();
-        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer((event) -> {
-            invisible.setHidden(true);
-        }));
+        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer(event -> invisible.setHidden(true)));
 
         Button disabled = button()
                 .withText("Disabled")

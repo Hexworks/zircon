@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType;
 
 public class PlayerMoveExampleJava {
 
-    private static Tile PLAYER_TILE = Tile.newBuilder()
+    private static final Tile PLAYER_TILE = Tile.newBuilder()
             .withBackgroundColor(ANSITileColor.BLACK)
             .withForegroundColor(ANSITileColor.WHITE)
             .withCharacter('@')
