@@ -17,4 +17,9 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle.kts" }}
-      - run: ./gradlew build --no-parallel
+      - run: ./gradlew build sonarqube --no-parallel
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
