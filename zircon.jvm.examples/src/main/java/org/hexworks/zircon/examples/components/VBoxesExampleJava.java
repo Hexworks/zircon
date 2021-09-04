@@ -52,9 +52,7 @@ public class VBoxesExampleJava extends OneColumnComponentExampleJava {
         container.addComponents(defaultBox, boxedBox, borderedBox, shadowedBox);
         box.addComponent(container);
 
-        addNew.onActivated(fromConsumer((componentEvent -> {
-            addButton(buttonContainers.get(random.nextInt(4)));
-        })));
+        addNew.onActivated(fromConsumer((componentEvent -> addButton(buttonContainers.get(random.nextInt(4))))));
 
         buttonContainers.forEach(this::addButton);
     }

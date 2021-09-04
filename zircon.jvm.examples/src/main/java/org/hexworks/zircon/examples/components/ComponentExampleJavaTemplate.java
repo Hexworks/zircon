@@ -11,7 +11,7 @@ public class ComponentExampleJavaTemplate extends TwoColumnComponentExampleJava 
 
     @Override
     public void build(VBox box) {
-
+        throw new UnsupportedOperationException("Implement me");
     }
 
 }

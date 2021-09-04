@@ -21,9 +21,7 @@ public class CheckBoxesExampleJava extends TwoColumnComponentExampleJava {
                 .withText("Make me invisible")
                 .withDecorations(side())
                 .build();
-        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer((event) -> {
-            invisible.setHidden(true);
-        }));
+        invisible.processComponentEvents(ComponentEventType.ACTIVATED, fromConsumer((event) -> invisible.setHidden(true)));
 
         CheckBox disabled = checkBox()
                 .withText("Disabled Button")

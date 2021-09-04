@@ -9,11 +9,11 @@ import static org.hexworks.zircon.api.Components.vbox;
 
 public abstract class OneColumnComponentExampleJava extends ComponentExampleJava {
 
-    public OneColumnComponentExampleJava() {
+    protected OneColumnComponentExampleJava() {
         super();
     }
 
-    public OneColumnComponentExampleJava(Size size) {
+    protected OneColumnComponentExampleJava(Size size) {
         super(size);
     }
 

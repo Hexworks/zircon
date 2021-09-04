@@ -44,9 +44,7 @@ public class HBoxesExampleJava extends OneColumnComponentExampleJava {
 
         box.addComponents(addNew, defaultBox, boxedBox, borderedBox, shadowedBox);
 
-        addNew.onActivated(fromConsumer((componentEvent -> {
-            addButton(buttonContainers.get(random.nextInt(4)));
-        })));
+        addNew.onActivated(fromConsumer((componentEvent -> addButton(buttonContainers.get(random.nextInt(4))))));
 
         buttonContainers.forEach(this::addButton);
     }

@@ -25,17 +25,18 @@ public abstract class ComponentExampleJava {
 
     private Size gridSize;
 
-    public ComponentExampleJava() {
+    protected ComponentExampleJava() {
         this(GRID_SIZE);
     }
 
-    public ComponentExampleJava(Size gridSize) {
+    protected ComponentExampleJava(Size gridSize) {
         this.gridSize = gridSize;
     }
 
     /**
      * Creates the container for the examples.
      */
+    @SuppressWarnings("unused")
     public final VBox createExampleContainer(Screen screen, String title) {
 
         VBox container = Components.vbox()

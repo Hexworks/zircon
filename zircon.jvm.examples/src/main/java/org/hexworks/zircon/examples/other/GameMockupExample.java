@@ -129,7 +129,7 @@ public class GameMockupExample {
 
         RadioButtonGroup difficultyGroup = Components.radioButtonGroup().build();
 
-        Arrays.asList(DIFFICULTIES).forEach((diff) -> {
+        Arrays.asList(DIFFICULTIES).forEach(diff -> {
             RadioButton btn = Components.radioButton()
                     .withText(diff)
                     .withKey(diff)
@@ -146,17 +146,17 @@ public class GameMockupExample {
 
         // INTERACTIONS
 
-        quitButton.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        quitButton.handleComponentEvents(ComponentEventType.ACTIVATED, event -> {
             System.exit(0);
             return UIEventResponse.processed();
         });
 
-        optionsButton.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        optionsButton.handleComponentEvents(ComponentEventType.ACTIVATED, event -> {
             optionsScreen.display();
             return UIEventResponse.processed();
         });
 
-        backButton.handleComponentEvents(ComponentEventType.ACTIVATED, (event) -> {
+        backButton.handleComponentEvents(ComponentEventType.ACTIVATED, event -> {
             mainMenuScreen.display();
             return UIEventResponse.processed();
         });

@@ -42,7 +42,6 @@ public class DataBindingExampleJava extends OneColumnComponentExampleJava {
 
         CheckBox check0 = checkBox().withText("Check Me!").build();
         CheckBox check1 = checkBox().withText("I am bound!").build();
-//        check1.getSelectedProperty().updateFrom(check0.getSelectedProperty());
 
         selectionBinding.addComponents(check0, check1);
 
