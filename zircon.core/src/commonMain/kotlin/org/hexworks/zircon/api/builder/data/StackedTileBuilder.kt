@@ -52,7 +52,7 @@ public class StackedTileBuilder private constructor(
     override fun build(): StackedTile {
         return DefaultStackedTile(
             baseTile = baseTile,
-            rest = tileStack.toPersistentList()
+            rest = tileStack.reversed().toPersistentList()
             )
     }
 
