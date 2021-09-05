@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.graphics.DrawSurface
@@ -137,7 +138,7 @@ interface Tile : Cacheable, StyleSet {
      * Creates a new [TileBuilder] preconfigured with the contents of
      * this [Tile].
      */
-    fun toBuilder(): TileBuilder
+    fun toBuilder(): Builder<Tile>
 
     companion object {
 

@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 import org.hexworks.zircon.api.Beta
+import org.hexworks.zircon.api.builder.data.StackedTileBuilder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
@@ -74,7 +75,13 @@ data class DefaultStackedTile(
 
     override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
 
-    override fun toBuilder(): TileBuilder {
-        throw UnsupportedOperationException("This operation is not implemented yet")
+    override fun toBuilder(): StackedTileBuilder {
+        return StackedTileBuilder.newBuilder()
+            .apply {
+                this.withBaseTile(baseTile)
+                rest.forEach { tile -> // The List "rest" is a stack, where the last element of the list is on top of the stack
+                    this.withPushedTile(tile)
+                }
+            }
     }
 }
