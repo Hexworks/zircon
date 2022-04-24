@@ -10,7 +10,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         jcenter()
-        kotlinx()
+        maven("https://dl.bintray.com/kotlin/kotlinx")
     }
 }
 
@@ -66,5 +66,4 @@ tasks {
         outputDirectory.set(docsDir.resolve("${project.version}-JAVA"))
         finalizedBy(renameModulesToIndex, generateDocsIndexTask)
     }
-
 }

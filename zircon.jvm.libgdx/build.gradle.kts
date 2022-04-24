@@ -13,16 +13,11 @@ plugins {
 base.archivesBaseName = "zircon.jvm.libgdx"
 
 kotlin {
-    target {
-        jvmTarget(JavaVersion.VERSION_1_8)
-    }
-
     dependencies {
-        with(Projects) {
-            api(zirconCore)
-        }
 
-        with(Libs) {
+        implementation(project(":zircon.core"))
+
+        with(Libraries) {
             api(cobaltCore)
             api(kotlinxCollectionsImmutable)
 
@@ -36,9 +31,7 @@ kotlin {
             api(gdxBackendLwjgl)
 
             api(logbackClassic)
-        }
 
-        with(TestLibs) {
             testImplementation(junit)
             testImplementation(mockitoCore)
             testImplementation(assertjCore)

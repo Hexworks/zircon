@@ -6,9 +6,10 @@ import org.hexworks.zircon.api.application.AppConfig;
 import org.hexworks.zircon.api.data.Size;
 import org.hexworks.zircon.api.graphics.Layer;
 import org.hexworks.zircon.api.grid.TileGrid;
-import org.hexworks.zircon.api.resource.REXPaintResource;
+import org.hexworks.zircon.api.resource.REXPaintResources;
 import org.hexworks.zircon.api.resource.TilesetResource;
 import org.hexworks.zircon.api.screen.Screen;
+import org.hexworks.zircon.internal.resource.REXPaintResource;
 
 import java.io.InputStream;
 import java.util.List;
@@ -21,7 +22,7 @@ public class RexLoaderExampleJava {
     private static final InputStream RESOURCE = RexLoaderExampleJava.class.getResourceAsStream("/rex_files/cp437_table.xp");
 
     public static void main(String[] args) {
-        REXPaintResource rex = REXPaintResource.loadREXFile(RESOURCE);
+        REXPaintResource rex = REXPaintResources.loadREXFile(RESOURCE);
 
         TileGrid tileGrid = SwingApplications.startTileGrid(AppConfig.newBuilder()
                 .withDefaultTileset(CP437TilesetResources.taffer20x20())

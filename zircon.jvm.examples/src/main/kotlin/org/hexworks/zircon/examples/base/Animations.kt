@@ -1,6 +1,6 @@
 package org.hexworks.zircon.examples.base
 
-import org.hexworks.zircon.api.animation.AnimationResource.Companion.loadAnimationFromStream
+import org.hexworks.zircon.api.animation.AnimationResource.loadAnimationFromStream
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.examples.animations.HexworksSkullExampleJava

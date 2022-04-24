@@ -20,7 +20,6 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
 import org.hexworks.zircon.internal.data.GridPosition
-import org.hexworks.zircon.internal.graphics.DefaultStyleSet
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer

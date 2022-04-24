@@ -1,7 +1,8 @@
 package org.hexworks.zircon.api.util
 
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.platform.factory.CacheFactory
+import org.hexworks.zircon.internal.util.DefaultCache
+import kotlin.time.ExperimentalTime
 
 /**
  * Simple cache interface for storing objects.
@@ -31,6 +32,6 @@ interface Cache<T> {
         /**
          * Creates a new [Cache] for the given type.
          */
-        fun <T : Cacheable> create(): Cache<T> = CacheFactory.create()
+        fun <T : Cacheable> create(): Cache<T> = DefaultCache()
     }
 }

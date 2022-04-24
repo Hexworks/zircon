@@ -49,7 +49,7 @@ class UIEventToComponentDispatcher(
         }
     }
 
-    @ExperimentalContracts
+    @OptIn(ExperimentalContracts::class)
     override fun dispatch(event: UIEvent): UIEventResponse {
         // we need to transform the mouse moved event in the case when the mouse
         // is exited a component and entered another

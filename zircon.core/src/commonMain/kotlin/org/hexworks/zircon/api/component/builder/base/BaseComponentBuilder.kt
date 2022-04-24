@@ -155,7 +155,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     )
 
     protected open fun createMetadata(): ComponentMetadata {
-        if(updateOnAttach.not()) {
+        if (updateOnAttach.not()) {
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
             }
@@ -215,6 +215,5 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         fun complete(component: Component) {
             delegate = onComponentCreated(component)
         }
-
     }
 }
