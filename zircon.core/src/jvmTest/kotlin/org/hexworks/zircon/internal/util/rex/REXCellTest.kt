@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.resource.REXPaintResources.toREXCell
 import org.junit.Ignore
 import org.junit.Test
 import java.awt.Color
@@ -24,10 +25,10 @@ class REXCellTest {
         val buffer = ByteBuffer.wrap(ba)
         buffer.order(ByteOrder.LITTLE_ENDIAN)
 
-        val cell = REXCell.fromByteBuffer(buffer)
+        val cell = buffer.toREXCell()
 
-        assertThat(cell.getCharacter()).isEqualTo('A')
-        assertThat(cell.getForegroundColor()).isEqualTo(Color(170, 170, 170))
-        assertThat(cell.getBackgroundColor()).isEqualTo(Color(85, 85, 85))
+        assertThat(cell.character).isEqualTo('A')
+        assertThat(cell.foregroundColor).isEqualTo(Color(170, 170, 170))
+        assertThat(cell.backgroundColor).isEqualTo(Color(85, 85, 85))
     }
 }

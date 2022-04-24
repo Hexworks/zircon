@@ -1,19 +1,20 @@
 @file:Suppress("UnstableApiUsage")
 
-import Libs.caffeine
-import Libs.cobaltCore
-import Libs.kotlinxCollectionsImmutable
-import Libs.kotlinxCoroutines
-import Libs.kotlinxCoroutinesTest
-import Libs.logbackClassic
-import Libs.slf4jApi
-import Libs.snakeYaml
-import TestLibs.assertjCore
-import TestLibs.kotlinTestAnnotationsCommon
-import TestLibs.kotlinTestCommon
-import TestLibs.logbackCore
-import TestLibs.mockitoCore
-import TestLibs.mockitoKotlin
+import Libraries.caffeine
+import Libraries.cobaltCore
+import Libraries.kotlinxCollectionsImmutable
+import Libraries.kotlinxCoroutines
+import Libraries.kotlinxCoroutinesTest
+import Libraries.logbackClassic
+import Libraries.slf4jApi
+import Libraries.cache4k
+import Libraries.snakeYaml
+import Libraries.assertjCore
+import Libraries.kotlinTestAnnotationsCommon
+import Libraries.kotlinTestCommon
+import Libraries.logbackCore
+import Libraries.mockitoCore
+import Libraries.mockitoKotlin
 
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
@@ -29,7 +30,13 @@ kotlin {
 
     jvm {
         withJava()
-        jvmTarget(JavaVersion.VERSION_1_8)
+        compilations.all {
+            kotlinOptions {
+                apiVersion = "1.5"
+                languageVersion = "1.5"
+                jvmTarget = "11"
+            }
+        }
     }
 
     sourceSets {
@@ -41,13 +48,13 @@ kotlin {
                 api(kotlinxCollectionsImmutable)
 
                 api(cobaltCore)
+                api(cache4k)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlinTestCommon)
                 implementation(kotlinTestAnnotationsCommon)
-
                 implementation(kotlinxCoroutinesTest)
             }
         }

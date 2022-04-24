@@ -7,6 +7,7 @@ import org.junit.Before
 import org.mockito.MockitoAnnotations
 import java.util.*
 
+@Suppress("DEPRECATION")
 class MouseEventListenerTest {
 
     lateinit var target: MouseEventListener

@@ -14,6 +14,8 @@ pluginManagement {
 rootProject.name = "zircon"
 
 include(":zircon.core")
+include(":zircon.core.jvm")
 include(":zircon.jvm.swing")
 include(":zircon.jvm.libgdx")
+include(":zircon.mpp.korge")
 include(":zircon.jvm.examples")

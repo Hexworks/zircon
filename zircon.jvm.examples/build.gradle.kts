@@ -10,27 +10,21 @@ application {
 }
 
 kotlin {
-    target {
-        jvmTarget(JavaVersion.VERSION_1_8)
-    }
-
     dependencies {
-        with(Projects) {
-            api(zirconCore)
-            api(zirconJvmSwing)
-            api(zirconJvmLibgdx)
-            api("org.openjdk.jol:jol-core:0.13")
-        }
+        implementation(project(":zircon.core"))
+        implementation(project(":zircon.jvm.swing"))
+        implementation(project(":zircon.jvm.libgdx"))
+        implementation("org.openjdk.jol:jol-core:0.13")
 
-        with(Libs) {
-            api(gdx)
-            api(gdxFreetype)
-            api(gdxFreetypePlatform)
-            api(gdxFreetypePlatformNatives)
-            api(gdxPlatformNativesDesktop)
-            api(gdxBox2D)
-            api(gdxBox2DPlatform)
-            api(gdxBackendLwjgl)
+        with(Libraries) {
+            implementation(gdx)
+            implementation(gdxFreetype)
+            implementation(gdxFreetypePlatform)
+            implementation(gdxFreetypePlatformNatives)
+            implementation(gdxPlatformNativesDesktop)
+            implementation(gdxBox2D)
+            implementation(gdxBox2DPlatform)
+            implementation(gdxBackendLwjgl)
         }
     }
 }

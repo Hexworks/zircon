@@ -2,19 +2,33 @@
 
 package org.hexworks.zircon.examples.game
 
-
-import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.GameComponents
+import org.hexworks.zircon.api.Shapes
+import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.Block
+import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.KeyCode.*
+import org.hexworks.zircon.api.uievent.KeyCode.DOWN
+import org.hexworks.zircon.api.uievent.KeyCode.KEY_D
+import org.hexworks.zircon.api.uievent.KeyCode.KEY_U
+import org.hexworks.zircon.api.uievent.KeyCode.LEFT
+import org.hexworks.zircon.api.uievent.KeyCode.RIGHT
+import org.hexworks.zircon.api.uievent.KeyCode.UP
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.Processed
 import kotlin.random.Random
@@ -110,7 +124,6 @@ object TopDownObliqueWorldExample {
         ga.setBlockAt(Position3D.create(32, 10, 0), trollLegs)
         ga.setBlockAt(Position3D.create(32, 10, 1), trollTorso)
 
-
         addHouse(ga, Position.create(5, 5), Size.create(12, 8))
         addHouse(ga, Position.create(40, 0), Size.create(9, 8))
         addHouse(ga, Position.create(25, 20), Size.create(14, 6))
@@ -167,12 +180,16 @@ object TopDownObliqueWorldExample {
         val roofOffset = topLeft.withRelativeX(-1).withRelativeY(-1)
         val roofSize = size.withRelativeHeight(2).withRelativeWidth(2)
         repeat(size.width.coerceAtMost(size.height) / 2 + 1) { idx ->
-            Shapes.buildRectangle(Position.defaultPosition(), roofSize.minus(Size.create(idx * 2, idx * 2))).positions.forEach {
+            Shapes.buildRectangle(
+                Position.defaultPosition(),
+                roofSize.minus(Size.create(idx * 2, idx * 2))
+            ).positions.forEach {
                 ga.setBlockAt(
                     it.plus(roofOffset)
                         .withRelativeX(idx)
                         .withRelativeY(idx)
-                        .toPosition3D(houseHeight + idx), roof()
+                        .toPosition3D(houseHeight + idx),
+                    roof()
                 )
             }
         }
@@ -205,7 +222,6 @@ object TopDownObliqueWorldExample {
     private val YELLOW = TileColor.fromString("#dad45e")
     private val BRIGHT_GREEN = TileColor.fromString("#deeed6")
     private val TRANSPARENT = TileColor.transparent()
-
 
     private val EMPTY = Tile.empty()
     private val FLOOR = Tile.defaultTile()
@@ -269,10 +285,12 @@ object TopDownObliqueWorldExample {
     private fun grass() = Block.newBuilder<Tile>()
         .withEmptyTile(Tile.empty())
         .withContent(Tile.empty())
-        .withBottom(GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
-            it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
-                .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
-        })
+        .withBottom(
+            GRASS_TILES[random.nextInt(GRASS_TILES.size)].let {
+                it.withForegroundColor(it.foregroundColor.darkenByPercent(random.nextDouble(.1)))
+                    .withBackgroundColor(it.backgroundColor.lightenByPercent(random.nextDouble(.1)))
+            }
+        )
         .build()
 
     private val EMPTY_BLOCK = Block.newBuilder<Tile>()

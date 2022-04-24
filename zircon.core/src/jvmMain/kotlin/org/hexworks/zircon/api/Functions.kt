@@ -3,6 +3,9 @@ package org.hexworks.zircon.api
 import java.util.function.BiConsumer
 import java.util.function.Consumer
 
+/**
+ * Utility functions that can be used to create functions from java functional classes.
+ */
 object Functions {
 
     @JvmStatic

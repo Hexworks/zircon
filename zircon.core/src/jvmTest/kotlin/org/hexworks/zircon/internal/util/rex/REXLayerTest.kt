@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.resource.REXPaintResources.toRexLayer
 import org.hexworks.zircon.internal.color.DefaultTileColor
 import org.junit.Before
 import org.junit.Ignore
@@ -18,7 +19,7 @@ class REXLayerTest {
 
     @Before
     fun setUp() {
-        target = REXLayer.fromByteBuffer(createTestData())
+        target = createTestData().toRexLayer()
     }
 
     @Test
@@ -50,17 +51,17 @@ class REXLayerTest {
 
     @Test
     fun shouldHaveProperCellCount() {
-        assertThat(target.getCells()).hasSize(2)
+        assertThat(target.cells).hasSize(2)
     }
 
     @Test
     fun shouldHaveProperWidth() {
-        assertThat(target.getWidth()).isEqualTo(2)
+        assertThat(target.width).isEqualTo(2)
     }
 
     @Test
     fun shouldHaveProperHeight() {
-        assertThat(target.getHeight()).isEqualTo(1)
+        assertThat(target.height).isEqualTo(1)
     }
 
     private fun createTestData(): ByteBuffer {

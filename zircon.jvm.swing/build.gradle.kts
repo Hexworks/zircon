@@ -12,23 +12,14 @@ plugins {
 base.archivesBaseName = "zircon.jvm.swing"
 
 kotlin {
-    target {
-        jvmTarget(JavaVersion.VERSION_1_8)
-    }
-
     dependencies {
 
-        with(Projects) {
-            api(zirconCore)
-        }
+        implementation(project(":zircon.core"))
 
-        with(Libs) {
+        with(Libraries) {
             api(cobaltCore)
             api(kotlinxCollectionsImmutable)
             api(filters)
-        }
-
-        with(TestLibs) {
             testImplementation(junit)
             testImplementation(mockitoCore)
             testImplementation(assertjCore)
