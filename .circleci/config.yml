@@ -11,8 +11,8 @@ jobs: # a collection of steps
     # Remove if parallelism is not desired
     parallelism: 2
     environment:
-      _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1"
+      _JAVA_OPTIONS: "-Xmx2g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     steps:
