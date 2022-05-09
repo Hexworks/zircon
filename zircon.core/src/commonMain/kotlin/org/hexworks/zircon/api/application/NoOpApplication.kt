@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.application
 
-import org.hexworks.cobalt.core.behavior.DisposeState
-import org.hexworks.cobalt.core.behavior.DisposedByHand
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.DisposedByHand
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.grid.TileGrid

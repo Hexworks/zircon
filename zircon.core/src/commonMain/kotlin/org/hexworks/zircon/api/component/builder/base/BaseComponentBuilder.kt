@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component.builder.base
 
-import org.hexworks.cobalt.core.behavior.DisposeState
-import org.hexworks.cobalt.core.behavior.NotDisposed
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory

@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 /**
- * JVM utilities for loading [REXPaintResource]s from files.
+ * JVM utilities for loading [REXPaintResource]s from files **on the JVM**.
  */
 object REXPaintResources {
 

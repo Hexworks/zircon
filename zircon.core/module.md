@@ -1,8 +1,10 @@
 # Module zircon.core
 
-This module contains the core implementation files of *Zircon*.
+This module contains the core implementation files of *Zircon*. This module is multiplatform, so it can be compiled to any target. If you're looking for a platform-specific renderer implementation take a look at the other modules in the root folder:
 
-It also contains a multiplatform renderer implementation that uses [KorGE](https://github.com/korlibs/korge).
+- `zircon.jvm.libgdx`
+- `zircon.jvm.swing`
+- `zircon.mpp.korge`
 
 Please refer to the [README](https://github.com/Hexworks/zircon/blob/master/README.md) for details about how to set *Zircon* up in your project.
 

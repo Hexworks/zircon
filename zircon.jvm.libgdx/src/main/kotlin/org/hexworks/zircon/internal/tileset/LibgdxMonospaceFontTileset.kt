@@ -1,30 +1,24 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType.CHARACTER_TILE
-import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.util.Assets
-import org.w3c.dom.Text
-import kotlin.math.abs
 
 
 class LibgdxMonospaceFontTileset(private val resource: TilesetResource) : Tileset<SpriteBatch> {
 
-    override val id: UUID = UUIDFactory.randomUUID()
+    override val id: UUID = UUID.randomUUID()
     override val targetType = SpriteBatch::class
     override val width: Int
         get() = resource.width

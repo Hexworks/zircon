@@ -4,13 +4,12 @@ plugins {
 
 repositories {
     mavenCentral()
-    jcenter()
-}
-
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20")
+}
+
+kotlinDslPluginOptions {
+    experimentalWarning.set(false)
 }

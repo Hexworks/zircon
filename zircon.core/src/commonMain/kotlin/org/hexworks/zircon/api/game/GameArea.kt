@@ -2,7 +2,7 @@
 
 package org.hexworks.zircon.api.game
 
-import org.hexworks.cobalt.core.behavior.Disposable
+import org.hexworks.cobalt.core.api.behavior.Disposable
 import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block

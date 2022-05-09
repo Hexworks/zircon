@@ -19,7 +19,7 @@ class LibgdxGame(
     private var started: Boolean = false
 ) : Game() {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private val tileset = appConfig.defaultTileset
 

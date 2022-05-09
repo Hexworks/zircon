@@ -6,9 +6,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.graphics.GL20
 import org.hexworks.cobalt.logging.api.LoggerFactory
-
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.LibgdxApplications
@@ -16,14 +16,13 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.screen.ScreenBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.internal.application.LibgdxApplication
 import org.hexworks.zircon.internal.listeners.ZirconInputListener
 
 
 object LibgdxPlayground : Game() {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private lateinit var zirconApplication: LibgdxApplication
 

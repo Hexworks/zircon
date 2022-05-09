@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.animation
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -21,7 +20,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
     override val closedValue: Property<Boolean> = false.toProperty()
 
-    private val id = UUIDFactory.randomUUID()
+    private val id = UUID.randomUUID()
     private val debug = RuntimeConfig.config.debugMode
     private val logger = LoggerFactory.getLogger(this::class)
 

@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -32,7 +31,7 @@ class ComponentStub(
     override val relativePosition: Position = position,
     override val contentOffset: Position = position,
     override val contentSize: Size = size,
-    override val id: UUID = UUIDFactory.randomUUID(),
+    override val id: UUID = UUID.randomUUID(),
 ) : InternalComponent {
 
     override val disabledProperty: Property<Boolean> = false.toProperty()

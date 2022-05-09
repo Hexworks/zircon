@@ -1,17 +1,17 @@
-@file:Suppress("UnstableApiUsage")
-
 import Libraries.caffeine
 import Libraries.cobaltCore
 import Libraries.kotlinxCollectionsImmutable
 import Libraries.kotlinxCoroutines
-import Libraries.kotlinxCoroutinesTest
 import Libraries.logbackClassic
 import Libraries.slf4jApi
 import Libraries.cache4k
 import Libraries.snakeYaml
 import Libraries.assertjCore
+import Libraries.kotlinReflect
 import Libraries.kotlinTestAnnotationsCommon
 import Libraries.kotlinTestCommon
+import Libraries.kotlinTestJs
+import Libraries.kotlinTestJunit
 import Libraries.logbackCore
 import Libraries.mockitoCore
 import Libraries.mockitoKotlin
@@ -21,9 +21,9 @@ import java.net.URL
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
+    id("org.jetbrains.dokka")
 }
 
 kotlin {
@@ -39,12 +39,22 @@ kotlin {
         }
     }
 
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(kotlin("reflect"))
+    js(BOTH) {
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                }
+            }
+        }
+        nodejs()
+    }
 
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
                 api(kotlinxCoroutines)
+                api(kotlinReflect)
                 api(kotlinxCollectionsImmutable)
 
                 api(cobaltCore)
@@ -55,9 +65,9 @@ kotlin {
             dependencies {
                 implementation(kotlinTestCommon)
                 implementation(kotlinTestAnnotationsCommon)
-                implementation(kotlinxCoroutinesTest)
             }
         }
+
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect"))
@@ -69,14 +79,20 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
+                implementation(kotlinTestJunit)
 
                 implementation(mockitoCore)
                 implementation(mockitoKotlin)
                 implementation(assertjCore)
                 implementation(logbackClassic)
                 implementation(logbackCore)
+            }
+        }
+
+        val jsMain by getting {}
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlinTestJs)
             }
         }
     }

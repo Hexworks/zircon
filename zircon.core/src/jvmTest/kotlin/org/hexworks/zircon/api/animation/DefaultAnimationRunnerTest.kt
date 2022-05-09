@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.animation
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
@@ -61,7 +60,7 @@ class DefaultAnimationRunnerTest {
     @Test
     fun shouldReturnInProgressWhenAnimationIsInProgress() {
 
-        val uuid = UUIDFactory.randomUUID()
+        val uuid = UUID.randomUUID()
         val lock = ReentrantLock()
         val cond = lock.newCondition()
 
@@ -76,7 +75,7 @@ class DefaultAnimationRunnerTest {
     @Test
     fun shouldReturnFinishedWhenAnimationIsFinished() {
 
-        val uuid = UUIDFactory.randomUUID()
+        val uuid = UUID.randomUUID()
         val currFrame = DefaultAnimationFrame(Size.one(), listOf(), 1)
 
 //        whenever(animationMock.id).thenReturn(uuid)
@@ -89,10 +88,12 @@ class DefaultAnimationRunnerTest {
 //        whenever(animationMock.hasNextFrame()).thenReturn(false)
 
         val grid = TileGridBuilder.newBuilder()
-            .withConfig(AppConfig.newBuilder()
-                .withSize(50, 50)
-                .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
-                .build())
+            .withConfig(
+                AppConfig.newBuilder()
+                    .withSize(50, 50)
+                    .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
+                    .build()
+            )
             .build()
 
         val result = target.start(animationMock)
