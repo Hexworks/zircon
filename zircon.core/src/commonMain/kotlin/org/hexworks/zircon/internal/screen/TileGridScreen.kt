@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
@@ -32,7 +32,6 @@ import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 import org.hexworks.zircon.internal.event.ZirconEvent.ScreenSwitch
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
@@ -68,8 +67,8 @@ class TileGridScreen(
     // we make this random because we don't know which one is the active
     // yet, and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
-    private var activeScreenId = UUIDFactory.randomUUID()
-    private val id = UUIDFactory.randomUUID()
+    private var activeScreenId = UUID.randomUUID()
+    private val id = UUID.randomUUID()
 
     override var application: InternalApplication
         get() = tileGrid.application.asInternal()

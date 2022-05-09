@@ -9,7 +9,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 /**
- * Takes a GZIP-compressed [ByteArray] and returns it decompressed.
+ * Takes a GZIP-compressed [ByteArray] and returns it decompressed. This
+ * function can only be used on the **JVM**.
  */
 fun decompressGZIPByteArray(compressedData: ByteArray): ByteArray {
     ByteArrayInputStream(compressedData).use { bin ->

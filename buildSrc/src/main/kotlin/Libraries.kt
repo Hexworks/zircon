@@ -18,7 +18,6 @@ object Libraries {
 
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect"
     const val kotlinxCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
-    const val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion"
     const val kotlinxCollectionsImmutable =
         "org.jetbrains.kotlinx:kotlinx-collections-immutable:$kotlinxCollectionsImmutableVersion"
 
@@ -41,8 +40,11 @@ object Libraries {
     const val logbackClassic = "ch.qos.logback:logback-classic:$logbackVersion"
     const val filters = "com.jhlabs:filters:$filtersVersion"
 
+    // TEST
     const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common"
     const val kotlinTestAnnotationsCommon = "org.jetbrains.kotlin:kotlin-test-annotations-common"
+    const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit"
+    const val kotlinTestJs = "org.jetbrains.kotlin:kotlin-test-js"
 
     const val logbackCore = "ch.qos.logback:logback-core:$logbackVersion"
 

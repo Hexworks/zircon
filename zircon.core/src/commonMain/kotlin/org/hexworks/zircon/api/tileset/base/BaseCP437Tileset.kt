@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.tileset.base
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -34,7 +33,7 @@ abstract class BaseCP437Tileset<S : Any, T : Any>(
     override val targetType: KClass<S>,
 ) : Tileset<S> {
 
-    override val id: UUID = UUIDFactory.randomUUID()
+    override val id: UUID = UUID.randomUUID()
     override val width: Int
         get() = resource.width
     override val height: Int

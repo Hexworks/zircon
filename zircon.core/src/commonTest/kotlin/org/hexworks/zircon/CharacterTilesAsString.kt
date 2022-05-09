@@ -1,7 +1,7 @@
 package org.hexworks.zircon
 
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileComposite
 
 /**
@@ -24,7 +24,7 @@ fun TileComposite.convertCharacterTilesToString(padToSize: Size = Size.zero()): 
             sb.append(' ');
         }
 
-        sb.setCharAt(x, (tile as CharacterTile).character)
+        sb[x] = tile.asCharacterTileOrElse { Tile.empty() }.character
     }
     return strings.joinToString(separator = "\n") { it.toString() }
 }

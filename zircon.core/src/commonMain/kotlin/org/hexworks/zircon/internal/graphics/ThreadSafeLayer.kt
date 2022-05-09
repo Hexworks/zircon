@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
@@ -20,20 +19,16 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.jvm.Synchronized
 
 open class ThreadSafeLayer internal constructor(
-    initialPosition: Position,
-    initialContents: TileGraphics,
-    private val movable: Movable = DefaultMovable(
-        position = initialPosition,
-        size = initialContents.size
-    ),
-    private val backend: InternalTileGraphics = FastTileGraphics(
+    initialPosition: Position, initialContents: TileGraphics, private val movable: Movable = DefaultMovable(
+        position = initialPosition, size = initialContents.size
+    ), private val backend: InternalTileGraphics = FastTileGraphics(
         initialSize = initialContents.size,
         initialTileset = initialContents.tileset,
         initialTiles = initialContents.tiles
     )
 ) : Clearable, InternalLayer, Movable by movable, TileGraphics by backend {
 
-    final override val id: UUID = UUIDFactory.randomUUID()
+    final override val id: UUID = UUID.randomUUID()
 
     final override val size: Size
         get() = backend.size
@@ -129,8 +124,7 @@ open class ThreadSafeLayer internal constructor(
     @Synchronized
     final override fun createCopy(): Layer {
         return ThreadSafeLayer(
-            initialPosition = position,
-            initialContents = tiles.toTileGraphics(size, tileset)
+            initialPosition = position, initialContents = tiles.toTileGraphics(size, tileset)
         ).apply {
             isHidden = isHidden
         }
@@ -154,11 +148,7 @@ open class ThreadSafeLayer internal constructor(
     final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, backend)
 
     override fun toString(): String {
-        return DrawSurfaces.tileGraphicsBuilder()
-            .withSize(size)
-            .withTiles(tiles)
-            .build()
-            .toString()
+        return DrawSurfaces.tileGraphicsBuilder().withSize(size).withTiles(tiles).build().toString()
     }
 
 }

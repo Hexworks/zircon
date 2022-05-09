@@ -11,7 +11,8 @@ import org.yaml.snakeyaml.constructor.Constructor
 import java.io.InputStream
 
 /**
- * This object contains utility functions for loading animations from external sources (JVM).
+ * This object contains utility functions for loading animations from external sources
+ * **on the JVM**.
  */
 object AnimationResource {
 
