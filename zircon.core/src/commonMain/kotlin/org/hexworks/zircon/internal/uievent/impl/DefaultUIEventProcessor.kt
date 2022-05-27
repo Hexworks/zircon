@@ -3,13 +3,28 @@ package org.hexworks.zircon.internal.uievent.impl
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentHashMapOf
 import kotlinx.collections.immutable.persistentListOf
-import org.hexworks.cobalt.core.behavior.DisposeState
-import org.hexworks.cobalt.core.behavior.NotDisposed
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEvent
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.PreventDefault
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.StopPropagation
+import org.hexworks.zircon.api.uievent.UIEvent
+import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.UIEventSource
+import org.hexworks.zircon.api.uievent.UIEventType
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {

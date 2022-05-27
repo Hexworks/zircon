@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.tileset.impl
 
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -12,7 +12,7 @@ class VirtualTileset : Tileset<Char> {
     override val width = 16
     override val height = 16
     override val targetType = Char::class
-    override val id = UUIDFactory.randomUUID()
+    override val id = UUID.randomUUID()
 
     override fun drawTile(tile: Tile, surface: Char, position: Position) {
         fetchTextureForTile(tile)

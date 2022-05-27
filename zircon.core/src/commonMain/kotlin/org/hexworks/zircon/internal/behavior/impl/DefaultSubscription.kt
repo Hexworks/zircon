@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import kotlinx.collections.immutable.PersistentList
-import org.hexworks.cobalt.core.behavior.DisposeState
-import org.hexworks.cobalt.core.behavior.NotDisposed
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 

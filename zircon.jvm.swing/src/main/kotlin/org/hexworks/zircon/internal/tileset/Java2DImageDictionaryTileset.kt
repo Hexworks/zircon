@@ -1,14 +1,14 @@
 package org.hexworks.zircon.internal.tileset
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.resource.TileType.IMAGE_TILE
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
+import org.hexworks.zircon.internal.resource.TileType.IMAGE_TILE
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -18,7 +18,7 @@ import javax.imageio.ImageIO
 
 class Java2DImageDictionaryTileset(resource: TilesetResource) : Tileset<Graphics2D> {
 
-    override val id = UUIDFactory.randomUUID()
+    override val id = UUID.randomUUID()
     override val targetType = Graphics2D::class
     override val width = 1
     override val height = 1

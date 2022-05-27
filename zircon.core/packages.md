@@ -5,7 +5,7 @@ annotated with `@Beta` are considered a preliminary implementation, and their AP
 
 # Package org.hexworks.zircon.api.animation
 
-Contains classes that can be used to create animations. RexPaint file loading is also supported.
+Contain classes that can be used to create animations. RexPaint file loading is also supported.
 
 # Package org.hexworks.zircon.api.application
 

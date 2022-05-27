@@ -3,8 +3,6 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.Beta
-import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.application.CursorStyle
@@ -18,12 +16,10 @@ import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
-import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.impl.SwingFrame
 import org.hexworks.zircon.internal.tileset.transformer.toAWTColor
 import org.hexworks.zircon.internal.uievent.KeyboardEventListener
 import org.hexworks.zircon.internal.uievent.MouseEventListener
@@ -187,7 +183,6 @@ class SwingCanvasRenderer private constructor(
                         break@tiles
                     }
                 }
-
             }
             for ((tile, tileset) in tiles) {
                 renderTile(
@@ -251,9 +246,11 @@ class SwingCanvasRenderer private constructor(
             } else {
                 tile
             }
-            ((finalTile as? TilesetHolder)?.let {
-                tilesetLoader.loadTilesetFrom(it.tileset)
-            } ?: tileset).drawTile(
+            (
+                (finalTile as? TilesetHolder)?.let {
+                    tilesetLoader.loadTilesetFrom(it.tileset)
+                } ?: tileset
+                ).drawTile(
                 tile = finalTile,
                 surface = graphics,
                 position = position
@@ -299,7 +296,7 @@ class SwingCanvasRenderer private constructor(
 
     private fun shouldDrawCursor(): Boolean {
         return tileGrid.isCursorVisible &&
-                (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
+            (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 
     private tailrec fun initializeBufferStrategy() {

@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.LibgdxRenderer
 import org.hexworks.zircon.platform.util.SystemUtils
@@ -24,7 +23,7 @@ class LibgdxApplication(
         tileGrid.application = this
     }
 
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class)
 
     private val renderer = LibgdxRenderer(tileGrid, config.debugMode)
 

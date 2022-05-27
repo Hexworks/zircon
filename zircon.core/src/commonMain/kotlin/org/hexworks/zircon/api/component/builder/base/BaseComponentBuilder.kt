@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component.builder.base
 
-import org.hexworks.cobalt.core.behavior.DisposeState
-import org.hexworks.cobalt.core.behavior.NotDisposed
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -155,7 +155,7 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
     )
 
     protected open fun createMetadata(): ComponentMetadata {
-        if(updateOnAttach.not()) {
+        if (updateOnAttach.not()) {
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
             }
@@ -215,6 +215,5 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
         fun complete(component: Component) {
             delegate = onComponentCreated(component)
         }
-
     }
 }

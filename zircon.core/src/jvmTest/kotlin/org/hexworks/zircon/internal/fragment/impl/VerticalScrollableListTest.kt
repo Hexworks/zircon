@@ -6,12 +6,19 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
 import org.hexworks.zircon.internal.renderer.TestRenderer
+import org.junit.Ignore
 import org.junit.Test
 
+@Ignore
 class VerticalScrollableListTest {
     private val graphics: TileGraphics =
         DrawSurfaces
@@ -46,7 +53,7 @@ class VerticalScrollableListTest {
             Item 8 |
             Item 9 |
             Item 10▼
-        """.trimIndent()
+            """.trimIndent()
         )
     }
 
@@ -65,7 +72,7 @@ class VerticalScrollableListTest {
             Item 8 |
             Item 9 |
             Item 10▼
-        """.trimIndent()
+            """.trimIndent()
         )
         testRenderer.dispatch(TAB) // top arrow
         testRenderer.dispatch(TAB) // scrollbar
@@ -84,7 +91,7 @@ class VerticalScrollableListTest {
             Item 9 |
             Item 10|
             Item 11▼
-        """.trimIndent()
+            """.trimIndent()
         )
     }
 
@@ -109,7 +116,7 @@ class VerticalScrollableListTest {
             Item 18+
             Item 19+
             Item 20▼
-        """.trimIndent()
+            """.trimIndent()
         )
     }
 
@@ -136,7 +143,7 @@ class VerticalScrollableListTest {
             Item 11|
             Item 12|
             Item 13▼
-        """.trimIndent()
+            """.trimIndent()
         )
     }
 
@@ -162,7 +169,7 @@ class VerticalScrollableListTest {
             Item 11|
             Item 12|
             Item 13▼
-        """.trimIndent()
+            """.trimIndent()
         )
     }
 }

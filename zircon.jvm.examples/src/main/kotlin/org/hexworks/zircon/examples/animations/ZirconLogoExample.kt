@@ -10,9 +10,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.resource.REXPaintResource
-import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.api.resource.REXPaintResources
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
+import kotlin.jvm.JvmStatic
 
 object ZirconLogoExample {
 
@@ -21,8 +21,8 @@ object ZirconLogoExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val rex = REXPaintResource
-            .loadREXFile(ZirconLogoExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp")!!)
+        val rex =
+            REXPaintResources.loadREXFile(ZirconLogoExample::class.java.getResourceAsStream("/rex_files/zircon_logo.xp")!!)
 
         val screen = SwingApplications.startTileGrid(
             AppConfig.newBuilder()
@@ -72,16 +72,18 @@ object ZirconLogoExample {
                     size = size,
                     layers = listOf(
                         Layer.newBuilder()
-                            .withTileGraphics(img.toTileImage().transform { tc ->
-                                tc.withBackgroundColor(
-                                    tc.backgroundColor
-                                        .darkenByPercent(idx.toDouble().div(20))
-                                )
-                                    .withForegroundColor(
-                                        tc.foregroundColor
+                            .withTileGraphics(
+                                img.toTileImage().transform { tc ->
+                                    tc.withBackgroundColor(
+                                        tc.backgroundColor
                                             .darkenByPercent(idx.toDouble().div(20))
                                     )
-                            }.toTileGraphics())
+                                        .withForegroundColor(
+                                            tc.foregroundColor
+                                                .darkenByPercent(idx.toDouble().div(20))
+                                        )
+                                }.toTileGraphics()
+                            )
                             .build().asInternalLayer()
                     ),
                     repeatCount = repeat
@@ -98,7 +100,5 @@ object ZirconLogoExample {
         screen.display()
 
         screen.start(anim)
-
     }
-
 }
