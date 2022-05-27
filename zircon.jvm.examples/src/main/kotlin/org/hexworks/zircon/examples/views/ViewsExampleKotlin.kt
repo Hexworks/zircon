@@ -1,19 +1,18 @@
 package org.hexworks.zircon.examples.views
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.api.uievent.ComponentEventType.ACTIVATED
+import org.hexworks.zircon.api.view.base.BaseView
 
 object ViewsExampleKotlin {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(this::class)
 
     class InitialView(grid: TileGrid) : BaseView(grid, ColorThemes.adriftInDreams()) {
 
@@ -40,7 +39,7 @@ object ViewsExampleKotlin {
 
     class OtherView(grid: TileGrid) : BaseView(grid, ColorThemes.afterglow()) {
 
-        private val logger = LoggerFactory.getLogger(javaClass)
+        private val logger = LoggerFactory.getLogger(this::class)
 
         val dockInitial = Components.button()
             .withText("Dock initial")

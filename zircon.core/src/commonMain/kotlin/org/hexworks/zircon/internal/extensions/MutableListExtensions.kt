@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.extensions
 
-import org.hexworks.cobalt.core.behavior.Disposable
+import org.hexworks.cobalt.core.api.behavior.Disposable
 
 fun <T : Disposable> MutableList<T>.disposeAll() {
     forEach {

@@ -20,7 +20,7 @@ import java.io.File
 import java.io.InputStream
 import javax.imageio.ImageIO
 
-@Suppress("unused")
+@Suppress("unused", "DEPRECATION")
 class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Graphics2D> {
 
     override val id: UUID = resource.id

@@ -40,31 +40,19 @@ object ModifiersExampleKotlin {
         screen.putTile(randomTile().withAddedModifiers(crop(6, 6, 10, 10)))
         screen.putTile(randomTile().withAddedModifiers(crop(6, 6, 10, 10)))
 
-
         screen.cursorPosition = Position.create(5, 10)
 
-        screen.putTile(randomTile().withAddedModifiers(fadeIn()))
-        screen.putTile(randomTile().withAddedModifiers(fadeOut()))
-        screen.putTile(randomTile().withAddedModifiers(fadeInOut()))
-        screen.putTile(randomTile().withAddedModifiers(Modifiers.delay(2000L)))
+//        screen.putTile(randomTile().withAddedModifiers(fadeIn()))
+//        screen.putTile(randomTile().withAddedModifiers(fadeOut()))
+//        screen.putTile(randomTile().withAddedModifiers(fadeInOut()))
+//        screen.putTile(randomTile().withAddedModifiers(Modifiers.delay(2000L)))
     }
 
     private fun randomTile() = Tile.createCharacterTile(
-        'x', StyleSet.newBuilder().apply {
+        'x',
+        StyleSet.newBuilder().apply {
             foregroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]
             backgroundColor = ANSITileColor.values()[random.nextInt(ANSITileColor.values().size)]
         }.build()
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-

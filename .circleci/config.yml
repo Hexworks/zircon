@@ -9,7 +9,7 @@ workflows:
 jobs: # a collection of steps
   build:
     # Remove if parallelism is not desired
-    parallelism: 2
+    parallelism: 1
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"

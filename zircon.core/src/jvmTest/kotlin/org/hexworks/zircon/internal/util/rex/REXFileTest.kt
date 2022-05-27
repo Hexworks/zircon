@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.util.rex
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.resource.REXPaintResources.toREXFile
 import org.junit.Test
 
 class REXFileTest {
@@ -39,9 +40,9 @@ class REXFileTest {
             ba[i] = b.toByte()
         }
 
-        val file = REXFile.fromByteArray(ba)
+        val file = ba.toREXFile()
 
-        assertThat(file.getVersion()).isEqualTo(1)
-        assertThat(file.getLayers().size).isEqualTo(file.getNumberOfLayers())
+        assertThat(file.version).isEqualTo(1)
+        assertThat(file.layers.size).isEqualTo(file.numberOfLayers)
     }
 }

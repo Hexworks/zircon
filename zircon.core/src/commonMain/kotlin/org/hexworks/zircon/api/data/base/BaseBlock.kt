@@ -3,9 +3,14 @@ package org.hexworks.zircon.api.data.base
 import kotlinx.collections.immutable.PersistentMap
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
-import org.hexworks.zircon.api.data.BlockTileType.*
+import org.hexworks.zircon.api.data.BlockTileType.BACK
+import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
+import org.hexworks.zircon.api.data.BlockTileType.CONTENT
+import org.hexworks.zircon.api.data.BlockTileType.FRONT
+import org.hexworks.zircon.api.data.BlockTileType.LEFT
+import org.hexworks.zircon.api.data.BlockTileType.RIGHT
+import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.platform.extension.getOrDefault
 
 /**
  * Base class which implements common functionality of
@@ -18,43 +23,43 @@ abstract class BaseBlock<T : Tile>(
 ) : Block<T> {
 
     override var top: T
-        get() = tiles.getOrDefault(TOP, emptyTile)
+        get() = tiles[TOP] ?: emptyTile
         set(value) {
             tiles = tiles.put(TOP, value)
         }
 
     override var bottom: T
-        get() = tiles.getOrDefault(BOTTOM, emptyTile)
+        get() = tiles[BOTTOM] ?: emptyTile
         set(value) {
             tiles = tiles.put(BOTTOM, value)
         }
 
     override var front: T
-        get() = tiles.getOrDefault(FRONT, emptyTile)
+        get() = tiles[FRONT] ?: emptyTile
         set(value) {
             tiles = tiles.put(FRONT, value)
         }
 
     override var back: T
-        get() = tiles.getOrDefault(BACK, emptyTile)
+        get() = tiles[BACK] ?: emptyTile
         set(value) {
             tiles = tiles.put(BACK, value)
         }
 
     override var left: T
-        get() = tiles.getOrDefault(LEFT, emptyTile)
+        get() = tiles[LEFT] ?: emptyTile
         set(value) {
             tiles = tiles.put(LEFT, value)
         }
 
     override var right: T
-        get() = tiles.getOrDefault(RIGHT, emptyTile)
+        get() = tiles[RIGHT] ?: emptyTile
         set(value) {
             tiles = tiles.put(RIGHT, value)
         }
 
     override var content: T
-        get() = tiles.getOrDefault(CONTENT, emptyTile)
+        get() = tiles[CONTENT] ?: emptyTile
         set(value) {
             tiles = tiles.put(CONTENT, value)
         }

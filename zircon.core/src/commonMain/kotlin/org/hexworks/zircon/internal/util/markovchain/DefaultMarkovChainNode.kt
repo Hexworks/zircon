@@ -1,8 +1,6 @@
 package org.hexworks.zircon.internal.util.markovchain
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
-
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import kotlin.random.Random
 
@@ -14,7 +12,7 @@ class DefaultMarkovChainNode<T : Any> internal constructor(
 
     private val nextNodes: MutableList<Pair<Double, MarkovChainNode<T>>> = mutableListOf()
 
-    override val id: UUID = UUIDFactory.randomUUID()
+    override val id: UUID = UUID.randomUUID()
 
     override fun next(): MarkovChainNode<T> {
         val rnd: Int = random.nextInt(accuracy)

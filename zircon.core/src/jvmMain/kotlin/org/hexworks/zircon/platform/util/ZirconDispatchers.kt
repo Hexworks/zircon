@@ -7,5 +7,4 @@ import java.util.concurrent.Executors
 actual object ZirconDispatchers {
 
     actual fun single(): CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-
 }

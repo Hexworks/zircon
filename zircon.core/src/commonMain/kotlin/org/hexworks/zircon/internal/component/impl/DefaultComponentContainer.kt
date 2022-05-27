@@ -40,7 +40,7 @@ class DefaultComponentContainer(
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    @ExperimentalContracts
+    @OptIn(ExperimentalContracts::class)
     @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
         return if (isActive.value) {

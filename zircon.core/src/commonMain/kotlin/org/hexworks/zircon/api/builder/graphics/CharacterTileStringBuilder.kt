@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import org.hexworks.cobalt.core.platform.factory.UUIDFactory
+import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
@@ -96,7 +96,7 @@ class CharacterTileStringBuilder private constructor(
 
     companion object {
 
-        private val NO_VALUE = UUIDFactory.randomUUID().toString()
+        private val NO_VALUE = UUID.randomUUID().toString()
 
         /**
          * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.CharacterTileString]s.
