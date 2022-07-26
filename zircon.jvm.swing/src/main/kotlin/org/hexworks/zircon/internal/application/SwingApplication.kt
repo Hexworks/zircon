@@ -17,7 +17,7 @@ class SwingApplication(
         System.setProperty("sun.java2d.opengl", "true")
         tileGrid.application = this
         renderer.onFrameClosed {
-            stop()
+            close()
         }
     }
 }

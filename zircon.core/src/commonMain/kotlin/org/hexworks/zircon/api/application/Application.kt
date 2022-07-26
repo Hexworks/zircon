@@ -1,41 +1,20 @@
 package org.hexworks.zircon.api.application
 
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.application.InternalApplication
 
 /**
  * An [Application] enhances a [TileGrid] with continuous rendering,
- * and some additional functionality for starting, pausing, resuming and
- * stopping it.
+ * and some additional functionality such as rendering callbacks.
  */
-interface Application {
+interface Application : Closeable {
 
     /**
      * The tile grid that's being continuously rendered by this [Application].
      */
     val tileGrid: TileGrid
-
-    /**
-     * Initializes this [Application] and starts continuous rendering.
-     */
-    fun start()
-
-    /**
-     * Pauses rendering.
-     */
-    fun pause()
-
-    /**
-     * Resumes rendering.
-     */
-    fun resume()
-
-    /**
-     * Stops this [Application] and frees all of its resources.
-     * Once an [Application] is stopped it can't be started again.
-     */
-    fun stop()
 
     /**
      * Adds a callback which will be called **before** every render.

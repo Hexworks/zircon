@@ -8,7 +8,10 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.hexworks.cobalt.databinding.api.binding.bindNot
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
@@ -36,9 +39,6 @@ abstract class BaseApplication(
     private val logger = LoggerFactory.getLogger(this::class)
     private val renderIntervalMs = 1000.div(config.fpsLimit)
 
-    private var stopped = false
-    private var running = false
-
     private var lastRender = 0L
 
     data class Command(val fn: suspend () -> Unit)
@@ -46,27 +46,27 @@ abstract class BaseApplication(
     private val channel = Channel<Command>()
     private var renderLoop: Job? = null
 
+    final override val closed: Boolean
+        get() = closedValue.value
+    final override val closedValue: Property<Boolean> = false.toProperty()
+
+    private final val running = closedValue.bindNot()
+
     init {
         coroutineScope.launch {
             for (cmd in channel) {
                 cmd.fn()
             }
         }
-    }
-
-    override fun start() {
         executeCommand {
-            if (stopped.not() && running.not()) {
-                renderer.create()
-                running = true
-                startRenderLoop()
-            }
+            renderer.create()
+            startRenderLoop()
         }
     }
 
     private fun startRenderLoop() {
         renderLoop = executeCommand {
-            while (!stopped && running) {
+            while (running.value) {
                 try {
                     val now = SystemUtils.getCurrentTimeMs()
                     val elapsedTimeMs = now - lastRender
@@ -86,18 +86,9 @@ abstract class BaseApplication(
         }
     }
 
-    override fun pause() {
-        renderLoop?.cancel()
-    }
-
-    override fun resume() {
-        startRenderLoop()
-    }
-
-    override fun stop() {
+    override fun close() {
         executeCommand {
-            stopped = true
-            running = false
+            closedValue.value = true
             renderLoop?.cancel()
             renderer.close()
             tileGrid.close()

@@ -2,6 +2,9 @@ package org.hexworks.zircon.api.application
 
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.DisposedByHand
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.grid.TileGrid
@@ -15,24 +18,21 @@ import org.hexworks.zircon.internal.event.ZirconScope
 class NoOpApplication(
     override val config: AppConfig,
     override val eventBus: EventBus,
-    override val eventScope: ZirconScope
+    override val eventScope: ZirconScope,
 ) : InternalApplication {
 
     override lateinit var tileGrid: TileGrid
 
-    override fun start() {}
-
-    override fun pause() {}
-
-    override fun resume() {}
-
-    override fun stop() {}
+    override val closedValue: Property<Boolean> = false.toProperty()
 
     override fun beforeRender(listener: (RenderData) -> Unit) = NoOpSubscription
 
     override fun afterRender(listener: (RenderData) -> Unit) = NoOpSubscription
 
     override fun asInternal() = this
+    override fun close() {
+        closedValue.value = true
+    }
 
     object NoOpSubscription : Subscription {
         override val disposeState: DisposeState = DisposedByHand
