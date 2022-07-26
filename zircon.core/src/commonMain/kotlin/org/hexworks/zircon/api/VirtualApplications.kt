@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.application.impl.VirtualApplication
-import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
 
 object VirtualApplications {
 
@@ -28,7 +28,7 @@ object VirtualApplications {
     fun startApplication(
         appConfig: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
-    ): Application = buildApplication(appConfig, eventBus).apply { start() }
+    ): Application = buildApplication(appConfig, eventBus)
 
     /**
      * Builds and starts a new [Application] and returns its [TileGrid].

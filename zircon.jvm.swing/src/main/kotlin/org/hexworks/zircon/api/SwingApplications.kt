@@ -74,9 +74,7 @@ object SwingApplications {
         eventBus = eventBus,
         tileGrid = tileGrid,
         renderer = renderer
-    ).also {
-        it.start()
-    }
+    )
 
 
     /**
@@ -110,7 +108,7 @@ object SwingApplications {
      * Creating a [TileGrid] without an [Application] is a **beta** feature. Feel free to report
      * a bug if it is not working [here](https://github.com/Hexworks/zircon/issues/new?assignees=&labels=&template=bug_report.md&title=).
      */
-    
+
     @JvmStatic
     @JvmOverloads
     fun createTileGrid(
@@ -134,7 +132,7 @@ object SwingApplications {
      * Creating a [Renderer] without an [Application] is a **beta** feature. Feel free to report
      * a bug if it is not working [here](https://github.com/Hexworks/zircon/issues/new?assignees=&labels=&template=bug_report.md&title=).
      */
-    
+
     @JvmStatic
     @JvmOverloads
     fun createRenderer(

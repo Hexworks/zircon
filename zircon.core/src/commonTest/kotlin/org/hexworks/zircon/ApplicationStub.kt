@@ -1,5 +1,7 @@
 package org.hexworks.zircon
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.application.AppConfig
@@ -15,30 +17,11 @@ class ApplicationStub : InternalApplication {
     override var eventScope: ZirconScope = ZirconScope()
     override lateinit var tileGrid: TileGrid
 
-    var started = false
-        private set
-    var paused = false
-        private set
-    var resumed = false
-        private set
-    var stopped = false
-        private set
-
-    override fun start() {
-        started = true
+    override val closedValue: Property<Boolean> = false.toProperty()
+    override fun close() {
+        closedValue.value = true
     }
 
-    override fun pause() {
-        paused = true
-    }
-
-    override fun resume() {
-        resumed = true
-    }
-
-    override fun stop() {
-        stopped = true
-    }
 
     override fun asInternal() = this
 
