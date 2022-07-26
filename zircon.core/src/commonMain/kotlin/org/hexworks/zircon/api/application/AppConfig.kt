@@ -32,16 +32,6 @@ class AppConfig internal constructor(
      */
     val blinkLengthInMilliSeconds: Long,
     /**
-     * The [CursorStyle] to be used when the cursor is displayed.
-     * Default is [CursorStyle.FIXED_BACKGROUND].
-     */
-    val cursorStyle: CursorStyle,
-    /**
-     * The [TileColor] to be used when drawing a cursor.
-     * Default is [TileColor.defaultForegroundColor()] (black).
-     */
-    val cursorColor: TileColor,
-    /**
      * Controls whether the cursor should be blinking when rendered.
      * Default is `false`
      */
