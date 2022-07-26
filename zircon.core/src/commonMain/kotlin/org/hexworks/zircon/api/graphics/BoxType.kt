@@ -1,9 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.Beta
-
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 enum class BoxType(
     val topLeft: Char,
     val topRight: Char,

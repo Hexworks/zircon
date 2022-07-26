@@ -2,7 +2,6 @@
 
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.GridPosition
@@ -125,7 +124,7 @@ interface Position : Comparable<Position> {
      * Turns this [Position] to a [PixelPosition]. Has no effect if
      * `this` object is a [PixelPosition].
      */
-    @Beta
+    
     fun toPixelPosition(tileset: TilesetResource): PixelPosition
 
     /**

@@ -2,7 +2,6 @@
 
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
@@ -10,7 +9,7 @@ import org.hexworks.zircon.api.graphics.Layer
 /**
  * Stores information about a single animation frame.
  */
-@Beta
+
 interface AnimationFrame {
 
     val size: Size

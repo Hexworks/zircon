@@ -5,7 +5,6 @@ import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
@@ -16,7 +15,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.internal.game.InternalGameArea
 
-@Beta
+
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialVisibleSize: Size3D,

@@ -12,32 +12,29 @@ import org.hexworks.zircon.api.dsl.component.header
 import org.hexworks.zircon.api.dsl.component.plus
 import org.hexworks.zircon.api.extensions.toScreen
 
-class UpdateOnAttachExampleKotlin {
+object UpdateOnAttachExampleKotlin {
 
-    companion object {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val screen = SwingApplications.startTileGrid().toScreen()
 
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val screen = SwingApplications.startTileGrid().toScreen()
+        val box = buildVbox {
+            spacing = 1
+            alignment = ComponentAlignments.alignmentWithin(screen, CENTER)
+            preferredSize = Size.create(20, 10)
 
-            val box = buildVbox {
-                spacing = 1
-                alignment = ComponentAlignments.alignmentWithin(screen, CENTER)
-                preferredSize = Size.create(20, 10)
-
-                header { +"Same style" }
-            }
-
-            screen.addComponent(box)
-
-            box + buildLabel {
-                +"Different style"
-                colorTheme = ColorThemes.cherryBear()
-                tileset = TrueTypeFontResources.ibmBios(16)
-                updateOnAttach = false
-            }
-
-            screen.display()
+            header { +"Same style" }
         }
+
+        screen.addComponent(box)
+
+        box + buildLabel {
+            +"Different style"
+            colorTheme = ColorThemes.cherryBear()
+            tileset = TrueTypeFontResources.ibmBios(16)
+            updateOnAttach = false
+        }
+
+        screen.display()
     }
 }

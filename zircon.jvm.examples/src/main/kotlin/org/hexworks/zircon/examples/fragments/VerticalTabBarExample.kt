@@ -5,19 +5,17 @@ import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.component.buildHbox
 import org.hexworks.zircon.api.dsl.fragment.buildVerticalTabBar
-import org.hexworks.zircon.examples.base.ComponentExampleKotlin
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
-import org.hexworks.zircon.examples.components.ButtonsExampleKotlin
-import org.hexworks.zircon.examples.components.DataBindingExampleKotlin
-import org.hexworks.zircon.examples.components.MarginExampleKotlin
+import org.hexworks.zircon.examples.base.ComponentExample
+import org.hexworks.zircon.examples.base.OneColumnComponentExample
+import org.hexworks.zircon.examples.components.ButtonsExample
+import org.hexworks.zircon.examples.components.DataBindingExample
+import org.hexworks.zircon.examples.components.MarginExample
 
-class VerticalTabBarExample : OneColumnComponentExampleKotlin() {
+object VerticalTabBarExample : OneColumnComponentExample() {
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            VerticalTabBarExample().show("Vertical Tab Bar")
-        }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        VerticalTabBarExample.show("Vertical Tab Bar")
     }
 
     override fun build(box: VBox) {
@@ -30,23 +28,23 @@ class VerticalTabBarExample : OneColumnComponentExampleKotlin() {
                 tab {
                     key = "buttons"
                     label = "Buttons"
-                    content = ButtonsExampleKotlin().wrap(tabContentSize)
+                    content = ButtonsExample.wrap(tabContentSize)
                 }
                 tab {
                     key = "bindings"
                     label = "Bindings"
-                    content = DataBindingExampleKotlin().wrap(tabContentSize)
+                    content = DataBindingExample.wrap(tabContentSize)
                 }
                 tab {
                     key = "margins"
                     label = "Margins"
-                    content = MarginExampleKotlin().wrap(tabContentSize)
+                    content = MarginExample().wrap(tabContentSize)
                 }
             }
         )
     }
 
-    private fun ComponentExampleKotlin.wrap(size: Size): HBox {
+    private fun ComponentExample.wrap(size: Size): HBox {
         val example = this
         return buildHbox {
             preferredSize = size

@@ -1,12 +1,10 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.Beta
-
 /**
  * Represents the states an [Animation] can be in.
  */
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 enum class AnimationState {
 
     /**

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.game
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.internal.game.GameAreaRenderer
 import org.hexworks.zircon.internal.game.impl.TopDownFrontGameAreaRenderer
 import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
@@ -11,7 +10,7 @@ import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
  * for more info.
  */
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 enum class ProjectionMode(
     val gameAreaRenderer: GameAreaRenderer
 ) {

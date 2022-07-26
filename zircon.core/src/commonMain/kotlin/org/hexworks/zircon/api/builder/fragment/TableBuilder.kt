@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Icon
@@ -22,7 +21,7 @@ import org.hexworks.zircon.internal.fragment.impl.TableColumn
 import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-@Beta
+
 class TableBuilder<T : Any> private constructor(
     var data: ObservableList<T>? = null,
     var columns: List<TableColumn<T, *, *>> = listOf(),

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
@@ -10,7 +9,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 data class MarginDecorationRenderer(
     val top: Int,
     val right: Int,

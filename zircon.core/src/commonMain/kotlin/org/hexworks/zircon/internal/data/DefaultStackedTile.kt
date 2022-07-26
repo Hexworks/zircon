@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.data
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
@@ -11,7 +10,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 data class DefaultStackedTile(
     override val baseTile: Tile,
     private val rest: PersistentList<Tile> = persistentListOf()

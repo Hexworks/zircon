@@ -1,12 +1,8 @@
 package org.hexworks.zircon.internal.data
 
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.color.TileColor
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.GraphicalTile
-import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -18,7 +14,7 @@ import org.hexworks.zircon.internal.resource.TileType
  * Only use it if you need the speed and you can be really cautious.
  */
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-@Beta
+
 class FastStackedTile(
     initialTiles: List<Tile> = listOf(),
     initialCapacity: Int = initialTiles.size

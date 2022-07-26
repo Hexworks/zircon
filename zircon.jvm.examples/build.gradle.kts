@@ -13,7 +13,6 @@ kotlin {
     dependencies {
         implementation(project(":zircon.core"))
         implementation(project(":zircon.jvm.swing"))
-        implementation(project(":zircon.jvm.libgdx"))
         implementation("org.openjdk.jol:jol-core:0.13")
 
         with(Libraries) {

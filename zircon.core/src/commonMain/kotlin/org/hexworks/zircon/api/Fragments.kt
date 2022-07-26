@@ -23,28 +23,28 @@ object Fragments {
     /**
      * Creates a [VerticalTabBarBuilder] to create [TabBar]s.
      */
-    @Beta
+    
     @JvmStatic
     fun verticalTabBar() = VerticalTabBarBuilder.newBuilder()
 
     /**
      * Creates a [HorizontalTabBarBuilder] to create [TabBar]s.
      */
-    @Beta
+    
     @JvmStatic
     fun horizontalTabBar() = HorizontalTabBarBuilder.newBuilder()
 
     /**
      * Creates a [MenuBarBuilder] to create [MenuBar]s.
      */
-    @Beta
+    
     @JvmStatic
     fun <T : Any> menuBar() = MenuBarBuilder.newBuilder<T>()
 
     /**
      * Creates a new [TableBuilder] to build a [Table] with its [TableColumns].
      */
-    @Beta
+    
     @JvmStatic
     fun <T : Any> table(): TableBuilder<T> = TableBuilder.newBuilder()
 

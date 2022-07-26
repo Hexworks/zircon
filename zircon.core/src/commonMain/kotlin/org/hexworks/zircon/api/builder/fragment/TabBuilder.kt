@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
@@ -11,7 +10,7 @@ import org.hexworks.zircon.internal.fragment.impl.TabData
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
-@Beta
+
 @ZirconDsl
 class TabBuilder private constructor(
     var key: String? = null,
