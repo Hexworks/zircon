@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
@@ -9,7 +8,7 @@ import org.hexworks.zircon.internal.fragment.impl.TableColumn
 import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-@Beta
+
 class TableColumnBuilder<T : Any, V : Any, C : Component> private constructor(
     /**
      * The name of this column. It will be used as table header.

@@ -3,7 +3,6 @@
 package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.core.api.behavior.Disposable
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
@@ -17,7 +16,7 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * have 6 sides (all optional), and a content [Tile] within the voxel itself (optional as well).
  * If it is no longer used it should be [dispose]d to free resources.
  */
-@Beta
+
 interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
 
     /**

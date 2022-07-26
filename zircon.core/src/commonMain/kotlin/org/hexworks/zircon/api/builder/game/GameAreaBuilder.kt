@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.game
 
 import kotlinx.collections.immutable.toPersistentMap
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
@@ -9,11 +8,10 @@ import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.game.GameAreaTileFilter
-import org.hexworks.zircon.api.game.ProjectionMode
 import org.hexworks.zircon.internal.game.impl.DefaultGameArea
 import kotlin.jvm.JvmStatic
 
-@Beta
+
 @Suppress("unused", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
 class GameAreaBuilder<T : Tile, B : Block<T>> private constructor(
     private var actualSize: Size3D = Size3D.one(),

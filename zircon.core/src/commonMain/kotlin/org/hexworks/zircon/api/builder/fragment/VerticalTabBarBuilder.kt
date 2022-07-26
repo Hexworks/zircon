@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.TabBar
@@ -9,7 +8,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultVerticalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 import kotlin.jvm.JvmStatic
 
-@Beta
+
 class VerticalTabBarBuilder private constructor(
     size: Size = Size.unknown(),
     defaultSelected: String? = null,

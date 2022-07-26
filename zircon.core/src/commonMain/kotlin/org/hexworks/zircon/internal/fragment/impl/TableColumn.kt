@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.component.buildHeader
@@ -15,7 +14,7 @@ import org.hexworks.zircon.api.fragment.TableColumn
  * @param V the type of the value of each cell in this column
  * @param C type of the [Component] used to represent each cell
  */
-@Beta
+
 class TableColumn<T : Any, V : Any, C : Component> internal constructor(
     override val name: String,
     override val width: Int,

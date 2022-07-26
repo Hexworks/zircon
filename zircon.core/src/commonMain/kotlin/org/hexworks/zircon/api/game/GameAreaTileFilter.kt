@@ -2,13 +2,12 @@
 
 package org.hexworks.zircon.api.game
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.data.TileBuilder
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
-@Beta
+
 interface GameAreaTileFilter {
 
     fun transform(

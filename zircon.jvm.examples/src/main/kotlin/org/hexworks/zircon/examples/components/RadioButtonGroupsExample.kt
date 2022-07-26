@@ -15,7 +15,7 @@ object RadioButtonGroupsExample {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val screen = LibgdxApplications.startTileGrid(
+        val screen = SwingApplications.startTileGrid(
             AppConfig.newBuilder()
                 .withDefaultTileset(TILESET)
                 .withSize(Size.create(60, 30))

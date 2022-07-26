@@ -2,7 +2,6 @@
 
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.jvm.JvmStatic
@@ -12,7 +11,7 @@ import kotlin.jvm.JvmStatic
  * after each other become an animation.
  */
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
-@Beta
+
 interface Animation : Identifiable {
 
     /**

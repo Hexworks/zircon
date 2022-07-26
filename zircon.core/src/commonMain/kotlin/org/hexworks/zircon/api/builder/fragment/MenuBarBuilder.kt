@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.events.api.CallbackResult
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Position
@@ -16,7 +15,7 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
 import kotlin.jvm.JvmStatic
 
-@Beta
+
 @ZirconDsl
 class MenuBarBuilder<T : Any> private constructor(
     var screen: Screen? = null,

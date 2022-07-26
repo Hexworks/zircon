@@ -2,8 +2,7 @@
 
 package org.hexworks.zircon.api.fragment
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.component.Fragment
 
-@Beta
+
 interface TabBar : Fragment

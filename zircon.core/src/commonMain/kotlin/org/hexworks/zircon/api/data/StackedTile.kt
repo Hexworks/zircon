@@ -3,7 +3,6 @@
 package org.hexworks.zircon.api.data
 
 import kotlinx.collections.immutable.toPersistentList
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.data.DefaultStackedTile
 import kotlin.jvm.JvmStatic
@@ -19,7 +18,7 @@ import kotlin.jvm.JvmStatic
  * @since 2020.2.0-RELEASE
  * @see Tile
  */
-@Beta
+
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface StackedTile : Tile {
 

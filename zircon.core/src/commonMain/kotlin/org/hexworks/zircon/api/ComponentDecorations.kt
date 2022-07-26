@@ -89,7 +89,7 @@ object ComponentDecorations {
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      * @param value the margin to add to all sides (top, right, bottom and left)
      */
-    @Beta
+    
     @JvmStatic
     fun margin(
         value: Int
@@ -103,7 +103,7 @@ object ComponentDecorations {
     /**
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      */
-    @Beta
+    
     @JvmStatic
     fun margin(
         top: Int,
@@ -122,7 +122,7 @@ object ComponentDecorations {
      * @param x horizontal margin (left and right)
      * @param y vertical margin (top and bottom)
      */
-    @Beta
+    
     @JvmStatic
     fun margin(
         y: Int,
@@ -138,7 +138,7 @@ object ComponentDecorations {
      * Can be used to explicitly state that a [Component] has no decorations. This is useful
      * when a [Component] has decorations by default.
      */
-    @Beta
+    
     @JvmStatic
     fun noDecoration(): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = 0,

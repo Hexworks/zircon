@@ -13,17 +13,15 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.dsl.component.*
 import org.hexworks.zircon.api.dsl.fragment.buildTable
 import org.hexworks.zircon.api.fragment.Table
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
+import org.hexworks.zircon.examples.base.OneColumnComponentExample
 import org.hexworks.zircon.examples.fragments.table.*
 import org.hexworks.zircon.examples.fragments.table.randomWage
 
-class TableWithSelectionExample : OneColumnComponentExampleKotlin() {
+object TableWithSelectionExample : OneColumnComponentExample() {
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            TableWithSelectionExample().show("Table with selection")
-        }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        TableWithSelectionExample.show("Table with selection")
     }
 
     override fun build(box: VBox) {

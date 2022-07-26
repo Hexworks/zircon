@@ -9,15 +9,13 @@ import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.examples.base.OneColumnComponentExampleKotlin
+import org.hexworks.zircon.examples.base.OneColumnComponentExample
 
-class CustomRendererExample : OneColumnComponentExampleKotlin() {
+object CustomRendererExample : OneColumnComponentExample() {
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            CustomRendererExample().show("Custom Renderer")
-        }
+    @JvmStatic
+    fun main(args: Array<String>) {
+        CustomRendererExample.show("Custom Renderer")
     }
 
     override fun build(box: VBox) {
@@ -30,10 +28,14 @@ class CustomRendererExample : OneColumnComponentExampleKotlin() {
         val colored = label()
             .withPreferredSize(10, 1)
             .withComponentRenderer { graphics, _ ->
-                graphics.draw("Colored".toCharacterTileString(StyleSet.newBuilder()
-                    .withBackgroundColor(RED)
-                    .withForegroundColor(GREEN)
-                    .build()))
+                graphics.draw(
+                    "Colored".toCharacterTileString(
+                        StyleSet.newBuilder()
+                            .withBackgroundColor(RED)
+                            .withForegroundColor(GREEN)
+                            .build()
+                    )
+                )
             }.build()
 
         with(logArea) {

@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.events.api.*
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
 import org.hexworks.zircon.api.component.ColorTheme
@@ -18,7 +17,7 @@ import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
 
-@Beta
+
 class DefaultMenuBar<T : Any> internal constructor(
     private val screen: Screen,
     position: Position,

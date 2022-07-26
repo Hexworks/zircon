@@ -2,7 +2,6 @@
 
 package org.hexworks.zircon.api.data
 
-import org.hexworks.zircon.api.Beta
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.data.BlockBuilder
 import kotlin.jvm.JvmStatic
@@ -13,7 +12,7 @@ import kotlin.jvm.JvmStatic
  * the [emptyTile] will be used when the sides are dereferenced.
  * If you want to have multiple [Tile]s in any side (or as the [content]) try using a [StackedTile].
  */
-@Beta
+
 @Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Block<T : Tile> : Copiable<Block<T>> {
 

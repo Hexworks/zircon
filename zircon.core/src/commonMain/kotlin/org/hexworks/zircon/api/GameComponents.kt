@@ -21,7 +21,7 @@ import kotlin.jvm.JvmStatic
 /**
  * This object is a facade that can be used to create builders for [GameArea] and [GameComponent].
  */
-@Beta
+
 // TODO: add to the docs that the GameComponent was removed and now a ComponentRenderer can be created instead
 object GameComponents {
 

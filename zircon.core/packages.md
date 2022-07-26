@@ -1,7 +1,7 @@
 # Package org.hexworks.zircon.api
 
 This package contains the public *API* of Zircon. You can use anything you find here, but note that classes and methods
-annotated with `@Beta` are considered a preliminary implementation, and their API might change in the future.
+annotated with `` are considered a preliminary implementation, and their API might change in the future.
 
 # Package org.hexworks.zircon.api.animation
 
