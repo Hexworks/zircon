@@ -2,7 +2,6 @@ package org.hexworks.zircon.examples.other
 
 import org.hexworks.zircon.api.CP437TilesetResources.bisasam16x16
 import org.hexworks.zircon.api.SwingApplications.startTileGrid
-import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.color.TileColor.Companion.fromString
 import org.hexworks.zircon.api.data.Size.Companion.create
@@ -24,8 +23,6 @@ object TypingExample {
                 .withDefaultTileset(bisasam16x16())
                 .withSize(create(TERMINAL_WIDTH, 10))
                 .withCursorBlinking(true)
-                .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
-                .withCursorColor(fromString("#ff00ff"))
                 .build()
         )
         tileGrid.handleKeyboardEvents(KeyboardEventType.KEY_PRESSED) { (_, key, code): KeyboardEvent, phase: UIEventPhase? ->

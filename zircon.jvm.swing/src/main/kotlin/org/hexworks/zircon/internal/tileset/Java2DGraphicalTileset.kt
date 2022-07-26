@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TileTexture
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TileType.*
 import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
 import org.hexworks.zircon.internal.tileset.impl.GraphicTextureMetadata
@@ -21,7 +20,7 @@ import java.io.InputStream
 import javax.imageio.ImageIO
 
 @Suppress("unused", "DEPRECATION")
-class Java2DGraphicTileset(private val resource: TilesetResource) : Tileset<Graphics2D> {
+class Java2DGraphicalTileset(private val resource: TilesetResource) : Tileset<Graphics2D> {
 
     override val id: UUID = resource.id
     override val targetType = Graphics2D::class

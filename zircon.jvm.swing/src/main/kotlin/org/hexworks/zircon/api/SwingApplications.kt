@@ -215,7 +215,7 @@ object SwingApplications {
                 supportedTileType = GRAPHICAL_TILE
                 supportedTilesetType = GraphicalTileset
                 factoryFunction = { resource: TilesetResource ->
-                    Java2DGraphicTileset(resource)
+                    Java2DGraphicalTileset(resource)
                 }
             },
             buildTilesetFactory {

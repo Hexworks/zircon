@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.CP437TilesetResources.taffer20x20
 import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.SwingApplications.startApplication
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.color.TileColor.Companion.fromString
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -18,9 +17,7 @@ object CursorExample {
     @JvmStatic
     fun main(args: Array<String>) {
         val config = AppConfig.newBuilder()
-            .withCursorColor(fromString("#ff8844"))
             .withBlinkLengthInMilliSeconds(500)
-            .withCursorStyle(CursorStyle.FIXED_BACKGROUND)
             .withCursorBlinking(true)
             .withSize(SIZE)
             .withDefaultTileset(taffer20x20())

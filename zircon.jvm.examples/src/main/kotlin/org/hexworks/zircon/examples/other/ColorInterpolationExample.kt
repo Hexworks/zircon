@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.SwingApplications
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.CursorStyle
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.Tile
@@ -26,8 +25,6 @@ object ColorInterpolationExample {
             AppConfig.newBuilder()
                 .withDefaultTileset(tileset)
                 .withCursorBlinking(true)
-                .withCursorStyle(CursorStyle.UNDER_BAR)
-                .withCursorColor(theme.accentColor)
                 .withSize(34, 30)
                 .build()
         )

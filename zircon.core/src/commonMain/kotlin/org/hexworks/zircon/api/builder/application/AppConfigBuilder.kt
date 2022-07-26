@@ -38,16 +38,6 @@ class AppConfigBuilder private constructor(
      */
     var blinkLengthInMilliSeconds: Long = 500,
     /**
-     * The [CursorStyle] to be used when the cursor is displayed.
-     * Default is [CursorStyle.FIXED_BACKGROUND].
-     */
-    var cursorStyle: CursorStyle = CursorStyle.FIXED_BACKGROUND,
-    /**
-     * The [TileColor] to be used when drawing a cursor.
-     * Default is [TileColor.defaultForegroundColor()] (black).
-     */
-    var cursorColor: TileColor = TileColor.defaultForegroundColor(),
-    /**
      * Controls whether the cursor should be blinking when rendered.
      * Default is `false`
      */
@@ -176,14 +166,6 @@ class AppConfigBuilder private constructor(
         this.borderless = borderless
     }
 
-    fun withCursorStyle(cursorStyle: CursorStyle) = also {
-        this.cursorStyle = cursorStyle
-    }
-
-    fun withCursorColor(cursorColor: TileColor) = also {
-        this.cursorColor = cursorColor
-    }
-
     fun withCursorBlinking(isCursorBlinking: Boolean) = also {
         this.isCursorBlinking = isCursorBlinking
     }
@@ -266,8 +248,6 @@ class AppConfigBuilder private constructor(
 
     override fun build() = AppConfig(
         blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-        cursorStyle = cursorStyle,
-        cursorColor = cursorColor,
         isCursorBlinking = isCursorBlinking,
         isClipboardAvailable = isClipboardAvailable,
         defaultTileset = defaultTileset,
@@ -293,8 +273,6 @@ class AppConfigBuilder private constructor(
 
     override fun createCopy() = AppConfigBuilder(
         blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
-        cursorStyle = cursorStyle,
-        cursorColor = cursorColor,
         isCursorBlinking = isCursorBlinking,
         isClipboardAvailable = isClipboardAvailable,
         defaultTileset = defaultTileset,
