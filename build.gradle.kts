@@ -1,7 +1,4 @@
-import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
-
 plugins {
-    id("org.jetbrains.dokka")
     id("org.sonarqube") version "3.3"
 }
 

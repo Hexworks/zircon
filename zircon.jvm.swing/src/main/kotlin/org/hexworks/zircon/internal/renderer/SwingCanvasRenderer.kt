@@ -4,6 +4,7 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.CloseBehavior
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.application.SwingApplication
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -25,7 +26,7 @@ class SwingCanvasRenderer private constructor(
     val canvas: Canvas,
     val frame: JFrame,
     val shouldInitializeSwingComponents: Boolean
-) : BaseRenderer<Graphics2D>(tileGrid, tilesetLoader), SwingRenderer,
+) : BaseRenderer<Graphics2D, SwingApplication>(tileGrid, tilesetLoader), SwingRenderer,
     Observable<SwingCanvasRenderer> by DefaultObservable() {
 
     private val config = tileGrid.config
@@ -38,14 +39,6 @@ class SwingCanvasRenderer private constructor(
             super.mouseClicked(e)
             canvas.requestFocusInWindow()
         }
-    }
-
-    /**
-     * Adds a callback [fn] that will be called whenever the frame where the contents
-     * of the [tileGrid] are rendered is closed.
-     */
-    override fun onFrameClosed(fn: (SwingRenderer) -> Unit): Subscription {
-        return addObserver(fn)
     }
 
     override fun create() {
@@ -116,7 +109,7 @@ class SwingCanvasRenderer private constructor(
         }
     }
 
-    protected override fun doRender(now: Long) {
+    override fun doRender(now: Long) {
         val bs: BufferStrategy = canvas.bufferStrategy // this is a regular Swing Canvas object
 
         canvas.bufferStrategy.drawGraphics.configure().apply {
@@ -129,22 +122,6 @@ class SwingCanvasRenderer private constructor(
         bs.show()
     }
 
-    override fun doClose() {
-        frame.dispose()
-    }
-
-    private fun Graphics.configure(): Graphics2D {
-        val gc = this as Graphics2D
-        gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
-        gc.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
-        gc.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
-        gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
-        gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
-        gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
-        gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
-        return gc
-    }
-
     override fun processInputEvents() {
         keyboardEventListener.drainEvents().forEach { (event, phase) ->
             tileGrid.process(event, phase)
@@ -152,6 +129,18 @@ class SwingCanvasRenderer private constructor(
         mouseEventListener.drainEvents().forEach { (event, phase) ->
             tileGrid.process(event, phase)
         }
+    }
+
+    override fun doClose() {
+        frame.dispose()
+    }
+
+    /**
+     * Adds a callback [fn] that will be called whenever the frame where the contents
+     * of the [tileGrid] are rendered is closed.
+     */
+    override fun onFrameClosed(fn: (SwingRenderer) -> Unit): Subscription {
+        return addObserver(fn)
     }
 
     private tailrec fun initializeBufferStrategy() {
@@ -174,6 +163,18 @@ class SwingCanvasRenderer private constructor(
         frame.pack()
         frame.isVisible = true
         frame.setLocationRelativeTo(null)
+    }
+
+    private fun Graphics.configure(): Graphics2D {
+        val gc = this as Graphics2D
+        gc.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED)
+        gc.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE)
+        gc.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF)
+        gc.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED)
+        gc.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY)
+        return gc
     }
 
     companion object {

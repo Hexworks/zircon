@@ -11,27 +11,29 @@ import kotlin.jvm.JvmStatic
 object VirtualApplications {
 
     /**
-     * Builds a new [Application] using the given `appConfig`.
+     * Builds a new [Application] using the given `appConfig` and `eventBus`.
      */
     @JvmStatic
     @JvmOverloads
+    @Deprecated("Use startApplication instead", ReplaceWith("startApplication(appConfig, eventBus)"))
     fun buildApplication(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
-    ): Application = VirtualApplication(config, eventBus)
+    ): Application = startApplication(config, eventBus)
 
     /**
-     * Builds and starts a new [Application] from the given `appConfig`.
+     * Builds a new [Application] using the given `appConfig` and `eventBus`.
      */
     @JvmStatic
     @JvmOverloads
     fun startApplication(
         appConfig: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
-    ): Application = buildApplication(appConfig, eventBus)
+    ): Application = VirtualApplication(appConfig, eventBus)
 
     /**
-     * Builds and starts a new [Application] and returns its [TileGrid].
+     * Build a new [Application] and returns its [TileGrid].
+     * Use this when you don't want to interact with the [Application] itself.
      */
     @JvmStatic
     @JvmOverloads

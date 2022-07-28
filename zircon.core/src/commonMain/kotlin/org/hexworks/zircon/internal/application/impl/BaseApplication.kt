@@ -1,20 +1,14 @@
 package org.hexworks.zircon.internal.application.impl
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.hexworks.cobalt.databinding.api.binding.bindNot
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.RunTimeStats
@@ -23,7 +17,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.platform.util.SystemUtils
 
-abstract class BaseApplication(
+abstract class BaseApplication<A : Application>(
     final override val config: AppConfig,
     final override val tileGrid: TileGrid,
     final override val eventBus: EventBus,
@@ -31,7 +25,7 @@ abstract class BaseApplication(
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 ) : InternalApplication {
 
-    abstract val renderer: Renderer
+    abstract val renderer: Renderer<A>
 
     private val beforeRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
     private val afterRenderData = RenderData(SystemUtils.getCurrentTimeMs()).toProperty()
@@ -50,7 +44,7 @@ abstract class BaseApplication(
         get() = closedValue.value
     final override val closedValue: Property<Boolean> = false.toProperty()
 
-    private final val running = closedValue.bindNot()
+    private val running = closedValue.bindNot()
 
     init {
         coroutineScope.launch {

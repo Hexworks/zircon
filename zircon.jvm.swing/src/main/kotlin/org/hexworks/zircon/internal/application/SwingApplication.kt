@@ -11,7 +11,7 @@ class SwingApplication(
     eventBus: EventBus,
     tileGrid: InternalTileGrid,
     override val renderer: SwingRenderer
-) : BaseApplication(config, tileGrid, eventBus) {
+) : BaseApplication<SwingApplication>(config, tileGrid, eventBus) {
 
     init {
         System.setProperty("sun.java2d.opengl", "true")

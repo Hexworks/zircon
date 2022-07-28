@@ -1,29 +1,15 @@
-plugins {
-    kotlin("jvm")
-    application
+import com.soywiz.korge.gradle.*
+
+apply<KorgeGradlePlugin>()
+
+korge {
+    id = "org.hexworks.zircon.examples"
+    targetJvm()
+    targetJs()
 }
 
-base.archivesBaseName = "zircon.jvm.examples"
-
-application {
-    mainClass.set("org.hexworks.zircon.benchmark.SwingBenchmark")
-}
-
-kotlin {
-    dependencies {
-        implementation(project(":zircon.core"))
-        implementation(project(":zircon.jvm.swing"))
-        implementation("org.openjdk.jol:jol-core:0.13")
-
-        with(Libraries) {
-            implementation(gdx)
-            implementation(gdxFreetype)
-            implementation(gdxFreetypePlatform)
-            implementation(gdxFreetypePlatformNatives)
-            implementation(gdxPlatformNativesDesktop)
-            implementation(gdxBox2D)
-            implementation(gdxBox2DPlatform)
-            implementation(gdxBackendLwjgl)
-        }
-    }
+dependencies {
+    project(":zircon.core")
+    project(":zircon.jvm.swing")
+    add("commonMainApi", "org.openjdk.jol:jol-core:0.13")
 }
