@@ -4,7 +4,6 @@ import java.net.URL
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
 }

@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.renderer.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -20,18 +21,17 @@ import org.hexworks.zircon.platform.util.SystemUtils
 /**
  * @param T the type of the draw surface (Swing, for example will use `Graphics2D`)
  */
-abstract class BaseRenderer<T : Any>(
+abstract class BaseRenderer<T : Any, A: Application>(
     protected val tileGrid: InternalTileGrid,
-    protected val tilesetLoader: TilesetLoader<T>
-) : Renderer {
+    private val tilesetLoader: TilesetLoader<T>
+) : Renderer<A> {
 
     private val isClosed = false.toProperty()
     private val gridPositions = tileGrid.size.fetchPositions().toList()
     private var blinkOn = true
     private var lastBlink: Long = SystemUtils.getCurrentTimeMs()
     private val config = tileGrid.config
-
-    protected var lastRender: Long = lastBlink
+    private var lastRender: Long = lastBlink
         private set
 
     override val closedValue: ObservableValue<Boolean>

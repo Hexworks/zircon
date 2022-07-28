@@ -14,7 +14,7 @@ class VirtualApplication(
     config: AppConfig,
     eventBus: EventBus,
     tileGrid: ThreadSafeTileGrid = ThreadSafeTileGrid(config),
-) : BaseApplication(config, tileGrid, eventBus) {
+) : BaseApplication<VirtualApplication>(config, tileGrid, eventBus) {
 
     override val renderer = VirtualRenderer(tileGrid)
 

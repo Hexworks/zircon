@@ -7,6 +7,7 @@ import Libraries.slf4jApi
 import Libraries.cache4k
 import Libraries.snakeYaml
 import Libraries.assertjCore
+import Libraries.korge
 import Libraries.kotlinReflect
 import Libraries.kotlinTestAnnotationsCommon
 import Libraries.kotlinTestCommon
@@ -16,14 +17,10 @@ import Libraries.logbackCore
 import Libraries.mockitoCore
 import Libraries.mockitoKotlin
 
-import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URL
-
 plugins {
     kotlin("multiplatform")
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.dokka")
 }
 
 kotlin {
@@ -39,7 +36,7 @@ kotlin {
         }
     }
 
-    js(BOTH) {
+    js(IR) {
         browser {
             testTask {
                 useKarma {
@@ -56,6 +53,8 @@ kotlin {
                 api(kotlinxCoroutines)
                 api(kotlinReflect)
                 api(kotlinxCollectionsImmutable)
+
+                api(korge)
 
                 api(cobaltCore)
                 api(cache4k)
@@ -97,35 +96,6 @@ kotlin {
         }
     }
 
-}
-
-tasks {
-    create<DokkaTask>("dokkaHtmlAsJava") {
-        val dokka_version: String by project
-        dependencies {
-            plugins("org.jetbrains.dokka:kotlin-as-java-plugin:$dokka_version")
-        }
-    }
-
-    withType<DokkaTask>().configureEach {
-        dokkaSourceSets {
-            configureEach {
-                includes.from("module.md", "packages.md")
-                samples.from("src/commonMain/kotlin/org/hexworks/zircon/samples")
-
-                sourceLink {
-                    localDirectory.set(file("src/commonMain/kotlin"))
-                    remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/commonMain/kotlin"))
-                }
-
-                sourceLink {
-                    localDirectory.set(file("src/jvmMain/kotlin"))
-                    remoteUrl.set(URL("https://github.com/Hexworks/zircon/tree/master/zircon.core/src/jvmMain/kotlin"))
-                }
-                jdkVersion.set(8)
-            }
-        }
-    }
 }
 
 publishing {

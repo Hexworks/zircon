@@ -3,6 +3,7 @@
 package org.hexworks.zircon.playground
 
 import org.hexworks.cobalt.events.api.EventBus
+import org.hexworks.zircon.api.Applications
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.SwingApplications
@@ -22,11 +23,15 @@ import javax.swing.JFrame
 import javax.swing.KeyStroke
 
 
+suspend fun main() {
+    val app = Applications.startTileGrid()
+}
+
 object KotlinPlayground {
 
     @JvmStatic
     fun main(args: Array<String>) {
-
+        val app = Applications.startTileGrid()
     }
 }
 

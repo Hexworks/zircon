@@ -27,7 +27,7 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 class TestRenderer(
     config: AppConfig,
     private val tileGraphics: TileGraphics,
-) : UIEventDispatcher, Renderer, Clearable {
+) : UIEventDispatcher, Renderer<ApplicationStub>, Clearable {
     private val tileGrid: TileGrid = ThreadSafeTileGrid(config).apply {
         application = ApplicationStub()
     }
