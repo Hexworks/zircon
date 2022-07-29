@@ -71,10 +71,10 @@ object Applications {
         tileGrid: TileGrid = createTileGrid(config),
     ): KorGERenderer = KorGERenderer(
         tileGrid = tileGrid.asInternal(),
-        tilesetLoader = DefaultTilesetLoader(listOf<TilesetFactory<KorGECP437DrawSurface, CharacterTile>>(
+        tilesetLoader = DefaultTilesetLoader(listOf<TilesetFactory<KorGECP437DrawSurface>>(
             buildTilesetFactory {
                 targetType = KorGECP437DrawSurface::class
-                supportedTileType = TileType.CharacterTileType
+                supportedTileType = TileType.CHARACTER_TILE
                 supportedTilesetType = TilesetType.CP437Tileset
                 factoryFunction = { resource: TilesetResource ->
                     KorGECP437Tileset(

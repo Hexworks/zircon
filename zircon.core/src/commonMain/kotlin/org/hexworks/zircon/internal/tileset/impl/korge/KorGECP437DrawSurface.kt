@@ -55,7 +55,8 @@ class KorGECP437DrawSurface(
 
     fun drawTile(tile: CharacterTile, position: Position) {
         val character = tile.character
-        val (foregroundColor, backgroundColor) = tile.styleSet
+        val foregroundColor = tile.styleSet.foregroundColor
+        val backgroundColor = tile.styleSet.backgroundColor
         val (x, y) = position
         bgFSprites.apply {
             FSprite(bgMat[x, y]).colorMul = backgroundColor.toRGBA()
