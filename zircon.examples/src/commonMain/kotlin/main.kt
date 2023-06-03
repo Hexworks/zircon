@@ -1,3 +1,4 @@
+import korlibs.image.bitmap.Bitmaps
 import korlibs.time.*
 import korlibs.korge.*
 import korlibs.korge.view.*
@@ -13,6 +14,7 @@ import kotlinx.coroutines.*
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.cobalt.databinding.internal.binding.ListBinding
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.KeepSubscription
 import org.hexworks.cobalt.events.api.Subscription
@@ -22,6 +24,7 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -42,225 +45,62 @@ import org.hexworks.zircon.internal.animation.InternalAnimationRunner
 import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
 import org.hexworks.zircon.internal.renderer.impl.KorGERenderer
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
-class KorgeTilegrid(override val config: AppConfig) : TileGrid, InternalTileGrid {
-    override var backend: Layer
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override var layerable: InternalLayerable
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override var animationHandler: InternalAnimationRunner
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override var cursorHandler: InternalCursorHandler
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override var application: InternalApplication
-        get() = TODO("Not yet implemented")
-        set(value) {}
+class BasicInternalApplication(
+    override val config: AppConfig
+) : InternalApplication {
+    override val eventBus: EventBus = EventBus.create()
+    override val eventScope: ZirconScope = ZirconScope()
+    override val tileGrid: TileGrid = ThreadSafeTileGrid(config).also {
+        it.application = this
+    }
 
-    override fun delegateTo(tileGrid: InternalTileGrid) {
+    override fun beforeRender(listener: (RenderData) -> Unit): Subscription {
         TODO("Not yet implemented")
     }
 
-    override fun reset() {
+    override fun afterRender(listener: (RenderData) -> Unit): Subscription {
         TODO("Not yet implemented")
     }
 
-    override fun asInternal(): InternalTileGrid = this
+    override fun asInternal(): InternalApplication = this
 
-    override fun start(animation: Animation): AnimationHandle {
-        TODO("Not yet implemented")
-    }
-
-    override fun clear() {
-        TODO("Not yet implemented")
-    }
-
-    override val closedValue: ObservableValue<Boolean>
-        get() = TODO("Not yet implemented")
+    override val closedValue: ObservableValue<Boolean> get() = TODO()
 
     override fun close() {
-        TODO("Not yet implemented")
+        //closedValue.value = true
     }
 
-    override fun draw(tile: Tile, drawPosition: Position) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileMap: Map<Position, Tile>) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileComposite: TileComposite) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileComposite: TileComposite, drawPosition: Position) {
-        TODO("Not yet implemented")
-    }
-
-    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
-        TODO("Not yet implemented")
-    }
-
-    override fun transform(transformer: (Position, Tile) -> Tile) {
-        TODO("Not yet implemented")
-    }
-
-    override fun applyStyle(styleSet: StyleSet) {
-        TODO("Not yet implemented")
-    }
-
-    override fun fill(filler: Tile) {
-        TODO("Not yet implemented")
-    }
-
-    override val tiles: Map<Position, Tile>
-        get() = TODO("Not yet implemented")
-    override val size: Size
-        get() = TODO("Not yet implemented")
-    override var tileset: TilesetResource
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override val tilesetProperty: Property<TilesetResource>
-        get() = TODO("Not yet implemented")
-    override val layers: ObservableList<out InternalLayer>
-        get() = TODO("Not yet implemented")
-
-    override fun getLayerAtOrNull(level: Int): LayerHandle? {
-        TODO("Not yet implemented")
-    }
-
-    override fun addLayer(layer: Layer): LayerHandle {
-        TODO("Not yet implemented")
-    }
-
-    override fun insertLayerAt(level: Int, layer: Layer): LayerHandle {
-        TODO("Not yet implemented")
-    }
-
-    override fun setLayerAt(level: Int, layer: Layer): LayerHandle {
-        TODO("Not yet implemented")
-    }
-
-    override fun onShutdown(listener: () -> Unit) {
-        TODO("Not yet implemented")
-    }
-
-    override fun putTile(tile: Tile) {
-        TODO("Not yet implemented")
-    }
-
-    override var isCursorVisible: Boolean
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override var cursorPosition: Position
-        get() = TODO("Not yet implemented")
-        set(value) {}
-    override val isCursorAtTheEndOfTheLine: Boolean
-        get() = TODO("Not yet implemented")
-    override val isCursorAtTheStartOfTheLine: Boolean
-        get() = TODO("Not yet implemented")
-    override val isCursorAtTheFirstRow: Boolean
-        get() = TODO("Not yet implemented")
-    override val isCursorAtTheLastRow: Boolean
-        get() = TODO("Not yet implemented")
-
-    override fun moveCursorForward() {
-        TODO("Not yet implemented")
-    }
-
-    override fun moveCursorBackward() {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleMouseEvents(
-        eventType: MouseEventType,
-        handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
-    ): Subscription {
-        TODO("Not yet implemented")
-    }
-
-    override fun processMouseEvents(
-        eventType: MouseEventType,
-        handler: (event: MouseEvent, phase: UIEventPhase) -> Unit
-    ): Subscription {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleKeyboardEvents(
-        eventType: KeyboardEventType,
-        handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
-    ): Subscription {
-        TODO("Not yet implemented")
-    }
-
-    override fun processKeyboardEvents(
-        eventType: KeyboardEventType,
-        handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit
-    ): Subscription {
-        TODO("Not yet implemented")
-    }
-
-    override fun dock(view: org.hexworks.zircon.api.view.View) {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
-        TODO("Not yet implemented")
-    }
-
-    override fun stop(animation: InternalAnimation) {
-        TODO("Not yet implemented")
-    }
-
-    override fun removeLayer(layer: Layer): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override val renderables: List<Renderable>
-        get() = TODO("Not yet implemented")
-
-    override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
-        TODO("Not yet implemented")
-    }
-
-}
-
-class KorgeTilegridView(val config: AppConfig) : View() {
-    val tilegrid = KorgeTilegrid(config)
-    override fun renderInternal(ctx: RenderContext) {
-    }
 }
 
 class ZirconKorgeScene : Scene() {
     override suspend fun SContainer.sceneMain() {
-        val application = Applications.startApplication(
-            AppConfig.newBuilder()
-                .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-                .withProperty(KORGE_CONTAINER, this)
+        val config = AppConfig.newBuilder()
+            .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+            .withProperty(KORGE_CONTAINER, this)
+            .build()
+        //Applications.startApplication()
+        val application = BasicInternalApplication(config)
+        val tileGrid = application.tileGrid as InternalTileGrid
+        val screen = tileGrid.toScreen()
 
-                .build(),
-        )
-        val screen = application.tileGrid.toScreen()
+        renderableView {
+            this.ctx.useBatcher { batch ->
+                println(tileGrid.getTileAtOrNull(Position.create(0, 0)))
+                val tex = this.ctx.getTex(Bitmaps.white)
+                batch.drawQuad(tex, 0f, 0f, 100f, 100f)
+            }
+        }
 
         screen.display()
         screen.theme = ColorThemes.arc()
@@ -337,6 +177,7 @@ class ZirconKorgeScene : Scene() {
         }
 
         screen.addFragment(menuBar)
+        screen.display()
     }
 }
 
