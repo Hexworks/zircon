@@ -1,6 +1,8 @@
-import com.soywiz.korge.gradle.*
+import korlibs.korge.gradle.*
 
-apply<KorgeGradlePlugin>()
+plugins {
+	id("com.soywiz.korge")
+}
 
 korge {
 	id = "com.soywiz.samples.animations"
