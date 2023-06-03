@@ -124,14 +124,14 @@ abstract class BaseRenderer<T : Any, A: Application>(
                 tile
             }
             (
-                    (finalTile as? TilesetHolder)?.let {
-                        tilesetLoader.loadTilesetFrom(it.tileset)
-                    } ?: tileset
-                    ).drawTile(
-                    tile = finalTile,
-                    surface = graphics,
-                    position = position
-                )
+                (finalTile as? TilesetHolder)?.let {
+                    tilesetLoader.loadTilesetFrom(it.tileset)
+                } ?: tileset
+            ).drawTile(
+                tile = finalTile,
+                surface = graphics,
+                position = position
+            )
         }
     }
 
