@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api
 
+import korlibs.korge.view.Container
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
@@ -13,6 +14,7 @@ import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
+import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
 import org.hexworks.zircon.internal.renderer.impl.KorGERenderer
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetType
@@ -70,6 +72,7 @@ object Applications {
         config: AppConfig = AppConfig.defaultConfiguration(),
         tileGrid: TileGrid = createTileGrid(config),
     ): KorGERenderer = KorGERenderer(
+        korgeBaseContainer = config.customProperties[KORGE_CONTAINER] as Container,
         tileGrid = tileGrid.asInternal(),
         tilesetLoader = DefaultTilesetLoader(listOf<TilesetFactory<KorGECP437DrawSurface>>(
             buildTilesetFactory {

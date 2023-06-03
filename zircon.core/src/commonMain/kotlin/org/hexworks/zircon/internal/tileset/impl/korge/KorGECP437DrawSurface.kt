@@ -1,14 +1,15 @@
 package org.hexworks.zircon.internal.tileset.impl.korge
 
-import com.soywiz.kds.IntArray2
-import com.soywiz.korge.view.Container
-import com.soywiz.korge.view.addTo
-import com.soywiz.korge.view.fast.FSprite
-import com.soywiz.korge.view.fast.FSprites
-import com.soywiz.korim.bitmap.Bitmap32
-import com.soywiz.korim.bitmap.BmpSlice
-import com.soywiz.korim.bitmap.slice
-import com.soywiz.korim.color.Colors
+import korlibs.datastructure.IntArray2
+import korlibs.korge.view.Container
+import korlibs.korge.view.addTo
+import korlibs.korge.view.fast.FSprite
+import korlibs.korge.view.fast.FSprites
+import korlibs.image.bitmap.Bitmap32
+import korlibs.image.bitmap.BmpSlice
+import korlibs.image.bitmap.bmp
+import korlibs.image.bitmap.slice
+import korlibs.image.color.Colors
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size

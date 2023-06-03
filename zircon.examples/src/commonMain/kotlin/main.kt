@@ -16,6 +16,7 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.KeepSubscription
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.Applications
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.animation.Animation
@@ -44,6 +45,9 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.renderer.Renderer
+import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
+import org.hexworks.zircon.internal.renderer.impl.KorGERenderer
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
@@ -249,9 +253,14 @@ class KorgeTilegridView(val config: AppConfig) : View() {
 
 class ZirconKorgeScene : Scene() {
     override suspend fun SContainer.sceneMain() {
-        val screen = KorgeTilegridView(AppConfig.newBuilder()
-            .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
-            .build()).addTo(this).tilegrid.toScreen()
+        val application = Applications.startApplication(
+            AppConfig.newBuilder()
+                .withDefaultTileset(CP437TilesetResources.rexPaint16x16())
+                .withProperty(KORGE_CONTAINER, this)
+
+                .build(),
+        )
+        val screen = application.tileGrid.toScreen()
 
         screen.display()
         screen.theme = ColorThemes.arc()
