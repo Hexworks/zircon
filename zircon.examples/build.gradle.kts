@@ -11,5 +11,5 @@ korge {
 }
 
 dependencies {
-	project(":zircon.core")
+	add("commonMainApi", project(":zircon.core"))
 }
