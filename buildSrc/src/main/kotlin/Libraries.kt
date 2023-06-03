@@ -31,7 +31,7 @@ object Libraries {
     const val logbackClassic = "ch.qos.logback:logback-classic:$logbackVersion"
     const val filters = "com.jhlabs:filters:$filtersVersion"
 
-    const val korge = "com.soywiz.korlibs.korge2:korge:2.7.0"
+    const val korge = "com.soywiz.korlibs.korge2:korge:4.0.3"
 
     // TEST
     const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common"
