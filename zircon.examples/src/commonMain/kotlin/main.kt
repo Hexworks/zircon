@@ -1,3 +1,4 @@
+import korlibs.image.bitmap.Bitmap32
 import korlibs.image.bitmap.Bitmaps
 import korlibs.image.bitmap.slice
 import korlibs.image.color.Colors
@@ -23,24 +24,30 @@ import org.hexworks.zircon.api.ComponentDecorations
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.RenderData
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.builder.component.ModalBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.dsl.fragment.buildMenuBar
 import org.hexworks.zircon.api.dsl.fragment.dropdownMenu
 import org.hexworks.zircon.api.dsl.fragment.menuItem
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.internal.application.InternalApplication
+import org.hexworks.zircon.internal.behavior.RenderableContainer
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
@@ -191,13 +198,8 @@ class ZirconKorgeScene : Scene() {
         val TILE_HEIGHT = 16
         val tileSize = SizeInt(TILE_WIDTH, TILE_HEIGHT)
         val tilemapBitmap = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().toBMP32()
-        val tilemapBitmapInverted = tilemapBitmap.clone().depremultipliedIfRequired().also {
-            it.updateColors {
-                if (it.a == 0) Colors.WHITE.withA(255) else Colors.WHITE.withA(0)
-            }
-        }.premultiplied()
+        val bgTile = Bitmap32(TILE_WIDTH, TILE_HEIGHT) { _, _ -> Colors.WHITE }.slice()
         val tiles = tilemapBitmap.slice().splitInRows(tileSize.width, tileSize.height)
-        val bgTiles = tilemapBitmapInverted.slice().splitInRows(tileSize.width, tileSize.height)
 
         //image(tilemapBitmapInverted.slice())
         //image(tiles[1])
@@ -209,30 +211,27 @@ class ZirconKorgeScene : Scene() {
                 val TILE_WIDTHf = TILE_WIDTH.toFloat()
                 val TILE_HEIGHTf = TILE_HEIGHT.toFloat()
 
-                // @TODO:
-                //for (layer in tileGrid.layers) {
-                for (n in 0 until 2) {
-                    tileGrid.tiles.forEach { (pos, tile) ->
-                        val px = (pos.x * TILE_WIDTHf) + n * 2
-                        val py = (pos.y * TILE_HEIGHTf) + n * 2
-                        //println("pos=$pos, tile=$tile")
-                        when (tile) {
-                            is CharacterTile -> {
-                                batch.drawQuad(
-                                    this.ctx.getTex(bgTiles[tile.character.code]),
-                                    px, py, TILE_WIDTHf, TILE_HEIGHTf,
-                                    colorMul = tile.backgroundColor.toRGBA()
-                                )
-                                batch.drawQuad(
-                                    this.ctx.getTex(tiles[tile.character.code]),
-                                    px, py, TILE_WIDTHf, TILE_HEIGHTf,
-                                    colorMul = tile.foregroundColor.toRGBA()
-                                )
-                            }
+                val bgTex = this.ctx.getTex(bgTile)
+
+                tileGrid.renderAllTiles { pos, tile, tileset ->
+                    val px = (pos.x * TILE_WIDTHf)
+                    val py = (pos.y * TILE_HEIGHTf)
+
+                    when (tile) {
+                        is CharacterTile -> {
+                            batch.drawQuad(
+                                bgTex,
+                                px, py, TILE_WIDTHf, TILE_HEIGHTf,
+                                colorMul = tile.backgroundColor.toRGBA()
+                            )
+                            batch.drawQuad(
+                                this.ctx.getTex(tiles[tile.character.code]),
+                                px, py, TILE_WIDTHf, TILE_HEIGHTf,
+                                colorMul = tile.foregroundColor.toRGBA()
+                            )
                         }
                     }
                 }
-                //}
 
             }
         }
@@ -275,4 +274,61 @@ class KorgeBasicInternalApplication(
         //closedValue.value = true
     }
 
+}
+
+private fun InternalTileGrid.renderAllTiles(
+    renderTile: (position: Position, tile: Tile?, tileset: TilesetResource) -> Unit
+) {
+    val layers = fetchLayers()
+    val gridPositions = size.fetchPositions().toList()
+    val tiles = mutableListOf<Pair<Tile, TilesetResource>>()
+    gridPositions.forEach { pos ->
+        tiles@ for (i in layers.size - 1 downTo 0) {
+            val (layerPos, layer) = layers[i]
+            val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
+            for (j in toRender.size - 1 downTo 0) {
+                val tile = toRender[j]
+                val tileset = tile.finalTileset(layer)
+                tiles.add(0, tile to tileset)
+                if (tile.isOpaque) {
+                    break@tiles
+                }
+            }
+        }
+
+        var idx = 1;
+        for ((tile, tileset) in tiles) {
+
+            renderTile(
+                pos,
+                tile,
+                tileset
+            )
+            idx++;
+        }
+        tiles.clear()
+    }
+}
+
+private fun RenderableContainer.fetchLayers(): List<Pair<Position, TileGraphics>> {
+    return renderables.map { renderable ->
+        val tg = FastTileGraphics(
+            initialSize = renderable.size,
+            initialTileset = renderable.tileset,
+        )
+        if (!renderable.isHidden) {
+            renderable.render(tg)
+        }
+        renderable.position to tg
+    }
+}
+
+private fun Tile.tiles(): List<Tile> = if (this is StackedTile) {
+    tiles.flatMap { it.tiles() }
+} else listOf(this)
+
+private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource {
+    return if (this is TilesetHolder) {
+        tileset
+    } else graphics.tileset
 }
