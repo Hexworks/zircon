@@ -22,6 +22,7 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.builder.component.ModalBuilder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -41,6 +42,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
+import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
 
 
 suspend fun main() = Korge(virtualSize = Size(640, 400)) {
@@ -199,27 +201,34 @@ class ZirconKorgeScene : Scene() {
                 val TILE_HEIGHTf = TILE_HEIGHT.toFloat()
 
                 // @TODO:
-                tileGrid.tiles.forEach { (pos, tile) ->
-                    //println("pos=$pos, tile=$tile")
-                    when (tile) {
-                        is CharacterTile -> {
-                            val tex = this.ctx.getTex(tiles[tile.character.code])
-                            batch.drawQuad(
-                                tex,
-                                (pos.x * TILE_WIDTHf),
-                                (pos.y * TILE_HEIGHTf),
-                                TILE_WIDTHf,
-                                TILE_HEIGHTf
-                            )
+                //for (layer in tileGrid.layers) {
+                for (n in 0 until 2) {
+                    tileGrid.tiles.forEach { (pos, tile) ->
+                        //println("pos=$pos, tile=$tile")
+                        when (tile) {
+                            is CharacterTile -> {
+                                val tex = this.ctx.getTex(tiles[tile.character.code])
+                                batch.drawQuad(
+                                    tex,
+                                    (pos.x * TILE_WIDTHf) + n * 2,
+                                    (pos.y * TILE_HEIGHTf) + n * 2,
+                                    TILE_WIDTHf,
+                                    TILE_HEIGHTf,
+                                    colorMul = tile.foregroundColor.toRGBA()
+                                )
+                            }
                         }
                     }
                 }
+                //}
+
             }
         }
 
         for (y in 0 until 20) {
             for (x in 0 until 32) {
-                tileGrid.draw(Tile.createCharacterTile('a' + x + y, StyleSet.defaultStyle()), Position.create(x, y))
+                tileGrid.draw(Tile.createCharacterTile('b' + x + y, StyleSet.defaultStyle().withForegroundColor(
+                    TileColor.create(x * 8, 0, 0, 255))), Position.create(x, y))
             }
         }
 
