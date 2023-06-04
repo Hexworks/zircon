@@ -21,7 +21,7 @@ import org.hexworks.zircon.platform.util.SystemUtils
 /**
  * @param T the type of the draw surface (Swing, for example will use `Graphics2D`)
  */
-abstract class BaseRenderer<T : Any, A: Application>(
+abstract class BaseRenderer<T : Any, A : Application>(
     protected val tileGrid: InternalTileGrid,
     private val tilesetLoader: TilesetLoader<T>
 ) : Renderer<A> {
@@ -32,7 +32,6 @@ abstract class BaseRenderer<T : Any, A: Application>(
     private var lastBlink: Long = SystemUtils.getCurrentTimeMs()
     private val config = tileGrid.config
     private var lastRender: Long = lastBlink
-        private set
 
     override val closedValue: ObservableValue<Boolean>
         get() = isClosed
@@ -71,9 +70,9 @@ abstract class BaseRenderer<T : Any, A: Application>(
                 }
             }
 
-            var idx = 1;
+            var idx = 1
             for ((tile, tileset) in tiles) {
-                var finalTile = tile;
+                var finalTile = tile
                 if (shouldDrawCursor() && tileGrid.cursorPosition == pos && idx == tiles.size) {
                     finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
                         .withForegroundColor(finalTile.backgroundColor)
@@ -84,7 +83,7 @@ abstract class BaseRenderer<T : Any, A: Application>(
                     tile = finalTile,
                     tileset = tilesetLoader.loadTilesetFrom(tileset)
                 )
-                idx++;
+                idx++
             }
             tiles.clear()
         }
@@ -97,7 +96,7 @@ abstract class BaseRenderer<T : Any, A: Application>(
 
     protected abstract fun processInputEvents()
 
-    protected abstract fun doRender(now: Long);
+    protected abstract fun doRender(now: Long)
 
     protected open fun doClose() {
     }
@@ -124,14 +123,14 @@ abstract class BaseRenderer<T : Any, A: Application>(
                 tile
             }
             (
-                (finalTile as? TilesetHolder)?.let {
-                    tilesetLoader.loadTilesetFrom(it.tileset)
-                } ?: tileset
-            ).drawTile(
-                tile = finalTile,
-                surface = graphics,
-                position = position
-            )
+                    (finalTile as? TilesetHolder)?.let {
+                        tilesetLoader.loadTilesetFrom(it.tileset)
+                    } ?: tileset
+                    ).drawTile(
+                    tile = finalTile,
+                    surface = graphics,
+                    position = position
+                )
         }
     }
 
