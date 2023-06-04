@@ -1,5 +1,7 @@
 import korlibs.image.bitmap.Bitmaps
 import korlibs.image.bitmap.slice
+import korlibs.image.color.Colors
+import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
 import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.*
@@ -188,9 +190,16 @@ class ZirconKorgeScene : Scene() {
         val TILE_WIDTH = 16
         val TILE_HEIGHT = 16
         val tileSize = SizeInt(TILE_WIDTH, TILE_HEIGHT)
-        val tileset = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().slice()
-        val tiles = tileset.splitInRows(tileSize.width, tileSize.height)
+        val tilemapBitmap = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().toBMP32()
+        val tilemapBitmapInverted = tilemapBitmap.clone().depremultipliedIfRequired().also {
+            it.updateColors {
+                if (it.a == 0) Colors.WHITE.withA(255) else Colors.WHITE.withA(0)
+            }
+        }.premultiplied()
+        val tiles = tilemapBitmap.slice().splitInRows(tileSize.width, tileSize.height)
+        val bgTiles = tilemapBitmapInverted.slice().splitInRows(tileSize.width, tileSize.height)
 
+        //image(tilemapBitmapInverted.slice())
         //image(tiles[1])
 
         renderableView {
@@ -204,16 +213,19 @@ class ZirconKorgeScene : Scene() {
                 //for (layer in tileGrid.layers) {
                 for (n in 0 until 2) {
                     tileGrid.tiles.forEach { (pos, tile) ->
+                        val px = (pos.x * TILE_WIDTHf) + n * 2
+                        val py = (pos.y * TILE_HEIGHTf) + n * 2
                         //println("pos=$pos, tile=$tile")
                         when (tile) {
                             is CharacterTile -> {
-                                val tex = this.ctx.getTex(tiles[tile.character.code])
                                 batch.drawQuad(
-                                    tex,
-                                    (pos.x * TILE_WIDTHf) + n * 2,
-                                    (pos.y * TILE_HEIGHTf) + n * 2,
-                                    TILE_WIDTHf,
-                                    TILE_HEIGHTf,
+                                    this.ctx.getTex(bgTiles[tile.character.code]),
+                                    px, py, TILE_WIDTHf, TILE_HEIGHTf,
+                                    colorMul = tile.backgroundColor.toRGBA()
+                                )
+                                batch.drawQuad(
+                                    this.ctx.getTex(tiles[tile.character.code]),
+                                    px, py, TILE_WIDTHf, TILE_HEIGHTf,
                                     colorMul = tile.foregroundColor.toRGBA()
                                 )
                             }
@@ -227,8 +239,10 @@ class ZirconKorgeScene : Scene() {
 
         for (y in 0 until 20) {
             for (x in 0 until 32) {
-                tileGrid.draw(Tile.createCharacterTile('b' + x + y, StyleSet.defaultStyle().withForegroundColor(
-                    TileColor.create(x * 8, 0, 0, 255))), Position.create(x, y))
+                tileGrid.draw(Tile.createCharacterTile('b' + x + y, StyleSet.defaultStyle()
+                    .withForegroundColor(TileColor.create(x * 8, 0, 0, 255))
+                    .withBackgroundColor(if (x > 16) TileColor.create(0, x * 8, y * 8, 255) else TileColor.transparent())
+                ), Position.create(x, y))
             }
         }
 
