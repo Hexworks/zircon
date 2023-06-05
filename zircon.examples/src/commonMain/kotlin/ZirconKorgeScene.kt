@@ -18,6 +18,7 @@ import korlibs.math.geom.SizeInt
 import korlibs.math.geom.slice.splitInRows
 import korlibs.math.geom.toFloat
 import korlibs.math.geom.toInt
+import korlibs.time.DateTime
 import korlibs.time.milliseconds
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
@@ -116,6 +117,9 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
         }
 
         renderableView {
+            val now = DateTime.nowUnixMillisLong()
+            tileGrid.updateAnimations(now, tileGrid)
+
             this.ctx.useBatcher { batch ->
                 //println("tileGrid.tiles=${tileGrid.tiles}")
 
