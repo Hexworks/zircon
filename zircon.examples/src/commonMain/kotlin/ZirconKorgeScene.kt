@@ -136,12 +136,8 @@ open class ZirconKorgeScene(
             tileGrid.updateAnimations(now, tileGrid)
 
             this.ctx.useBatcher { batch ->
-                //println("tileGrid.tiles=${tileGrid.tiles}")
-
                 val tileWidthF = tileWidth.toFloat()
                 val tileHeightF = tileHeight.toFloat()
-
-                val bgTex = this.ctx.getTex(bgTile)
 
                 fun drawSlice(x: Float, y: Float, bmp: BmpSlice, color: RGBA, flipX: Boolean, flipY: Boolean) {
                     val rx = if (flipX) x + tileWidthF else x
@@ -149,11 +145,7 @@ open class ZirconKorgeScene(
                     val w = if (flipX) -tileWidthF else tileWidthF
                     val h = if (flipY) -tileHeightF else tileHeightF
 
-                    batch.drawQuad(
-                        this.ctx.getTex(bmp),
-                        rx, ry, w, h,
-                        colorMul = color
-                    )
+                    batch.drawQuad(this.ctx.getTex(bmp), rx, ry, w, h, colorMul = color)
                 }
 
                 tileGrid.renderAllTiles { pos, tile, tileset ->
@@ -189,21 +181,11 @@ class KorgeBasicInternalApplication(
     override val tileGrid: TileGrid = Applications.createTileGrid(config, eventBus).asInternal().also {
         it.application = this
     }
-
-    override fun beforeRender(listener: (RenderData) -> Unit): Subscription {
-        TODO("Not yet implemented")
-    }
-
-    override fun afterRender(listener: (RenderData) -> Unit): Subscription {
-        TODO("Not yet implemented")
-    }
-
+    override fun beforeRender(listener: (RenderData) -> Unit): Subscription = TODO("Not yet implemented")
+    override fun afterRender(listener: (RenderData) -> Unit): Subscription = TODO("Not yet implemented")
     override fun asInternal(): InternalApplication = this
-
     override val closedValue: ObservableValue<Boolean> get() = TODO()
-
-    override fun close() {
-    }
+    override fun close() = Unit
 
 }
 
@@ -221,20 +203,13 @@ private fun InternalTileGrid.renderAllTiles(
                 val tile = toRender[j]
                 val tileset = tile.finalTileset(layer)
                 tiles.add(0, tile to tileset)
-                if (tile.isOpaque) {
-                    break@tiles
-                }
+                if (tile.isOpaque) break@tiles
             }
         }
 
         var idx = 1
         for ((tile, tileset) in tiles) {
-
-            renderTile(
-                pos,
-                tile,
-                tileset
-            )
+            renderTile(pos, tile, tileset)
             idx++
         }
         tiles.clear()
@@ -243,25 +218,20 @@ private fun InternalTileGrid.renderAllTiles(
 
 private fun RenderableContainer.fetchLayers(): List<Pair<Position, TileGraphics>> {
     return renderables.map { renderable ->
-        val tg = FastTileGraphics(
-            initialSize = renderable.size,
-            initialTileset = renderable.tileset,
-        )
-        if (!renderable.isHidden) {
-            renderable.render(tg)
-        }
+        val tg = FastTileGraphics(initialSize = renderable.size, initialTileset = renderable.tileset)
+        if (!renderable.isHidden) renderable.render(tg)
         renderable.position to tg
     }
 }
 
-private fun Tile.tiles(): List<Tile> = if (this is StackedTile) {
-    tiles.flatMap { it.tiles() }
-} else listOf(this)
+private fun Tile.tiles(): List<Tile> = when (this) {
+    is StackedTile -> tiles.flatMap { it.tiles() }
+    else -> listOf(this)
+}
 
-private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource {
-    return if (this is TilesetHolder) {
-        tileset
-    } else graphics.tileset
+private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
+    is TilesetHolder -> tileset
+    else -> graphics.tileset
 }
 
 fun Key.toKeyCode(): KeyCode = when (this) {
