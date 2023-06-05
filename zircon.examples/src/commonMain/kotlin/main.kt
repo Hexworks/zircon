@@ -1,4 +1,5 @@
 import korlibs.korge.Korge
+import korlibs.korge.KorgeDisplayMode
 import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
 import org.hexworks.zircon.api.ColorThemes
@@ -11,13 +12,17 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.screen.Screen
 
+val GAME_SIZE = Size(640, 400)
 
-suspend fun main() = Korge(virtualSize = Size(640, 400)) {
+suspend fun main() = Korge(
+    virtualSize = GAME_SIZE,
+    displayMode = KorgeDisplayMode.TOP_LEFT_NO_CLIP
+) {
     sceneContainer().changeTo({ MyScene() })
 }
 
-class MyScene : ZirconKorgeScene(::zirconGame2)
-//class MyScene : ZirconKorgeScene(::zirconGame)
+class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
 
 fun zirconGame2(screen: Screen) {
     for (y in 0 until 20) {

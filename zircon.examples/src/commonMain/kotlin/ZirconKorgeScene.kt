@@ -15,15 +15,13 @@ import korlibs.korge.annotations.KorgeExperimental
 import korlibs.korge.input.MouseEvents
 import korlibs.korge.input.keys
 import korlibs.korge.input.mouse
+import korlibs.korge.scene.PixelatedScene
 import korlibs.korge.scene.Scene
 import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
 import korlibs.korge.view.renderableView
-import korlibs.math.geom.Point
-import korlibs.math.geom.SizeInt
+import korlibs.math.geom.*
 import korlibs.math.geom.slice.splitInRows
-import korlibs.math.geom.toFloat
-import korlibs.math.geom.toInt
 import korlibs.time.DateTime
 import korlibs.time.milliseconds
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -57,7 +55,10 @@ import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
 
 //class ZirconKorgeScene : PixelatedScene(128, 128, sceneScaleMode = ScaleMode.FILL) {
 @OptIn(KorgeExperimental::class)
-open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
+open class ZirconKorgeScene(
+    val sceneSize: Size,
+    val function: (screen: Screen) -> Unit
+) : PixelatedScene(sceneSize.width.toInt(), sceneSize.height.toInt(), sceneScaleMode = ScaleMode.SHOW_ALL, sceneAnchor = Anchor.TOP_LEFT, sceneSmoothing = false) {
     override suspend fun SContainer.sceneMain() {
         val config = AppConfig.newBuilder()
             .withProperty(KORGE_CONTAINER, this)
