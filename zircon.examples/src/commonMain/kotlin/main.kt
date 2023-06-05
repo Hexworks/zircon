@@ -1,5 +1,6 @@
 import korlibs.event.Key
 import korlibs.event.KeyEvent
+import korlibs.event.MouseEvent
 import korlibs.image.bitmap.Bitmap32
 import korlibs.image.bitmap.slice
 import korlibs.image.color.Colors
@@ -7,7 +8,10 @@ import korlibs.image.format.readBitmap
 import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.Korge
 import korlibs.korge.annotations.KorgeExperimental
+import korlibs.korge.input.MouseEvents
 import korlibs.korge.input.keys
+import korlibs.korge.input.mouse
+import korlibs.korge.input.onMouseDrag
 import korlibs.korge.scene.Scene
 import korlibs.korge.scene.sceneContainer
 import korlibs.korge.view.SContainer
@@ -15,6 +19,8 @@ import korlibs.korge.view.renderableView
 import korlibs.math.geom.Size
 import korlibs.math.geom.SizeInt
 import korlibs.math.geom.slice.splitInRows
+import korlibs.math.geom.toFloat
+import korlibs.math.geom.toInt
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
@@ -34,10 +40,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.RenderableContainer
 import org.hexworks.zircon.internal.event.ZirconScope
@@ -110,6 +113,33 @@ class ZirconKorgeScene : Scene() {
 
         //image(tilemapBitmapInverted.slice())
         //image(tiles[1])
+
+        mouse {
+            fun mevent(e: MouseEvents) {
+                val tilePos = (e.currentPosLocal / tileSize.toFloat()).toInt()
+                val pos = Position.create(tilePos.x, tilePos.y)
+                //println("$tilePos: $e")
+
+                val type = when (e.lastEvent.type) {
+                    MouseEvent.Type.MOVE -> MouseEventType.MOUSE_MOVED
+                    MouseEvent.Type.DRAG -> MouseEventType.MOUSE_DRAGGED
+                    MouseEvent.Type.UP -> MouseEventType.MOUSE_RELEASED
+                    MouseEvent.Type.DOWN -> MouseEventType.MOUSE_PRESSED
+                    MouseEvent.Type.CLICK -> MouseEventType.MOUSE_CLICKED
+                    MouseEvent.Type.ENTER -> MouseEventType.MOUSE_ENTERED
+                    MouseEvent.Type.EXIT -> MouseEventType.MOUSE_EXITED
+                    MouseEvent.Type.SCROLL -> if (e.scrollDeltaYPages < 0f) MouseEventType.MOUSE_WHEEL_ROTATED_DOWN else MouseEventType.MOUSE_WHEEL_ROTATED_UP
+                }
+                tileGrid.process(org.hexworks.zircon.api.uievent.MouseEvent(type, e.button.id, pos), UIEventPhase.TARGET)
+            }
+            click { mevent(it) }
+            over { mevent(it) }
+            out { mevent(it) }
+            move { mevent(it) }
+            upAnywhere { mevent(it) }
+            down { mevent(it) }
+            downOutside { mevent(it) }
+        }
 
         keys {
             fun kevent(e: KeyEvent) {
