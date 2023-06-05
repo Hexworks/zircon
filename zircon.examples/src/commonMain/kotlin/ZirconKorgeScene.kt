@@ -11,12 +11,14 @@ import korlibs.korge.input.MouseEvents
 import korlibs.korge.input.keys
 import korlibs.korge.input.mouse
 import korlibs.korge.scene.Scene
+import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
 import korlibs.korge.view.renderableView
 import korlibs.math.geom.SizeInt
 import korlibs.math.geom.slice.splitInRows
 import korlibs.math.geom.toFloat
 import korlibs.math.geom.toInt
+import korlibs.time.milliseconds
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
@@ -29,6 +31,8 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toScreen
+import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -106,6 +110,11 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
             typed { kevent(it) }
         }
 
+        var blinkOn = false
+        interval(config.blinkLengthInMilliSeconds.milliseconds) {
+            blinkOn = !blinkOn
+        }
+
         renderableView {
             this.ctx.useBatcher { batch ->
                 //println("tileGrid.tiles=${tileGrid.tiles}")
@@ -116,6 +125,8 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
                 val bgTex = this.ctx.getTex(bgTile)
 
                 tileGrid.renderAllTiles { pos, tile, tileset ->
+                    if (tile.isBlinking && blinkOn) return@renderAllTiles
+
                     val px = (pos.x * tileWidthF)
                     val py = (pos.y * tileHeightF)
 
@@ -148,6 +159,8 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
 //        }
 
         function(screen)
+
+        //screen.insertLayerAt(4, Layer.newBuilder().build()).draw(Tile.createCharacterTile('*', StyleSet.defaultStyle()), Position.create(10, 10))
     }
 }
 
@@ -178,7 +191,7 @@ class KorgeBasicInternalApplication(
 }
 
 private fun InternalTileGrid.renderAllTiles(
-    renderTile: (position: Position, tile: Tile?, tileset: TilesetResource) -> Unit
+    renderTile: (position: Position, tile: Tile, tileset: TilesetResource) -> Unit
 ) {
     val layers = fetchLayers()
     val gridPositions = size.fetchPositions().toList()
