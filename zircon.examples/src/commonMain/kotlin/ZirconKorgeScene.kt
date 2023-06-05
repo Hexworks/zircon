@@ -1,9 +1,14 @@
 import korlibs.event.Key
 import korlibs.event.KeyEvent
 import korlibs.event.MouseEvent
+import korlibs.image.atlas.MutableAtlasUnit
+import korlibs.image.atlas.add
 import korlibs.image.bitmap.Bitmap32
+import korlibs.image.bitmap.BmpSlice
+import korlibs.image.bitmap.context2d
 import korlibs.image.bitmap.slice
 import korlibs.image.color.Colors
+import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
 import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.annotations.KorgeExperimental
@@ -14,6 +19,7 @@ import korlibs.korge.scene.Scene
 import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
 import korlibs.korge.view.renderableView
+import korlibs.math.geom.Point
 import korlibs.math.geom.SizeInt
 import korlibs.math.geom.slice.splitInRows
 import korlibs.math.geom.toFloat
@@ -27,6 +33,7 @@ import org.hexworks.zircon.api.Applications
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
+import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
@@ -36,6 +43,7 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.*
@@ -63,8 +71,15 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
         val tileWidth = 16
         val tileHeight = 16
         val tileSize = SizeInt(tileWidth, tileHeight)
+        val atlas = MutableAtlasUnit()
         val tilemapBitmap = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().toBMP32()
-        val bgTile = Bitmap32(tileWidth, tileHeight) { _, _ -> Colors.WHITE }.slice()
+        val bgTile = atlas.add(Bitmap32(tileWidth, tileHeight) { _, _ -> Colors.WHITE }).slice
+        val strikeoutTile = atlas.add(Bitmap32(tileWidth, tileHeight).context2d {
+            stroke(Colors.WHITE, 2f) { line(Point(0, tileHeight * .5f), Point(tileWidth, tileHeight * .5f)) }
+        }).slice
+        val underlinedTile = atlas.add(Bitmap32(tileWidth, tileHeight).context2d {
+            stroke(Colors.WHITE, 2f) { line(Point(0, tileHeight - 1), Point(tileWidth, tileHeight - 1)) }
+        }).slice
         val tiles = tilemapBitmap.slice().splitInRows(tileSize.width, tileSize.height)
 
         //image(tilemapBitmapInverted.slice())
@@ -128,24 +143,33 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
 
                 val bgTex = this.ctx.getTex(bgTile)
 
+                fun drawSlice(x: Float, y: Float, bmp: BmpSlice, color: RGBA, flipX: Boolean, flipY: Boolean) {
+                    val rx = if (flipX) x + tileWidthF else x
+                    val ry = if (flipY) y + tileHeightF else y
+                    val w = if (flipX) -tileWidthF else tileWidthF
+                    val h = if (flipY) -tileHeightF else tileHeightF
+
+                    batch.drawQuad(
+                        this.ctx.getTex(bmp),
+                        rx, ry, w, h,
+                        colorMul = color
+                    )
+                }
+
                 tileGrid.renderAllTiles { pos, tile, tileset ->
                     if (tile.isBlinking && blinkOn) return@renderAllTiles
 
+                    val flipX = tile.isHorizontalFlipped
+                    val flipY = tile.isVerticalFlipped
                     val px = (pos.x * tileWidthF)
                     val py = (pos.y * tileHeightF)
 
                     when (tile) {
                         is CharacterTile -> {
-                            batch.drawQuad(
-                                bgTex,
-                                px, py, tileWidthF, tileHeightF,
-                                colorMul = tile.backgroundColor.toRGBA()
-                            )
-                            batch.drawQuad(
-                                this.ctx.getTex(tiles[tile.character.code]),
-                                px, py, tileWidthF, tileHeightF,
-                                colorMul = tile.foregroundColor.toRGBA()
-                            )
+                            drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
+                            drawSlice(px, py, tiles[tile.character.code], tile.foregroundColor.toRGBA(), flipX, flipY)
+                            if (tile.isCrossedOut) drawSlice(px, py, strikeoutTile, tile.foregroundColor.toRGBA(), false, false)
+                            if (tile.isUnderlined) drawSlice(px, py, underlinedTile, tile.foregroundColor.toRGBA(), false, false)
                         }
                     }
                 }
@@ -153,16 +177,24 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
             }
         }
 
-//        for (y in 0 until 20) {
-//            for (x in 0 until 32) {
-//                tileGrid.draw(Tile.createCharacterTile('b' + x + y, StyleSet.defaultStyle()
-//                    .withForegroundColor(TileColor.create(x * 8, 0, 0, 255))
-//                    .withBackgroundColor(if (x > 16) TileColor.create(0, x * 8, y * 8, 255) else TileColor.transparent())
-//                ), Position.create(x, y))
-//            }
-//        }
+        for (y in 0 until 20) {
+            for (x in 0 until 32) {
+                tileGrid.draw(Tile.createCharacterTile('b' + x + y * 2, StyleSet.defaultStyle()
+                    .withForegroundColor(TileColor.create(x * 8, 0, 0, 255))
+                    .withBackgroundColor(if (x > 16) TileColor.create(0, x * 8, y * 8, 255) else TileColor.transparent())
+                    .withModifiers(buildSet {
+                        if ((x + y) % 4 == 0) add(SimpleModifiers.Blink)
+                        if ((x + y) % 5 == 1) add(SimpleModifiers.CrossedOut)
+                        if ((x + y) % 6 == 2) add(SimpleModifiers.Hidden)
+                        if ((x + y) % 7 == 3) add(SimpleModifiers.HorizontalFlip)
+                        if ((x + y) % 8 == 4) add(SimpleModifiers.VerticalFlip)
+                        if ((x + y) % 9 == 5) add(SimpleModifiers.Underline)
+                    })
+                ), Position.create(x, y))
+            }
+        }
 
-        function(screen)
+        //function(screen)
 
         //screen.insertLayerAt(4, Layer.newBuilder().build()).draw(Tile.createCharacterTile('*', StyleSet.defaultStyle()), Position.create(10, 10))
     }
