@@ -63,7 +63,6 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
             .withProperty(KORGE_CONTAINER, this)
             .build()
 
-        //Applications.startApplication()
         val application = KorgeBasicInternalApplication(config)
         val tileGrid = application.tileGrid as InternalTileGrid
         val screen = tileGrid.toScreen()
@@ -177,26 +176,7 @@ open class ZirconKorgeScene(val function: (screen: Screen) -> Unit) : Scene() {
             }
         }
 
-        for (y in 0 until 20) {
-            for (x in 0 until 32) {
-                tileGrid.draw(Tile.createCharacterTile('b' + x + y * 2, StyleSet.defaultStyle()
-                    .withForegroundColor(TileColor.create(x * 8, 0, 0, 255))
-                    .withBackgroundColor(if (x > 16) TileColor.create(0, x * 8, y * 8, 255) else TileColor.transparent())
-                    .withModifiers(buildSet {
-                        if ((x + y) % 4 == 0) add(SimpleModifiers.Blink)
-                        if ((x + y) % 5 == 1) add(SimpleModifiers.CrossedOut)
-                        if ((x + y) % 6 == 2) add(SimpleModifiers.Hidden)
-                        if ((x + y) % 7 == 3) add(SimpleModifiers.HorizontalFlip)
-                        if ((x + y) % 8 == 4) add(SimpleModifiers.VerticalFlip)
-                        if ((x + y) % 9 == 5) add(SimpleModifiers.Underline)
-                    })
-                ), Position.create(x, y))
-            }
-        }
-
-        //function(screen)
-
-        //screen.insertLayerAt(4, Layer.newBuilder().build()).draw(Tile.createCharacterTile('*', StyleSet.defaultStyle()), Position.create(10, 10))
+        function(screen)
     }
 }
 
