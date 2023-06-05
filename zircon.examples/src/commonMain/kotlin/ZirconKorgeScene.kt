@@ -13,8 +13,11 @@ import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
 import korlibs.io.async.launchImmediately
+import korlibs.io.dynamic.dyn
 import korlibs.io.file.std.localCurrentDirVfs
+import korlibs.io.file.std.openAsZip
 import korlibs.io.file.std.resourcesVfs
+import korlibs.io.serialization.yaml.Yaml
 import korlibs.korge.annotations.KorgeExperimental
 import korlibs.korge.input.MouseEvents
 import korlibs.korge.input.keys
@@ -24,6 +27,7 @@ import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
 import korlibs.korge.view.renderableView
 import korlibs.math.geom.*
+import korlibs.math.geom.Size
 import korlibs.math.geom.slice.splitInRows
 import korlibs.time.DateTime
 import korlibs.time.milliseconds
@@ -35,10 +39,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.StackedTile
-import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
@@ -146,7 +147,8 @@ open class ZirconKorgeScene(
                 val tileWidthF = tileWidth.toFloat()
                 val tileHeightF = tileHeight.toFloat()
 
-                fun drawSlice(x: Float, y: Float, bmp: BmpSlice, color: RGBA, flipX: Boolean, flipY: Boolean) {
+                fun drawSlice(x: Float, y: Float, bmp: BmpSlice?, color: RGBA, flipX: Boolean, flipY: Boolean) {
+                    if (bmp == null) return
                     val rx = if (flipX) x + tileWidthF else x
                     val ry = if (flipY) y + tileHeightF else y
                     val w = if (flipX) -tileWidthF else tileWidthF
@@ -180,6 +182,9 @@ open class ZirconKorgeScene(
                             if (tile.isCrossedOut) drawSlice(px, py, strikeoutTile, tile.foregroundColor.toRGBA(), false, false)
                             if (tile.isUnderlined) drawSlice(px, py, underlinedTile, tile.foregroundColor.toRGBA(), false, false)
                         }
+                        is GraphicalTile -> {
+                            drawSlice(px, py, ktileset.tilesByName[tile.name], Colors.WHITE, flipX, flipY)
+                        }
                     }
                 }
 
@@ -200,12 +205,34 @@ class KorgeTileset(
                 TilesetSourceType.FILESYSTEM -> localCurrentDirVfs
                 TilesetSourceType.JAR -> resourcesVfs
             }
-            val bitmap = vfs[resource.path].readBitmap().toBMP32()
             when (resource.tilesetType) {
-                TilesetType.CP437Tileset, TilesetType.GraphicalTileset -> {
+                TilesetType.CP437Tileset -> {
+                    val bitmap = vfs[resource.path].readBitmap().toBMP32IfRequired()
                     tiles = bitmap.slice().splitInRows(resource.width, resource.width)
                 }
+                TilesetType.GraphicalTileset -> {
+                    val zip = vfs[resource.path].openAsZip()
+                    val info = Yaml.decode(zip["tileinfo.yml"].readString()).dyn
+                    val infoName = info["name"].str
+                    val infoSize = info["size"].int
+                    val infoFiles = info["files"].list
+                    for (file in infoFiles) {
+                        val fileName = file["name"].str
+                        val tilesPerRow = file["tilesPerRow"].int
+                        val tiles = file["tiles"].list
+                        val tileNames = tiles.map { it["name"].str }
+                        val bitmap = zip[fileName].readBitmap().toBMP32IfRequired()
+                        val tilesBmps = bitmap.slice().splitInRows(infoSize, infoSize)
+                        this.tiles = tilesBmps
+                        this.tilesByName = tileNames.zip(tilesBmps).associate { it.first to it.second }
 
+                        //println("tileNames=$tileNames")
+                        //println("file=$file")
+                    }
+                    //println(zip.listNames())
+                    //println(info)
+                    //TODO()
+                }
                 is TilesetType.CustomTileset -> TODO()
                 TilesetType.TrueTypeFont -> TODO()
             }

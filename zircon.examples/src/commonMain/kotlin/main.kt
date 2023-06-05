@@ -4,6 +4,7 @@ import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.margin
+import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -11,6 +12,7 @@ import org.hexworks.zircon.api.dsl.component.*
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.screen.Screen
+import kotlin.random.Random
 
 val GAME_SIZE = Size(640, 400)
 
@@ -42,6 +44,40 @@ fun zirconGame2(screen: Screen) {
             ), Position.create(x, y))
         }
     }
+
+    val NAMES = listOf(
+        "Giant ant",
+        "Killer bee",
+        "Fire ant",
+        "Werewolf",
+        "Dingo",
+        "Hell hound pup",
+        "Tiger",
+        "Gremlin"
+    )
+
+    val RANDOM = Random
+
+    val GRID_WIDTH = 50
+    val GRID_HEIGHT = 24
+    val TILESET = GraphicalTilesetResources.nethack16x16()
+
+
+    for (row in 8 until GRID_HEIGHT) {
+        for (col in 0 until GRID_WIDTH) {
+            val name =
+                NAMES[RANDOM.nextInt(NAMES.size)]
+            screen.draw(
+                Tile.newBuilder()
+                    .withName(name)
+                    .withTileset(TILESET)
+                    .buildGraphicalTile(),
+                Position.create(col, row)
+            )
+        }
+    }
+
+
     screen.display()
 }
 
