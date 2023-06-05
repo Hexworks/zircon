@@ -1,3 +1,5 @@
+import korlibs.datastructure.FastIdentityMap
+import korlibs.datastructure.getOrPut
 import korlibs.event.Key
 import korlibs.event.KeyEvent
 import korlibs.event.MouseEvent
@@ -10,13 +12,14 @@ import korlibs.image.bitmap.slice
 import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
+import korlibs.io.async.launchImmediately
+import korlibs.io.file.std.localCurrentDirVfs
 import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.annotations.KorgeExperimental
 import korlibs.korge.input.MouseEvents
 import korlibs.korge.input.keys
 import korlibs.korge.input.mouse
 import korlibs.korge.scene.PixelatedScene
-import korlibs.korge.scene.Scene
 import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
 import korlibs.korge.view.renderableView
@@ -28,20 +31,17 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Applications
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.graphics.Layer
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.*
@@ -51,6 +51,8 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
+import org.hexworks.zircon.internal.resource.TilesetSourceType
+import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
 
 //class ZirconKorgeScene : PixelatedScene(128, 128, sceneScaleMode = ScaleMode.FILL) {
@@ -61,6 +63,8 @@ open class ZirconKorgeScene(
 ) : PixelatedScene(sceneSize.width.toInt(), sceneSize.height.toInt(), sceneScaleMode = ScaleMode.SHOW_ALL, sceneAnchor = Anchor.TOP_LEFT, sceneSmoothing = false) {
     override suspend fun SContainer.sceneMain() {
         val config = AppConfig.newBuilder()
+            .withDefaultTileset(CP437TilesetResources.fnord16x16())
+            //.withSize(16, 16)
             .withProperty(KORGE_CONTAINER, this)
             .build()
 
@@ -68,11 +72,12 @@ open class ZirconKorgeScene(
         val tileGrid = application.tileGrid as InternalTileGrid
         val screen = tileGrid.toScreen()
 
-        val tileWidth = 16
-        val tileHeight = 16
+
+        val tileWidth = config.defaultTileset.width
+        val tileHeight = config.defaultTileset.height
         val tileSize = SizeInt(tileWidth, tileHeight)
         val atlas = MutableAtlasUnit()
-        val tilemapBitmap = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().toBMP32()
+        //val tilemapBitmap = resourcesVfs["cp_437_tilesets/rex_paint_16x16.png"].readBitmap().toBMP32()
         val bgTile = atlas.add(Bitmap32(tileWidth, tileHeight) { _, _ -> Colors.WHITE }).slice
         val strikeoutTile = atlas.add(Bitmap32(tileWidth, tileHeight).context2d {
             stroke(Colors.WHITE, 2f) { line(Point(0, tileHeight * .5f), Point(tileWidth, tileHeight * .5f)) }
@@ -80,7 +85,7 @@ open class ZirconKorgeScene(
         val underlinedTile = atlas.add(Bitmap32(tileWidth, tileHeight).context2d {
             stroke(Colors.WHITE, 2f) { line(Point(0, tileHeight - 1), Point(tileWidth, tileHeight - 1)) }
         }).slice
-        val tiles = tilemapBitmap.slice().splitInRows(tileSize.width, tileSize.height)
+        //val tiles = tilemapBitmap.slice().splitInRows(tileSize.width, tileSize.height)
 
         //image(tilemapBitmapInverted.slice())
         //image(tiles[1])
@@ -131,6 +136,8 @@ open class ZirconKorgeScene(
             blinkOn = !blinkOn
         }
 
+        val cachedTileSets = FastIdentityMap<TilesetResource, KorgeTileset>()
+
         renderableView {
             val now = DateTime.nowUnixMillisLong()
             tileGrid.updateAnimations(now, tileGrid)
@@ -151,6 +158,16 @@ open class ZirconKorgeScene(
                 tileGrid.renderAllTiles { pos, tile, tileset ->
                     if (tile.isBlinking && blinkOn) return@renderAllTiles
 
+                    val ktileset = cachedTileSets.getOrPut(tileset) {
+                        KorgeTileset(it).also { tileset ->
+                            launchImmediately {
+                                tileset.preload()
+                            }
+                        }
+                    }
+
+                    if (!ktileset.ready) return@renderAllTiles
+
                     val flipX = tile.isHorizontalFlipped
                     val flipY = tile.isVerticalFlipped
                     val px = (pos.x * tileWidthF)
@@ -159,7 +176,7 @@ open class ZirconKorgeScene(
                     when (tile) {
                         is CharacterTile -> {
                             drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
-                            drawSlice(px, py, tiles[tile.character.code], tile.foregroundColor.toRGBA(), flipX, flipY)
+                            drawSlice(px, py, ktileset.tiles[tile.character.code], tile.foregroundColor.toRGBA(), flipX, flipY)
                             if (tile.isCrossedOut) drawSlice(px, py, strikeoutTile, tile.foregroundColor.toRGBA(), false, false)
                             if (tile.isUnderlined) drawSlice(px, py, underlinedTile, tile.foregroundColor.toRGBA(), false, false)
                         }
@@ -171,6 +188,36 @@ open class ZirconKorgeScene(
 
         function(screen)
     }
+}
+
+class KorgeTileset(
+    val resource: TilesetResource
+) {
+    suspend fun preload() {
+        println("KorgeTileset.preload: ${resource.tilesetSourceType}, ${resource.tilesetType}, '${resource.path}'")
+        try {
+            val vfs = when (resource.tilesetSourceType) {
+                TilesetSourceType.FILESYSTEM -> localCurrentDirVfs
+                TilesetSourceType.JAR -> resourcesVfs
+            }
+            val bitmap = vfs[resource.path].readBitmap().toBMP32()
+            when (resource.tilesetType) {
+                TilesetType.CP437Tileset, TilesetType.GraphicalTileset -> {
+                    tiles = bitmap.slice().splitInRows(resource.width, resource.width)
+                }
+
+                is TilesetType.CustomTileset -> TODO()
+                TilesetType.TrueTypeFont -> TODO()
+            }
+            ready = true
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    var ready = false
+    var tiles: List<BmpSlice> = listOf()
+    var tilesByName: Map<String, BmpSlice> = mapOf()
 }
 
 class KorgeBasicInternalApplication(
