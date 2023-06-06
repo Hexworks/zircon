@@ -70,4 +70,6 @@ enum class ANSITileColor(
     override fun withBlue(blue: Int): TileColor = DefaultTileColor(red, green, blue, alpha)
 
     override fun interpolateTo(other: TileColor): ColorInterpolator = DefaultColorInterpolator(this, other)
+
+    companion object
 }
