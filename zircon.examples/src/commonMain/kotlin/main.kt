@@ -5,6 +5,7 @@ import korlibs.math.geom.Size
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.GraphicalTilesetResources
+import org.hexworks.zircon.api.ImageDictionaryTilesetResources
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -18,11 +19,14 @@ import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.util.CP437Utils
 import kotlin.random.Random
 
-const val SCREEN_WIDTH = 1920
-const val SCREEN_HEIGHT = 1080
-const val TILE_SIZE = 8
-const val GRID_WIDTH = 1920.div(TILE_SIZE)
-const val GRID_HEIGHT = 1080.div(TILE_SIZE)
+//const val SCREEN_WIDTH = 1920
+//const val SCREEN_HEIGHT = 1080
+const val SCREEN_WIDTH = 1280
+const val SCREEN_HEIGHT = 720
+//const val TILE_SIZE = 8
+const val TILE_SIZE = 16
+const val GRID_WIDTH = SCREEN_WIDTH.div(TILE_SIZE)
+const val GRID_HEIGHT = SCREEN_HEIGHT.div(TILE_SIZE)
 val TILESET = BuiltInCP437TilesetResource.values().first { it.width == TILE_SIZE && it.tilesetName == "rex_paint" }
 val GAME_SIZE = Size(SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -34,9 +38,13 @@ suspend fun main() = Korge(
     sceneContainer().changeTo({ MyScene() })
 }
 
-//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
+class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
-class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconImageDictionaryTilesetResources)
+
+fun zirconImageDictionaryTilesetResources(app: Application, screen: Screen) {
+}
 
 fun zirconBenchmark(app: Application, screen: Screen) {
     var BENCHMARK_CURR_IDX = 0
@@ -143,7 +151,6 @@ fun zirconGame2(app: Application, screen: Screen) {
     val GRID_HEIGHT = 24
     val TILESET = GraphicalTilesetResources.nethack16x16()
 
-
     for (row in 8 until GRID_HEIGHT) {
         for (col in 0 until GRID_WIDTH) {
             val name =
@@ -157,6 +164,14 @@ fun zirconGame2(app: Application, screen: Screen) {
             )
         }
     }
+
+    val imageDictionary = ImageDictionaryTilesetResources.loadTilesetFromFilesystem("../zircon.jvm.examples/src/main/resources/image_dictionary")
+
+    val imageTile = Tile.newBuilder()
+        .withTileset(imageDictionary)
+        .withName("hexworks_logo.png")
+        .buildImageTile()
+    screen.draw(imageTile, Position.create(10, 10))
 
 
     screen.display()
