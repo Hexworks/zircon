@@ -31,17 +31,18 @@ import korlibs.math.geom.Size
 import korlibs.math.geom.slice.splitInRows
 import korlibs.time.DateTime
 import korlibs.time.milliseconds
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.DisposedByHand
+import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.Applications
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -59,50 +60,12 @@ import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
 import org.hexworks.zircon.internal.util.CP437Utils
-import kotlin.random.Random
-
-
-/// === BENCHMARK ===
-
-val BENCHMARK_RANDOM = Random(13513516895)
-
-var BENCHMARK_CURR_IDX = 0
-
-const val BENCHMARK_LAYER_WIDTH = GRID_WIDTH.div(2)
-const val BENCHMARK_LAYER_HEIGHT = GRID_HEIGHT.div(2)
-const val BENCHMARK_LAYER_COUNT = 20
-val BENCHMARK_LAYER_SIZE = org.hexworks.zircon.api.data.Size.create(BENCHMARK_LAYER_WIDTH, BENCHMARK_LAYER_HEIGHT)
-val BENCHMARK_FILLER = Tile.defaultTile().withCharacter('x')
-
-val BENCHMARK_LAYERS = (0..BENCHMARK_LAYER_COUNT).map {
-    val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-        .withSize(BENCHMARK_LAYER_SIZE)
-        .withTileset(CP437TilesetResources.rexPaint16x16())
-        .build()
-    BENCHMARK_LAYER_SIZE.fetchPositions().forEach {
-        imageLayer.draw(BENCHMARK_FILLER, it)
-    }
-    LayerBuilder.newBuilder()
-        .withOffset(
-            Position.create(
-                x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
-                y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
-            )
-        )
-        .withTileGraphics(imageLayer)
-        .build()
-}
-
-/// === END BENCHMARK ===
-
-const val BENCHMARK = true
-const val DO_RENDER = true
 
 //class ZirconKorgeScene : PixelatedScene(128, 128, sceneScaleMode = ScaleMode.FILL) {
 @OptIn(KorgeExperimental::class)
 open class ZirconKorgeScene(
     private val sceneSize: Size,
-    val function: (screen: Screen) -> Unit
+    val function: (app: Application, screen: Screen) -> Unit
 ) : PixelatedScene(
     sceneSize.width.toInt(),
     sceneSize.height.toInt(),
@@ -121,10 +84,6 @@ open class ZirconKorgeScene(
 
         val application = KorgeBasicInternalApplication(config)
         val tileGrid = application.tileGrid as InternalTileGrid
-
-        if (BENCHMARK) {
-            BENCHMARK_LAYERS.forEach(tileGrid::addLayer)
-        }
 
         val screen = tileGrid.toScreen()
 
@@ -201,11 +160,13 @@ open class ZirconKorgeScene(
 
         renderableView {
             val now = DateTime.nowUnixMillisLong()
-            tileGrid.updateAnimations(now, tileGrid)
+            val renderData = RenderData(now)
 
-            if (BENCHMARK) {
-                benchmark(tileGrid)
+            application.beforeRenderListeners.toList().forEach {
+                it(renderData)
             }
+
+            tileGrid.updateAnimations(now, tileGrid)
 
             this.ctx.useBatcher { batch ->
                 val tileWidthF = tileWidth.toFloat()
@@ -221,66 +182,51 @@ open class ZirconKorgeScene(
                     batch.drawQuad(this.ctx.getTex(bmp), rx, ry, w, h, colorMul = color)
                 }
 
-                if (DO_RENDER) {
-                    tileGrid.renderAllTiles { pos, tile, tileset ->
-                        if (tile.isBlinking && blinkOn) return@renderAllTiles
+                tileGrid.renderAllTiles { pos, tile, tileset ->
+                    if (tile.isBlinking && blinkOn) return@renderAllTiles
 
-
-                        val ktileset = cachedTileSets.getOrPut(tileset) {
-                            KorgeTileset(it).also { tileset ->
-                                launchImmediately {
-                                    tileset.preload()
-                                }
-                            }
-                        }
-
-                        if (!ktileset.ready) return@renderAllTiles
-
-                        val flipX = tile.isHorizontalFlipped
-                        val flipY = tile.isVerticalFlipped
-                        val px = (pos.x * tileWidthF)
-                        val py = (pos.y * tileHeightF)
-
-                        when (tile) {
-                            is CharacterTile -> {
-                                drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
-                                drawSlice(
-                                    px,
-                                    py,
-                                    ktileset.tiles[CP437Utils.fetchCP437IndexForChar(tile.character)],
-                                    tile.foregroundColor.toRGBA(),
-                                    flipX,
-                                    flipY
-                                )
-                                if (tile.isCrossedOut) drawSlice(
-                                    px,
-                                    py,
-                                    strikeoutTile,
-                                    tile.foregroundColor.toRGBA(),
-                                    false,
-                                    false
-                                )
-                                if (tile.isUnderlined) drawSlice(
-                                    px,
-                                    py,
-                                    underlinedTile,
-                                    tile.foregroundColor.toRGBA(),
-                                    false,
-                                    false
-                                )
-                            }
-
-                            is GraphicalTile -> {
-                                drawSlice(px, py, ktileset.tilesByName[tile.name], Colors.WHITE, flipX, flipY)
+                    val ktileset = cachedTileSets.getOrPut(tileset) {
+                        KorgeTileset(it).also { tileset ->
+                            launchImmediately {
+                                tileset.preload()
                             }
                         }
                     }
 
+                    if (!ktileset.ready) return@renderAllTiles
+
+                    val flipX = tile.isHorizontalFlipped
+                    val flipY = tile.isVerticalFlipped
+                    val px = (pos.x * tileWidthF)
+                    val py = (pos.y * tileHeightF)
+
+                    when (tile) {
+                        is CharacterTile -> {
+                            drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
+                            drawSlice(
+                                px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar(tile.character)],
+                                tile.foregroundColor.toRGBA(), flipX, flipY
+                            )
+                            if (tile.isCrossedOut) drawSlice(
+                                px, py, strikeoutTile, tile.foregroundColor.toRGBA(), false, false
+                            )
+                            if (tile.isUnderlined) drawSlice(
+                                px, py, underlinedTile, tile.foregroundColor.toRGBA(), false, false
+                            )
+                        }
+
+                        is GraphicalTile -> {
+                            drawSlice(px, py, ktileset.tilesByName[tile.name], Colors.WHITE, flipX, flipY)
+                        }
+                    }
+                }
+                application.afterRenderListeners.toList().forEach {
+                    it(renderData)
                 }
             }
-
-            function(screen)
         }
+
+        function(application, screen)
     }
 
 
@@ -338,36 +284,6 @@ open class ZirconKorgeScene(
         var tilesByName: Map<String, BmpSlice> = mapOf()
     }
 
-    fun ANSITileColor.Companion.random(): ANSITileColor {
-        return ANSITileColor.values()[BENCHMARK_RANDOM.nextInt(0, ANSITileColor.values().size)]
-    }
-
-    fun benchmark(grid: TileGrid) {
-
-
-        for (x in 0 until GRID_WIDTH) {
-            for (y in 1 until GRID_HEIGHT) {
-                grid.draw(
-                    Tile.newBuilder()
-                        .withCharacter(CP437Utils.convertCp437toUnicode(BENCHMARK_RANDOM.nextInt(0, 255)))
-                        .withBackgroundColor(ANSITileColor.random())
-                        .withForegroundColor(ANSITileColor.random())
-                        .buildCharacterTile(), Position.create(x, y)
-                )
-            }
-        }
-
-        BENCHMARK_LAYERS.forEach {
-            it.asInternalLayer().moveTo(
-                Position.create(
-                    x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
-                    y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
-                )
-            )
-        }
-        BENCHMARK_CURR_IDX = if (BENCHMARK_CURR_IDX == 0) 1 else 0
-    }
-
     class KorgeBasicInternalApplication(
         override val config: AppConfig
     ) : InternalApplication {
@@ -377,12 +293,23 @@ open class ZirconKorgeScene(
             it.application = this
         }
 
-        override fun beforeRender(listener: (RenderData) -> Unit): Subscription = TODO("Not yet implemented")
-        override fun afterRender(listener: (RenderData) -> Unit): Subscription = TODO("Not yet implemented")
+        val beforeRenderListeners = LinkedHashSet<(RenderData) -> Unit>()
+        val afterRenderListeners = LinkedHashSet<(RenderData) -> Unit>()
+
+        override fun beforeRender(listener: (RenderData) -> Unit): Subscription {
+            beforeRenderListeners += listener
+            return SimpleDisposable { beforeRenderListeners -= listener }
+        }
+        override fun afterRender(listener: (RenderData) -> Unit): Subscription {
+            afterRenderListeners += listener
+            return SimpleDisposable { afterRenderListeners -= listener }
+        }
         override fun asInternal(): InternalApplication = this
+
+        //var closed = DefaultSetProperty()
+
         override val closedValue: ObservableValue<Boolean> get() = TODO()
         override fun close() = Unit
-
     }
 
     private fun InternalTileGrid.renderAllTiles(
@@ -428,6 +355,17 @@ open class ZirconKorgeScene(
     private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
         is TilesetHolder -> tileset
         else -> graphics.tileset
+    }
+
+    class SimpleDisposable(val callbackOnce: () -> Unit) : Subscription {
+        private var _disposeState: DisposeState = NotDisposed
+        override val disposeState: DisposeState get() = _disposeState
+
+        override fun dispose(disposeState: DisposeState) {
+            if (_disposeState != NotDisposed) return
+            _disposeState = DisposedByHand
+            callbackOnce()
+        }
     }
 
     fun Key.toKeyCode(): KeyCode = when (this) {

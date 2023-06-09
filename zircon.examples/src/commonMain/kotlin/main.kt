@@ -2,7 +2,12 @@ import korlibs.korge.Korge
 import korlibs.korge.KorgeDisplayMode
 import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
+import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.GraphicalTilesetResources
+import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -10,8 +15,8 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
+import org.hexworks.zircon.internal.util.CP437Utils
 import kotlin.random.Random
-
 
 const val SCREEN_WIDTH = 1920
 const val SCREEN_HEIGHT = 1080
@@ -30,9 +35,70 @@ suspend fun main() = Korge(
 }
 
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
-class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
+class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
 
-fun zirconGame2(screen: Screen) {
+fun zirconBenchmark(app: Application, screen: Screen) {
+    var BENCHMARK_CURR_IDX = 0
+
+    val BENCHMARK_RANDOM = Random(13513516895)
+
+    val BENCHMARK_LAYER_WIDTH = GRID_WIDTH.div(2)
+    val BENCHMARK_LAYER_HEIGHT = GRID_HEIGHT.div(2)
+    val BENCHMARK_LAYER_COUNT = 20
+    val BENCHMARK_LAYER_SIZE = org.hexworks.zircon.api.data.Size.create(BENCHMARK_LAYER_WIDTH, BENCHMARK_LAYER_HEIGHT)
+    val BENCHMARK_FILLER = Tile.defaultTile().withCharacter('x')
+
+    val BENCHMARK_LAYERS = (0..BENCHMARK_LAYER_COUNT).map {
+        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
+            .withSize(BENCHMARK_LAYER_SIZE)
+            .withTileset(CP437TilesetResources.rexPaint16x16())
+            .build()
+        BENCHMARK_LAYER_SIZE.fetchPositions().forEach {
+            imageLayer.draw(BENCHMARK_FILLER, it)
+        }
+        LayerBuilder.newBuilder()
+            .withOffset(
+                Position.create(
+                    x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
+                    y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
+                )
+            )
+            .withTileGraphics(imageLayer)
+            .build()
+    }
+
+    fun ANSITileColor.Companion.random(): ANSITileColor =
+        ANSITileColor.values()[BENCHMARK_RANDOM.nextInt(0, ANSITileColor.values().size)]
+
+    app.beforeRender {
+        //println("BEFORE RENDER")
+        for (x in 0 until GRID_WIDTH) {
+            for (y in 1 until GRID_HEIGHT) {
+                screen.draw(
+                    Tile.newBuilder()
+                        .withCharacter(CP437Utils.convertCp437toUnicode(BENCHMARK_RANDOM.nextInt(0, 255)))
+                        .withBackgroundColor(ANSITileColor.random())
+                        .withForegroundColor(ANSITileColor.random())
+                        .buildCharacterTile(), Position.create(x, y)
+                )
+            }
+        }
+
+        BENCHMARK_LAYERS.forEach {
+            it.asInternalLayer().moveTo(
+                Position.create(
+                    x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
+                    y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
+                )
+            )
+        }
+        BENCHMARK_CURR_IDX = if (BENCHMARK_CURR_IDX == 0) 1 else 0
+        screen.display()
+    }
+}
+
+fun zirconGame2(app: Application, screen: Screen) {
     for (y in 0 until 20) {
         for (x in 0 until 32) {
             screen.draw(
@@ -94,9 +160,10 @@ fun zirconGame2(screen: Screen) {
 
 
     screen.display()
+
 }
 
-fun zirconGame(screen: Screen) {
+fun zirconGame(app: Application, screen: Screen) {
     screen.apply {
         display()
 //        addComponent(buildHbox {
