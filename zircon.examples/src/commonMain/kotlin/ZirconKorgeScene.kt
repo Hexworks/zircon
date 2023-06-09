@@ -6,12 +6,11 @@ import korlibs.event.KeyEvent
 import korlibs.event.MouseEvent
 import korlibs.image.atlas.MutableAtlasUnit
 import korlibs.image.atlas.add
-import korlibs.image.bitmap.Bitmap32
-import korlibs.image.bitmap.BmpSlice
-import korlibs.image.bitmap.context2d
-import korlibs.image.bitmap.slice
+import korlibs.image.bitmap.*
 import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
+import korlibs.image.font.readTtfFont
+import korlibs.image.font.renderGlyphToBitmap
 import korlibs.image.format.readBitmap
 import korlibs.io.async.launchImmediately
 import korlibs.io.dynamic.dyn
@@ -28,6 +27,7 @@ import korlibs.korge.input.mouse
 import korlibs.korge.scene.PixelatedScene
 import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
+import korlibs.korge.view.image
 import korlibs.korge.view.renderableView
 import korlibs.math.geom.*
 import korlibs.math.geom.Size
@@ -45,6 +45,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
+import org.hexworks.zircon.api.behavior.OptTilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.extensions.toScreen
@@ -198,6 +199,7 @@ open class ZirconKorgeScene(
                             //println("pos=$pos, tile=$tile, tileset=$tileset")
                             launchImmediately {
                                 tileset.preload()
+                                //tileset.atlas?.let { image(it.bitmap) }
                             }
                         }
                     }
@@ -210,13 +212,19 @@ open class ZirconKorgeScene(
                     val px = (pos.x * tileWidthF)
                     val py = (pos.y * tileHeightF)
 
+                    //if (ktileset.atlas != null) {
+                    //    println("pos=$pos, tile=$tile")
+                    //}
+
                     when (tile) {
                         is CharacterTile -> {
-                            drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
+                            //if (tile.character != ' ') {
+                                drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
+                            //}
                             drawSlice(
                                 //px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar((tile.character.code and 0xFF).toChar())],
                                 //px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar(CP437Utils.convertCp437toUnicode(tile.character.code and 0xFF))],
-                                px, py, ktileset.tiles[tile.character.code and 0xFF],
+                                px, py, ktileset.tiles.getOrNull(tile.character.code and 0xFF),
                                 tile.foregroundColor.toRGBA(), flipX, flipY
                             )
                             if (tile.isCrossedOut) drawSlice(
@@ -320,16 +328,28 @@ open class ZirconKorgeScene(
                         //TODO()
                     }
                     is TilesetType.CustomTileset -> TODO()
-                    TilesetType.TrueTypeFont -> TODO()
+                    TilesetType.TrueTypeFont -> {
+                        val atlas = MutableAtlasUnit(512)
+                        val font = vfsFile.readTtfFont()
+                        val tiles = mutableListOf<BmpSlice>()
+                        this.atlas = atlas
+                        this.tiles = tiles
+                        for (n in 0 until 256) {
+                            tiles += atlas.add(font.renderGlyphToBitmap(16f, CP437Utils.convertCp437toUnicode(n).code, Colors.WHITE).bmp.toBMP32()).slice
+                        }
+                        //println("!! TTF: $font")
+                        //TODO()
+                    }
                 }
                 ready = true
-                println("!! READY: $this : $resource")
+                println("!! READY: $this : $resource : ${resource.tileType} : ${resource.tilesetType}")
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
         }
 
         var ready = false
+        var atlas: MutableAtlasUnit? = null
         var tiles: List<BmpSlice> = listOf()
         var tilesByName: Map<String, BmpSlice> = mapOf()
     }
@@ -404,6 +424,7 @@ open class ZirconKorgeScene(
 
     private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
         is TilesetHolder -> tileset
+        is OptTilesetHolder -> tileset ?: graphics.tileset
         else -> graphics.tileset
     }
 

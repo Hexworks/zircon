@@ -87,7 +87,8 @@ class TileBuilder private constructor(
     fun buildCharacterTile(): CharacterTile {
         return DefaultCharacterTile(
             character = character,
-            styleSet = styleSet
+            styleSet = styleSet,
+            tileset = tileset
         )
     }
 

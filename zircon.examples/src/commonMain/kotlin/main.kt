@@ -2,18 +2,17 @@ import korlibs.korge.Korge
 import korlibs.korge.KorgeDisplayMode
 import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
-import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.DrawSurfaces
-import org.hexworks.zircon.api.GraphicalTilesetResources
-import org.hexworks.zircon.api.ImageDictionaryTilesetResources
+import org.hexworks.zircon.api.*
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.util.CP437Utils
@@ -173,9 +172,50 @@ fun zirconGame2(app: Application, screen: Screen) {
         .buildImageTile()
     screen.draw(imageTile, Position.create(10, 10))
 
+    val ttf1 = TrueTypeFontResources.amstrad(16)
+    val ttf2 = TrueTypeFontResources.vtech(16)
+
+    screen.drawText(
+        "HELLO WORLD!\nfrom amstrad!",
+        Position.create(32, 24),
+        StyleSet.defaultStyle()
+            .withForegroundColor(TileColor.create(255, 0, 0))
+            .withBackgroundColor(TileColor.create(0, 0, 255)),
+        ttf1
+    )
+
+    screen.drawText(
+        "HELLO WORLD!\nfrom vtech!",
+        Position.create(32, 27),
+        StyleSet.defaultStyle()
+            .withForegroundColor(TileColor.create(255, 0, 0))
+            .withBackgroundColor(TileColor.create(0, 0, 255)),
+        ttf2
+    )
 
     screen.display()
+}
 
+fun DrawSurface.drawText(
+    text: String,
+    drawPosition: Position,
+    styleSet: StyleSet,
+    tileSet: TilesetResource
+) {
+    var pos = drawPosition
+    for (c in text) {
+        if (c == '\n') {
+            pos = Position.create(drawPosition.x, pos.y + 1)
+            continue
+        }
+        draw(Tile.newBuilder()
+            .withTileset(tileSet)
+            .withCharacter(c)
+            .withStyleSet(styleSet)
+            .buildCharacterTile(), pos
+        )
+        pos = Position.create(pos.x + 1, pos.y)
+    }
 }
 
 fun zirconGame(app: Application, screen: Screen) {
