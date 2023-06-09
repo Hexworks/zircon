@@ -1,5 +1,6 @@
 import korlibs.datastructure.FastIdentityMap
 import korlibs.datastructure.getOrPut
+import korlibs.datastructure.iterators.fastForEach
 import korlibs.event.Key
 import korlibs.event.KeyEvent
 import korlibs.event.MouseEvent
@@ -14,6 +15,8 @@ import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
 import korlibs.io.async.launchImmediately
 import korlibs.io.dynamic.dyn
+import korlibs.io.file.baseName
+import korlibs.io.file.extensionLC
 import korlibs.io.file.std.localCurrentDirVfs
 import korlibs.io.file.std.openAsZip
 import korlibs.io.file.std.resourcesVfs
@@ -56,6 +59,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
+import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
@@ -167,26 +171,31 @@ open class ZirconKorgeScene(
             }
 
             tileGrid.updateAnimations(now, tileGrid)
+            val view = this
 
             this.ctx.useBatcher { batch ->
                 val tileWidthF = tileWidth.toFloat()
                 val tileHeightF = tileHeight.toFloat()
 
-                fun drawSlice(x: Float, y: Float, bmp: BmpSlice?, color: RGBA, flipX: Boolean, flipY: Boolean) {
+                fun drawSlice(x: Float, y: Float, bmp: BmpSlice?, color: RGBA, flipX: Boolean, flipY: Boolean, rw: Float = tileWidthF, rh: Float = tileHeightF) {
                     if (bmp == null) return
-                    val rx = if (flipX) x + tileWidthF else x
-                    val ry = if (flipY) y + tileHeightF else y
-                    val w = if (flipX) -tileWidthF else tileWidthF
-                    val h = if (flipY) -tileHeightF else tileHeightF
+                    val rx = if (flipX) x + rw else x
+                    val ry = if (flipY) y + rh else y
+                    val w = if (flipX) -rw else rw
+                    val h = if (flipY) -rh else rh
 
-                    batch.drawQuad(this.ctx.getTex(bmp), rx, ry, w, h, colorMul = color)
+                    //if (w != 16f) println("w=$w,h=$h")
+                    batch.drawQuad(this.ctx.getTex(bmp), rx, ry, w, h, colorMul = color, m = view.globalMatrix, blendMode = view.renderBlendMode)
                 }
+
+                val imageTiles = arrayListOf<Pair<Vector2, BmpSlice>>()
 
                 tileGrid.renderAllTiles { pos, tile, tileset ->
                     if (tile.isBlinking && blinkOn) return@renderAllTiles
 
                     val ktileset = cachedTileSets.getOrPut(tileset) {
                         KorgeTileset(it).also { tileset ->
+                            //println("pos=$pos, tile=$tile, tileset=$tileset")
                             launchImmediately {
                                 tileset.preload()
                             }
@@ -194,6 +203,7 @@ open class ZirconKorgeScene(
                     }
 
                     if (!ktileset.ready) return@renderAllTiles
+                    //println("-- ${ktileset.resource}")
 
                     val flipX = tile.isHorizontalFlipped
                     val flipY = tile.isVerticalFlipped
@@ -204,7 +214,9 @@ open class ZirconKorgeScene(
                         is CharacterTile -> {
                             drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
                             drawSlice(
-                                px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar(tile.character)],
+                                //px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar((tile.character.code and 0xFF).toChar())],
+                                //px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar(CP437Utils.convertCp437toUnicode(tile.character.code and 0xFF))],
+                                px, py, ktileset.tiles[tile.character.code and 0xFF],
                                 tile.foregroundColor.toRGBA(), flipX, flipY
                             )
                             if (tile.isCrossedOut) drawSlice(
@@ -216,10 +228,27 @@ open class ZirconKorgeScene(
                         }
 
                         is GraphicalTile -> {
+                            //println("tile.name=${tile.name}, ktileset.tilesByName[tile.name]=${ktileset.tilesByName[tile.name]}")
                             drawSlice(px, py, ktileset.tilesByName[tile.name], Colors.WHITE, flipX, flipY)
+                        }
+                        is ImageTile -> {
+                            //println("tile.name=${tile.name}, ktileset.tilesByName[tile.name]=${ktileset.tilesByName[tile.name]}")
+                            ktileset.tilesByName[tile.name]?.let { tile ->
+                                //println("tile.width.toFloat()=${tile.width.toFloat()}")
+                                imageTiles += Pair(Vector2(px, py), tile)
+                                //drawSlice(px, py, tile, Colors.WHITE, flipX, flipY, rw = tile.width.toFloat(), rh = tile.height.toFloat())
+                            }
+                        }
+                        else -> {
+                            println("Unknown tile.type=$tile")
                         }
                     }
                 }
+
+                imageTiles.fastForEach { (pos, bmp) ->
+                    drawSlice(pos.x, pos.y, bmp, Colors.WHITE, false, false, bmp.width.toFloat(), bmp.height.toFloat())
+                }
+
                 application.afterRenderListeners.toList().forEach {
                     it(renderData)
                 }
@@ -240,40 +269,61 @@ open class ZirconKorgeScene(
                     TilesetSourceType.FILESYSTEM -> localCurrentDirVfs
                     TilesetSourceType.JAR -> resourcesVfs
                 }
+                val vfsFile = vfs[resource.path]
+
+                if (!vfsFile.exists()) {
+                    error("File $vfsFile doesn't exist!")
+                }
+                //println("!! $vfsFile")
                 when (resource.tilesetType) {
                     TilesetType.CP437Tileset -> {
-                        val bitmap = vfs[resource.path].readBitmap().toBMP32IfRequired()
+                        val bitmap = vfsFile.readBitmap().toBMP32IfRequired()
                         tiles = bitmap.slice().splitInRows(resource.width, resource.width)
                     }
-
                     TilesetType.GraphicalTileset -> {
-                        val zip = vfs[resource.path].openAsZip()
-                        val info = Yaml.decode(zip["tileinfo.yml"].readString()).dyn
-                        val infoName = info["name"].str
-                        val infoSize = info["size"].int
-                        val infoFiles = info["files"].list
-                        for (file in infoFiles) {
-                            val fileName = file["name"].str
-                            val tilesPerRow = file["tilesPerRow"].int
-                            val tiles = file["tiles"].list
-                            val tileNames = tiles.map { it["name"].str }
-                            val bitmap = zip[fileName].readBitmap().toBMP32IfRequired()
-                            val tilesBmps = bitmap.slice().splitInRows(infoSize, infoSize)
-                            this.tiles = tilesBmps
-                            this.tilesByName = tileNames.zip(tilesBmps).associate { it.first to it.second }
+                        if (vfsFile.isDirectory()) {
+                            val atlas = MutableAtlasUnit()
 
-                            //println("tileNames=$tileNames")
-                            //println("file=$file")
+                            val tiles = mutableListOf<BmpSlice>()
+                            val tilesByName = mutableMapOf<String, BmpSlice>()
+                            this.tiles = tiles
+                            this.tilesByName = tilesByName
+                            for (imageFile in vfsFile.listSimple().filter { it.extensionLC == "png" }) {
+                                val tile = atlas.add(imageFile.readBitmap().toBMP32IfRequired()).slice
+                                tiles += tile
+                                tilesByName[imageFile.baseName] = tile
+                            }
+
+                            //println("tilesByName=$tilesByName")
+                        } else {
+                            val zip = vfsFile.openAsZip()
+                            val info = Yaml.decode(zip["tileinfo.yml"].readString()).dyn
+                            val infoName = info["name"].str
+                            val infoSize = info["size"].int
+                            val infoFiles = info["files"].list
+                            for (file in infoFiles) {
+                                val fileName = file["name"].str
+                                val tilesPerRow = file["tilesPerRow"].int
+                                val tiles = file["tiles"].list
+                                val tileNames = tiles.map { it["name"].str }
+                                val bitmap = zip[fileName].readBitmap().toBMP32IfRequired()
+                                val tilesBmps = bitmap.slice().splitInRows(infoSize, infoSize)
+                                this.tiles = tilesBmps
+                                this.tilesByName = tileNames.zip(tilesBmps).associate { it.first to it.second }
+
+                                //println("tileNames=$tileNames")
+                                //println("file=$file")
+                            }
                         }
                         //println(zip.listNames())
                         //println(info)
                         //TODO()
                     }
-
                     is TilesetType.CustomTileset -> TODO()
                     TilesetType.TrueTypeFont -> TODO()
                 }
                 ready = true
+                println("!! READY: $this : $resource")
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
