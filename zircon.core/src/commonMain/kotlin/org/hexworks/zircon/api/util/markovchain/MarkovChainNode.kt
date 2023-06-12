@@ -4,11 +4,11 @@ package org.hexworks.zircon.api.util.markovchain
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChainNode
 import kotlin.random.Random
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents a markov chain node.
  */
+// TODO: refactor this
 interface MarkovChainNode<T : Any> : Identifiable {
 
     /**
@@ -17,13 +17,12 @@ interface MarkovChainNode<T : Any> : Identifiable {
     fun next(): MarkovChainNode<T>
 
     /**
-     * Returns the satellite data stored in this node
-     * or an exception if it is not present.
+     * Returns the satellite data stored in this node or an exception if it is not present.
      */
     fun data(): T
 
     /**
-     * Returns the satellite data stored in this node.
+     * Returns the satellite data stored in this node or `null` if it is not present.
      */
     fun dataOrNull(): T?
 
@@ -39,13 +38,10 @@ interface MarkovChainNode<T : Any> : Identifiable {
 
     companion object {
 
-        @JvmStatic
         fun <T : Any> create(): MarkovChainNode<T> = DefaultMarkovChainNode()
 
-        @JvmStatic
         fun <T : Any> create(data: T): MarkovChainNode<T> = DefaultMarkovChainNode(data)
 
-        @JvmStatic
         fun <T : Any> create(data: T, seed: Long): MarkovChainNode<T> = DefaultMarkovChainNode(data, Random(seed))
     }
 }

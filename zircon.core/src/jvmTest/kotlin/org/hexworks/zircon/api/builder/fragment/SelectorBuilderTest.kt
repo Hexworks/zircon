@@ -17,17 +17,17 @@ class SelectorBuilderTest {
     fun sizeAndMinWidth() {
         for (w in 0..2) {
             assertThatThrownBy {
-                SelectorBuilder.newBuilder<String>()
-                    .withWidth(w)
-                    .withValues(listOf("a", "b").toProperty())
-                    .build()
+                buildSelector<String> {
+                    width = w
+                    valuesProperty = listOf("a", "b").toProperty()
+                }
             }.hasMessageContaining("minimum width").isInstanceOf(IllegalArgumentException::class.java)
         }
 
-        val minimalMultiSelect = SelectorBuilder.newBuilder<String>()
-            .withWidth(3)
-            .withValues(listOf("a", "b").toProperty())
-            .build()
+        val minimalMultiSelect = buildSelector<String> {
+            width = 3
+            valuesProperty = listOf("a", "b").toProperty()
+        }
         assertThat(minimalMultiSelect).isInstanceOf(Selector::class.java)
 
         assertThat(minimalMultiSelect.root.size).isEqualTo(Size.create(3, 1))
@@ -36,49 +36,52 @@ class SelectorBuilderTest {
     @Test
     fun noEmptyList() {
         assertThatThrownBy {
-            SelectorBuilder.newBuilder<String>()
-                .withWidth(10)
-                .withValues(listOf<String>().toProperty())
-                .build()
+            buildSelector<String> {
+                width = 10
+                valuesProperty = listOf<String>().toProperty()
+            }
         }.isInstanceOf(IllegalArgumentException::class.java).hasMessageContaining("No values supplied for Selector.")
     }
 
     @Test
     fun textTooLong() {
-        val multiSelect = SelectorBuilder.newBuilder<String>()
-            .withWidth(7)
-            .withValueList(listOf("veryLongWord", "b"))
-            .build() as DefaultSelector
+        val multiSelect = buildSelector<String> {
+            width = 7
+            valueList = listOf("veryLongWord", "b")
+        } as DefaultSelector
         val label = getLabel(multiSelect)
         assertThat(label.text).isEqualTo("veryL")
     }
 
     @Test
     fun centeredText() {
-        val multiSelect = SelectorBuilder.newBuilder<String>()
-            .withWidth(7)
-            .withValueList(listOf("6"))
-            .build() as DefaultSelector
+        val multiSelect = buildSelector<String> {
+            width = 7
+            valueList = listOf("6")
+        } as DefaultSelector
         val label = getLabel(multiSelect)
         assertThat(label.text).isEqualTo("  6  ")
     }
 
     @Test
     fun uncenteredText() {
-        val multiSelect = SelectorBuilder.newBuilder<String>()
-            .withWidth(7)
-            .withValueList(listOf("9"))
-            .withCenteredText(false).build() as DefaultSelector
+        val multiSelect = buildSelector<String> {
+            width = 7
+            valueList = listOf("9")
+            centeredText = false
+        } as DefaultSelector
         val label = getLabel(multiSelect)
         assertThat(label.text).isEqualTo("9")
     }
 
     @Test
     fun toStringMethod() {
-        val multiSelect = SelectorBuilder.newBuilder<TestClass>()
-            .withWidth(10)
-            .withValueList(listOf(TestClass(5))).withToStringMethod(TestClass::bigger)
-            .withCenteredText(false).build() as DefaultSelector
+        val multiSelect = buildSelector<TestClass> {
+            width = 10
+            valueList = listOf(TestClass(5))
+            toStringMethod = TestClass::bigger
+            centeredText = false
+        } as DefaultSelector
         val label = getLabel(multiSelect)
         assertThat(label.text).isEqualTo("500")
     }
@@ -94,10 +97,11 @@ class SelectorBuilderTest {
     }
 
     private fun checkComponentClasses(clickable: Boolean, expectedNumberOfButtons: Int, expectedNumberOfLabels: Int) {
-        val multiSelect = SelectorBuilder.newBuilder<String>()
-            .withWidth(10)
-            .withValueList(listOf("one", "two", "three")).withClickableLabel(clickable)
-            .build() as DefaultSelector
+        val multiSelect = buildSelector<String> {
+            width = 10
+            valueList = listOf("one", "two", "three")
+            clickableLabel = clickable
+        } as DefaultSelector
 
         val components = multiSelect.root.children.map { it::class }
         assertThat(components.filter { it.isSubclassOf(Button::class) }).`as`("${if (clickable) "C" else "Unc"}lickable MultiSelect should have $expectedNumberOfButtons Buttons")

@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl.textedit.transformation
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.internal.component.impl.textedit.DefaultEditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
-import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Test
 
 class AddRowBreakTest {
@@ -78,7 +77,7 @@ class AddRowBreakTest {
         const val CHAR_BEFORE_LINE_BREAK = 'x'
 
         fun generateBufferFor(cursor: Cursor) = DefaultEditableTextBuffer(
-            source = "$OTHER_CHAR$CHAR_BEFORE_LINE_BREAK$OTHER_CHAR" + SystemUtils.getLineSeparator() +
+            source = "$OTHER_CHAR$CHAR_BEFORE_LINE_BREAK$OTHER_CHAR" + '\n' +
                     "$OTHER_CHAR$OTHER_CHAR$OTHER_CHAR",
             cursor = cursor
         )

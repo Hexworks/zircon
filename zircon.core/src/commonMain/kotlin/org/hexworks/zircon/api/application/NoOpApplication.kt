@@ -4,7 +4,6 @@ import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.DisposedByHand
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.grid.TileGrid
@@ -23,7 +22,11 @@ class NoOpApplication(
 
     override lateinit var tileGrid: TileGrid
 
+
     override val closedValue: Property<Boolean> = false.toProperty()
+
+    override suspend fun start() {
+    }
 
     override fun beforeRender(listener: (RenderData) -> Unit) = NoOpSubscription
 

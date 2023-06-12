@@ -1,18 +1,11 @@
 package org.hexworks.zircon.api.color
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.extensions.toAWTColor
 import org.junit.Test
 import java.awt.Color
 
 class ANSITileColorTest {
 
-
-    @Test
-    fun shouldReturnProperAWTColor() {
-        assertThat(ANSITileColor.YELLOW.toAWTColor())
-            .isEqualTo(YELLOW)
-    }
 
     @Test
     fun shouldReturnProperRed() {

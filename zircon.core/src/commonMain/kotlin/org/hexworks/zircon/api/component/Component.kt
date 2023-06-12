@@ -2,14 +2,12 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.uievent.ComponentEvent
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.UIEventSource
 import org.hexworks.zircon.internal.behavior.Focusable
@@ -23,7 +21,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * The component hierarchy **always** has a [Container] at its root. A child [Component]
  * is **always** bounded by its parent. Containers are branches in this tree while [Component]s
  * are leaves. So for example a panel which is intended to be able to hold other components
- * like a label or a check box is a [Container] while a label which is only intended to
+ * like a label or a checkbox is a [Container] while a label which is only intended to
  * display information is just a [Component].
  *
  * [Component]s also support UI event handling through [UIEventSource] and [ComponentEventSource]

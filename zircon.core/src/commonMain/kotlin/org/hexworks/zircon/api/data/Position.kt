@@ -1,22 +1,21 @@
-@file:Suppress("unused", "ReplaceSingleLineLet", "SpellCheckingInspection", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.internal.data.PixelPosition
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents a coordinate on a 2D plane. [Position]
  * destructures into [x] and [y].
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Position : Comparable<Position> {
 
     val x: Int
     val y: Int
+
+    // 📙 Note that most of these functions should be extension functions, but we had to support
+    // Java originally so that's why we have it like this.
 
     /**
      * Tells whether this [Position] is `UNKNOWN`.
@@ -124,7 +123,7 @@ interface Position : Comparable<Position> {
      * Turns this [Position] to a [PixelPosition]. Has no effect if
      * `this` object is a [PixelPosition].
      */
-    
+
     fun toPixelPosition(tileset: TilesetResource): PixelPosition
 
     /**
@@ -138,37 +137,31 @@ interface Position : Comparable<Position> {
         /**
          * Constant for the top-left corner (0x0)
          */
-        @JvmStatic
         fun topLeftCorner() = TOP_LEFT_CORNER
 
         /**
          * Constant for the 1x1 position (one offset in both directions from top-left)
          */
-        @JvmStatic
         fun offset1x1() = OFFSET_1X1
 
         /**
          * Constant for the 0x0 position.
          */
-        @JvmStatic
         fun zero() = DEFAULT_POSITION
 
         /**
          * This position can be considered as the default (0x0).
          */
-        @JvmStatic
         fun defaultPosition() = DEFAULT_POSITION
 
         /**
          * Used in place of a possible null value. Means that the position is unknown (cursor for example).
          */
-        @JvmStatic
         fun unknown() = UNKNOWN
 
         /**
          * Creates a new [Position] using the given `x` and `y` values.
          */
-        @JvmStatic
         fun create(x: Int, y: Int): Position {
             return GridPosition(x, y)
         }
@@ -176,25 +169,21 @@ interface Position : Comparable<Position> {
         /**
          * Returns the top left position of the given [Component].
          */
-        @JvmStatic
         fun topLeftOf(component: Component) = component.position
 
         /**
          * Returns the top right position of the given [Component].
          */
-        @JvmStatic
         fun topRightOf(component: Component) = component.position.withRelativeX(component.width)
 
         /**
          * Returns the bottom left position of the given [Component].
          */
-        @JvmStatic
         fun bottomLeftOf(component: Component) = component.position.withRelativeY(component.height)
 
         /**
          * Returns the bottom right position of the given [Component].
          */
-        @JvmStatic
         fun bottomRightOf(component: Component) = component.position.withRelative(component.size.toPosition())
 
         private val TOP_LEFT_CORNER = create(0, 0)

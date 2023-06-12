@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.color
 import org.hexworks.zircon.api.color.ColorInterpolator
 import org.hexworks.zircon.api.color.TileColor
 
-class DefaultColorInterpolator(
+internal class DefaultColorInterpolator(
     override val lowColor: TileColor,
     override val highColor: TileColor
 ) : ColorInterpolator {

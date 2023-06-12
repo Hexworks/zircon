@@ -5,28 +5,26 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.Components
+import org.hexworks.zircon.api.builder.component.buildGroup
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
-import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
-import kotlin.jvm.Synchronized
 
 class DefaultRadioButtonGroup internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,
     initialTileset: TilesetResource,
-    private val groupDelegate: InternalGroup<RadioButton> = Components.group<RadioButton>()
-        .withIsDisabled(initialIsDisabled)
-        .withIsHidden(initialIsHidden)
-        .withTheme(initialTheme)
-        .withTileset(initialTileset)
-        .build() as InternalGroup<RadioButton>
+    private val groupDelegate: InternalGroup<RadioButton> = buildGroup<RadioButton> {
+        isDisabled = initialIsDisabled
+        isHidden = initialIsHidden
+        theme = initialTheme
+        tileset = initialTileset
+    } as InternalGroup<RadioButton>
 ) : RadioButtonGroup, InternalGroup<RadioButton> by groupDelegate {
 
     private val buttons = mutableMapOf<String, Pair<GroupAttachedComponent, Subscription>>()
@@ -34,7 +32,6 @@ class DefaultRadioButtonGroup internal constructor(
     override var selectedButtonProperty: Property<RadioButton?> = null.toProperty()
     override var selectedButton: RadioButton? by selectedButtonProperty.asDelegate()
 
-    @Synchronized
     override fun addComponent(component: RadioButton): AttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."

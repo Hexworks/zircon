@@ -3,15 +3,14 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHBox
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.math.max
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class HBoxBuilder private constructor() : BaseContainerBuilder<HBox, HBoxBuilder>(DefaultHBoxRenderer()) {
+class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
 
     var spacing: Int = 0
         set(value) {
@@ -21,9 +20,6 @@ class HBoxBuilder private constructor() : BaseContainerBuilder<HBox, HBoxBuilder
             field = value
         }
 
-    fun withSpacing(spacing: Int) = also {
-        this.spacing = spacing
-    }
 
     override fun build(): HBox {
         return DefaultHBox(
@@ -32,14 +28,10 @@ class HBoxBuilder private constructor() : BaseContainerBuilder<HBox, HBoxBuilder
             initialTitle = title,
             spacing = spacing,
         ).apply {
+            println("adding components (${childrenToAdd.size}")
             addComponents(*childrenToAdd.toTypedArray())
         }.attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withSpacing(spacing)
-        .withChildren(*childrenToAdd.toTypedArray())
 
     @Suppress("DuplicatedCode")
     override fun calculateContentSize(): Size {
@@ -59,10 +51,18 @@ class HBoxBuilder private constructor() : BaseContainerBuilder<HBox, HBoxBuilder
         }
         return Size.create(max(1, width), maxHeight)
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = HBoxBuilder()
-    }
 }
+
+/**
+ * Creates a new [HBox] using the component builder DSL and returns it.
+ */
+fun buildHbox(init: HBoxBuilder.() -> Unit): HBox =
+    HBoxBuilder().apply(init).build()
+
+/**
+ * Creates a new [HBox] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [HBox].
+ */
+fun <T : BaseContainerBuilder<*>> T.hbox(
+    init: HBoxBuilder.() -> Unit
+): HBox = buildChildFor(this, HBoxBuilder(), init)

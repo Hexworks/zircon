@@ -6,8 +6,6 @@ package org.hexworks.zircon.api.component
  *
  * A [Fragment] usually contains view logic that works with the controls that are
  * present in [root].
- *
- * @sample org.hexworks.zircon.samples.ConfirmButton
  */
 interface Fragment {
 

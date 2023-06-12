@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 
 internal enum class BuiltInGraphicalTilesetResource(
@@ -12,7 +13,7 @@ internal enum class BuiltInGraphicalTilesetResource(
     override val tileType: TileType = TileType.GRAPHICAL_TILE,
     override val tilesetType: TilesetType = TilesetType.GraphicalTileset,
     override val path: String = "/graphical_tilesets/$fileName",
-    override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR
+    override val resourceType: ResourceType = ResourceType.PROJECT
 ) : TilesetResource {
 
     NETHACK_16X16("nethack", 16, 16)

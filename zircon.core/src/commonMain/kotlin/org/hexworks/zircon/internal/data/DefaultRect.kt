@@ -23,9 +23,7 @@ class DefaultRect(
         other as DefaultRect
 
         if (position != other.position) return false
-        if (size != other.size) return false
-
-        return true
+        return size == other.size
     }
 
     override fun hashCode(): Int {

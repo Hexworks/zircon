@@ -1,5 +1,3 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.animation
 
 /**

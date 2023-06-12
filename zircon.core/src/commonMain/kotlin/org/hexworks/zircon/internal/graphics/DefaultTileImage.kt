@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 class DefaultTileImage internal constructor(
     override val size: Size,
     override val tileset: TilesetResource,
-    initialTiles: Map<Position, Tile> = mapOf()
+    initialTiles: Map<Position, Tile>
 ) : BaseTileImage() {
 
     override val tiles: PersistentMap<Position, Tile> = persistentHashMapOf<Position, Tile>()

@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.util.rex
+package org.hexworks.zircon.internal.util
 
 import java.io.* // ktlint-disable no-wildcard-imports
 import java.io.ByteArrayInputStream

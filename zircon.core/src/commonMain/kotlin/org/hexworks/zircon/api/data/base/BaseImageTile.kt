@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.builder.data.imageTile
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.ImageTile
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -28,15 +28,15 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
     override val styleSet: StyleSet
         get() = StyleSet.empty()
 
-    override fun withName(name: String) = Tile.createImageTile(
-        name = name,
-        tileset = tileset
-    )
+    override fun withName(name: String) = imageTile {
+        this.name = name
+        tileset = this@BaseImageTile.tileset
+    }
 
-    override fun withTileset(tileset: TilesetResource) = Tile.createImageTile(
-        name = name,
-        tileset = tileset
-    )
+    override fun withTileset(tileset: TilesetResource) = imageTile {
+        name = this@BaseImageTile.name
+        this.tileset = tileset
+    }
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
 
@@ -57,8 +57,4 @@ abstract class BaseImageTile : BaseTile(), ImageTile {
     override fun withRemovedModifiers(vararg modifiers: Modifier) = this
 
     override fun withNoModifiers() = this
-
-    override fun toBuilder() = Tile.newBuilder()
-        .withName(name)
-        .withTileset(tileset)
 }

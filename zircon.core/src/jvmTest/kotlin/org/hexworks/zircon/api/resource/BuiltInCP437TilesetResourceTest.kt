@@ -53,6 +53,6 @@ class BuiltInCP437TilesetResourceTest {
     }
 
     companion object {
-        val X_CP437_INDEX = 120
+        const val X_CP437_INDEX = 120
     }
 }

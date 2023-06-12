@@ -27,7 +27,7 @@ object DelayedTileStringExample {
                 .build()
         )
 
-        val screen = ScreenBuilder.createScreenFor(tileGrid)
+        val screen = tileGrid.toScreen()
 
         val panel = Components.panel()
             .withDecorations(box())

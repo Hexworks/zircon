@@ -17,5 +17,5 @@ interface TilesetLoader<T : Any> {
     /**
      * Returns true if calling [loadTilesetFrom] for this particular [resource] will likely succeed.
      */
-    fun canLoadResource(resource: TilesetResource): Boolean
+    fun canLoadTileset(resource: TilesetResource): Boolean
 }

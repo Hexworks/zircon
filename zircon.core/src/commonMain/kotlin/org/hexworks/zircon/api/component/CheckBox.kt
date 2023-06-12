@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 
 /**
  * A [CheckBox] is a [Selectable] that represents its [Selectable.isSelected]
- * state with a check box.
+ * state with a checkbox.
  */
 interface CheckBox : Component, Selectable, TextOverride {
     /**

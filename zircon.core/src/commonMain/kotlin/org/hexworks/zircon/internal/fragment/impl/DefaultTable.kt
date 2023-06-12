@@ -3,23 +3,19 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.VBoxBuilder
+import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildHbox
-import org.hexworks.zircon.api.dsl.component.buildVbox
-import org.hexworks.zircon.api.dsl.component.hbox
-import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
-import kotlin.jvm.Synchronized
 
 /**
  * The **internal** default implementation of [Table].
@@ -75,7 +71,6 @@ class DefaultTable<M : Any> internal constructor(
         data.onChange { reloadData() }
     }
 
-    @Synchronized
     private fun reloadData() {
         dataPanel.detachAllComponents()
         dataPanel.apply {
@@ -87,7 +82,6 @@ class DefaultTable<M : Any> internal constructor(
         }
     }
 
-    @Synchronized
     private fun newRowFor(model: M): Component {
         val cells: List<Component> = columns.map { column -> column.renderCellFor(model) }
         val rowHeight = cells.maxOf { it.height }
@@ -108,20 +102,21 @@ class DefaultTable<M : Any> internal constructor(
             if (phase == UIEventPhase.BUBBLE) {
                 selectedElements.clear()
                 selectedElements.add(model)
-                UIEventResponse.processed()
+                Processed
             } else {
-                UIEventResponse.pass()
+                Pass
             }
         }
         return row
     }
 
-    @Synchronized
     private fun VBoxBuilder.addHeaderRow(width: Int) = hbox {
         preferredSize = Size.create(width, 1)
         spacing = colSpacing
         columns.forEach { column ->
-            withAddedChildren(column.header)
+            children {
+                +column.header
+            }
         }
     }
 

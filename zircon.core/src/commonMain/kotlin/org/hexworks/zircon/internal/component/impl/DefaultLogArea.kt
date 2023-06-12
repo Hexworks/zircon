@@ -1,14 +1,17 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ParagraphBuilder
-import org.hexworks.zircon.api.builder.component.TextBoxBuilder
-import org.hexworks.zircon.api.component.*
+import org.hexworks.zircon.api.builder.component.buildHbox
+import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.component.AttachedComponent
+import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.component.LogArea
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
-import kotlin.jvm.Synchronized
 
 class DefaultLogArea internal constructor(
     componentMetadata: ComponentMetadata,
@@ -18,82 +21,49 @@ class DefaultLogArea internal constructor(
     renderer = renderingStrategy
 ) {
 
-    private var currentInlineBuilder = createTextBoxBuilder()
     private val logElements = mutableListOf<AttachedComponent>()
 
-    override fun addHeader(text: String, withNewLine: Boolean) {
-        LOGGER.debug("Adding header text ($text) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(
-            createTextBoxBuilder()
-                .addHeader(text, withNewLine)
-                .build()
-        )
-    }
-
-    override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffectSpeedInMs: Long) {
-        LOGGER.debug("Adding paragraph text ($paragraph) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(
-            createTextBoxBuilder()
-                .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
-                .build()
-        )
-    }
-
-    override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
-        LOGGER.debug("Adding paragraph from builder to LogArea (id=${id.abbreviate()}).")
-        addLogElement(
-            createTextBoxBuilder()
-                .addParagraph(paragraphBuilder, withNewLine)
-                .build(), false
-        )
-    }
-
-
-    override fun addListItem(item: String) {
-        LOGGER.debug("Adding list item ($item) to LogArea (id=${id.abbreviate()}).")
-        addLogElement(
-            createTextBoxBuilder()
-                .addListItem(item)
-                .build()
-        )
-    }
-
-    override fun addInlineText(text: String) {
-        LOGGER.debug("Adding inline text ($text) to LogArea (id=${id.abbreviate()}).")
-        currentInlineBuilder.addInlineText(text)
-    }
-
-    override fun addInlineComponent(component: Component) {
-        LOGGER.debug("Adding inline component ($component) to LogArea (id=${id.abbreviate()}).")
-        currentInlineBuilder.addInlineComponent(component)
-    }
-
-    override fun commitInlineElements() {
-        LOGGER.debug("Committing inline elements of LogArea (id=${id.abbreviate()}).")
-        val builder = currentInlineBuilder
-        currentInlineBuilder = createTextBoxBuilder()
-        addLogElement(builder.commitInlineElements().build())
-    }
-
     override fun addNewRows(numberOfRows: Int) {
-        LOGGER.debug("Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()}).")
-        (0 until numberOfRows).forEach { _ ->
-            addLogElement(
-                createTextBoxBuilder()
-                    .addNewLine()
-                    .build()
-            )
-        }
+        LOGGER.debug { "Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()})." }
+        addLogElement(
+            buildLabel {
+                withPreferredSize {
+                    width = 1
+                    height = numberOfRows
+                }
+            }
+        )
     }
 
-    @Synchronized
+    override fun addEmptyLine() {
+        addLogElement(buildLabel { })
+    }
+
+    override fun addInlineRow(row: List<Component>, applyTheme: Boolean) {
+        val width = size.width
+        addLogElement(buildHbox {
+            withPreferredSize {
+                this.width = width
+                height = 1
+            }
+            children {
+                row.forEach {
+                    +it
+                }
+            }
+        }, applyTheme)
+    }
+
+    override fun addRow(row: Component, applyTheme: Boolean) {
+        addLogElement(row, applyTheme)
+    }
+
     override fun clear() {
         logElements.forEach { it.detach() }
         logElements.clear()
     }
 
-    @Synchronized
-    private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
+    private fun addLogElement(element: Component, applyTheme: Boolean = true) {
         var currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height
         val elementHeight = element.height
@@ -124,12 +94,6 @@ class DefaultLogArea internal constructor(
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
-
-    private fun createTextBoxBuilder(): TextBoxBuilder {
-        return TextBoxBuilder
-            .newBuilder(contentSize.width)
-            .withTileset(tileset)
-    }
 
     companion object {
         val LOGGER = LoggerFactory.getLogger(LogArea::class)

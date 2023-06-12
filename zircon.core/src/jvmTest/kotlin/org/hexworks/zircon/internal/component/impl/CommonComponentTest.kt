@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
-
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -13,12 +12,7 @@ import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType.KEY_PRESSED
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_DRAGGED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_DOWN
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_WHEEL_ROTATED_UP
+import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.InternalComponent

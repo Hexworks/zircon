@@ -3,9 +3,10 @@ package org.hexworks.zircon.api.animation
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.builder.animation.AnimationBuilder
-import org.hexworks.zircon.api.builder.grid.TileGridBuilder
+import org.hexworks.zircon.api.application.appConfig
+import org.hexworks.zircon.api.builder.animation.animation
+import org.hexworks.zircon.api.builder.application.withSize
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
@@ -45,12 +46,15 @@ class DefaultAnimationRunnerTest {
 
     @Test
     fun shouldReturnInfiniteWhenAnimationIsInfinite() {
-        val infiniteAnimation = AnimationBuilder.newBuilder()
-            .addFrame(DefaultAnimationFrame(Size.one(), listOf(), 1))
-            .addPosition(Position.offset1x1())
-            .withLoopCount(0)
-            .withFps(1)
-            .build()
+        val infiniteAnimation = animation {
+            frame {
+                size = Size.one()
+                repeatCount = 1
+            }
+            position = Position.offset1x1()
+            loopCount = 0
+            fps = 1
+        }
 
         val result = target.start(infiniteAnimation)
 
@@ -87,14 +91,15 @@ class DefaultAnimationRunnerTest {
 //                }
 //        whenever(animationMock.hasNextFrame()).thenReturn(false)
 
-        val grid = TileGridBuilder.newBuilder()
-            .withConfig(
-                AppConfig.newBuilder()
-                    .withSize(50, 50)
-                    .withDefaultTileset(CP437TilesetResources.aduDhabi16x16())
-                    .build()
-            )
-            .build()
+        val grid = tileGrid {
+            config = appConfig {
+                withSize { 
+                    width = 50
+                    height = 50
+                }
+                defaultTileset = CP437TilesetResources.aduDhabi16x16()
+            }
+        }
 
         val result = target.start(animationMock)
 

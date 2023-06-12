@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
 import org.hexworks.zircon.api.modifier.BorderType
-import kotlin.jvm.JvmStatic
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builds [Border]s.
@@ -13,32 +13,13 @@ import kotlin.jvm.JvmStatic
  * - a simple border
  * - on all sides (top, right, bottom, left)
  */
-class BorderBuilder private constructor(
-    private var borderType: BorderType = BorderType.SOLID,
-    private var borderColor: TileColor = TileColor.defaultForegroundColor(),
-    private var borderWidth: Int = 2,
-    private var borderPositions: Set<BorderPosition> = BorderPosition.values().toSet()
-) : Builder<Border> {
+@ZirconDsl
+class BorderBuilder : Builder<Border> {
 
-    fun withBorderType(borderType: BorderType) = also {
-        this.borderType = borderType
-    }
-
-    fun withBorderColor(borderColor: TileColor) = also {
-        this.borderColor = borderColor
-    }
-
-    fun withBorderWidth(borderWidth: Int) = also {
-        this.borderWidth = borderWidth
-    }
-
-    fun withBorderPositions(vararg borderPositions: BorderPosition) = also {
-        withBorderPositions(borderPositions.toSet())
-    }
-
-    fun withBorderPositions(borderPositions: Set<BorderPosition>) = also {
-        this.borderPositions = borderPositions
-    }
+    var borderType: BorderType = BorderType.SOLID
+    var borderColor: TileColor = TileColor.defaultForegroundColor()
+    var borderWidth: Int = 2
+    var borderPositions: Set<BorderPosition> = BorderPosition.values().toSet()
 
     override fun build(): Border = Border(
         borderType = borderType,
@@ -46,18 +27,10 @@ class BorderBuilder private constructor(
         borderWidth = borderWidth,
         borderPositions = borderPositions
     )
-
-    override fun createCopy() = BorderBuilder(
-        borderType = borderType,
-        borderColor = borderColor,
-        borderPositions = borderPositions,
-        borderWidth = borderWidth
-    )
-
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = BorderBuilder()
-    }
 }
+
+/**
+ * Creates a new [BorderBuilder] using the builder DSL and returns it.
+ */
+fun border(init: BorderBuilder.() -> Unit): Border =
+    BorderBuilder().apply(init).build()

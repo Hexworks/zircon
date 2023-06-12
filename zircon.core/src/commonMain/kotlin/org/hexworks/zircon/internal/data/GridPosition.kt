@@ -15,7 +15,7 @@ data class GridPosition(
     override val y: Int
 ) : BasePosition() {
 
-    override fun toString() = "($x,$y)"
+    override fun toString() = "(x=$x,y=$y)"
 
     companion object {
 

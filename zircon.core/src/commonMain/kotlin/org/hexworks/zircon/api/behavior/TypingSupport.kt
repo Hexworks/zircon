@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.Tile
 
 /**
  * A [TypingSupport] is a specialized [CursorHandler] that not only handles a cursor
- * but can simulate typing (eg.: put a [Tile] at the current cursor position and advance the cursor).
+ * but can simulate typing (e.g.: put a [Tile] at the current cursor position and advance the cursor).
  */
 interface TypingSupport : CursorHandler {
 

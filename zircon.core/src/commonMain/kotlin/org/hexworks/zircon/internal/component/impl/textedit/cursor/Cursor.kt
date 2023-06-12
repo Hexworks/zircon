@@ -6,7 +6,7 @@ import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 /**
  * Represents the position where a user edits a document.
  */
-data class Cursor constructor(
+data class Cursor(
     val rowIdx: Int = 0,
     val colIdx: Int = 0
 ) {

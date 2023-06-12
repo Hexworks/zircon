@@ -1,15 +1,19 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.cobalt.events.api.*
+import org.hexworks.cobalt.events.api.CallbackResult
+import org.hexworks.cobalt.events.api.Event
+import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
+import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.component.buildHbox
+import org.hexworks.zircon.api.builder.component.buildModal
+import org.hexworks.zircon.api.builder.component.buildVbox
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildButton
-import org.hexworks.zircon.api.dsl.component.buildHbox
-import org.hexworks.zircon.api.dsl.component.buildModal
-import org.hexworks.zircon.api.dsl.component.buildVbox
 import org.hexworks.zircon.api.fragment.MenuBar
 import org.hexworks.zircon.api.fragment.menu.*
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -45,7 +49,9 @@ class DefaultMenuBar<T : Any> internal constructor(
 
             val menuButton = buildButton {
                 +dropdownMenu.label
-                decoration = noDecoration()
+                decorations {
+                    +noDecoration()
+                }
             }
             menuButton.onActivated {
 
@@ -55,7 +61,9 @@ class DefaultMenuBar<T : Any> internal constructor(
                         height = children.size
                     )
                     this.position = Position.bottomLeftOf(menuButton)
-                    decoration = box()
+                    decorations {
+                        +box()
+                    }
                 }
 
                 val modal = buildModal<MenuSelection<T>> {
@@ -92,7 +100,9 @@ class DefaultMenuBar<T : Any> internal constructor(
                     menuItems.addComponent(buildButton {
                         +menuItem.label
                         colorTheme = theme
-                        decoration = noDecoration()
+                        decorations {
+                            +noDecoration()
+                        }
                         onActivated {
                             modal.close(MenuItemSelected(menuItem.key))
                         }
@@ -116,5 +126,5 @@ class DefaultMenuBar<T : Any> internal constructor(
     ) : Event
 
     private val List<DropdownMenuItem<T>>.minMenuWidth: Int
-        get() = map { it.width }.maxOrNull() ?: 0
+        get() = maxOfOrNull { it.width } ?: 0
 }

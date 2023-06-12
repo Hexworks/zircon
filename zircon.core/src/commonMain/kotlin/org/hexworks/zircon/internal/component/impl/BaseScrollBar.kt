@@ -5,26 +5,20 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
-@Suppress("LeakingThis")
 abstract class BaseScrollBar(
     final override val minValue: Int,
     final override var maxValue: Int,
@@ -53,12 +47,12 @@ abstract class BaseScrollBar(
             computeCurrentStep(it.newValue)
         }
         disabledProperty.onChange {
-            if (it.newValue) {
-                LOGGER.debug("Disabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentState = ComponentState.DISABLED
+            componentState = if (it.newValue) {
+                LOGGER.debug { "Disabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled)." }
+                ComponentState.DISABLED
             } else {
-                LOGGER.debug("Enabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
-                componentState = ComponentState.DEFAULT
+                LOGGER.debug { "Enabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled)." }
+                ComponentState.DEFAULT
             }
         }
     }
@@ -146,7 +140,7 @@ abstract class BaseScrollBar(
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
 
             when (computeClickedZone(getMousePosition(event))) {
@@ -162,7 +156,7 @@ abstract class BaseScrollBar(
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
 
             val mousePosition = getMousePosition(event)
@@ -190,41 +184,33 @@ abstract class BaseScrollBar(
 
     override fun activated() = whenEnabledRespondWith {
         if (isDisabled) {
-            LOGGER.warn("Trying to activate disabled ScrollBar (id=${id.abbreviate()}. Request dropped.")
+            LOGGER.warn { "Trying to activate disabled ScrollBar (id=${id.abbreviate()}. Request dropped." }
             Pass
         } else {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was activated." }
             componentState = ComponentState.HIGHLIGHTED
             Processed
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryForegroundColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-        )
-        .withHighlightedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.accentColor)
-                .build()
-        )
-        .withDisabledStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                .build()
-        )
-        .withFocusedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.primaryForegroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.primaryForegroundColor
+            backgroundColor = transparent()
+        }
+        highlightedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.accentColor
+        }
+        disabledStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = colorTheme.secondaryBackgroundColor
+        }
+        focusedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.primaryForegroundColor
+        }
+    }
 
     override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)

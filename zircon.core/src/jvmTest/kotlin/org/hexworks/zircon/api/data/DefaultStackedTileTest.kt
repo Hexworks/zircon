@@ -1,28 +1,39 @@
 package org.hexworks.zircon.api.data
 
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.ANSITileColor.GREEN
+import org.hexworks.zircon.api.color.ANSITileColor.RED
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class DefaultStackedTileTest {
 
-    private val t1 = Tile.newBuilder()
-        .withCharacter('1')
-        .withForegroundColor(ANSITileColor.RED)
-        .withBackgroundColor(TileColor.transparent())
-        .buildCharacterTile()
-    private val t2 = Tile.newBuilder()
-        .withCharacter('2')
-        .withForegroundColor(ANSITileColor.GREEN)
-        .withBackgroundColor(TileColor.transparent())
-        .buildCharacterTile()
-    private val t3 = Tile.newBuilder()
-        .withCharacter('3')
-        .withForegroundColor(ANSITileColor.BLUE)
-        .withBackgroundColor(TileColor.transparent())
-        .buildCharacterTile()
+    private val t1 = characterTile {
+        character = '1'
+        withStyleSet {
+            foregroundColor = RED
+            backgroundColor = transparent()
+        }
+    }
+
+    private val t2 = characterTile {
+        character = '2'
+        withStyleSet {
+            foregroundColor = GREEN
+            backgroundColor = transparent()
+        }
+    }
+    private val t3 = characterTile {
+        character = '3'
+        withStyleSet {
+            foregroundColor = ANSITileColor.BLUE
+            backgroundColor = transparent()
+        }
+    }
 
     @Test
     fun simpleStack() {

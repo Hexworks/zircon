@@ -1,21 +1,16 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
-import kotlin.jvm.JvmStatic
 
 /**
- * Represents a series of [AnimationFrame]s which if drawn on the screen
+ * Represents a series of [AnimationFrame]s that when drawn on the screen
  * after each other become an animation.
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 
 interface Animation : Identifiable {
 
     /**
-     * The number of [AnimationFrame]s which are in this animation.
+     * The number of [AnimationFrame]s that are in this animation.
      */
     val uniqueFrameCount: Int
 
@@ -40,10 +35,4 @@ interface Animation : Identifiable {
      * Tells whether this [Animation] is looped indefinitely.
      */
     val isLoopedIndefinitely: Boolean
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = AnimationBuilder.newBuilder()
-    }
 }

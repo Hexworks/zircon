@@ -4,9 +4,9 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -44,10 +44,10 @@ abstract class BaseSlider(
         }
         disabledProperty.onChange {
             componentState = if (it.newValue) {
-                LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 ComponentState.DISABLED
             } else {
-                LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 ComponentState.DEFAULT
             }
         }
@@ -118,7 +118,7 @@ abstract class BaseSlider(
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
@@ -127,7 +127,7 @@ abstract class BaseSlider(
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
@@ -138,41 +138,33 @@ abstract class BaseSlider(
 
     override fun activated() = whenEnabledRespondWith {
         if (isDisabled) {
-            LOGGER.warn("Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped.")
+            LOGGER.warn { "Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped." }
             Pass
         } else {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated." }
             componentState = ComponentState.HIGHLIGHTED
             Processed
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryForegroundColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-        )
-        .withHighlightedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.accentColor)
-                .build()
-        )
-        .withDisabledStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                .build()
-        )
-        .withFocusedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.primaryForegroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.primaryForegroundColor
+            backgroundColor = transparent()
+        }
+        highlightedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.accentColor
+        }
+        disabledStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = colorTheme.secondaryBackgroundColor
+        }
+        focusedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.primaryForegroundColor
+        }
+    }
 
     override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)
