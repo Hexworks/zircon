@@ -18,12 +18,12 @@ import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.util.CP437Utils
 import kotlin.random.Random
 
-//const val SCREEN_WIDTH = 1920
-//const val SCREEN_HEIGHT = 1080
-const val SCREEN_WIDTH = 1280
-const val SCREEN_HEIGHT = 720
-//const val TILE_SIZE = 8
-const val TILE_SIZE = 16
+const val SCREEN_WIDTH = 1920
+const val SCREEN_HEIGHT = 1080
+//const val SCREEN_WIDTH = 1280
+//const val SCREEN_HEIGHT = 720
+const val TILE_SIZE = 8
+//const val TILE_SIZE = 16
 const val GRID_WIDTH = SCREEN_WIDTH.div(TILE_SIZE)
 const val GRID_HEIGHT = SCREEN_HEIGHT.div(TILE_SIZE)
 val TILESET = BuiltInCP437TilesetResource.values().first { it.width == TILE_SIZE && it.tilesetName == "rex_paint" }
@@ -37,9 +37,9 @@ suspend fun main() = Korge(
     sceneContainer().changeTo({ MyScene() })
 }
 
-class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
-//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
+class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconImageDictionaryTilesetResources)
 
 fun zirconImageDictionaryTilesetResources(app: Application, screen: Screen) {
