@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.game.base
 
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentHashMapOf
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -16,13 +14,12 @@ import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 
-@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D,
     initialVisibleOffset: Position3D = Position3D.defaultPosition(),
-    initialContents: PersistentMap<Position3D, B> = persistentHashMapOf(),
-    initialFilters: Iterable<GameAreaTileFilter>,
+    initialContents: Map<Position3D, B> = mapOf(),
+    initialFilters: Iterable<GameAreaTileFilter<T>>,
     private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
         initialVisibleSize = initialVisibleSize,
         initialActualSize = initialActualSize
@@ -32,10 +29,13 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val visibleOffsetValue: ObservableValue<Position3D>
         get() = scrollable3D.visibleOffsetValue
 
-    final override val filter = initialFilters.fold(GameAreaTileFilter.identity, GameAreaTileFilter::plus)
+    final override val filter = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
 
+    // 📙 Note that this was necessary back in the day when Zircon supported Java and we needed
+    // to have consistent snapshots for thread safety. Now we don't need that anymore as with coroutines
+    // we don't have this problem anymore, but we left this as-is.
     override var state = GameAreaState(
-        blocks = initialContents,
+        blocks = initialContents.toMutableMap(),
         actualSize = initialActualSize,
         visibleSize = initialVisibleSize,
         visibleOffset = initialVisibleOffset,
@@ -63,12 +63,10 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
 
     override fun setBlockAt(position: Position3D, block: B) {
         if (actualSize.containsPosition(position)) {
-            state = state.copy(
-                blocks = state.blocks.put(position, block)
-            )
+            state.blocks[position] = block
         }
     }
 
-    override fun asInternalGameArea() = this
+    override fun asInternal() = this
 
 }

@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.fragment
 
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.Fragment
 

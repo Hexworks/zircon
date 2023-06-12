@@ -4,18 +4,17 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextArea
-import org.hexworks.zircon.api.component.builder.ComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
 
-abstract class ComponentWithTextBuilder<T : Component, U : ComponentBuilder<T, U>>(
+abstract class ComponentWithTextBuilder<T : Component>(
     initialRenderer: ComponentRenderer<out T>,
     initialText: String = "",
     /**
      * The space that should be reserved for additional mandatory decorations (like a list item prefix: `- `)
      */
     private val reservedSpace: Int = 0
-) : BaseComponentBuilder<T, U>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer) {
 
     val textProperty: Property<String> = initialText.toProperty()
 
@@ -45,14 +44,5 @@ abstract class ComponentWithTextBuilder<T : Component, U : ComponentBuilder<T, U
 
     operator fun String.unaryPlus() {
         this@ComponentWithTextBuilder.text = this
-    }
-
-    /**
-     * Sets the [text] for the component that is being built and returns the builder.
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun withText(text: String): U {
-        this.text = text
-        return this as U
     }
 }

@@ -10,9 +10,9 @@ import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
 
 fun PublishingExtension.publishWith(
-        project: Project,
-        module: String,
-        desc: String
+    project: Project,
+    module: String,
+    desc: String
 ) {
 
     with(project) {
@@ -78,8 +78,8 @@ fun PublishingExtension.publishWith(
             maven {
                 url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
                 credentials {
-                    username = if (sonatypeUsername.isBlank()) "" else sonatypeUsername
-                    password = if (sonatypePassword.isBlank()) "" else sonatypePassword
+                    username = sonatypeUsername.ifBlank { "" }
+                    password = sonatypePassword.ifBlank { "" }
                 }
             }
         }

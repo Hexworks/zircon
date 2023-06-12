@@ -3,8 +3,11 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.application.NoOpApplication
+import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -14,7 +17,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.internal.behavior.RenderableContainer
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**
@@ -27,8 +30,8 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 class TestRenderer(
     config: AppConfig,
     private val tileGraphics: TileGraphics,
-) : UIEventDispatcher, Renderer<ApplicationStub>, Clearable {
-    private val tileGrid: TileGrid = ThreadSafeTileGrid(config).apply {
+) : UIEventDispatcher, Renderer<Any, ApplicationStub, Any>, Clearable {
+    private val tileGrid: TileGrid = DefaultTileGrid(config).apply {
         application = ApplicationStub()
     }
     private val mainView = object : BaseView(tileGrid) {}
@@ -46,11 +49,19 @@ class TestRenderer(
     override fun create() {
     }
 
+    override fun beforeRender(listener: (RenderData) -> Unit): Subscription {
+        return NoOpApplication.NoOpSubscription
+    }
+
+    override fun afterRender(listener: (RenderData) -> Unit): Subscription {
+        return NoOpApplication.NoOpSubscription
+    }
+
     override fun clear() {
         tileGraphics.clear()
     }
 
-    override fun render() {
+    override fun render(context: Any) {
         (tileGrid as RenderableContainer).renderables.forEach { renderable ->
             if (!renderable.isHidden) {
                 val graphics = FastTileGraphics(

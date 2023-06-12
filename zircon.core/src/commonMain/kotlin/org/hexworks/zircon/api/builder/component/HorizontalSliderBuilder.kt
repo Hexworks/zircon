@@ -1,13 +1,13 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Slider
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
 import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 /**
  * Builder for a horizontal [Slider]. By default, it creates a slider with
  * - [minValue]: `0`
@@ -15,7 +15,7 @@ import kotlin.jvm.JvmStatic
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-class HorizontalSliderBuilder private constructor() : SliderBuilder<Slider, HorizontalSliderBuilder>(
+class HorizontalSliderBuilder : SliderBuilder<Slider>(
     initialRenderer = HorizontalSliderRenderer()
 ) {
 
@@ -36,16 +36,18 @@ class HorizontalSliderBuilder private constructor() : SliderBuilder<Slider, Hori
         maxValue = maxValue,
         numberOfSteps = numberOfSteps,
     ).attachListeners()
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withMinValue(minValue)
-        .withMaxValue(maxValue)
-        .withNumberOfSteps(numberOfSteps)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = HorizontalSliderBuilder()
-    }
 }
+
+/**
+ * Creates a new [Slider] using the component builder DSL and returns it.
+ */
+fun buildHorizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
+    HorizontalSliderBuilder().apply(init).build()
+
+/**
+ * Creates a new [Slider] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [Slider].
+ */
+fun <T : BaseContainerBuilder<*>> T.horizontalSlider(
+    init: HorizontalSliderBuilder.() -> Unit
+): Slider = buildChildFor(this, HorizontalSliderBuilder(), init)

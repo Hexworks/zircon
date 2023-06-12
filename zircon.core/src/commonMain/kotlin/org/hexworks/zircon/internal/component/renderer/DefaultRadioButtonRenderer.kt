@@ -2,27 +2,24 @@ package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.component.renderer.fillWithText
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
+import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.*
 import kotlin.math.max
 
 @Suppress("DuplicatedCode")
 class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentRenderContext<DefaultRadioButton>) {
+    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultRadioButton>) {
         val state = context.component.state
         val text = context.component.text
-        val maxTextLength = max(0, tileGraphics.size.width - DECORATION_WIDTH)
+        val maxTextLength = max(0, drawWindow.size.width - DECORATION_WIDTH)
         val clearedText = if (text.length > maxTextLength) {
             text.substring(0, max(0, maxTextLength - 3)).plus(ELLIPSIS)
         } else {
             text
         }
-        tileGraphics.fillWithText(
+        drawWindow.fillWithText(
             text = "${STATES.getValue(state)} $clearedText",
             style = context.currentStyle
         )

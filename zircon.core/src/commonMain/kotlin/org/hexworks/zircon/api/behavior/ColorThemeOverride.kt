@@ -3,13 +3,10 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.behavior.impl.DefaultColorThemeOverride
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents an object that has a [ColorTheme] that can be changed.
  */
-// TODO: mention in the release notes that HasColorTheme + ColorThemeOverride was created
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface ColorThemeOverride : HasColorTheme {
 
     /**
@@ -30,7 +27,6 @@ interface ColorThemeOverride : HasColorTheme {
         /**
          * Creates a new [ColorThemeOverride] using [initialTheme] for the initial [ColorThemeOverride.theme].
          */
-        @JvmStatic
         fun create(initialTheme: ColorTheme): ColorThemeOverride = DefaultColorThemeOverride(initialTheme)
     }
 }

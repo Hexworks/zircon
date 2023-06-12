@@ -1,27 +1,26 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.junit.Test
 
-@Suppress("PropertyName", "TestFunctionName")
+@Suppress("TestFunctionName")
 abstract class ComponentImplementationTest<T : InternalComponent> : CommonComponentTest<T>() {
 
-    abstract val graphics: TileGraphics
+    abstract val drawWindow: DrawWindow
 
     @Test
     fun When_render_is_called_on_a_component_Then_it_gets_rendered() {
         rendererStub.clear()
 
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
 
         assertThat(rendererStub.renderedOnce()).isTrue
     }

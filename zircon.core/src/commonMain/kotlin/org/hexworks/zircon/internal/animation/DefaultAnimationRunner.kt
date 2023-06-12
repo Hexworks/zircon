@@ -1,20 +1,17 @@
 package org.hexworks.zircon.internal.animation
 
+import korlibs.time.DateTime
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
-import org.hexworks.zircon.api.animation.AnimationState.FINISHED
-import org.hexworks.zircon.api.animation.AnimationState.INFINITE
-import org.hexworks.zircon.api.animation.AnimationState.IN_PROGRESS
+import org.hexworks.zircon.api.animation.AnimationState.*
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.platform.util.SystemUtils
-import kotlin.jvm.Synchronized
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
@@ -28,11 +25,10 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     private val animations = mutableMapOf<UUID, InternalAnimation>()
     private val nextUpdatesForAnimations = mutableMapOf<UUID, Long>()
 
-    @Synchronized
     override fun start(animation: Animation): AnimationHandle {
         animation as? InternalAnimation
             ?: error("The supplied animation does not implement required interface: InternalAnimation.")
-        if (debug) logger.debug("Adding animation to AnimationHandler ($id).")
+        if (debug) logger.debug { "Adding animation to AnimationHandler ($id)." }
         val result = DefaultAnimationHandle(
             state = if (animation.isLoopedIndefinitely) INFINITE else IN_PROGRESS,
             animation = animation,
@@ -40,11 +36,10 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         )
         results[animation.id] = result
         animations[animation.id] = animation
-        nextUpdatesForAnimations[animation.id] = SystemUtils.getCurrentTimeMs()
+        nextUpdatesForAnimations[animation.id] = DateTime.nowUnixMillisLong()
         return result
     }
 
-    @Synchronized
     override fun stop(animation: InternalAnimation) {
         results[animation.id]?.state = FINISHED
         results.remove(animation.id)
@@ -53,7 +48,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         animation.removeCurrentFrame()
     }
 
-    @Synchronized
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         if (closed.not()) {
             animations.forEach { (key, animation) ->
@@ -69,7 +63,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         }
     }
 
-    @Synchronized
     override fun close() {
         closedValue.value = true
         animations.forEach { (_, animation) ->

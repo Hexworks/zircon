@@ -3,8 +3,6 @@ package org.hexworks.zircon.api.animation
 /**
  * Represents the states an [Animation] can be in.
  */
-@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 enum class AnimationState {
 
     /**

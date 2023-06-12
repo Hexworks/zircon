@@ -15,28 +15,18 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.UIEvent
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
-import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
+import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
-import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
-import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
-import org.hexworks.zircon.internal.event.ZirconEvent.ScreenSwitch
+import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.graphics.Renderable
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import kotlin.jvm.Synchronized
 
 class TileGridScreen(
     private val tileGrid: InternalTileGrid,
@@ -47,11 +37,11 @@ class TileGridScreen(
             initialTheme = tileGrid.config.defaultColorTheme,
             application = tileGrid.application
         ),
-    private val bufferGrid: InternalTileGrid = ThreadSafeTileGrid(
+    private val bufferGrid: InternalTileGrid = DefaultTileGrid(
         config = tileGrid.config,
         layerable = ComponentsLayerable(
             componentContainer = componentContainer,
-            layerable = ThreadSafeLayerable(
+            layerable = DefaultLayerable(
                 initialSize = tileGrid.size
             )
         )
@@ -83,10 +73,10 @@ class TileGridScreen(
 
     init {
         eventBus.simpleSubscribeTo<ScreenSwitch>(eventScope) { (screenId) ->
-            LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
+            LOGGER.debug { "Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()})." }
             activeScreenId = screenId
             if (id != activeScreenId && isActive.value) {
-                LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
+                LOGGER.debug { "Deactivating screen (id=${id.abbreviate()})." }
                 deactivate()
             }
         }.disposeWhen(closedValue)
@@ -97,10 +87,9 @@ class TileGridScreen(
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
     // have no visible effect)
-    @Synchronized
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
         return if (isActive.value) {
-            LOGGER.debug("Processing event $event in phase $phase for screen $this.")
+            LOGGER.debug { "Processing event $event in phase $phase for screen $this." }
             // note that first we process listeners on the Screen itself
             // then component ones. They don't affect each other
             (if (componentContainer.isMainContainerActive()) {
@@ -131,7 +120,6 @@ class TileGridScreen(
         }
     }
 
-    @Synchronized
     override fun display() {
         if (activeScreenId != id) {
             eventBus.publish(
@@ -160,7 +148,6 @@ class TileGridScreen(
         }
     }
 
-    @Synchronized
     override fun close() {
         bufferGrid.close()
         deactivate()

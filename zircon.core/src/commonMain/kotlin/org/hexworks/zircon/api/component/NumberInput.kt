@@ -21,7 +21,7 @@ interface NumberInput : Component {
     val currentValueProperty: Property<Int>
 
     // TODO: do we need to expose this?
-    fun textBuffer(): EditableTextBuffer
+    fun fetchTextBuffer(): EditableTextBuffer
 
     fun incrementCurrentValue()
 

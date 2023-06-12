@@ -4,15 +4,15 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class IconBuilder private constructor() : BaseComponentBuilder<Icon, IconBuilder>(
+class IconBuilder : BaseComponentBuilder<Icon>(
     initialRenderer = DefaultIconRenderer()
 ) {
 
@@ -23,14 +23,6 @@ class IconBuilder private constructor() : BaseComponentBuilder<Icon, IconBuilder
             iconProperty.value = value
         }
 
-    fun withIcon(icon: Tile) = also {
-        this.iconTile = icon
-    }
-
-    fun withIconProperty(iconProperty: Property<Tile>) = also {
-        this.iconProperty = iconProperty
-    }
-
     override fun build(): Icon {
         return DefaultIcon(
             componentMetadata = createMetadata(),
@@ -38,12 +30,18 @@ class IconBuilder private constructor() : BaseComponentBuilder<Icon, IconBuilder
             iconProperty = iconProperty
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder().withProps(props.copy()).withIcon(iconTile)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = IconBuilder()
-    }
 }
+
+/**
+ * Creates a new [Icon] using the component builder DSL and returns it.
+ */
+fun buildIcon(init: IconBuilder.() -> Unit): Icon =
+    IconBuilder().apply(init).build()
+
+/**
+ * Creates a new [Icon] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [Icon].
+ */
+fun <T : BaseContainerBuilder<*>> T.icon(
+    init: IconBuilder.() -> Unit
+): Icon = buildChildFor(this, IconBuilder(), init)

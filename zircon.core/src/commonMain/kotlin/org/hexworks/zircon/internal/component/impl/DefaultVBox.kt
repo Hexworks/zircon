@@ -1,8 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.cobalt.events.api.DisposeSubscription
-import org.hexworks.cobalt.events.api.KeepSubscription
-import org.hexworks.cobalt.events.api.subscribeTo
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -12,8 +9,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
-import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import kotlin.jvm.Synchronized
 
 class DefaultVBox internal constructor(
     componentMetadata: ComponentMetadata,
@@ -32,7 +27,6 @@ class DefaultVBox internal constructor(
     override val remainingSpace: Int
         get() = availableSpace.height
 
-    @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."

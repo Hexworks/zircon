@@ -25,20 +25,20 @@ internal data class DefaultTileColor(
     override fun tint(factor: Double): TileColor {
         requireRange(factor)
         val white = TileColor.create(255, 255, 255)
-        return interpolateTo(white).getColorAtRatio(factor);
+        return interpolateTo(white).getColorAtRatio(factor)
     }
 
     override fun shade(factor: Double): TileColor {
         requireRange(factor)
         val black = TileColor.create(0, 0, 0)
-        return interpolateTo(black).getColorAtRatio(factor);
+        return interpolateTo(black).getColorAtRatio(factor)
     }
 
     override fun tone(factor: Double): TileColor {
         requireRange(factor)
         val value = ((red + green + blue) / 3)
         val gray = TileColor.create(value, value, value)
-        return interpolateTo(gray).getColorAtRatio(factor);
+        return interpolateTo(gray).getColorAtRatio(factor)
     }
 
     override fun invert(): TileColor {

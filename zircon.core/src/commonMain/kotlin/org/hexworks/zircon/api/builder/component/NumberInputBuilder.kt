@@ -5,9 +5,9 @@ import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
 
-abstract class NumberInputBuilder<T : NumberInput, B : BaseComponentBuilder<T, B>>(
+abstract class NumberInputBuilder<T : NumberInput>(
     initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T, B>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer) {
 
     var initialValue: Int = 0
         set(value) {
@@ -42,17 +42,5 @@ abstract class NumberInputBuilder<T : NumberInput, B : BaseComponentBuilder<T, B
         }
 
     protected abstract fun calculateContentSize(): Size
-
-    fun withInitialValue(value: Int) = also {
-        this.initialValue = value
-    }
-
-    fun withMinValue(value: Int) = also {
-        this.minValue = value
-    }
-
-    fun withMaxValue(value: Int) = also {
-        this.maxValue = value
-    }
 
 }

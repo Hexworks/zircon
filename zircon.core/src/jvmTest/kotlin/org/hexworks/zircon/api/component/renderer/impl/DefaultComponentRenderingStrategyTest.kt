@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.ComponentDecorations.side
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Label
@@ -45,11 +45,11 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun shouldRenderButtonWithDecorations() {
         val size = Size.create(8, 4)
-        val graphics = TileGraphicsBuilder.newBuilder()
-            .withSize(size)
-            .build().apply {
-                fill(Tile.defaultTile().withCharacter('_'))
-            }
+        val graphics = tileGraphics {
+            this.size = size
+        }.apply {
+            fill(Tile.defaultTile().withCharacter('_'))
+        }
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(shadow(), box(), side()),
@@ -57,7 +57,7 @@ class DefaultComponentRenderingStrategyTest {
         )
 
         val btn = DefaultButton(
-            componentMetadata = ComponentMetadata(size),
+            componentMetadata = createComponentMetadata(size),
             textProperty = "qux".toProperty(),
             renderingStrategy = target
         )
@@ -76,9 +76,9 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun shouldNotRenderButtonWhenItIsInvisible() {
         val size = Size.create(8, 4)
-        val graphics = TileGraphicsBuilder.newBuilder()
-            .withSize(size)
-            .build()
+        val graphics = tileGraphics {
+            this.size = size
+        }
 
         val target: DefaultComponentRenderingStrategy<Button> = DefaultComponentRenderingStrategy(
             decorationRenderers = listOf(shadow(), box(), side()),
@@ -86,7 +86,7 @@ class DefaultComponentRenderingStrategyTest {
         )
 
         val btn = DefaultButton(
-            componentMetadata = ComponentMetadata(size),
+            componentMetadata = createComponentMetadata(size),
             textProperty = "qux".toProperty(),
             renderingStrategy = target
         )
@@ -102,15 +102,14 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun shouldProperlyRenderComponentWithoutDecorations() {
         val size = Size.create(5, 5)
-        val graphics = TileGraphicsBuilder.newBuilder()
-            .withSize(size)
-            .build()
-            .apply {
-                fill(Tile.defaultTile().withCharacter('_'))
-            }
+        val graphics = tileGraphics {
+            this.size = size
+        }.apply {
+            fill(Tile.defaultTile().withCharacter('_'))
+        }
 
         val label = DefaultLabel(
-            componentMetadata = ComponentMetadata(size),
+            componentMetadata = createComponentMetadata(size),
             textProperty = "Long text".toProperty(),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
@@ -130,15 +129,14 @@ class DefaultComponentRenderingStrategyTest {
     fun `Should properly render decorations and the component on a filled TileGraphics`() {
 
         val size = Size.create(5, 5)
-        val graphics = TileGraphicsBuilder.newBuilder()
-            .withSize(size)
-            .build()
-            .apply {
-                fill(Tile.defaultTile().withCharacter('_'))
-            }
+        val graphics = tileGraphics {
+            this.size = size
+        }.apply {
+            fill(Tile.defaultTile().withCharacter('_'))
+        }
 
         val button = DefaultButton(
-            componentMetadata = ComponentMetadata(size),
+            componentMetadata = createComponentMetadata(size),
             textProperty = "foo".toProperty(),
             renderingStrategy = target
         )
@@ -158,12 +156,12 @@ class DefaultComponentRenderingStrategyTest {
     fun `Should properly render decorations and the component on a blank TileGraphics`() {
 
         val size = Size.create(4, 4)
-        val graphics = TileGraphicsBuilder.newBuilder()
-            .withSize(size)
-            .build()
+        val graphics = tileGraphics {
+            this.size = size
+        }
 
         val button = DefaultButton(
-            componentMetadata = ComponentMetadata(size),
+            componentMetadata = createComponentMetadata(size),
             textProperty = "bar".toProperty(),
             renderingStrategy = target
         )
@@ -178,7 +176,7 @@ class DefaultComponentRenderingStrategyTest {
         )
     }
 
-    private fun ComponentMetadata(size: Size) = ComponentMetadata(
+    private fun createComponentMetadata(size: Size) = ComponentMetadata(
         size = size,
         relativePosition = Position.defaultPosition(),
         tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),

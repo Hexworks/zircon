@@ -4,9 +4,9 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -39,19 +39,19 @@ abstract class BaseNumberInput(
 ) {
 
     final override var text: String
-        get() = _textBuffer.getText()
+        get() = textBuffer.getText()
         set(value) {
             if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
-                _textBuffer = when {
+                textBuffer = when {
                     clean == "" -> EditableTextBuffer.create("")
-                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, _textBuffer.cursor)
-                    else -> _textBuffer
+                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, textBuffer.cursor)
+                    else -> textBuffer
                 }
             }
         }
 
-    protected var _textBuffer = EditableTextBuffer.create("$initialValue")
+    protected var textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
@@ -84,28 +84,22 @@ abstract class BaseNumberInput(
         }
     }
 
-    override fun textBuffer() = _textBuffer
+    override fun fetchTextBuffer() = textBuffer
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                .build()
-        )
-        .withDisabledStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-        )
-        .withFocusedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.primaryForegroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.secondaryBackgroundColor
+            backgroundColor = colorTheme.secondaryForegroundColor
+        }
+        disabledStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = transparent()
+        }
+        focusedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.primaryForegroundColor
+        }
+    }
 
     override fun focusGiven() = whenEnabled {
         textBeforeModifications = text
@@ -136,11 +130,12 @@ abstract class BaseNumberInput(
                         saveModifications()
                         clearFocus()
                     }
+
                     KeyCode.ESCAPE -> clearFocus()
-                    KeyCode.RIGHT -> _textBuffer.applyTransformation(MoveCursor(RIGHT))
-                    KeyCode.LEFT -> _textBuffer.applyTransformation(MoveCursor(LEFT))
-                    KeyCode.DELETE -> _textBuffer.applyTransformation(DeleteCharacter(DEL))
-                    KeyCode.BACKSPACE -> _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
+                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
+                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
+                    KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
                     else -> {
                         event.key.forEach { char ->
                             if (TextUtils.isDigitCharacter(char)) {
@@ -159,17 +154,17 @@ abstract class BaseNumberInput(
         event == TAB || event == REVERSE_TAB
 
     private fun checkAndAddChar(char: Char) {
-        val virtualTextBuffer = EditableTextBuffer.create(text, _textBuffer.cursor)
+        val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
         virtualTextBuffer.applyTransformation(InsertCharacter(char))
         if (virtualTextBuffer.getText().toInt() <= maxValue) {
             if (text.length == maxNumberLength) {
-                _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
             }
-            _textBuffer.applyTransformation(InsertCharacter(char))
+            textBuffer.applyTransformation(InsertCharacter(char))
         } else {
-            _textBuffer.getCharAtOrNull(_textBuffer.cursor.position)?.let {
-                _textBuffer.applyTransformation(DeleteCharacter(DEL))
-            }.orElseGet { _textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
+            textBuffer.getCharAtOrNull(textBuffer.cursor.position)?.let {
+                textBuffer.applyTransformation(DeleteCharacter(DEL))
+            }.orElseGet { textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
             checkAndAddChar(char)
         }
     }

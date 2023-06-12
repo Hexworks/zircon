@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.junit.Before
 import org.junit.Test
 
@@ -14,7 +14,7 @@ class DefaultMovableTest {
     @Before
     fun setUp() {
         target = DefaultMovable(
-            size = TARGET_SIZE,
+            size = TARGET_SIZE_10x10,
             position = Position.defaultPosition()
         )
     }
@@ -30,7 +30,7 @@ class DefaultMovableTest {
         assertThat(
             target.containsPosition(
                 target.position
-                    .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))
+                    .withRelative(Position.create(TARGET_SIZE_10x10.height, TARGET_SIZE_10x10.width))
             )
         )
             .isFalse()
@@ -39,12 +39,12 @@ class DefaultMovableTest {
     @Test
     fun shouldKnowItsSizeCorrectly() {
         assertThat(target.size)
-            .isEqualTo(TARGET_SIZE)
+            .isEqualTo(TARGET_SIZE_10x10)
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultMovable(TARGET_SIZE)))
+        assertThat(target.intersects(DefaultMovable(TARGET_SIZE_10x10)))
             .isTrue()
     }
 
@@ -52,9 +52,10 @@ class DefaultMovableTest {
     fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
         assertThat(
             target.intersects(
-                LayerBuilder.newBuilder()
-                    .withOffset(NON_INTERSECTING_OFFSET)
-                    .build()
+                layer {
+                    size = TARGET_SIZE_10x10
+                    offset = NON_INTERSECTING_OFFSET_20x20
+                }
             )
         )
             .isFalse()
@@ -64,10 +65,10 @@ class DefaultMovableTest {
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(
             target.intersects(
-                LayerBuilder.newBuilder()
-                    .withOffset(INTERSECTION_OFFSET)
-                    .withSize(Size.one())
-                    .build()
+                layer {
+                    offset = INTERSECTION_OFFSET_1x1
+                    size = Size.one()
+                }
             )
         )
             .isTrue()
@@ -86,10 +87,10 @@ class DefaultMovableTest {
     }
 
     companion object {
-        val DEFAULT_COLS = 10
-        val DEFAULT_ROWS = 10
-        val TARGET_SIZE = Size.create(DEFAULT_COLS, DEFAULT_ROWS)
-        val INTERSECTION_OFFSET = Position.offset1x1()
-        val NON_INTERSECTING_OFFSET = Position.create(20, 20)
+        const val DEFAULT_COLS_10 = 10
+        const val DEFAULT_ROWS_10 = 10
+        val TARGET_SIZE_10x10 = Size.create(DEFAULT_COLS_10, DEFAULT_ROWS_10)
+        val INTERSECTION_OFFSET_1x1 = Position.offset1x1()
+        val NON_INTERSECTING_OFFSET_20x20 = Position.create(20, 20)
     }
 }

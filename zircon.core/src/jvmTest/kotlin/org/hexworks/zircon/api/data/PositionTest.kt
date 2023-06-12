@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.component.PanelBuilder
+import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.internal.data.PixelPosition
@@ -15,10 +15,10 @@ class PositionTest {
 
     @Before
     fun setUp() {
-        componentStub = PanelBuilder.newBuilder()
-            .withPosition(COMPONENT_POSITION)
-            .withPreferredSize(COMPONENT_SIZE)
-            .build()
+        componentStub = buildPanel {
+            position = COMPONENT_POSITION
+            preferredSize = COMPONENT_SIZE
+        }
     }
 
     @Test

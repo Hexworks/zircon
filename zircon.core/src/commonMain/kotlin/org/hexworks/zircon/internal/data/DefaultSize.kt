@@ -7,7 +7,7 @@ data class DefaultSize(
     override val height: Int
 ) : BaseSize() {
 
-    override fun toString() = "(${width}X$height)"
+    override fun toString() = "(w=${width},h=$height)"
 
     init {
         require(width >= 0 && height >= 0) {

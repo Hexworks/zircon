@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -16,10 +16,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.util.TextUtils
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.DOWN
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.UP
+import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
 import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
@@ -57,26 +54,20 @@ class DefaultTextArea internal constructor(
 
     override fun textBuffer() = textBuffer
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryBackgroundColor)
-                .withBackgroundColor(colorTheme.secondaryForegroundColor)
-                .build()
-        )
-        .withDisabledStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-        )
-        .withFocusedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.primaryForegroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.secondaryBackgroundColor
+            backgroundColor = colorTheme.secondaryForegroundColor
+        }
+        disabledStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = transparent()
+        }
+        focusedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.primaryForegroundColor
+        }
+    }
 
     override fun focusGiven() = whenEnabled {
         refreshCursor()
@@ -109,9 +100,11 @@ class DefaultTextArea internal constructor(
                     KeyCode.HOME -> {
                         // TODO
                     }
+
                     KeyCode.END -> {
                         // TODO
                     }
+
                     else -> {
                         event.key.forEach { char ->
                             if (TextUtils.isPrintableCharacter(char)) {
@@ -138,14 +131,17 @@ class DefaultTextArea internal constructor(
                 val delta = visibleOffset.x - bufferCursorPos.x
                 scrollLeftBy(delta)
             }
+
             bufferCursorPosOverlapsRight(bufferCursorPos) -> {
                 val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width
                 scrollRightBy(delta + 1)
             }
+
             bufferCursorOverflowsUp(bufferCursorPos) -> {
                 val delta = visibleOffset.y - bufferCursorPos.y
                 scrollUpBy(delta)
             }
+
             bufferCursorPosOverlapsDown(bufferCursorPos) -> {
                 val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height
                 scrollDownBy(delta + 1)

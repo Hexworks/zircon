@@ -1,8 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -92,24 +93,25 @@ abstract class TileGraphicsTest {
     }
 
     @Test
-    fun When_creating_a_snapshot_Then_it_should_return_a_proper_snapshot() {
+    fun When_drawing_a_tile_Then_tiles_should_contain_it() {
         target.draw(FILLER, FILLED_POS)
 
         assertEquals(
             expected = mapOf(FILLED_POS to FILLER),
-            actual = target.state.tiles.toMap()
+            actual = target.tiles.toMap()
         )
 
     }
 
     @Test
     fun When_drawing_other_tile_graphics_Then_it_should_be_properly_drawn() {
-        val other = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .buildPersistent()
-            .apply {
-                fill(FILLER)
+        val other = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
             }
+            filler = FILLER
+        }
         target.draw(other, pos(1, 1))
 
         assertEquals(
@@ -124,12 +126,13 @@ abstract class TileGraphicsTest {
 
     @Test
     fun When_drawing_onto_other_tile_graphics_Then_it_should_properly_be_drawn() {
-        val other = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
-            .apply {
-                fill(FILLER)
+        val other = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
             }
+            filler = FILLER
+        }
         target.draw(other, pos(2, 2))
 
         assertEquals(
@@ -140,12 +143,13 @@ abstract class TileGraphicsTest {
 
     @Test
     fun When_drawing_overflowing_tile_graphics_Then_it_should_be_properly_drawn() {
-        val other = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .buildPersistent()
-            .apply {
-                fill(FILLER)
+        val other = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
             }
+            filler = FILLER
+        }
         target.draw(other, pos(2, 2))
 
         assertEquals(
@@ -222,7 +226,7 @@ abstract class TileGraphicsTest {
             .withForegroundColor(ANSITileColor.GREEN)
             .withBackgroundColor(ANSITileColor.YELLOW)
 
-        target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.one()))
+        target.toDrawWindow(Rect.create(Position.offset1x1(), Size.one()))
             .applyStyle(new)
 
         assertEquals(
@@ -259,9 +263,9 @@ abstract class TileGraphicsTest {
         val TILESET = CP437TilesetResources.jolly12x12()
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
-        val FILLER: CharacterTile = TileBuilder.newBuilder()
-            .withCharacter('a')
-            .buildCharacterTile()
+        val FILLER: CharacterTile = characterTile {
+            +'a'
+        }
 
     }
 }

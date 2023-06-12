@@ -1,5 +1,6 @@
 package org.hexworks.zircon
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -10,7 +11,7 @@ import kotlin.test.assertTrue
 
 class CharacterTilesAsStringTest {
     private fun pos(x: Int, y: Int) = Position.create(x, y)
-    private fun charTile(char: Char) = Tile.newBuilder().withCharacter(char).buildCharacterTile()
+    private fun charTile(char: Char) = characterTile { +char }
 
     private fun tileComposite(tiles: Map<Position, Tile>, size: Size = Size.zero()) = DefaultTileComposite(tiles, size)
 

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.fragment.TabBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -8,10 +9,10 @@ abstract class TabBarBuilder(
     var size: Size,
     var defaultSelected: String?,
     var position: Position,
-    internal var tabs: List<TabBuilder>,
+    internal var tabs: List<TabBuilder>
 ) {
 
-    fun checkCommonProperties() {
+    protected fun checkCommonProperties() {
         require(size.isNotUnknown) {
             "A tab bar must has a size"
         }
@@ -31,4 +32,8 @@ abstract class TabBarBuilder(
             "A tab bar can't have duplicate keys."
         }
     }
+}
+
+fun TabBarBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
 }

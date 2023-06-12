@@ -1,15 +1,15 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.NumberInput
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInputRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class VerticalNumberInputBuilder private constructor() : NumberInputBuilder<NumberInput, VerticalNumberInputBuilder>(
+class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>(
     initialRenderer = DefaultVerticalNumberInputRenderer()
 ) {
 
@@ -27,16 +27,19 @@ class VerticalNumberInputBuilder private constructor() : NumberInputBuilder<Numb
         minValue = minValue,
         maxValue = maxValue,
     ).attachListeners()
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withInitialValue(initialValue)
-        .withMinValue(minValue)
-        .withMaxValue(maxValue)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = VerticalNumberInputBuilder()
-    }
 }
+
+/**
+ * Creates a new [NumberInput] using the component builder DSL and returns it.
+ */
+fun buildVerticalNumberInput(
+    init: VerticalNumberInputBuilder.() -> Unit
+): NumberInput = VerticalNumberInputBuilder().apply(init).build()
+
+/**
+ * Creates a new [NumberInput] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [NumberInput].
+ */
+fun <T : BaseContainerBuilder<*>> T.verticalNumberInput(
+    init: VerticalNumberInputBuilder.() -> Unit
+): NumberInput = buildChildFor(this, VerticalNumberInputBuilder(), init)

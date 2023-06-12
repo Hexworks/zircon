@@ -4,7 +4,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
@@ -50,7 +50,7 @@ class ComponentsLayerableTest {
             application = application
         )
         componentContainer = DefaultComponentContainer(rootContainer)
-        layerable = ThreadSafeLayerable(SIZE_4X2)
+        layerable = DefaultLayerable(SIZE_4X2)
         target = ComponentsLayerable(
             componentContainer = componentContainer,
             layerable = layerable
@@ -59,7 +59,10 @@ class ComponentsLayerableTest {
 
     @Test
     fun Given_a_components_layerable_When_fetching_its_layers_Then_they_are_returned_in_the_proper_order() {
-        val layer = LayerBuilder.newBuilder().withSize(Size.create(1, 1)).build().asInternalLayer()
+        val layer = layer {
+            size = Size.one()
+        }.asInternal()
+
         layerable.addLayer(layer)
 
         assertEquals(

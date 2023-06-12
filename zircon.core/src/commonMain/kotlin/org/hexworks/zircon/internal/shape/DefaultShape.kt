@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.shape
 
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -19,10 +19,10 @@ class DefaultShape(override val positions: Set<Position> = setOf()) : Shape, Col
             maxCol = max(maxCol, col)
             maxRow = max(maxRow, row)
         }
-        val result = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(maxCol + 1, maxRow + 1))
-            .withTileset(tileset)
-            .build()
+        val result = tileGraphics {
+            size = Size.create(maxCol + 1, maxRow + 1)
+            this.tileset = tileset
+        }
         offsetPositions.forEach {
             result.draw(tile, it)
         }

@@ -20,7 +20,7 @@ class DefaultVerticalNumberInput internal constructor(
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.height)
 
     override fun refreshCursor() {
-        var pos = _textBuffer.cursor.position
+        var pos = textBuffer.cursor.position
         pos = pos.withX(min(pos.x, contentSize.height))
         pos = pos.withY(0)
         val invertedPosition = Position.create(pos.y, pos.x)

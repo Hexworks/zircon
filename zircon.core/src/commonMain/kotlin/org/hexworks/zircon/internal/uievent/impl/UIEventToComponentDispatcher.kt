@@ -19,7 +19,6 @@ import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import kotlin.jvm.JvmSynthetic
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
@@ -55,7 +54,7 @@ class UIEventToComponentDispatcher(
         // is exited a component and entered another
         if (mouseExitedComponent(event, lastMousePosition, lastHoveredComponent, root)) {
             // TODO: fix activation here as well
-            logger.debug("Mouse exited component $lastHoveredComponent...")
+            logger.debug { "Mouse exited component $lastHoveredComponent..." }
             return handleHoveredComponentChange(event)
         }
 
@@ -87,23 +86,29 @@ class UIEventToComponentDispatcher(
                 }
                 Pass
             }
+
             is KeyboardEvent -> {
                 when {
                     shortcutsConfig.activateFocused.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)
                     }
+
                     shortcutsConfig.deactivateActivated.matches(event) -> {
                         deactivateComponent(focusOrderList.focusedComponent)
                     }
+
                     shortcutsConfig.focusNext.matches(event) -> {
                         focusComponent(focusOrderList.findNext())
                     }
+
                     shortcutsConfig.focusPrevious.matches(event) -> {
                         focusComponent(focusOrderList.findPrevious())
                     }
+
                     else -> Pass
                 }
             }
+
             else -> Pass
         }
     }
@@ -141,9 +146,11 @@ class UIEventToComponentDispatcher(
             is KeyboardEvent -> {
                 focusOrderList.focusedComponent
             }
+
             is MouseEvent -> {
                 root.fetchComponentByPositionOrNull(event.position)
             }
+
             else -> {
                 null
             }
@@ -188,9 +195,9 @@ class UIEventToComponentDispatcher(
         var result = previousResult
         result = result.pickByPrecedence(component.process(event, phase))
         if (result.shouldStopPropagation()) {
-//            logger.debug("Propagation was stopped by component: $component.")
+//            logger.debug{"Propagation was stopped by component: $component.")
         } else if (result.allowsDefaults()) {
-//            logger.debug("Trying defaults for component $component, with event $event and phase $phase")
+//            logger.debug{"Trying defaults for component $component, with event $event and phase $phase")
             result = result.pickByPrecedence(tryDefaultsFor(component, event, phase))
         }
         return result
@@ -215,6 +222,7 @@ class UIEventToComponentDispatcher(
                     MOUSE_MOVED -> component.mouseMoved(event, phase)
                 }
             }
+
             is KeyboardEvent -> {
                 when (event.type) {
                     KEY_PRESSED -> component.keyPressed(event, phase)
@@ -231,21 +239,21 @@ class UIEventToComponentDispatcher(
      * can be focused (eg: it is focusable, and it is not already focused).
      */
     private fun focusComponent(componentToFocus: InternalComponent): UIEventResponse {
-//        logger.debug("Trying to focus component $componentToFocus.")
+//        logger.debug{"Trying to focus component $componentToFocus.")
         return if (focusOrderList.canFocus(componentToFocus)) {
 
-//            logger.debug("Component $componentToFocus can be focused, proceeding.")
+//            logger.debug{"Component $componentToFocus can be focused, proceeding.")
             val currentlyFocusedComponent = focusOrderList.focusedComponent
 
-//            logger.debug("Taking focus from currently focused component $currentlyFocusedComponent.")
+//            logger.debug{"Taking focus from currently focused component $currentlyFocusedComponent.")
             val focusTaken = ComponentEvent(FOCUS_TAKEN)
             var takenResult = currentlyFocusedComponent.process(focusTaken, TARGET)
             if (takenResult.allowsDefaults()) {
-//                logger.debug("Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
+//                logger.debug{"Default focus taken event was not prevented for component $currentlyFocusedComponent, proceeding.")
                 takenResult = takenResult.pickByPrecedence(currentlyFocusedComponent.focusTaken())
             }
 
-//            logger.debug("Focusing new component $componentToFocus.")
+//            logger.debug{"Focusing new component $componentToFocus.")
             focusOrderList.focus(componentToFocus)
 
             val focusGiven = ComponentEvent(FOCUS_GIVEN)
@@ -278,7 +286,6 @@ class UIEventToComponentDispatcher(
 
     companion object {
 
-        @JvmSynthetic
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
     }

@@ -13,12 +13,9 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
-import kotlin.contracts.ExperimentalContracts
-import kotlin.jvm.Synchronized
 
 class DefaultComponentContainer(
     private val root: RootContainer,
@@ -40,8 +37,6 @@ class DefaultComponentContainer(
 
     private val logger = LoggerFactory.getLogger(this::class)
 
-    @OptIn(ExperimentalContracts::class)
-    @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
         return if (isActive.value) {
             dispatcher.dispatch(event)
@@ -49,9 +44,8 @@ class DefaultComponentContainer(
     }
 
 
-    @Synchronized
     override fun activate() {
-        logger.debug("Activating component container.")
+        logger.debug { "Activating component container." }
         isActive.value = true
         refreshFocusables()
         root.eventBus.simpleSubscribeTo<ComponentAdded>(root.eventScope) {
@@ -62,7 +56,6 @@ class DefaultComponentContainer(
         }.keepWhile(isActive)
     }
 
-    @Synchronized
     override fun deactivate() {
         isActive.value = false
     }

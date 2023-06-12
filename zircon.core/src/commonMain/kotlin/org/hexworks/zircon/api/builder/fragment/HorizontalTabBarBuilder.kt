@@ -1,15 +1,18 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
-import kotlin.jvm.JvmStatic
 
-
-class HorizontalTabBarBuilder private constructor(
+@ZirconDsl
+class HorizontalTabBarBuilder(
     size: Size = Size.unknown(),
     defaultSelected: String? = null,
     tabs: List<TabBuilder> = listOf(),
@@ -19,25 +22,15 @@ class HorizontalTabBarBuilder private constructor(
     defaultSelected = defaultSelected,
     tabs = tabs,
     position = position
-), FragmentBuilder<TabBar, HorizontalTabBarBuilder> {
+), FragmentBuilder<TabBar> {
 
     fun HorizontalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
-        tabs = tabs + TabBuilder.newBuilder().apply(init)
+        tabs = tabs + TabBuilder().apply(init)
     }
 
     val contentSize: Size
         get() = size.withRelativeHeight(-3)
 
-    override fun withPosition(position: Position) = also {
-        this.position = position
-    }
-
-    override fun createCopy() = HorizontalTabBarBuilder(
-        size = size,
-        defaultSelected = defaultSelected,
-        tabs = tabs,
-        position = position
-    )
 
     override fun build(): TabBar {
         checkCommonProperties()
@@ -51,12 +44,21 @@ class HorizontalTabBarBuilder private constructor(
             tabs = finalTabs
         )
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder(): HorizontalTabBarBuilder = HorizontalTabBarBuilder()
-    }
-
-
 }
+
+/**
+ * Creates a new [TabBar] using the fragment builder DSL and returns it.
+ */
+
+fun buildHorizontalTabBar(
+    init: HorizontalTabBarBuilder.() -> Unit
+): TabBar = HorizontalTabBarBuilder().apply(init).build()
+
+/**
+ * Creates a new horizontal [TabBar] using the fragment builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [TabBar].
+ */
+
+fun AnyContainerBuilder.horizontalTabBar(
+    init: HorizontalTabBarBuilder.() -> Unit
+): TabBar = buildFragmentFor(this, HorizontalTabBarBuilder(), init)

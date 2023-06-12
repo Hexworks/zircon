@@ -17,6 +17,11 @@ interface Application : Closeable {
     val tileGrid: TileGrid
 
     /**
+     * Starts this application and returns the framework-specific application object.
+     */
+    suspend fun start()
+
+    /**
      * Adds a callback which will be called **before** every render.
      * **Note that** this operation should be **very fast** otherwise it will
      * block the rendering. Very fast is `<1ms`.

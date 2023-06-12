@@ -2,13 +2,15 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.graphics.TileImageBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileImage
+import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.YELLOW
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.data.Tile.Companion.defaultTile
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Test
 
@@ -18,17 +20,24 @@ class DefaultTileImageTest {
     @Test
     fun shouldProperlyGetExistingTile() {
 
-        val other = TileImageBuilder.newBuilder()
-            .withFiller(Tile.defaultTile())
-            .withSize(Size.create(3, 3))
-            .build()
+        val other = tileImage {
+            withSize {
+                width = 3
+                height = 3
+            }
+            filler = defaultTile()
+        }
 
-        TileImageBuilder.newBuilder()
-            .withFiller(Tile.defaultTile())
-            .withSize(Size.create(5, 5))
-            .withTileset(CP437TilesetResources.aduDhabi16x16())
-            .build()
-            .withTileAt(Position.create(1, 1), Tile.defaultTile().withCharacter('x'))
+        // TODO: WTF is happening here?
+        tileImage {
+            filler = defaultTile()
+            withSize {
+                width = 5
+                height = 5
+            }
+            tileset = CP437TilesetResources.aduDhabi16x16()
+        }
+            .withTileAt(Position.create(1, 1), defaultTile().withCharacter('x'))
             .combineWith(other, Position.offset1x1())
             .toTileGraphics()
 
@@ -142,11 +151,17 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyWithStyle() {
-        val style = StyleSet.newBuilder().withForegroundColor(YELLOW).withBackgroundColor(GREEN).build()
+        val style = styleSet {
+            foregroundColor = YELLOW
+            backgroundColor = GREEN
+        }
         val result = IMAGE_3X3.withFiller(FILLER_TILE_A).withStyle(style)
 
         assertThat(result.tiles.values.toSet()).containsExactly(
-            Tile.createCharacterTile('a', style)
+            characterTile {
+                +'a'
+                styleSet = style
+            }
         )
     }
 
@@ -164,8 +179,8 @@ class DefaultTileImageTest {
 
         val FILLED_POS = Position.create(1, 0)
         val EMPTY_POS = Position.create(2, 1)
-        val FILLER_TILE_A = Tile.defaultTile().withCharacter('a')
-        val NEW_TILE_B = Tile.defaultTile().withCharacter('b')
+        val FILLER_TILE_A = defaultTile().withCharacter('a')
+        val NEW_TILE_B = defaultTile().withCharacter('b')
 
         val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
         val SIZE_3X3 = Size.create(3, 3)

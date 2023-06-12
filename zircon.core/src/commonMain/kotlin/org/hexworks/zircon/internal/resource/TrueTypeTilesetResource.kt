@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.base.BaseTilesetResource
 
 /**
@@ -10,7 +11,7 @@ internal class TrueTypeTilesetResource(
     override val width: Int,
     override val height: Int,
     override val path: String,
-    override val tilesetSourceType: TilesetSourceType,
+    override val resourceType: ResourceType,
     val name: String = ""
 ) : BaseTilesetResource() {
 
