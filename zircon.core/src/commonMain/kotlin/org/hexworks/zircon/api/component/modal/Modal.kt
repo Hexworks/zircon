@@ -16,7 +16,7 @@ interface Modal<T : ModalResult> : Component {
 
     /**
      * A value between `0` and `1` that will be used to darken the area
-     * outside of the [Modal] when it is opened.
+     * outside the [Modal] when it is opened.
      */
     val darkenPercent: Double
 

@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.zircon.api.resource.TilesetResource
-import kotlin.jvm.JvmStatic
 
 /**
  * This enum contains the metadata for the built-in True Type fonts.
@@ -50,17 +49,14 @@ enum class BuiltInTrueTypeFontResource(
         const val FONTS_DIR = "/monospace_fonts"
         const val FONTS_EXT = "ttf"
 
-        @JvmStatic
         fun squareFonts(height: Int): List<TilesetResource> = values()
             .filter { it.ratioFn(1) == 1 }
             .map { it.toTilesetResource(height) }
 
-        @JvmStatic
         fun wideFonts(height: Int): List<TilesetResource> = values()
             .filter { it.ratioFn(2) > 2 }
             .map { it.toTilesetResource(height) }
 
-        @JvmStatic
         fun narrowFonts(height: Int): List<TilesetResource> = values()
             .filter { it.ratioFn(2) < 2 }
             .map { it.toTilesetResource(height) }

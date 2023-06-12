@@ -9,13 +9,11 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.graphics.InternalLayer
-import kotlin.jvm.JvmStatic
 
 /**
  * A [Layer] is a [TileGraphics] which can be positioned and moved over a [TileGrid].
  * With [Layer]s one can create a quasi 3D effect (like top-down oblique projections).
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
 
     override fun createCopy(): Layer
@@ -48,7 +46,6 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
 
     companion object {
 
-        @JvmStatic
         fun newBuilder() = LayerBuilder.newBuilder()
     }
 }

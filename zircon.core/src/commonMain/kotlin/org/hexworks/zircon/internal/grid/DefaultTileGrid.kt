@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.grid
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
@@ -27,13 +26,12 @@ import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
-import org.hexworks.zircon.internal.behavior.impl.ThreadSafeLayerable
+import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
-import kotlin.jvm.Synchronized
 
-class ThreadSafeTileGrid(
+class DefaultTileGrid(
     override val config: AppConfig,
     override var layerable: InternalLayerable = buildLayerable(config.size),
     override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
@@ -108,7 +106,6 @@ class ThreadSafeTileGrid(
         return backend.getTileAtOrNull(position)
     }
 
-    @Synchronized
     override fun putTile(tile: Tile) {
         if (tile is CharacterTile && tile.character == '\n') {
             moveCursorToNextLine()
@@ -126,13 +123,11 @@ class ThreadSafeTileGrid(
         cursorHandler.moveCursorBackward()
     }
 
-    @Synchronized
     override fun close() {
         animationHandler.close()
         closedValue.value = true
     }
 
-    @Synchronized
     override fun delegateTo(tileGrid: InternalTileGrid) {
         backend = tileGrid.backend
         layerable = tileGrid.layerable
@@ -140,7 +135,6 @@ class ThreadSafeTileGrid(
         cursorHandler = tileGrid.cursorHandler
     }
 
-    @Synchronized
     override fun reset() {
         backend = originalBackend
         layerable = originalLayerable
@@ -148,7 +142,6 @@ class ThreadSafeTileGrid(
         cursorHandler = originalCursorHandler
     }
 
-    @Synchronized
     override fun clear() {
         backend.clear()
         layerable = buildLayerable(size)
@@ -240,8 +233,8 @@ class ThreadSafeTileGrid(
     }
 }
 
-private fun buildLayerable(initialSize: Size): ThreadSafeLayerable {
-    return ThreadSafeLayerable(
+private fun buildLayerable(initialSize: Size): DefaultLayerable {
+    return DefaultLayerable(
         initialSize = initialSize
     )
 }

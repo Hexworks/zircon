@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.TilesetSourceType
-import kotlin.jvm.JvmStatic
 
 /**
  * This object can be used to load either built-in graphical
@@ -12,14 +11,12 @@ import kotlin.jvm.JvmStatic
  */
 object GraphicalTilesetResources {
 
-    @JvmStatic
     fun nethack16x16(): TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16
 
     /**
      * Use this function if you want to load a [TilesetResource]
      * from the filesystem.
      */
-    @JvmStatic
     fun loadTilesetFromFilesystem(
         width: Int,
         height: Int,
@@ -38,7 +35,6 @@ object GraphicalTilesetResources {
      * which is bundled into a jar file which you build from
      * your application.
      */
-    @JvmStatic
     fun loadTilesetFromJar(
         width: Int,
         height: Int,

@@ -50,7 +50,7 @@ class ComponentsLayerableTest {
             application = application
         )
         componentContainer = DefaultComponentContainer(rootContainer)
-        layerable = ThreadSafeLayerable(SIZE_4X2)
+        layerable = DefaultLayerable(SIZE_4X2)
         target = ComponentsLayerable(
             componentContainer = componentContainer,
             layerable = layerable

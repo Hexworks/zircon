@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.util.markovchain.MarkovChain
 
-@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 
 data class Markov(
     private val chain: MarkovChain<CharacterTile>

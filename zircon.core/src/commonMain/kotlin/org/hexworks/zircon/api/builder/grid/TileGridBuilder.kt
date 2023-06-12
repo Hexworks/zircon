@@ -2,15 +2,11 @@ package org.hexworks.zircon.api.builder.grid
 
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.grid.InternalTileGrid
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.screen.TileGridScreen
 import kotlin.jvm.JvmStatic
-import kotlin.jvm.JvmOverloads
 
 /**
  * Builds [TileGrid]s.
@@ -29,7 +25,7 @@ class TileGridBuilder private constructor(
     fun buildScreen(): Screen = TileGridScreen(build().asInternal())
 
     override fun build(): TileGrid {
-        return ThreadSafeTileGrid(config)
+        return DefaultTileGrid(config)
     }
 
     override fun createCopy(): TileGridBuilder = TileGridBuilder(

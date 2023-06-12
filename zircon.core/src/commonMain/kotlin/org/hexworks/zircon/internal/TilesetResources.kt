@@ -3,11 +3,9 @@ package org.hexworks.zircon.internal
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
-import kotlin.jvm.JvmStatic
 
 object TilesetResources {
 
-    @JvmStatic
     fun allTextTilesetsCompatibleWith(tileset: TilesetResource): List<TilesetResource> {
         val width = tileset.width
         val height = tileset.height

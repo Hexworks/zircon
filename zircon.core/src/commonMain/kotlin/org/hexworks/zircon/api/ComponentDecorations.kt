@@ -1,5 +1,3 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -11,8 +9,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Re
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.internal.component.renderer.decoration.*
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
 
 /**
  * This object contains functions for creating component decorations.
@@ -23,8 +19,6 @@ object ComponentDecorations {
      * Can be used to draw a border around a [Component]. A border is
      * [RenderingMode.NON_INTERACTIVE] by default.
      */
-    @JvmOverloads
-    @JvmStatic
     fun border(
         border: Border = Border.newBuilder().build(),
         renderingMode: RenderingMode = NON_INTERACTIVE
@@ -38,8 +32,6 @@ object ComponentDecorations {
      * **Note that** the [title] will only be displayed for a [Component] if it is wrapped
      * with a box. This decoration uses [RenderingMode.NON_INTERACTIVE] by default.
      */
-    @JvmOverloads
-    @JvmStatic
     fun box(
         boxType: BoxType = BoxType.SINGLE,
         title: String = "",
@@ -57,8 +49,6 @@ object ComponentDecorations {
      * [leftSideCharacter] and [rightSideCharacter]. This decoration will use
      * [RenderingMode.INTERACTIVE] by default.
      */
-    @JvmOverloads
-    @JvmStatic
     fun side(
         leftSideCharacter: Char = '[',
         rightSideCharacter: Char = ']',
@@ -73,14 +63,11 @@ object ComponentDecorations {
      * Can be used to draw a shadow around a [Component]. The shadow is drawn
      * around the bottom and the right sides.
      */
-    @JvmStatic
     fun shadow(): ComponentDecorationRenderer = ShadowDecorationRenderer()
 
     /**
      * Can be used to add a half box decoration (half-height "border") to a [Component].
      */
-    @JvmOverloads
-    @JvmStatic
     fun halfBlock(
         renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
@@ -89,8 +76,7 @@ object ComponentDecorations {
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      * @param value the margin to add to all sides (top, right, bottom and left)
      */
-    
-    @JvmStatic
+
     fun margin(
         value: Int
     ): ComponentDecorationRenderer = MarginDecorationRenderer(
@@ -103,8 +89,7 @@ object ComponentDecorations {
     /**
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      */
-    
-    @JvmStatic
+
     fun margin(
         top: Int,
         right: Int,
@@ -122,8 +107,7 @@ object ComponentDecorations {
      * @param x horizontal margin (left and right)
      * @param y vertical margin (top and bottom)
      */
-    
-    @JvmStatic
+
     fun margin(
         y: Int,
         x: Int
@@ -138,8 +122,7 @@ object ComponentDecorations {
      * Can be used to explicitly state that a [Component] has no decorations. This is useful
      * when a [Component] has decorations by default.
      */
-    
-    @JvmStatic
+
     fun noDecoration(): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = 0,
         right = 0,

@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
-import kotlin.jvm.JvmStatic
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -22,7 +21,6 @@ import kotlin.jvm.JvmStatic
  * [Screen]s also implement the [ComponentContainer] interface which means that if you want to use
  * [Component]s you'll have to use [Screen]s.
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
     /**
@@ -50,7 +48,6 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
     companion object {
 
-        @JvmStatic
         fun create(tileGrid: TileGrid) = ScreenBuilder.createScreenFor(tileGrid)
     }
 }

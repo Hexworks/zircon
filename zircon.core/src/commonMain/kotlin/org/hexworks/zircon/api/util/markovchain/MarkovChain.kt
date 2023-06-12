@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.util.markovchain
 
 import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChain
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents a markov chain.
@@ -27,13 +26,12 @@ interface MarkovChain<T : Any> {
 
     /**
      * Resets this [MarkovChain] to its initial state (the value
-     * returned by `first` and returns it.
+     * returned by `first`) and returns it.
      */
     fun reset(): MarkovChainNode<T>
 
     companion object {
 
-        @JvmStatic
         fun <T : Any> create(initialNode: MarkovChainNode<T>): MarkovChain<T> = DefaultMarkovChain(initialNode)
     }
 

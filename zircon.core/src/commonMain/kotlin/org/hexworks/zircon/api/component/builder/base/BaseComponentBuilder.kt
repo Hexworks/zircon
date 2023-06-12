@@ -20,7 +20,6 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.data.CommonComponentProperties
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import kotlin.jvm.JvmSynthetic
 
 /**
  * This class can be used as a base class for creating [ComponentBuilder]s.
@@ -186,7 +185,6 @@ abstract class BaseComponentBuilder<T : Component, U : ComponentBuilder<T, U>>(
 
     private infix fun Int.doesntFitWithin(size: Size) = this > size.width * size.height
 
-    @JvmSynthetic
     internal fun withProps(props: CommonComponentProperties<T>): U {
         this.props = props
         return this as U

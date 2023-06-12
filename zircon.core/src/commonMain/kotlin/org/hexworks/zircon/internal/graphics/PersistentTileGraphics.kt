@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.PersistentTileGraphicsState
-import kotlin.jvm.Synchronized
 
 /**
  * This is a thread-safe [TileGraphics] All read / write operations
@@ -36,7 +35,6 @@ class PersistentTileGraphics internal constructor(
             tiles = tiles
         )
 
-    @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {
             tiles = if (tile.isEmpty) {
@@ -47,7 +45,6 @@ class PersistentTileGraphics internal constructor(
         }
     }
 
-    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         var newTiles = tiles
         val tilesToAdd = mutableMapOf<Position, Tile>()
@@ -65,12 +62,10 @@ class PersistentTileGraphics internal constructor(
         tiles = newTiles
     }
 
-    @Synchronized
     override fun clear() {
         tiles = tiles.clear()
     }
 
-    @Synchronized
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
             val (currentTiles, _, currentSize) = state
@@ -82,7 +77,6 @@ class PersistentTileGraphics internal constructor(
         }
     }
 
-    @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
         var newTiles = tiles
         val tilesToAdd = mutableMapOf<Position, Tile>()

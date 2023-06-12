@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
-import kotlin.jvm.Synchronized
 
 class DefaultLogArea internal constructor(
     componentMetadata: ComponentMetadata,
@@ -86,13 +85,11 @@ class DefaultLogArea internal constructor(
         }
     }
 
-    @Synchronized
     override fun clear() {
         logElements.forEach { it.detach() }
         logElements.clear()
     }
 
-    @Synchronized
     private fun addLogElement(element: TextBox, applyTheme: Boolean = true) {
         var currentHeight = children.map { it.height }.fold(0, Int::plus)
         val maxHeight = contentSize.height

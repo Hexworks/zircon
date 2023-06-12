@@ -20,11 +20,10 @@ import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 
 /**
- * Represents a sub-section of a [TileGraphics]. This class can be used to
+ * Represents a subsection of a [TileGraphics]. This class can be used to
  * restrict edits to the original [TileGraphics]. Note that the contents of
  * the two [TileGraphics] are shared so edits will be visible for both.
  */
-@Suppress("OverridingDeprecatedMember")
 class SubTileGraphics(
     private val rect: Rect,
     private val backend: InternalTileGraphics

@@ -1,10 +1,7 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.builder.data.BlockBuilder
-import kotlin.jvm.JvmStatic
 
 /**
  * A [Block] is a voxel that consists of [Tile]s representing each side, and the internal
@@ -13,7 +10,6 @@ import kotlin.jvm.JvmStatic
  * If you want to have multiple [Tile]s in any side (or as the [content]) try using a [StackedTile].
  */
 
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Block<T : Tile> : Copiable<Block<T>> {
 
     var content: T
@@ -44,7 +40,7 @@ interface Block<T : Tile> : Copiable<Block<T>> {
 
     /**
      * Tells whether this [Block] is empty (all of its sides and content are
-     * the the [emptyTile]).
+     * the [emptyTile]).
      */
     fun isEmpty(): Boolean
 
@@ -80,10 +76,8 @@ interface Block<T : Tile> : Copiable<Block<T>> {
 
     companion object {
 
-        @JvmStatic
         fun <T : Tile> newBuilder() = BlockBuilder.newBuilder<T>()
 
-        @JvmStatic
         fun <T : Tile> create(emptyTile: T): Block<T> {
             return BlockBuilder.newBuilder<T>()
                 .withEmptyTile(emptyTile)

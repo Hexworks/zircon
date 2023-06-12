@@ -16,12 +16,14 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
-import kotlin.jvm.Synchronized
 
-open class ThreadSafeLayer internal constructor(
-    initialPosition: Position, initialContents: TileGraphics, private val movable: Movable = DefaultMovable(
+open class DefaultLayer internal constructor(
+    initialPosition: Position,
+    initialContents: TileGraphics,
+    private val movable: Movable = DefaultMovable(
         position = initialPosition, size = initialContents.size
-    ), private val backend: InternalTileGraphics = FastTileGraphics(
+    ),
+    private val backend: InternalTileGraphics = FastTileGraphics(
         initialSize = initialContents.size,
         initialTileset = initialContents.tileset,
         initialTiles = initialContents.tiles
@@ -44,93 +46,79 @@ open class ThreadSafeLayer internal constructor(
 
     override fun asInternalLayer() = this
 
-
-    @Synchronized
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)
     }
 
-    @Synchronized
     override fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile {
         return getAbsoluteTileAtOrNull(position) ?: orElse(position)
     }
 
-    @Synchronized
     final override fun drawAbsoluteTileAt(position: Position, tile: Tile) {
         backend.draw(tile, position - this.position)
     }
 
-    @Synchronized
     override fun moveTo(position: Position): Boolean {
         return movable.moveTo(position)
     }
 
-    @Synchronized
     final override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition, drawArea)
     }
 
 
-    @Synchronized
     final override fun draw(tile: Tile, drawPosition: Position) {
         backend.draw(tile, drawPosition)
     }
 
-    @Synchronized
     final override fun draw(tileComposite: TileComposite) {
         backend.draw(tileComposite)
     }
 
-    @Synchronized
     final override fun draw(tileComposite: TileComposite, drawPosition: Position) {
         backend.draw(tileComposite, drawPosition)
     }
 
-    @Synchronized
     final override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
         backend.draw(tileComposite, drawPosition, drawArea)
     }
 
-    @Synchronized
     final override fun draw(tileMap: Map<Position, Tile>) {
         backend.draw(tileMap)
     }
 
-    @Synchronized
     final override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
         backend.draw(tileMap, drawPosition)
     }
 
-    @Synchronized
     final override fun fill(filler: Tile) {
         backend.fill(filler)
     }
 
-    @Synchronized
     final override fun transform(transformer: (Position, Tile) -> Tile) {
         backend.transform(transformer)
     }
 
-    @Synchronized
     final override fun applyStyle(styleSet: StyleSet) {
         backend.applyStyle(styleSet)
     }
 
-    @Synchronized
     final override fun clear() {
         backend.clear()
     }
 
-    @Synchronized
     final override fun createCopy(): Layer {
-        return ThreadSafeLayer(
+        return DefaultLayer(
             initialPosition = position, initialContents = tiles.toTileGraphics(size, tileset)
         ).apply {
             isHidden = isHidden
         }
     }
 
-    @Synchronized
+    override fun render(): TileGraphics {
+        return backend
+    }
+
     override fun render(graphics: TileGraphics) {
         graphics.draw(backend)
     }

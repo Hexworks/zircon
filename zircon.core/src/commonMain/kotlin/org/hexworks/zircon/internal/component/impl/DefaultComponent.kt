@@ -7,7 +7,6 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
@@ -32,9 +31,9 @@ import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
-import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 abstract class DefaultComponent(
@@ -138,14 +137,24 @@ abstract class DefaultComponent(
         }
     }
 
-    @Synchronized
+    // TODO: 💡 optimize this by doing a render whenever the component changes
+    override fun render(): TileGraphics {
+        val tg = FastTileGraphics(
+            initialSize = size,
+            initialTileset = tileset
+        )
+        (renderer as ComponentRenderingStrategy<Component>).render(
+            this, tg
+        )
+        return tg
+    }
+
     override fun render(graphics: TileGraphics) {
         (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
     }
 
     // MOVABLE
 
-    @Synchronized
     override fun moveTo(position: Position): Boolean {
         parent?.let { parent ->
             val newBounds = movable.rect.withPosition(position)

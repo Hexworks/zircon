@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder
  * in a typesafe way.
  *
  * @see AppConfigBuilder.withProperty
- * @see AppConfig.getProperty
+ * @see AppConfig.getOrNull
+ * @see AppConfig.getOrElse
  */
 interface AppConfigKey<T>

@@ -12,9 +12,8 @@ import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
-import kotlin.jvm.Synchronized
 
-class ThreadSafeLayerable(
+class DefaultLayerable(
     initialSize: Size
 ) : InternalLayerable {
 
@@ -28,14 +27,12 @@ class ThreadSafeLayerable(
     override fun getLayerAtOrNull(level: Int): LayerHandle? =
         layers.getOrNull(level)?.let { DefaultLayerHandle(it) }
 
-    @Synchronized
     override fun addLayer(layer: Layer): LayerHandle {
         val internalLayer = layer.asInternalLayer()
         layers.add(internalLayer)
         return DefaultLayerHandle(internalLayer)
     }
 
-    @Synchronized
     override fun setLayerAt(level: Int, layer: Layer): LayerHandle {
         val internalLayer = layer.asInternalLayer()
         if (level.isValidIndex) {
@@ -45,7 +42,6 @@ class ThreadSafeLayerable(
         return DefaultLayerHandle(internalLayer)
     }
 
-    @Synchronized
     override fun insertLayerAt(level: Int, layer: Layer): LayerHandle {
         val internalLayer = layer.asInternalLayer()
         if (level.isValidIndex) {
@@ -54,7 +50,6 @@ class ThreadSafeLayerable(
         return DefaultLayerHandle(internalLayer)
     }
 
-    @Synchronized
     override fun removeLayer(layer: Layer): Boolean {
         var result = false
         layers.indexOfFirst { it.id == layer.id }.whenValidIndex { idx ->
@@ -80,7 +75,6 @@ class ThreadSafeLayerable(
 
         private var attached = true
 
-        @Synchronized
         override fun removeLayer(): Boolean {
             attached = false
             return removeLayer(backend)

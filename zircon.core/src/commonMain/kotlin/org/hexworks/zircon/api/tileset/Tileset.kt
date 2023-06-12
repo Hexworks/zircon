@@ -11,6 +11,7 @@ import kotlin.reflect.KClass
  * Each tileset has a [targetType] that specifies the object type which will be used
  * when [drawTile] is called. For example in case of Swing [targetType] will be
  * a `Graphics2D` object.
+ * 
  * @param S the class of the surface that we'll draw upon (Graphics2D for Swing for example)
  */
 interface Tileset<S : Any> : Identifiable {

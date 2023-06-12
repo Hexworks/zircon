@@ -7,7 +7,6 @@ import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TilesetType
-import kotlin.jvm.JvmStatic
 
 /**
  * Contains metadata about a tileset for a given [Tile] type.
@@ -77,7 +76,6 @@ interface TilesetResource : Identifiable {
             override fun toString() = "UNKNOWN"
         }
 
-        @JvmStatic
         fun unknown() = UNKNOWN
     }
 }

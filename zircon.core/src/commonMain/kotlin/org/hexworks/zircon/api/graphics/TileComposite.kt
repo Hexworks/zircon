@@ -20,9 +20,7 @@ interface TileComposite : HasSize {
      * if there is no such [Tile].
      */
     fun getTileAtOrNull(position: Position): Tile? {
-        return if (size.containsPosition(position)) tiles[position] else let {
-            null
-        }
+        return tiles[position]
     }
 
     /**

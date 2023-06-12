@@ -1,5 +1,3 @@
-@file:JvmName("DrawSurfaceUtils")
-
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.DrawSurfaces
@@ -10,7 +8,6 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
-import kotlin.jvm.JvmName
 
 /**
  * Transforms an [Iterable] of [Position] to [Tile] [Pair]s to a [TileImage] with

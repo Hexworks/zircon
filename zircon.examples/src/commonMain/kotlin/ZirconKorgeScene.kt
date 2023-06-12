@@ -6,7 +6,10 @@ import korlibs.event.KeyEvent
 import korlibs.event.MouseEvent
 import korlibs.image.atlas.MutableAtlasUnit
 import korlibs.image.atlas.add
-import korlibs.image.bitmap.*
+import korlibs.image.bitmap.Bitmap32
+import korlibs.image.bitmap.BmpSlice
+import korlibs.image.bitmap.context2d
+import korlibs.image.bitmap.slice
 import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
 import korlibs.image.font.readTtfFont
@@ -27,7 +30,6 @@ import korlibs.korge.input.mouse
 import korlibs.korge.scene.PixelatedScene
 import korlibs.korge.time.interval
 import korlibs.korge.view.SContainer
-import korlibs.korge.view.image
 import korlibs.korge.view.renderableView
 import korlibs.math.geom.*
 import korlibs.math.geom.Size
@@ -45,7 +47,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
-import org.hexworks.zircon.api.behavior.OptTilesetHolder
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.extensions.toScreen
@@ -60,7 +61,6 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
-import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.korge.toRGBA
@@ -178,7 +178,16 @@ open class ZirconKorgeScene(
                 val tileWidthF = tileWidth.toFloat()
                 val tileHeightF = tileHeight.toFloat()
 
-                fun drawSlice(x: Float, y: Float, bmp: BmpSlice?, color: RGBA, flipX: Boolean, flipY: Boolean, rw: Float = tileWidthF, rh: Float = tileHeightF) {
+                fun drawSlice(
+                    x: Float,
+                    y: Float,
+                    bmp: BmpSlice?,
+                    color: RGBA,
+                    flipX: Boolean,
+                    flipY: Boolean,
+                    rw: Float = tileWidthF,
+                    rh: Float = tileHeightF
+                ) {
                     if (bmp == null) return
                     val rx = if (flipX) x + rw else x
                     val ry = if (flipY) y + rh else y
@@ -186,7 +195,16 @@ open class ZirconKorgeScene(
                     val h = if (flipY) -rh else rh
 
                     //if (w != 16f) println("w=$w,h=$h")
-                    batch.drawQuad(this.ctx.getTex(bmp), rx, ry, w, h, colorMul = color, m = view.globalMatrix, blendMode = view.renderBlendMode)
+                    batch.drawQuad(
+                        this.ctx.getTex(bmp),
+                        rx,
+                        ry,
+                        w,
+                        h,
+                        colorMul = color,
+                        m = view.globalMatrix,
+                        blendMode = view.renderBlendMode
+                    )
                 }
 
                 val imageTiles = arrayListOf<Pair<Vector2, BmpSlice>>()
@@ -219,7 +237,7 @@ open class ZirconKorgeScene(
                     when (tile) {
                         is CharacterTile -> {
                             //if (tile.character != ' ') {
-                                drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
+                            drawSlice(px, py, bgTile, tile.backgroundColor.toRGBA(), flipX, flipY)
                             //}
                             drawSlice(
                                 //px, py, ktileset.tiles[CP437Utils.fetchCP437IndexForChar((tile.character.code and 0xFF).toChar())],
@@ -239,6 +257,7 @@ open class ZirconKorgeScene(
                             //println("tile.name=${tile.name}, ktileset.tilesByName[tile.name]=${ktileset.tilesByName[tile.name]}")
                             drawSlice(px, py, ktileset.tilesByName[tile.name], Colors.WHITE, flipX, flipY)
                         }
+
                         is ImageTile -> {
                             //println("tile.name=${tile.name}, ktileset.tilesByName[tile.name]=${ktileset.tilesByName[tile.name]}")
                             ktileset.tilesByName[tile.name]?.let { tile ->
@@ -247,6 +266,7 @@ open class ZirconKorgeScene(
                                 //drawSlice(px, py, tile, Colors.WHITE, flipX, flipY, rw = tile.width.toFloat(), rh = tile.height.toFloat())
                             }
                         }
+
                         else -> {
                             println("Unknown tile.type=$tile")
                         }
@@ -288,6 +308,7 @@ open class ZirconKorgeScene(
                         val bitmap = vfsFile.readBitmap().toBMP32IfRequired()
                         tiles = bitmap.slice().splitInRows(resource.width, resource.width)
                     }
+
                     TilesetType.GraphicalTileset -> {
                         if (vfsFile.isDirectory()) {
                             val atlas = MutableAtlasUnit()
@@ -327,6 +348,7 @@ open class ZirconKorgeScene(
                         //println(info)
                         //TODO()
                     }
+
                     is TilesetType.CustomTileset -> TODO()
                     TilesetType.TrueTypeFont -> {
                         val atlas = MutableAtlasUnit(512)
@@ -335,7 +357,13 @@ open class ZirconKorgeScene(
                         this.atlas = atlas
                         this.tiles = tiles
                         for (n in 0 until 256) {
-                            tiles += atlas.add(font.renderGlyphToBitmap(16f, CP437Utils.convertCp437toUnicode(n).code, Colors.WHITE).bmp.toBMP32()).slice
+                            tiles += atlas.add(
+                                font.renderGlyphToBitmap(
+                                    16f,
+                                    CP437Utils.convertCp437toUnicode(n).code,
+                                    Colors.WHITE
+                                ).bmp.toBMP32()
+                            ).slice
                         }
                         //println("!! TTF: $font")
                         //TODO()
@@ -370,10 +398,12 @@ open class ZirconKorgeScene(
             beforeRenderListeners += listener
             return SimpleDisposable { beforeRenderListeners -= listener }
         }
+
         override fun afterRender(listener: (RenderData) -> Unit): Subscription {
             afterRenderListeners += listener
             return SimpleDisposable { afterRenderListeners -= listener }
         }
+
         override fun asInternal(): InternalApplication = this
 
         //var closed = DefaultSetProperty()
@@ -391,7 +421,7 @@ open class ZirconKorgeScene(
         gridPositions.forEach { pos ->
             tiles@ for (i in layers.size - 1 downTo 0) {
                 val (layerPos, layer) = layers[i]
-                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
+                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: emptyList()
                 for (j in toRender.size - 1 downTo 0) {
                     val tile = toRender[j]
                     val tileset = tile.finalTileset(layer)
@@ -411,8 +441,10 @@ open class ZirconKorgeScene(
 
     private fun RenderableContainer.fetchLayers(): List<Pair<Position, TileGraphics>> {
         return renderables.map { renderable ->
-            val tg = FastTileGraphics(initialSize = renderable.size, initialTileset = renderable.tileset)
-            if (!renderable.isHidden) renderable.render(tg)
+            val tg = if (renderable.isHidden) FastTileGraphics(
+                initialSize = renderable.size,
+                initialTileset = renderable.tileset
+            ) else renderable.render()
             renderable.position to tg
         }
     }
@@ -424,7 +456,6 @@ open class ZirconKorgeScene(
 
     private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
         is TilesetHolder -> tileset
-        is OptTilesetHolder -> tileset ?: graphics.tileset
         else -> graphics.tileset
     }
 

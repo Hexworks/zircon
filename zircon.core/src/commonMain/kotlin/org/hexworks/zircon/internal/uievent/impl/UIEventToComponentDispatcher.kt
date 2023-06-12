@@ -19,7 +19,6 @@ import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
-import kotlin.jvm.JvmSynthetic
 
 /**
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
@@ -87,23 +86,29 @@ class UIEventToComponentDispatcher(
                 }
                 Pass
             }
+
             is KeyboardEvent -> {
                 when {
                     shortcutsConfig.activateFocused.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)
                     }
+
                     shortcutsConfig.deactivateActivated.matches(event) -> {
                         deactivateComponent(focusOrderList.focusedComponent)
                     }
+
                     shortcutsConfig.focusNext.matches(event) -> {
                         focusComponent(focusOrderList.findNext())
                     }
+
                     shortcutsConfig.focusPrevious.matches(event) -> {
                         focusComponent(focusOrderList.findPrevious())
                     }
+
                     else -> Pass
                 }
             }
+
             else -> Pass
         }
     }
@@ -141,9 +146,11 @@ class UIEventToComponentDispatcher(
             is KeyboardEvent -> {
                 focusOrderList.focusedComponent
             }
+
             is MouseEvent -> {
                 root.fetchComponentByPositionOrNull(event.position)
             }
+
             else -> {
                 null
             }
@@ -215,6 +222,7 @@ class UIEventToComponentDispatcher(
                     MOUSE_MOVED -> component.mouseMoved(event, phase)
                 }
             }
+
             is KeyboardEvent -> {
                 when (event.type) {
                     KEY_PRESSED -> component.keyPressed(event, phase)
@@ -278,7 +286,6 @@ class UIEventToComponentDispatcher(
 
     companion object {
 
-        @JvmSynthetic
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 
     }

@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.platform.util.SystemUtils
-import kotlin.jvm.Synchronized
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
@@ -28,7 +27,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     private val animations = mutableMapOf<UUID, InternalAnimation>()
     private val nextUpdatesForAnimations = mutableMapOf<UUID, Long>()
 
-    @Synchronized
     override fun start(animation: Animation): AnimationHandle {
         animation as? InternalAnimation
             ?: error("The supplied animation does not implement required interface: InternalAnimation.")
@@ -44,7 +42,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         return result
     }
 
-    @Synchronized
     override fun stop(animation: InternalAnimation) {
         results[animation.id]?.state = FINISHED
         results.remove(animation.id)
@@ -53,7 +50,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         animation.removeCurrentFrame()
     }
 
-    @Synchronized
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         if (closed.not()) {
             animations.forEach { (key, animation) ->
@@ -69,7 +65,6 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         }
     }
 
-    @Synchronized
     override fun close() {
         closedValue.value = true
         animations.forEach { (_, animation) ->

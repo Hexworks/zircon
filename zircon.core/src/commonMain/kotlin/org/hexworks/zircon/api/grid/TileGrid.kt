@@ -10,16 +10,16 @@ import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 
 /**
- * The [TileGrid] is the most fundamental interface in Zircon.
- * It is an abstraction which lets you manage a 2D grid composed of [Tile]s.
- * It also supports layering, cursor handling, character printing, event handling,
- * simple [Tile] drawing operations and many more.
+ * The [TileGrid] is the most fundamental interface in Zircon. It is an abstraction
+ * that lets you manage a 2D grid composed of [Tile]s. It also supports layering,
+ * cursor handling, character printing, event handling, simple [Tile] drawing operations
+ * and many more.
  *
  * You can consider a [TileGrid] as an easy to use **facade** for all of your tile grid
  * needs.
  *
- * **Note That** all [TileGrid]s have a [Layer] at index `0` which is used
- * for implementing the [DrawSurface] operations and it can't be removed from the grid.
+ * **Note That** all [TileGrid]s have a [Layer] at index `0` that is used
+ * for implementing the [DrawSurface] operations, and it can't be removed from the grid.
  *
  * In short all [TileGrid]s have at least **one** [Layer] in them.
  *

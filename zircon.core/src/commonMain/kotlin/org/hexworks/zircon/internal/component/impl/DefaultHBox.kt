@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
-import kotlin.jvm.Synchronized
 
 open class DefaultHBox(
     componentMetadata: ComponentMetadata,
@@ -28,7 +27,6 @@ open class DefaultHBox(
     override val remainingSpace: Int
         get() = availableSpace.width
 
-    @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."

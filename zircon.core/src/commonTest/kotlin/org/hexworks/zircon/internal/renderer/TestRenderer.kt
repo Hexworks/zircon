@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.view.base.BaseView
 import org.hexworks.zircon.internal.behavior.RenderableContainer
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**
@@ -28,7 +28,7 @@ class TestRenderer(
     config: AppConfig,
     private val tileGraphics: TileGraphics,
 ) : UIEventDispatcher, Renderer<ApplicationStub>, Clearable {
-    private val tileGrid: TileGrid = ThreadSafeTileGrid(config).apply {
+    private val tileGrid: TileGrid = DefaultTileGrid(config).apply {
         application = ApplicationStub()
     }
     private val mainView = object : BaseView(tileGrid) {}

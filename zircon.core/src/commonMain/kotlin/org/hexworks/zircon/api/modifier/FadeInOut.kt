@@ -8,7 +8,6 @@ import org.hexworks.zircon.platform.util.SystemUtils
 data class FadeInOut(
     private val stepsFadeIn: Int = 20,
     private val timeMsFadeIn: Long = 2000,
-    private val glowOnFinalFadeInStep: Boolean = false,
     private val timeMsBeforeFadingOut: Long = 5000,
     private val stepsFadeOut: Int = 20,
     private val timeMsFadeOut: Long = 2000
@@ -26,7 +25,7 @@ data class FadeInOut(
         }
 
     private var currentFadeMode = FadeInOutMode.FadeIn
-    private val fadeIn = FadeIn(stepsFadeIn, timeMsFadeIn, glowOnFinalFadeInStep)
+    private val fadeIn = FadeIn(stepsFadeIn, timeMsFadeIn)
     private val fadeOut = FadeOut(stepsFadeOut, timeMsFadeOut)
     private var startNoFadingRender: Long = Long.MIN_VALUE
 
@@ -42,6 +41,7 @@ data class FadeInOut(
                     startNoFadingRender = SystemUtils.getCurrentTimeMs()
                 tile
             }
+
             FadeInOutMode.FadeOut -> fadeOut.transform(tile)
         }
 
@@ -52,6 +52,7 @@ data class FadeInOut(
             FadeInOutMode.FadeIn -> if (fadeIn.isFadingFinished()) FadeInOutMode.NoFading else FadeInOutMode.FadeIn
             FadeInOutMode.NoFading -> if ((SystemUtils.getCurrentTimeMs() - startNoFadingRender) > timeMsBeforeFadingOut)
                 FadeInOutMode.FadeOut else FadeInOutMode.NoFading
+
             FadeInOutMode.FadeOut -> FadeInOutMode.FadeOut
         }
     }

@@ -215,6 +215,10 @@ class ComponentStub(
         error("not implemented")
     }
 
+    override fun render(): TileGraphics {
+        error("not implemented")
+    }
+
     override fun render(graphics: TileGraphics) {
         error("not implemented")
     }

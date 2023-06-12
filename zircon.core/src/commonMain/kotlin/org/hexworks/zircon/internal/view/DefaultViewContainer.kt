@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.mvc
+package org.hexworks.zircon.internal.view
 
 
 import org.hexworks.zircon.api.view.View

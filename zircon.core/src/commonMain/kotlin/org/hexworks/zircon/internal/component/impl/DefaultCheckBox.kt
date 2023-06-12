@@ -16,7 +16,6 @@ import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.CHECKING
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKED
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.UNCHECKING
-import kotlin.jvm.Synchronized
 
 @Suppress("DuplicatedCode")
 class DefaultCheckBox internal constructor(
@@ -42,7 +41,6 @@ class DefaultCheckBox internal constructor(
         }
     }
 
-    @Synchronized
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             pressing = false
@@ -51,14 +49,12 @@ class DefaultCheckBox internal constructor(
         super.mouseExited(event, phase)
     }
 
-    @Synchronized
     override fun activated() = whenEnabled {
         pressing = true
         this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
         super.activated()
     }
 
-    @Synchronized
     override fun deactivated() = whenEnabled {
         pressing = false
         isSelected = isSelected.not()
@@ -66,7 +62,6 @@ class DefaultCheckBox internal constructor(
         super.deactivated()
     }
 
-    @Synchronized
     override fun focusTaken() = whenEnabled {
         pressing = false
         super.focusTaken()

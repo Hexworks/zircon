@@ -9,8 +9,3 @@ interface TilesetHolder {
 
     val tileset: TilesetResource
 }
-
-interface OptTilesetHolder {
-
-    val tileset: TilesetResource?
-}

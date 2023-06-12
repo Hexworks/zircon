@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.application
 
 import org.hexworks.zircon.api.builder.application.DebugConfigBuilder
-import kotlin.jvm.JvmStatic
 
 /**
  * Contains the configuration to be used when debug mode is enabled.
@@ -27,10 +26,8 @@ class DebugConfig internal constructor(
 
     companion object {
 
-        @JvmStatic
         fun newBuilder() = DebugConfigBuilder.newBuilder()
 
-        @JvmStatic
         fun defaultConfig() = DebugConfigBuilder.newBuilder().build()
     }
 }

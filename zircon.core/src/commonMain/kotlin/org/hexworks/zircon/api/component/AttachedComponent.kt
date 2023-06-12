@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component
 
 /**
- * Decorator that represents a [Component] which is attached to a [ComponentContainer].
+ * Decorator that represents a [Component] that is attached to a [ComponentContainer].
  */
 interface AttachedComponent : Component {
 

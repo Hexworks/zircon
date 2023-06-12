@@ -5,7 +5,6 @@ package org.hexworks.zircon.api.color
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.color.DefaultTileColor
-import kotlin.jvm.JvmStatic
 
 /**
  * A [TileColor] represents the colors of a [Tile]. [TileColor]s support transparency
@@ -13,7 +12,6 @@ import kotlin.jvm.JvmStatic
  * functions in [TileColor.Companion] or use [ANSITileColor] instead that comes with
  * the default ANSI colors.
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface TileColor : Cacheable {
 
     val alpha: Int
@@ -111,25 +109,20 @@ interface TileColor : Cacheable {
         /**
          * The default foreground color is `WHITE`.
          */
-        @JvmStatic
         fun defaultForegroundColor() = ANSITileColor.WHITE
 
         /**
          * The default background color is `BLACK`.
          */
-        @JvmStatic
         fun defaultBackgroundColor() = ANSITileColor.BLACK
 
         /**
          * Shorthand for a [TileColor] which is fully transparent.
          */
-        @JvmStatic
         fun transparent() = TRANSPARENT
 
-        @JvmStatic
         fun defaultAlpha() = DEFAULT_ALPHA
 
-        @JvmStatic
         fun defaultFactor() = DEFAULT_FACTOR
 
         /**
@@ -139,7 +132,6 @@ interface TileColor : Cacheable {
          *  parsing the tuples as Red, Green and Blue.
          */
         @Suppress("DEPRECATION")
-        @JvmStatic
         fun fromString(value: String): TileColor {
             value.trim { it <= ' ' }.let { cleanValue ->
                 try {
@@ -164,7 +156,6 @@ interface TileColor : Cacheable {
         /**
          * Creates a new [TileColor].
          */
-        @JvmStatic
         fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): TileColor {
             return DefaultTileColor(red, green, blue, alpha)
         }

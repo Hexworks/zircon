@@ -13,14 +13,12 @@ import org.hexworks.zircon.internal.data.DefaultCharacterTile
 import org.hexworks.zircon.internal.data.DefaultGraphicalTile
 import org.hexworks.zircon.internal.data.DefaultImageTile
 import org.hexworks.zircon.internal.resource.TileType
-import kotlin.jvm.JvmStatic
 
 /**
  * A [Tile] is the basic building block that can be drawn on the screen.
  * It is a rectangular graphic, or character that can also be drawn on
  * [DrawSurface]s using [DrawSurface.draw].
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Tile : Cacheable, StyleSet {
 
     /**
@@ -148,7 +146,6 @@ interface Tile : Cacheable, StyleSet {
          * - and default background
          * - and no modifiers.
          */
-        @JvmStatic
         fun defaultTile(): CharacterTile = DEFAULT_CHARACTER_TILE
 
         /**
@@ -158,13 +155,11 @@ interface Tile : Cacheable, StyleSet {
          * - and transparent background
          * - and no modifiers.
          */
-        @JvmStatic
         fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
 
         /**
          * Creates a new [TileBuilder] for creating [Tile]s.
          */
-        @JvmStatic
         fun newBuilder() = TileBuilder.newBuilder()
 
         /**
@@ -190,7 +185,7 @@ interface Tile : Cacheable, StyleSet {
         /**
          * Creates a new [GraphicalTile].
          */
-        fun createGraphicTile(
+        fun createGraphicalTile(
             name: String,
             tags: Set<String>,
             tileset: TilesetResource = RuntimeConfig.config.defaultGraphicalTileset

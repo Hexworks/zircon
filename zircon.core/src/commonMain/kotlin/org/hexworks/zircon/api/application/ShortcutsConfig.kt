@@ -1,10 +1,7 @@
 package org.hexworks.zircon.api.application
 
 import org.hexworks.zircon.api.builder.application.ShortcutsConfigBuilder
-import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import kotlin.jvm.JvmStatic
 
 /**
  * These are the shortcuts that Zircon will use for component activation / deactivation
@@ -30,10 +27,8 @@ class ShortcutsConfig internal constructor(
 ) {
     companion object {
 
-        @JvmStatic
         fun newBuilder() = ShortcutsConfigBuilder.newBuilder()
 
-        @JvmStatic
         fun defaultConfig() = ShortcutsConfigBuilder.newBuilder().build()
     }
 }

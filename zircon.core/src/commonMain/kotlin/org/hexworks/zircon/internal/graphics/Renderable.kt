@@ -11,7 +11,13 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 interface Renderable : Boundable, CanBeHidden, TilesetOverride {
 
     /**
-     * Renders this [Renderable] onto the given [TileGraphics] object.
+     * Renders this [Renderable] to a [TileGraphics].
+     */
+    fun render(): TileGraphics
+
+    /**
+     * Renders this [Renderable] on top of the given [graphics].
      */
     fun render(graphics: TileGraphics)
+
 }

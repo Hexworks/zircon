@@ -23,7 +23,6 @@ class ArrayBackedTileMap(
 
     override fun containsKey(key: Position) = key.index.let { idx ->
         if (idx > arr.lastIndex) false else arr[key.index] != null
-
     }
 
     override fun containsValue(value: Tile) = arr.any { it?.value == value }

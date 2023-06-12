@@ -4,14 +4,12 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents an object which has bounds and a position in 2D space. A [Boundable] object
  * can provide useful information about its geometry relating to other [Boundable]s
  * (like intersection).
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface Boundable : HasSize {
 
     /**
@@ -57,7 +55,6 @@ interface Boundable : HasSize {
 
     companion object {
 
-        @JvmStatic
         fun create(position: Position = Position.defaultPosition(), size: Size): Boundable {
             return DefaultMovable(size, position)
         }

@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.modifier.TextureTransformModifier
@@ -15,9 +14,8 @@ import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetType
-import kotlin.reflect.KClass
-import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmName
+import kotlin.reflect.KClass
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].
@@ -161,21 +159,20 @@ class AppConfig internal constructor(
 
     companion object {
 
-        @JvmStatic
         fun newBuilder() = AppConfigBuilder.newBuilder()
 
-        @JvmStatic
         fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
 
     }
 }
 
-@JvmName("filterTilesetFactoriesByType")
+@JvmName("filterTilesetsByType")
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(type: KClass<T>): Map<Pair<TileType, TilesetType>, TilesetFactory<T>> {
     return this.filterValues { it.targetType == type } as Map<Pair<TileType, TilesetType>, TilesetFactory<T>>
 }
 
+@JvmName("filterModifiersByType")
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> Map<KClass<out TextureTransformModifier>, ModifierSupport<*>>.filterByType(type: KClass<T>): Map<KClass<out TextureTransformModifier>, ModifierSupport<T>> {
     return this.filterValues { it.targetType == type } as Map<KClass<out TextureTransformModifier>, ModifierSupport<T>>

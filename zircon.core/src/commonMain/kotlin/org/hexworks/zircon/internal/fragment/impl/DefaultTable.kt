@@ -15,11 +15,8 @@ import org.hexworks.zircon.api.dsl.component.buildVbox
 import org.hexworks.zircon.api.dsl.component.hbox
 import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.fragment.Table
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
-import kotlin.jvm.Synchronized
 
 /**
  * The **internal** default implementation of [Table].
@@ -75,7 +72,6 @@ class DefaultTable<M : Any> internal constructor(
         data.onChange { reloadData() }
     }
 
-    @Synchronized
     private fun reloadData() {
         dataPanel.detachAllComponents()
         dataPanel.apply {
@@ -87,7 +83,6 @@ class DefaultTable<M : Any> internal constructor(
         }
     }
 
-    @Synchronized
     private fun newRowFor(model: M): Component {
         val cells: List<Component> = columns.map { column -> column.renderCellFor(model) }
         val rowHeight = cells.maxOf { it.height }
@@ -108,15 +103,14 @@ class DefaultTable<M : Any> internal constructor(
             if (phase == UIEventPhase.BUBBLE) {
                 selectedElements.clear()
                 selectedElements.add(model)
-                UIEventResponse.processed()
+                Processed
             } else {
-                UIEventResponse.pass()
+                Pass
             }
         }
         return row
     }
 
-    @Synchronized
     private fun VBoxBuilder.addHeaderRow(width: Int) = hbox {
         preferredSize = Size.create(width, 1)
         spacing = colSpacing

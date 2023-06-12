@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
- * Represents the contents of a [TileGraphics] at a given moment in time.
+ * Represents the *immutable* contents of a [TileGraphics] at a given moment in time.
  */
 interface TileGraphicsState {
 

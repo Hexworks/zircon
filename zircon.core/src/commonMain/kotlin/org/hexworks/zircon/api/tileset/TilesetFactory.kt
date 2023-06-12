@@ -7,6 +7,7 @@ import org.hexworks.zircon.internal.resource.TileType
 import kotlin.reflect.KClass
 import kotlin.jvm.JvmStatic
 
+// TODO: document this
 interface TilesetFactory<S : Any> {
 
     /**

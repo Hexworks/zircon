@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.component.data.ComponentState
  * - [ComponentState.DISABLED]
  * - [ComponentState.FOCUSED]
  * - [ComponentState.HIGHLIGHTED]
+ *
  * @see ComponentState and
  * @see ComponentStyleSet for more info
  */
@@ -61,12 +62,6 @@ interface ColorTheme {
 
     val isNotUnknown: Boolean
         get() = isUnknown.not()
-
-    @Deprecated(
-        message = "contains a typo, use toInteractiveStyle instead",
-        replaceWith = ReplaceWith("this.toInteractiveStyle()")
-    )
-    fun toInteractableStyle(): ComponentStyleSet = toInteractiveStyle()
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default

@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
 import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
-import kotlin.jvm.Synchronized
 
 /**
  * This is a fast implementation of [TileGraphics] that sacrifices memory footprint
@@ -35,24 +34,25 @@ class FastTileGraphics(
 
     override var tiles: ArrayBackedTileMap = ArrayBackedTileMap(initialSize, arr)
         private set
+
+    // 📙 Note that we needed this to have consistent snapshots back in the day when
+    // Java was supported, and we needed thread safety. This is no longer the case,
+    // but we kept this here because refactoring it wouldn't create value.
     override val state: TileGraphicsState
-        @Synchronized
         get() = DefaultTileGraphicsState(
             size = size,
             tileset = tileset,
-            tiles = tiles.createCopy()
+            tiles = tiles
         )
 
     fun contents() = tiles.contents()
 
-    @Synchronized
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {
             arr[drawPosition.index] = Entry(drawPosition, tile)
         }
     }
 
-    @Synchronized
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         tileMap.asSequence()
             .filter { drawArea.containsPosition(it.key) && size.containsPosition(it.key + drawPosition) }
@@ -66,20 +66,17 @@ class FastTileGraphics(
             }
     }
 
-    @Synchronized
     override fun draw(tileComposite: TileComposite) {
         if (tileComposite is FastTileGraphics && tileComposite.size == size) {
             tileComposite.arr.copyInto(arr)
         } else super.draw(tileComposite)
     }
 
-    @Synchronized
     override fun clear() {
         arr = arrayOfNulls(size.width * size.height)
         tiles = ArrayBackedTileMap(size, arr)
     }
 
-    @Synchronized
     override fun fill(filler: Tile) {
         if (filler.isNotEmpty) {
             for (i in arr.indices) {
@@ -90,7 +87,6 @@ class FastTileGraphics(
         }
     }
 
-    @Synchronized
     override fun transform(transformer: (Position, Tile) -> Tile) {
         size.fetchPositions().forEach { pos ->
             val tile = transformer(pos, arr[pos.index]?.value ?: Tile.empty())
@@ -111,5 +107,4 @@ class FastTileGraphics(
             val x = this - (y * size.width)
             return Position.create(x, y)
         }
-
 }

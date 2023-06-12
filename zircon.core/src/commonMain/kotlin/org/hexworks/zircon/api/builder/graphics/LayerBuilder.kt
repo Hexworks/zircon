@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.graphics.ThreadSafeLayer
+import org.hexworks.zircon.internal.graphics.DefaultLayer
 import kotlin.jvm.JvmStatic
 
 /**
@@ -81,12 +81,12 @@ class LayerBuilder private constructor(
     }
 
     override fun build(): Layer = tileGraphics?.let {
-        ThreadSafeLayer(
+        DefaultLayer(
             initialPosition = offset,
             initialContents = it
         )
     } ?: run {
-        ThreadSafeLayer(
+        DefaultLayer(
             initialPosition = offset,
             initialContents = TileGraphicsBuilder.newBuilder()
                 .withSize(size)

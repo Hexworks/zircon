@@ -19,7 +19,6 @@ import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import kotlin.jvm.Synchronized
 
 @Suppress("UNCHECKED_CAST")
 open class DefaultContainer(
@@ -36,7 +35,6 @@ open class DefaultContainer(
 
     private val attachments = mutableListOf<AttachedComponent>()
 
-    @Synchronized
     final override fun moveTo(position: Position): Boolean {
         val diff = position - this.position
         super.moveTo(position)
@@ -52,7 +50,6 @@ open class DefaultContainer(
      * doesn't make sense. If you really need to override this please call `super.addComponent`
      * and let Zircon do the heavy lifting for you.
      */
-    @Synchronized
     override fun addComponent(component: Component): InternalAttachedComponent {
         val ic = checkIfCanAdd(component)
         val parent = this
@@ -74,7 +71,6 @@ open class DefaultContainer(
     }
 
     // TODO: test detachment
-    @Synchronized
     override fun detachAllComponents() = attachments.toList().map { it.detach() }
 
     final override fun asInternalComponent(): InternalContainer = this
@@ -152,7 +148,6 @@ open class DefaultContainer(
                 .keepWhile(component.hasParent)
         }
 
-        @Synchronized
         override fun detach(): Component {
             val attachment = this
             component.parent = null

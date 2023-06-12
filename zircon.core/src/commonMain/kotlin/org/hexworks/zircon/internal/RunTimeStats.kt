@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal
 
 import org.hexworks.zircon.platform.util.SystemUtils
-import kotlin.jvm.Synchronized
 
 object RunTimeStats {
 
@@ -9,12 +8,10 @@ object RunTimeStats {
 
     fun getAllStats() = stats.values.toList()
 
-    @Synchronized
     fun printStatFor(key: String) {
         println("T: ${SystemUtils.getCurrentTimeMs()}, " + stats[key])
     }
 
-    @Synchronized
     fun <T> addTimedStatFor(key: String, fn: () -> T): T? {
         var result: T? = null
         val time = SystemUtils.measureNanoTime {
@@ -56,9 +53,9 @@ object RunTimeStats {
                 .div(measurements.size)
             val ms = avgTimeNs.toDouble() / 1000 / 1000
             return "Stats: name='$name', " +
-                "avgTimeMs=$ms, " +
-                "fps=${1000 / ms}, " +
-                "measurements=$measurementCount"
+                    "avgTimeMs=$ms, " +
+                    "fps=${1000 / ms}, " +
+                    "measurements=$measurementCount"
         }
     }
 }

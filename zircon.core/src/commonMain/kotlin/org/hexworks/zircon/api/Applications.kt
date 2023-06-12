@@ -6,13 +6,12 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.KorGEApplication
 import org.hexworks.zircon.api.application.NoOpApplication
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.dsl.tileset.buildTilesetFactory
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.internal.event.ZirconScope
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
 import org.hexworks.zircon.internal.renderer.impl.KorGERenderer
@@ -21,8 +20,6 @@ import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 import org.hexworks.zircon.internal.tileset.impl.korge.KorGECP437DrawSurface
 import org.hexworks.zircon.internal.tileset.impl.korge.KorGECP437Tileset
-import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
 
 object Applications {
 
@@ -35,8 +32,6 @@ object Applications {
      *
      * Also make sure that all the objects you pass use the same [AppConfig].
      */
-    @JvmStatic
-    @JvmOverloads
     fun startApplication(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
@@ -49,8 +44,6 @@ object Applications {
         renderer = renderer
     )
 
-    @JvmStatic
-    @JvmOverloads
     fun startTileGrid(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
@@ -66,8 +59,6 @@ object Applications {
      * Creating a [Renderer] without an [Application] is a **beta** feature. Feel free to report
      * a bug if it is not working [here](https://github.com/Hexworks/zircon/issues/new?assignees=&labels=&template=bug_report.md&title=).
      */
-    @JvmStatic
-    @JvmOverloads
     fun createRenderer(
         config: AppConfig = AppConfig.defaultConfiguration(),
         tileGrid: TileGrid = createTileGrid(config),
@@ -91,12 +82,10 @@ object Applications {
      * Creates a new [TileGrid] with a [NoOpApplication] implementation
      * (eg: no continuous rendering).
      */
-    @JvmStatic
-    @JvmOverloads
     fun createTileGrid(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
-    ): TileGrid = ThreadSafeTileGrid(config).apply {
+    ): TileGrid = DefaultTileGrid(config).apply {
         application = NoOpApplication(
             config = config,
             eventBus = eventBus,

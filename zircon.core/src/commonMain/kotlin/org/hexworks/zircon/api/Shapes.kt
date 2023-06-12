@@ -3,7 +3,6 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.shape.*
-import kotlin.jvm.JvmStatic
 
 /**
  * This object is a facade for the various [ShapeFactory] implementations.
@@ -19,7 +18,6 @@ object Shapes {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildFilledRectangle(
         topLeft: Position,
         size: Size
@@ -32,7 +30,6 @@ object Shapes {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildTriangle(
         p1: Position,
         p2: Position,
@@ -48,13 +45,11 @@ object Shapes {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildRectangle(
         topLeft: Position,
         size: Size
     ) = RectangleFactory.createShape(RectangleParameters(topLeft, size))
 
-    @JvmStatic
     fun buildLine(fromPoint: Position, toPoint: Position) = LineFactory.createShape(LineParameters(fromPoint, toPoint))
 
     /**
@@ -64,7 +59,6 @@ object Shapes {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [Shape.offsetToDefaultPosition] for more info!
      */
-    @JvmStatic
     fun buildFilledTriangle(
         p1: Position,
         p2: Position,

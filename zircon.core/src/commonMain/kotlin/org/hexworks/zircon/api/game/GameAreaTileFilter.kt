@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 
 
+// TODO: document this
 interface GameAreaTileFilter {
 
     fun transform(

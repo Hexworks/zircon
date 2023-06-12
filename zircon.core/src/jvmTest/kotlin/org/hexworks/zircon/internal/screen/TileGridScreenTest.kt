@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.Renderable
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -23,12 +23,12 @@ class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
     lateinit var tileset: TilesetResource
-    lateinit var grid: ThreadSafeTileGrid
+    lateinit var grid: DefaultTileGrid
 
     @Before
     fun setUp() {
         tileset = FONT
-        grid = ThreadSafeTileGrid(AppConfig.newBuilder()
+        grid = DefaultTileGrid(AppConfig.newBuilder()
             .withDefaultTileset(tileset)
             .withSize(SIZE)
             .build())

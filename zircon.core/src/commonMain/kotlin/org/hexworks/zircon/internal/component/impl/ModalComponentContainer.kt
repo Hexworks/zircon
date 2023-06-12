@@ -21,7 +21,6 @@ import org.hexworks.zircon.internal.component.renderer.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.graphics.Renderable
-import kotlin.jvm.Synchronized
 
 /**
  * This [InternalComponentContainer] implements the logic of using Modal containers.
@@ -64,7 +63,6 @@ class ModalComponentContainer(
 
     fun isMainContainerActive() = mainContainer.isActive.value
 
-    @Synchronized
     override fun dispatch(event: UIEvent): UIEventResponse {
         var lastIdx = containerStack.lastIndex
         logger.debug {
@@ -82,13 +80,11 @@ class ModalComponentContainer(
         return result
     }
 
-    @Synchronized
     override fun activate() {
         mainContainer.activate()
         updateIsActive()
     }
 
-    @Synchronized
     override fun deactivate() {
         containerStack.forEach {
             it.deactivate()
@@ -98,7 +94,6 @@ class ModalComponentContainer(
         updateIsActive()
     }
 
-    @Synchronized
     override fun addComponent(component: Component): AttachedComponent {
         return mainContainer.addComponent(component)
     }
@@ -107,7 +102,6 @@ class ModalComponentContainer(
         return mainContainer.detachAllComponents()
     }
 
-    @Synchronized
     fun addModal(modal: Modal<out ModalResult>) {
         val previousContainer = containerStack.fetchLast()
         previousContainer.deactivate()

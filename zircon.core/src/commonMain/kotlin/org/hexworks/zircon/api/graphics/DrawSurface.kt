@@ -34,7 +34,7 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      *                 the [Positions] will be offset with [drawPosition] when drawing
      * @param drawPosition the starting position of the drawing relative to the top left
      *                     corner of this [TileGraphics]. The default is [Positions.zero].
-     * @param drawArea the sub-section of the [tileMap] to which the [Tile]s should be drawn
+     * @param drawArea the subsection of the [tileMap] to which the [Tile]s should be drawn
      * Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1) and
      * [drawArea] is (2,2) the following positions will be overwritten: [(1,1), (2,1), (1,2), (2,2)]
      */
@@ -72,7 +72,7 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
     )
 
     /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
+     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be used as the [Map].
      */
     fun draw(
         tileComposite: TileComposite,

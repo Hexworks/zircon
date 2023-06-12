@@ -38,7 +38,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
     /**
      * Returns a copy of this [TileGraphics] resized to a new size and using
      * [Tile.empty] if the new size is larger than the old and
-     * it needs to fill in empty areas. The copy will be independent from the
+     * it needs to fill in empty areas. The copy will be independent of the
      * one this method is invoked on, so modifying one will not affect the other.
      */
     fun toResized(newSize: Size): TileGraphics
@@ -46,7 +46,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
     /**
      * Returns a copy of this image resized to a new size and using
      * the specified [filler] [Tile] if the new size is larger than the old one
-     * and we need to fill in empty areas. The copy will be independent from
+     * and we need to fill in empty areas. The copy will be independent of
      * the one this method is invoked on, so modifying one will not affect the other.
      */
     fun toResized(newSize: Size, filler: Tile): TileGraphics

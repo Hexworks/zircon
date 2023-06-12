@@ -28,7 +28,7 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
         get() = StyleSet.empty()
 
     override fun withName(name: String): GraphicalTile {
-        return Tile.createGraphicTile(
+        return Tile.createGraphicalTile(
             name = name,
             tags = tags,
             tileset = tileset
@@ -36,7 +36,7 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
     }
 
     override fun withTags(tags: Set<String>): GraphicalTile {
-        return Tile.createGraphicTile(
+        return Tile.createGraphicalTile(
             name = name,
             tags = tags,
             tileset = tileset

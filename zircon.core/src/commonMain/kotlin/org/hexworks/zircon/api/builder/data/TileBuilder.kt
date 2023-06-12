@@ -88,7 +88,6 @@ class TileBuilder private constructor(
         return DefaultCharacterTile(
             character = character,
             styleSet = styleSet,
-            tileset = tileset
         )
     }
 

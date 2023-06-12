@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
-import kotlin.jvm.JvmStatic
 
 /**
  * Represents style information which is handled by Zircon like
@@ -15,7 +14,6 @@ import kotlin.jvm.JvmStatic
  * - modifiers
  * and a set of useful operations on them.
  */
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface StyleSet : Cacheable, Copiable<StyleSet> {
 
     val foregroundColor: TileColor
@@ -78,7 +76,6 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * - default background color (black)
          * - no modifiers
          */
-        @JvmStatic
         fun defaultStyle() = DEFAULT_STYLE
 
         /**
@@ -87,13 +84,11 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * - and transparent background
          * - and no modifiers.
          */
-        @JvmStatic
         fun empty() = EMPTY
 
         /**
          * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.
          */
-        @JvmStatic
         fun newBuilder() = StyleSetBuilder.newBuilder()
 
         private val DEFAULT_STYLE = DefaultStyleSet(

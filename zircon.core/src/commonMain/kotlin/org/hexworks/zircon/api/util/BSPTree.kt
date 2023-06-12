@@ -5,7 +5,6 @@ import org.hexworks.cobalt.databinding.api.extension.fold
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import kotlin.jvm.JvmStatic
 import kotlin.random.Random
 
 class BSPTree(rec: Rect, var parent: BSPTree? = null) {
@@ -73,7 +72,6 @@ class BSPTree(rec: Rect, var parent: BSPTree? = null) {
     }
 
     companion object {
-        @JvmStatic
 
         var minSize = 6
 

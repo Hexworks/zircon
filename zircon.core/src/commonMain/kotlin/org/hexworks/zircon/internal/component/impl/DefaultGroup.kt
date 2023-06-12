@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
 import org.hexworks.zircon.internal.extensions.disposeAll
-import kotlin.jvm.Synchronized
 
 class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
@@ -34,7 +33,6 @@ class DefaultGroup<T : Component> internal constructor(
     override var theme: ColorTheme by themeProperty.asDelegate()
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
-    @Synchronized
     override fun addComponent(component: T): AttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."

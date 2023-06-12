@@ -15,15 +15,15 @@ import org.junit.Before
 import org.junit.Test
 
 @Suppress("TestFunctionName")
-class ThreadSafeLayerableTest {
+class DefaultLayerableTest {
 
-    lateinit var target: ThreadSafeLayerable
+    lateinit var target: DefaultLayerable
     lateinit var tileset: TilesetResource
 
     @Before
     fun setUp() {
         tileset = TILESET
-        target = ThreadSafeLayerable(SIZE)
+        target = DefaultLayerable(SIZE)
     }
 
     @Test

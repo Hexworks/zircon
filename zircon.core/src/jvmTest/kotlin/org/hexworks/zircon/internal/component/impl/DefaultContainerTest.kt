@@ -22,7 +22,7 @@ import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import org.hexworks.zircon.internal.grid.ThreadSafeTileGrid
+import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
@@ -65,7 +65,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                     .withDefaultTileset(TILESET_REX_PAINT_20X20)
                     .build()
             )
-            .build() as ThreadSafeTileGrid
+            .build() as DefaultTileGrid
 
         grid.application = ApplicationStub()
 
@@ -123,14 +123,14 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
-        val grid: ThreadSafeTileGrid = TileGridBuilder.newBuilder()
+        val grid: DefaultTileGrid = TileGridBuilder.newBuilder()
             .withConfig(
                 AppConfig.newBuilder()
                     .withSize(40, 25)
                     .withDefaultTileset(TILESET_REX_PAINT_20X20)
                     .build()
             )
-            .build() as ThreadSafeTileGrid
+            .build() as DefaultTileGrid
         grid.application = ApplicationStub()
 
         val screen = ScreenBuilder.createScreenFor(grid)

@@ -8,7 +8,6 @@ import org.hexworks.zircon.platform.util.SystemUtils
 data class FadeIn(
     private val steps: Int = 20,
     private val timeMs: Long = 2000,
-    private val glowOnFinalStep: Boolean = true
 ) : TileTransformModifier<CharacterTile>, Fade {
 
     override val cacheKey: String
@@ -29,12 +28,7 @@ data class FadeIn(
             lastRender = SystemUtils.getCurrentTimeMs()
             generateTile(tile)
         }
-        return if (currentStep == steps) {
-            if (glowOnFinalStep)
-                tile.withModifiers(Glow()).asCharacterTileOrNull()!!
-            else
-                tile
-        } else {
+        return if (currentStep == steps) tile else {
             val now = SystemUtils.getCurrentTimeMs()
             if (now - lastRender > delay) {
                 lastRender = now

@@ -9,18 +9,17 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
-import org.hexworks.zircon.internal.data.LayerState
 import org.junit.Before
 import org.junit.Test
 
 @Suppress("UsePropertyAccessSyntax", "TestFunctionName")
-class ThreadSafeLayerTest {
+class DefaultLayerTest {
 
-    lateinit var target: ThreadSafeLayer
+    lateinit var target: DefaultLayer
 
     @Before
     fun setUp() {
-        target = ThreadSafeLayer(
+        target = DefaultLayer(
             initialPosition = OFFSET,
             initialContents = EMPTY_TILE_IMAGE
         )

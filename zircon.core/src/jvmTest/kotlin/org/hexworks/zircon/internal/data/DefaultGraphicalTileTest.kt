@@ -17,14 +17,14 @@ class DefaultGraphicalTileTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.cacheKey).isEqualTo("GraphicTile(n=NAME,t=[BAR, FOO])")
     }
 
     @Test
     fun shouldProperlyCreateCopy() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.createCopy())
             .isEqualTo(target)
@@ -33,35 +33,35 @@ class DefaultGraphicalTileTest {
 
     @Test
     fun shouldProperlyReportTileType() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.tileType).isEqualTo(TileType.GRAPHICAL_TILE)
     }
 
     @Test
     fun shouldHaveTransparentFGColor() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.foregroundColor).isEqualTo(TileColor.transparent())
     }
 
     @Test
     fun shouldHaveTransparentBGColor() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.backgroundColor).isEqualTo(TileColor.transparent())
     }
 
     @Test
     fun shouldHaveNoModifiers() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.modifiers).isEmpty()
     }
 
     @Test
     fun shouldHaveTheEmptyStyleSet() {
-        val target: GraphicalTile = Tile.createGraphicTile(NAME, TAGS)
+        val target: GraphicalTile = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.styleSet).isSameAs(StyleSet.empty())
     }
@@ -69,24 +69,24 @@ class DefaultGraphicalTileTest {
     @Test
     fun shouldProperlyCreateCopyWithName() {
         val otherName = "baz"
-        val target = Tile.createGraphicTile(NAME, TAGS)
+        val target = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.withName(otherName))
-            .isEqualTo(Tile.createGraphicTile(otherName, TAGS))
+            .isEqualTo(Tile.createGraphicalTile(otherName, TAGS))
     }
 
     @Test
     fun shouldProperlyCreateCopyWithTags() {
         val otherTags = setOf("qux", "fux")
-        val target = Tile.createGraphicTile(NAME, TAGS)
+        val target = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.withTags(otherTags))
-            .isEqualTo(Tile.createGraphicTile(NAME, otherTags))
+            .isEqualTo(Tile.createGraphicalTile(NAME, otherTags))
     }
 
     @Test
     fun shouldReturnItselfForAllStyleCopiers() {
-        val target = Tile.createGraphicTile(NAME, TAGS)
+        val target = Tile.createGraphicalTile(NAME, TAGS)
 
         assertThat(target.withForegroundColor(YELLOW)).isSameAs(target)
         assertThat(target.withBackgroundColor(GREEN)).isSameAs(target)

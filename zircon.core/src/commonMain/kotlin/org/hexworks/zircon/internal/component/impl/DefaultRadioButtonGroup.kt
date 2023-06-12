@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
-import kotlin.jvm.Synchronized
 
 class DefaultRadioButtonGroup internal constructor(
     initialIsDisabled: Boolean,
@@ -34,7 +33,6 @@ class DefaultRadioButtonGroup internal constructor(
     override var selectedButtonProperty: Property<RadioButton?> = null.toProperty()
     override var selectedButton: RadioButton? by selectedButtonProperty.asDelegate()
 
-    @Synchronized
     override fun addComponent(component: RadioButton): AttachedComponent {
         require(component is InternalComponent) {
             "The supplied component does not implement required interface: InternalComponent."

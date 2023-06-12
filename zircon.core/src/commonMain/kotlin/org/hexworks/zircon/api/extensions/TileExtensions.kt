@@ -1,9 +1,6 @@
-@file:JvmName("TileUtils")
-
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.data.Tile
-import kotlin.jvm.JvmName
 
 fun List<Tile>.transform(tileTransformer: (Tile) -> Tile): List<Tile> {
     return this.map(tileTransformer::invoke)
