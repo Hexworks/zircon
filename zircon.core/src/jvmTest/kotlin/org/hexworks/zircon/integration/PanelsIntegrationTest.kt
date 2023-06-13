@@ -1,9 +1,8 @@
 package org.hexworks.zircon.integration
 
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentDecorations.halfBlock
 import org.hexworks.zircon.api.ComponentDecorations.shadow
+import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 
@@ -54,7 +53,7 @@ class PanelsIntegrationTest : ComponentIntegrationTestBase() {
 
         screen.addComponent(
             Components.panel()
-                .withDecorations(halfBlock(), shadow())
+                .withDecorations(shadow())
                 .withPreferredSize(18, 5)
                 .withPosition(21, 15)
         )

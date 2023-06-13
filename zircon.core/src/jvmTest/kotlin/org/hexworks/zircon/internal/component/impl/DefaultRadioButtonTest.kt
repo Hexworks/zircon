@@ -12,14 +12,13 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
-import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
-import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -33,7 +32,7 @@ import org.junit.Test
 class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadioButton>() {
 
     override lateinit var target: DefaultRadioButton
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -66,7 +65,9 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultRadioButtonRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build().toDrawWindow(
+            Rect.create(size = SIZE_20X1)
+        )
         target = DefaultRadioButton(
             componentMetadata = ComponentMetadata(
                 size = SIZE_20X1,
@@ -81,7 +82,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
             initialText = DefaultCheckBoxTest.TEXT,
             key = "key"
         )
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
     }
 
     @Test
@@ -132,7 +133,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     fun shouldProperlySelect() {
         target.isSelected = true
 
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
 
         assertThat(getButtonChar()).isEqualTo('O')
         assertThat(target.isSelected).isTrue()
@@ -196,7 +197,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         assertThat(target.componentState).isEqualTo(ComponentState.HIGHLIGHTED)
     }
 
-    private fun getButtonChar() = graphics.getTileAtOrNull(Position.create(1, 0))?.asCharacterTileOrNull()?.character
+    private fun getButtonChar() = drawWindow.getTileAtOrNull(Position.create(1, 0))?.asCharacterTileOrNull()?.character
 
     companion object {
         val SIZE_20X1 = Size.create(20, 1)

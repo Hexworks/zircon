@@ -3,36 +3,26 @@ package org.hexworks.zircon.api.graphics
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.fetchCharacters
 import org.junit.Before
 import org.junit.Test
 
-class SubTileGraphicsTest {
+class DrawWindowTest {
 
     private val backend = TileGraphicsBuilder.newBuilder()
         .withSize(BACKEND_SIZE_5X5)
         .build()
-    lateinit var target: TileGraphics
+    lateinit var target: DrawWindow
 
     @Before
     fun setUp() {
-        target = backend.toSubTileGraphics(BOUNDS_1TO1_3X3)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun shouldRestrictResize() {
-        target.toResized(Size.defaultGridSize())
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun shouldRestrictResizeWithFiller() {
-        target.toResized(Size.defaultGridSize(), Tile.empty())
+        target = backend.toDrawWindow(BOUNDS_1TO1_3X3)
     }
 
     @Test
@@ -81,7 +71,7 @@ class SubTileGraphicsTest {
         val subFiller = FILLER_UNDERSCORE.withCharacter('x')
 
         val result = target
-            .toSubTileGraphics(Rect.create(Position.offset1x1(), Size.create(2, 1)))
+            .toDrawWindow(Rect.create(Position.offset1x1(), Size.create(2, 1)))
         result.fill(subFiller)
 
         val chars = backend.size.fetchPositions().map {

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.game.impl
 
 import org.hexworks.zircon.api.data.*
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile
 import org.hexworks.zircon.internal.game.GameAreaRenderer
 import org.hexworks.zircon.internal.game.InternalGameArea
@@ -12,7 +12,7 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
 
     override fun render(
         gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
-        graphics: TileGraphics,
+        graphics: DrawWindow,
         fillerTile: Tile
     ) {
         val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state

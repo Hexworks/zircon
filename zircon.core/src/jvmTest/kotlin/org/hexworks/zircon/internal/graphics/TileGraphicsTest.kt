@@ -92,12 +92,12 @@ abstract class TileGraphicsTest {
     }
 
     @Test
-    fun When_creating_a_snapshot_Then_it_should_return_a_proper_snapshot() {
+    fun When_drawing_a_tile_Then_tiles_should_contain_it() {
         target.draw(FILLER, FILLED_POS)
 
         assertEquals(
             expected = mapOf(FILLED_POS to FILLER),
-            actual = target.state.tiles.toMap()
+            actual = target.tiles.toMap()
         )
 
     }
@@ -106,7 +106,7 @@ abstract class TileGraphicsTest {
     fun When_drawing_other_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = TileGraphicsBuilder.newBuilder()
             .withSize(Size.create(2, 2))
-            .buildPersistent()
+            .build()
             .apply {
                 fill(FILLER)
             }
@@ -142,7 +142,7 @@ abstract class TileGraphicsTest {
     fun When_drawing_overflowing_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = TileGraphicsBuilder.newBuilder()
             .withSize(Size.create(2, 2))
-            .buildPersistent()
+            .build()
             .apply {
                 fill(FILLER)
             }
@@ -222,7 +222,7 @@ abstract class TileGraphicsTest {
             .withForegroundColor(ANSITileColor.GREEN)
             .withBackgroundColor(ANSITileColor.YELLOW)
 
-        target.toSubTileGraphics(Rect.create(Position.offset1x1(), Size.one()))
+        target.toDrawWindow(Rect.create(Position.offset1x1(), Size.one()))
             .applyStyle(new)
 
         assertEquals(

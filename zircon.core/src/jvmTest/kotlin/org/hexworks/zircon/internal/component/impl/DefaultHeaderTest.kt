@@ -11,7 +11,8 @@ import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -24,7 +25,7 @@ import org.junit.Test
 class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
 
     override lateinit var target: DefaultHeader
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -39,7 +40,9 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultHeaderRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10_4).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10_4).build().toDrawWindow(
+            Rect.create(size = SIZE_10_4)
+        )
         target = DefaultHeader(
             componentMetadata = ComponentMetadata(
                 size = SIZE_10_4,
@@ -73,9 +76,9 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
     @Test
     fun shouldGenerateProperTiles() {
         rendererStub.clear()
-        rendererStub.render(graphics, ComponentRenderContext(target))
-        // Careful, the last line has a trailing space
-        assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
+        // 💀 Careful, the last line has a trailing space
+        assertThat(drawWindow.convertCharacterTilesToString()).isEqualTo(
             """
             Button
             text

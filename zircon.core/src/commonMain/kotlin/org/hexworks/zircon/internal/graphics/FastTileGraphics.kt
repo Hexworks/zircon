@@ -7,8 +7,6 @@ import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.data.DefaultTileGraphicsState
-import org.hexworks.zircon.internal.data.TileGraphicsState
 import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
 
 /**
@@ -25,6 +23,7 @@ class FastTileGraphics(
 ) {
 
     private var arr = arrayOfNulls<Map.Entry<Position, Tile>>(initialSize.width * initialSize.height)
+    private val positions = size.fetchPositions().toSet()
 
     init {
         for ((pos, tile) in initialTiles.entries) {
@@ -34,16 +33,6 @@ class FastTileGraphics(
 
     override var tiles: ArrayBackedTileMap = ArrayBackedTileMap(initialSize, arr)
         private set
-
-    // 📙 Note that we needed this to have consistent snapshots back in the day when
-    // Java was supported, and we needed thread safety. This is no longer the case,
-    // but we kept this here because refactoring it wouldn't create value.
-    override val state: TileGraphicsState
-        get() = DefaultTileGraphicsState(
-            size = size,
-            tileset = tileset,
-            tiles = tiles
-        )
 
     fun contents() = tiles.contents()
 
@@ -88,7 +77,7 @@ class FastTileGraphics(
     }
 
     override fun transform(transformer: (Position, Tile) -> Tile) {
-        size.fetchPositions().forEach { pos ->
+        positions.forEach { pos ->
             val tile = transformer(pos, arr[pos.index]?.value ?: Tile.empty())
             if (tile.isEmpty) {
                 arr[pos.index] = null

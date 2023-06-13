@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.shape.LineFactory
 
 data class ShadowDecorationRenderer(
@@ -24,16 +24,16 @@ data class ShadowDecorationRenderer(
         .withCharacter(shadowChar)
         .build()
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
-        val graphicsSize = tileGraphics.size
-        tileGraphics.draw(
+    override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
+        val graphicsSize = drawWindow.size
+        drawWindow.draw(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(graphicsSize.width - 1, 0)
             ).map { it to shadowTile }.toMap(),
             drawPosition = Position.create(1, graphicsSize.height - 1)
         )
-        tileGraphics.draw(
+        drawWindow.draw(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(0, graphicsSize.height - 1)

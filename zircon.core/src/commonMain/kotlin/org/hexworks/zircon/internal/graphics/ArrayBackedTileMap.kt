@@ -27,7 +27,7 @@ class ArrayBackedTileMap(
 
     override fun containsValue(value: Tile) = arr.any { it?.value == value }
 
-    override fun get(key: Position) = arr[key.index]?.value
+    override fun get(key: Position) = if (key.index >= 0 && key.index <= arr.lastIndex) arr[key.index]?.value else null
 
     override fun isEmpty() = arr.isEmpty()
 

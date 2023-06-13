@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.data.ComponentState
 import org.junit.Before
 import org.junit.Test
 

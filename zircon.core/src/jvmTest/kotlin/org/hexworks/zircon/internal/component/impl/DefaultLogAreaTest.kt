@@ -6,15 +6,15 @@ import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
@@ -26,7 +26,7 @@ import org.junit.Test
 class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     override lateinit var target: DefaultLogArea
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -54,7 +54,9 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     override fun setUp() {
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 1))
         rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_40x10).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_40x10).build().toDrawWindow(
+            Rect.create(size = SIZE_40x10)
+        )
         target = DefaultLogArea(
             componentMetadata = ComponentMetadata(
                 size = SIZE_40x10,

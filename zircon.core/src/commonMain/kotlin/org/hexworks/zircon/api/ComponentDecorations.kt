@@ -66,13 +66,6 @@ object ComponentDecorations {
     fun shadow(): ComponentDecorationRenderer = ShadowDecorationRenderer()
 
     /**
-     * Can be used to add a half box decoration (half-height "border") to a [Component].
-     */
-    fun halfBlock(
-        renderingMode: RenderingMode = NON_INTERACTIVE
-    ): ComponentDecorationRenderer = HalfBlockDecorationRenderer(renderingMode)
-
-    /**
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      * @param value the margin to add to all sides (top, right, bottom and left)
      */

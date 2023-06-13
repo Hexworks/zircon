@@ -12,21 +12,12 @@ import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_MOVED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
-import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_RELEASED
-import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.contracts.ExperimentalContracts
@@ -36,7 +27,8 @@ import kotlin.contracts.ExperimentalContracts
 class DefaultComponentContainerTest {
 
     lateinit var target: DefaultComponentContainer
-    lateinit var applicationStub: ApplicationStub
+
+    private lateinit var applicationStub: ApplicationStub
 
     @Before
     fun setUp() {

@@ -10,14 +10,13 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
-import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
-import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
@@ -31,7 +30,7 @@ import org.junit.Test
 class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox>() {
 
     override lateinit var target: DefaultCheckBox
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -70,7 +69,9 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultCheckBoxRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_20X1).build().toDrawWindow(
+            Rect.create(size = SIZE_20X1)
+        )
         target = DefaultCheckBox(
             componentMetadata = ComponentMetadata(
                 size = SIZE_20X1,
@@ -84,14 +85,14 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
             ),
             textProperty = TEXT.toProperty()
         )
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
     }
 
     @Test
     fun shouldProperlyAddCheckBoxText() {
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            assertThat(graphics.getTileAtOrNull(Position.create(i + offset, 0)))
+            assertThat(drawWindow.getTileAtOrNull(Position.create(i + offset, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(char)

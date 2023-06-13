@@ -7,13 +7,10 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Re
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.api.modifier.BorderPosition
-import org.hexworks.zircon.api.modifier.BorderPosition.BOTTOM
-import org.hexworks.zircon.api.modifier.BorderPosition.LEFT
-import org.hexworks.zircon.api.modifier.BorderPosition.RIGHT
-import org.hexworks.zircon.api.modifier.BorderPosition.TOP
+import org.hexworks.zircon.api.modifier.BorderPosition.*
 import org.hexworks.zircon.api.shape.LineFactory
 
 data class BorderDecorationRenderer(
@@ -25,7 +22,7 @@ data class BorderDecorationRenderer(
 
     override val occupiedSize = Size.create(0, 0)
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
 
         val color = context.fetchStyleFor(renderingMode).backgroundColor
 
@@ -33,7 +30,7 @@ data class BorderDecorationRenderer(
         val drawBottom = border.borderPositions.contains(BOTTOM)
         val drawLeft = border.borderPositions.contains(LEFT)
         val drawRight = border.borderPositions.contains(RIGHT)
-        val size = tileGraphics.size
+        val size = drawWindow.size
 
         val topLeftBorders = mutableSetOf<BorderPosition>()
         val topRightBorders = mutableSetOf<BorderPosition>()
@@ -63,8 +60,8 @@ data class BorderDecorationRenderer(
         val bottomRightPos = size.fetchBottomRightPosition()
 
         if (drawTop.or(drawLeft)) {
-            tileGraphics.getTileAtOrNull(topLeftPos)?.let { char: Tile ->
-                tileGraphics.draw(
+            drawWindow.getTileAtOrNull(topLeftPos)?.let { char: Tile ->
+                drawWindow.draw(
                     char
                         .withModifiers(
                             BorderBuilder.newBuilder()
@@ -77,8 +74,8 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawTop.or(drawRight)) {
-            tileGraphics.getTileAtOrNull(topRightPos)?.let { char ->
-                tileGraphics.draw(
+            drawWindow.getTileAtOrNull(topRightPos)?.let { char ->
+                drawWindow.draw(
                     char
                         .withModifiers(
                             BorderBuilder.newBuilder()
@@ -91,8 +88,8 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawLeft.or(drawBottom)) {
-            tileGraphics.getTileAtOrNull(bottomLeftPos)?.let { char ->
-                tileGraphics.draw(
+            drawWindow.getTileAtOrNull(bottomLeftPos)?.let { char ->
+                drawWindow.draw(
                     char
                         .withModifiers(
                             BorderBuilder.newBuilder()
@@ -105,8 +102,8 @@ data class BorderDecorationRenderer(
             }
         }
         if (drawRight.or(drawBottom)) {
-            tileGraphics.getTileAtOrNull(bottomRightPos)?.let { char ->
-                tileGraphics.draw(
+            drawWindow.getTileAtOrNull(bottomRightPos)?.let { char ->
+                drawWindow.draw(
                     char
                         .withModifiers(
                             BorderBuilder.newBuilder()
@@ -124,8 +121,8 @@ data class BorderDecorationRenderer(
                 horizontalLine.positions.forEach {
                     if (drawTop) {
                         val topOffset = it.withRelativeX(1)
-                        tileGraphics.getTileAtOrNull(topOffset)?.let { char ->
-                            tileGraphics.draw(
+                        drawWindow.getTileAtOrNull(topOffset)?.let { char ->
+                            drawWindow.draw(
                                 char
                                     .withModifiers(
                                         BorderBuilder.newBuilder()
@@ -140,8 +137,8 @@ data class BorderDecorationRenderer(
                     if (drawBottom) {
                         val bottomOffset = it.withRelativeX(1)
                             .withRelativeY(size.height - 1)
-                        tileGraphics.getTileAtOrNull(bottomOffset)?.let { char ->
-                            tileGraphics.draw(
+                        drawWindow.getTileAtOrNull(bottomOffset)?.let { char ->
+                            drawWindow.draw(
                                 char
                                     .withModifiers(
                                         BorderBuilder.newBuilder()
@@ -162,8 +159,8 @@ data class BorderDecorationRenderer(
                 verticalLine.positions.forEach {
                     if (drawLeft) {
                         val leftOffset = it.withRelativeY(1)
-                        tileGraphics.getTileAtOrNull(leftOffset)?.let { char ->
-                            tileGraphics.draw(
+                        drawWindow.getTileAtOrNull(leftOffset)?.let { char ->
+                            drawWindow.draw(
                                 char
                                     .withModifiers(
                                         BorderBuilder.newBuilder()
@@ -178,8 +175,8 @@ data class BorderDecorationRenderer(
                     if (drawRight) {
                         val rightOffset = it.withRelativeY(1)
                             .withRelativeX(size.width - 1)
-                        tileGraphics.getTileAtOrNull(rightOffset)?.let { char ->
-                            tileGraphics.draw(
+                        drawWindow.getTileAtOrNull(rightOffset)?.let { char ->
+                            drawWindow.draw(
                                 char
                                     .withModifiers(
                                         BorderBuilder.newBuilder()

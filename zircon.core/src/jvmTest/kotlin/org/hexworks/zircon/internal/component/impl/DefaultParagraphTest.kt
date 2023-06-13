@@ -11,8 +11,9 @@ import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
@@ -23,7 +24,7 @@ import org.junit.Test
 class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
 
     override lateinit var target: DefaultParagraph
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -38,7 +39,9 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultParagraphRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE).build().toDrawWindow(
+            Rect.create(size = SIZE)
+        )
         target = DefaultParagraph(
             componentMetadata = ComponentMetadata(
                 size = SIZE,

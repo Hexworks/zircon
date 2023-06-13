@@ -10,7 +10,8 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
@@ -21,7 +22,7 @@ import org.junit.Test
 class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
 
     override lateinit var target: DefaultLabel
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -36,7 +37,9 @@ class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultLabelRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build().toDrawWindow(
+            Rect.create(size = SIZE_3_4)
+        )
         target = DefaultLabel(
             componentMetadata = ComponentMetadata(
                 size = SIZE_3_4,

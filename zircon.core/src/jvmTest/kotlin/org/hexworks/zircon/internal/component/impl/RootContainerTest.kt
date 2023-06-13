@@ -10,8 +10,10 @@ import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
@@ -23,7 +25,7 @@ import org.junit.Test
 class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     override lateinit var target: RootContainer
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     private lateinit var applicationStub: ApplicationStub
 
@@ -41,7 +43,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     override fun setUp() {
         applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build().toDrawWindow(Rect.create(size = SIZE_3_4))
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
             metadata = ComponentMetadata(

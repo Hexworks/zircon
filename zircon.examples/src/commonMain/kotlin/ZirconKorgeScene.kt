@@ -225,8 +225,10 @@ open class ZirconKorgeScene(
                     if (!ktileset.ready) return@renderAllTiles
                     //println("-- ${ktileset.resource}")
 
-                    val flipX = tile.isHorizontalFlipped
-                    val flipY = tile.isVerticalFlipped
+//                    val flipX = tile.isHorizontalFlipped
+//                    val flipY = tile.isVerticalFlipped
+                    val flipX = false
+                    val flipY = false
                     val px = (pos.x * tileWidthF)
                     val py = (pos.y * tileHeightF)
 
@@ -416,24 +418,23 @@ open class ZirconKorgeScene(
         renderTile: (position: Position, tile: Tile, tileset: TilesetResource) -> Unit
     ) {
         val layers = fetchLayers()
-        val gridPositions = size.fetchPositions().toList()
+        val gridPositions = size.fetchPositions()
         val tiles = mutableListOf<Pair<Tile, TilesetResource>>()
         gridPositions.forEach { pos ->
             tiles@ for (i in layers.size - 1 downTo 0) {
                 val (layerPos, layer) = layers[i]
-                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: emptyList()
+                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
                 for (j in toRender.size - 1 downTo 0) {
                     val tile = toRender[j]
                     val tileset = tile.finalTileset(layer)
                     tiles.add(0, tile to tileset)
-                    if (tile.isOpaque) break@tiles
+                    if (tile.isOpaque) {
+                        break@tiles
+                    }
                 }
             }
-
-            var idx = 1
             for ((tile, tileset) in tiles) {
                 renderTile(pos, tile, tileset)
-                idx++
             }
             tiles.clear()
         }

@@ -6,10 +6,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Re
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 @Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 data class MarginDecorationRenderer(
     val top: Int,
     val right: Int,
@@ -22,6 +21,6 @@ data class MarginDecorationRenderer(
 
     override val occupiedSize = Size.create(left + right, top + bottom)
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
     }
 }

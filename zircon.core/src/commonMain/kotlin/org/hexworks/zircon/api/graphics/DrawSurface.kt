@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.data.Tile
 interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
     /**
-     * Draws the given [Tile] on this [TileGraphics] at the given [drawPosition].
+     * Draws the given [Tile] on this [DrawSurface] at the given [drawPosition].
      * Drawing the empty tile ([Tile.empty]) will result in the deletion of the
      * [Tile] at [drawPosition].
      */
@@ -28,15 +28,16 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
     )
 
     /**
-     * Draws the given [tileMap] onto this [TileGraphics]. If the [tileMap] has [Tile]s
-     * which are not contained within the [size] of this [TileGraphics] they will be ignored.
+     * Draws the given [tileMap] onto this [DrawSurface]. If the [tileMap] has [Tile]s
+     * which are not contained within the [size] of this [DrawSurface] they will be ignored.
      * @param tileMap [Position] -> [Tile] mappings which contains the [Tile]s to draw.
-     *                 the [Positions] will be offset with [drawPosition] when drawing
+     *                the [Positions] will be offset with [drawPosition] when drawing
      * @param drawPosition the starting position of the drawing relative to the top left
-     *                     corner of this [TileGraphics]. The default is [Positions.zero].
+     *                     corner of this [DrawSurface]. The default is [Positions.zero].
      * @param drawArea the subsection of the [tileMap] to which the [Tile]s should be drawn
-     * Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1) and
-     * [drawArea] is (2,2) the following positions will be overwritten: [(1,1), (2,1), (1,2), (2,2)]
+     *                 Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1)
+     *                 and [drawArea] is (2,2) the following positions will be overwritten:
+     *                 [(1,1), (2,1), (1,2), (2,2)]
      */
     fun draw(
         tileMap: Map<Position, Tile>,
@@ -81,7 +82,7 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
     )
 
     /**
-     * Transforms all of the [Tile]s in this [TileGraphics] with the given
+     * Transforms all of the [Tile]s in this [DrawSurface] with the given
      * [transformer] and overwrites them with the results of calling
      * [transformer].
      */
@@ -89,14 +90,14 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
     /**
      * Applies the given [styleSet] to all currently present [Tile]s in this
-     * [TileGraphics].
+     * [DrawSurface].
      * If you want to apply a style to a subset only take a look at
-     * [TileGraphics.toSubTileGraphics].
+     * [TileGraphics.toDrawWindow].
      */
     fun applyStyle(styleSet: StyleSet)
 
     /**
-     * Fills the empty parts of this [TileGraphics] with the given [filler] [Tile].
+     * Fills the empty parts of this [DrawSurface] with the given [filler] [Tile].
      * A [Position] is considered empty if there is no [Tile] in it.
      */
     fun fill(filler: Tile)

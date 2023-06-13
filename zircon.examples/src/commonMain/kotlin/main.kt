@@ -3,12 +3,16 @@ import korlibs.korge.KorgeDisplayMode
 import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
 import org.hexworks.zircon.api.*
+import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.component.ComponentAlignment
+import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.dsl.component.*
+import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.SimpleModifiers
@@ -20,10 +24,7 @@ import kotlin.random.Random
 
 const val SCREEN_WIDTH = 1920
 const val SCREEN_HEIGHT = 1080
-//const val SCREEN_WIDTH = 1280
-//const val SCREEN_HEIGHT = 720
-const val TILE_SIZE = 8
-//const val TILE_SIZE = 16
+const val TILE_SIZE = 20
 const val GRID_WIDTH = SCREEN_WIDTH.div(TILE_SIZE)
 const val GRID_HEIGHT = SCREEN_HEIGHT.div(TILE_SIZE)
 val TILESET = BuiltInCP437TilesetResource.values().first { it.width == TILE_SIZE && it.tilesetName == "rex_paint" }
@@ -39,7 +40,8 @@ suspend fun main() = Korge(
 
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame2)
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame)
-class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
+class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconGame3)
+//class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconBenchmark)
 //class MyScene : ZirconKorgeScene(GAME_SIZE, ::zirconImageDictionaryTilesetResources)
 
 fun zirconImageDictionaryTilesetResources(app: Application, screen: Screen) {
@@ -47,33 +49,7 @@ fun zirconImageDictionaryTilesetResources(app: Application, screen: Screen) {
 
 fun zirconBenchmark(app: Application, screen: Screen) {
     var BENCHMARK_CURR_IDX = 0
-
     val BENCHMARK_RANDOM = Random(13513516895)
-
-    val BENCHMARK_LAYER_WIDTH = GRID_WIDTH.div(2)
-    val BENCHMARK_LAYER_HEIGHT = GRID_HEIGHT.div(2)
-    val BENCHMARK_LAYER_COUNT = 20
-    val BENCHMARK_LAYER_SIZE = org.hexworks.zircon.api.data.Size.create(BENCHMARK_LAYER_WIDTH, BENCHMARK_LAYER_HEIGHT)
-    val BENCHMARK_FILLER = Tile.defaultTile().withCharacter('x')
-
-    val BENCHMARK_LAYERS = (0..BENCHMARK_LAYER_COUNT).map {
-        val imageLayer = DrawSurfaces.tileGraphicsBuilder()
-            .withSize(BENCHMARK_LAYER_SIZE)
-            .withTileset(CP437TilesetResources.rexPaint16x16())
-            .build()
-        BENCHMARK_LAYER_SIZE.fetchPositions().forEach {
-            imageLayer.draw(BENCHMARK_FILLER, it)
-        }
-        LayerBuilder.newBuilder()
-            .withOffset(
-                Position.create(
-                    x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
-                    y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
-                )
-            )
-            .withTileGraphics(imageLayer)
-            .build()
-    }
 
     fun ANSITileColor.Companion.random(): ANSITileColor =
         ANSITileColor.values()[BENCHMARK_RANDOM.nextInt(0, ANSITileColor.values().size)]
@@ -91,18 +67,68 @@ fun zirconBenchmark(app: Application, screen: Screen) {
                 )
             }
         }
-
-        BENCHMARK_LAYERS.forEach {
-            it.asInternalLayer().moveTo(
-                Position.create(
-                    x = BENCHMARK_RANDOM.nextInt(GRID_WIDTH - BENCHMARK_LAYER_WIDTH),
-                    y = BENCHMARK_RANDOM.nextInt(GRID_HEIGHT - BENCHMARK_LAYER_HEIGHT)
-                )
-            )
-        }
         BENCHMARK_CURR_IDX = if (BENCHMARK_CURR_IDX == 0) 1 else 0
         screen.display()
     }
+
+    screen.theme = ColorThemes.defaultTheme()
+
+    val box = Components.vbox().withPreferredSize(screen.width / 2, screen.height / 2).build()
+
+    build(box)
+
+    screen.addComponent(box)
+}
+
+fun build(box: VBox) {
+    println("box size: ${box.size}")
+    val contentWidth = 46
+    val table = Components.vbox()
+        .withPreferredSize(contentWidth + 2, 20)
+        .withAlignmentWithin(box, ComponentAlignment.CENTER)
+        .withDecorations(ComponentDecorations.box(BoxType.SINGLE, "Crew"))
+        .build()
+    val headerRow = Components.hbox()
+        .withPreferredSize(contentWidth, 1)
+        .build()
+    headerRow.addComponent(Components.header().withText("#").withPreferredSize(4, 1))
+    headerRow.addComponent(Components.header().withText("First Name").withPreferredSize(12, 1))
+    headerRow.addComponent(Components.header().withText("Last Name").withPreferredSize(12, 1))
+    headerRow.addComponent(Components.header().withText("Job").withPreferredSize(12, 1))
+    val samLawrey = Components.hbox()
+        .withPreferredSize(contentWidth, 1)
+        .build()
+    samLawrey.addComponent(Components.label().withText("0").withPreferredSize(4, 1))
+    samLawrey.addComponent(Components.label().withText("Sam").withPreferredSize(12, 1))
+    samLawrey.addComponent(Components.label().withText("Lawrey").withPreferredSize(12, 1))
+    samLawrey.addComponent(Components.label().withText("Stoneworker").withPreferredSize(12, 1))
+    val janeFisher = Components.hbox()
+        .withPreferredSize(contentWidth, 1)
+        .build()
+    janeFisher.addComponent(Components.label().withText("1").withPreferredSize(4, 1))
+    janeFisher.addComponent(Components.label().withText("Jane").withPreferredSize(12, 1))
+    janeFisher.addComponent(Components.label().withText("Fisher").withPreferredSize(12, 1))
+    janeFisher.addComponent(Components.label().withText("Woodcutter").withPreferredSize(12, 1))
+    val johnSmith = Components.hbox()
+        .withPreferredSize(contentWidth, 1)
+        .build()
+    johnSmith.addComponent(Components.label().withText("2").withPreferredSize(4, 1))
+    johnSmith.addComponent(Components.label().withText("John").withPreferredSize(12, 1))
+    johnSmith.addComponent(Components.label().withText("Smith").withPreferredSize(12, 1))
+    johnSmith.addComponent(Components.label().withText("Mason").withPreferredSize(12, 1))
+    val steveThrush = Components.hbox()
+        .withPreferredSize(contentWidth, 1)
+        .build()
+    steveThrush.addComponent(Components.label().withText("3").withPreferredSize(4, 1))
+    steveThrush.addComponent(Components.label().withText("Steve").withPreferredSize(12, 1))
+    steveThrush.addComponent(Components.label().withText("Thrush").withPreferredSize(12, 1))
+    steveThrush.addComponent(Components.label().withText("Farmer").withPreferredSize(12, 1))
+    table.addComponent(headerRow)
+    table.addComponent(samLawrey)
+    table.addComponent(janeFisher)
+    table.addComponent(johnSmith)
+    table.addComponent(steveThrush)
+    box.addComponent(table)
 }
 
 fun zirconGame2(app: Application, screen: Screen) {
@@ -164,7 +190,8 @@ fun zirconGame2(app: Application, screen: Screen) {
         }
     }
 
-    val imageDictionary = ImageDictionaryTilesetResources.loadTilesetFromFilesystem("../zircon.jvm.examples/src/main/resources/image_dictionary")
+    val imageDictionary =
+        ImageDictionaryTilesetResources.loadTilesetFromFilesystem("../zircon.jvm.examples/src/main/resources/image_dictionary")
 
     val imageTile = Tile.newBuilder()
         .withTileset(imageDictionary)
@@ -172,8 +199,8 @@ fun zirconGame2(app: Application, screen: Screen) {
         .buildImageTile()
     screen.draw(imageTile, Position.create(10, 10))
 
-    val ttf1 = TrueTypeFontResources.amstrad(16)
-    val ttf2 = TrueTypeFontResources.vtech(16)
+    val ttf1 = TrueTypeFontResources.amstrad(TILE_SIZE)
+    val ttf2 = TrueTypeFontResources.vtech(TILE_SIZE)
 
     screen.drawText(
         "HELLO WORLD!\nfrom amstrad!",
@@ -208,11 +235,12 @@ fun DrawSurface.drawText(
             pos = Position.create(drawPosition.x, pos.y + 1)
             continue
         }
-        draw(Tile.newBuilder()
-            .withTileset(tileSet)
-            .withCharacter(c)
-            .withStyleSet(styleSet)
-            .buildCharacterTile(), pos
+        draw(
+            Tile.newBuilder()
+                .withTileset(tileSet)
+                .withCharacter(c)
+                .withStyleSet(styleSet)
+                .buildCharacterTile(), pos
         )
         pos = Position.create(pos.x + 1, pos.y)
     }
@@ -221,35 +249,50 @@ fun DrawSurface.drawText(
 fun zirconGame(app: Application, screen: Screen) {
     screen.apply {
         display()
-//        addComponent(buildHbox {
-//
-//            spacing = 1
-//            decorations = listOf(margin(1))
-//
-//            vbox {
-//                header {
-//                    +"Hello, KorGE!"
-//                }
-//                paragraph {
-//                    +"This is a paragraph"
-//                }
-//                button {
-//                    +"Yep"
-//                }
-//            }
-//
-//            vbox {
-//                header {
-//                    +"Another box"
-//                }
-//                paragraph {
-//                    +"This is a paragraph"
-//                }
-//                button {
-//                    +"Nope"
-//                }
-//            }
-//
-//        })
+        addComponent(buildHbox {
+
+            spacing = 1
+            decorations = listOf(margin(1))
+
+            vbox {
+                header {
+                    +"Hello, KorGE!"
+                }
+                paragraph {
+                    +"This is a paragraph"
+                }
+                button {
+                    +"Yep"
+                }
+            }
+
+            vbox {
+                header {
+                    +"Another box"
+                }
+                paragraph {
+                    +"This is a paragraph"
+                }
+                button {
+                    +"Nope"
+                }
+            }
+
+        })
+    }
+}
+
+fun zirconGame3(app: Application, screen: Screen) {
+    screen.apply {
+        display()
+        addComponents(buildParagraph {
+            +"a"
+        }, buildParagraph {
+            position = Position.create(1, 0)
+            +"b"
+        }, buildParagraph {
+            position = Position.create(2, 0)
+            +"c"
+        })
     }
 }

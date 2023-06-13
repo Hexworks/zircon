@@ -9,12 +9,10 @@ import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
-import org.hexworks.zircon.api.component.renderer.isRight
-import org.hexworks.zircon.api.component.renderer.isTop
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 data class BoxDecorationRenderer(
     val boxType: BoxType = BoxType.SINGLE,
@@ -29,13 +27,13 @@ data class BoxDecorationRenderer(
 
     val title: String by titleProperty.asDelegate()
 
-    override fun render(tileGraphics: TileGraphics, context: ComponentDecorationRenderContext) {
+    override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
         val finalTitle = if (context.component is TitleOverride) {
             context.component.title
         } else titleProperty.value
-        val size = tileGraphics.size
+        val size = drawWindow.size
         val style = context.fetchStyleFor(renderingMode)
-        tileGraphics.draw(
+        drawWindow.draw(
             BoxBuilder.newBuilder()
                 .withBoxType(boxType)
                 .withSize(size)
@@ -61,7 +59,7 @@ data class BoxDecorationRenderer(
                     titleAlignment.isBottom() -> size.height - 1
                     else -> throw IllegalStateException("unreachable")
                 }
-                tileGraphics.draw(
+                drawWindow.draw(
                     TileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorLeft)
@@ -69,7 +67,7 @@ data class BoxDecorationRenderer(
                 )
                 val pos = Position.create(2 + titleOffsetX, titleOffsetY)
                 (cleanText.indices).forEach { idx ->
-                    tileGraphics.draw(
+                    drawWindow.draw(
                         tile = TileBuilder.newBuilder()
                             .withStyleSet(style)
                             .withCharacter(cleanText[idx])
@@ -77,7 +75,7 @@ data class BoxDecorationRenderer(
                         drawPosition = pos.withRelativeX(idx)
                     )
                 }
-                tileGraphics.draw(
+                drawWindow.draw(
                     tile = TileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorRight)

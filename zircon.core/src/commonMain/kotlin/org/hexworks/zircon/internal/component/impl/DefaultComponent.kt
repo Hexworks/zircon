@@ -137,6 +137,11 @@ abstract class DefaultComponent(
         }
     }
 
+    val tg = FastTileGraphics(
+        initialSize = size,
+        initialTileset = tileset
+    )
+
     // TODO: 💡 optimize this by doing a render whenever the component changes
     override fun render(): TileGraphics {
         val tg = FastTileGraphics(

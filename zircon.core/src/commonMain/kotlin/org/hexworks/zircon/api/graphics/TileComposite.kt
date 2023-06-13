@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.Tile
 interface TileComposite : HasSize {
 
     /**
-     * The [Tile]s this [TileComposite] contains.
+     * Represents the tiles in this [TileComposite] as a [Map].
      */
     val tiles: Map<Position, Tile>
 

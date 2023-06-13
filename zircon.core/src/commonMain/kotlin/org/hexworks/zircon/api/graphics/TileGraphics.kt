@@ -5,11 +5,12 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 /**
  * A [TileGraphics] enhances the [DrawSurface] interface with factory functions
  * for creating derived objects such as:
- * - [toSubTileGraphics]
+ * - [toDrawWindow]
  * - [toLayer]
  * - [toResized]
  * - [toTileImage]
@@ -24,7 +25,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toSubTileGraphics(rect: Rect): TileGraphics
+    fun toDrawWindow(rect: Rect): DrawWindow
 
     /**
      * Creates a **new** [Layer] from the contents of this [TileGraphics].
@@ -45,7 +46,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
 
     /**
      * Returns a copy of this image resized to a new size and using
-     * the specified [filler] [Tile] if the new size is larger than the old one
+     * the specified [filler] [Tile] if the new size is larger than the old one,
      * and we need to fill in empty areas. The copy will be independent of
      * the one this method is invoked on, so modifying one will not affect the other.
      */

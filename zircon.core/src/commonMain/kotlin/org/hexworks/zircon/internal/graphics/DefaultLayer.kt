@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 
 open class DefaultLayer internal constructor(
@@ -133,7 +133,7 @@ open class DefaultLayer internal constructor(
 
     final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
 
-    final override fun toSubTileGraphics(rect: Rect) = SubTileGraphics(rect, backend)
+    final override fun toDrawWindow(rect: Rect) = DrawWindow(rect, backend)
 
     override fun toString(): String {
         return DrawSurfaces.tileGraphicsBuilder().withSize(size).withTiles(tiles).build().toString()

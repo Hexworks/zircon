@@ -19,6 +19,7 @@ fun Iterable<Pair<Position, Tile>>.toTileImage(size: Size, tileset: TilesetResou
 
 /**
  * Transforms the given [Map] to a [TileImage] with the given [size] and [tileset].
+ * The [Map] will be used to back the [TileImage].
  */
 fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileImage {
     require(keys.none { it.hasNegativeComponent }) {
@@ -41,6 +42,7 @@ fun Iterable<Pair<Position, Tile>>.toTileComposite(size: Size): TileComposite {
 
 /**
  * Transforms the given [Map] to a [TileComposite] with the given [size].
+ * The [Map] will be used to back the [TileComposite].
  */
 fun Map<Position, Tile>.toTileComposite(size: Size): TileComposite {
     require(keys.none { it.hasNegativeComponent }) {
@@ -62,6 +64,7 @@ fun Iterable<Pair<Position, Tile>>.toTileGraphics(size: Size, tileset: TilesetRe
 
 /**
  * Transforms the given [Map] to a [TileGraphics] with the given [size] and [tileset].
+ * The [Map] will be used to back the [TileGraphics].
  */
 fun Map<Position, Tile>.toTileGraphics(size: Size, tileset: TilesetResource): TileGraphics {
     require(keys.none { it.hasNegativeComponent }) {

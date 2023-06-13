@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.builder.graphics
 
-import kotlinx.collections.immutable.toPersistentMap
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -10,7 +9,6 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
-import org.hexworks.zircon.internal.graphics.PersistentTileGraphics
 import kotlin.jvm.JvmStatic
 
 /**
@@ -89,17 +87,6 @@ class TileGraphicsBuilder private constructor(
         tiles = tiles.toMutableMap(),
         filler = filler
     )
-
-    /**
-     * Builds a [PersistentTileGraphics] implementation.
-     */
-    fun buildPersistent(): PersistentTileGraphics = PersistentTileGraphics(
-        initialSize = size,
-        initialTileset = tileset,
-        initialTiles = tiles.toPersistentMap()
-    ).apply {
-        if (hasToFill()) fill(filler)
-    }
 
     private fun hasToFill() = filler != Tile.empty()
 

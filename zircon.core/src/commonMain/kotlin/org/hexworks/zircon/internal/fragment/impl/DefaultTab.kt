@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 class DefaultTab internal constructor(
@@ -71,7 +72,7 @@ class DefaultTab internal constructor(
         tabButton.isSelected = false
     }
 
-    private fun TileGraphics.drawText(
+    private fun DrawWindow.drawText(
         text: String,
         style: StyleSet,
         position: Position = Position.defaultPosition()

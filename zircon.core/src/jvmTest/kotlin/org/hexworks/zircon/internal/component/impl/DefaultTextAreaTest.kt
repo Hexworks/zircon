@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
@@ -13,16 +12,15 @@ import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
-import org.hexworks.zircon.internal.event.ZirconEvent
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +29,7 @@ import org.junit.Test
 class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -59,7 +57,9 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultTextAreaRenderer())
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(COMMON_COMPONENT_METADATA.size).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(COMMON_COMPONENT_METADATA.size).build().toDrawWindow(
+            Rect.create(size = COMMON_COMPONENT_METADATA.size)
+        )
         target = DefaultTextArea(
             componentMetadata = COMMON_COMPONENT_METADATA,
             renderingStrategy = DefaultComponentRenderingStrategy(
@@ -67,7 +67,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
             ),
             initialText = TEXT
         )
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
     }
 
     @Test
@@ -219,8 +219,8 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     @Test
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
-        rendererStub.render(graphics, ComponentRenderContext(target))
-        val character = graphics.getTileAtOrNull(Position.defaultPosition())
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
+        val character = drawWindow.getTileAtOrNull(Position.defaultPosition())
 
         assertThat(character?.asCharacterTileOrNull()?.character)
             .isEqualTo(UPDATE_TEXT)

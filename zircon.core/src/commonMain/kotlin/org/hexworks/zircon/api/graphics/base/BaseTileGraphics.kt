@@ -10,8 +10,11 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toTileGraphics
 import org.hexworks.zircon.api.extensions.toTileImage
-import org.hexworks.zircon.api.graphics.*
-import org.hexworks.zircon.api.graphics.impl.SubTileGraphics
+import org.hexworks.zircon.api.graphics.Layer
+import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.graphics.TileComposite
+import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 
@@ -86,19 +89,14 @@ abstract class BaseTileGraphics(
         }.trim()
     }
 
-    override fun toSubTileGraphics(
+    override fun toDrawWindow(
         rect: Rect
-    ): SubTileGraphics {
-        return SubTileGraphics(
-            rect = rect,
-            backend = this
-        )
-    }
+    ) = DrawWindow(
+        rect = rect,
+        backend = this
+    )
 
-    override fun toTileImage(): TileImage {
-        val (tiles, tileset, size) = state
-        return tiles.toTileImage(size, tileset)
-    }
+    override fun toTileImage() = tiles.toTileImage(size, tileset)
 
     override fun toLayer(offset: Position): Layer {
         return if (this is Layer) this else LayerBuilder.newBuilder()
@@ -110,13 +108,13 @@ abstract class BaseTileGraphics(
     override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())
 
     override fun toResized(newSize: Size, filler: Tile): TileGraphics {
-        val (tiles, tileset) = state
         val newTiles = mutableMapOf<Position, Tile>()
+        val positions = newSize.fetchPositions().toSet()
         tiles.forEach { (pos, tile) ->
-            if (newSize.containsPosition(pos)) newTiles[pos] = tile
+            if (positions.contains(pos)) newTiles[pos] = tile
         }
         if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size.fetchPositions()).forEach { pos ->
+            positions.subtract(size.fetchPositions().toSet()).forEach { pos ->
                 newTiles[pos] = filler
             }
         }
@@ -124,17 +122,7 @@ abstract class BaseTileGraphics(
     }
 
     override fun createCopy(): TileGraphics {
-        val (tiles, tileset, size) = state
-        return tiles.toTileGraphics(size, tileset)
-    }
-
-    override fun transform(transformer: (Position, Tile) -> Tile) {
-        val (tiles, _, size) = state
-        val newTiles = mutableMapOf<Position, Tile>()
-        size.fetchPositions().forEach { pos ->
-            newTiles[pos] = transformer(pos, tiles.getOrElse(pos) { Tile.empty() })
-        }
-        draw(newTiles)
+        return tiles.toMutableMap().toTileGraphics(size, tileset)
     }
 
     override fun applyStyle(styleSet: StyleSet) {

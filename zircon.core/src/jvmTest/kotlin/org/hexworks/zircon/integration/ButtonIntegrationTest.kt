@@ -1,13 +1,12 @@
 package org.hexworks.zircon.integration
 
+import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
+import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.shadow
+import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentDecorations.halfBlock
-import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
-import org.hexworks.zircon.api.ComponentDecorations.shadow
-import org.hexworks.zircon.api.ComponentDecorations.side
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 
@@ -36,12 +35,8 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
             .withPreferredSize(Size.create(10, 4))
         val overTheTopBtn = Components.button()
             .withText("Over the top button")
-            .withDecorations(box(boxType = BoxType.DOUBLE), halfBlock(), shadow())
+            .withDecorations(box(boxType = BoxType.DOUBLE), shadow())
             .withAlignment(positionalAlignment(1, 14))
-        val halfBlockBtn = Components.button()
-            .withText("Half block button")
-            .withDecorations(halfBlock(), shadow())
-            .withAlignment(positionalAlignment(Position.create(1, 23)))
 
 
         screen.addComponent(simpleBtn)
@@ -55,9 +50,6 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
 
         screen.addComponent(overTheTopBtn)
         panel.addComponent(overTheTopBtn.withPosition(Position.create(1, 12)).build())
-
-        screen.addComponent(halfBlockBtn)
-        panel.addComponent(halfBlockBtn.withPosition(Position.create(1, 21)).build())
     }
 
 }

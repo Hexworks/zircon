@@ -13,16 +13,17 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.junit.Before
 import org.junit.Test
 
@@ -30,7 +31,7 @@ import org.junit.Test
 class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() {
 
     override lateinit var target: DefaultButton
-    override lateinit var graphics: TileGraphics
+    override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSetBuilder.newBuilder()
@@ -69,7 +70,9 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultButtonRenderer())
-        graphics = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build()
+        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_15X1).build().toDrawWindow(
+            Rect.create(size = SIZE_15X1)
+        )
         target = DefaultButton(
             componentMetadata = ComponentMetadata(
                 size = SIZE_15X1,
@@ -83,14 +86,14 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
             ),
             textProperty = TEXT.toProperty()
         )
-        rendererStub.render(graphics, ComponentRenderContext(target))
+        rendererStub.render(drawWindow, ComponentRenderContext(target))
     }
 
     @Test
     fun shouldProperlyAddButtonText() {
         TEXT.forEachIndexed { i, char ->
             println("idx: $i")
-            assertThat(graphics.getTileAtOrNull(Position.create(i, 0)))
+            assertThat(drawWindow.getTileAtOrNull(Position.create(i, 0)))
                 .isEqualTo(
                     TileBuilder.newBuilder()
                         .withCharacter(char)
