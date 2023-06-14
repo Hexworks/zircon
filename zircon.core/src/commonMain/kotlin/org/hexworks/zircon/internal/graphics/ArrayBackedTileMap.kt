@@ -21,13 +21,11 @@ class ArrayBackedTileMap(
     override val values: Collection<Tile>
         get() = arr.asSequence().filterNotNull().map { it.value }.toList()
 
-    override fun containsKey(key: Position) = key.index.let { idx ->
-        if (idx > arr.lastIndex) false else arr[key.index] != null
-    }
+    override fun containsKey(key: Position) = dimensions.containsPosition(key)
 
     override fun containsValue(value: Tile) = arr.any { it?.value == value }
 
-    override fun get(key: Position) = if (key.index >= 0 && key.index <= arr.lastIndex) arr[key.index]?.value else null
+    override fun get(key: Position) = if (dimensions.containsPosition(key)) arr[key.index]?.value else null
 
     override fun isEmpty() = arr.isEmpty()
 

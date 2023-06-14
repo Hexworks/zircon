@@ -286,13 +286,13 @@ fun zirconGame3(app: Application, screen: Screen) {
     screen.apply {
         display()
         addComponents(buildParagraph {
-            +"a"
-        }, buildParagraph {
-            position = Position.create(1, 0)
-            +"b"
+            +"aa"
         }, buildParagraph {
             position = Position.create(2, 0)
-            +"c"
+            +"bb"
+        }, buildParagraph {
+            position = Position.create(4, 0)
+            +"cc"
         })
     }
 }
