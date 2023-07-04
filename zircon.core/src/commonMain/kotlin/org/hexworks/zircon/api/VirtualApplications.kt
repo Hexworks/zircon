@@ -4,7 +4,7 @@ import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.application.impl.VirtualApplication
+import org.hexworks.zircon.renderer.virtual.VirtualApplication
 
 object VirtualApplications {
 

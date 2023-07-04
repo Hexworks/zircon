@@ -1,10 +1,11 @@
 package org.hexworks.zircon.internal.renderer.impl
 
+import korlibs.time.DateTime
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
@@ -16,22 +17,25 @@ import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
-import org.hexworks.zircon.platform.util.SystemUtils
 
-/**
- * @param T the type of the draw surface (Swing, for example will use `Graphics2D`)
- */
-abstract class BaseRenderer<T : Any, A : Application>(
+abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     protected val tileGrid: InternalTileGrid,
-    private val tilesetLoader: TilesetLoader<T>
-) : Renderer<A> {
+    private val tilesetLoader: TilesetLoader<C>
+) : Renderer<C, A, V> {
 
-    private val isClosed = false.toProperty()
-    private val gridPositions = tileGrid.size.fetchPositions().toList()
-    private var blinkOn = true
-    private var lastBlink: Long = SystemUtils.getCurrentTimeMs()
     private val config = tileGrid.config
+    private val gridPositions = tileGrid.size.fetchPositions().toList()
+    private val isClosed = false.toProperty()
+
+    private val beforeRenderDataProp = RenderData(DateTime.nowUnixMillisLong()).toProperty()
+    private val afterRenderDataProp = RenderData(DateTime.nowUnixMillisLong()).toProperty()
+
+    private var blinkOn = true
+    private var lastBlink: Long = DateTime.nowUnixMillisLong()
     private var lastRender: Long = lastBlink
+
+    protected var beforeRenderData: RenderData by beforeRenderDataProp.asDelegate()
+    protected var afterRenderData: RenderData by afterRenderDataProp.asDelegate()
 
     override val closedValue: ObservableValue<Boolean>
         get() = isClosed
@@ -41,19 +45,47 @@ abstract class BaseRenderer<T : Any, A : Application>(
         doClose()
     }
 
-    final override fun render() {
+    final override fun beforeRender(listener: (RenderData) -> Unit) = beforeRenderDataProp.onChange {
+        listener(it.newValue)
+    }
+
+    final override fun afterRender(listener: (RenderData) -> Unit) = afterRenderDataProp.onChange {
+        listener(it.newValue)
+    }
+
+    /**
+     * Template method that is responsible for processing all input events for the given frame.
+     */
+    protected abstract fun processInputEvents()
+
+    /**
+     * Template method that is called during [render] but before the actual rendering happens.
+     * Can be used to configure the [context] or other components for rendering.
+     */
+    protected open fun prepareRender(context: C) {}
+
+    /**
+     * Template method that implments the close mechanism.
+     */
+    protected open fun doClose() {
+    }
+
+    final override fun render(context: C) {
         if (closed.not()) {
-            val now = SystemUtils.getCurrentTimeMs()
+            val now = DateTime.nowUnixMillisLong()
+            beforeRenderDataProp.value = RenderData(now)
             processInputEvents()
             tileGrid.updateAnimations(now, tileGrid)
             handleBlink(now)
-            doRender(now)
+            prepareRender(context)
+            renderAllTiles(context)
             lastRender = now
+            afterRenderDataProp.value = RenderData(DateTime.nowUnixMillisLong())
         }
     }
 
     // TODO: use a drawing strategy here
-    protected fun drawTiles(graphics: T) {
+    private fun renderAllTiles(context: C) {
         val layers = fetchLayers()
         val tiles = mutableListOf<Pair<Tile, TilesetResource>>()
         gridPositions.forEach { pos ->
@@ -73,12 +105,13 @@ abstract class BaseRenderer<T : Any, A : Application>(
             var idx = 1
             for ((tile, tileset) in tiles) {
                 var finalTile = tile
+                // 📘 we only draw the cursor on top, that's why we have the last check
                 if (shouldDrawCursor() && tileGrid.cursorPosition == pos && idx == tiles.size) {
                     finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
                         .withForegroundColor(finalTile.backgroundColor)
                 }
                 renderTile(
-                    graphics = graphics,
+                    context = context,
                     position = pos,
                     tile = finalTile,
                     tileset = tilesetLoader.loadTilesetFrom(tileset)
@@ -94,43 +127,35 @@ abstract class BaseRenderer<T : Any, A : Application>(
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 
-    protected abstract fun processInputEvents()
-
-    protected abstract fun doRender(now: Long)
-
-    protected open fun doClose() {
-    }
-
     private fun renderTile(
-        graphics: T,
+        context: C,
         position: Position,
         tile: Tile,
-        tileset: Tileset<T>
+        tileset: Tileset<C>
     ) {
+        if (tile.isBlinking && blinkOn) {
+            return
+        }
         if (tile.isNotEmpty) {
-            var finalTile = tile
-            finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
-                if (modifier.canTransform(finalTile)) {
-                    (finalTile as? CharacterTile)?.let {
-                        finalTile = modifier.transform(it)
-                    }
+            var tempTile = tile
+            tempTile.modifiers.filterIsInstance<TileTransformModifier<Tile>>().forEach { modifier ->
+                if (modifier.canTransform(tempTile)) {
+                    tempTile = modifier.transform(tempTile)
                 }
             }
-            finalTile = if (tile.isBlinking && blinkOn) {
+            tempTile = if (tile.isBlinking && blinkOn) {
                 tile.withBackgroundColor(tile.foregroundColor)
                     .withForegroundColor(tile.backgroundColor)
-            } else {
-                tile
+            } else tile
+            val finalTileset = when (val finalTile = tempTile) {
+                is TilesetHolder -> tilesetLoader.loadTilesetFrom(finalTile.tileset)
+                else -> tileset
             }
-            (
-                    (finalTile as? TilesetHolder)?.let {
-                        tilesetLoader.loadTilesetFrom(it.tileset)
-                    } ?: tileset
-                    ).drawTile(
-                    tile = finalTile,
-                    surface = graphics,
-                    position = position
-                )
+            finalTileset.drawTile(
+                tile = tempTile,
+                context = context,
+                position = position
+            )
         }
     }
 
@@ -146,24 +171,21 @@ abstract class BaseRenderer<T : Any, A : Application>(
      */
     private fun fetchLayers(): List<Pair<Position, TileGraphics>> {
         return tileGrid.renderables.map { renderable ->
-            val tg = FastTileGraphics(
+            val tg = if (renderable.isHidden) FastTileGraphics(
                 initialSize = renderable.size,
-                initialTileset = renderable.tileset,
-            )
-            if (!renderable.isHidden) {
-                renderable.render(tg)
-            }
+                initialTileset = renderable.tileset
+            ) else renderable.render()
             renderable.position to tg
         }
     }
 
-    private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource {
-        return if (this is TilesetHolder) {
-            tileset
-        } else graphics.tileset
+    private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
+        is TilesetHolder -> tileset
+        else -> graphics.tileset
     }
 
-    private fun Tile.tiles(): List<Tile> = if (this is StackedTile) {
-        tiles.flatMap { it.tiles() }
-    } else listOf(this)
+    private fun Tile.tiles(): List<Tile> = when (this) {
+        is StackedTile -> tiles.flatMap { it.tiles() }
+        else -> listOf(this)
+    }
 }

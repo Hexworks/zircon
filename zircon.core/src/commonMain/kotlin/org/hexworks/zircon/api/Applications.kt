@@ -1,27 +1,32 @@
 package org.hexworks.zircon.api
 
-import korlibs.korge.view.Container
+import korlibs.korge.render.BatchBuilder2D
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.application.KorGEApplication
 import org.hexworks.zircon.api.application.NoOpApplication
 import org.hexworks.zircon.api.dsl.tileset.buildTilesetFactory
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
-import org.hexworks.zircon.internal.renderer.impl.KORGE_CONTAINER
-import org.hexworks.zircon.internal.renderer.impl.KorGERenderer
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
-import org.hexworks.zircon.internal.tileset.impl.korge.KorGECP437DrawSurface
-import org.hexworks.zircon.internal.tileset.impl.korge.KorGECP437Tileset
+import org.hexworks.zircon.renderer.korge.KorgeApplication
+import org.hexworks.zircon.renderer.korge.KorgeRenderer
 
 object Applications {
+
+    /**
+     * Creates and starts a new application (see [startApplication])
+     * and returns its [TileGrid].
+     */
+    suspend fun startTileGrid(
+        config: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create()
+    ): TileGrid = startApplication(config, eventBus).first.tileGrid
 
     /**
      * Builds a new [Application] using the given parameters. This factory method
@@ -32,55 +37,74 @@ object Applications {
      *
      * Also make sure that all the objects you pass use the same [AppConfig].
      */
-    fun startApplication(
+    suspend fun startApplication(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
         tileGrid: TileGrid = createTileGrid(config),
-        renderer: Renderer<KorGEApplication> = createRenderer(config, tileGrid)
-    ): Application = KorGEApplication(
-        config = config,
-        eventBus = eventBus,
-        tileGrid = tileGrid.asInternal(),
-        renderer = renderer
-    )
-
-    fun startTileGrid(
-        config: AppConfig = AppConfig.defaultConfiguration(),
-        eventBus: EventBus = EventBus.create()
-    ): TileGrid = startApplication(config, eventBus).tileGrid
+    ): Pair<Application<Unit>, Unit> {
+        val app = KorgeApplication(
+            config = config,
+            eventBus = eventBus,
+            tileGrid = tileGrid.asInternal(),
+            renderer = createRenderer(config, tileGrid)
+        )
+        val fw = app.start()
+        return app to fw
+    }
 
     /**
-     * Creates a new [Renderer] for the default [Application] using the given parameters.
+     * Creates a new [Application] using the given parameters. This factory method
+     * uses sensible defaults, and it is fine to call it without parameters.
+     *
+     * 📙 Note that this will not `start` the given application (no continuous renering).
+     *
+     */
+    fun createApplication(
+        config: AppConfig = AppConfig.defaultConfiguration(),
+        eventBus: EventBus = EventBus.create(),
+    ): Application<Unit> {
+        val tileGrid = createTileGrid(config)
+        return KorgeApplication(
+            config = config,
+            eventBus = eventBus,
+            tileGrid = tileGrid.asInternal(),
+            renderer = createRenderer(config, tileGrid)
+        )
+    }
+
+
+    /**
+     * Creates a new instance of the default [Renderer] implementation using the given parameters.
      *
      * This factory method uses sensible defaults, and it is fine to call it without parameters.
      *
      * Also make sure that all the objects you pass use the same [AppConfig].
-     *
-     * Creating a [Renderer] without an [Application] is a **beta** feature. Feel free to report
-     * a bug if it is not working [here](https://github.com/Hexworks/zircon/issues/new?assignees=&labels=&template=bug_report.md&title=).
      */
     fun createRenderer(
         config: AppConfig = AppConfig.defaultConfiguration(),
         tileGrid: TileGrid = createTileGrid(config),
-    ): KorGERenderer = KorGERenderer(
-        korgeBaseContainer = config.customProperties[KORGE_CONTAINER] as Container,
+    ): KorgeRenderer = KorgeRenderer(
         tileGrid = tileGrid.asInternal(),
-        tilesetLoader = DefaultTilesetLoader(listOf<TilesetFactory<KorGECP437DrawSurface>>(
-            buildTilesetFactory {
-                targetType = KorGECP437DrawSurface::class
-                supportedTileType = TileType.CHARACTER_TILE
-                supportedTilesetType = TilesetType.CP437Tileset
-                factoryFunction = { resource: TilesetResource ->
-                    KorGECP437Tileset(
-                        resource = resource,
-                    )
-                }
-            }).associateBy { it.supportedTileType to it.supportedTilesetType }),
+        // TODO: use tileset loaders from config
+        tilesetLoader = DefaultTilesetLoader(
+            listOf(
+                buildTilesetFactory {
+                    targetType = BatchBuilder2D::class
+                    supportedTileType = TileType.CHARACTER_TILE
+                    supportedTilesetType = TilesetType.CP437Tileset
+                    factoryFunction = { resource: TilesetResource ->
+                        KorGECP437Tileset(
+                            resource = resource,
+                        )
+                    }
+                })
+        ),
     )
 
     /**
      * Creates a new [TileGrid] with a [NoOpApplication] implementation
-     * (eg: no continuous rendering).
+     * (eg: no continuous rendering). Use this if you embed a [TileGrid] into your
+     * own application and you have your own renderer.
      */
     fun createTileGrid(
         config: AppConfig = AppConfig.defaultConfiguration(),

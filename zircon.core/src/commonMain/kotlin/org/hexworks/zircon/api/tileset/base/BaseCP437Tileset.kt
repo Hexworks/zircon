@@ -25,13 +25,13 @@ import kotlin.reflect.KClass
  * - Checking for CharacterTile
  * - Caching
  * - Creating the necessary metadata for the texture
- * @param S the class of the surface that we'll draw upon (Graphics2D for Swing for example)
+ * @param C the context object that will be used for drawing
  * @param T the class of the individual texture tile that can be cached (BufferedImage for Swing for example)
  */
-abstract class BaseCP437Tileset<S : Any, T : Any>(
+abstract class BaseCP437Tileset<C : Any, T : Any>(
     protected val resource: TilesetResource,
-    override val targetType: KClass<S>,
-) : Tileset<S> {
+    override val targetType: KClass<C>,
+) : Tileset<C> {
 
     override val id: UUID = UUID.randomUUID()
     override val width: Int
