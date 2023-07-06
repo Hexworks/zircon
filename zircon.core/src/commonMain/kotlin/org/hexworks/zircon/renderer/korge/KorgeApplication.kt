@@ -3,6 +3,7 @@ package org.hexworks.zircon.renderer.korge
 import korlibs.korge.Korge
 import korlibs.korge.KorgeDisplayMode
 import korlibs.korge.scene.sceneContainer
+import korlibs.math.geom.ScaleMode
 import korlibs.math.geom.Size
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -34,11 +35,16 @@ class KorgeApplication(
     override val closedValue: Property<Boolean> = false.toProperty()
 
     override suspend fun start() {
-        val size = Size(tileGrid.widthInPixels, tileGrid.heightInPixels);
+        val size = Size(tileGrid.widthInPixels, tileGrid.heightInPixels)
         Korge(
             virtualSize = size,
             windowSize = size,
-            displayMode = KorgeDisplayMode.TOP_LEFT_NO_CLIP
+            displayMode = KorgeDisplayMode.TOP_LEFT_NO_CLIP,
+            fullscreen = config.fullScreen,
+            title = config.title,
+            debug = config.debugMode,
+            icon = config.iconPath,
+            scaleMode = ScaleMode.NO_SCALE
         ) {
             sceneContainer().changeTo({ scene })
         }

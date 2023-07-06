@@ -110,11 +110,12 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
                     finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
                         .withForegroundColor(finalTile.backgroundColor)
                 }
+                val finalTileset = tilesetLoader.loadTilesetFrom(tileset)
                 renderTile(
                     context = context,
                     position = pos,
                     tile = finalTile,
-                    tileset = tilesetLoader.loadTilesetFrom(tileset)
+                    tileset = finalTileset
                 )
                 idx++
             }

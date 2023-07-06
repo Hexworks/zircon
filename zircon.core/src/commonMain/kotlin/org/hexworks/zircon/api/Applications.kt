@@ -27,7 +27,7 @@ object Applications {
     suspend fun startTileGrid(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create()
-    ): TileGrid = startApplication(config, eventBus).first.tileGrid
+    ): TileGrid = startApplication(config, eventBus).tileGrid
 
     /**
      * Builds a new [Application] using the given parameters. This factory method
@@ -42,15 +42,15 @@ object Applications {
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
         tileGrid: TileGrid = createTileGrid(config),
-    ): Pair<Application, Unit> {
+    ): Application {
         val app = KorgeApplication(
             config = config,
             eventBus = eventBus,
             tileGrid = tileGrid.asInternal(),
             renderer = createRenderer(config, tileGrid)
         )
-        val fw = app.start()
-        return app to fw
+        app.start()
+        return app
     }
 
     /**

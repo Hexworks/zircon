@@ -5,7 +5,7 @@ object Versions {
     const val kotlinxCoroutinesVersion = "1.5.0"
     const val kotlinxCollectionsImmutableVersion = "0.3.4"
 
-    const val cobaltVersion = "2022.1.0-RELEASE"
+    const val cobaltVersion = "2023.0.0-RELEASE"
     const val cache4kVersion = "0.3.0"
 
     const val caffeineVersion = "3.0.3"
