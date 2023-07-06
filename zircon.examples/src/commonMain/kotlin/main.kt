@@ -12,8 +12,8 @@ suspend fun main() {
     var currIdx = 0
     val random = Random(13513516895)
     val tileSize = 8
-    val gridWidth = 32 / tileSize
-    val gridHeight = 16 / tileSize
+    val gridWidth = 1920 / tileSize
+    val gridHeight = 1080 / tileSize
 
     fun ANSITileColor.Companion.random(): ANSITileColor =
         ANSITileColor.values()[random.nextInt(0, ANSITileColor.values().size)]
