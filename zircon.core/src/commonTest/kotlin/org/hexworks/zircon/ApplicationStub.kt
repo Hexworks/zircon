@@ -22,6 +22,9 @@ class ApplicationStub : InternalApplication {
         closedValue.value = true
     }
 
+    override suspend fun start() {
+        TODO("Not yet implemented")
+    }
 
     override fun asInternal() = this
 

@@ -82,7 +82,7 @@ class KorgeRenderer(
         }
     }
 
-    override fun prepareRender(conetxt: KorgeContext) {
+    override fun prepareRender(context: KorgeContext) {
         // TODO: do we need this?
     }
 

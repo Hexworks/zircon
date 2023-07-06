@@ -26,7 +26,7 @@ import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
 import org.hexworks.zircon.renderer.korge.toRGBA
 import kotlin.reflect.KClass
 
-class KorGECP437Tileset(
+class KorgeCP437Tileset(
     private val resource: TilesetResource
 ) : Tileset<KorgeContext> {
 

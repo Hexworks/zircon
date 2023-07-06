@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.modifier
 
+import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.impl.Fade
-import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeInOut(
     private val stepsFadeIn: Int = 20,
@@ -38,7 +38,7 @@ data class FadeInOut(
             FadeInOutMode.FadeIn -> fadeIn.transform(tile)
             FadeInOutMode.NoFading -> {
                 if (startNoFadingRender == Long.MIN_VALUE)
-                    startNoFadingRender = SystemUtils.getCurrentTimeMs()
+                    startNoFadingRender = DateTime.nowUnixMillisLong()
                 tile
             }
 
@@ -50,7 +50,7 @@ data class FadeInOut(
     private fun getFadeMode(): FadeInOutMode {
         return when (currentFadeMode) {
             FadeInOutMode.FadeIn -> if (fadeIn.isFadingFinished()) FadeInOutMode.NoFading else FadeInOutMode.FadeIn
-            FadeInOutMode.NoFading -> if ((SystemUtils.getCurrentTimeMs() - startNoFadingRender) > timeMsBeforeFadingOut)
+            FadeInOutMode.NoFading -> if ((DateTime.nowUnixMillisLong() - startNoFadingRender) > timeMsBeforeFadingOut)
                 FadeInOutMode.FadeOut else FadeInOutMode.NoFading
 
             FadeInOutMode.FadeOut -> FadeInOutMode.FadeOut

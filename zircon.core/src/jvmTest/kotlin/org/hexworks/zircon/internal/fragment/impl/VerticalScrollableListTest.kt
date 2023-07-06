@@ -40,7 +40,7 @@ class VerticalScrollableListTest {
 
     @Test
     fun rendersCorrectly() {
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 1 ▲
@@ -59,7 +59,7 @@ class VerticalScrollableListTest {
 
     @Test
     fun scrollsCorrectly() {
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 1 ▲
@@ -78,7 +78,7 @@ class VerticalScrollableListTest {
         testRenderer.dispatch(TAB) // scrollbar
         testRenderer.dispatch(TAB) // bottom arrow
         assertThat(testRenderer.dispatch(SPACE)).isEqualTo(Processed)
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 2 ▲
@@ -103,7 +103,7 @@ class VerticalScrollableListTest {
         repeat(20) {
             testRenderer.dispatch(SPACE)
         }
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 11▲
@@ -130,7 +130,7 @@ class VerticalScrollableListTest {
                 pos
             )
         )
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 4 ▲
@@ -156,7 +156,7 @@ class VerticalScrollableListTest {
                 Position.create(7, 1)
             )
         )
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             Item 4 ▲

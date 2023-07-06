@@ -15,7 +15,7 @@ class VirtualTileset : Tileset<Char> {
     override val targetType = Char::class
     override val id = UUID.randomUUID()
 
-    override fun drawTile(tile: Tile, surface: Char, position: Position) {
+    override fun drawTile(tile: Tile, context: Char, position: Position) {
         fetchTextureForTile(tile)
     }
 

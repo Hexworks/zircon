@@ -2,7 +2,6 @@ package org.hexworks.zircon.renderer.korge
 
 import korlibs.korge.Korge
 import korlibs.korge.KorgeDisplayMode
-import korlibs.korge.render.BatchBuilder2D
 import korlibs.korge.scene.sceneContainer
 import korlibs.math.geom.Size
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -15,19 +14,20 @@ import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.renderer.Renderer
 import org.hexworks.zircon.renderer.korge.KorgeRenderer.KorgeScene
+import org.hexworks.zircon.renderer.korge.tileset.KorgeContext
 
 class KorgeApplication(
     override val config: AppConfig,
     override val tileGrid: TileGrid,
     override val eventBus: EventBus,
-    private val renderer: Renderer<BatchBuilder2D, KorgeApplication, KorgeScene>,
+    private val renderer: Renderer<KorgeContext, KorgeApplication, KorgeScene>,
     override val eventScope: ZirconScope = ZirconScope(),
 ) : InternalApplication {
     init {
         tileGrid.asInternal().application = this
     }
 
-    val scene = renderer.create()
+    private val scene = renderer.create()
 
     override val closed: Boolean
         get() = closedValue.value

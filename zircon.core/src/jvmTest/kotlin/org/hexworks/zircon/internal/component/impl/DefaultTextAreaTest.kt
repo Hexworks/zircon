@@ -21,7 +21,6 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
-import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Before
 import org.junit.Test
 
@@ -237,7 +236,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     }
 
     companion object {
-        val SEP = SystemUtils.getLineSeparator()!!
+        val SEP = '\n'!!
         const val TEXT = "text"
         const val UPDATE_TEXT = 'U'
         val MULTI_LINE_TEXT = "text${SEP}text$SEP"

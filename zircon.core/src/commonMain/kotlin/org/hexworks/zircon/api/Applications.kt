@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api
 
-import korlibs.korge.render.BatchBuilder2D
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
@@ -16,6 +15,8 @@ import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
 import org.hexworks.zircon.renderer.korge.KorgeApplication
 import org.hexworks.zircon.renderer.korge.KorgeRenderer
+import org.hexworks.zircon.renderer.korge.tileset.KorgeCP437Tileset
+import org.hexworks.zircon.renderer.korge.tileset.KorgeContext
 
 object Applications {
 
@@ -41,7 +42,7 @@ object Applications {
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
         tileGrid: TileGrid = createTileGrid(config),
-    ): Pair<Application<Unit>, Unit> {
+    ): Pair<Application, Unit> {
         val app = KorgeApplication(
             config = config,
             eventBus = eventBus,
@@ -62,7 +63,7 @@ object Applications {
     fun createApplication(
         config: AppConfig = AppConfig.defaultConfiguration(),
         eventBus: EventBus = EventBus.create(),
-    ): Application<Unit> {
+    ): Application {
         val tileGrid = createTileGrid(config)
         return KorgeApplication(
             config = config,
@@ -89,11 +90,11 @@ object Applications {
         tilesetLoader = DefaultTilesetLoader(
             listOf(
                 buildTilesetFactory {
-                    targetType = BatchBuilder2D::class
+                    targetType = KorgeContext::class
                     supportedTileType = TileType.CHARACTER_TILE
                     supportedTilesetType = TilesetType.CP437Tileset
                     factoryFunction = { resource: TilesetResource ->
-                        KorGECP437Tileset(
+                        KorgeCP437Tileset(
                             resource = resource,
                         )
                     }
@@ -104,7 +105,7 @@ object Applications {
     /**
      * Creates a new [TileGrid] with a [NoOpApplication] implementation
      * (eg: no continuous rendering). Use this if you embed a [TileGrid] into your
-     * own application and you have your own renderer.
+     * own application, and you have your own renderer.
      */
     fun createTileGrid(
         config: AppConfig = AppConfig.defaultConfiguration(),

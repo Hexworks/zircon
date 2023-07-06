@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.util
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.platform.util.SystemUtils
 import kotlin.math.min
 
 @Suppress("unused")
@@ -14,9 +13,9 @@ class TextBuffer(text: String) {
         setText(text)
     }
 
-    fun getBoundingBoxSize() = Size.create(currentText.map { it.length }.maxOrNull() ?: 0, currentText.size)
+    fun getBoundingBoxSize() = Size.create(currentText.maxOfOrNull { it.length } ?: 0, currentText.size)
 
-    fun getText() = currentText.joinToString(SystemUtils.getLineSeparator()) { it.toString() }
+    fun getText() = currentText.joinToString("\n") { it.toString() }
 
     fun getSize() = currentText.size
 
@@ -61,7 +60,7 @@ class TextBuffer(text: String) {
 
     fun setText(text: String) {
         currentText.clear()
-        currentText.addAll(text.split(SystemUtils.getLineSeparator()).map {
+        currentText.addAll(text.split('\n').map {
             StringBuilder(it)
         })
     }

@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl.textedit
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
-import org.hexworks.zircon.platform.util.SystemUtils
 
 interface EditableTextBuffer {
 
@@ -29,7 +28,7 @@ interface EditableTextBuffer {
             .maxOrNull() ?: 0,
         height = textBuffer.size)
 
-    fun getText(): String = textBuffer.joinToString(SystemUtils.getLineSeparator()) { it.joinToString("") }
+    fun getText(): String = textBuffer.joinToString("\n") { it.joinToString("") }
 
     fun getSize() = textBuffer.size
 

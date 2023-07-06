@@ -1,19 +1,17 @@
 package org.hexworks.zircon.internal.animation
 
+import korlibs.time.DateTime
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
-import org.hexworks.zircon.api.animation.AnimationState.FINISHED
-import org.hexworks.zircon.api.animation.AnimationState.INFINITE
-import org.hexworks.zircon.api.animation.AnimationState.IN_PROGRESS
+import org.hexworks.zircon.api.animation.AnimationState.*
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.platform.util.SystemUtils
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
@@ -38,7 +36,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         )
         results[animation.id] = result
         animations[animation.id] = animation
-        nextUpdatesForAnimations[animation.id] = SystemUtils.getCurrentTimeMs()
+        nextUpdatesForAnimations[animation.id] = DateTime.nowUnixMillisLong()
         return result
     }
 

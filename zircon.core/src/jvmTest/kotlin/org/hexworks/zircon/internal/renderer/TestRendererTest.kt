@@ -19,7 +19,7 @@ class TestRendererTest {
                 addComponent(Components.textBox(3).addParagraph("Foo").build())
             }
         }
-        testRenderer.render()
+        testRenderer.render("null")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo("Foo")
     }
 
@@ -37,7 +37,7 @@ class TestRendererTest {
                 )
             }
         }
-        testRenderer.render()
+        testRenderer.render("")
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(
             """
             ╒════════════╕

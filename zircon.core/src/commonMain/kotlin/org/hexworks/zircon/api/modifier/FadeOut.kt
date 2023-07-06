@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api.modifier
 
+import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.impl.Fade
-import org.hexworks.zircon.platform.util.SystemUtils
 
 data class FadeOut(
     private val steps: Int = 20,
@@ -26,13 +26,13 @@ data class FadeOut(
 
     override fun transform(tile: CharacterTile): CharacterTile {
         if (isFirstRender()) {
-            lastRender = SystemUtils.getCurrentTimeMs()
+            lastRender = DateTime.nowUnixMillisLong()
             generateTile(tile)
         }
         return if (currentStep == steps) {
             Tile.empty()
         } else {
-            val now = SystemUtils.getCurrentTimeMs()
+            val now = DateTime.nowUnixMillisLong()
             if (now - lastRender > delay) {
                 lastRender = now
                 currentStep++

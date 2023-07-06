@@ -8,6 +8,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class DefaultCache<R : Cacheable>(
     maximumSize: Long = 5000,
+    @OptIn(kotlin.time.ExperimentalTime::class)
     duration: Duration = 1.minutes
 ) : Cache<R> {
 

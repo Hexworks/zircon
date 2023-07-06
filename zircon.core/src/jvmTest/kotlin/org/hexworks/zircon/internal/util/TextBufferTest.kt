@@ -68,7 +68,7 @@ class TextBufferTest {
     }
 
     companion object {
-        val SEP = System.lineSeparator()
+        val SEP = '\n'
         val TEXT = "asdf"
         val EXPECTED_MULTI_LINE_TEXT = "$TEXT$SEP$TEXT"
 

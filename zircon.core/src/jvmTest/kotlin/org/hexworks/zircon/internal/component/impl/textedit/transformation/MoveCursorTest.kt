@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.internal.component.impl.textedit.DefaultEditableTextBuffer
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.Cursor
 import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
-import org.hexworks.zircon.platform.util.SystemUtils
 import org.junit.Test
 
 class MoveCursorTest {
@@ -107,7 +106,7 @@ class MoveCursorTest {
         private const val ROW2 = "Longer row"
         private const val ROW3 = "Row"
         private val ROWS = listOf(ROW0, ROW1, ROW2, ROW3)
-            .joinToString(SystemUtils.getLineSeparator())
+            .joinToString("\n")
 
         fun generateBufferFor(cursor: Cursor) = DefaultEditableTextBuffer(
             source = ROWS,

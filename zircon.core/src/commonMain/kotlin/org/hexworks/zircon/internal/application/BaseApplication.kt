@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.application
 
+import korlibs.time.DateTime
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import org.hexworks.cobalt.databinding.api.binding.bindNot
@@ -13,7 +14,6 @@ import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.renderer.Renderer
-import org.hexworks.zircon.platform.util.SystemUtils
 
 /**
  * This class implements continuous rendering for an `Application`. Use it
@@ -62,7 +62,7 @@ abstract class BaseApplication<R : Any, A : Application, V>(
         renderLoop = executeCommand {
             while (running.value) {
                 try {
-                    val now = SystemUtils.getCurrentTimeMs()
+                    val now = DateTime.nowUnixMillisLong()
                     val elapsedTimeMs = now - lastRender
                     if (elapsedTimeMs > renderIntervalMs) {
                         logger.debug {

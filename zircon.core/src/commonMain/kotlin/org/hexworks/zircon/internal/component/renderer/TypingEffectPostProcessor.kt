@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import korlibs.time.DateTime
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessorContext
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
-import org.hexworks.zircon.platform.util.SystemUtils
 
 /**
  * This [ComponentPostProcessor] adds a typing effect to the rendering of a component. Note that the Delay modifier
@@ -19,9 +19,9 @@ data class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: L
 
     override fun render(drawWindow: DrawWindow, context: ComponentPostProcessorContext<T>) {
         if (startAt < 0) {
-            startAt = SystemUtils.getCurrentTimeMs() + baseDelayInMs
+            startAt = DateTime.nowUnixMillisLong() + baseDelayInMs
         }
-        val now = SystemUtils.getCurrentTimeMs()
+        val now = DateTime.nowUnixMillisLong()
         if (now > startAt) {
             shouldShow = true
         }
