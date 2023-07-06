@@ -39,12 +39,12 @@ class KorgeApplication(
         Korge(
             virtualSize = size,
             windowSize = size,
-            displayMode = KorgeDisplayMode.TOP_LEFT_NO_CLIP,
+            displayMode = KorgeDisplayMode.NO_SCALE,
+            scaleMode = ScaleMode.NO_SCALE,
             fullscreen = config.fullScreen,
             title = config.title,
             debug = config.debugMode,
             icon = config.iconPath,
-            scaleMode = ScaleMode.NO_SCALE
         ) {
             sceneContainer().changeTo({ scene })
         }

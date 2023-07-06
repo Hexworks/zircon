@@ -29,8 +29,8 @@ class KorgeRenderer(
     private val mouseEventListener = MouseEventListener(tileGrid)
 
     inner class KorgeScene : PixelatedScene(
-        tileGrid.size.width,
-        tileGrid.size.height,
+        tileGrid.widthInPixels,
+        tileGrid.heightInPixels,
         sceneScaleMode = ScaleMode.NO_SCALE,
         sceneAnchor = Anchor.TOP_LEFT,
         sceneSmoothing = false
