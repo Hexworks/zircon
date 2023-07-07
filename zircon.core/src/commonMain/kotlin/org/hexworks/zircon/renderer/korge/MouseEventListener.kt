@@ -62,12 +62,14 @@ class MouseEventListener(
                         .or(isNotMoveEvent(type))
                 ) {
                     lastMouseLocation = position
-                    logger.debug("Processing Mouse Event: $it.")
+                    logger.debug { "Processing Mouse Event: $it." }
                     events.add(it to UIEventPhase.TARGET)
                 }
             }
         } catch (e: Exception) {
-            logger.error("Position for mouse event '$e' was out of bounds. It is dropped.")
+            logger.error {
+                "Position for mouse event '$e' was out of bounds. It is dropped."
+            }
             e.printStackTrace()
         }
     }

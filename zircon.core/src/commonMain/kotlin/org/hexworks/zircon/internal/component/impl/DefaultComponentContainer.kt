@@ -13,11 +13,9 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
-import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
-import kotlin.contracts.ExperimentalContracts
 
 class DefaultComponentContainer(
     private val root: RootContainer,
@@ -47,7 +45,7 @@ class DefaultComponentContainer(
 
 
     override fun activate() {
-        logger.debug("Activating component container.")
+        logger.debug { "Activating component container." }
         isActive.value = true
         refreshFocusables()
         root.eventBus.simpleSubscribeTo<ComponentAdded>(root.eventScope) {

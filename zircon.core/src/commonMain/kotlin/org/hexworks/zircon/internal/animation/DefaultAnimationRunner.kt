@@ -28,7 +28,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     override fun start(animation: Animation): AnimationHandle {
         animation as? InternalAnimation
             ?: error("The supplied animation does not implement required interface: InternalAnimation.")
-        if (debug) logger.debug("Adding animation to AnimationHandler ($id).")
+        if (debug) logger.debug { "Adding animation to AnimationHandler ($id)." }
         val result = DefaultAnimationHandle(
             state = if (animation.isLoopedIndefinitely) INFINITE else IN_PROGRESS,
             animation = animation,

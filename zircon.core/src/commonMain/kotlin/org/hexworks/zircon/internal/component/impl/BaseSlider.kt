@@ -44,10 +44,10 @@ abstract class BaseSlider(
         }
         disabledProperty.onChange {
             componentState = if (it.newValue) {
-                LOGGER.debug("Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Disabling Slider (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 ComponentState.DISABLED
             } else {
-                LOGGER.debug("Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Enabling Slider (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 ComponentState.DEFAULT
             }
         }
@@ -118,7 +118,7 @@ abstract class BaseSlider(
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
@@ -127,7 +127,7 @@ abstract class BaseSlider(
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
@@ -138,10 +138,10 @@ abstract class BaseSlider(
 
     override fun activated() = whenEnabledRespondWith {
         if (isDisabled) {
-            LOGGER.warn("Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped.")
+            LOGGER.warn { "Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped." }
             Pass
         } else {
-            LOGGER.debug("Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
+            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated." }
             componentState = ComponentState.HIGHLIGHTED
             Processed
         }

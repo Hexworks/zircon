@@ -129,7 +129,7 @@ class ModalComponentContainer(
 
     private fun List<InternalComponentContainer>.fetchLast(): InternalComponentContainer {
         return lastOrNull() ?: run {
-            logger.warn("No containers were present in container stack. Re-adding main container.")
+            logger.warn { "No containers were present in container stack. Re-adding main container." }
             containerStack.add(mainContainer)
             isActive.value = mainContainer.isActive.value
             return mainContainer

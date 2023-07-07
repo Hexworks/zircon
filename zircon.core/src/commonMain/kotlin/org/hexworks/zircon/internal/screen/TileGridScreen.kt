@@ -24,8 +24,8 @@ import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.graphics.Renderable
-import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
+import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 class TileGridScreen(
@@ -73,10 +73,10 @@ class TileGridScreen(
 
     init {
         eventBus.simpleSubscribeTo<ScreenSwitch>(eventScope) { (screenId) ->
-            LOGGER.debug("Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()}).")
+            LOGGER.debug { "Screen switch event received (id=${screenId.abbreviate()}) in screen object (id=${id.abbreviate()})." }
             activeScreenId = screenId
             if (id != activeScreenId && isActive.value) {
-                LOGGER.debug("Deactivating screen (id=${id.abbreviate()}).")
+                LOGGER.debug { "Deactivating screen (id=${id.abbreviate()})." }
                 deactivate()
             }
         }.disposeWhen(closedValue)
@@ -89,7 +89,7 @@ class TileGridScreen(
     // have no visible effect)
     override fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse {
         return if (isActive.value) {
-            LOGGER.debug("Processing event $event in phase $phase for screen $this.")
+            LOGGER.debug { "Processing event $event in phase $phase for screen $this." }
             // note that first we process listeners on the Screen itself
             // then component ones. They don't affect each other
             (if (componentContainer.isMainContainerActive()) {

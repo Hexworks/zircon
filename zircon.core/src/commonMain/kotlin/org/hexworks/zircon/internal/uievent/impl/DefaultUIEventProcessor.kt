@@ -43,7 +43,7 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
                     }
 
                     Pass -> {
-                        logger.debug("Result of invoking listener was 'Pass'. Result is ignored.")
+                        logger.debug { "Result of invoking listener was 'Pass'. Result is ignored." }
                     }
                 }
             }

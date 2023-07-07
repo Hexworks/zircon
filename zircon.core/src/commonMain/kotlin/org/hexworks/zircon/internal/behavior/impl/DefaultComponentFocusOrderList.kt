@@ -23,9 +23,9 @@ class DefaultComponentFocusOrderList(
     override fun findPrevious() = prevsLookup.getValue(focusedComponent.id)
 
     override fun focus(component: InternalComponent) {
-        logger.debug("Trying to focus component: $component.")
+        logger.debug { "Trying to focus component: $component." }
         if (canFocus(component)) {
-            logger.debug("Component $component is focusable, focusing.")
+            logger.debug { "Component $component is focusable, focusing." }
             focusedComponent = component
         }
     }
@@ -42,15 +42,17 @@ class DefaultComponentFocusOrderList(
 
         // this will have at least 1 element because the root container is always focusable
         val tree = root.componentTree.filter { it.acceptsFocus() }
-        logger.debug("New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${root.id.abbreviate()}")
+        logger.debug {
+            "New tree is ${tree.joinToString { it.id.abbreviate() }}, root is: ${root.id.abbreviate()}"
+        }
 
         var previous: InternalComponent = root
 
         tree.forEach { next ->
-            logger.debug(
+            logger.debug {
                 "Next for ${previous.id.abbreviate()} is ${next.id.abbreviate()}, " +
                         "previous for ${next.id.abbreviate()} is ${previous.id.abbreviate()}"
-            )
+            }
             nextsLookup[previous.id] = next
             prevsLookup[next.id] = previous
             previous = next
@@ -58,19 +60,19 @@ class DefaultComponentFocusOrderList(
 
         // root has children
         if (tree.isNotEmpty()) {
-            logger.debug("Root, has children, adding circle between root and last.")
+            logger.debug { "Root, has children, adding circle between root and last." }
             // we make a connection between the first (root) and the last to make it circular
-            logger.debug(
+            logger.debug {
                 "Next for ${tree.last().id.abbreviate()} is ${root.id.abbreviate()}, " +
                         "prev for ${root.id.abbreviate()} is ${tree.last().id.abbreviate()}"
-            )
+            }
             nextsLookup[tree.last().id] = root
             prevsLookup[root.id] = tree.last()
         }
 
         // if the previously focused component was removed we reset the focus to the root
         if (tree.contains(focusedComponent).not()) {
-            logger.debug("Tree doesn't contain previously focused component, focusing root.")
+            logger.debug { "Tree doesn't contain previously focused component, focusing root." }
             focusedComponent = root
         }
     }

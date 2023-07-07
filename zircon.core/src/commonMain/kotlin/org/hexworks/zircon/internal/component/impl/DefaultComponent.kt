@@ -105,10 +105,10 @@ abstract class DefaultComponent(
     init {
         val updateState: (Boolean) -> Unit = {
             componentState = if (it) {
-                logger.debug("Component disabled. Applying disabled style.")
+                logger.debug { "Component disabled. Applying disabled style." }
                 DISABLED
             } else {
-                logger.debug("Component enabled. Applying enabled style.")
+                logger.debug { "Component enabled. Applying enabled style." }
                 DEFAULT
             }
         }
@@ -278,12 +278,18 @@ abstract class DefaultComponent(
             isFocused = hasFocusValue.value,
             eventType = eventType
         )
-        logger.debug("Updating component state with $key.")
+        logger.debug {
+            "Updating component state with $key."
+        }
         COMPONENT_STATE_TRANSITIONS[key]?.let {
-            logger.debug("Component state was updated to state $it.")
+            logger.debug {
+                "Component state was updated to state $it."
+            }
             componentState = it
         } ?: run {
-            logger.debug("There was no corresponding key, no update happened.")
+            logger.debug {
+                "There was no corresponding key, no update happened."
+            }
         }
     }
 

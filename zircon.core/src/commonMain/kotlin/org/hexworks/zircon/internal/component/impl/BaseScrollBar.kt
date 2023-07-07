@@ -14,12 +14,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.Pass
-import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.uievent.*
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.math.truncate
@@ -54,10 +49,10 @@ abstract class BaseScrollBar(
         }
         disabledProperty.onChange {
             if (it.newValue) {
-                LOGGER.debug("Disabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Disabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 componentState = ComponentState.DISABLED
             } else {
-                LOGGER.debug("Enabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled).")
+                LOGGER.debug { "Enabling ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled)." }
                 componentState = ComponentState.DEFAULT
             }
         }
@@ -146,7 +141,7 @@ abstract class BaseScrollBar(
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
 
             when (computeClickedZone(getMousePosition(event))) {
@@ -162,7 +157,7 @@ abstract class BaseScrollBar(
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
 
             val mousePosition = getMousePosition(event)
@@ -190,10 +185,10 @@ abstract class BaseScrollBar(
 
     override fun activated() = whenEnabledRespondWith {
         if (isDisabled) {
-            LOGGER.warn("Trying to activate disabled ScrollBar (id=${id.abbreviate()}. Request dropped.")
+            LOGGER.warn { "Trying to activate disabled ScrollBar (id=${id.abbreviate()}. Request dropped." }
             Pass
         } else {
-            LOGGER.debug("ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was activated.")
+            LOGGER.debug { "ScrollBar (id=${id.abbreviate()}, disabled=$isDisabled) was activated." }
             componentState = ComponentState.HIGHLIGHTED
             Processed
         }

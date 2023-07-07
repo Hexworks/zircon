@@ -21,7 +21,7 @@ class DefaultLogArea internal constructor(
     private val logElements = mutableListOf<AttachedComponent>()
 
     override fun addHeader(text: String, withNewLine: Boolean) {
-        LOGGER.debug("Adding header text ($text) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding header text ($text) to LogArea (id=${id.abbreviate()})." }
         addLogElement(
             createTextBoxBuilder()
                 .addHeader(text, withNewLine)
@@ -30,7 +30,7 @@ class DefaultLogArea internal constructor(
     }
 
     override fun addParagraph(paragraph: String, withNewLine: Boolean, withTypingEffectSpeedInMs: Long) {
-        LOGGER.debug("Adding paragraph text ($paragraph) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding paragraph text ($paragraph) to LogArea (id=${id.abbreviate()})." }
         addLogElement(
             createTextBoxBuilder()
                 .addParagraph(paragraph, withNewLine, withTypingEffectSpeedInMs)
@@ -39,7 +39,7 @@ class DefaultLogArea internal constructor(
     }
 
     override fun addParagraph(paragraphBuilder: ParagraphBuilder, withNewLine: Boolean) {
-        LOGGER.debug("Adding paragraph from builder to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding paragraph from builder to LogArea (id=${id.abbreviate()})." }
         addLogElement(
             createTextBoxBuilder()
                 .addParagraph(paragraphBuilder, withNewLine)
@@ -49,7 +49,7 @@ class DefaultLogArea internal constructor(
 
 
     override fun addListItem(item: String) {
-        LOGGER.debug("Adding list item ($item) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding list item ($item) to LogArea (id=${id.abbreviate()})." }
         addLogElement(
             createTextBoxBuilder()
                 .addListItem(item)
@@ -58,24 +58,24 @@ class DefaultLogArea internal constructor(
     }
 
     override fun addInlineText(text: String) {
-        LOGGER.debug("Adding inline text ($text) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding inline text ($text) to LogArea (id=${id.abbreviate()})." }
         currentInlineBuilder.addInlineText(text)
     }
 
     override fun addInlineComponent(component: Component) {
-        LOGGER.debug("Adding inline component ($component) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding inline component ($component) to LogArea (id=${id.abbreviate()})." }
         currentInlineBuilder.addInlineComponent(component)
     }
 
     override fun commitInlineElements() {
-        LOGGER.debug("Committing inline elements of LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Committing inline elements of LogArea (id=${id.abbreviate()})." }
         val builder = currentInlineBuilder
         currentInlineBuilder = createTextBoxBuilder()
         addLogElement(builder.commitInlineElements().build())
     }
 
     override fun addNewRows(numberOfRows: Int) {
-        LOGGER.debug("Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()}).")
+        LOGGER.debug { "Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()})." }
         (0 until numberOfRows).forEach { _ ->
             addLogElement(
                 createTextBoxBuilder()
