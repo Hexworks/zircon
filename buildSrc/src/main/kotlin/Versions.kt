@@ -6,7 +6,6 @@ object Versions {
     const val kotlinxCollectionsImmutableVersion = "0.3.4"
 
     const val cobaltVersion = "2023.0.0-RELEASE"
-    const val cache4kVersion = "0.3.0"
 
     const val snakeyamlVersion = "1.29"
 

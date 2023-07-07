@@ -1,5 +1,4 @@
 import Libraries.assertjCore
-import Libraries.cache4k
 import Libraries.cobaltCore
 import Libraries.korge
 import Libraries.kotlinReflect
@@ -58,7 +57,6 @@ kotlin {
                 api(korge)
 
                 api(cobaltCore)
-                api(cache4k)
             }
         }
         val commonTest by getting {

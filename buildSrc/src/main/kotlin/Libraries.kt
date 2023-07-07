@@ -1,5 +1,4 @@
 import Versions.assertjVersion
-import Versions.cache4kVersion
 import Versions.cobaltVersion
 import Versions.kotlinxCollectionsImmutableVersion
 import Versions.kotlinxCoroutinesVersion
@@ -15,7 +14,6 @@ object Libraries {
         "org.jetbrains.kotlinx:kotlinx-collections-immutable:$kotlinxCollectionsImmutableVersion"
 
     const val cobaltCore = "org.hexworks.cobalt:cobalt.core:$cobaltVersion"
-    const val cache4k = "io.github.reactivecircus.cache4k:cache4k:$cache4kVersion"
 
     const val snakeYaml = "org.yaml:snakeyaml:$snakeyamlVersion"
 
