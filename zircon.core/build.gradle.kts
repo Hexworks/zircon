@@ -1,21 +1,21 @@
+import Libraries.assertjCore
+import Libraries.cache4k
 import Libraries.caffeine
 import Libraries.cobaltCore
-import Libraries.kotlinxCollectionsImmutable
-import Libraries.kotlinxCoroutines
-import Libraries.logbackClassic
-import Libraries.slf4jApi
-import Libraries.cache4k
-import Libraries.snakeYaml
-import Libraries.assertjCore
 import Libraries.korge
 import Libraries.kotlinReflect
 import Libraries.kotlinTestAnnotationsCommon
 import Libraries.kotlinTestCommon
 import Libraries.kotlinTestJs
 import Libraries.kotlinTestJunit
+import Libraries.kotlinxCollectionsImmutable
+import Libraries.kotlinxCoroutines
+import Libraries.logbackClassic
 import Libraries.logbackCore
 import Libraries.mockitoCore
 import Libraries.mockitoKotlin
+import Libraries.slf4jApi
+import Libraries.snakeYaml
 
 plugins {
     kotlin("multiplatform")
@@ -37,11 +37,16 @@ kotlin {
     }
 
     js(IR) {
+        compilations.all {
+            kotlinOptions {
+                sourceMap = true
+                moduleKind = "umd"
+                metaInfo = true
+            }
+        }
         browser {
             testTask {
-                useKarma {
-                    useChromeHeadless()
-                }
+                useMocha()
             }
         }
         nodejs()
@@ -71,9 +76,7 @@ kotlin {
             dependencies {
                 api(kotlin("reflect"))
 
-                api(caffeine)
                 api(snakeYaml)
-                api(slf4jApi)
             }
         }
         val jvmTest by getting {
@@ -83,8 +86,6 @@ kotlin {
                 implementation(mockitoCore)
                 implementation(mockitoKotlin)
                 implementation(assertjCore)
-                implementation(logbackClassic)
-                implementation(logbackCore)
             }
         }
 
