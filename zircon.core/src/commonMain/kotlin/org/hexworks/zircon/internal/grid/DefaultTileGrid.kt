@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Layerable
-import org.hexworks.zircon.api.behavior.ShutdownHook
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -25,7 +24,6 @@ import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
-import org.hexworks.zircon.internal.behavior.impl.DefaultShutdownHook
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
@@ -40,7 +38,6 @@ class DefaultTileGrid(
     ),
     private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalTileGrid,
-    ShutdownHook by DefaultShutdownHook(),
     UIEventProcessor by eventProcessor,
     ViewContainer by ViewContainer.create() {
 

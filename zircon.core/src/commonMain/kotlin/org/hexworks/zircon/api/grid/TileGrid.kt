@@ -28,13 +28,12 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
  * @see Closeable
  * @see DrawSurface
  * @see Layerable
- * @see ShutdownHook
  * @see TypingSupport
  * @see UIEventSource
  * @see ViewContainer
  */
 interface TileGrid : AnimationRunner, Clearable, Closeable, DrawSurface, Layerable,
-    ShutdownHook, TypingSupport, UIEventSource, ViewContainer {
+    TypingSupport, UIEventSource, ViewContainer {
 
     val widthInPixels: Int
         get() = tileset.width * width
