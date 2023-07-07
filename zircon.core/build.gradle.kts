@@ -1,6 +1,5 @@
 import Libraries.assertjCore
 import Libraries.cache4k
-import Libraries.caffeine
 import Libraries.cobaltCore
 import Libraries.korge
 import Libraries.kotlinReflect
@@ -10,11 +9,8 @@ import Libraries.kotlinTestJs
 import Libraries.kotlinTestJunit
 import Libraries.kotlinxCollectionsImmutable
 import Libraries.kotlinxCoroutines
-import Libraries.logbackClassic
-import Libraries.logbackCore
 import Libraries.mockitoCore
 import Libraries.mockitoKotlin
-import Libraries.slf4jApi
 import Libraries.snakeYaml
 
 plugins {
