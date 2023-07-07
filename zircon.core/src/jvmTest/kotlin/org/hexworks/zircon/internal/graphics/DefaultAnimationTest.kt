@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.animation.AnimationResource
+import org.hexworks.zircon.api.animation.AnimationResources
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Test
@@ -10,7 +10,7 @@ class DefaultAnimationTest {
 
     @Test
     fun shouldProperlyBuildFromResource() {
-        val builder = AnimationResource.loadAnimationFromStream(
+        val builder = AnimationResources.loadAnimationFromStream(
             zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
             tileset = BuiltInCP437TilesetResource.BISASAM_16X16
         )

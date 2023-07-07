@@ -14,7 +14,7 @@ import java.io.InputStream
  * This object contains utility functions for loading animations from external sources
  * **on the JVM**.
  */
-object AnimationResource {
+object AnimationResources {
 
     /**
      * Loads the data of an animation from the given animation file returns an
