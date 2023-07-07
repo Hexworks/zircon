@@ -3,7 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.*
 import org.hexworks.zircon.internal.resource.CP437TilesetResource
-import org.hexworks.zircon.internal.resource.TilesetSourceType
+import org.hexworks.zircon.api.resource.ResourceType
 
 /**
  * This object can be used to load either built-in CP437 [TilesetResource]s
@@ -395,7 +395,7 @@ object CP437TilesetResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.FILESYSTEM
+            resourceType = ResourceType.FILESYSTEM
         )
     }
 
@@ -413,7 +413,7 @@ object CP437TilesetResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.JAR
+            resourceType = ResourceType.PROJECT
         )
     }
 }

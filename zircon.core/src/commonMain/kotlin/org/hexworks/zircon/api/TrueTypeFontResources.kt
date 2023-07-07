@@ -2,7 +2,7 @@ package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.internal.resource.TilesetSourceType
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 
 /**
@@ -116,7 +116,7 @@ object TrueTypeFontResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.FILESYSTEM
+            resourceType = ResourceType.FILESYSTEM
         )
     }
 
@@ -134,7 +134,7 @@ object TrueTypeFontResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.JAR
+            resourceType = ResourceType.PROJECT
         )
     }
 }

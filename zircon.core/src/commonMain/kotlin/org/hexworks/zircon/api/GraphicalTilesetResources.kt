@@ -3,7 +3,7 @@ package org.hexworks.zircon.api
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInGraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
-import org.hexworks.zircon.internal.resource.TilesetSourceType
+import org.hexworks.zircon.api.resource.ResourceType
 
 /**
  * This object can be used to load either built-in graphical
@@ -26,7 +26,7 @@ object GraphicalTilesetResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.FILESYSTEM
+            resourceType = ResourceType.FILESYSTEM
         )
     }
 
@@ -44,7 +44,7 @@ object GraphicalTilesetResources {
             width = width,
             height = height,
             path = path,
-            tilesetSourceType = TilesetSourceType.JAR
+            resourceType = ResourceType.PROJECT
         )
     }
 }

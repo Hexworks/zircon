@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -38,9 +39,9 @@ enum class BuiltInTrueTypeFontResource(
 
     fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
         path = "$FONTS_DIR/$fileName.$FONTS_EXT",
-        width = ratioFn.invoke(height),
+        width = ratioFn(height),
         height = height,
-        tilesetSourceType = TilesetSourceType.JAR,
+        resourceType = ResourceType.PROJECT,
         name = name
     )
 

@@ -9,17 +9,15 @@ import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
 import korlibs.image.format.readBitmap
 import korlibs.io.async.launchImmediately
-import korlibs.io.dynamic.dyn
 import korlibs.io.file.fullName
 import korlibs.io.file.std.openAsZip
-import korlibs.io.serialization.yaml.Yaml
 import korlibs.math.geom.slice.splitInRows
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
-import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
@@ -43,7 +41,7 @@ class KorgeGraphicalTileset(
     private var loadingState = NOT_LOADED
 
     private var atlas: MutableAtlasUnit = MutableAtlasUnit()
-    private var tileLookup = mapOf<String, BmpSlice>()
+    private var tileLookup = mutableMapOf<String, BmpSlice>()
 
     private val bgSlice = atlas.add(Bitmap32(width, height) { _, _ -> Colors.WHITE }).slice
 
@@ -99,25 +97,25 @@ class KorgeGraphicalTileset(
 
 
     private suspend fun preload() {
-        println("KorgeTileset.preload: ${resource.tilesetSourceType}, ${resource.tilesetType}, '${resource.path}'")
+        println("KorgeTileset.preload: ${resource.resourceType}, ${resource.tilesetType}, '${resource.path}'")
         try {
-            val vfsFile = loadVfs(resource)
+            val vfsFile = loadResource(resource)
             if (vfsFile.isDirectory()) {
                 error("Unexpected directory: ${vfsFile.fullName} for graphical tileset (expected zip file)")
             } else {
                 val zip = vfsFile.openAsZip()
-                val info = Yaml.decode(zip["tileinfo.yml"].readString()).dyn
-                val infoName = info["name"].str
-                val infoSize = info["size"].int
-                val infoFiles = info["files"].list
-                for (file in infoFiles) {
+                val info = zip.extractFile("tileinfo.yml").readString().asYaml()
+                val tilesetName = info["name"].str
+                val tileSize = info["size"].int
+                val files = info["files"].list
+                for (file in files) {
                     val fileName = file["name"].str
                     val tilesPerRow = file["tilesPerRow"].int
                     val tiles = file["tiles"].list
                     val tileNames = tiles.map { it["name"].str }
-                    val bitmap = zip[fileName].readBitmap().toBMP32IfRequired()
-                    val tilesBmps = bitmap.slice().splitInRows(infoSize, infoSize)
-                    this.tileLookup = tileNames.zip(tilesBmps).associate { it.first to it.second }
+                    val bitmap = zip.extractFile(fileName).readBitmap().toBMP32IfRequired()
+                    val tileBitmaps = bitmap.slice().splitInRows(tilesPerRow, tileSize)
+                    this.tileLookup.putAll(tileNames.zip(tileBitmaps).associate { it.first to it.second })
                 }
             }
             println("!! READY: $this : $resource : ${resource.tileType} : ${resource.tilesetType}")

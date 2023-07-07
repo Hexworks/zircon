@@ -13,6 +13,6 @@ suspend fun main() {
         size = Size.create(gridCols, gridRows)
         defaultTileset = BuiltInCP437TilesetResource.valueOf("REX_PAINT_${tileSize}X${tileSize}")
         debugMode = true
-    }).components().start()
+    }).rex().start()
 
 }

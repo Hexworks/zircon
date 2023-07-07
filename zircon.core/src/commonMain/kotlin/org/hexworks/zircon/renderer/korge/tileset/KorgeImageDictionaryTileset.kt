@@ -10,12 +10,12 @@ import korlibs.io.async.launchImmediately
 import korlibs.io.file.baseName
 import korlibs.io.file.extensionLC
 import korlibs.io.file.fullName
-import korlibs.math.geom.Vector2
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
@@ -75,9 +75,9 @@ class KorgeImageDictionaryTileset(
 
 
     private suspend fun preload() {
-        println("KorgeTileset.preload: ${resource.tilesetSourceType}, ${resource.tilesetType}, '${resource.path}'")
+        println("KorgeTileset.preload: ${resource.resourceType}, ${resource.tilesetType}, '${resource.path}'")
         try {
-            val vfsFile = loadVfs(resource)
+            val vfsFile = loadResource(resource)
             if (vfsFile.isDirectory()) {
                 val tiles = mutableListOf<BmpSlice>()
                 val lookup = mutableMapOf<String, BmpSlice>()

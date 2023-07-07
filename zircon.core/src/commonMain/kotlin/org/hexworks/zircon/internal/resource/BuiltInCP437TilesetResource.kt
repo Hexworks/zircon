@@ -1,21 +1,22 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
 enum class BuiltInCP437TilesetResource(
-    val tilesetName: String,
+    private val tilesetName: String,
     override val width: Int,
     override val height: Int,
-    val fileName: String = "${tilesetName}_${width}x$height.png",
+    private val fileName: String = "${tilesetName}_${width}x$height.png",
     override val id: UUID = UUID.randomUUID(),
     override val tileType: TileType = TileType.CHARACTER_TILE,
     override val tilesetType: TilesetType = TilesetType.CP437Tileset,
     override val path: String = "/cp_437_tilesets/$fileName",
-    override val tilesetSourceType: TilesetSourceType = TilesetSourceType.JAR
+    override val resourceType: ResourceType = ResourceType.PROJECT
 ) : TilesetResource {
 
     // These fonts come from the Dwarf Fortress Tileset Repository

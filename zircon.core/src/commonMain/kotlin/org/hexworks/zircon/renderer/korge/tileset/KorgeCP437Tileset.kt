@@ -20,7 +20,7 @@ import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.resource.TilesetSourceType
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.internal.util.CP437Utils
 import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
 import org.hexworks.zircon.renderer.korge.toRGBA
@@ -113,11 +113,11 @@ class KorgeCP437Tileset(
 
 
     private suspend fun preload() {
-        println("KorgeTileset.preload: ${resource.tilesetSourceType}, ${resource.tilesetType}, '${resource.path}'")
+        println("KorgeTileset.preload: ${resource.resourceType}, ${resource.tilesetType}, '${resource.path}'")
         try {
-            val vfs = when (resource.tilesetSourceType) {
-                TilesetSourceType.FILESYSTEM -> localCurrentDirVfs
-                TilesetSourceType.JAR -> resourcesVfs
+            val vfs = when (resource.resourceType) {
+                ResourceType.FILESYSTEM -> localCurrentDirVfs
+                ResourceType.PROJECT -> resourcesVfs
             }
             val vfsFile = vfs[resource.path]
 

@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TileTransformModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.util.CP437Utils
@@ -95,11 +96,11 @@ class KorgeTrueTypeFontTileset(
 
 
     private suspend fun preload() {
-        println("KorgeTileset.preload: ${resource.tilesetSourceType}, ${resource.tilesetType}, '${resource.path}'")
+        println("KorgeTileset.preload: ${resource.resourceType}, ${resource.tilesetType}, '${resource.path}'")
         try {
-            val vfsFile = loadVfs(resource)
+            val vfsFile = loadResource(resource)
             val font = vfsFile.readTtfFont()
-            // TODO: add support for all characters
+            // TODO: add support for all characters in the font
             for (n in 0 until 256) {
                 tiles += atlas.add(
                     font.renderGlyphToBitmap(

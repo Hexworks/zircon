@@ -5,21 +5,18 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.resource.TilesetSourceType
 import org.hexworks.zircon.internal.resource.TilesetType
 
 /**
  * Contains metadata about a tileset for a given [Tile] type.
  */
-interface TilesetResource : Identifiable {
+interface TilesetResource : Identifiable, Resource {
 
     val tileType: TileType
     val tilesetType: TilesetType
-    val tilesetSourceType: TilesetSourceType
 
     val width: Int
     val height: Int
-    val path: String
 
     val size: Size
         get() = Size.create(width, height)
@@ -62,7 +59,7 @@ interface TilesetResource : Identifiable {
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val tilesetType: TilesetType
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
-            override val tilesetSourceType: TilesetSourceType
+            override val resourceType: ResourceType
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val width: Int
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
