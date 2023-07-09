@@ -44,7 +44,7 @@ open class DefaultLayer internal constructor(
     final override val hiddenProperty = false.toProperty()
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    override fun asInternalLayer() = this
+    override fun asInternal() = this
 
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)

@@ -15,10 +15,6 @@ object Modifiers {
 
     fun crossedOut(): Modifier = CrossedOut
 
-    fun verticalFlip(): Modifier = VerticalFlip
-
-    fun horizontalFlip(): Modifier = HorizontalFlip
-
     fun hidden(): Modifier = Hidden
 
     /**
@@ -28,14 +24,6 @@ object Modifiers {
      * @see BorderBuilder if you want to create custom borders
      */
     fun border(): Border = BorderBuilder.newBuilder().build()
-
-    /**
-     * Crops the tile that contains this modifier. [Crop] takes
-     * an [x],[y] position pair and the [width]+[height] that delimits
-     * the are that will be **kept** from the source tile. Everything
-     * else will be cropped.
-     */
-    fun crop(x: Int, y: Int, width: Int, height: Int): Modifier = Crop(x, y, width, height)
 
     /**
      * Provides a fade in effect for the tile that has this modifier.

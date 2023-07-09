@@ -14,7 +14,7 @@ class TestRendererTest {
     @Test
     fun tinyExample() {
         val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(3, 1)).build()
-        val testRenderer = TestRenderer(AppConfig.defaultConfiguration(), graphics).apply {
+        val testRenderer = TestRenderer(AppConfig.DEFAULT_APP_CONFIG(), graphics).apply {
             withComponentContainer {
                 addComponent(Components.textBox(3).addParagraph("Foo").build())
             }
@@ -27,7 +27,7 @@ class TestRendererTest {
     fun rendersAsExpected() {
         val text = "Hello Zircon"
         val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(text.length + 2, 4)).build()
-        val testRenderer = TestRenderer(AppConfig.defaultConfiguration(), graphics).apply {
+        val testRenderer = TestRenderer(AppConfig.DEFAULT_APP_CONFIG(), graphics).apply {
             withComponentContainer {
                 addComponent(
                     Components.textBox(text.length)

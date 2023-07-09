@@ -1,5 +1,6 @@
 import Versions.assertjVersion
 import Versions.cobaltVersion
+import Versions.korVersion
 import Versions.kotlinxCollectionsImmutableVersion
 import Versions.kotlinxCoroutinesVersion
 import Versions.mockitoKotlinVersion
@@ -17,7 +18,7 @@ object Libraries {
 
     const val snakeYaml = "org.yaml:snakeyaml:$snakeyamlVersion"
 
-    const val korge = "com.soywiz.korlibs.korge2:korge:4.0.3"
+    const val korge = "com.soywiz.korlibs.korge2:korge:$korVersion"
 
     // TEST
     const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common"

@@ -37,7 +37,7 @@ object AnimationResources {
                 val size = frameImage.toLayerList(tileset).maxByOrNull { it.size }!!.size
                 DefaultAnimationFrame(
                     size = size,
-                    layers = frameImage.toLayerList(tileset).map { it.asInternalLayer() },
+                    layers = frameImage.toLayerList(tileset).map { it.asInternal() },
                     repeatCount = frame.repeatCount
                 )
             }

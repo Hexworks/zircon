@@ -15,10 +15,6 @@ class DebugConfig internal constructor(
      */
     val displayCoordinates: Boolean,
     /**
-     * If `true` log messages will appear detailing the FPS characteristics
-     */
-    val displayFps: Boolean,
-    /**
      * if `true` no bounds check will be performed when adding/moving components
      */
     val relaxBoundsCheck: Boolean
@@ -26,8 +22,6 @@ class DebugConfig internal constructor(
 
     companion object {
 
-        fun newBuilder() = DebugConfigBuilder.newBuilder()
-
-        fun defaultConfig() = DebugConfigBuilder.newBuilder().build()
+        val DEFAULT_DEBUG_CONFIG = DebugConfigBuilder().build()
     }
 }

@@ -32,7 +32,7 @@ class VerticalScrollableListTest {
         (1..20).map { "Item $it" },
         scrollbarRenderer = TestScrollbarRenderer
     )
-    private val testRenderer = TestRenderer(AppConfig.defaultConfiguration(), graphics).apply {
+    private val testRenderer = TestRenderer(AppConfig.DEFAULT_APP_CONFIG(), graphics).apply {
         withComponentContainer {
             addFragment(scrollableListFragment)
         }

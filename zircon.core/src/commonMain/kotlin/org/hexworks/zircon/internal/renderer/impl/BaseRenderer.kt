@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.modifier.TileTransformModifier
+import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
@@ -139,7 +139,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
         }
         if (tile.isNotEmpty) {
             var tempTile = tile
-            tempTile.modifiers.filterIsInstance<TileTransformModifier<Tile>>().forEach { modifier ->
+            tempTile.modifiers.filterIsInstance<TileModifier<Tile>>().forEach { modifier ->
                 if (modifier.canTransform(tempTile)) {
                     tempTile = modifier.transform(tempTile)
                 }

@@ -21,8 +21,8 @@ class VirtualRenderer(
         listOf(
             buildTilesetFactory {
                 targetType = Char::class
-                supportedTileType = TileType.CHARACTER_TILE
-                supportedTilesetType = TilesetType.CP437Tileset
+                tileType = TileType.CHARACTER_TILE
+                tilesetType = TilesetType.CP437Tileset
                 factoryFunction = {
                     VirtualTileset()
                 }

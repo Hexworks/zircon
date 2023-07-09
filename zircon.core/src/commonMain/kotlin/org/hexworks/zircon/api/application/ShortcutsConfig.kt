@@ -27,8 +27,6 @@ class ShortcutsConfig internal constructor(
 ) {
     companion object {
 
-        fun newBuilder() = ShortcutsConfigBuilder.newBuilder()
-
-        fun defaultConfig() = ShortcutsConfigBuilder.newBuilder().build()
+        val DEFAULT_SHORTCUTS_CONFIG = ShortcutsConfigBuilder().build()
     }
 }

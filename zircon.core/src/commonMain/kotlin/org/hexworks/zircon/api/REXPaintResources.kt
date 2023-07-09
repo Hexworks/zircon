@@ -21,9 +21,6 @@ import org.hexworks.zircon.internal.util.rex.REXLayer
  * Loads a REXPaint file from the given path.
  */
 suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.FILESYSTEM): REXPaintResource {
-    println("===== loading")
-    loadResource(Resource.create(path, resourceType)).openAsZip()
-    println("===== loading ok")
     return loadREXFile(loadResource(Resource.create(path, resourceType)).openAsZip().readBytes())
 }
 

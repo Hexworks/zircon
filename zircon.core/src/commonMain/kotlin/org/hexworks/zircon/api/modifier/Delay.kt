@@ -4,7 +4,7 @@ import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
 
-data class Delay(private val timeMs: Long = 2000) : TileTransformModifier<CharacterTile> {
+data class Delay(private val timeMs: Long = 2000) : TileModifier<CharacterTile> {
 
     override val cacheKey: String
         get() = "Modifier.Delay.$shouldShow"

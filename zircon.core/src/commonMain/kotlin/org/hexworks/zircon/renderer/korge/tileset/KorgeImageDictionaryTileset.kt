@@ -12,6 +12,7 @@ import korlibs.io.file.extensionLC
 import korlibs.io.file.fullName
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -41,14 +42,14 @@ class KorgeImageDictionaryTileset(
     private var tileLookup = mapOf<String, BmpSlice>()
 
     init {
-        require(resource.tileType == TileType.CHARACTER_TILE) {
-            "CP437 tilesets only support ${TileType.CHARACTER_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
+        require(resource.tileType == TileType.IMAGE_TILE) {
+            "Image dictionary tilesets only support ${TileType.IMAGE_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
         }
     }
 
     override fun drawTile(tile: Tile, context: KorgeContext, position: Position) {
-        require(tile is GraphicalTile) {
-            "A graphical tile renderer can only render ${GraphicalTile::class.simpleName}s. Offending tile: $tile."
+        require(tile is ImageTile) {
+            "A graphical tile renderer can only render ${ImageTile::class.simpleName}s. Offending tile: $tile."
         }
         if (loadingState == NOT_LOADED) {
             loadingState = LOADING

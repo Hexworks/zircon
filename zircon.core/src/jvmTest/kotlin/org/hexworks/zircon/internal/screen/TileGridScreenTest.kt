@@ -81,7 +81,7 @@ class TileGridScreenTest {
             .withSize(Size.create(3, 4))
             .build().apply {
                 draw(Tile.defaultTile().withCharacter('x'), Position.offset1x1())
-            }.asInternalLayer()
+            }.asInternal()
 
         val button = Components.button().withText("y").withPosition(Position.create(2, 3)).build()
 
@@ -89,7 +89,7 @@ class TileGridScreenTest {
             .withSize(Size.create(5, 6))
             .build().apply {
                 draw(Tile.defaultTile().withCharacter('z'), Position.create(2, 3))
-            }.asInternalLayer()
+            }.asInternal()
 
         target.draw(surfaceLayer)
         target.addLayer(layer)

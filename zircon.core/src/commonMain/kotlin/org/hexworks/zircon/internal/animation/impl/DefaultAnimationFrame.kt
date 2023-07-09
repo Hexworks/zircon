@@ -46,4 +46,6 @@ data class DefaultAnimationFrame(
             displayLayerable = null
         }
     }
+
+    override fun asInternal() = this
 }

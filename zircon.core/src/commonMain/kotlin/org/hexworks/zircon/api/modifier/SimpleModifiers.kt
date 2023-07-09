@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.modifier
 /**
  * Represents the built-in SimpleModifiers supported by zircon.
  */
-sealed class SimpleModifiers : TextureTransformModifier {
+sealed class SimpleModifiers : TextureModifier {
 
     /**
      * Displays an underline below the tile.
@@ -19,9 +19,6 @@ sealed class SimpleModifiers : TextureTransformModifier {
      * Displays a horizontal line in the middle of the tile (from left to right).
      */
     object CrossedOut : SimpleModifiers()
-
-    object VerticalFlip : SimpleModifiers()
-    object HorizontalFlip : SimpleModifiers()
 
     /**
      * Prevents the tile content from rendering (will only render the background).

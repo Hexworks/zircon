@@ -84,15 +84,6 @@ class CharacterTileStringBuilder private constructor(
             textWrap = textWrap)
     }
 
-    override fun createCopy() = CharacterTileStringBuilder(
-        text = text,
-        textWrap = textWrap,
-        size = size,
-        modifiers = modifiers.toMutableSet(),
-        foregroundColor = foregroundColor,
-        backgroundColor = backgroundColor
-    )
-
 
     companion object {
 

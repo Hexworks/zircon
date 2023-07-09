@@ -16,11 +16,9 @@ suspend fun loadResource(resource: Resource): VfsFile {
     if (!vfsFile.exists()) {
         error("${resource.resourceType} resource '$vfsFile' doesn't exist!")
     }
-    return vfsFile;
+    return vfsFile
 }
 
-typealias ZipFile = VfsFile
-
-suspend fun ZipFile.extractFile(name: String) = this[name]
+suspend fun VfsFile.loadFile(name: String) = this[name]
 
 fun String.asYaml() = Yaml.decode(this).dyn

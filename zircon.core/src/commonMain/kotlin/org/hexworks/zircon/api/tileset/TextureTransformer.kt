@@ -1,25 +1,28 @@
 package org.hexworks.zircon.api.tileset
 
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.TextureTransformModifier
+import org.hexworks.zircon.api.modifier.TextureModifier
 import kotlin.reflect.KClass
 
 /**
- * Transforms a tile texture. A [TileTexture] is a part of a tileset sprite sheet or other
+ * Transforms a tile texture. A [TextureContext] is a part of a tileset sprite sheet or other
  * tileset source that represents a [Tile].
  *
- * Each [TextureTransformer] corresponds to a [TextureTransformModifier]. The transformation
- * of a [Tile] will only happen if [Tile.modifiers] contains the corresponding [supportedModifier].
+ * Each [TextureTransformer] corresponds to a [TextureModifier]. The transformation
+ * of a [Tile] will only happen if [Tile.modifiers] contains the corresponding modifier.
  */
-interface TextureTransformer<T : Any> {
+interface TextureTransformer<T : Any, C : Any> {
 
     /**
-     * The type of the texture that will be transformed by [transform]
+     * The type of the texture that will be modified by [apply]
      */
     val targetType: KClass<T>
 
     /**
-     * Transforms a tileset texture and returns the transformed version.
+     * Takes a tileset texture and applies the transformation to it.
+     * 📙 Note that this operation is potentially drawing onto an existing texture
+     * (probably in video memory), so some modifications will not work
+     * (for example cropping, flipping)
      */
-    fun transform(texture: TileTexture<T>, tile: Tile): TileTexture<T>
+    fun apply(texture: TextureContext<T, C>, tile: Tile): TextureContext<T, C>
 }

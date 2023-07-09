@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.modifier
 import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.impl.Fade
 
 data class FadeInOut(
     private val stepsFadeIn: Int = 20,
@@ -11,7 +10,7 @@ data class FadeInOut(
     private val timeMsBeforeFadingOut: Long = 5000,
     private val stepsFadeOut: Int = 20,
     private val timeMsFadeOut: Long = 2000
-) : TileTransformModifier<CharacterTile>, Fade {
+) : TileModifier<CharacterTile>, Fade {
 
     override fun isFadingFinished(): Boolean {
         return fadeOut.isFadingFinished()

@@ -256,7 +256,7 @@ class DefaultLayerableTest {
         return LayerBuilder.newBuilder()
             .withSize(Size.one())
             .withOffset(Position.zero())
-            .build().asInternalLayer().apply {
+            .build().asInternal().apply {
                 fill(Tile.defaultTile().withCharacter(char))
             }
     }

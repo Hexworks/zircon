@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.modifier.TextureTransformModifier
+import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TilesetFactory
@@ -72,36 +72,10 @@ class AppConfig internal constructor(
      */
     val fullScreen: Boolean,
     /**
-     * Controls if the [Application] will be borderless or not.
-     * Default is `false`
-     */
-    val borderless: Boolean,
-    /**
      * Sets the title of the application window.
      * Default is `"Zircon Application"`
      */
     val title: String,
-    /**
-     * Sets the fps limit of the resulting [Application].
-     * Default is `60`
-     */
-    val fpsLimit: Int,
-    /**
-     * Sets the [DebugConfig] to be used when [debugMode] is `true`.
-     * By default, all settings are `false`.
-     */
-    val debugConfig: DebugConfig,
-    /**
-     * Determines the [CloseBehavior] when the application windows is closed.
-     * Default is [CloseBehavior.EXIT_ON_CLOSE]
-     * @see CloseBehavior
-     */
-    val closeBehavior: CloseBehavior,
-    /**
-     * Determines the [ShortcutsConfig] to be used for built-in shortcuts.
-     * @see ShortcutsConfig for defaults
-     */
-    val shortcutsConfig: ShortcutsConfig,
     /**
      * If set [iconData] contains the bytes of the icon image that will
      * be used in the application window.
@@ -113,15 +87,25 @@ class AppConfig internal constructor(
      */
     val iconPath: String?,
     /**
-     * If set [tilesetLoaders] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
-     * before using the default [TilesetLoader] of the [Renderer].
+     * Sets the [DebugConfig] to be used when [debugMode] is `true`.
+     * By default, all settings are `false`.
      */
-    val tilesetLoaders: Map<Pair<TileType, TilesetType>, TilesetFactory<*>>,
+    val debugConfig: DebugConfig,
     /**
-     * If set [modifierSupports] will contain the list of [TextureTransformer]s to try to use
+     * Determines the [ShortcutsConfig] to be used for built-in shortcuts.
+     * @see ShortcutsConfig for defaults
+     */
+    val shortcutsConfig: ShortcutsConfig,
+    /**
+     * Contains all the [TilesetFactory] objects that will be used by the
+     * [TilesetLoader] when a renderer is created.
+     */
+    val tilesetFactories: List<TilesetFactory<*>>,
+    /**
+     * If set [textureModifierStrategies] will contain the list of [TextureTransformer]s to try to use
      * before using the default [TextureTransformer] of the [Renderer].
      */
-    var modifierSupports: Map<KClass<out TextureTransformModifier>, ModifierSupport<*>>,
+    val textureModifierStrategies: Map<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>,
     /**
      * If set, contains custom properties that plugin authors can set and access.
      */
@@ -159,12 +143,16 @@ class AppConfig internal constructor(
 
     companion object {
 
-        fun newBuilder() = AppConfigBuilder.newBuilder()
-
-        fun defaultConfiguration() = AppConfigBuilder.newBuilder().build()
+        val DEFAULT_APP_CONFIG = AppConfigBuilder().build()
 
     }
 }
+
+/**
+ * Creates a new [AppConfig] using the builder DSL and returns it.
+ */
+fun appConfig(init: AppConfigBuilder.() -> Unit = {}): AppConfig =
+    AppConfigBuilder().apply(init).build()
 
 @JvmName("filterTilesetsByType")
 @Suppress("UNCHECKED_CAST")
@@ -174,6 +162,6 @@ fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(t
 
 @JvmName("filterModifiersByType")
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> Map<KClass<out TextureTransformModifier>, ModifierSupport<*>>.filterByType(type: KClass<T>): Map<KClass<out TextureTransformModifier>, ModifierSupport<T>> {
-    return this.filterValues { it.targetType == type } as Map<KClass<out TextureTransformModifier>, ModifierSupport<T>>
+fun <T : Any, C : Any> Map<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>.filterByType(type: KClass<T>): Map<KClass<out TextureModifier>, TextureModifierStrategy<T, C>> {
+    return this.filterValues { it.targetType == type } as Map<KClass<out TextureModifier>, TextureModifierStrategy<T, C>>
 }

@@ -8,33 +8,30 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.internal.resource.TilesetType
 import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetFactory
+import org.hexworks.zircon.renderer.korge.tileset.*
 import kotlin.reflect.KClass
-import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-class TilesetFactoryBuilder<S : Any> private constructor(
-    var targetType: KClass<S>? = null,
-    var supportedTileType: TileType? = null,
-    var supportedTilesetType: TilesetType? = null,
-    var factoryFunction: ((TilesetResource) -> Tileset<S>)? = null
+class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
 
-) : Builder<TilesetFactory<S>> {
+    var targetType: KClass<S>? = null
+    var tileType: TileType? = null
+    var tilesetType: TilesetType? = null
+    private var factoryFunction: ((TilesetResource) -> Tileset<S>)? = null
 
-    override fun createCopy() = TilesetFactoryBuilder(
-        targetType = targetType,
-        supportedTileType = supportedTileType,
-        supportedTilesetType = supportedTilesetType,
-        factoryFunction = factoryFunction
-    )
+    fun factoryFunction(fn: (TilesetResource) -> Tileset<S>) {
+        factoryFunction = fn
+    }
 
     override fun build(): TilesetFactory<S> {
+        // TODO: use contract here for checking
         requireNotNull(targetType) {
             "Target type is missing."
         }
-        requireNotNull(supportedTileType) {
+        requireNotNull(tileType) {
             "Supported tile type is missing."
         }
-        requireNotNull(supportedTilesetType) {
+        requireNotNull(tilesetType) {
             "Supported tileset type is missing."
         }
         requireNotNull(factoryFunction) {
@@ -42,16 +39,60 @@ class TilesetFactoryBuilder<S : Any> private constructor(
         }
         return DefaultTilesetFactory(
             targetType = targetType!!,
-            supportedTileType = supportedTileType!!,
-            supportedTilesetType = supportedTilesetType!!,
+            supportedTileType = tileType!!,
+            supportedTilesetType = tilesetType!!,
             factoryFunction = factoryFunction!!
         )
     }
 
     companion object {
-
-        @JvmStatic
-        fun <S : Any> newBuilder() = TilesetFactoryBuilder<S>()
-
+        val DEFAULT_TILESET_FACTORIES: List<TilesetFactory<KorgeContext>> = listOf(
+            tilesetFactory {
+                targetType = KorgeContext::class
+                tileType = TileType.CHARACTER_TILE
+                tilesetType = TilesetType.CP437Tileset
+                factoryFunction { resource: TilesetResource ->
+                    KorgeCP437Tileset(
+                        resource = resource,
+                    )
+                }
+            },
+            tilesetFactory {
+                targetType = KorgeContext::class
+                tileType = TileType.GRAPHICAL_TILE
+                tilesetType = TilesetType.GraphicalTileset
+                factoryFunction { resource: TilesetResource ->
+                    KorgeGraphicalTileset(
+                        resource = resource,
+                    )
+                }
+            },
+            tilesetFactory {
+                targetType = KorgeContext::class
+                tileType = TileType.CHARACTER_TILE
+                tilesetType = TilesetType.TrueTypeFont
+                factoryFunction { resource: TilesetResource ->
+                    KorgeTrueTypeFontTileset(
+                        resource = resource,
+                    )
+                }
+            },
+            tilesetFactory {
+                targetType = KorgeContext::class
+                tileType = TileType.IMAGE_TILE
+                tilesetType = TilesetType.GraphicalTileset
+                factoryFunction { resource: TilesetResource ->
+                    KorgeImageDictionaryTileset(
+                        resource = resource,
+                    )
+                }
+            }
+        )
     }
 }
+
+/**
+ * Creates a new [TilesetFactory] using the builder DSL and returns it.
+ */
+fun <S : Any> tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit): TilesetFactory<S> =
+    TilesetFactoryBuilder<S>().apply(init).build()

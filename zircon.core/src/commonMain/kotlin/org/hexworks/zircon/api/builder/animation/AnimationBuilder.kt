@@ -7,9 +7,12 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 
-@Suppress("UNCHECKED_CAST", "RUNTIME_ANNOTATION_NOT_SUPPORTED")
+private const val DEFAULT_FPS = 15L
+
+@ZirconDsl
 class AnimationBuilder private constructor(
     private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
     private val positions: MutableList<Position> = mutableListOf(),
@@ -21,72 +24,47 @@ class AnimationBuilder private constructor(
         private set
 
     var loopCount: Int = 1
-        private set
-
-    fun withLoopCount(loopCount: Int) = also {
-        require(loopCount >= 0) {
-            "Loop count must be greater than or equal to 0!"
+        set(value) {
+            require(value >= 0) {
+                "Loop count must be greater than or equal to 0!"
+            }
+            field = value
         }
-        this.loopCount = loopCount
-    }
 
-    fun withFps(fps: Int) = also {
-        require(fps > 0) {
-            "Fps must be greater than 0!"
+    var fps: Long
+        get() = 1000L / tick
+        set(value) {
+            require(value > 0) {
+                "Fps must be greater than 0!"
+            }
+            tick = 1000L / fps
         }
-        this.tick = 1000L / fps
-    }
 
-    fun addFrame(frame: AnimationFrame) = also {
-        this.frames.add(
-            frame as? InternalAnimationFrame
-                ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame")
-        )
+    var position: Position = Position.zero()
+
+    fun frame(init: AnimationFrameBuilder.() -> Unit) =
+        AnimationFrameBuilder().apply(init).build().apply {
+            frames.add(asInternal())
+            recalculateFrameCountAndLength()
+        }
+
+    fun addFrames(frames: List<AnimationFrame>) {
+        frames.forEach {
+            this.frames.add(it.asInternal())
+        }
         recalculateFrameCountAndLength()
-    }
-
-    fun addFrames(frames: List<AnimationFrame>) = also {
-        require(frames.isNotEmpty()) {
-            "You can't add zero frames to an animation!"
-        }
-        frames as? List<InternalAnimationFrame>
-            ?: throw IllegalArgumentException("Can't use a custom implementation of AnimationFrame")
-        this.frames.addAll(frames)
-        recalculateFrameCountAndLength()
-    }
-
-    fun setPositionForAll(position: Position) = also {
-        for (i in 0 until totalFrameCount) {
-            addPosition(position)
-        }
-    }
-
-    fun addPositions(positions: List<Position>) = also {
-        this.positions.addAll(positions)
-    }
-
-    fun addPosition(position: Position) = also {
-        this.positions.add(position)
     }
 
     override fun build(): Animation {
         recalculateFrameCountAndLength()
-        if (positions.size == 0) {
-            setPositionForAll(Position.defaultPosition())
-        } else {
-            require(totalFrameCount == positions.size) {
-                "An Animation must have the same amount of positions as frames (one position for each frame)!" +
-                        " length: $totalFrameCount, position count: ${positions.size}"
-            }
-        }
         require(uniqueFrameCount > 0) {
             "An Animation must contain at least one frame!"
         }
         require(totalFrameCount > 0) {
             "An Animation must have a length greater than zero!"
         }
-        frames.forEachIndexed { i, frame ->
-            frame.position = positions[i]
+        frames.forEach { frame ->
+            frame.position = position
         }
         return DefaultAnimation(
             frames = frames,
@@ -97,14 +75,14 @@ class AnimationBuilder private constructor(
         )
     }
 
-    override fun createCopy() = AnimationBuilder(
+    fun createCopy() = AnimationBuilder(
         frames = frames
             .asSequence()
             .map { frame ->
                 DefaultAnimationFrame(
                     size = frame.size,
                     layers = frame.layers.asSequence()
-                        .map { it.createCopy().asInternalLayer() }
+                        .map { it.createCopy().asInternal() }
                         .toList(),
                     repeatCount = frame.repeatCount)
             }
@@ -121,15 +99,13 @@ class AnimationBuilder private constructor(
         uniqueFrameCount = frames.size
     }
 
-
     companion object {
-
-        /**
-         * Creates a new [AnimationBuilder] to build [Animation]s.
-         */
-        fun newBuilder() = AnimationBuilder()
-
-        private const val DEFAULT_FPS = 15L
-
+        fun create() = AnimationBuilder()
     }
 }
+
+/**
+ * Creates a new [AnimationBuilder] using the builder DSL and returns it.
+ */
+fun animation(init: AnimationBuilder.() -> Unit): Animation =
+    AnimationBuilder.create().apply(init).build()

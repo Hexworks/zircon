@@ -18,7 +18,7 @@ abstract class ComponentIntegrationTestBase(
     val size: Size = DEFAULT_SIZE_60X30,
     val tileset: TilesetResource = DEFAULT_TILESET_WANDERLUST,
     val tileGrid: TileGrid = VirtualApplications.startTileGrid(
-        appConfig = AppConfigBuilder.newBuilder()
+        appConfig = AppConfigBuilder.newAppConfigBuilder()
             .withDefaultTileset(tileset)
             .withSize(size)
             .build()

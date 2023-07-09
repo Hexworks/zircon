@@ -16,7 +16,7 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.TileTransformModifier
+import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.*
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
@@ -47,8 +47,8 @@ class KorgeGraphicalTileset(
 
 
     init {
-        require(resource.tileType == TileType.CHARACTER_TILE) {
-            "CP437 tilesets only support ${TileType.CHARACTER_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
+        require(resource.tileType == TileType.GRAPHICAL_TILE) {
+            "Graphical tilesets only support ${TileType.GRAPHICAL_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
         }
     }
 
@@ -65,7 +65,7 @@ class KorgeGraphicalTileset(
         }
         if (loadingState == LOADED) {
             var finalTile: GraphicalTile = tile
-            finalTile.modifiers.filterIsInstance<TileTransformModifier<GraphicalTile>>().forEach { modifier ->
+            finalTile.modifiers.filterIsInstance<TileModifier<GraphicalTile>>().forEach { modifier ->
                 if (modifier.canTransform(finalTile)) {
                     finalTile = modifier.transform(finalTile)
                 }
@@ -104,7 +104,7 @@ class KorgeGraphicalTileset(
                 error("Unexpected directory: ${vfsFile.fullName} for graphical tileset (expected zip file)")
             } else {
                 val zip = vfsFile.openAsZip()
-                val info = zip.extractFile("tileinfo.yml").readString().asYaml()
+                val info = zip.loadFile("tileinfo.yml").readString().asYaml()
                 val tilesetName = info["name"].str
                 val tileSize = info["size"].int
                 val files = info["files"].list
@@ -113,7 +113,7 @@ class KorgeGraphicalTileset(
                     val tilesPerRow = file["tilesPerRow"].int
                     val tiles = file["tiles"].list
                     val tileNames = tiles.map { it["name"].str }
-                    val bitmap = zip.extractFile(fileName).readBitmap().toBMP32IfRequired()
+                    val bitmap = zip.loadFile(fileName).readBitmap().toBMP32IfRequired()
                     val tileBitmaps = bitmap.slice().splitInRows(tilesPerRow, tileSize)
                     this.tileLookup.putAll(tileNames.zip(tileBitmaps).associate { it.first to it.second })
                 }

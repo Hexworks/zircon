@@ -3,12 +3,11 @@ package org.hexworks.zircon.api.modifier
 import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.impl.Fade
 
 data class FadeIn(
     private val steps: Int = 20,
     private val timeMs: Long = 2000,
-) : TileTransformModifier<CharacterTile>, Fade {
+) : TileModifier<CharacterTile>, Fade {
 
     override val cacheKey: String
         get() = "Modifier.FadeIn.$currentStep"

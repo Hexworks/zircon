@@ -28,13 +28,13 @@ class DefaultLayerable(
         layers.getOrNull(level)?.let { DefaultLayerHandle(it) }
 
     override fun addLayer(layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternalLayer()
+        val internalLayer = layer.asInternal()
         layers.add(internalLayer)
         return DefaultLayerHandle(internalLayer)
     }
 
     override fun setLayerAt(level: Int, layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternalLayer()
+        val internalLayer = layer.asInternal()
         if (level.isValidIndex) {
             listeners[internalLayer.id]?.dispose()
             layers.set(level, internalLayer)
@@ -43,7 +43,7 @@ class DefaultLayerable(
     }
 
     override fun insertLayerAt(level: Int, layer: Layer): LayerHandle {
-        val internalLayer = layer.asInternalLayer()
+        val internalLayer = layer.asInternal()
         if (level.isValidIndex) {
             layers.add(level, internalLayer)
         } else error("Can't insert layer $layer at $level")

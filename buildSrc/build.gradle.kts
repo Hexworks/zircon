@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
-    implementation("com.soywiz.korlibs.korge.plugins:korge-gradle-plugin:4.0.3")
+    implementation("com.soywiz.korlibs.korge.plugins:korge-gradle-plugin:4.0.7")
 }

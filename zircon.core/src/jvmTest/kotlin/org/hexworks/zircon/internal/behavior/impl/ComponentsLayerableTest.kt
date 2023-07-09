@@ -59,7 +59,7 @@ class ComponentsLayerableTest {
 
     @Test
     fun Given_a_components_layerable_When_fetching_its_layers_Then_they_are_returned_in_the_proper_order() {
-        val layer = LayerBuilder.newBuilder().withSize(Size.create(1, 1)).build().asInternalLayer()
+        val layer = LayerBuilder.newBuilder().withSize(Size.create(1, 1)).build().asInternal()
         layerable.addLayer(layer)
 
         assertEquals(

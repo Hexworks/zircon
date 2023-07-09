@@ -8,7 +8,7 @@ data class Border internal constructor(
     val borderColor: TileColor,
     val borderWidth: Int,
     val borderPositions: Set<BorderPosition>
-) : TextureTransformModifier {
+) : TextureModifier {
 
     override val cacheKey: String
         get() = "Modifier.Border(t=${borderType.name},bp=[" + borderPositions.joinToString(separator = ",") { it.name } + "])"

@@ -21,7 +21,7 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
     /**
      * Returns this [Layer] as an [InternalLayer] that represents Zircon's internal API.
      */
-    fun asInternalLayer(): InternalLayer
+    fun asInternal(): InternalLayer
 
     /**
      * Same as [TileGraphics.getTileAtOrNull] but will consider the given [position]

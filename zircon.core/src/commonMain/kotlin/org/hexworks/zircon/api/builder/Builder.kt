@@ -1,7 +1,5 @@
 package org.hexworks.zircon.api.builder
 
-import org.hexworks.zircon.api.behavior.Copiable
-
 /**
  * Simple builder pattern interface for [build]ing instances of type [T].
  * All builders have sensible defaults. If there are no sensible defaults a [Builder]
@@ -17,7 +15,7 @@ import org.hexworks.zircon.api.behavior.Copiable
  * }
  * ```
  */
-interface Builder<out T> : Copiable<Builder<T>> {
+interface Builder<out T> {
 
     /**
      * Builds an object of type [T].

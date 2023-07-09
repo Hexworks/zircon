@@ -4,9 +4,9 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.tileset.TileTexture
+import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.tileset.impl.DefaultTileTexture
+import org.hexworks.zircon.internal.tileset.impl.DefaultTextureContext
 
 class VirtualTileset : Tileset<Char> {
 
@@ -19,15 +19,16 @@ class VirtualTileset : Tileset<Char> {
         fetchTextureForTile(tile)
     }
 
-    private fun fetchTextureForTile(tile: Tile): TileTexture<Char> {
+    private fun fetchTextureForTile(tile: Tile): TextureContext<Char, String> {
         require(tile is CharacterTile) {
             "A VirtualTileset only works with CharacterTiles."
         }
-        return DefaultTileTexture(
+        return DefaultTextureContext(
             width = width,
             height = height,
+            cacheKey = tile.cacheKey,
             texture = tile.asCharacterTileOrNull()?.character!!,
-            cacheKey = tile.cacheKey
+            context = "",
         )
     }
 

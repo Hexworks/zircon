@@ -14,10 +14,10 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  * Setting an [emptyTile] is **mandatory** and has no default.
  */
 @Suppress("UNCHECKED_CAST")
-class BlockBuilder<T : Tile> private constructor(
-    private var emptyTile: T? = null,
+class BlockBuilder<T : Tile> : Builder<Block<T>> {
+
+    var emptyTile: T? = null
     private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
-) : Builder<Block<T>> {
 
     fun withEmptyTile(tile: T) = also {
         this.emptyTile = tile
@@ -77,19 +77,5 @@ class BlockBuilder<T : Tile> private constructor(
             emptyTile = emptyTile!!,
             initialTiles = tiles.toPersistentMap()
         )
-    }
-
-    override fun createCopy() = BlockBuilder(
-        emptyTile = emptyTile,
-        tiles = tiles.toMutableMap()
-    )
-
-    companion object {
-
-        /**
-         * Creates a new [BlockBuilder] for creating [Block]s.
-         */
-        fun <T : Tile> newBuilder() = BlockBuilder<T>()
-
     }
 }

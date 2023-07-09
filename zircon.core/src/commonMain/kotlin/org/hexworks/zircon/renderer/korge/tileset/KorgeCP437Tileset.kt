@@ -16,7 +16,7 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.TileTransformModifier
+import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
@@ -66,7 +66,7 @@ class KorgeCP437Tileset(
                 "A CP437 renderer can only render ${CharacterTile::class.simpleName}s. Offending tile: $tile."
             }
             var finalTile: CharacterTile = tile
-            finalTile.modifiers.filterIsInstance<TileTransformModifier<CharacterTile>>().forEach { modifier ->
+            finalTile.modifiers.filterIsInstance<TileModifier<CharacterTile>>().forEach { modifier ->
                 if (modifier.canTransform(finalTile)) {
                     finalTile = modifier.transform(finalTile)
                 }

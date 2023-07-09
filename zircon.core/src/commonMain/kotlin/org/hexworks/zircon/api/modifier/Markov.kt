@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.util.markovchain.MarkovChain
 
 data class Markov(
     private val chain: MarkovChain<CharacterTile>
-) : TileTransformModifier<CharacterTile> {
+) : TileModifier<CharacterTile> {
 
     override val cacheKey: String
         get() = "Modifier.Markov.${chain.current().id}"

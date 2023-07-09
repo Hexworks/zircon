@@ -12,21 +12,24 @@ import kotlin.jvm.JvmStatic
  * [Builder] for creating [ShortcutsConfig]s.
  */
 @ZirconDsl
-class ShortcutsConfigBuilder private constructor(
+class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
+
     /**
      * Default is `<Space>` press.
      */
     var activateFocused: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_PRESSED,
         code = KeyCode.SPACE
-    ),
+    )
+
     /**
      * Default is `<Space>` release.
      */
     var deactivateActivated: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_RELEASED,
         code = KeyCode.SPACE
-    ),
+    )
+
     /**
      * Default is `<Tab>` press.
      */
@@ -34,7 +37,8 @@ class ShortcutsConfigBuilder private constructor(
         type = KeyboardEventType.KEY_PRESSED,
         code = KeyCode.TAB,
         shiftDown = false
-    ),
+    )
+
     /**
      * Default is `<Shift>`+`<Tab>` press.
      */
@@ -43,42 +47,11 @@ class ShortcutsConfigBuilder private constructor(
         code = KeyCode.TAB,
         shiftDown = true
     )
-) : Builder<ShortcutsConfig> {
-
-    fun withActivateFocused(activateFocused: KeyboardEventMatcher) = also {
-        this.activateFocused = activateFocused
-    }
-
-    fun withDeactivateActivated(deactivateActivated: KeyboardEventMatcher) = also {
-        this.deactivateActivated = deactivateActivated
-    }
-
-    fun withFocusNext(focusNext: KeyboardEventMatcher) = also {
-        this.focusNext = focusNext
-    }
-
-    fun withFocusPrevious(focusPrevious: KeyboardEventMatcher) = also {
-        this.focusPrevious = focusPrevious
-    }
 
     override fun build() = ShortcutsConfig(
         activateFocused = activateFocused,
         deactivateActivated = deactivateActivated,
-        focusNext =focusNext,
+        focusNext = focusNext,
         focusPrevious = focusPrevious
     )
-
-    override fun createCopy() = ShortcutsConfigBuilder(
-        activateFocused = activateFocused,
-        deactivateActivated = deactivateActivated,
-        focusNext =focusNext,
-        focusPrevious = focusPrevious
-    )
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = ShortcutsConfigBuilder()
-
-    }
 }
