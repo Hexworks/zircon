@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.Components.label
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D

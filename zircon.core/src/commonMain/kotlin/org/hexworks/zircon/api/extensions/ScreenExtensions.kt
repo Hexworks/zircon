@@ -11,14 +11,17 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * Note that the size is fixed, and you cannot change it.
  */
 fun Screen.useComponentBuilder(fn: PanelBuilder.() -> Unit) {
-    val builder = PanelBuilder.newBuilder()
-        .withPreferredSize(size)
-        .withPosition(Position.defaultPosition())
+    val builder = PanelBuilder().apply {
+        preferredSize = size
+        position = Position.defaultPosition()
+    }
     fn(builder)
     // we need to make sure that these were not tampered with
-    builder.withComponentRenderer(NoOpComponentRenderer())
-        .withPreferredSize(size)
-        .withPosition(Position.defaultPosition())
+    builder.apply {
+        componentRenderer = NoOpComponentRenderer()
+        preferredSize = size
+        position = Position.defaultPosition()
+    }
 
     addComponent(builder.build())
 }

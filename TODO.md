@@ -33,3 +33,33 @@
 - Java support dropped
 - All MPP targets supported
 - Obsolete configurations dropped
+- add to the docs that the GameComponent was removed and now a ComponentRenderer can be created instead
+- Code example with improved builders:
+```kotlin
+ComponentStyleSetBuilder.newBuilder()
+        .withDefaultStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(primaryForegroundColor)
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .withDisabledStyle(
+            StyleSetBuilder.newBuilder()
+                .withForegroundColor(primaryForegroundColor.desaturate(.85).darkenByPercent(.1))
+                .withBackgroundColor(TileColor.transparent())
+                .build()
+        )
+        .build()
+        
+// vs
+componentStyleSet {
+    defaultStyle = styleSet {
+        foregroundColor = primaryForegroundColor
+        backgroundColor = TileColor.transparent()
+    }
+    disabledStyle = styleSet {
+        foregroundColor = primaryForegroundColor.desaturate(.85).darkenByPercent(.1)
+        backgroundColor = TileColor.transparent()
+    }
+}
+```

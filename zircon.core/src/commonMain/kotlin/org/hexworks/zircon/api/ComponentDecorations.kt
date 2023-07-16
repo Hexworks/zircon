@@ -20,7 +20,7 @@ object ComponentDecorations {
      * [RenderingMode.NON_INTERACTIVE] by default.
      */
     fun border(
-        border: Border = Border.newBuilder().build(),
+        border: Border = org.hexworks.zircon.api.builder.modifier.border {  },
         renderingMode: RenderingMode = NON_INTERACTIVE
     ): ComponentDecorationRenderer = BorderDecorationRenderer(
         border = border,

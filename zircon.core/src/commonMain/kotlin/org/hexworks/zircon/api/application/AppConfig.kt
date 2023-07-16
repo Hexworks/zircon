@@ -119,7 +119,7 @@ class AppConfig internal constructor(
     fun shouldCheckBounds() = !debugMode || !debugConfig.relaxBoundsCheck
 
     /**
-     * Retrieves a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * Retrieves a custom property set earlier using [AppConfigBuilder.customProperties]. If this property was
      * never set, this returns `null`.
      *
      * **Note that** you probably don't need to call this API.
@@ -132,7 +132,7 @@ class AppConfig internal constructor(
     }
 
     /**
-     * Retrieves a custom property set earlier using [AppConfigBuilder.withProperty]. If this property was
+     * Retrieves a custom property set earlier using [AppConfigBuilder.customProperties]. If this property was
      * never set, this returns the result of calling `orElse`.
      *
      * **Note that** you probably don't need to call this API.
@@ -143,7 +143,7 @@ class AppConfig internal constructor(
 
     companion object {
 
-        val DEFAULT_APP_CONFIG = AppConfigBuilder().build()
+        fun defaultAppConfig() = AppConfigBuilder().build()
 
     }
 }

@@ -2,14 +2,14 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class LogAreaBuilder private constructor() : BaseComponentBuilder<LogArea, LogAreaBuilder>(
+class LogAreaBuilder : BaseComponentBuilder<LogArea>(
     initialRenderer = DefaultLogAreaRenderer()
 ) {
 
@@ -25,14 +25,19 @@ class LogAreaBuilder private constructor() : BaseComponentBuilder<LogArea, LogAr
             renderingStrategy = createRenderingStrategy(),
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withLogRowHistorySize(logRowHistorySize)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = LogAreaBuilder()
-    }
 }
+
+/**
+ * Creates a new [LogArea] using the component builder DSL and returns it.
+ */
+fun buildLogArea(init: LogAreaBuilder.() -> Unit): LogArea =
+    LogAreaBuilder().apply(init).build()
+
+/**
+ * Creates a new [LogArea] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [LogArea].
+ */
+fun <T : BaseContainerBuilder<*>> T.logArea(
+    init: LogAreaBuilder.() -> Unit
+): LogArea = buildChildFor(this, LogAreaBuilder(), init)
+

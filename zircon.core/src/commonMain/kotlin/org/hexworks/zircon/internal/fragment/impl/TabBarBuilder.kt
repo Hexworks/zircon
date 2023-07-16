@@ -8,10 +8,10 @@ abstract class TabBarBuilder(
     var size: Size,
     var defaultSelected: String?,
     var position: Position,
-    internal var tabs: List<TabBuilder>,
+    internal var tabs: List<TabBuilder>
 ) {
 
-    fun checkCommonProperties() {
+    protected fun checkCommonProperties() {
         require(size.isNotUnknown) {
             "A tab bar must has a size"
         }

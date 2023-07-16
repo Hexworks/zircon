@@ -1,17 +1,17 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Paragraph
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ParagraphBuilder private constructor() : ComponentWithTextBuilder<Paragraph, ParagraphBuilder>(
+class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
     initialRenderer = DefaultParagraphRenderer(),
     initialText = ""
 ) {
@@ -24,13 +24,6 @@ class ParagraphBuilder private constructor() : ComponentWithTextBuilder<Paragrap
 
     var typingEffectSpeedInMs: Long = 0
 
-    fun withTextWrap(textWrap: TextWrap) = also {
-        this.textWrap = textWrap
-    }
-
-    fun withTypingEffect(typingEffectSpeedInMs: Long) = also {
-        this.typingEffectSpeedInMs = typingEffectSpeedInMs
-    }
 
     override fun build(): Paragraph {
         props.postProcessors = props.postProcessors + if (typingEffectSpeedInMs > 0) {
@@ -44,15 +37,18 @@ class ParagraphBuilder private constructor() : ComponentWithTextBuilder<Paragrap
             initialText = text,
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withText(text)
-        .withTypingEffect(typingEffectSpeedInMs)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = ParagraphBuilder()
-    }
 }
+
+/**
+ * Creates a new [Paragraph] using the component builder DSL and returns it.
+ */
+fun buildParagraph(init: ParagraphBuilder.() -> Unit): Paragraph =
+    ParagraphBuilder().apply(init).build()
+
+/**
+ * Creates a new [Paragraph] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [Paragraph].
+ */
+fun <T : BaseContainerBuilder<*>> T.paragraph(
+    init: ParagraphBuilder.() -> Unit
+): Paragraph = buildChildFor(this, ParagraphBuilder(), init)

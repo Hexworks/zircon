@@ -2,7 +2,6 @@ package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.graphics.BoxType.SINGLE
 import org.hexworks.zircon.api.screen.Screen

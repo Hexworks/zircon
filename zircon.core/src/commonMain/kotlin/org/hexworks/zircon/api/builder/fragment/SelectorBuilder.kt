@@ -3,35 +3,44 @@ package org.hexworks.zircon.api.builder.fragment
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
-import kotlin.jvm.JvmStatic
 
-class SelectorBuilder<T : Any> private constructor(
-    var width: Int? = null,
-    var position: Position = Position.zero(),
-    var valuesProperty: ListProperty<T> = listOf<T>().toProperty(),
+@ZirconDsl
+class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
+
+    override var position: Position = Position.zero()
+
+    var width: Int? = null
+
+    var valuesProperty: ListProperty<T> = listOf<T>().toProperty()
+
     /**
      * Whether the text on the label should be centered.
      */
-    var centeredText: Boolean = true,
+    var centeredText: Boolean = true
+
     /**
      * The method to use for the label text if not ::toString
      */
-    var toStringMethod: (T) -> String = Any::toString,
+    var toStringMethod: (T) -> String = Any::toString
+
     /**
      * When set to true the center component, showing the text, will be an undecorated button that also invokes the
      * callback (else it is just a simple label).
      */
-    var clickableLabel: Boolean = false,
+    var clickableLabel: Boolean = false
+
     /**
      * The value that should be selected by default.
      */
-    var defaultSelected: T? = null,
-) : FragmentBuilder<Selector<T>, SelectorBuilder<T>>, Builder<Selector<T>> {
+    var defaultSelected: T? = null
 
     var valueList: List<T>
         get() = valuesProperty.value
@@ -40,38 +49,6 @@ class SelectorBuilder<T : Any> private constructor(
         }
 
     val selectedProperty: Property<T?> = null.toProperty()
-
-    fun withWidth(width: Int) = also {
-        this.width = width
-    }
-
-    fun withValueList(values: List<T>) = also {
-        this.valuesProperty = values.toProperty()
-    }
-
-    fun withValues(valuesProperty: ListProperty<T>) = also {
-        this.valuesProperty = valuesProperty
-    }
-
-    fun withCenteredText(centerText: Boolean) = also {
-        this.centeredText = centerText
-    }
-
-    fun withToStringMethod(function: (T) -> String) = also {
-        this.toStringMethod = function
-    }
-
-    fun withClickableLabel(clickable: Boolean) = also {
-        this.clickableLabel = clickable
-    }
-
-    fun withDefaultSelected(item: T) = also {
-        this.defaultSelected = item
-    }
-
-    final override fun withPosition(position: Position) = also {
-        this.position = position
-    }
 
     override fun build(): Selector<T> {
         defaultSelected?.let {
@@ -98,22 +75,20 @@ class SelectorBuilder<T : Any> private constructor(
         )
     }
 
-    override fun createCopy() = SelectorBuilder(
-        width = width,
-        position = position,
-        valuesProperty = valuesProperty.value.toProperty(),
-        centeredText = centeredText,
-        toStringMethod = toStringMethod,
-        clickableLabel = clickableLabel,
-        defaultSelected = defaultSelected
-    )
-
     private fun calculateWidth() = valuesProperty.value.maxOf { toStringMethod(it).length } + 2
-
-    companion object {
-
-        @JvmStatic
-        fun <T : Any> newBuilder(): SelectorBuilder<T> = SelectorBuilder()
-    }
-
 }
+
+/**
+ * Creates a new [Selector] using the fragment builder DSL and returns it.
+ */
+fun <T : Any> buildSelector(
+    init: SelectorBuilder<T>.() -> Unit
+): Selector<T> = SelectorBuilder<T>().apply(init).build()
+
+/**
+ * Creates a new [Selector] using the fragment builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [Selector].
+ */
+fun <S : Any> AnyContainerBuilder.selector(
+    init: SelectorBuilder<S>.() -> Unit
+): Selector<S> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.SelectorBuilder(), init)

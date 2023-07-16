@@ -1,10 +1,12 @@
 package org.hexworks.zircon.api.graphics.impl
 
-import org.hexworks.zircon.api.CharacterTileStrings
+import org.hexworks.zircon.api.builder.graphics.characterTileString
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.isEmpty
+import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TileComposite
@@ -21,7 +23,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 class DrawWindow(
     rect: Rect,
     private val backend: TileGraphics
-): TileComposite {
+) : TileComposite {
 
     override val size = rect.size
     override val width = size.width
@@ -135,12 +137,11 @@ class DrawWindow(
     ) {
         clear()
         draw(
-            CharacterTileStrings
-                .newBuilder()
-                .withText(text)
-                .withSize(size)
-                .withTextWrap(textWrap)
-                .build()
+            characterTileString {
+                this.text = text
+                this.size = size
+                this.textWrap = textWrap
+            }
         )
         applyStyle(style)
     }

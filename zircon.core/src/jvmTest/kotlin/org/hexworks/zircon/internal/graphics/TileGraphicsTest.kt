@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.*
@@ -259,7 +259,7 @@ abstract class TileGraphicsTest {
         val TILESET = CP437TilesetResources.jolly12x12()
         val FILLED_POS = Position.create(1, 2)
         val SIZE_OF_3X3 = Size.create(3, 3)
-        val FILLER: CharacterTile = TileBuilder.newBuilder()
+        val FILLER: CharacterTile = GraphicalTileBuilder.newBuilder()
             .withCharacter('a')
             .buildCharacterTile()
 

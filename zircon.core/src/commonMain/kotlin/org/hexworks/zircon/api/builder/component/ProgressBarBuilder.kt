@@ -2,18 +2,18 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 /**
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
  */
 @ZirconDsl
-class ProgressBarBuilder private constructor() :
-    BaseComponentBuilder<ProgressBar, ProgressBarBuilder>(
+class ProgressBarBuilder :
+    BaseComponentBuilder<ProgressBar>(
         initialRenderer = DefaultProgressBarRenderer()
     ) {
 
@@ -32,18 +32,6 @@ class ProgressBarBuilder private constructor() :
 
     var displayPercentValueOfProgress: Boolean = false
 
-    fun withRange(range: Int) = also {
-        this.range = range
-    }
-
-    fun withNumberOfSteps(steps: Int) = also {
-        this.numberOfSteps = steps
-    }
-
-    fun withDisplayPercentValueOfProgress(displayPercentValueOfProgress: Boolean) = also {
-        this.displayPercentValueOfProgress = displayPercentValueOfProgress
-    }
-
     override fun build(): ProgressBar {
         return DefaultProgressBar(
             componentMetadata = createMetadata(),
@@ -53,16 +41,18 @@ class ProgressBarBuilder private constructor() :
             displayPercentValueOfProgress = displayPercentValueOfProgress,
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withRange(range)
-        .withNumberOfSteps(numberOfSteps)
-        .withDisplayPercentValueOfProgress(displayPercentValueOfProgress)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = ProgressBarBuilder()
-    }
 }
+
+/**
+ * Creates a new [ProgressBar] using the component builder DSL and returns it.
+ */
+fun buildProgressBar(init: ProgressBarBuilder.() -> Unit): ProgressBar =
+    ProgressBarBuilder().apply(init).build()
+
+/**
+ * Creates a new [ProgressBar] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [ProgressBar].
+ */
+fun <T : BaseContainerBuilder<*>> T.progressBar(
+    init: ProgressBarBuilder.() -> Unit
+): ProgressBar = buildChildFor(this, ProgressBarBuilder(), init)

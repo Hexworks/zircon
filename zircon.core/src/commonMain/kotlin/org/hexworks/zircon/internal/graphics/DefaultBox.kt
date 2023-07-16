@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -23,7 +23,7 @@ class DefaultBox internal constructor(
 ) : Box, TileGraphics by backend {
 
     init {
-        val verticalChar = TileBuilder.newBuilder()
+        val verticalChar = GraphicalTileBuilder.newBuilder()
             .withStyleSet(styleSet)
             .withCharacter(boxType.vertical)
             .buildCharacterTile()

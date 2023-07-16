@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.base
 
 import kotlinx.collections.immutable.persistentHashMapOf
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -37,7 +37,7 @@ abstract class BaseTileImage : TileImage {
                 newTiles = newTiles.put(pos, tile)
             }
         if (filler != Tile.empty()) {
-            newSize.fetchPositions().subtract(size.fetchPositions()).forEach {
+            newSize.fetchPositions().subtract(size.fetchPositions().toSet()).forEach {
                 newTiles = newTiles.put(it, filler)
             }
         }
@@ -105,7 +105,7 @@ abstract class BaseTileImage : TileImage {
         var newTiles = persistentHashMapOf<Position, Tile>()
         size.fetchPositions()
             .map { it + offset }
-            .intersect(this.size.fetchPositions())
+            .intersect(this.size.fetchPositions().toSet())
             .forEach { pos ->
                 getTileAtOrNull(pos)?.let { tile ->
                     newTiles = newTiles.put(pos - offset, tile)
@@ -118,9 +118,9 @@ abstract class BaseTileImage : TileImage {
         )
     }
 
-    override fun toTileGraphics() = TileGraphicsBuilder.newBuilder()
-        .withSize(size)
-        .withTileset(tileset)
-        .withTiles(tiles)
-        .build()
+    override fun toTileGraphics() = tileGraphics {
+        size = this@BaseTileImage.size
+        tileset = this@BaseTileImage.tileset
+        tiles = this@BaseTileImage.tiles
+    }
 }

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.data.Size
@@ -18,7 +18,7 @@ class DefaultBoxTest {
             .withStyle(StyleSetBuilder.newBuilder().build())
             .build()
             .apply {
-                fill(TileBuilder.newBuilder().withCharacter('x').build())
+                fill(GraphicalTileBuilder.newBuilder().withCharacter('x').build())
             }
             .toString())
             .isEqualTo(EXPECTED_BOX)

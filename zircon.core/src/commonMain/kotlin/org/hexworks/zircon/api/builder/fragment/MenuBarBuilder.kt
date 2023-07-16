@@ -1,39 +1,39 @@
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.events.api.CallbackResult
-import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.MenuBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.api.fragment.menu.DropdownMenu
 import org.hexworks.zircon.api.fragment.menu.MenuSelection
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
-import kotlin.jvm.JvmStatic
 
 
 @ZirconDsl
-class MenuBarBuilder<T : Any> private constructor(
-    var screen: Screen? = null,
-    var menuElements: List<DropdownMenu<T>> = listOf(),
-    var theme: ColorTheme = ColorTheme.unknown(),
-    var tileset: TilesetResource = TilesetResource.unknown(),
-    var position: Position = Position.zero(),
-    var width: Int = -1,
-    var spacing: Int = 1,
+class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
+
+    override var position: Position = Position.zero()
+
+    var screen: Screen? = null
+    var menuElements: List<DropdownMenu<T>> = listOf()
+    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    var width: Int = -1
+    var spacing: Int = 1
     var onMenuItemSelected: ((menuSelection: MenuSelection<T>) -> CallbackResult)? = null
-) : FragmentBuilder<MenuBar<T>, MenuBarBuilder<T>>, Builder<MenuBar<T>> {
 
     override fun build(): MenuBar<T> {
         require(menuElements.isNotEmpty()) {
             "Cannot build a MenuBar without menu elements"
-        }
-        require(theme.isNotUnknown) {
-            "You must set a theme for a MenuBar"
         }
         val minWidth = menuElements.minSize(1).width
         val finalWidth = if (width > 0) {
@@ -57,31 +57,38 @@ class MenuBarBuilder<T : Any> private constructor(
         }
     }
 
-    override fun createCopy() = MenuBarBuilder(
-        screen = screen,
-        menuElements = menuElements,
-        theme = theme,
-        tileset = tileset,
-        spacing = spacing
-    )
-
-    override fun withPosition(position: Position) = also {
-        this.position = position
-    }
-
     private fun <T : Any> List<DropdownMenu<T>>.minSize(spacing: Int) = Size.create(
         width = map { it.width }.fold(0, Int::plus) + (size - 1) * spacing,
         height = 1
     )
+}
 
-    companion object {
+/**
+ * Creates a new [MenuBar] using the fragment builder DSL and returns it.
+ */
+fun <T : Any> buildMenuBar(
+    init: MenuBarBuilder<T>.() -> Unit
+): MenuBar<T> = MenuBarBuilder<T>().apply(init).build()
 
-        /**
-         * Creates a builder to configure and build a [MenuBar].
-         * @param T the type of the item(s) that can be selected
-         */
-        @JvmStatic
-        fun <T : Any> newBuilder(): MenuBarBuilder<T> = MenuBarBuilder()
-    }
+/**
+ * Creates a new [MenuBar] using the fragment builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [MenuBar].
+ */
 
+fun <T : Any> AnyContainerBuilder.menuBar(
+    init: MenuBarBuilder<T>.() -> Unit
+): MenuBar<T> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.MenuBarBuilder(), init)
+
+
+fun <T : Any> MenuBarBuilder<T>.dropdownMenu(init: DropdownMenuBuilder<T>.() -> Unit) {
+    val builder = DropdownMenuBuilder<T>()
+    init(builder)
+    this.menuElements = menuElements + builder.build()
+}
+
+
+fun <T : Any> DropdownMenuBuilder<T>.menuItem(init: DropdownMenuItemBuilder<T>.() -> Unit) {
+    val builder = DropdownMenuItemBuilder<T>()
+    init(builder)
+    children = children + builder.build()
 }

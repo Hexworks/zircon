@@ -7,8 +7,8 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
-import kotlin.jvm.JvmStatic
 
 /**
  * Creates [org.hexworks.zircon.api.graphics.TileGraphics]s.
@@ -16,53 +16,31 @@ import kotlin.jvm.JvmStatic
  * - Default [Size] is `ONE` (1x1).
  * - Default `filler` is an `EMPTY` character
  */
-class TileImageBuilder private constructor(
-    private var tileset: TilesetResource = RuntimeConfig.config.defaultTileset,
-    private var filler: Tile = Tile.empty(),
-    private var size: Size = Size.one(),
-    private var tiles: MutableMap<Position, Tile> = mutableMapOf()
-) : Builder<TileImage> {
+@ZirconDsl
+class TileImageBuilder : Builder<TileImage> {
 
-    /**
-     * Sets the [tileset] to be used when building this [TileImage].
-     * The default comes from [RuntimeConfig.config].
-     */
-    fun withTileset(tileset: TilesetResource) = also {
-        this.tileset = tileset
-    }
+    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    var filler: Tile = Tile.empty()
 
-    /**
-     * Sets the [filler] to be used when the [TileImage] is built.
-     * Default is [Tile.empty]
-     */
-    fun withFiller(filler: Tile) = also {
-        this.filler = filler
-    }
-
-    /**
-     * Sets the size for the new [TileImage].
-     * Default is [Size.one].
-     */
-    fun withSize(size: Size) = also {
-        this.size = size
-    }
-
-    /**
-     * Adds a [Tile] at the given [Position].
-     */
-    fun withTile(position: Position, tile: Tile) = also {
-        require(size.containsPosition(position)) {
-            "The given character's position ($position) is out create bounds for text image size: $size."
+    var size: Size = Size.one()
+        set(value) {
+            if (this.size.width > size.width || this.size.height > size.height) {
+                removeOutOfBoundsTiles(size)
+            }
+            field = value
         }
-        tiles[position] = tile
-    }
 
-    /**
-     * Sets the given [tiles] to be used for the new [TileImage].
-     */
-    fun withTiles(tiles: Map<Position, Tile>) = also {
-        this.tiles.clear()
-        this.tiles.putAll(tiles)
+    var tiles: Map<Position, Tile> = mapOf()
+        set(value) {
+            field = value
+            removeOutOfBoundsTiles()
+        }
+
+
+    private fun removeOutOfBoundsTiles(size: Size = this.size) {
+        this.tiles = tiles
+            .filterKeys { size.containsPosition(it) }
+            .toMap()
     }
 
     override fun build(): TileImage {
@@ -72,20 +50,10 @@ class TileImageBuilder private constructor(
             initialTiles = tiles.filter { size.containsPosition(it.key) }
         ).withFiller(filler)
     }
-
-    override fun createCopy() = TileImageBuilder(
-        tileset = tileset,
-        filler = filler,
-        size = size,
-        tiles = tiles.toMutableMap(),
-    )
-
-    companion object {
-
-        /**
-         * Creates a new [TileImageBuilder] to build [TileImage] objects.
-         */
-        @JvmStatic
-        fun newBuilder() = TileImageBuilder()
-    }
 }
+
+/**
+ * Creates a new [TileImageBuilder] using the builder DSL and returns it.
+ */
+fun tileImage(init: TileImageBuilder.() -> Unit): TileImage =
+    TileImageBuilder().apply(init).build()

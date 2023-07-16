@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.graphics
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CanBeHidden
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.grid.TileGrid
@@ -44,8 +43,4 @@ interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOve
      */
     fun drawAbsoluteTileAt(position: Position, tile: Tile)
 
-    companion object {
-
-        fun newBuilder() = LayerBuilder.newBuilder()
-    }
 }

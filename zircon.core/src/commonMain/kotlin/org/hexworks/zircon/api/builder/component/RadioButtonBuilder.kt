@@ -1,15 +1,15 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class RadioButtonBuilder private constructor() : ComponentWithTextBuilder<RadioButton, RadioButtonBuilder>(
+class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
     initialRenderer = DefaultRadioButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
@@ -32,15 +32,18 @@ class RadioButtonBuilder private constructor() : ComponentWithTextBuilder<RadioB
             key = key,
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withText(text)
-        .withKey(key)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = RadioButtonBuilder()
-    }
 }
+
+/**
+ * Creates a new [RadioButton] using the component builder DSL and returns it.
+ */
+fun buildRadioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
+    RadioButtonBuilder().apply(init).build()
+
+/**
+ * Creates a new [RadioButton] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [RadioButton].
+ */
+fun <T : BaseContainerBuilder<*>> T.radioButton(
+    init: RadioButtonBuilder.() -> Unit
+): RadioButton = buildChildFor(this, RadioButtonBuilder(), init)

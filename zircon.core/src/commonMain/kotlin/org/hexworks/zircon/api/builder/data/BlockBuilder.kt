@@ -5,69 +5,71 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builds [Block]s.
  * Has no [Tile]s for either sides by default.
  * Setting an [emptyTile] is **mandatory** and has no default.
  */
-@Suppress("UNCHECKED_CAST")
+@ZirconDsl
 class BlockBuilder<T : Tile> : Builder<Block<T>> {
 
+    private var tilesMap: MutableMap<BlockTileType, T> = mutableMapOf()
+
     var emptyTile: T? = null
-    private val tiles: MutableMap<BlockTileType, T> = mutableMapOf()
 
-    fun withEmptyTile(tile: T) = also {
-        this.emptyTile = tile
-    }
-
-    fun withTop(top: T) = also {
-        tiles[TOP] = top
-    }
-
-    fun withBottom(bottom: T) = also {
-        tiles[BOTTOM] = bottom
-    }
-
-    fun withFront(front: T) = also {
-        tiles[FRONT] = front
-    }
-
-    fun withBack(back: T) = also {
-        tiles[BACK] = back
-    }
-
-    fun withLeft(left: T) = also {
-        tiles[LEFT] = left
-    }
-
-    fun withRight(right: T) = also {
-        tiles[RIGHT] = right
-    }
-
-    fun withContent(content: T) = also {
-        tiles[CONTENT] = content
-    }
-
-    /**
-     * Sets this [tile] on all sides.
-     */
-    fun withTileOnAllSides(tile: T) = also {
-        BlockTileType.values().forEach {
-            tiles[it] = tile
+    var top: T
+        get() = tilesMap[TOP] ?: error("No top tile present")
+        set(value) {
+            tilesMap[TOP] = value
         }
-    }
 
-    /**
-     * Overwrites the [Tile]s in this [BlockBuilder] with the
-     * given [BlockTileType] -> [Tile] mapping.
-     */
-    fun withTiles(tiles: Map<BlockTileType, T>) = also {
-        this.tiles.clear()
-        this.tiles.putAll(tiles)
-    }
+    var bottom: T
+        get() = tilesMap[BOTTOM] ?: error("No bottom tile present")
+        set(value) {
+            tilesMap[BOTTOM] = value
+        }
+
+    var front: T
+        get() = tilesMap[FRONT] ?: error("No front tile present")
+        set(value) {
+            tilesMap[FRONT] = value
+        }
+
+    var back: T
+        get() = tilesMap[BACK] ?: error("No back tile present")
+        set(value) {
+            tilesMap[BACK] = value
+        }
+
+    var left: T
+        get() = tilesMap[LEFT] ?: error("No left tile present")
+        set(value) {
+            tilesMap[LEFT] = value
+        }
+
+    var right: T
+        get() = tilesMap[RIGHT] ?: error("No right tile present")
+        set(value) {
+            tilesMap[RIGHT] = value
+        }
+
+    var content: T
+        get() = tilesMap[CONTENT] ?: error("No content tile present")
+        set(value) {
+            tilesMap[CONTENT] = value
+        }
+    
+    var tiles: Map<BlockTileType, T>
+        get() = tilesMap.toMap()
+        set(value) {
+            tilesMap = value.toMutableMap()
+        }
+
 
     override fun build(): Block<T> {
         requireNotNull(emptyTile) {
@@ -75,7 +77,14 @@ class BlockBuilder<T : Tile> : Builder<Block<T>> {
         }
         return DefaultBlock(
             emptyTile = emptyTile!!,
-            initialTiles = tiles.toPersistentMap()
+            initialTiles = tilesMap.toPersistentMap()
         )
     }
+}
+
+/**
+ * Creates a new [Block] using the builder DSL and returns it.
+ */
+fun <T : Tile> block(init: BlockBuilder<T>.() -> Unit): Block<T> {
+    return BlockBuilder<T>().apply(init).build()
 }

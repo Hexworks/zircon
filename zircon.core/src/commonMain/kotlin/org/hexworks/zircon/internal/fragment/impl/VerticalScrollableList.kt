@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer

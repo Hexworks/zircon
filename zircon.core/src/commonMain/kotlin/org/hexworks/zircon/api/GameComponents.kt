@@ -18,13 +18,8 @@ import org.hexworks.zircon.internal.game.impl.GameAreaComponentRenderer
 /**
  * This object is a facade that can be used to create builders for [GameArea] and [GameComponent].
  */
-// TODO: add to the docs that the GameComponent was removed and now a ComponentRenderer can be created instead
 object GameComponents {
 
-    /**
-     * Creates a new [GameAreaBuilder].
-     */
-    fun <T : Tile, B : Block<T>> newGameAreaBuilder() = GameAreaBuilder.newBuilder<T, B>()
 
     fun <C : Component, T : Tile, B : Block<T>> newGameAreaComponentRenderer(
         gameArea: GameArea<T, B>,

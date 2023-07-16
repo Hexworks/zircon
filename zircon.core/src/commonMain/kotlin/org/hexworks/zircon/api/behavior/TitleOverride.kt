@@ -6,7 +6,6 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTitleOverride
 /**
  * Represents an object that has a visual [title] that can be changed.
  */
-// TODO: mention in the release notes that TitleHolder + TitleOverride was created
 interface TitleOverride {
 
     /**

@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 
-abstract class ScrollBarBuilder<T : ScrollBar, B : BaseComponentBuilder<T, B>>(
+abstract class ScrollBarBuilder<T : ScrollBar>(
     initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T, B>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer) {
 
     var numberOfScrollableItems: Int = 100
         set(value) {
@@ -19,12 +19,4 @@ abstract class ScrollBarBuilder<T : ScrollBar, B : BaseComponentBuilder<T, B>>(
             require(value > 0) { "Count must be greater than 0." }
             field = value
         }
-
-    fun withNumberOfScrollableItems(items: Int) = also {
-        this.numberOfScrollableItems = items
-    }
-
-    fun withItemsShownAtOnce(count: Int) = also {
-        this.itemsShownAtOnce = count
-    }
 }

@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.data.Position
@@ -90,7 +90,7 @@ class DefaultLayerTest {
 
     companion object {
         private val TILESET = CP437TilesetResources.cla18x18()
-        val CHAR = TileBuilder.newBuilder()
+        val CHAR = GraphicalTileBuilder.newBuilder()
             .withCharacter('x')
             .build()
         val SIZE = Size.create(10, 10)

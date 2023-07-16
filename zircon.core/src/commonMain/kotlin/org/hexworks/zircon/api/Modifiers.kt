@@ -23,7 +23,7 @@ object Modifiers {
      * - on all sides (top, right, bottom, left)
      * @see BorderBuilder if you want to create custom borders
      */
-    fun border(): Border = BorderBuilder.newBuilder().build()
+    fun border(): Border = org.hexworks.zircon.api.builder.modifier.border {  }
 
     /**
      * Provides a fade in effect for the tile that has this modifier.

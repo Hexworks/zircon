@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.dsl.component
+package org.hexworks.zircon.api.dsl
 
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component

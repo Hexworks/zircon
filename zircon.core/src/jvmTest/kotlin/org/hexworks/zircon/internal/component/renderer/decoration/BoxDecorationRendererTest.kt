@@ -3,8 +3,6 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.Components
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment.*
 import org.hexworks.zircon.api.data.Size

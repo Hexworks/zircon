@@ -1,35 +1,31 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultVerticalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
-import kotlin.jvm.JvmStatic
 
 
-class VerticalTabBarBuilder private constructor(
+@ZirconDsl
+class VerticalTabBarBuilder(
     size: Size = Size.unknown(),
     defaultSelected: String? = null,
     position: Position = Position.zero(),
     tabs: List<TabBuilder> = listOf(),
-    var tabWidth: Int = -1,
 ) : TabBarBuilder(
     size = size,
     defaultSelected = defaultSelected,
     tabs = tabs,
     position = position
-), FragmentBuilder<TabBar, VerticalTabBarBuilder> {
+), FragmentBuilder<TabBar> {
 
-    fun VerticalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
-        require(tabWidth >= 3) {
-            "tabWidth must be set before adding tabs"
-        }
-        tabs = tabs + TabBuilder.newBuilder().apply(init).apply {
-            width = tabWidth
-        }
-    }
+    var tabWidth: Int = -1
 
     val contentSize: Size
         get() {
@@ -39,17 +35,15 @@ class VerticalTabBarBuilder private constructor(
             return size.withRelativeWidth(-tabWidth)
         }
 
-    override fun withPosition(position: Position) = also {
-        this.position = position
+    fun VerticalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
+        require(tabWidth >= 3) {
+            "tabWidth must be set before adding tabs"
+        }
+        val tabWidth = this.tabWidth
+        tabs = tabs + TabBuilder().apply(init).apply {
+            width = tabWidth
+        }
     }
-
-    override fun createCopy() = VerticalTabBarBuilder(
-        size = size,
-        defaultSelected = defaultSelected,
-        tabs = tabs,
-        position = position,
-        tabWidth = tabWidth
-    )
 
     override fun build(): TabBar {
         checkCommonProperties()
@@ -64,12 +58,19 @@ class VerticalTabBarBuilder private constructor(
             tabWidth = tabWidth
         )
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder(): VerticalTabBarBuilder = VerticalTabBarBuilder()
-    }
-
-
 }
+
+/**
+ * Creates a new [TabBar] using the fragment builder DSL and returns it.
+ */
+fun buildVerticalTabBar(
+    init: VerticalTabBarBuilder.() -> Unit
+): TabBar = VerticalTabBarBuilder().apply(init).build()
+
+/**
+ * Creates a new horizontal [TabBar] using the fragment builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [TabBar].
+ */
+fun AnyContainerBuilder.verticalTabBar(
+    init: VerticalTabBarBuilder.() -> Unit
+): TabBar = buildFragmentFor(this, VerticalTabBarBuilder(), init)

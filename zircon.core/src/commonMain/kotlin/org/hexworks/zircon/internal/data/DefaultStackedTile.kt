@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.data
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -73,7 +73,7 @@ data class DefaultStackedTile(
 
     override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
 
-    override fun toBuilder(): TileBuilder {
+    override fun toBuilder(): GraphicalTileBuilder {
         throw UnsupportedOperationException("This operation is not implemented yet")
     }
 }

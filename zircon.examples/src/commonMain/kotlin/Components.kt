@@ -1,24 +1,18 @@
-import korlibs.io.async.CIO
 import korlibs.io.async.delay
 import korlibs.io.async.launch
 import korlibs.time.seconds
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.ComponentDecorations.margin
-import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.dsl.component.*
+import org.hexworks.zircon.api.dsl.plus
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.Symbols
 
 val DEFAULT_TILESET = CP437TilesetResources.rexPaint16x16()
 

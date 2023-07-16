@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.extensions
 
-import org.hexworks.zircon.api.DrawSurfaces
+import org.hexworks.zircon.api.builder.graphics.tileComposite
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.tileImage
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -25,11 +27,11 @@ fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileI
     require(keys.none { it.hasNegativeComponent }) {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
-    return DrawSurfaces.tileImageBuilder()
-        .withTiles(this)
-        .withSize(size)
-        .withTileset(tileset)
-        .build()
+    return tileImage {
+        tiles = this@toTileImage
+        this.size = size
+        this.tileset = tileset
+    }
 }
 
 /**
@@ -48,10 +50,10 @@ fun Map<Position, Tile>.toTileComposite(size: Size): TileComposite {
     require(keys.none { it.hasNegativeComponent }) {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
-    return DrawSurfaces.tileCompositeBuilder()
-        .withSize(size)
-        .withTiles(this)
-        .build()
+    return tileComposite {
+        this.size = size
+        tiles = this@toTileComposite
+    }
 }
 
 /**
@@ -70,9 +72,9 @@ fun Map<Position, Tile>.toTileGraphics(size: Size, tileset: TilesetResource): Ti
     require(keys.none { it.hasNegativeComponent }) {
         "Can't create a TileImage with positions which have a negative component (x or y)."
     }
-    return DrawSurfaces.tileGraphicsBuilder()
-        .withTiles(this)
-        .withSize(size)
-        .withTileset(tileset)
-        .build()
+    return tileGraphics {
+        tiles = this@toTileGraphics
+        this.size = size
+        this.tileset = tileset
+    }
 }

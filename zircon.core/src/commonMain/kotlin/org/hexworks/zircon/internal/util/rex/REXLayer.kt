@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.util.rex
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
@@ -36,7 +36,7 @@ data class REXLayer(
                     continue
                 }
                 layer.draw(
-                    tile = TileBuilder.newBuilder()
+                    tile = GraphicalTileBuilder.newBuilder()
                         .withCharacter(cell.character)
                         .withBackgroundColor(cell.backgroundColor)
                         .withForegroundColor(cell.foregroundColor)

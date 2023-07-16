@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
@@ -28,7 +28,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.foregroundColor == foregroundColor) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet.withForegroundColor(foregroundColor))
+            characterTile {
+                character = this@BaseCharacterTile.character
+                styleSet = this@BaseCharacterTile.styleSet.withForegroundColor(foregroundColor)
+            }
         }
     }
 
@@ -36,7 +39,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.backgroundColor == backgroundColor) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet.withBackgroundColor(backgroundColor))
+            characterTile {
+                character = this@BaseCharacterTile.character
+                styleSet = this@BaseCharacterTile.styleSet.withBackgroundColor(backgroundColor)
+            }
         }
     }
 
@@ -44,7 +50,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.styleSet == style) {
             this
         } else {
-            Tile.createCharacterTile(character, style)
+            characterTile {
+                character = this@BaseCharacterTile.character
+                this.styleSet = style
+            }
         }
     }
 
@@ -55,7 +64,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.modifiers == modifiers) {
             this
         } else {
-            return Tile.createCharacterTile(character, styleSet.withModifiers(modifiers))
+            return characterTile {
+                character = this@BaseCharacterTile.character
+                this.styleSet = styleSet.withModifiers(modifiers)
+            }
         }
     }
 
@@ -66,7 +78,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.modifiers.containsAll(modifiers)) {
             this
         } else {
-            return Tile.createCharacterTile(character, styleSet.withAddedModifiers(modifiers))
+            return characterTile {
+                character = this@BaseCharacterTile.character
+                this.styleSet = styleSet.withAddedModifiers(modifiers)
+            }
         }
     }
 
@@ -77,7 +92,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.modifiers.intersect(modifiers).isEmpty()) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet.withRemovedModifiers(modifiers))
+            return characterTile {
+                character = this@BaseCharacterTile.character
+                this.styleSet = styleSet.withRemovedModifiers(modifiers)
+            }
         }
     }
 
@@ -85,7 +103,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.modifiers.isEmpty()) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet.withNoModifiers())
+            return characterTile {
+                character = this@BaseCharacterTile.character
+                this.styleSet = styleSet.withNoModifiers()
+            }
         }
     }
 
@@ -93,11 +114,10 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         return if (this.character == character) {
             this
         } else {
-            Tile.createCharacterTile(character, styleSet)
+            return characterTile {
+                this.character = character
+                styleSet = this@BaseCharacterTile.styleSet
+            }
         }
     }
-
-    override fun toBuilder() = Tile.newBuilder()
-        .withCharacter(character)
-        .withStyleSet(styleSet)
 }

@@ -2,98 +2,58 @@ package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.TileBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.api.graphics.TextWrap.WRAP
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.graphics.DefaultCharacterTileString
-import kotlin.jvm.JvmStatic
+
+private val NO_VALUE = UUID.randomUUID().toString()
 
 /**
  * Creates [CharacterTileString]s.
  * Defaults:
  * - `text` is **mandatory**
  */
-@Suppress("ArrayInDataClass")
-class CharacterTileStringBuilder private constructor(
-    private var text: String = NO_VALUE,
-    private var textWrap: TextWrap = WRAP,
-    private var size: Size = Size.unknown(),
-    private val modifiers: MutableSet<Modifier> = mutableSetOf(),
-    private var foregroundColor: TileColor = TileColor.defaultForegroundColor(),
-    private var backgroundColor: TileColor = TileColor.defaultBackgroundColor()
-) : Builder<CharacterTileString> {
+@ZirconDsl
+class CharacterTileStringBuilder : Builder<CharacterTileString> {
 
-    fun withText(text: String) = also {
-        this.text = text
-        if (size.isUnknown) {
-            size = Size.create(text.length, 1)
+    var text: String = NO_VALUE
+        set(value) {
+            field = value
+            if (size.isUnknown) {
+                size = Size.create(text.length, 1)
+            }
         }
-    }
 
-    fun withSize(size: Size) = also {
-        this.size = size
-    }
-
-    fun withSize(width: Int, height: Int) = also {
-        this.size = Size.create(width, height)
-    }
-
-    fun withTextWrap(textWrap: TextWrap) = also {
-        this.textWrap = textWrap
-    }
-
-    fun withStyleSet(styleSet: StyleSet) = also {
-        modifiers.clear()
-        modifiers.addAll(styleSet.modifiers)
-        foregroundColor = styleSet.foregroundColor
-        backgroundColor = styleSet.backgroundColor
-    }
-
-    fun withModifiers(vararg modifier: Modifier) = also {
-        this.modifiers.addAll(modifier.toSet())
-    }
-
-    fun withForegroundColor(foregroundColor: TileColor) = also {
-        this.foregroundColor = foregroundColor
-    }
-
-    fun withBackgroundColor(backgroundColor: TileColor) = also {
-        this.backgroundColor = backgroundColor
-    }
+    var textWrap: TextWrap = WRAP
+    var size: Size = Size.unknown()
+    val modifiers: MutableSet<Modifier> = mutableSetOf()
+    var styleSet: StyleSet = StyleSet.defaultStyle()
 
     override fun build(): CharacterTileString {
+        val template = characterTile {
+            styleSet = styleSet
+            character = ' '
+        }
         return DefaultCharacterTileString(
             characterTiles = if (text == NO_VALUE || text.isBlank()) {
                 listOf()
             } else {
-                text.map {
-                    TileBuilder.newBuilder()
-                        .withForegroundColor(foregroundColor)
-                        .withBackgroundColor(backgroundColor)
-                        .withCharacter(it)
-                        .withModifiers(modifiers)
-                        .buildCharacterTile()
-                }
+                text.map(template::withCharacter)
             },
             size = size,
-            textWrap = textWrap)
-    }
-
-
-    companion object {
-
-        private val NO_VALUE = UUID.randomUUID().toString()
-
-        /**
-         * Creates a new [CharacterTileStringBuilder] to build [org.hexworks.zircon.api.graphics.CharacterTileString]s.
-         */
-        @JvmStatic
-        fun newBuilder() = CharacterTileStringBuilder()
-
+            textWrap = textWrap
+        )
     }
 }
+
+/**
+ * Creates a new [CharacterTileStringBuilder] using the builder DSL and returns it.
+ */
+fun characterTileString(init: CharacterTileStringBuilder.() -> Unit): CharacterTileString =
+    CharacterTileStringBuilder().apply(init).build()

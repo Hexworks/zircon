@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.Tileset
-import org.hexworks.zircon.internal.tileset.impl.DefaultTextureContext
 
 class VirtualTileset : Tileset<Char> {
 
@@ -23,7 +22,7 @@ class VirtualTileset : Tileset<Char> {
         require(tile is CharacterTile) {
             "A VirtualTileset only works with CharacterTiles."
         }
-        return DefaultTextureContext(
+        return TextureContext(
             width = width,
             height = height,
             cacheKey = tile.cacheKey,

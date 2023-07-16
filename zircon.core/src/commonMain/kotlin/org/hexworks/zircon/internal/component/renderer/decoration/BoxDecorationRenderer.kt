@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TitleOverride
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.BoxBuilder
 import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
@@ -60,7 +60,7 @@ data class BoxDecorationRenderer(
                     else -> throw IllegalStateException("unreachable")
                 }
                 drawWindow.draw(
-                    TileBuilder.newBuilder()
+                    GraphicalTileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorLeft)
                         .build(), Position.create(1 + titleOffsetX, titleOffsetY)
@@ -68,7 +68,7 @@ data class BoxDecorationRenderer(
                 val pos = Position.create(2 + titleOffsetX, titleOffsetY)
                 (cleanText.indices).forEach { idx ->
                     drawWindow.draw(
-                        tile = TileBuilder.newBuilder()
+                        tile = GraphicalTileBuilder.newBuilder()
                             .withStyleSet(style)
                             .withCharacter(cleanText[idx])
                             .build(),
@@ -76,7 +76,7 @@ data class BoxDecorationRenderer(
                     )
                 }
                 drawWindow.draw(
-                    tile = TileBuilder.newBuilder()
+                    tile = GraphicalTileBuilder.newBuilder()
                         .withStyleSet(style)
                         .withCharacter(boxType.connectorRight)
                         .build(),

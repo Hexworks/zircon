@@ -8,38 +8,14 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.jvm.JvmStatic
 
 @ZirconDsl
-class ColorThemeBuilder private constructor(
-    var name: String = "anonymous",
-    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor(),
-    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
-    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+class ColorThemeBuilder: Builder<ColorTheme> {
+
+    var name: String = "anonymous"
+    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
+    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
+    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
+    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
     var accentColor: TileColor = TileColor.defaultForegroundColor()
-) : Builder<ColorTheme> {
-
-    fun withName(name: String) = also {
-        this.name = name
-    }
-
-    fun withPrimaryForegroundColor(primaryForegroundColor: TileColor) = also {
-        this.primaryForegroundColor = primaryForegroundColor
-    }
-
-    fun withSecondaryForegroundColor(secondaryForegroundColor: TileColor) = also {
-        this.secondaryForegroundColor = secondaryForegroundColor
-    }
-
-    fun withPrimaryBackgroundColor(primaryBackgroundColor: TileColor) = also {
-        this.primaryBackgroundColor = primaryBackgroundColor
-    }
-
-    fun withSecondaryBackgroundColor(secondaryBackgroundColor: TileColor) = also {
-        this.secondaryBackgroundColor = secondaryBackgroundColor
-    }
-
-    fun withAccentColor(accentColor: TileColor) = also {
-        this.accentColor = accentColor
-    }
 
     override fun build(): ColorTheme = DefaultColorTheme(
         name = name,
@@ -49,20 +25,12 @@ class ColorThemeBuilder private constructor(
         secondaryBackgroundColor = secondaryBackgroundColor,
         accentColor = accentColor
     )
-
-    override fun createCopy() = ColorThemeBuilder(
-        name = name,
-        primaryForegroundColor = primaryForegroundColor,
-        primaryBackgroundColor = primaryBackgroundColor,
-        secondaryForegroundColor = secondaryForegroundColor,
-        secondaryBackgroundColor = secondaryBackgroundColor,
-        accentColor = accentColor
-    )
-
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = ColorThemeBuilder()
-    }
 }
+
+/**
+ * Creates a new [ColorTheme] using the component builder DSL and returns it.
+ */
+fun colorTheme(init: ColorThemeBuilder.() -> Unit): ColorTheme =
+    ColorThemeBuilder().apply(init).build()
+
+

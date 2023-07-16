@@ -2,7 +2,7 @@
 
 package org.hexworks.zircon.api.game
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
@@ -15,8 +15,8 @@ interface GameAreaTileFilter {
         visibleSize: Size3D,
         offsetPosition: Position3D,
         blockTileType: BlockTileType,
-        tileBuilder: TileBuilder,
-    ): TileBuilder
+        tileBuilder: GraphicalTileBuilder,
+    ): GraphicalTileBuilder
 
     operator fun plus(other: GameAreaTileFilter): GameAreaTileFilter {
         return CompositeGameAreaTileFilter(this, other)
@@ -30,8 +30,8 @@ interface GameAreaTileFilter {
             visibleSize: Size3D,
             offsetPosition: Position3D,
             blockTileType: BlockTileType,
-            tileBuilder: TileBuilder
-        ): TileBuilder {
+            tileBuilder: GraphicalTileBuilder
+        ): GraphicalTileBuilder {
             val prev = first.transform(
                 visibleSize = visibleSize,
                 offsetPosition = offsetPosition,
@@ -53,8 +53,8 @@ interface GameAreaTileFilter {
                 visibleSize: Size3D,
                 offsetPosition: Position3D,
                 blockTileType: BlockTileType,
-                tileBuilder: TileBuilder
-            ): TileBuilder {
+                tileBuilder: GraphicalTileBuilder
+            ): GraphicalTileBuilder {
                 return tileBuilder
             }
 

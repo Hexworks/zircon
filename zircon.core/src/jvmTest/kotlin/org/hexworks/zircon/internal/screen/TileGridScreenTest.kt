@@ -4,9 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -107,7 +106,7 @@ class TileGridScreenTest {
     companion object {
         val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResources.rogueYun16x16()
-        val CHAR = TileBuilder.newBuilder()
+        val CHAR = GraphicalTileBuilder.newBuilder()
             .withCharacter('x')
             .build()
     }

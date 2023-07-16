@@ -1,6 +1,5 @@
 package org.hexworks.zircon.integration
 
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.screen.Screen

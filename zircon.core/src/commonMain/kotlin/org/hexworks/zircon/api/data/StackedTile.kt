@@ -5,7 +5,6 @@ package org.hexworks.zircon.api.data
 import kotlinx.collections.immutable.toPersistentList
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.data.DefaultStackedTile
-import kotlin.jvm.JvmStatic
 
 /**
  * This tile implementation contains a *stack* of [Tile]s. This can be used to
@@ -19,7 +18,6 @@ import kotlin.jvm.JvmStatic
  * @see Tile
  */
 
-@Suppress("JVM_STATIC_IN_INTERFACE_1_6")
 interface StackedTile : Tile {
 
     /**
@@ -61,7 +59,6 @@ interface StackedTile : Tile {
          * @param rest use this parameter if you want to add multiple tiles apart from the [baseTile].
          * [rest] is ordered from bottom to top (vertically)
          */
-        @JvmStatic
         fun create(
             baseTile: Tile,
             vararg rest: Tile

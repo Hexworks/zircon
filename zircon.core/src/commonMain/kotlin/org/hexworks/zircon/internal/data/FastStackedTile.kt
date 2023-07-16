@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.data
 
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
@@ -128,7 +128,7 @@ class FastStackedTile(
 
     override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
 
-    override fun toBuilder(): TileBuilder {
+    override fun toBuilder(): GraphicalTileBuilder {
         throw UnsupportedOperationException("This operation is not implemented yet")
     }
 }

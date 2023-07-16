@@ -3,7 +3,7 @@ package org.hexworks.zircon.api
 import korlibs.datastructure.fastCastTo
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.AppConfig.Companion.DEFAULT_APP_CONFIG
+import org.hexworks.zircon.api.application.AppConfig.Companion.defaultAppConfig
 import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.NoOpApplication
 import org.hexworks.zircon.api.grid.TileGrid
@@ -20,7 +20,7 @@ import org.hexworks.zircon.renderer.korge.tileset.KorgeContext
  * and returns its [TileGrid].
  */
 suspend fun startTileGrid(
-    config: AppConfig = DEFAULT_APP_CONFIG,
+    config: AppConfig = defaultAppConfig(),
     eventBus: EventBus = EventBus.create()
 ): TileGrid = startApplication(config, eventBus).tileGrid
 
@@ -34,7 +34,7 @@ suspend fun startTileGrid(
  * Also make sure that all the objects you pass use the same [AppConfig].
  */
 suspend fun startApplication(
-    config: AppConfig = DEFAULT_APP_CONFIG,
+    config: AppConfig = defaultAppConfig(),
     eventBus: EventBus = EventBus.create(),
     tileGrid: TileGrid = createTileGrid(config),
 ): Application {
@@ -56,7 +56,7 @@ suspend fun startApplication(
  *
  */
 fun createApplication(
-    config: AppConfig = DEFAULT_APP_CONFIG,
+    config: AppConfig = defaultAppConfig(),
     eventBus: EventBus = EventBus.create(),
 ): Application {
     val tileGrid = createTileGrid(config)
@@ -77,7 +77,7 @@ fun createApplication(
  * Also make sure that all the objects you pass use the same [AppConfig].
  */
 fun createRenderer(
-    config: AppConfig = DEFAULT_APP_CONFIG,
+    config: AppConfig = defaultAppConfig(),
     tileGrid: TileGrid = createTileGrid(config),
 ): KorgeRenderer = KorgeRenderer(
     tileGrid = tileGrid.asInternal(),
@@ -93,7 +93,7 @@ fun createRenderer(
  * own application, and you have your own renderer.
  */
 fun createTileGrid(
-    config: AppConfig = DEFAULT_APP_CONFIG,
+    config: AppConfig = defaultAppConfig(),
     eventBus: EventBus = EventBus.create()
 ): TileGrid = DefaultTileGrid(config).apply {
     application = NoOpApplication(

@@ -2,9 +2,8 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.Button
@@ -95,7 +94,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
             println("idx: $i")
             assertThat(drawWindow.getTileAtOrNull(Position.create(i, 0)))
                 .isEqualTo(
-                    TileBuilder.newBuilder()
+                    GraphicalTileBuilder.newBuilder()
                         .withCharacter(char)
                         .withStyleSet(target.componentStyleSet.fetchStyleFor(DEFAULT))
                         .build()

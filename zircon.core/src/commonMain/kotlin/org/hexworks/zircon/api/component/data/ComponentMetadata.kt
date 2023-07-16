@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component.data
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -13,7 +12,6 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Contains metadata that is common to **all** [Component]s.
  */
-// TODO: add API breakage to release notes
 data class ComponentMetadata(
     // TODO: next big thing is to make these observable too
     val relativePosition: Position,

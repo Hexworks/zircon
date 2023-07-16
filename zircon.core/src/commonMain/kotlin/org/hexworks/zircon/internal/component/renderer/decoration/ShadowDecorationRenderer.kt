@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
@@ -18,7 +18,7 @@ data class ShadowDecorationRenderer(
 
     override val occupiedSize = Size.create(1, 1)
 
-    private val shadowTile = TileBuilder.newBuilder()
+    private val shadowTile = GraphicalTileBuilder.newBuilder()
         .withBackgroundColor(TileColor.transparent())
         .withForegroundColor(TileColor.create(100, 100, 100))
         .withCharacter(shadowChar)

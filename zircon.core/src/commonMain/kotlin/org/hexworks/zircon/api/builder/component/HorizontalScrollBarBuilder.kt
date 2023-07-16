@@ -1,10 +1,11 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.ScrollBar
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalScrollBar
 import org.hexworks.zircon.internal.component.renderer.HorizontalScrollBarRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
 /**
  * Builder for a horizontal [ScrollBar]. By default, it creates a [ScrollBar] with
@@ -12,8 +13,8 @@ import kotlin.jvm.JvmStatic
  * - [numberOfScrollableItems]: `100`
  */
 @ZirconDsl
-class HorizontalScrollBarBuilder private constructor() :
-    ScrollBarBuilder<ScrollBar, HorizontalScrollBarBuilder>(HorizontalScrollBarRenderer()) {
+class HorizontalScrollBarBuilder :
+    ScrollBarBuilder<ScrollBar>(HorizontalScrollBarRenderer()) {
 
     override fun build(): ScrollBar = DefaultHorizontalScrollBar(
         componentMetadata = createMetadata(),
@@ -23,15 +24,19 @@ class HorizontalScrollBarBuilder private constructor() :
         itemsShownAtOnce = size.width,
         numberOfSteps = size.width,
     ).attachListeners()
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withItemsShownAtOnce(itemsShownAtOnce)
-        .withNumberOfScrollableItems(numberOfScrollableItems)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = HorizontalScrollBarBuilder()
-    }
 }
+
+/**
+ * Creates a new [ScrollBar] using the component builder DSL and returns it.
+ */
+fun buildHorizontalScrollBar(
+    init: HorizontalScrollBarBuilder.() -> Unit
+): ScrollBar = HorizontalScrollBarBuilder().apply(init).build()
+
+/**
+ * Creates a new [ScrollBar] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [ScrollBar].
+ */
+fun <T : BaseContainerBuilder<*>> T.horizontalScrollBar(
+    init: HorizontalScrollBarBuilder.() -> Unit
+): ScrollBar = buildChildFor(this, HorizontalScrollBarBuilder(), init)

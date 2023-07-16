@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -32,7 +31,7 @@ class VerticalScrollableListTest {
         (1..20).map { "Item $it" },
         scrollbarRenderer = TestScrollbarRenderer
     )
-    private val testRenderer = TestRenderer(AppConfig.DEFAULT_APP_CONFIG(), graphics).apply {
+    private val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
         withComponentContainer {
             addFragment(scrollableListFragment)
         }

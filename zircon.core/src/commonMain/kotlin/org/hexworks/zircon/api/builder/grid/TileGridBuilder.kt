@@ -4,20 +4,17 @@ import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.screen.Screen
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.screen.TileGridScreen
-import kotlin.jvm.JvmStatic
 
 /**
  * Builds [TileGrid]s.
  */
-class TileGridBuilder private constructor(
-    var config: AppConfig = AppConfig.defaultConfiguration()
-) : Builder<TileGrid> {
+@ZirconDsl
+class TileGridBuilder : Builder<TileGrid> {
 
-    fun withConfig(config: AppConfig) = also {
-        this.config = config
-    }
+    var config: AppConfig = AppConfig.defaultAppConfig()
 
     /**
      * Creates a [TileGrid] using this builder's settings and immediately wraps it up in a [Screen].
@@ -27,17 +24,10 @@ class TileGridBuilder private constructor(
     override fun build(): TileGrid {
         return DefaultTileGrid(config)
     }
-
-    override fun createCopy(): TileGridBuilder = TileGridBuilder(
-        config = config
-    )
-
-    companion object {
-
-        /**
-         * Creates a new [TileGridBuilder].
-         */
-        @JvmStatic
-        fun newBuilder() = TileGridBuilder()
-    }
 }
+
+/**
+ * Creates a new [TileGridBuilder] using the builder DSL and returns it.
+ */
+fun tileGrid(init: TileGridBuilder.() -> Unit): TileGrid =
+    TileGridBuilder().apply(init).build()

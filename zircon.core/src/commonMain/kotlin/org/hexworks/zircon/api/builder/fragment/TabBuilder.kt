@@ -8,28 +8,23 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTab
 import org.hexworks.zircon.internal.fragment.impl.TabData
 import kotlin.jvm.JvmStatic
-import kotlin.jvm.JvmSynthetic
 
 
 @ZirconDsl
-class TabBuilder private constructor(
-    var key: String? = null,
-    var label: String? = null,
-    var content: Component? = null,
-    @JvmSynthetic
-    internal var width: Int? = null,
-) : FragmentBuilder<TabData, TabBuilder>, Builder<TabData> {
+class TabBuilder : FragmentBuilder<TabData>, Builder<TabData> {
+
+    override var position: Position
+        get() = error("Can't get the position of a tab")
+        set(_) = error("Can't set the position of a tab")
+
+    var key: String? = null
+    var label: String? = null
+    var content: Component? = null
+
+    internal var width: Int? = null
 
     private val calculatedWidth: Int
         get() = label?.length?.plus(2) ?: 3
-
-    fun withKey(key: String) = also {
-        this.key = key
-    }
-
-    fun withLabel(label: String) = also {
-        this.label = label
-    }
 
     override fun build(): TabData {
         require(key != null && key!!.isNotBlank()) {
@@ -50,23 +45,4 @@ class TabBuilder private constructor(
             content = content!!
         )
     }
-
-    override fun createCopy() = TabBuilder(
-        key = key,
-        label = label,
-        width = width,
-        content = content
-    )
-
-    override fun withPosition(position: Position): TabBuilder {
-        error("Can't set the position of a tab")
-    }
-
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder(): TabBuilder = TabBuilder()
-    }
-
 }

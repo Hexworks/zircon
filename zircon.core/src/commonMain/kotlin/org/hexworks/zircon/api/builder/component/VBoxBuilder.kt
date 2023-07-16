@@ -3,15 +3,14 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVBox
 import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.math.max
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class VBoxBuilder private constructor() : BaseContainerBuilder<VBox, VBoxBuilder>(
+class VBoxBuilder : BaseContainerBuilder<VBox>(
     initialRenderer = DefaultVBoxRenderer()
 ) {
 
@@ -23,10 +22,6 @@ class VBoxBuilder private constructor() : BaseContainerBuilder<VBox, VBoxBuilder
             field = value
         }
 
-    fun withSpacing(spacing: Int) = also {
-        this.spacing = spacing
-    }
-
     override fun build(): VBox {
         return DefaultVBox(
             componentMetadata = createMetadata(),
@@ -37,11 +32,6 @@ class VBoxBuilder private constructor() : BaseContainerBuilder<VBox, VBoxBuilder
             addComponents(*childrenToAdd.toTypedArray())
         }.attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withSpacing(spacing)
-        .withChildren(*childrenToAdd.toTypedArray())
 
     @Suppress("DuplicatedCode")
     override fun calculateContentSize(): Size {
@@ -61,10 +51,18 @@ class VBoxBuilder private constructor() : BaseContainerBuilder<VBox, VBoxBuilder
         }
         return Size.create(maxWidth, max(1, height))
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = VBoxBuilder()
-    }
 }
+
+/**
+ * Creates a new [VBox] using the component builder DSL and returns it.
+ */
+fun buildVbox(init: VBoxBuilder.() -> Unit): VBox =
+    VBoxBuilder().apply(init).build()
+
+/**
+ * Creates a new [VBox] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [VBox].
+ */
+fun <T : BaseContainerBuilder<*>> T.vbox(
+    init: VBoxBuilder.() -> Unit
+): VBox = buildChildFor(this, VBoxBuilder(), init)

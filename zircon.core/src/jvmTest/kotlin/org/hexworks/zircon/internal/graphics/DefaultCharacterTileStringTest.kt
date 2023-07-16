@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
@@ -22,7 +22,7 @@ class DefaultCharacterTileStringTest {
             .withText(TEXT)
             .build()
 
-        val template = TileBuilder.newBuilder().buildCharacterTile()
+        val template = GraphicalTileBuilder.newBuilder().buildCharacterTile()
 
         assertThat(result.characterTiles).containsExactly(
             template.withCharacter('T'),
@@ -50,7 +50,7 @@ class DefaultCharacterTileStringTest {
             .withTextWrap(NO_WRAPPING)
             .build() as DefaultCharacterTileString
 
-        val template = TileBuilder.newBuilder()
+        val template = GraphicalTileBuilder.newBuilder()
             .withForegroundColor(FOREGROUND)
             .withBackgroundColor(BACKGROUND)
             .withModifiers(MODIFIER)
@@ -334,7 +334,7 @@ class DefaultCharacterTileStringTest {
             .withText("XT")
             .build()
 
-        val template = TileBuilder.newBuilder().buildCharacterTile()
+        val template = GraphicalTileBuilder.newBuilder().buildCharacterTile()
 
         assertThat(string.plus(other).characterTiles).containsExactly(
             template.withCharacter('T'),

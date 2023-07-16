@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.behavior.Copiable
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
@@ -85,11 +84,6 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * - and no modifiers.
          */
         fun empty() = EMPTY
-
-        /**
-         * Creates a new [StyleSetBuilder] for creating [org.hexworks.zircon.api.graphics.StyleSet]s.
-         */
-        fun newBuilder() = StyleSetBuilder.newBuilder()
 
         private val DEFAULT_STYLE = DefaultStyleSet(
             foregroundColor = TileColor.defaultForegroundColor(),

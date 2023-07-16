@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.builder.data.graphicalTile
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.GraphicalTile
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.resource.TileType
@@ -27,20 +27,16 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
     override val styleSet: StyleSet
         get() = StyleSet.empty()
 
-    override fun withName(name: String): GraphicalTile {
-        return Tile.createGraphicalTile(
-            name = name,
-            tags = tags,
-            tileset = tileset
-        )
+    override fun withName(name: String) = graphicalTile {
+        this.name = name
+        tileset = this@BaseGraphicalTile.tileset
+        tags = this@BaseGraphicalTile.tags
     }
 
-    override fun withTags(tags: Set<String>): GraphicalTile {
-        return Tile.createGraphicalTile(
-            name = name,
-            tags = tags,
-            tileset = tileset
-        )
+    override fun withTags(tags: Set<String>) = graphicalTile {
+        name = this@BaseGraphicalTile.name
+        tileset = this@BaseGraphicalTile.tileset
+        this.tags = tags
     }
 
     override fun withForegroundColor(foregroundColor: TileColor) = this
@@ -63,8 +59,4 @@ abstract class BaseGraphicalTile : BaseTile(), GraphicalTile {
 
     override fun withNoModifiers() = this
 
-    override fun toBuilder() = Tile.newBuilder()
-        .withName(name)
-        .withTags(tags)
-        .withTileset(tileset)
 }

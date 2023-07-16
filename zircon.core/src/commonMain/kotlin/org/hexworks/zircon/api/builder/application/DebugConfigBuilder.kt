@@ -2,11 +2,13 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.application.DebugConfig
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builder for [DebugConfig]s.
  * @see DebugConfig for defaults
  */
+@ZirconDsl
 class DebugConfigBuilder : Builder<DebugConfig> {
 
     /**

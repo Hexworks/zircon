@@ -1,40 +1,48 @@
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.builder.component.buildIcon
+import org.hexworks.zircon.api.builder.component.buildLabel
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.Label
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.dsl.component.buildIcon
-import org.hexworks.zircon.api.dsl.component.buildLabel
+import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTable
 import org.hexworks.zircon.internal.fragment.impl.TableColumn
-import kotlin.jvm.JvmStatic
 
 @ZirconDsl
+class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
 
-class TableBuilder<T : Any> private constructor(
-    var data: ObservableList<T>? = null,
-    var columns: List<TableColumn<T, *, *>> = listOf(),
-    var height: Int = 2,
-    var rowSpacing: Int = 0,
-    var colSpacing: Int = 0,
-    var position: Position = Position.zero(),
-    var addHeader: Boolean = true,
-    var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer(),
-) : FragmentBuilder<Table<T>, TableBuilder<T>> {
+    override var position: Position = Position.zero()
+
+    var data: ObservableList<T> = listOf<T>().toProperty()
+    var columns: List<TableColumn<T, *, *>> = listOf()
+    var height: Int = 2
+    var rowSpacing: Int = 0
+    var colSpacing: Int = 0
+    var addHeader: Boolean = true
+
+    /**
+     * Renderer that will be used to render the selected row. Override this if
+     * you want to differentiate the selected row visually.
+     */
+    var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer()
 
     fun <V : Any, C : Component> TableBuilder<T>.column(init: TableColumnBuilder<T, V, C>.() -> Unit) {
-        columns = columns + TableColumnBuilder.newBuilder<T, V, C>().apply(init).build()
+        columns = columns + TableColumnBuilder<T, V, C>().apply(init).build()
     }
 
     /**
@@ -45,7 +53,7 @@ class TableBuilder<T : Any> private constructor(
      * The rest will be set for you.
      */
     fun TableBuilder<T>.textColumn(init: TableColumnBuilder<T, String, Label>.() -> Unit) {
-        columns = columns + TableColumnBuilder.newBuilder<T, String, Label>()
+        columns = columns + TableColumnBuilder<T, String, Label>()
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = {
@@ -66,7 +74,7 @@ class TableBuilder<T : Any> private constructor(
      * The rest will be set for you.
      */
     fun TableBuilder<T>.numberColumn(init: TableColumnBuilder<T, Number, Label>.() -> Unit) {
-        columns = columns + TableColumnBuilder.newBuilder<T, Number, Label>()
+        columns = columns + TableColumnBuilder<T, Number, Label>()
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = { number ->
@@ -80,13 +88,13 @@ class TableBuilder<T : Any> private constructor(
     }
 
     /**
-     * Creates a column that will render an [Label] and bind its value to the obserable value
+     * Creates a column that will render an [Label] and bind its value to the observable value
      * you provide. In order for this to work what you'll need to set is
      * - a [TableColumnBuilder.valueProvider]
      * The rest will be set for you.
      */
     fun TableBuilder<T>.observableTextColumn(init: TableColumnBuilder<T, ObservableValue<String>, Label>.() -> Unit) {
-        columns = columns + TableColumnBuilder.newBuilder<T, ObservableValue<String>, Label>()
+        columns = columns + TableColumnBuilder<T, ObservableValue<String>, Label>()
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = { value ->
@@ -107,7 +115,7 @@ class TableBuilder<T : Any> private constructor(
      */
     fun TableBuilder<T>.iconColumn(init: TableColumnBuilder<T, Tile, Icon>.() -> Unit) {
         columns = columns +
-                TableColumnBuilder.newBuilder<T, Tile, Icon>()
+                TableColumnBuilder<T, Tile, Icon>()
                     .apply(init).also { builder ->
                         builder.width = 1
                         builder.cellRenderer = { tile ->
@@ -117,34 +125,6 @@ class TableBuilder<T : Any> private constructor(
                         }
                     }
                     .build()
-    }
-
-    fun withHeight(height: Int) = also {
-        this.height = height
-    }
-
-    fun withData(data: ObservableList<T>) = also {
-        this.data = data
-    }
-
-    fun withColumns(columns: List<TableColumn<T, *, *>>) = also {
-        this.columns = columns
-    }
-
-    fun withRowSpacing(spacing: Int) = also {
-        rowSpacing = spacing
-    }
-
-    fun withColumnSpacing(spacing: Int) = also {
-        colSpacing = spacing
-    }
-
-    fun withAddHeader(addHeader: Boolean) = also {
-        this.addHeader = addHeader
-    }
-
-    fun withSelectedRowRenderer(rowRenderer: ComponentRenderer<HBox>) = also {
-        this.selectedRowRenderer = rowRenderer
     }
 
     override fun build(): Table<T> {
@@ -172,25 +152,22 @@ class TableBuilder<T : Any> private constructor(
             selectedRowRenderer = selectedRowRenderer
         )
     }
-
-    override fun withPosition(position: Position): TableBuilder<T> = also {
-        this.position = position
-    }
-
-    override fun createCopy() = TableBuilder(
-        data = data,
-        columns = columns,
-        height = (data?.size ?: 0) + 1,
-        rowSpacing = rowSpacing,
-        colSpacing = colSpacing,
-        position = position,
-        addHeader = addHeader,
-        selectedRowRenderer = selectedRowRenderer
-    )
-
-    companion object {
-
-        @JvmStatic
-        fun <T : Any> newBuilder() = TableBuilder<T>()
-    }
 }
+
+/**
+ * Creates a new [Table] using the fragment builder DSL and returns it.
+ */
+
+fun <T : Any> buildTable(
+    init: TableBuilder<T>.() -> Unit
+): Table<T> = TableBuilder<T>().apply(init).build()
+
+/**
+ * Creates a new [Table] using the fragment builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [Table].
+ */
+
+fun <T : Any> AnyContainerBuilder.table(
+    init: TableBuilder<T>.() -> Unit
+): Table<T> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.TableBuilder(), init)
+

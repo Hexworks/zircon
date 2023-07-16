@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
@@ -25,7 +25,7 @@ class TileGraphicsBuilderTest {
     }
 
     companion object {
-        val FILLER = TileBuilder.newBuilder().withCharacter('a').build()
+        val FILLER = GraphicalTileBuilder.newBuilder().withCharacter('a').build()
         val SIZE = Size.create(5, 5)
     }
 }

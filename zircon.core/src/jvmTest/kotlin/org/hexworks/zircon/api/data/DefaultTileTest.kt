@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.data
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.api.builder.data.TileBuilder
+import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.color.ANSITileColor.BLACK
@@ -79,7 +79,7 @@ class DefaultTileTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val result = TileBuilder.newBuilder()
+        val result = GraphicalTileBuilder.newBuilder()
             .withCharacter('x')
             .withBackgroundColor(ANSITileColor.GREEN)
             .withForegroundColor(TileColor.fromString("#aabbcc"))
@@ -101,7 +101,7 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsBorder() {
         assertThat(
-            TileBuilder.newBuilder()
+            GraphicalTileBuilder.newBuilder()
                 .withModifiers(Modifiers.border())
                 .build().hasBorder
         ).isTrue()
@@ -110,7 +110,7 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyReportHavingABorderWhenThereIsNoBorder() {
         assertThat(
-            TileBuilder.newBuilder()
+            GraphicalTileBuilder.newBuilder()
                 .build().hasBorder
         ).isFalse()
     }
@@ -128,7 +128,7 @@ class DefaultTileTest {
     @Test
     fun shouldProperlyRemoveModifiersWhenWithoutModifiersIsCalled() {
         assertThat(
-            TileBuilder.newBuilder()
+            GraphicalTileBuilder.newBuilder()
                 .withModifiers(Modifiers.crossedOut())
                 .build()
                 .withRemovedModifiers(setOf(Modifiers.crossedOut()))
@@ -145,7 +145,7 @@ class DefaultTileTest {
             .withModifiers(Modifiers.crossedOut())
             .build()
 
-        val copy = TileBuilder.newBuilder()
+        val copy = GraphicalTileBuilder.newBuilder()
             .build()
             .withStyle(style)
 
@@ -156,27 +156,27 @@ class DefaultTileTest {
 
     @Test
     fun boldModifierShouldBeBold() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
+        assertThat(GraphicalTileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
     }
 
     @Test
     fun underlinedModifierShouldBeUnderlined() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.underline()).build().isUnderlined).isTrue()
+        assertThat(GraphicalTileBuilder.newBuilder().withModifiers(Modifiers.underline()).build().isUnderlined).isTrue()
     }
 
     @Test
     fun crossedOutModifierShouldBeCrossedOut() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
+        assertThat(GraphicalTileBuilder.newBuilder().withModifiers(Modifiers.crossedOut()).build().isCrossedOut).isTrue()
     }
 
     @Test
     fun italicModifierShouldBeItalic() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.verticalFlip()).build().isVerticalFlipped).isTrue()
+        assertThat(GraphicalTileBuilder.newBuilder().withModifiers(Modifiers.verticalFlip()).build().isVerticalFlipped).isTrue()
     }
 
     @Test
     fun blinkingModifierShouldBeBlinking() {
-        assertThat(TileBuilder.newBuilder().withModifiers(Modifiers.blink()).build().isBlinking).isTrue()
+        assertThat(GraphicalTileBuilder.newBuilder().withModifiers(Modifiers.blink()).build().isBlinking).isTrue()
     }
 
     @Test

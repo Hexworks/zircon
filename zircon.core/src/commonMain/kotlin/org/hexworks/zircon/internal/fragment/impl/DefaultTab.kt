@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.CharacterTileStrings
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -14,7 +13,6 @@ import org.hexworks.zircon.api.dsl.component.buildPanel
 import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 

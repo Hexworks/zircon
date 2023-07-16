@@ -6,20 +6,19 @@ import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
 /**
  * Use this to build [StyleSet]s for your [org.hexworks.zircon.api.component.Component]s.
  * They will be used accordingly when the component's state changes.
  */
 @ZirconDsl
-class ComponentStyleSetBuilder private constructor(
-    var defaultStyle: StyleSet = StyleSet.defaultStyle(),
-    var highlightedStyle: StyleSet = StyleSet.defaultStyle(),
-    var activeStyle: StyleSet = StyleSet.defaultStyle(),
-    var disabledStyle: StyleSet = StyleSet.defaultStyle(),
+class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
+
+    var defaultStyle: StyleSet = StyleSet.defaultStyle()
+    var highlightedStyle: StyleSet = StyleSet.defaultStyle()
+    var activeStyle: StyleSet = StyleSet.defaultStyle()
+    var disabledStyle: StyleSet = StyleSet.defaultStyle()
     var focusedStyle: StyleSet = StyleSet.defaultStyle()
-) : Builder<ComponentStyleSet> {
 
     override fun build(): ComponentStyleSet {
         val styles = mutableMapOf(
@@ -40,39 +39,10 @@ class ComponentStyleSetBuilder private constructor(
             }
         return DefaultComponentStyleSet(styles)
     }
-
-    fun withDefaultStyle(styleSet: StyleSet) = also {
-        defaultStyle = styleSet
-    }
-
-    fun withHighlightedStyle(styleSet: StyleSet) = also {
-        highlightedStyle = styleSet
-    }
-
-    fun withActiveStyle(styleSet: StyleSet) = also {
-        activeStyle = styleSet
-    }
-
-    fun withDisabledStyle(styleSet: StyleSet) = also {
-        disabledStyle = styleSet
-    }
-
-    fun withFocusedStyle(styleSet: StyleSet) = also {
-        focusedStyle = styleSet
-    }
-
-    override fun createCopy() = ComponentStyleSetBuilder(
-        defaultStyle = defaultStyle,
-        highlightedStyle = highlightedStyle,
-        activeStyle = activeStyle,
-        disabledStyle = disabledStyle,
-        focusedStyle = focusedStyle
-    )
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = ComponentStyleSetBuilder()
-
-    }
 }
+
+/**
+ * Creates a new [ComponentStyleSet] using the component builder DSL and returns it.
+ */
+fun componentStyleSet(init: ComponentStyleSetBuilder.() -> Unit): ComponentStyleSet =
+    ComponentStyleSetBuilder().apply(init).build()

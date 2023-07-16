@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 
-abstract class SliderBuilder<T : Slider, B : BaseComponentBuilder<T, B>>(
+abstract class SliderBuilder<T : Slider>(
     initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T, B>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer) {
 
     var minValue: Int = 0
         set(value) {
@@ -23,15 +23,4 @@ abstract class SliderBuilder<T : Slider, B : BaseComponentBuilder<T, B>>(
 
     abstract var numberOfSteps: Int
 
-    fun withMinValue(minValue: Int) = also {
-        this.minValue = minValue
-    }
-
-    fun withMaxValue(maxValue: Int) = also {
-        this.maxValue = maxValue
-    }
-
-    fun withNumberOfSteps(steps: Int) = also {
-        this.numberOfSteps = steps
-    }
 }

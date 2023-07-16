@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.modifier
 
-import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.color.TileColor
 
 data class Border internal constructor(
@@ -19,10 +18,4 @@ data class Border internal constructor(
     operator fun plus(other: Border): Border {
         return copy(borderPositions = borderPositions.plus(other.borderPositions))
     }
-
-    companion object {
-
-        fun newBuilder() = BorderBuilder.newBuilder()
-    }
-
 }

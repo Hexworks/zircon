@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.builder.animation.AnimationBuilder
 import org.hexworks.zircon.internal.behavior.Identifiable
 
 /**
@@ -36,9 +35,4 @@ interface Animation : Identifiable {
      * Tells whether this [Animation] is looped indefinitely.
      */
     val isLoopedIndefinitely: Boolean
-
-    companion object {
-
-        fun newBuilder() = AnimationBuilder.newBuilder()
-    }
 }

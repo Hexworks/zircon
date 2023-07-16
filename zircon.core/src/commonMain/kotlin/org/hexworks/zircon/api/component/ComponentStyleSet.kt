@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
+import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
 
@@ -24,26 +24,22 @@ interface ComponentStyleSet {
 
     companion object {
 
-        private val UNKNOWN = newBuilder().build()
-
-        /**
-         * Creates a new [ComponentStyleSetBuilder] for creating styles.
-         */
-        fun newBuilder(): ComponentStyleSetBuilder = ComponentStyleSetBuilder.newBuilder()
+        // TODO: is this OK?
+        private val UNKNOWN = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]
          * for all states.
          */
-        fun defaultStyleSet() = ComponentStyleSetBuilder.newBuilder().build()
+        fun defaultStyleSet() = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.empty]
          * for all states.
          */
-        fun empty() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(StyleSet.empty())
-            .build()
+        fun empty() = componentStyleSet {
+            defaultStyle = StyleSet.empty()
+        }
 
         fun unknown() = UNKNOWN
 

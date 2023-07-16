@@ -72,16 +72,4 @@ interface Block<T : Tile> : Copiable<Block<T>> {
      * this [Block].
      */
     fun toBuilder(): BlockBuilder<T>
-
-
-    companion object {
-
-        fun <T : Tile> newBuilder() = BlockBuilder.newBuilder<T>()
-
-        fun <T : Tile> create(emptyTile: T): Block<T> {
-            return BlockBuilder.newBuilder<T>()
-                .withEmptyTile(emptyTile)
-                .build()
-        }
-    }
 }

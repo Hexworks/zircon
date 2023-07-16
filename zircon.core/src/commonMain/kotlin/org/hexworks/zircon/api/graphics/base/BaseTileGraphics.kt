@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.graphics.base
 import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.TilesetOverride
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
@@ -98,11 +98,9 @@ abstract class BaseTileGraphics(
 
     override fun toTileImage() = tiles.toTileImage(size, tileset)
 
-    override fun toLayer(offset: Position): Layer {
-        return if (this is Layer) this else LayerBuilder.newBuilder()
-            .withOffset(offset)
-            .withTileGraphics(createCopy())
-            .build()
+    override fun toLayer(offset: Position) = if (this is Layer) this else layer {
+        this.offset = offset
+        tileGraphics = createCopy()
     }
 
     override fun toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())

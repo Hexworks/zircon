@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.graphics
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.DrawSurfaces
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position

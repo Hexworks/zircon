@@ -1,6 +1,5 @@
 package org.hexworks.zircon.integration
 
-import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.shadow

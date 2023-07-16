@@ -12,7 +12,7 @@ object VirtualApplications {
      * Builds a new [Application] using the given `appConfig` and `eventBus`.
      */
     fun startApplication(
-        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        appConfig: AppConfig = AppConfig.defaultAppConfig(),
         eventBus: EventBus = EventBus.create()
     ): Application = VirtualApplication(appConfig, eventBus)
 
@@ -21,7 +21,7 @@ object VirtualApplications {
      * Use this when you don't want to interact with the [Application] itself.
      */
     fun startTileGrid(
-        appConfig: AppConfig = AppConfig.defaultConfiguration(),
+        appConfig: AppConfig = AppConfig.defaultAppConfig(),
         eventBus: EventBus = EventBus.create()
     ): TileGrid = startApplication(appConfig, eventBus).tileGrid
 }

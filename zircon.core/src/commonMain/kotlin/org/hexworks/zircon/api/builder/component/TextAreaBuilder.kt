@@ -2,27 +2,18 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
-import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
-@Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class TextAreaBuilder private constructor() : BaseComponentBuilder<TextArea, TextAreaBuilder>(
+class TextAreaBuilder : BaseComponentBuilder<TextArea>(
     initialRenderer = DefaultTextAreaRenderer(),
 ) {
 
     var text: String = ""
-
-    /**
-     * Sets the [text] for the component that is being built and returns the builder.
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun withText(text: String) = also {
-        this.text = text
-    }
 
     override fun build(): TextArea {
         return DefaultTextArea(
@@ -31,14 +22,18 @@ class TextAreaBuilder private constructor() : BaseComponentBuilder<TextArea, Tex
             initialText = text,
         ).attachListeners()
     }
-
-    override fun createCopy() = newBuilder()
-        .withProps(props.copy())
-        .withText(text)
-
-    companion object {
-
-        @JvmStatic
-        fun newBuilder() = TextAreaBuilder()
-    }
 }
+
+/**
+ * Creates a new [TextArea] using the component builder DSL and returns it.
+ */
+fun buildTextArea(init: TextAreaBuilder.() -> Unit): TextArea =
+    TextAreaBuilder().apply(init).build()
+
+/**
+ * Creates a new [TextArea] using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns the [TextArea].
+ */
+fun <T : BaseContainerBuilder<*>> T.textArea(
+    init: TextAreaBuilder.() -> Unit
+): TextArea = buildChildFor(this, TextAreaBuilder(), init)

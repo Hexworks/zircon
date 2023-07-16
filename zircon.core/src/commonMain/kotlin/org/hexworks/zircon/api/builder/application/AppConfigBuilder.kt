@@ -40,7 +40,6 @@ const val DEFAULT_TITLE = "Zircon Application"
  * has sensible default values so
  * @see AppConfig for all the default values.
  */
-@Suppress("unused")
 @ZirconDsl
 class AppConfigBuilder : Builder<AppConfig> {
 
@@ -172,11 +171,15 @@ class AppConfigBuilder : Builder<AppConfig> {
         iconData = iconData,
         iconPath = iconPath,
         customProperties = customProperties,
-        tilesetFactories = tilesetFactories,
+        tilesetFactories = tilesetFactories.values.toList(),
         textureModifierStrategies = textureModifierSupports
     ).also {
         RuntimeConfig.config = it
     }
+}
+
+fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
+    return AppConfigBuilder().apply(init).build()
 }
 
 /**
@@ -193,7 +196,7 @@ class AppConfigBuilder : Builder<AppConfig> {
  * to pass configuration in through [AppConfig] that your plugin can later use. It's recommended that [key]
  * be an `object` with minimal visibility (e.g. `internal`).
  *
- * @sample org.hexworks.zircon.api.application.AppConfigTest.propertyExample
+ * @sample org.hexworks.zircon.api.application.AppConfigTest
  */
 fun <T : Any> AppConfigBuilder.customProperty(init: CustomPropertyBuilder<T>.() -> Unit) {
     val (key, value) = CustomPropertyBuilder<T>().apply(init).build()

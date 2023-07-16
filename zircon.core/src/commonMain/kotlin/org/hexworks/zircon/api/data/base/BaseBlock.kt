@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.data.base
 
+import org.hexworks.zircon.api.builder.data.BlockBuilder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
@@ -93,8 +94,9 @@ abstract class BaseBlock<T : Tile>(
         )
     }
 
-    override fun toBuilder() = Block.newBuilder<T>()
-        .withEmptyTile(emptyTile)
-        .withTiles(tiles)
+    override fun toBuilder() = BlockBuilder<T>().apply {
+        emptyTile = this@BaseBlock.emptyTile
+        tiles = this@BaseBlock.tiles
+    }
 
 }
