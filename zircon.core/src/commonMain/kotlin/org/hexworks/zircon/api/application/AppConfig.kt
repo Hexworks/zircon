@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
  * This includes properties such as the shape of the cursor, the color of the cursor
  * and if the cursor should blink or not.
  */
-class AppConfig internal constructor(
+data class AppConfig internal constructor(
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).
@@ -76,11 +76,6 @@ class AppConfig internal constructor(
      * Default is `"Zircon Application"`
      */
     val title: String,
-    /**
-     * If set [iconData] contains the bytes of the icon image that will
-     * be used in the application window.
-     */
-    val iconData: ByteArray?,
     /**
      * If set [iconPath] will contain the path of the resource that points
      * to an icon image that will be used in the application window.

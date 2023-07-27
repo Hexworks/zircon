@@ -50,9 +50,9 @@ class Position3DTest {
 
     companion object {
 
-        val GREATER = 1
-        val EQUAL = 0
-        val LESS = -1
+        const val GREATER = 1
+        const val EQUAL = 0
+        const val LESS = -1
 
         val POS = Position3D.create(9, 9, 1)
 

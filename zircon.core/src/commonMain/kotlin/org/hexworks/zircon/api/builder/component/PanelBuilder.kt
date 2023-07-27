@@ -28,7 +28,6 @@ class PanelBuilder : BaseContainerBuilder<Panel>(
         val result = childrenToAdd.map { it.size }.fold(Size.zero(), Size::plus)
         return if (result < Size.one()) Size.one() else result
     }
-
 }
 
 /**

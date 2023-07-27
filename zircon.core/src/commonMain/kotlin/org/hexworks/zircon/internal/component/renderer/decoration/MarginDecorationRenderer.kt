@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
-@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
 data class MarginDecorationRenderer(
     val top: Int,
     val right: Int,

@@ -3,8 +3,8 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.TitleOverride
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.BoxBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.box
 import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
@@ -33,13 +33,14 @@ data class BoxDecorationRenderer(
         } else titleProperty.value
         val size = drawWindow.size
         val style = context.fetchStyleFor(renderingMode)
+        val boxType = this.boxType
         drawWindow.draw(
-            BoxBuilder.newBuilder()
-                .withBoxType(boxType)
-                .withSize(size)
-                .withStyle(style)
-                .withTileset(context.component.tileset)
-                .build()
+            box {
+                this.boxType = boxType
+                this.size = size
+                this.style = style
+                tileset = context.component.tileset
+            }
         )
         if (size.width > 4) {
             if (finalTitle.isNotBlank()) {
@@ -60,26 +61,26 @@ data class BoxDecorationRenderer(
                     else -> throw IllegalStateException("unreachable")
                 }
                 drawWindow.draw(
-                    GraphicalTileBuilder.newBuilder()
-                        .withStyleSet(style)
-                        .withCharacter(boxType.connectorLeft)
-                        .build(), Position.create(1 + titleOffsetX, titleOffsetY)
+                    characterTile {
+                        styleSet = style
+                        character = boxType.connectorLeft
+                    }, Position.create(1 + titleOffsetX, titleOffsetY)
                 )
                 val pos = Position.create(2 + titleOffsetX, titleOffsetY)
                 (cleanText.indices).forEach { idx ->
                     drawWindow.draw(
-                        tile = GraphicalTileBuilder.newBuilder()
-                            .withStyleSet(style)
-                            .withCharacter(cleanText[idx])
-                            .build(),
+                        tile = characterTile {
+                            styleSet = style
+                            character = cleanText[idx]
+                        },
                         drawPosition = pos.withRelativeX(idx)
                     )
                 }
                 drawWindow.draw(
-                    tile = GraphicalTileBuilder.newBuilder()
-                        .withStyleSet(style)
-                        .withCharacter(boxType.connectorRight)
-                        .build(),
+                    tile = characterTile {
+                        styleSet = style
+                        character = boxType.connectorRight
+                    },
                     drawPosition = Position.create(2 + titleOffsetX + cleanText.length, titleOffsetY)
                 )
             }

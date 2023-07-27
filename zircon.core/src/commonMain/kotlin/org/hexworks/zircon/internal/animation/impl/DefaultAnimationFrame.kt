@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.graphics.InternalLayer
 /**
  * Default implementation of the [AnimationFrame] interface.
  */
-data class DefaultAnimationFrame(
+internal data class DefaultAnimationFrame(
     override val size: Size,
     override val layers: List<InternalLayer>,
     override val repeatCount: Int

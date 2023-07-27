@@ -6,10 +6,15 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.ComponentDecorations.margin
+import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.builder.component.*
+import org.hexworks.zircon.api.component.builder.base.decoration
+import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.*
 import org.hexworks.zircon.api.dsl.plus
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.BoxType
@@ -39,18 +44,25 @@ suspend fun Application.components() = also {
             val column = this
             name = "Left Column"
             preferredSize = columnSize
-            decorations = listOf(box(BoxType.TOP_BOTTOM_DOUBLE, "Content"))
+            decorations {
+                +box(BoxType.TOP_BOTTOM_DOUBLE, "Content")
+            }
             spacing = 1
 
             header {
                 +"TODOs"
-                decoration = ComponentDecorations.margin(1, 0, 0, 0)
+                decorations {
+                    +margin(1, 0, 0, 0)
+                }
             }
             label { +"Foods:" }
             listItem { +"Buy ice cream" }
             listItem { +"Make dinner" }
             paragraph {
-                preferredSize = Size.create(column.contentWidth, 3)
+                withPreferredSize {
+                    width = column.contentWidth
+                    height = 3
+                }
                 +"All this stuff has to be done soon, or otherwise I'll stay hungry."
             }
 //            if (DEFAULT_TILESET.size.width == 16) {
@@ -63,18 +75,8 @@ suspend fun Application.components() = also {
 //                    tileset = GraphicalTilesetResources.nethack16x16()
 //                }
 //            }
-            textBox(column.contentWidth - 5) {
-                name = "Text Box"
-                decorations = box() + ComponentDecorations.shadow()
-
-                addHeader("Text Box!")
-
-                paragraph {
-                    +"Paragraph text."
-                }
-            }
             progressBar {
-                decoration = box(title = "Loading...")
+                decorations { +box(title = "Loading...") }
                 numberOfSteps = 10
                 range = 100
                 displayPercentValueOfProgress = true
@@ -86,12 +88,12 @@ suspend fun Application.components() = also {
         vbox {
             name = "Right Column"
             preferredSize = columnSize
-            decoration = box(BoxType.TOP_BOTTOM_DOUBLE, "Interactions")
+            decorations { +box(BoxType.TOP_BOTTOM_DOUBLE, "Interactions") }
             spacing = 1
 
             hbox {
                 spacing = 1
-                decoration = ComponentDecorations.margin(1, 0, 0, 0)
+                decorations { +margin(1, 0, 0, 0) }
 
                 hbox {
                     decoration = box(title = "Only numbers")
@@ -100,13 +102,19 @@ suspend fun Application.components() = also {
                         initialValue = 5
                         minValue = 1
                         maxValue = 10
-                        decorations = box() + ComponentDecorations.margin(1)
+                        decorations {
+                            +box()
+                            +margin(1)
+                        }
                     }
                     horizontalNumberInput {
                         initialValue = 5
                         minValue = 1
                         maxValue = 1000
-                        decorations = box() + ComponentDecorations.margin(1)
+                        decorations {
+                            +box()
+                            +margin(1)
+                        }
                     }
                 }
                 vbox {
@@ -162,13 +170,19 @@ suspend fun Application.components() = also {
                         minValue = 1
                         maxValue = 100
                         numberOfSteps = 3
-                        decorations = box() + ComponentDecorations.margin(1)
+                        decorations {
+                            +box()
+                            +margin(1)
+                        }
                     }
                     horizontalSlider {
                         minValue = 1
                         maxValue = 100
                         numberOfSteps = 4
-                        decorations = box() + ComponentDecorations.margin(1)
+                        decorations {
+                            +box()
+                            +margin(1)
+                        }
                     }
                 }
                 vbox {
@@ -214,20 +228,26 @@ suspend fun Application.components() = also {
 
                 button {
                     +"Sure"
-                    decorations = box(
-                        boxType = BoxType.DOUBLE,
-                        renderingMode = ComponentDecorationRenderer.RenderingMode.INTERACTIVE
-                    ) + ComponentDecorations.margin(1)
+                    decorations {
+                        +box(
+                            boxType = BoxType.DOUBLE,
+                            renderingMode = INTERACTIVE
+                        )
+                        +margin(1)
+                    }
                     onActivated {
                         println("Deleting everything...")
                     }
                 }
                 button {
                     +"Yes"
-                    decorations = box(
-                        boxType = BoxType.DOUBLE,
-                        renderingMode = ComponentDecorationRenderer.RenderingMode.INTERACTIVE
-                    ) + ComponentDecorations.margin(1)
+                    decorations {
+                        +box(
+                            boxType = BoxType.DOUBLE,
+                            renderingMode = INTERACTIVE
+                        )
+                        +margin(1)
+                    }
                     onActivated {
                         println("Deleting everything...")
                     }

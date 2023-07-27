@@ -24,7 +24,7 @@ class GameAreaBuilder<T : Tile, B : Block<T>> : Builder<GameArea<T, B>> {
     var visibleSize: Size3D = Size3D.one()
     var visibleOffset: Position3D = Position3D.defaultPosition()
     var blocks: Map<Position3D, B> = mapOf()
-    var filters: List<GameAreaTileFilter> = listOf()
+    var filters: List<GameAreaTileFilter<T>> = listOf()
 
 
     override fun build(): GameArea<T, B> {

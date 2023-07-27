@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.application.TextureModifierStrategy
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.grid.TileGridBuilder
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.tileset.TextureContext

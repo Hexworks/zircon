@@ -3,9 +3,12 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.withSize
+import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment.*
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.junit.Test
@@ -20,12 +23,19 @@ class BoxDecorationRendererTest(
 ) {
     @Test
     fun renderTest() {
-        val target = Components.panel()
-            .withTileset(CP437TilesetResources.rexPaint20x20())
-            .withDecorations(decorator)
-            .build()
+        val target = buildPanel {
+            tileset = CP437TilesetResources.rexPaint20x20()
+            decorations {
+                +decorator
+            }
+        }
 
-        val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(12, 4)).build()
+        val graphics = tileGraphics {
+            withSize {
+                width = 12
+                height = 4
+            }
+        }
         (target as Renderable).render(graphics)
         assertThat(graphics.convertCharacterTilesToString()).isEqualTo(expected.trimIndent())
     }

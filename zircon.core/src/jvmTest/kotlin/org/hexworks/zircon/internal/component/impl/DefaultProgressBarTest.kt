@@ -2,17 +2,17 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -28,21 +28,19 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
     override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build()
-            )
-            .build()
+        get() = componentStyleSet {
+            defaultStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
+                backgroundColor = transparent()
+            }
+        }
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultProgressBarRenderer())
-        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_10X1).build().toDrawWindow(
-            Rect.create(size = SIZE_10X1)
-        )
+        drawWindow = tileGraphics {
+            size = SIZE_10X1
+        }.toDrawWindow()
         target = DefaultProgressBar(
             componentMetadata = ComponentMetadata(
                 relativePosition = POSITION_2_3,
@@ -76,10 +74,10 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         (0 until PROGRESS_BAR_SIZE_5).forEachIndexed { i, _ ->
             assertThat(drawWindow.getTileAtOrNull(Position.create(i + offset, 0)))
                 .isEqualTo(
-                    GraphicalTileBuilder.newBuilder()
-                        .withCharacter(' ')
-                        .withStyleSet(invertedStyleSet)
-                        .build()
+                    characterTile {
+                        character = ' '
+                        styleSet = invertedStyleSet
+                    }
                 )
         }
     }

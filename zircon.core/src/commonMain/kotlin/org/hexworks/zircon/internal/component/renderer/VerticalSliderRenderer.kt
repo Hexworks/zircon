@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.graphics.Symbols.DOUBLE_LINE_HORIZONTAL
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 @Suppress("DuplicatedCode")
@@ -27,15 +27,26 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
         (0..barWidth).forEach { idx ->
             when {
                 idx == cursorPosition -> drawWindow.draw(
-                    tile = Tile.createCharacterTile(Symbols.DOUBLE_LINE_HORIZONTAL, context.currentStyle),
+                    tile = characterTile {
+                        character = DOUBLE_LINE_HORIZONTAL
+                        styleSet = context.currentStyle
+                    },
                     drawPosition = Position.create(0, idx)
                 )
+
                 idx < cursorPosition -> drawWindow.draw(
-                    tile = Tile.createCharacterTile(' ', invertedDefaultStyleSet),
+                    tile = characterTile {
+                        character = ' '
+                        styleSet = invertedDefaultStyleSet
+                    },
                     drawPosition = Position.create(0, idx)
                 )
+
                 else -> drawWindow.draw(
-                    tile = Tile.createCharacterTile(' ', disabledStyleSet),
+                    tile = characterTile {
+                        character = ' '
+                        styleSet = disabledStyleSet
+                    },
                     drawPosition = Position.create(0, idx)
                 )
             }

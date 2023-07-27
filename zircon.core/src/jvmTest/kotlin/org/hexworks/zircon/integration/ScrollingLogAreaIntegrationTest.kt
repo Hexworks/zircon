@@ -1,6 +1,11 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.builder.component.buildLogArea
+import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.component.addParagraph
+import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.screen.Screen
 import java.util.*
@@ -36,25 +41,37 @@ class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size
     )
 
     override fun buildScreenContent(screen: Screen) {
-        val panel = Components.panel()
-            .withDecorations(box(title = "Log"))
-            .withPreferredSize(60, 25)
-            .build()
-
-        screen.addComponent(panel)
-        val logArea = Components.logArea()
-            .withPreferredSize(Size.create(58, 23))
-            .build()
-        panel.addComponent(logArea)
 
         screen.display()
         screen.theme = theme
+
+        val logArea = buildLogArea {
+            withPreferredSize {
+                width = 58
+                height = 23
+            }
+        }
+
+        screen.addComponent(buildPanel {
+            decorations {
+                +box(title = "Log")
+            }
+            withPreferredSize {
+                width = 60
+                height = 25
+            }
+
+            children {
+                +logArea
+            }
+
+        })
 
         val random = Random()
 
         (0..40).forEach { _ ->
             Thread.sleep(random.nextInt(delayMs).toLong())
-            logArea.addParagraph(texts[random.nextInt(texts.size)], withNewLine = false)
+            logArea.addParagraph(texts[random.nextInt(texts.size)])
         }
     }
 

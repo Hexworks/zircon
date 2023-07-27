@@ -68,13 +68,13 @@ class TextBufferTest {
     }
 
     companion object {
-        val SEP = '\n'
-        val TEXT = "asdf"
+        const val SEP = '\n'
+        const val TEXT = "asdf"
         val EXPECTED_MULTI_LINE_TEXT = "$TEXT$SEP$TEXT"
 
-        val LINE_0 = "asdf"
-        val LINE_1 = "a"
-        val LINE_2 = "asd"
+        const val LINE_0 = "asdf"
+        const val LINE_1 = "a"
+        const val LINE_2 = "asd"
         val VARIABLE_WIDTH_LINES = "$LINE_0$SEP$LINE_1$SEP$LINE_2"
     }
 }

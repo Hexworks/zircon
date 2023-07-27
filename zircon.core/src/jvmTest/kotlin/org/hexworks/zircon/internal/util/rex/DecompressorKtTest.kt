@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.util.rex
 
+import org.hexworks.zircon.internal.util.unZipIt
 import org.junit.Test
 
 @Suppress("DEPRECATION")

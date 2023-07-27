@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.junit.Test
 
-@Suppress("PropertyName", "TestFunctionName")
+@Suppress("TestFunctionName")
 abstract class ComponentImplementationTest<T : InternalComponent> : CommonComponentTest<T>() {
 
     abstract val drawWindow: DrawWindow

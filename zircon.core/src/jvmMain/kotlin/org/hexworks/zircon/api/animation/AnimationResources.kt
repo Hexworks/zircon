@@ -1,11 +1,11 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.api.resource.REXPaintResources
 import org.hexworks.zircon.api.builder.animation.AnimationBuilder
+import org.hexworks.zircon.api.resource.REXPaintResources
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.animation.AnimationMetadata
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.util.rex.unZipIt
+import org.hexworks.zircon.internal.util.unZipIt
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import java.io.InputStream
@@ -44,9 +44,10 @@ object AnimationResources {
             // we need this trick to not load the file (and create a frame out of it) if it has already been loaded
             frameMap[frame.frame]!!.copy(repeatCount = frame.repeatCount)
         }
-        return AnimationBuilder.newBuilder()
-            .withFps(animationData.frameRate)
-            .withLoopCount(animationData.loopCount)
-            .addFrames(frames)
+        return AnimationBuilder().apply {
+            fps = animationData.frameRate.toLong()
+            loopCount = animationData.loopCount
+            addFrames(frames)
+        }
     }
 }

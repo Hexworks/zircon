@@ -14,7 +14,7 @@ interface Resource {
         fun create(
             path: String,
             resourceType: ResourceType = ResourceType.FILESYSTEM,
-        ) = DefaultResource(resourceType, path)
+        ): Resource = DefaultResource(resourceType, path)
     }
 }
 

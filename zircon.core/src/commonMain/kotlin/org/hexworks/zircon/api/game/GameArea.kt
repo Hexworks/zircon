@@ -1,5 +1,3 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.game
 
 import org.hexworks.cobalt.core.api.behavior.Disposable
@@ -50,7 +48,7 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
      */
     fun setBlockAt(position: Position3D, block: B)
 
-    fun asInternalGameArea(): InternalGameArea<T, B>
+    fun asInternal(): InternalGameArea<T, B>
 
     companion object {
 

@@ -2,10 +2,11 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.LabelBuilder
-import org.hexworks.zircon.api.builder.component.PanelBuilder
+import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -21,7 +22,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
-@Suppress("MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax", "TestFunctionName")
+@Suppress("MemberVisibilityCanBePrivate", "TestFunctionName")
 class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     override lateinit var target: DefaultComponent
@@ -190,23 +191,28 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         val parentPos = Position.create(2, 1)
         val leafPos = Position.create(1, 2)
 
-        val root = PanelBuilder.newBuilder()
-            .withPreferredSize(Size.create(10, 10))
-            .withPosition(rootPos)
-            .build()
+        val root = buildPanel {
+            withPreferredSize {
+                width = 10
+                height = 10
+            }
+            position = rootPos
+        }
 
-        val parent = PanelBuilder.newBuilder()
-            .withPreferredSize(Size.create(7, 7))
-            .withPosition(parentPos)
-            .build()
+        val parent = buildPanel {
+            withPreferredSize {
+                width = 7
+                height = 7
+            }
+            position = parentPos
+        }
 
         root.addComponent(parent)
 
-        val leaf = LabelBuilder.newBuilder()
-            .withPosition(leafPos)
-            .withText("foo")
-            .build()
-
+        val leaf = buildLabel {
+            +"foo"
+            position = leafPos
+        }
         parent.addComponent(leaf)
 
         assertThat(leaf.absolutePosition).isEqualTo(rootPos + parentPos + leafPos)

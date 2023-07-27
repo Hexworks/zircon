@@ -9,6 +9,9 @@ import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.isBlinking
+import org.hexworks.zircon.api.extensions.isNotEmpty
+import org.hexworks.zircon.api.extensions.isOpaque
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource

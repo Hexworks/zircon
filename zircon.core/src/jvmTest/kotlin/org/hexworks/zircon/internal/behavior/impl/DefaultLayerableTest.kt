@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.color.ANSITileColor.GREEN
 import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.data.CharacterTile
@@ -37,10 +37,9 @@ class DefaultLayerableTest {
 
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_Then_it_is_not_present() {
-        val layer = LayerBuilder.newBuilder()
-            .withSize(Size.one())
-            .withOffset(Position.zero())
-            .build()
+        val layer = layer {
+            size = Size.one()
+        }
 
         target.addLayer(layer)
         target.removeLayer(layer)
@@ -50,10 +49,9 @@ class DefaultLayerableTest {
 
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_with_the_handle_Then_it_is_not_present() {
-        val layer = LayerBuilder.newBuilder()
-            .withSize(Size.one())
-            .withOffset(Position.zero())
-            .build()
+        val layer = layer {
+            size = Size.one()
+        }
 
         target.addLayer(layer).removeLayer()
 
@@ -253,12 +251,11 @@ class DefaultLayerableTest {
     }
 
     private fun buildLayer(char: Char = ' '): InternalLayer {
-        return LayerBuilder.newBuilder()
-            .withSize(Size.one())
-            .withOffset(Position.zero())
-            .build().asInternal().apply {
-                fill(Tile.defaultTile().withCharacter(char))
-            }
+        return layer {
+            size = Size.one()
+        }.asInternal().apply {
+            fill(Tile.defaultTile().withCharacter(char))
+        }
     }
 
     companion object {

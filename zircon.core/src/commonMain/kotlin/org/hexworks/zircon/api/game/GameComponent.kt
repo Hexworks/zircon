@@ -1,5 +1,3 @@
-@file:Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 package org.hexworks.zircon.api.game
 
 import org.hexworks.zircon.api.component.Component

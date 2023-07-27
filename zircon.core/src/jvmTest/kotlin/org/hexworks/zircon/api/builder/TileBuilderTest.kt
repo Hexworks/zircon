@@ -34,7 +34,7 @@ class TileBuilderTest {
     companion object {
         val BG_COLOR = TileColor.fromString("#aabbcc")
         val FG_COLOR = TileColor.fromString("#ccbbaa")
-        val CHAR = 'a'
+        const val CHAR = 'a'
         val MODIFIER = Modifiers.crossedOut()
     }
 }

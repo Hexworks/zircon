@@ -4,9 +4,9 @@ import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -147,32 +147,24 @@ abstract class BaseSlider(
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryForegroundColor)
-                .withBackgroundColor(TileColor.transparent())
-                .build()
-        )
-        .withHighlightedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.accentColor)
-                .build()
-        )
-        .withDisabledStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                .build()
-        )
-        .withFocusedStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.primaryBackgroundColor)
-                .withBackgroundColor(colorTheme.primaryForegroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.primaryForegroundColor
+            backgroundColor = transparent()
+        }
+        highlightedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.accentColor
+        }
+        disabledStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = colorTheme.secondaryBackgroundColor
+        }
+        focusedStyle = styleSet {
+            foregroundColor = colorTheme.primaryBackgroundColor
+            backgroundColor = colorTheme.primaryForegroundColor
+        }
+    }
 
     override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)

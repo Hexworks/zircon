@@ -4,11 +4,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.component.ButtonBuilder
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.component.PanelBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.data.position
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -64,9 +66,12 @@ class DefaultComponentContainerTest {
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
         target.addComponent(
-            PanelBuilder.newBuilder()
-                .withPreferredSize(Size.create(999, 999))
-                .build()
+            buildPanel {
+                withPreferredSize {
+                    width = 999
+                    height = 999
+                }
+            }
         )
     }
 
@@ -192,13 +197,13 @@ class DefaultComponentContainerTest {
 
         val button = createButton()
         target.addComponent(button)
-        val other = ButtonBuilder.newBuilder()
-            .withText(BUTTON_TEXT)
-            .withPosition(
-                Position.create(0, 1)
-                    .relativeToBottomOf(button)
-            )
-            .build()
+        val other = buildButton {
+            +BUTTON_TEXT
+            position = position {
+                x = 0
+                y = 1
+            }.relativeToBottomOf(button)
+        }
         target.addComponent(other)
 
         target.dispatch(TAB)
@@ -244,45 +249,45 @@ class DefaultComponentContainerTest {
         assertThat(target.focusedComponent).isEqualTo(button)
     }
 
-    private fun createButton() = ButtonBuilder.newBuilder()
-        .withPosition(BUTTON_POSITION)
-        .withText(BUTTON_TEXT)
-        .withComponentStyleSet(buildStyles())
-        .build()
+    private fun createButton() = buildButton {
+        +BUTTON_TEXT
+        position = BUTTON_POSITION
+        componentStyleSet = buildStyles()
+    }
 
     companion object {
         const val BUTTON_TEXT = "TEXT"
         val TILESET = CP437TilesetResources.rexPaint16x16()
         val SIZE = Size.create(30, 20)
         val BUTTON_POSITION = Position.create(6, 7)
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-            .withBackgroundColor(ANSITileColor.BLUE)
-            .withForegroundColor(ANSITileColor.RED)
-            .build()
-        private val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-            .withBackgroundColor(ANSITileColor.GREEN)
-            .withForegroundColor(ANSITileColor.YELLOW)
-            .build()
-        private val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-            .withBackgroundColor(ANSITileColor.MAGENTA)
-            .withForegroundColor(ANSITileColor.BLUE)
-            .build()
-        val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-            .withBackgroundColor(ANSITileColor.YELLOW)
-            .withForegroundColor(ANSITileColor.CYAN)
-            .build()
-        private val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-            .withBackgroundColor(ANSITileColor.RED)
-            .withForegroundColor(ANSITileColor.CYAN)
-            .build()
+        val DEFAULT_STYLE = styleSet {
+            backgroundColor = BLUE
+            foregroundColor = RED
+        }
+        private val ACTIVE_STYLE = styleSet {
+            backgroundColor = GREEN
+            foregroundColor = YELLOW
+        }
+        private val DISABLED_STYLE = styleSet {
+            backgroundColor = MAGENTA
+            foregroundColor = BLUE
+        }
+        val FOCUSED_STYLE = styleSet {
+            backgroundColor = YELLOW
+            foregroundColor = CYAN
+        }
+        private val MOUSE_OVER_STYLE = styleSet {
+            backgroundColor = RED
+            foregroundColor = CYAN
+        }
 
-        fun buildStyles() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(DEFAULT_STYLE)
-            .withActiveStyle(ACTIVE_STYLE)
-            .withDisabledStyle(DISABLED_STYLE)
-            .withFocusedStyle(FOCUSED_STYLE)
-            .withHighlightedStyle(MOUSE_OVER_STYLE)
-            .build()
+        fun buildStyles() = componentStyleSet {
+            defaultStyle = DEFAULT_STYLE
+            activeStyle = ACTIVE_STYLE
+            disabledStyle = DISABLED_STYLE
+            focusedStyle = FOCUSED_STYLE
+            highlightedStyle = MOUSE_OVER_STYLE
+        }
 
         val SPACE = KeyboardEvent(
             type = KeyboardEventType.KEY_PRESSED,

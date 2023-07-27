@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
 
 /**
- * A [Renderer] is responsible for rendering the tiles on the actual screen.
+ * A [Renderer] is responsible for rendering the tiles on the user's screen.
  * It implements the template method pattern, and it works the following way:
  *
  * - [create] initializes the renderer and returns the UI view object

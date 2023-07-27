@@ -2,10 +2,10 @@ package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.VirtualApplications
-import org.hexworks.zircon.api.builder.application.AppConfigBuilder
-import org.hexworks.zircon.api.builder.screen.ScreenBuilder
+import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
@@ -18,12 +18,12 @@ abstract class ComponentIntegrationTestBase(
     val size: Size = DEFAULT_SIZE_60X30,
     val tileset: TilesetResource = DEFAULT_TILESET_WANDERLUST,
     val tileGrid: TileGrid = VirtualApplications.startTileGrid(
-        appConfig = AppConfigBuilder.newAppConfigBuilder()
-            .withDefaultTileset(tileset)
-            .withSize(size)
-            .build()
+        appConfig = appConfig {
+            defaultTileset = tileset
+            this.size = size
+        }
     ),
-    val screen: Screen = ScreenBuilder.createScreenFor(tileGrid)
+    val screen: Screen = tileGrid.toScreen()
 ) {
 
     @Test

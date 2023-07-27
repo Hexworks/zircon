@@ -77,7 +77,7 @@ class KorgeCP437Tileset(
             val px = position.x * widthF
             val py = position.y * heightF
 
-            val fg = tile.foregroundColor.toRGBA();
+            val fg = tile.foregroundColor.toRGBA()
             val bg = tile.backgroundColor.toRGBA()
 
             drawSlice(

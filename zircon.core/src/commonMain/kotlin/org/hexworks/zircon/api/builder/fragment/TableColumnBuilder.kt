@@ -11,7 +11,7 @@ class TableColumnBuilder<T : Any, V : Any, C : Component> : FragmentBuilder<Tabl
 
     override var position: Position
         get() = error("Can't get the position of a table column")
-        set(value) = error("Can't set the position of a table column")
+        set(_) = error("Can't set the position of a table column")
 
     /**
      * The name of this column. It will be used as table header.
@@ -47,4 +47,12 @@ class TableColumnBuilder<T : Any, V : Any, C : Component> : FragmentBuilder<Tabl
             cellRenderer = cellRenderer ?: error("Cell renderer is missing")
         )
     }
+}
+
+fun <T : Any, V : Any, C : Component> TableColumnBuilder<T, V, C>.withCellRenderer(renderer: (V) -> C) = apply {
+    cellRenderer = renderer
+}
+
+fun <T : Any, V : Any, C : Component> TableColumnBuilder<T, V, C>.withValueProvider(provider: (T) -> V) = apply {
+    valueProvider = provider
 }

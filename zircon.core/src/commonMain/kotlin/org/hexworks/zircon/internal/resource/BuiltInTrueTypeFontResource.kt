@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * This enum contains the metadata for the built-in True Type fonts.
  */
+@Suppress("SpellCheckingInspection")
 enum class BuiltInTrueTypeFontResource(
     private val fileName: String,
     private val ratioFn: (Int) -> Int

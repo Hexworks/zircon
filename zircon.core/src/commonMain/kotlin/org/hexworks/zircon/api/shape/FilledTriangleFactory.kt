@@ -9,28 +9,25 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
 
         // The algorithm described here is used
         // http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
-        val points = arrayOf(p1, p2, p3).sortedArrayWith(Comparator { o1, o2 ->
+        val points = arrayOf(p1, p2, p3).sortedArrayWith { o1, o2 ->
             if (o1.y < o2.y) -1 else if (o1.y == o2.y) 0 else 1
-        })
+        }
         var result: Shape = DefaultShape()
 
-        val dx1: Float
-        val dx2: Float
-        val dx3: Float
-        if (points[1].y - points[0].y > 0) {
-            dx1 = (points[1].x - points[0].x).toFloat() / (points[1].y - points[0].y).toFloat()
+        val dx1: Float = if (points[1].y - points[0].y > 0) {
+            (points[1].x - points[0].x).toFloat() / (points[1].y - points[0].y).toFloat()
         } else {
-            dx1 = 0f
+            0f
         }
-        if (points[2].y - points[0].y > 0) {
-            dx2 = (points[2].x - points[0].x).toFloat() / (points[2].y - points[0].y).toFloat()
+        val dx2: Float = if (points[2].y - points[0].y > 0) {
+            (points[2].x - points[0].x).toFloat() / (points[2].y - points[0].y).toFloat()
         } else {
-            dx2 = 0f
+            0f
         }
-        if (points[2].y - points[1].y > 0) {
-            dx3 = (points[2].x - points[1].x).toFloat() / (points[2].y - points[1].y).toFloat()
+        val dx3: Float = if (points[2].y - points[1].y > 0) {
+            (points[2].x - points[1].x).toFloat() / (points[2].y - points[1].y).toFloat()
         } else {
-            dx3 = 0f
+            0f
         }
 
         var startX: Float

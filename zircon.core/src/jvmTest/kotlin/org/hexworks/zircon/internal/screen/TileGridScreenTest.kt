@@ -4,12 +4,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.application.appConfig
+import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.layer
+import org.hexworks.zircon.api.builder.graphics.withSize
+import org.hexworks.zircon.api.component.builder.base.withPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
@@ -17,7 +19,7 @@ import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("TestFunctionName", "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
+@Suppress("TestFunctionName")
 class TileGridScreenTest {
 
     lateinit var target: TileGridScreen
@@ -27,10 +29,11 @@ class TileGridScreenTest {
     @Before
     fun setUp() {
         tileset = FONT
-        grid = DefaultTileGrid(AppConfig.newBuilder()
-            .withDefaultTileset(tileset)
-            .withSize(SIZE)
-            .build())
+        grid = DefaultTileGrid(
+            appConfig {
+                defaultTileset = tileset
+                size = SIZE
+            })
         grid.application = ApplicationStub()
         target = TileGridScreen(grid)
     }
@@ -76,19 +79,31 @@ class TileGridScreenTest {
 
     @Test
     fun When_a_layer_and_a_component_is_added_Then_renderables_should_be_returned_in_proper_order() {
-        val layer = LayerBuilder.newBuilder()
-            .withSize(Size.create(3, 4))
-            .build().apply {
-                draw(Tile.defaultTile().withCharacter('x'), Position.offset1x1())
-            }.asInternal()
+        val layer = layer {
+            withSize {
+                width = 3
+                height = 4
+            }
+        }.apply {
+            draw(characterTile { character = 'x' }, Position.offset1x1())
+        }.asInternal()
 
-        val button = Components.button().withText("y").withPosition(Position.create(2, 3)).build()
+        val button = buildButton {
+            +"y"
+            withPosition {
+                x = 2
+                y = 3
+            }
+        }
 
-        val surfaceLayer = LayerBuilder.newBuilder()
-            .withSize(Size.create(5, 6))
-            .build().apply {
-                draw(Tile.defaultTile().withCharacter('z'), Position.create(2, 3))
-            }.asInternal()
+        val surfaceLayer = layer {
+            withSize {
+                width = 5
+                height = 6
+            }
+        }.apply {
+            draw(characterTile { character = 'z' }, Position.create(2, 3))
+        }.asInternal()
 
         target.draw(surfaceLayer)
         target.addLayer(layer)
@@ -106,8 +121,6 @@ class TileGridScreenTest {
     companion object {
         val SIZE = Size.create(10, 10)
         val FONT = CP437TilesetResources.rogueYun16x16()
-        val CHAR = GraphicalTileBuilder.newBuilder()
-            .withCharacter('x')
-            .build()
+        val CHAR = characterTile { character = 'x' }
     }
 }

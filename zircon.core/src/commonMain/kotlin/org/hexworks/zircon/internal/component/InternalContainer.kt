@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component
 
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
-import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 

@@ -2,15 +2,18 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.component.buildParagraph
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.Paragraph
+import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -27,34 +30,28 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                    .build()
-            )
-            .withDisabledStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                    .build()
-            )
-            .withFocusedStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
-                    .build()
-            )
-            .build()
+        get() = componentStyleSet {
+            defaultStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
+                backgroundColor = DEFAULT_THEME.primaryBackgroundColor
+            }
+            disabledStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
+                backgroundColor = DEFAULT_THEME.secondaryBackgroundColor
+            }
+            focusedStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.primaryBackgroundColor
+                backgroundColor = DEFAULT_THEME.primaryForegroundColor
+            }
+        }
 
     @Before
     override fun setUp() {
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 1))
         rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
-        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_40x10).build().toDrawWindow(
-            Rect.create(size = SIZE_40x10)
-        )
+        drawWindow = tileGraphics {
+            size = SIZE_40x10
+        }.toDrawWindow()
         target = DefaultLogArea(
             componentMetadata = ComponentMetadata(
                 size = SIZE_40x10,
@@ -77,38 +74,49 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     @Test
     fun shouldProperlyAddNewText() {
-        target.addParagraph(TEXT)
+        target.addRow(buildParagraph { +TEXT })
+
         val child = target.children.first()
+
         assertThat((child.children.first() as Paragraph).text).isEqualTo(TEXT)
     }
 
     @Test
     fun shouldProperlyAddComponent() {
         val testComponent = testComponent()
-        target.addInlineComponent(testComponent)
-        target.commitInlineElements()
+
+        target.addInlineRow(listOf(testComponent))
+
         val child = target.children.first()
+
         assertThat(target.children.size).isEqualTo(1)
         assertThat(child.children.first()).isSameAs(testComponent)
     }
 
     @Test
     fun shouldProperlyRemoveComponentIfItGetsDisposedDueToHistorySize() {
-        target.addInlineComponent(testComponent())
-        target.commitInlineElements()
-        target.addNewRows(ROW_HISTORY_SIZE)
-        target.addParagraph(TEXT)
+        val testComponent = testComponent()
 
-        assertThat(target.children as Iterable<InternalComponent>).doesNotContain(testComponent())
+        target.addInlineRow(listOf(testComponent))
+
+        target.addNewRows(ROW_HISTORY_SIZE)
+
+        target.addRow(buildParagraph { +TEXT })
+
+        assertThat(target.children as Iterable<InternalComponent>).doesNotContain(testComponent)
     }
 
 
     @Test
     fun logElementShouldProperlyScrollDownIfNecessary() {
-        target.addParagraph(TEXT)
+        target.addRow(buildParagraph { +TEXT })
+
         target.addNewRows(10)
-        target.addParagraph(ALTERNATE_TEXT)
+
+        target.addRow(buildParagraph { +ALTERNATE_TEXT })
+
         val child = (target.children.first())
+
         assertThat(child.children).isEmpty() // this means it has no paragraph as a child
     }
 
@@ -126,10 +134,10 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
 
-        fun testComponent() = Components.button()
-            .withDecorations()
-            .withTileset(BuiltInCP437TilesetResource.TAFFER_20X20)
-            .withText("Button")
-            .build() as InternalComponent
+        fun testComponent() = buildButton {
+            +"Button"
+            decorations { }
+            tileset = BuiltInCP437TilesetResource.TAFFER_20X20
+        }.asInternalComponent()
     }
 }

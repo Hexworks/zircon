@@ -3,10 +3,10 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.builder.component.buildRadioButton
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
 class DefaultRadioButtonGroupTest {
 
     lateinit var target: DefaultRadioButtonGroup
@@ -24,10 +24,10 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldSelectButtonWhenClicked() {
 
-        val btn = Components.radioButton()
-            .withKey("qux")
-            .withText("baz")
-            .build() as (DefaultRadioButton)
+        val btn = buildRadioButton {
+            key = "qux"
+            text = "baz"
+        } as (DefaultRadioButton)
         target.addComponent(btn)
 
         btn.activated()
@@ -39,14 +39,14 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldProperlyDeselectPreviouslySelectedButtonWhenNewOneIsSelected() {
-        val oldBtn = Components.radioButton()
-            .withKey("old")
-            .withText("old")
-            .build() as (DefaultRadioButton)
-        val newBtn = Components.radioButton()
-            .withKey("new")
-            .withText("new")
-            .build() as (DefaultRadioButton)
+        val oldBtn = buildRadioButton {
+            key = "old"
+            text = "old"
+        } as (DefaultRadioButton)
+        val newBtn = buildRadioButton {
+            key = "new"
+            text = "new"
+        } as (DefaultRadioButton)
         oldBtn.isSelected = true
         newBtn.isSelected = true
         target.addComponents(oldBtn, newBtn)

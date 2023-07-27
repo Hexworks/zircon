@@ -19,6 +19,6 @@ class StringBuilderExtensionsKtTest {
     }
 
     companion object {
-        val STRING = "STRING"
+        const val STRING = "STRING"
     }
 }

@@ -1,23 +1,25 @@
 package org.hexworks.zircon.internal.game.impl
 
+import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType.BACK
 import org.hexworks.zircon.api.data.BlockTileType.BOTTOM
 import org.hexworks.zircon.api.data.BlockTileType.FRONT
 import org.hexworks.zircon.api.data.BlockTileType.TOP
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
+import org.hexworks.zircon.api.data.Tile
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @Suppress("TestFunctionName")
-class TopDownFrontGameAreaRendererTest {
+class TopDownObliqueFrontGameAreaRendererTest {
 
-    lateinit var target: TopDownFrontGameAreaRenderer
+    lateinit var target: TopDownObliqueFrontGameAreaRenderer<Tile, Block<Tile>>
 
     @BeforeTest
     fun setUp() {
-        target = TopDownFrontGameAreaRenderer()
+        target = TopDownObliqueFrontGameAreaRenderer()
     }
 
     @Test

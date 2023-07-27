@@ -19,7 +19,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialActualSize: Size3D,
     initialVisibleOffset: Position3D = Position3D.defaultPosition(),
     initialContents: Map<Position3D, B> = mapOf(),
-    initialFilters: Iterable<GameAreaTileFilter>,
+    initialFilters: Iterable<GameAreaTileFilter<T>>,
     private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
         initialVisibleSize = initialVisibleSize,
         initialActualSize = initialActualSize
@@ -29,7 +29,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val visibleOffsetValue: ObservableValue<Position3D>
         get() = scrollable3D.visibleOffsetValue
 
-    final override val filter = initialFilters.fold(GameAreaTileFilter.identity, GameAreaTileFilter::plus)
+    final override val filter = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
 
     // 📙 Note that this was necessary back in the day when Zircon supported Java and we needed
     // to have consistent snapshots for thread safety. Now we don't need that anymore as with coroutines
@@ -67,6 +67,6 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         }
     }
 
-    override fun asInternalGameArea() = this
+    override fun asInternal() = this
 
 }

@@ -4,7 +4,6 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import kotlin.random.Random
 
-@Suppress("DataClassPrivateConstructor")
 class DefaultMarkovChainNode<T : Any> internal constructor(
     private var data: T? = null,
     private val random: Random = Random(5234321)

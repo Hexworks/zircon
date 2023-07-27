@@ -4,11 +4,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.component.buildVbox
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position.Companion.bottomLeftOf
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.ComponentRendererStub
 import org.hexworks.zircon.internal.component.impl.DefaultRootContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
@@ -57,10 +60,16 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_root_has_children_Then_focus_order_is_the_flattened_tree() {
 
-        val button0 = Components.button().build() as InternalComponent
-        val box = Components.vbox().withPreferredSize(10, 2).withPosition(Position.bottomLeftOf(button0)).build()
-        val button1a = Components.button().build() as InternalComponent
-        val button1b = Components.button().build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
+        val box = buildVbox {
+            withPreferredSize {
+                width = 10
+                height = 2
+            }
+            position = bottomLeftOf(button0)
+        }
+        val button1a = buildButton { }.asInternalComponent()
+        val button1b = buildButton { }.asInternalComponent()
 
         box.addComponents(button1a, button1b)
         root.addComponents(button0, box)
@@ -79,10 +88,10 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_last_component_is_focused_Then_the_next_focus_is_the_root() {
 
-        val button0 = Components.button().build() as InternalComponent
-        val button1 = Components.button()
-            .withPosition(Position.bottomLeftOf(button0))
-            .build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
+        val button1 = buildButton {
+            position = bottomLeftOf(button0)
+        }.asInternalComponent()
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -94,10 +103,10 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_first_component_is_focused_Then_the_previous_focus_is_the_root() {
 
-        val button0 = Components.button().build() as InternalComponent
-        val button1 = Components.button()
-            .withPosition(Position.bottomLeftOf(button0))
-            .build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
+        val button1 = buildButton {
+            position = bottomLeftOf(button0)
+        }.asInternalComponent()
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -109,10 +118,10 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_root_is_focused_Then_the_next_focus_is_the_first_component() {
 
-        val button0 = Components.button().build() as InternalComponent
-        val button1 = Components.button()
-            .withPosition(Position.bottomLeftOf(button0))
-            .build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
+        val button1 = buildButton {
+            position = bottomLeftOf(button0)
+        }.asInternalComponent()
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -124,10 +133,10 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_root_is_focused_Then_the_previous_focus_is_the_last_component() {
 
-        val button0 = Components.button().build() as InternalComponent
-        val button1 = Components.button()
-            .withPosition(Position.bottomLeftOf(button0))
-            .build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
+        val button1 = buildButton {
+            position = bottomLeftOf(button0)
+        }.asInternalComponent()
 
         root.addComponents(button0, button1)
         target.refreshFocusables()
@@ -139,7 +148,7 @@ class DefaultComponentFocusOrderListTest {
     @Test
     fun When_the_root_has_only_one_child_Then_focus_order_is_correct() {
 
-        val button0 = Components.button().build() as InternalComponent
+        val button0 = buildButton { }.asInternalComponent()
 
         root.addComponent(button0)
         target.refreshFocusables()

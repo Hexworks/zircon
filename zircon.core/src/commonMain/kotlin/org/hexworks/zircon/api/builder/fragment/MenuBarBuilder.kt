@@ -77,7 +77,7 @@ fun <T : Any> buildMenuBar(
 
 fun <T : Any> AnyContainerBuilder.menuBar(
     init: MenuBarBuilder<T>.() -> Unit
-): MenuBar<T> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.MenuBarBuilder(), init)
+): MenuBar<T> = buildFragmentFor(this, MenuBarBuilder(), init)
 
 
 fun <T : Any> MenuBarBuilder<T>.dropdownMenu(init: DropdownMenuBuilder<T>.() -> Unit) {

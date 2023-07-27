@@ -31,7 +31,8 @@ abstract class BaseApplication<R : Any, A : Application, V>(
     abstract val renderer: Renderer<R, A, V>
 
     private val logger = LoggerFactory.getLogger(this::class)
-    private val renderIntervalMs = 1000.div(config.fpsLimit)
+    // 60 FPS by default...can go into app config if necessary
+    private val renderIntervalMs = 1000.div(60)
 
     private var lastRender = 0L
 

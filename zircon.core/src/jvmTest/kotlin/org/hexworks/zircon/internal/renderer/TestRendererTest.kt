@@ -3,18 +3,37 @@ package org.hexworks.zircon.internal.renderer
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.builder.component.buildVbox
+import org.hexworks.zircon.api.builder.component.paragraph
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.withSize
+import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.junit.Test
 
 class TestRendererTest {
+
     @Test
     fun tinyExample() {
-        val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(3, 1)).build()
+        val graphics = tileGraphics {
+            withSize {
+                width = 3
+                height = 1
+            }
+        }
         val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
             withComponentContainer {
-                addComponent(Components.textBox(3).addParagraph("Foo").build())
+                addComponent(buildVbox {
+                    withPreferredSize {
+                        width = 3
+                        height = 1
+                    }
+                    paragraph {
+                        +"Foo"
+                    }
+                })
             }
         }
         testRenderer.render("null")
@@ -24,14 +43,27 @@ class TestRendererTest {
     @Test
     fun rendersAsExpected() {
         val text = "Hello Zircon"
-        val graphics = DrawSurfaces.tileGraphicsBuilder().withSize(Size.create(text.length + 2, 4)).build()
+        val graphics = tileGraphics {
+            withSize {
+                width = text.length + 2
+                height = 4
+            }
+        }
         val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
             withComponentContainer {
                 addComponent(
-                    Components.textBox(text.length)
-                        .withDecorations(box(boxType = BoxType.TOP_BOTTOM_DOUBLE))
-                        .addParagraph(text, withNewLine = false)
-                        .build()
+                    buildVbox {
+                        withPreferredSize {
+                            width = text.length
+                            height = 4
+                        }
+                        decorations {
+                            +box(boxType = BoxType.TOP_BOTTOM_DOUBLE)
+                        }
+                        paragraph {
+                            +text
+                        }
+                    }
                 )
             }
         }

@@ -36,7 +36,7 @@ fun Map<Position, Tile>.toTileImage(size: Size, tileset: TilesetResource): TileI
 
 /**
  * Transforms an [Iterable] of [Position] to [Tile] [Pair]s to a [TileImage] with
- * the given [size] and [tileset].
+ * the given [size].
  */
 fun Iterable<Pair<Position, Tile>>.toTileComposite(size: Size): TileComposite {
     return toMap().toTileComposite(size)

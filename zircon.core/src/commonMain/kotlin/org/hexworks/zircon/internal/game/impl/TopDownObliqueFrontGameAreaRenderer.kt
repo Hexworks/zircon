@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.game.impl
 
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.extensions.isOpaque
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile
 import org.hexworks.zircon.internal.game.GameAreaRenderer
@@ -8,12 +9,12 @@ import org.hexworks.zircon.internal.game.InternalGameArea
 import kotlin.math.max
 
 // TODO: test this
-class TopDownFrontGameAreaRenderer : GameAreaRenderer {
+class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
 
     override fun render(
-        gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
+        gameArea: InternalGameArea<T, B>,
         graphics: DrawWindow,
-        fillerTile: Tile
+        fillerTile: T
     ) {
         val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
@@ -36,8 +37,8 @@ class TopDownFrontGameAreaRenderer : GameAreaRenderer {
                                 visibleSize = visibleSize,
                                 offsetPosition = pos - visibleOffset,
                                 blockTileType = side,
-                                tile.toBuilder()
-                            ).build()
+                                tile = tile
+                            )
                         )
                         if (tile.isOpaque) {
                             break@stacking

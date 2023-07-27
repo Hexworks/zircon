@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.builder.component.buildHeader
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildHeader
 import org.hexworks.zircon.api.fragment.TableColumn
 
 /**
- * This class represents the definition of a column in a [Table]. It provides means to get the value
+ * This class represents the definition of a column in a `Table`. It provides means to get the value
  * from a model object and wrap that value into a [Component]. That component is then displayed
  * as table cell.
  *

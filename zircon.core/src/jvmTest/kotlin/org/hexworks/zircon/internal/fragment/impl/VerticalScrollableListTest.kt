@@ -2,15 +2,11 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.uievent.KeyCode
-import org.hexworks.zircon.api.uievent.KeyboardEvent
-import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType
-import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.convertCharacterTilesToString
 import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
 import org.hexworks.zircon.internal.renderer.TestRenderer
@@ -19,11 +15,12 @@ import org.junit.Test
 
 @Ignore
 class VerticalScrollableListTest {
-    private val graphics: TileGraphics =
-        DrawSurfaces
-            .tileGraphicsBuilder()
-            .withSize(Size.create(8, 10))
-            .build()
+    private val graphics: TileGraphics = tileGraphics {
+        withSize {
+            width = 8
+            height = 10
+        }
+    }
 
     private val scrollableListFragment = VerticalScrollableList(
         graphics.size,

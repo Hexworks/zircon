@@ -36,10 +36,13 @@ abstract class BaseContainerBuilder<T : Container>(
     private fun hasNoExplicitSize() = preferredContentSize.isUnknown && preferredSize.isUnknown
 
     /**
-     * Creates a new [DecorationsBuilder] using the builder DSL and returns it.
+     * Creates a new [ChildrenBuilder] using the builder DSL and returns it.
      */
-    fun BaseContainerBuilder<T>.children(init: ChildrenBuilder.() -> Unit): List<Component> =
-        ChildrenBuilder().apply(init).build().apply {
-            this@BaseContainerBuilder.childrenToAdd = this
+    fun BaseContainerBuilder<T>.children(init: ChildrenBuilder.() -> Unit): List<Component> {
+        val builder = this
+        return ChildrenBuilder().apply(init).build().apply {
+            builder.childrenToAdd = this
         }
+    }
+
 }

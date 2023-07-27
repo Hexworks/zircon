@@ -143,8 +143,8 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
         }
         return DefaultTable(
             position = position,
-            data = data ?: error("A table must have an observable list of data associated with its columns"),
-            height = data!!.size + 1,
+            data = data,
+            height = data.size + 1,
             columns = columns,
             rowSpacing = rowSpacing,
             colSpacing = colSpacing,
@@ -169,5 +169,5 @@ fun <T : Any> buildTable(
 
 fun <T : Any> AnyContainerBuilder.table(
     init: TableBuilder<T>.() -> Unit
-): Table<T> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.TableBuilder(), init)
+): Table<T> = buildFragmentFor(this, TableBuilder(), init)
 

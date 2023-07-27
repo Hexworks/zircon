@@ -101,7 +101,7 @@ class DrawWindow(
 
     fun fill(filler: Tile) {
         offsetPositions.forEach { pos ->
-            val tile = backend.tiles[pos];
+            val tile = backend.tiles[pos]
             if (tile == null || tile.isEmpty) {
                 backend.draw(filler, pos)
             }
@@ -135,6 +135,7 @@ class DrawWindow(
         style: StyleSet,
         textWrap: TextWrap = TextWrap.WRAP
     ) {
+        val size = this.size
         clear()
         draw(
             characterTileString {

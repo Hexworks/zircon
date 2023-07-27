@@ -3,13 +3,20 @@ package org.hexworks.zircon.internal.component.impl
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.ApplicationStub
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.buildVbox
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position.Companion.offset1x1
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Size.Companion.one
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -27,20 +34,20 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     private lateinit var applicationStub: ApplicationStub
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                    .build()
-            )
-            .build()
+        get() = componentStyleSet {
+            defaultStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
+                backgroundColor = DEFAULT_THEME.secondaryBackgroundColor
+            }
+        }
 
     @Before
     override fun setUp() {
         applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
-        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(SIZE_3_4).build().toDrawWindow(Rect.create(size = SIZE_3_4))
+        drawWindow = tileGraphics {
+            size = SIZE_3_4
+        }.toDrawWindow(Rect.create(size = SIZE_3_4))
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
             metadata = ComponentMetadata(
@@ -95,11 +102,11 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val pos = Position.create(1, 2)
 
-        val label = Components.label()
-            .withPosition(pos)
-            .withPreferredSize(Size.one())
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val label = buildLabel {
+            position = pos
+            preferredSize = one()
+            tileset = TILESET_REX_PAINT_20X20
+        }
 
         target.addComponent(label)
 
@@ -118,23 +125,26 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         val label1Pos = Position.create(1, 2)
         val panelPos = Position.create(1, 1)
 
-        val panel = Components.panel()
-            .withPreferredSize(Size.create(2, 3))
-            .withPosition(panelPos)
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val panel = buildPanel {
+            withPreferredSize {
+                width = 2
+                height = 3
+            }
+            position = panelPos
+            tileset = TILESET_REX_PAINT_20X20
+        }
 
-        val label0 = Components.label()
-            .withPosition(label0Pos)
-            .withPreferredSize(Size.one())
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val label0 = buildLabel {
+            position = label0Pos
+            preferredSize = one()
+            tileset = TILESET_REX_PAINT_20X20
+        }
 
-        val label1 = Components.label()
-            .withPosition(label1Pos)
-            .withPreferredSize(Size.one())
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build()
+        val label1 = buildLabel {
+            position = label1Pos
+            preferredSize = one()
+            tileset = TILESET_REX_PAINT_20X20
+        }
 
         panel.addComponents(label0, label1)
         target.addComponent(panel)
@@ -154,17 +164,20 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun shouldProperlyCalculatePathFromRoot() {
 
-        val panel = Components.panel()
-            .withPreferredSize(Size.create(2, 3))
-            .withPosition(Position.offset1x1())
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build().asInternalComponent()
+        val panel = buildPanel {
+            withPreferredSize {
+                width = 2
+                height = 3
+            }
+            position = offset1x1()
+            tileset = TILESET_REX_PAINT_20X20
+        }.asInternalComponent()
 
-        val label = Components.label()
-            .withPosition(Position.offset1x1())
-            .withPreferredSize(Size.one())
-            .withTileset(TILESET_REX_PAINT_20X20)
-            .build().asInternalComponent()
+        val label = buildLabel {
+            position = offset1x1()
+            preferredSize = one()
+            tileset = TILESET_REX_PAINT_20X20
+        }.asInternalComponent()
 
         panel.addComponent(label)
         target.addComponent(panel)
@@ -174,15 +187,18 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     companion object {
 
-        fun label(tileset: TilesetResource, text: String): InternalComponent = Components.label()
-            .withTileset(tileset)
-            .withText(text)
-            .build().asInternalComponent()
+        fun label(tileset: TilesetResource, text: String): InternalComponent = buildLabel {
+            +text
+            this.tileset = tileset
+        }.asInternalComponent()
 
-        fun vbox(tileset: TilesetResource): InternalContainer = Components.vbox()
-            .withTileset(tileset)
-            .withPreferredSize(3, 4)
-            .build().asInternalComponent()
+        fun vbox(tileset: TilesetResource): InternalContainer = buildVbox {
+            this.tileset = tileset
+            withPreferredSize {
+                width = 3
+                height = 4
+            }
+        }.asInternalComponent()
     }
 }
 

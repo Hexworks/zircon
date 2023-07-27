@@ -7,6 +7,8 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.PositionBuilder
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
@@ -27,6 +29,7 @@ import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationR
  * This class can be used as a base class for creating builders for [Component]s.
  * If your component has text use [ComponentWithTextBuilder] instead.
  */
+@Suppress("UNCHECKED_CAST")
 abstract class BaseComponentBuilder<T : Component>(
     initialRenderer: ComponentRenderer<out T>
 ) : Builder<T>, ComponentEventSource {
@@ -307,7 +310,7 @@ abstract class BaseComponentBuilder<T : Component>(
 
     /**
      * This [Subscription] can be used as an adapter between a [Component]
-     * that will be created by this [ComponentBuilder] and the component
+     * that will be created by this [BaseComponentBuilder] and the component
      * event listeners created by the user.
      */
     private class SubscriptionFuture(
@@ -339,4 +342,38 @@ fun <T : Component> BaseComponentBuilder<T>.decorations(init: DecorationsBuilder
     decorationRenderers = DecorationsBuilder().apply(init).build()
 }
 
+/**
+ * Overwrites the current list of [ComponentDecorationRenderer]s with the given [decoration].
+ */
+var BaseComponentBuilder<out Component>.decoration: ComponentDecorationRenderer?
+    get() = null
+    set(value) {
+        value?.let {
+            decorationRenderers = listOf(value)
+        }
+    }
+
+fun <T : Component> BaseComponentBuilder<T>.withPosition(init: PositionBuilder.() -> Unit) {
+    apply {
+        position = PositionBuilder().apply(init).build()
+    }
+}
+
+fun <T : Component> BaseComponentBuilder<T>.withPreferredSize(init: SizeBuilder.() -> Unit) {
+    apply {
+        preferredSize = SizeBuilder().apply(init).build()
+    }
+}
+
+fun <T : Component> BaseComponentBuilder<T>.withPreferredContentSize(init: SizeBuilder.() -> Unit) {
+    apply {
+        preferredContentSize = SizeBuilder().apply(init).build()
+    }
+}
+
+fun <T : Component> BaseComponentBuilder<T>.withComponentRenderer(init: ComponentRenderer<T>) {
+    apply {
+        componentRenderer = init
+    }
+}
 

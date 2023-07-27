@@ -27,7 +27,7 @@ suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.
 /**
  * Loads a REXPaint file from the given [ByteArray].
  */
-suspend fun loadREXFile(source: ByteArray): REXPaintResource {
+fun loadREXFile(source: ByteArray): REXPaintResource {
     return REXPaintResource(source.toREXFile())
 }
 

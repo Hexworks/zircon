@@ -264,8 +264,7 @@ abstract class DefaultComponent(
         if (other == null) return false
         if (this::class != other::class) return false
         other as DefaultComponent
-        if (id != other.id) return false
-        return true
+        return id == other.id
     }
 
     final override fun hashCode(): Int {

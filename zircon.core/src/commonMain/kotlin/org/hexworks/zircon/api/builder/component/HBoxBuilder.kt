@@ -28,6 +28,7 @@ class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
             initialTitle = title,
             spacing = spacing,
         ).apply {
+            println("adding components (${childrenToAdd.size}")
             addComponents(*childrenToAdd.toTypedArray())
         }.attachListeners()
     }

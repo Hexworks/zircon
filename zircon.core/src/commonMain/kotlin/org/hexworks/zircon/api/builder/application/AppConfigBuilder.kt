@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.application.DebugConfig.Companion.DEFAULT_DEBUG_C
 import org.hexworks.zircon.api.application.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.application.TilesetFactoryBuilder.Companion.DEFAULT_TILESET_FACTORIES
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.modifier.TextureModifier
@@ -106,24 +107,10 @@ class AppConfigBuilder : Builder<AppConfig> {
     var title: String = DEFAULT_TITLE
 
     /**
-     * If set [iconData] contains the bytes of the icon image that will
-     * be used in the application window.
-     */
-    var iconData: ByteArray? = null
-        set(value) {
-            field = value
-            this.iconPath = null
-        }
-
-    /**
      * If set [iconPath] will contain the path of the resource that points
      * to an icon image that will be used in the application window.
      */
     var iconPath: String? = null
-        set(value) {
-            field = value
-            this.iconData = null
-        }
 
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
@@ -168,7 +155,6 @@ class AppConfigBuilder : Builder<AppConfig> {
         title = title,
         debugConfig = debugConfig,
         shortcutsConfig = shortcutsConfig,
-        iconData = iconData,
         iconPath = iconPath,
         customProperties = customProperties,
         tilesetFactories = tilesetFactories.values.toList(),
@@ -193,7 +179,7 @@ fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
  * ### Plugin Developers
  *
  * Write extension methods off of [AppConfigBuilder] that call this API in order to enable end developers
- * to pass configuration in through [AppConfig] that your plugin can later use. It's recommended that [key]
+ * to pass configuration in through [AppConfig] that your plugin can later use. It's recommended that `key`
  * be an `object` with minimal visibility (e.g. `internal`).
  *
  * @sample org.hexworks.zircon.api.application.AppConfigTest
@@ -227,4 +213,8 @@ fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() 
 fun <T : Any, C : Any> AppConfigBuilder.textureModifier(init: TextureModifierBuilder<T, C>.() -> Unit) {
     val result = TextureModifierBuilder<T, C>().apply(init).build()
     textureModifierSupports[result.modifierType] = result
+}
+
+fun AppConfigBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
 }

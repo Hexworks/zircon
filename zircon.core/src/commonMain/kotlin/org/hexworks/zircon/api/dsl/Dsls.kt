@@ -14,7 +14,7 @@ internal fun <T : Component, B : BaseComponentBuilder<T>> buildChildFor(
     init: B.() -> Unit
 ): T {
     val result = builder.apply(init).build()
-    parent.childrenToAdd.plus(result)
+    parent.childrenToAdd = parent.childrenToAdd.plus(result)
     return result
 }
 
@@ -24,7 +24,7 @@ internal fun <F : Fragment, B : FragmentBuilder<F>> buildFragmentFor(
     init: B.() -> Unit
 ): F {
     val result = builder.apply(init).build()
-    parent.childrenToAdd.plus(result.root)
+    parent.childrenToAdd = parent.childrenToAdd.plus(result.root)
     return result
 }
 

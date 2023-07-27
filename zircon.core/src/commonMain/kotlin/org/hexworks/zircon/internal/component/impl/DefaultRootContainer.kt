@@ -2,11 +2,10 @@ package org.hexworks.zircon.internal.component.impl
 
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -75,14 +74,12 @@ class DefaultRootContainer(
 
     override fun focusTaken() = Processed
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSetBuilder.newBuilder()
-        .withDefaultStyle(
-            StyleSetBuilder.newBuilder()
-                .withForegroundColor(colorTheme.secondaryForegroundColor)
-                .withBackgroundColor(colorTheme.secondaryBackgroundColor)
-                .build()
-        )
-        .build()
+    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+        defaultStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = colorTheme.secondaryBackgroundColor
+        }
+    }
 
     override fun calculatePathTo(component: InternalComponent): List<InternalComponent> {
         return componentTree.filter { it.containsBoundable(component) }

@@ -45,7 +45,7 @@ class ArrayBackedTileMap(
     private val Position.index: Int?
         get() {
             return if (dimensions.containsPosition(this)) {
-                val idx = dimensions.width * y + x;
+                val idx = dimensions.width * y + x
                 if (idx < arr.lastIndex || idx >= 0) idx else null
             } else null
         }

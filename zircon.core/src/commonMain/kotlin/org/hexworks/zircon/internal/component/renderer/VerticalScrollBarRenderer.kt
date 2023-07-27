@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 open class VerticalScrollBarRenderer internal constructor() : ComponentRenderer<ScrollBar> {
@@ -29,15 +29,26 @@ open class VerticalScrollBarRenderer internal constructor() : ComponentRenderer<
         (0 until totalScrollBarHeight).forEach { idx ->
             when {
                 idx < lowBarPosition -> drawWindow.draw(
-                    Tile.createCharacterTile(aboveBarCharacter, disabledStyleSet),
+                    characterTile {
+                        character = aboveBarCharacter
+                        styleSet = disabledStyleSet
+                    },
                     Position.create(0, idx)
                 )
+
                 idx > highBarPosition -> drawWindow.draw(
-                    Tile.createCharacterTile(belowBarCharacter, disabledStyleSet),
+                    characterTile {
+                        character = belowBarCharacter
+                        styleSet = disabledStyleSet
+                    },
                     Position.create(0, idx)
                 )
+
                 else -> drawWindow.draw(
-                    Tile.createCharacterTile(barCharacter, invertedDefaultStyleSet),
+                    characterTile {
+                        character = barCharacter
+                        styleSet = invertedDefaultStyleSet
+                    },
                     Position.create(0, idx)
                 )
             }

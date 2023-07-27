@@ -21,7 +21,7 @@ fun TileComposite.convertCharacterTilesToString(padToSize: Size = Size.zero()): 
         }
         val sb = strings[y]
         while (sb.length <= x || sb.length < padToSize.width) {
-            sb.append(' ');
+            sb.append(' ')
         }
 
         sb[x] = tile.asCharacterTileOrElse { Tile.empty() }.character

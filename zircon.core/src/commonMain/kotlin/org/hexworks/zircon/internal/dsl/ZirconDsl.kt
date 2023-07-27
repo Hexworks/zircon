@@ -1,4 +1,4 @@
 package org.hexworks.zircon.internal.dsl
 
-@DslMarker()
+@DslMarker
 annotation class ZirconDsl

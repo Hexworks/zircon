@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Box
 import org.hexworks.zircon.api.graphics.BoxType
@@ -20,7 +21,7 @@ class BoxBuilder : Builder<Box> {
 
     override fun build(): Box = DefaultBox(
         size = size,
-        styleSet = style,
+        style = style,
         boxType = boxType,
         tileset = tileset
     )
@@ -31,3 +32,11 @@ class BoxBuilder : Builder<Box> {
  */
 fun box(init: BoxBuilder.() -> Unit): Box =
     BoxBuilder().apply(init).build()
+
+fun BoxBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
+}
+
+fun BoxBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) = apply {
+    style = StyleSetBuilder().apply(init).build()
+}

@@ -13,7 +13,7 @@ class DefaultGameArea<T : Tile, B : Block<T>> internal constructor(
     initialActualSize: Size3D,
     initialVisibleOffset: Position3D,
     initialContents: PersistentMap<Position3D, B>,
-    initialFilters: Iterable<GameAreaTileFilter>
+    initialFilters: Iterable<GameAreaTileFilter<T>>
 ) : BaseGameArea<T, B>(
     initialVisibleSize = initialVisibleSize,
     initialActualSize = initialActualSize,

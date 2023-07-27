@@ -6,7 +6,7 @@ import org.hexworks.zircon.internal.util.CP437Utils
 import org.hexworks.zircon.internal.util.rex.REXCell
 import org.hexworks.zircon.internal.util.rex.REXFile
 import org.hexworks.zircon.internal.util.rex.REXLayer
-import org.hexworks.zircon.internal.util.rex.decompressGZIPByteArray
+import org.hexworks.zircon.internal.util.decompressGZIPByteArray
 import java.io.File
 import java.io.InputStream
 import java.nio.ByteBuffer

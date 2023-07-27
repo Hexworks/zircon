@@ -4,8 +4,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.base.BasePosition
 
 /**
- * Represents a position which has an x and an y pixel
- * coordinate.
+ * Represents a position that has an `x` and a `y` pixel coordinate.
  */
 data class PixelPosition(
     override val x: Int,

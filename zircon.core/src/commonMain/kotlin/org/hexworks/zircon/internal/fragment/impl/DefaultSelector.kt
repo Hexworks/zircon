@@ -1,18 +1,17 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
+import org.hexworks.zircon.api.builder.component.buildHbox
+import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.HBox
+import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildHbox
-import org.hexworks.zircon.api.dsl.component.button
-import org.hexworks.zircon.api.dsl.component.label
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.graphics.Symbols
 
@@ -47,7 +46,9 @@ class DefaultSelector<T : Any> internal constructor(
         this.position = position
         leftButton = button {
             +Symbols.ARROW_LEFT.toString()
-            decoration = noDecoration()
+            decorations {
+                +noDecoration()
+            }
             onActivated {
                 showPrevValue()
             }
@@ -55,7 +56,9 @@ class DefaultSelector<T : Any> internal constructor(
 
         if (clickable) {
             button {
-                decoration = noDecoration()
+                decorations {
+                    +noDecoration()
+                }
                 preferredSize = labelSize
                 +fetchLabelBy(0)
                 textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
@@ -73,10 +76,18 @@ class DefaultSelector<T : Any> internal constructor(
 
         rightButton = button {
             +Symbols.ARROW_RIGHT.toString()
-            decoration = noDecoration()
+            decorations {
+                +noDecoration()
+            }
             onActivated {
                 showNextValue()
             }
+        }
+    }.apply {
+        println("=== wtf ===")
+        println("=== children ===")
+        children.forEach {
+            println(it)
         }
     }
 

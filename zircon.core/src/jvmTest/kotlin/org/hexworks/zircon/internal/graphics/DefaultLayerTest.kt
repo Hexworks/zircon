@@ -2,9 +2,10 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
-import org.hexworks.zircon.api.color.ANSITileColor.*
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.color.ANSITileColor.BLUE
+import org.hexworks.zircon.api.color.ANSITileColor.RED
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -12,7 +13,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("UsePropertyAccessSyntax", "TestFunctionName")
+@Suppress("TestFunctionName")
 class DefaultLayerTest {
 
     lateinit var target: DefaultLayer
@@ -90,14 +91,12 @@ class DefaultLayerTest {
 
     companion object {
         private val TILESET = CP437TilesetResources.cla18x18()
-        val CHAR = GraphicalTileBuilder.newBuilder()
-            .withCharacter('x')
-            .build()
+        val CHAR = characterTile { +'x' }
         val SIZE = Size.create(10, 10)
-        val EMPTY_TILE_IMAGE = TileGraphicsBuilder.newBuilder()
-            .withSize(SIZE)
-            .withTileset(TILESET)
-            .build()
+        val EMPTY_TILE_IMAGE = tileGraphics {
+            size = SIZE
+            tileset = TILESET
+        }
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))

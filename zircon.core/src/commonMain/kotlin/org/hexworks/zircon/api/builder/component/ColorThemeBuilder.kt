@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
 import org.hexworks.zircon.internal.dsl.ZirconDsl
-import kotlin.jvm.JvmStatic
 
 @ZirconDsl
 class ColorThemeBuilder: Builder<ColorTheme> {

@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -222,10 +223,10 @@ class DefaultTileGrid(
 
     private fun initializeLayerable(config: AppConfig) {
         layerable.addLayer(
-            Layer.newBuilder()
-                .withSize(config.size)
-                .withTileset(config.defaultTileset)
-                .build()
+            layer {
+                size = config.size
+                tileset = config.defaultTileset
+            }
         )
     }
 }

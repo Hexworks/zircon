@@ -1,7 +1,8 @@
 import org.hexworks.zircon.api.application.Application
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.util.CP437Utils
 import kotlin.random.Random
 
@@ -17,11 +18,14 @@ fun Application.benchmark() = also {
         for (x in 0 until grid.width) {
             for (y in 1 until grid.height) {
                 grid.draw(
-                    Tile.newBuilder()
-                        .withCharacter(CP437Utils.convertCp437toUnicode(random.nextInt(0, 255)))
-                        .withBackgroundColor(ANSITileColor.random())
-                        .withForegroundColor(ANSITileColor.random())
-                        .buildCharacterTile(), Position.create(x, y)
+                    characterTile {
+                        +CP437Utils.convertCp437toUnicode(random.nextInt(0, 255))
+                        withStyleSet {
+                            backgroundColor = ANSITileColor.random()
+                            foregroundColor = ANSITileColor.random()
+                        }
+
+                    }, Position.create(x, y)
                 )
             }
         }

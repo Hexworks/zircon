@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -46,3 +47,7 @@ class TileCompositeBuilder : Builder<TileComposite> {
  */
 fun tileComposite(init: TileCompositeBuilder.() -> Unit): TileComposite =
     TileCompositeBuilder().apply(init).build()
+
+fun TileCompositeBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
+}

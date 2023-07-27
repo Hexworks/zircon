@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.junit.Before
 import org.junit.Test
 
@@ -52,9 +52,9 @@ class DefaultMovableTest {
     fun shouldNotIntersectWhenIntersectIsCalledWithNonIntersectingBoundable() {
         assertThat(
             target.intersects(
-                LayerBuilder.newBuilder()
-                    .withOffset(NON_INTERSECTING_OFFSET)
-                    .build()
+                layer {
+                    offset = NON_INTERSECTING_OFFSET
+                }
             )
         )
             .isFalse()
@@ -64,10 +64,10 @@ class DefaultMovableTest {
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         assertThat(
             target.intersects(
-                LayerBuilder.newBuilder()
-                    .withOffset(INTERSECTION_OFFSET)
-                    .withSize(Size.one())
-                    .build()
+                layer {
+                    offset = INTERSECTION_OFFSET
+                    size = Size.one()
+                }
             )
         )
             .isTrue()
@@ -86,8 +86,8 @@ class DefaultMovableTest {
     }
 
     companion object {
-        val DEFAULT_COLS = 10
-        val DEFAULT_ROWS = 10
+        const val DEFAULT_COLS = 10
+        const val DEFAULT_ROWS = 10
         val TARGET_SIZE = Size.create(DEFAULT_COLS, DEFAULT_ROWS)
         val INTERSECTION_OFFSET = Position.offset1x1()
         val NON_INTERSECTING_OFFSET = Position.create(20, 20)

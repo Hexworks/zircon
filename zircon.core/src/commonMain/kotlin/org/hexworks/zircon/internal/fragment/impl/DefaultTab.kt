@@ -1,16 +1,19 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.ComponentDecorations.box
+import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.buildRadioButton
+import org.hexworks.zircon.api.builder.graphics.characterTileString
+import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.dsl.component.buildLabel
-import org.hexworks.zircon.api.dsl.component.buildPanel
-import org.hexworks.zircon.api.dsl.component.buildRadioButton
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
@@ -30,7 +33,9 @@ class DefaultTab internal constructor(
         componentRenderer = ComponentRenderer { graphics, ctx ->
             graphics.drawText(ctx.component.text, ctx.currentStyle)
         }
-        decoration = box(renderingMode = INTERACTIVE)
+        decorations {
+            +box(renderingMode = INTERACTIVE)
+        }
     }
 
     private val label = buildLabel {
@@ -38,10 +43,10 @@ class DefaultTab internal constructor(
         preferredSize = Size.create(width, 3)
         componentRenderer = ComponentRenderer { graphics, ctx ->
             val theme = ctx.theme
-            val style = StyleSet.newBuilder()
-                .withBackgroundColor(theme.primaryBackgroundColor)
-                .withForegroundColor(theme.primaryForegroundColor)
-                .build()
+            val style = styleSet {
+                backgroundColor = theme.primaryBackgroundColor
+                foregroundColor = theme.primaryForegroundColor
+            }
             val filler = Tile.defaultTile().withStyle(style)
             graphics.fill(filler)
             graphics.drawText(ctx.component.text, style, Position.offset1x1())
@@ -77,11 +82,10 @@ class DefaultTab internal constructor(
     ) {
         clear()
         draw(
-            tileComposite = CharacterTileStrings
-                .newBuilder()
-                .withText(text)
-                .withSize(size)
-                .build(),
+            tileComposite = characterTileString {
+                this.text = text
+                size = this@drawText.size
+            },
             drawPosition = position
         )
         applyStyle(style)

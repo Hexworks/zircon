@@ -32,7 +32,7 @@ class VirtualApplication(
     companion object {
 
         fun create(
-            config: AppConfig = AppConfig.defaultConfiguration(),
+            config: AppConfig = AppConfig.defaultAppConfig(),
             eventBus: EventBus = EventBus.create()
         ): Application {
             return VirtualApplication(config, eventBus)

@@ -11,5 +11,5 @@ data class GameAreaState<T : Tile, B : Block<T>>(
     val actualSize: Size3D,
     val visibleSize: Size3D,
     val visibleOffset: Position3D,
-    val filter: GameAreaTileFilter
+    val filter: GameAreaTileFilter<T>
 )

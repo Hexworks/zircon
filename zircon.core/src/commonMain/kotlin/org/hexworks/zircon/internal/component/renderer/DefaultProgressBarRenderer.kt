@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 
@@ -20,7 +20,10 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
             .withForegroundColor(currentStyleSet.backgroundColor)
 
         (0 until progressBarState.currentProgression).forEach { idx ->
-            drawWindow.draw(Tile.createCharacterTile(' ', invertedStyleSet), Position.create(idx, 0))
+            drawWindow.draw(characterTile {
+                character = ' '
+                styleSet = invertedStyleSet
+            }, Position.create(idx, 0))
         }
 
         if (context.component.displayPercentValueOfProgress) {
@@ -31,10 +34,10 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
             repeat(text.length) { idx ->
                 val pos = Position.create(start + idx, 0)
                 val char = text[idx]
-                val tile = Tile.createCharacterTile(
-                    character = char,
-                    style = if (pos.x > progressBarState.currentProgression) currentStyleSet else style
-                )
+                val tile = characterTile {
+                    character = char
+                    styleSet = if (pos.x > progressBarState.currentProgression) currentStyleSet else style
+                }
                 drawWindow.draw(tile, pos)
             }
         }

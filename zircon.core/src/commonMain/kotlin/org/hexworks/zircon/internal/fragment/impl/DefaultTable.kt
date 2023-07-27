@@ -3,19 +3,18 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.VBoxBuilder
+import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.dsl.component.buildHbox
-import org.hexworks.zircon.api.dsl.component.buildVbox
-import org.hexworks.zircon.api.dsl.component.hbox
-import org.hexworks.zircon.api.dsl.component.vbox
 import org.hexworks.zircon.api.fragment.Table
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 
 /**
@@ -115,7 +114,9 @@ class DefaultTable<M : Any> internal constructor(
         preferredSize = Size.create(width, 1)
         spacing = colSpacing
         columns.forEach { column ->
-            withAddedChildren(column.header)
+            children {
+                +column.header
+            }
         }
     }
 

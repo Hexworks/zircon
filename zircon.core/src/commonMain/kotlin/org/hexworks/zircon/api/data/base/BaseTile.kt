@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
 /**
  * Base class for all [Tile] implementations.

@@ -1,12 +1,15 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ScrollBar
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.ScrollableList
-import org.hexworks.zircon.api.graphics.Symbols
+import org.hexworks.zircon.api.graphics.Symbols.TRIANGLE_DOWN_POINTING_BLACK
+import org.hexworks.zircon.api.graphics.Symbols.TRIANGLE_UP_POINTING_BLACK
 import org.hexworks.zircon.api.uievent.ComponentEventType
 
 /**
@@ -46,45 +49,40 @@ class VerticalScrollableList<T>(
      */
     private var topItemIdx: Int = 0
 
-    override val root = Components.hbox()
-        .withPreferredSize(size)
-        .withPosition(position)
-        .withSpacing(0)
-        .build()
+    override val root = buildHbox {
+        preferredSize = size
+        this.position = position
+    }
 
-    private val scrollPanel = Components.vbox()
-        .withPreferredSize(size.withRelativeWidth(-1))
-        .withDecorations()
-        .withSpacing(0)
-        .build()
+    private val scrollPanel = buildVbox {
+        preferredSize = size.withRelativeWidth(-1)
+    }
 
-    private val scrollBarVbox = Components.vbox()
-        .withPreferredSize(size.withWidth(1))
-        .withDecorations()
-        .withSpacing(0)
-        .build()
+    private val scrollBarVbox = buildVbox {
+        preferredSize = size.withWidth(1)
+    }
 
-    private val actualScrollbar: ScrollBar = Components.verticalScrollbar()
-        .withPreferredSize(1, size.height - 2)
-        .withItemsShownAtOnce(size.height)
-        .withNumberOfScrollableItems(items.size)
-        .withDecorations()
-        .also { builder ->
-            scrollbarRenderer?.let { builder.withComponentRenderer(it) }
+    private val actualScrollbar: ScrollBar = buildVerticalScrollBar {
+        withPreferredSize {
+            width = 1
+            height = this@buildVerticalScrollBar.size.height - 2
         }
-        .build()
+        itemsShownAtOnce = size.height
+        numberOfScrollableItems = items.size
+        scrollbarRenderer?.let {
+            componentRenderer = it
+        }
+    }
 
-    private val decrementButton = Components.button()
-        .withText("${Symbols.TRIANGLE_UP_POINTING_BLACK}")
-        .withPreferredSize(1, 1)
-        .withDecorations()
-        .build()
+    private val decrementButton = buildButton {
+        text = TRIANGLE_UP_POINTING_BLACK.toString()
+        preferredSize = Size.one()
+    }
 
-    private val incrementButton = Components.button()
-        .withText("${Symbols.TRIANGLE_DOWN_POINTING_BLACK}")
-        .withPreferredSize(1, 1)
-        .withDecorations()
-        .build()
+    private val incrementButton = buildButton {
+        text = TRIANGLE_DOWN_POINTING_BLACK.toString()
+        preferredSize = Size.one()
+    }
 
     init {
         root.addComponents(scrollPanel, scrollBarVbox)
@@ -119,11 +117,10 @@ class VerticalScrollableList<T>(
             val labelIdx = idx - topItemIdx
             // Generate and add labels until we have enough for the current entry
             while (labelIdx > labels.lastIndex) {
-                labels.add(Components.label()
-                    .withDecorations()
-                    .withPreferredSize(scrollPanel.contentSize.withHeight(1))
-                    .build()
-                    .also { label ->
+                labels.add(
+                    buildLabel {
+                        preferredSize = scrollPanel.contentSize.withHeight(1)
+                    }.also { label ->
                         scrollPanel.addComponent(label)
                         label.onActivated {
                             onItemActivated(items[topItemIdx + labelIdx], topItemIdx + labelIdx)

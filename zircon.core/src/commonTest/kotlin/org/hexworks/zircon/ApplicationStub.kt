@@ -12,7 +12,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 
 class ApplicationStub : InternalApplication {
 
-    override var config: AppConfig = AppConfig.defaultConfiguration()
+    override var config: AppConfig = AppConfig.defaultAppConfig()
     override var eventBus: EventBus = EventBus.create()
     override var eventScope: ZirconScope = ZirconScope()
     override lateinit var tileGrid: TileGrid

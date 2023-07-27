@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.component.modal
 
 
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -39,13 +39,11 @@ open class DefaultModal<T : ModalResult> internal constructor(
     override fun acceptsFocus() = true
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        return ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(colorTheme.secondaryForegroundColor)
-                    .withBackgroundColor(colorTheme.primaryBackgroundColor)
-                    .build()
-            )
-            .build()
+        return componentStyleSet {
+            defaultStyle = styleSet {
+                foregroundColor = colorTheme.secondaryForegroundColor
+                backgroundColor = colorTheme.primaryBackgroundColor
+            }
+        }
     }
 }

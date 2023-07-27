@@ -27,7 +27,6 @@ class ModalBuilder<T : ModalResult> :
 
     private var shouldCloseWith: T? = null
 
-
     override fun build(): Modal<T> {
         require(tileset.isNotUnknown) {
             "Since a Modal has no parent it must have its own tileset"

@@ -1,6 +1,9 @@
 package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.CharacterTileBuilder
+import org.hexworks.zircon.api.builder.data.PositionBuilder
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -52,3 +55,19 @@ class LayerBuilder : Builder<Layer> {
 
 fun layer(init: LayerBuilder.() -> Unit) =
     LayerBuilder().apply(init).build()
+
+fun LayerBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
+}
+
+fun LayerBuilder.withOffset(init: PositionBuilder.() -> Unit) = apply {
+    offset = PositionBuilder().apply(init).build()
+}
+
+fun LayerBuilder.withTileGraphics(init: TileGraphicsBuilder.() -> Unit) = apply {
+    tileGraphics = TileGraphicsBuilder().apply(init).build()
+}
+
+fun LayerBuilder.withFiller(init: CharacterTileBuilder.() -> Unit) = apply {
+    filler = CharacterTileBuilder().apply(init).build()
+}

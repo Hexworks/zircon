@@ -2,19 +2,19 @@ package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.SimpleModifiers
+import org.hexworks.zircon.api.modifier.SimpleModifiers.*
 
 val Tile.isOpaque: Boolean
     get() = backgroundColor.isOpaque
 
 val Tile.isUnderlined: Boolean
-    get() = modifiers.contains(SimpleModifiers.Underline)
+    get() = modifiers.contains(Underline)
 
 val Tile.isCrossedOut: Boolean
-    get() = modifiers.contains(SimpleModifiers.CrossedOut)
+    get() = modifiers.contains(CrossedOut)
 
 val Tile.isBlinking: Boolean
-    get() = modifiers.contains(SimpleModifiers.Blink)
+    get() = modifiers.contains(Blink)
 
 val Tile.hasBorder: Boolean
     get() = modifiers.any { it is Border }

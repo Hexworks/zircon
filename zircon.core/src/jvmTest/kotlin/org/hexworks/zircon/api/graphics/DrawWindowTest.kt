@@ -2,7 +2,8 @@ package org.hexworks.zircon.api.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.cobalt.databinding.api.extension.orElse
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
@@ -15,9 +16,10 @@ import org.junit.Test
 
 class DrawWindowTest {
 
-    private val backend = TileGraphicsBuilder.newBuilder()
-        .withSize(BACKEND_SIZE_5X5)
-        .build()
+    private val backend = tileGraphics {
+        size = BACKEND_SIZE_5X5
+    }
+
     lateinit var target: DrawWindow
 
     @Before
@@ -92,8 +94,14 @@ class DrawWindowTest {
 
     companion object {
 
-        private val BLUE_RED_STYLE = StyleSet.newBuilder().withBackgroundColor(BLUE).withForegroundColor(RED).build()
-        private val YELLOW_GREEN_STYLE = StyleSet.newBuilder().withBackgroundColor(YELLOW).withForegroundColor(GREEN).build()
+        private val BLUE_RED_STYLE = styleSet {
+            backgroundColor = BLUE
+            foregroundColor = RED
+        }
+        private val YELLOW_GREEN_STYLE = styleSet {
+            backgroundColor = YELLOW
+            foregroundColor = GREEN
+        }
         private val BACKEND_SIZE_5X5 = Size.create(5, 5)
         private val FILLER_UNDERSCORE = Tile.defaultTile().withCharacter('_')
 

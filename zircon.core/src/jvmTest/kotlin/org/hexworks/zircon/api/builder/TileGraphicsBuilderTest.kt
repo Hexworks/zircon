@@ -1,22 +1,21 @@
 package org.hexworks.zircon.api.builder
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
 import org.junit.Test
 
 class TileGraphicsBuilderTest {
 
     @Test
     fun shouldBuildProperTileGraphic() {
-        val result = TileGraphicsBuilder.newBuilder()
-            .withSize(SIZE)
-            .build()
-            .apply {
-                fill(FILLER)
-            }
+        val result = tileGraphics {
+            size = SIZE
+        }.apply {
+            fill(FILLER)
+        }
 
         assertThat(result.size).isEqualTo(SIZE)
 
@@ -25,7 +24,9 @@ class TileGraphicsBuilderTest {
     }
 
     companion object {
-        val FILLER = GraphicalTileBuilder.newBuilder().withCharacter('a').build()
+        val FILLER = characterTile {
+            character = 'a'
+        }
         val SIZE = Size.create(5, 5)
     }
 }

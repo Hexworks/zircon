@@ -1,7 +1,6 @@
 package org.hexworks.zircon.api.screen
 
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
-import org.hexworks.zircon.api.builder.screen.createScreenFor
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.modal.Modal
@@ -9,6 +8,7 @@ import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
+import org.hexworks.zircon.internal.screen.TileGridScreen
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -48,6 +48,6 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
     companion object {
 
-        fun create(tileGrid: TileGrid) = createScreenFor(tileGrid)
+        fun create(tileGrid: TileGrid): Screen = TileGridScreen(tileGrid.asInternal())
     }
 }

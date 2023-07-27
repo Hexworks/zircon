@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.data.DefaultBlock
 import org.hexworks.zircon.internal.dsl.ZirconDsl

@@ -2,12 +2,14 @@ package org.hexworks.zircon.internal.graphics
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.Modifiers
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.CharacterTileStringBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
+import org.hexworks.zircon.api.builder.graphics.characterTileString
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.builder.graphics.withSize
+import org.hexworks.zircon.api.builder.graphics.withStyleSet
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap.NO_WRAPPING
 import org.hexworks.zircon.api.graphics.TextWrap.WORD_WRAP
@@ -18,11 +20,9 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldBuildStringWithDefaultProperly() {
-        val result = CharacterTileStringBuilder.newBuilder()
-            .withText(TEXT)
-            .build()
+        val result = characterTileString { +TEXT }
 
-        val template = GraphicalTileBuilder.newBuilder().buildCharacterTile()
+        val template = characterTile { }
 
         assertThat(result.characterTiles).containsExactly(
             template.withCharacter('T'),
@@ -42,19 +42,23 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldBuildStringWithCustomProperly() {
-        val result = CharacterTileStringBuilder.newBuilder()
-            .withBackgroundColor(BACKGROUND)
-            .withForegroundColor(FOREGROUND)
-            .withModifiers(MODIFIER)
-            .withText(TEXT)
-            .withTextWrap(NO_WRAPPING)
-            .build() as DefaultCharacterTileString
+        val result = characterTileString {
+            +TEXT
+            withStyleSet {
+                backgroundColor = BACKGROUND
+                foregroundColor = FOREGROUND
+                modifiers = setOf(MODIFIER)
+            }
+            textWrap = NO_WRAPPING
+        }
 
-        val template = GraphicalTileBuilder.newBuilder()
-            .withForegroundColor(FOREGROUND)
-            .withBackgroundColor(BACKGROUND)
-            .withModifiers(MODIFIER)
-            .buildCharacterTile()
+        val template = characterTile {
+            withStyleSet {
+                foregroundColor = FOREGROUND
+                backgroundColor = BACKGROUND
+                modifiers = setOf(MODIFIER)
+            }
+        }
 
         assertThat(result.characterTiles).containsExactly(
             template.withCharacter('T'),
@@ -66,15 +70,17 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldTruncateWhenThereIsNoWrapAndDoesntFit() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
-
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText(TEXT)
-                .withTextWrap(NO_WRAPPING)
-                .build(), Position.create(1, 1)
+            characterTileString {
+                +TEXT
+                textWrap = NO_WRAPPING
+            }, Position.create(1, 1)
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -85,15 +91,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteNoWrapOverlappingStringToTileGraphic() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText(TEXT)
-                .withTextWrap(NO_WRAPPING)
-                .build()
+            characterTileString {
+                +TEXT
+                textWrap = NO_WRAPPING
+            }
         )
 
         assertThat(
@@ -121,15 +130,18 @@ class DefaultCharacterTileStringTest {
     }
 
     @Test
-    fun WordWrapShouldWorkCorrectlyFirstTest() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(5, 1))
-            .build()
+    fun when_word_wrap_is_used_then_it_should_work() {
+        val surface = tileGraphics {
+            withSize {
+                width = 5
+                height = 1
+            }
+        }
 
-        val textCharacterString = CharacterTileStringBuilder.newBuilder()
-            .withText("atest")
-            .withTextWrap(WORD_WRAP)
-            .build()
+        val textCharacterString = characterTileString {
+            +"atest"
+            textWrap = WORD_WRAP
+        }
         surface.draw(textCharacterString)
 
         // a and space should fit on the first line
@@ -167,15 +179,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldWorkWhenWordWrappingWithMultipleWords() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(4, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 4
+                height = 2
+            }
+        }
 
-        val textCharacterString = CharacterTileStringBuilder.newBuilder()
-            .withText("a test")
-            .withTextWrap(WORD_WRAP)
-            .withSize(surface.size)
-            .build()
+        val textCharacterString = characterTileString {
+            +"a test"
+            textWrap = WORD_WRAP
+            size = surface.size
+        }
         surface.draw(textCharacterString)
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -186,15 +201,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun wordWrapShouldWrapAsWordTooBigForSingleRow() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(4, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 4
+                height = 2
+            }
+        }
 
-        val textCharacterString = CharacterTileStringBuilder.newBuilder()
-            .withText("atest")
-            .withTextWrap(WORD_WRAP)
-            .withSize(surface.size)
-            .build()
+        val textCharacterString = characterTileString {
+            +"atest"
+            textWrap = WORD_WRAP
+            size = surface.size
+        }
         surface.draw(textCharacterString)
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -206,15 +224,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun wordWrapShouldWorkCorrectly() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(5, 4)
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 5
+                height = 4
+            }
+        }
 
-        val textCharacterString = CharacterTileStringBuilder.newBuilder()
-            .withText("a test thghty")
-            .withTextWrap(WORD_WRAP)
-            .withSize(surface.size)
-            .build()
+        val textCharacterString = characterTileString {
+            +"a test thghty"
+            textWrap = WORD_WRAP
+            size = surface.size
+        }
         surface.draw(textCharacterString)
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -227,16 +248,19 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteNoWrapStringToTileGraphicWithOffset() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText(TEXT)
-                .withTextWrap(NO_WRAPPING)
-                .withSize(surface.size)
-                .build(), Position.offset1x1()
+            characterTileString {
+                +TEXT
+                textWrap = NO_WRAPPING
+                size = surface.size
+            }, Position.offset1x1()
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -249,15 +273,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithoutOffset() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText(TEXT)
-                .withSize(surface.size)
-                .build()
+            characterTileString {
+                +TEXT
+                size = surface.size
+            }
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -268,15 +295,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithOffset() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText(TEXT)
-                .withSize(surface.size)
-                .build(), Position.create(1, 0)
+            characterTileString {
+                +TEXT
+                size = surface.size
+            }, Position.create(1, 0)
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -287,15 +317,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyWriteStringToTileGraphicWhenLengthIs1() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText("T")
-                .withSize(surface.size)
-                .build(), Position.create(0, 0)
+            characterTileString {
+                +"T"
+                size = surface.size
+            }, Position.create(0, 0)
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -306,15 +339,18 @@ class DefaultCharacterTileStringTest {
 
     @Test
     fun shouldProperlyTruncateStringWhenDoesNotFitOnTileGraphic() {
-        val surface = TileGraphicsBuilder.newBuilder()
-            .withSize(Size.create(2, 2))
-            .build()
+        val surface = tileGraphics {
+            withSize {
+                width = 2
+                height = 2
+            }
+        }
 
         surface.draw(
-            CharacterTileStringBuilder.newBuilder()
-                .withText("TEXTTEXT")
-                .withSize(surface.size)
-                .build(), Position.create(0, 0)
+            characterTileString {
+                +"TEXTTEXT"
+                size = surface.size
+            }, Position.create(0, 0)
         )
 
         assertThat(surface.fetchCharacters()).containsExactly(
@@ -326,15 +362,15 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldAddTwoStringsTogetherProperly() {
 
-        val string = CharacterTileStringBuilder.newBuilder()
-            .withText("TE")
-            .build()
+        val string = characterTileString {
+            +"TE"
+        }
 
-        val other = CharacterTileStringBuilder.newBuilder()
-            .withText("XT")
-            .build()
+        val other = characterTileString {
+            +"XT"
+        }
 
-        val template = GraphicalTileBuilder.newBuilder().buildCharacterTile()
+        val template = characterTile { }
 
         assertThat(string.plus(other).characterTiles).containsExactly(
             template.withCharacter('T'),

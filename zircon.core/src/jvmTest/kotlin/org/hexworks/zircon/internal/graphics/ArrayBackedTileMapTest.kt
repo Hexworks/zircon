@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
 import kotlin.test.*
 
@@ -118,6 +117,6 @@ class ArrayBackedTileMapTest {
         val FILLED_POSITION_1_2 = Position.create(1, 2)
         val EMPTY_POSITION_0_1 = Position.create(0, 1)
         val OUT_OF_BOUNDS_POSITION_2_2 = Position.create(2, 2)
-        val FILLER = Tile.createCharacterTile('x', StyleSet.defaultStyle())
+        val FILLER = Tile.defaultTile().withCharacter('x')
     }
 }

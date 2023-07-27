@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTab
 import org.hexworks.zircon.internal.fragment.impl.TabData
-import kotlin.jvm.JvmStatic
 
 
 @ZirconDsl

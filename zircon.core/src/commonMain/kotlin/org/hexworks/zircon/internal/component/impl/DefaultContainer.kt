@@ -20,7 +20,6 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
-@Suppress("UNCHECKED_CAST")
 open class DefaultContainer(
     metadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<out Component>

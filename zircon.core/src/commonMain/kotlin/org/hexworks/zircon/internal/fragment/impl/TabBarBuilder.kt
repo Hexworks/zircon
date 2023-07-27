@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.fragment.TabBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -31,4 +32,8 @@ abstract class TabBarBuilder(
             "A tab bar can't have duplicate keys."
         }
     }
+}
+
+fun TabBarBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
 }

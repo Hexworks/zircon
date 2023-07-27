@@ -14,9 +14,7 @@ class DefaultAnimationTest {
             zipStream = this.javaClass.getResourceAsStream("/animations/skull.zap"),
             tileset = BuiltInCP437TilesetResource.BISASAM_16X16
         )
-        (0 until EXPECTED_LENGTH).forEach { _ ->
-            builder.addPosition(Position.defaultPosition())
-        }
+        builder.position = Position.defaultPosition()
         val result = builder.build()
         assertThat(result.totalFrameCount).isEqualTo(EXPECTED_LENGTH)
         assertThat(result.uniqueFrameCount).isEqualTo(EXPECTED_FRAME_COUNT)

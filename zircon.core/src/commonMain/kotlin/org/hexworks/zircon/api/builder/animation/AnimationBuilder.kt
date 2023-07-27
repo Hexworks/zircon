@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.builder.animation
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.PositionBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
@@ -13,7 +14,7 @@ import org.hexworks.zircon.internal.dsl.ZirconDsl
 private const val DEFAULT_FPS = 15L
 
 @ZirconDsl
-class AnimationBuilder private constructor(
+class AnimationBuilder (
     private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
     private val positions: MutableList<Position> = mutableListOf(),
     private var tick: Long = 1000L / DEFAULT_FPS,
@@ -109,3 +110,7 @@ class AnimationBuilder private constructor(
  */
 fun animation(init: AnimationBuilder.() -> Unit): Animation =
     AnimationBuilder.create().apply(init).build()
+
+fun AnimationBuilder.withPosition(init: PositionBuilder.() -> Unit) = apply {
+    position = PositionBuilder().apply(init).build()
+}

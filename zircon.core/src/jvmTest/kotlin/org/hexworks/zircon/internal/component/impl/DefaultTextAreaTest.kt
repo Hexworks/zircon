@@ -1,9 +1,10 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
@@ -11,7 +12,6 @@ import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.KeyCode
@@ -23,41 +23,35 @@ import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("UNCHECKED_CAST", "UsePropertyAccessSyntax", "unused")
+@Suppress("UNCHECKED_CAST", "unused")
 class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
     override lateinit var drawWindow: DrawWindow
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSetBuilder.newBuilder()
-            .withDefaultStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryBackgroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .build()
-            )
-            .withDisabledStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.secondaryForegroundColor)
-                    .withBackgroundColor(TileColor.transparent())
-                    .build()
-            )
-            .withFocusedStyle(
-                StyleSetBuilder.newBuilder()
-                    .withForegroundColor(DEFAULT_THEME.primaryBackgroundColor)
-                    .withBackgroundColor(DEFAULT_THEME.primaryForegroundColor)
-                    .build()
-            )
-            .build()
+        get() = componentStyleSet {
+            defaultStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryBackgroundColor
+                backgroundColor = DEFAULT_THEME.secondaryForegroundColor
+            }
+            disabledStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
+                backgroundColor = transparent()
+            }
+            focusedStyle = styleSet {
+                foregroundColor = DEFAULT_THEME.primaryBackgroundColor
+                backgroundColor = DEFAULT_THEME.primaryForegroundColor
+            }
+        }
 
     @Before
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultTextAreaRenderer())
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
-        drawWindow = DrawSurfaces.tileGraphicsBuilder().withSize(COMMON_COMPONENT_METADATA.size).build().toDrawWindow(
-            Rect.create(size = COMMON_COMPONENT_METADATA.size)
-        )
+        drawWindow = tileGraphics {
+            size = COMMON_COMPONENT_METADATA.size
+        }.toDrawWindow()
         target = DefaultTextArea(
             componentMetadata = COMMON_COMPONENT_METADATA,
             renderingStrategy = DefaultComponentRenderingStrategy(
@@ -235,7 +229,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     }
 
     companion object {
-        val SEP = '\n'!!
+        val SEP = '\n'
         const val TEXT = "text"
         const val UPDATE_TEXT = 'U'
         val MULTI_LINE_TEXT = "text${SEP}text$SEP"

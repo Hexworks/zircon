@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.CharacterTileString
@@ -32,12 +33,17 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
 
     var textWrap: TextWrap = WRAP
     var size: Size = Size.unknown()
-    val modifiers: MutableSet<Modifier> = mutableSetOf()
     var styleSet: StyleSet = StyleSet.defaultStyle()
+    val modifiers: MutableSet<Modifier> = mutableSetOf()
+
+    operator fun String.unaryPlus() {
+        text = this
+    }
 
     override fun build(): CharacterTileString {
+        val styleSet = this.styleSet
         val template = characterTile {
-            styleSet = styleSet
+            this.styleSet = styleSet
             character = ' '
         }
         return DefaultCharacterTileString(
@@ -57,3 +63,11 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
  */
 fun characterTileString(init: CharacterTileStringBuilder.() -> Unit): CharacterTileString =
     CharacterTileStringBuilder().apply(init).build()
+
+fun CharacterTileStringBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
+    size = SizeBuilder().apply(init).build()
+}
+
+fun CharacterTileStringBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) = apply {
+    styleSet = StyleSetBuilder().apply(init).build()
+}

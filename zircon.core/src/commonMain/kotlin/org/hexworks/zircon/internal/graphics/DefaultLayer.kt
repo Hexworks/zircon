@@ -135,7 +135,7 @@ open class DefaultLayer internal constructor(
     final override fun toDrawWindow(rect: Rect) = DrawWindow(rect, backend)
 
     override fun toString(): String {
-        return DrawSurfaces.tileGraphicsBuilder().withSize(size).withTiles(tiles).build().toString()
+        return backend.toString()
     }
 
 }

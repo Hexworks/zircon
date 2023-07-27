@@ -24,7 +24,6 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
 
     var typingEffectSpeedInMs: Long = 0
 
-
     override fun build(): Paragraph {
         props.postProcessors = props.postProcessors + if (typingEffectSpeedInMs > 0) {
             listOf(TypingEffectPostProcessor(typingEffectSpeedInMs))

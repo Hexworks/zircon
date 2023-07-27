@@ -46,7 +46,7 @@ class KorgeApplication(
             debug = config.debugMode,
             icon = config.iconPath,
         ) {
-            sceneContainer().changeTo({ scene })
+            sceneContainer().changeTo { scene }
         }
     }
 

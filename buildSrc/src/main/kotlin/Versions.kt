@@ -1,5 +1,3 @@
-@file:Suppress("SpellCheckingInspection")
-
 object Versions {
 
     const val kotlinxCoroutinesVersion = "1.5.0"

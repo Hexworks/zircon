@@ -91,4 +91,4 @@ fun <T : Any> buildSelector(
  */
 fun <S : Any> AnyContainerBuilder.selector(
     init: SelectorBuilder<S>.() -> Unit
-): Selector<S> = buildFragmentFor(this, org.hexworks.zircon.api.builder.fragment.SelectorBuilder(), init)
+): Selector<S> = buildFragmentFor(this, SelectorBuilder(), init)

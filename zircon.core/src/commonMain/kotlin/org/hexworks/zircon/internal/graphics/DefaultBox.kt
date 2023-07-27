@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.TileGraphicsBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Box
@@ -13,20 +13,20 @@ import org.hexworks.zircon.api.shape.LineFactory
 
 class DefaultBox internal constructor(
     size: Size,
-    styleSet: StyleSet,
+    style: StyleSet,
     override val boxType: BoxType,
     tileset: TilesetResource,
-    private val backend: TileGraphics = TileGraphicsBuilder.newBuilder()
-        .withTileset(tileset)
-        .withSize(size)
-        .build()
+    private val backend: TileGraphics = tileGraphics {
+        this.tileset = tileset
+        this.size = size
+    }
 ) : Box, TileGraphics by backend {
 
     init {
-        val verticalChar = GraphicalTileBuilder.newBuilder()
-            .withStyleSet(styleSet)
-            .withCharacter(boxType.vertical)
-            .buildCharacterTile()
+        val verticalChar = characterTile {
+            styleSet = style
+            character = boxType.vertical
+        }
         val horizontalChar = verticalChar
             .withCharacter(boxType.horizontal)
 

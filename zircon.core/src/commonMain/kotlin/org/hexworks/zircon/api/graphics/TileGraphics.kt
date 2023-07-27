@@ -25,7 +25,7 @@ interface TileGraphics : Copiable<TileGraphics>, DrawSurface {
      * of (2, 2) and writing to it will write to the original graphics' surface, offset
      * by Position(1, 1).
      */
-    fun toDrawWindow(rect: Rect): DrawWindow
+    fun toDrawWindow(rect: Rect = size.toRect()): DrawWindow
 
     /**
      * Creates a **new** [Layer] from the contents of this [TileGraphics].

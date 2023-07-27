@@ -8,7 +8,7 @@ class SimpleModifiersTest {
 
     @Test
     fun shouldReturnProperCacheKeyForObject() {
-        assertThat(SimpleModifiers.VerticalFlip.cacheKey).isEqualTo("Modifier.VerticalFlip")
+        assertThat(SimpleModifiers.CrossedOut.cacheKey).isEqualTo("Modifier.CrossedOut")
     }
 
 }

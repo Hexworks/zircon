@@ -19,6 +19,6 @@ suspend fun loadResource(resource: Resource): VfsFile {
     return vfsFile
 }
 
-suspend fun VfsFile.loadFile(name: String) = this[name]
+fun VfsFile.loadFile(name: String) = this[name]
 
 fun String.asYaml() = Yaml.decode(this).dyn

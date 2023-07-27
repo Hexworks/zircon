@@ -1,7 +1,8 @@
 package org.hexworks.zircon.internal.util.rex
 
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
-import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -22,10 +23,10 @@ data class REXLayer(
      * Returns itself as a [REXLayer].
      */
     fun toLayer(tileset: TilesetResource): Layer {
-        val layer = LayerBuilder.newBuilder()
-            .withTileset(tileset)
-            .withSize(Size.create(width, height))
-            .build()
+        val layer = layer {
+            this.tileset = tileset
+            size = Size.create(width, height)
+        }
 
         for (y in 0 until height) {
             for (x in 0 until width) {
@@ -36,11 +37,13 @@ data class REXLayer(
                     continue
                 }
                 layer.draw(
-                    tile = GraphicalTileBuilder.newBuilder()
-                        .withCharacter(cell.character)
-                        .withBackgroundColor(cell.backgroundColor)
-                        .withForegroundColor(cell.foregroundColor)
-                        .build(),
+                    tile = characterTile {
+                        character = cell.character
+                        withStyleSet {
+                            backgroundColor = cell.backgroundColor
+                            foregroundColor = cell.foregroundColor
+                        }
+                    },
                     drawPosition = Position.create(x, y)
                 )
             }

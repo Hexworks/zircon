@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.zircon.api.builder.component.ComponentStyleSetBuilder
-import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.color.ANSITileColor.*
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.junit.Before
@@ -15,13 +15,13 @@ class DefaultComponentStyleSetTest {
 
     @Before
     fun setUp() {
-        target = ComponentStyleSetBuilder.newBuilder()
-            .withActiveStyle(ACTIVE_STYLE)
-            .withFocusedStyle(FOCUSED_STYLE)
-            .withDefaultStyle(DEFAULT_STYLE)
-            .withDisabledStyle(DISABLED_STYLE)
-            .withHighlightedStyle(MOUSE_OVER_STYLE)
-            .build()
+        target = componentStyleSet {
+            activeStyle = ACTIVE_STYLE
+            focusedStyle = FOCUSED_STYLE
+            defaultStyle = DEFAULT_STYLE
+            disabledStyle = DISABLED_STYLE
+            highlightedStyle = HIGHLIGHTED_STYLE
+        }
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -31,12 +31,12 @@ class DefaultComponentStyleSetTest {
 
     @Test
     fun shouldProperlyUseDefaultForUnsetStyles() {
-        val styles = ComponentStyleSetBuilder.newBuilder()
-            .withActiveStyle(ACTIVE_STYLE)
-            .withFocusedStyle(FOCUSED_STYLE)
-            .withDefaultStyle(DEFAULT_STYLE)
-            .withHighlightedStyle(MOUSE_OVER_STYLE)
-            .build()
+        val styles = componentStyleSet {
+            activeStyle = ACTIVE_STYLE
+            focusedStyle = FOCUSED_STYLE
+            highlightedStyle = HIGHLIGHTED_STYLE
+            defaultStyle = DEFAULT_STYLE
+        }
 
         assertThat(styles.fetchStyleFor(ComponentState.DISABLED))
             .isEqualTo(DEFAULT_STYLE)
@@ -49,26 +49,26 @@ class DefaultComponentStyleSetTest {
 
 
     companion object {
-        val ACTIVE_STYLE = StyleSetBuilder.newBuilder()
-            .withForegroundColor(ANSITileColor.RED)
-            .withBackgroundColor(ANSITileColor.BLACK)
-            .build()
-        val FOCUSED_STYLE = StyleSetBuilder.newBuilder()
-            .withForegroundColor(ANSITileColor.GREEN)
-            .withBackgroundColor(ANSITileColor.WHITE)
-            .build()
-        val DEFAULT_STYLE = StyleSetBuilder.newBuilder()
-            .withForegroundColor(ANSITileColor.YELLOW)
-            .withBackgroundColor(ANSITileColor.BLUE)
-            .build()
-        val DISABLED_STYLE = StyleSetBuilder.newBuilder()
-            .withForegroundColor(ANSITileColor.BLACK)
-            .withBackgroundColor(ANSITileColor.MAGENTA)
-            .build()
-        val MOUSE_OVER_STYLE = StyleSetBuilder.newBuilder()
-            .withForegroundColor(ANSITileColor.MAGENTA)
-            .withBackgroundColor(ANSITileColor.GREEN)
-            .build()
+        val ACTIVE_STYLE = styleSet {
+            foregroundColor = RED
+            backgroundColor = BLACK
+        }
+        val FOCUSED_STYLE = styleSet {
+            foregroundColor = GREEN
+            backgroundColor = WHITE
+        }
+        val DEFAULT_STYLE = styleSet {
+            foregroundColor = YELLOW
+            backgroundColor = BLUE
+        }
+        val DISABLED_STYLE = styleSet {
+            foregroundColor = BLACK
+            backgroundColor = MAGENTA
+        }
+        val HIGHLIGHTED_STYLE = styleSet {
+            foregroundColor = MAGENTA
+            backgroundColor = GREEN
+        }
     }
 
 }

@@ -11,7 +11,6 @@ import korlibs.io.file.baseName
 import korlibs.io.file.extensionLC
 import korlibs.io.file.fullName
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile

@@ -2,6 +2,10 @@ package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
+import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.component.builder.base.withPreferredSize
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.BoxType.DOUBLE
 import org.hexworks.zircon.api.graphics.BoxType.SINGLE
 import org.hexworks.zircon.api.screen.Screen
@@ -11,43 +15,58 @@ class LabelsIntegrationTest : ComponentIntegrationTestBase() {
 
     override fun buildScreenContent(screen: Screen) {
         screen.addComponent(
-            Components.label()
-                .withText("Foobar")
-                .withDecorations(shadow())
-                .withPosition(2, 2)
-                .build()
+            buildLabel {
+                +"Foobar"
+                decorations {
+                    +shadow()
+                }
+                position = Position.create(2, 2)
+            }
         )
 
         screen.addComponent(
-            Components.label()
-                .withText("Barbaz wombat")
-                .withPreferredSize(5, 2)
-                .withPosition(2, 6)
-                .build()
+            buildLabel {
+                +"Barbaz wombat"
+                withPreferredSize {
+                    width = 5
+                    height = 2
+                }
+                position = Position.create(2, 6)
+            }
         )
 
         screen.addComponent(
-            Components.label()
-                .withText("Qux")
-                .withDecorations(box(), shadow())
-                .withPosition(2, 10)
-                .build()
+            buildLabel {
+                +"Qux"
+                decorations {
+                    +box()
+                    +shadow()
+                }
+                position = Position.create(2, 10)
+            }
         )
 
         screen.addComponent(
-            Components.label()
-                .withText("Qux")
-                .withDecorations(box(DOUBLE), shadow())
-                .withPosition(15, 2)
-                .build()
+            buildLabel {
+                +"Qux"
+                decorations {
+                    +box(DOUBLE)
+                    +shadow()
+                }
+                position = Position.create(15, 2)
+            }
         )
 
         screen.addComponent(
-            Components.label()
-                .withText("Wtf")
-                .withDecorations(box(SINGLE), box(DOUBLE), shadow())
-                .withPosition(15, 7)
-                .build()
+            buildLabel {
+                +"Wtf"
+                decorations {
+                    +box(SINGLE)
+                    +box(DOUBLE)
+                    +shadow()
+                }
+                position = Position.create(15, 7)
+            }
         )
     }
 }

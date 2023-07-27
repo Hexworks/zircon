@@ -1,7 +1,9 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
@@ -18,11 +20,13 @@ data class ShadowDecorationRenderer(
 
     override val occupiedSize = Size.create(1, 1)
 
-    private val shadowTile = GraphicalTileBuilder.newBuilder()
-        .withBackgroundColor(TileColor.transparent())
-        .withForegroundColor(TileColor.create(100, 100, 100))
-        .withCharacter(shadowChar)
-        .build()
+    private val shadowTile = characterTile {
+        character = shadowChar
+        withStyleSet {
+            backgroundColor = transparent()
+            foregroundColor = TileColor.create(100, 100, 100)
+        }
+    }
 
     override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
         val graphicsSize = drawWindow.size
@@ -30,14 +34,14 @@ data class ShadowDecorationRenderer(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(graphicsSize.width - 1, 0)
-            ).map { it to shadowTile }.toMap(),
+            ).associateWith { shadowTile },
             drawPosition = Position.create(1, graphicsSize.height - 1)
         )
         drawWindow.draw(
             tileMap = LineFactory.buildLine(
                 fromPoint = Position.create(0, 0),
                 toPoint = Position.create(0, graphicsSize.height - 1)
-            ).map { it to shadowTile }.toMap(),
+            ).associateWith { shadowTile },
             drawPosition = Position.create(graphicsSize.width - 1, 1)
         )
     }

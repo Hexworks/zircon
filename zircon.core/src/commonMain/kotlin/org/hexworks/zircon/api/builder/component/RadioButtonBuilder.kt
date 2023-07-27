@@ -17,10 +17,6 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
 
     var key: String = ""
 
-    fun withKey(key: String) = also {
-        this.key = key
-    }
-
     override fun build(): RadioButton {
         require(key.isNotBlank()) {
             "Can't create a Radio Button without a key."

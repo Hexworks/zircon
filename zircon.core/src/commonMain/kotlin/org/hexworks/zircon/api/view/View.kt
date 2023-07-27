@@ -31,8 +31,6 @@ import org.hexworks.zircon.api.view.base.BaseView
  *
  * @see TileGrid
  * @see ColorTheme
- *
- * @sample org.hexworks.zircon.samples.WelcomeView
  */
 interface View : ColorThemeOverride {
 

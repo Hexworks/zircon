@@ -5,7 +5,7 @@ import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.graphics.Renderable
 
 /**
- * Extends a [InternalLayerable] with additional [renderables] taken form an [InternalComponentContainer]
+ * Extends an [InternalLayerable] with additional [renderables] taken form an [InternalComponentContainer]
  * to enable smooth rendering of both.
  */
 class ComponentsLayerable(

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
-import org.hexworks.zircon.api.builder.modifier.BorderBuilder
+import org.hexworks.zircon.api.builder.modifier.border
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
@@ -64,11 +64,11 @@ data class BorderDecorationRenderer(
                 drawWindow.draw(
                     char
                         .withModifiers(
-                            BorderBuilder.newBuilder()
-                                .withBorderType(border.borderType)
-                                .withBorderColor(color)
-                                .withBorderPositions(topLeftBorders)
-                                .build()
+                            border {
+                                borderType = border.borderType
+                                borderColor = color
+                                borderPositions = topLeftBorders
+                            }
                         ), topLeftPos
                 )
             }
@@ -78,11 +78,11 @@ data class BorderDecorationRenderer(
                 drawWindow.draw(
                     char
                         .withModifiers(
-                            BorderBuilder.newBuilder()
-                                .withBorderType(border.borderType)
-                                .withBorderColor(color)
-                                .withBorderPositions(topRightBorders)
-                                .build()
+                            border {
+                                borderType = border.borderType
+                                borderColor = color
+                                borderPositions = topRightBorders
+                            }
                         ), topRightPos
                 )
             }
@@ -92,11 +92,11 @@ data class BorderDecorationRenderer(
                 drawWindow.draw(
                     char
                         .withModifiers(
-                            BorderBuilder.newBuilder()
-                                .withBorderType(border.borderType)
-                                .withBorderColor(color)
-                                .withBorderPositions(bottomLeftBorders)
-                                .build()
+                            border {
+                                borderType = border.borderType
+                                borderColor = color
+                                borderPositions = bottomLeftBorders
+                            }
                         ), bottomLeftPos
                 )
             }
@@ -106,11 +106,11 @@ data class BorderDecorationRenderer(
                 drawWindow.draw(
                     char
                         .withModifiers(
-                            BorderBuilder.newBuilder()
-                                .withBorderType(border.borderType)
-                                .withBorderColor(color)
-                                .withBorderPositions(bottomRightBorders)
-                                .build()
+                            border {
+                                borderType = border.borderType
+                                borderColor = color
+                                borderPositions = bottomRightBorders
+                            }
                         ), bottomRightPos
                 )
             }
@@ -125,11 +125,11 @@ data class BorderDecorationRenderer(
                             drawWindow.draw(
                                 char
                                     .withModifiers(
-                                        BorderBuilder.newBuilder()
-                                            .withBorderType(border.borderType)
-                                            .withBorderColor(color)
-                                            .withBorderPositions(TOP)
-                                            .build()
+                                        border {
+                                            borderType = border.borderType
+                                            borderColor = color
+                                            borderPositions = setOf(TOP)
+                                        }
                                     ), topOffset
                             )
                         }
@@ -141,11 +141,11 @@ data class BorderDecorationRenderer(
                             drawWindow.draw(
                                 char
                                     .withModifiers(
-                                        BorderBuilder.newBuilder()
-                                            .withBorderType(border.borderType)
-                                            .withBorderColor(color)
-                                            .withBorderPositions(BOTTOM)
-                                            .build()
+                                        border {
+                                            borderType = border.borderType
+                                            borderColor = color
+                                            borderPositions = setOf(BOTTOM)
+                                        }
                                     ), bottomOffset
                             )
                         }
@@ -163,11 +163,11 @@ data class BorderDecorationRenderer(
                             drawWindow.draw(
                                 char
                                     .withModifiers(
-                                        BorderBuilder.newBuilder()
-                                            .withBorderType(border.borderType)
-                                            .withBorderColor(color)
-                                            .withBorderPositions(LEFT)
-                                            .build()
+                                        border {
+                                            borderType = border.borderType
+                                            borderColor = color
+                                            borderPositions = setOf(LEFT)
+                                        }
                                     ), leftOffset
                             )
                         }
@@ -179,11 +179,11 @@ data class BorderDecorationRenderer(
                             drawWindow.draw(
                                 char
                                     .withModifiers(
-                                        BorderBuilder.newBuilder()
-                                            .withBorderType(border.borderType)
-                                            .withBorderColor(color)
-                                            .withBorderPositions(RIGHT)
-                                            .build()
+                                        border {
+                                            borderType = border.borderType
+                                            borderColor = color
+                                            borderPositions = setOf(RIGHT)
+                                        }
                                     ), rightOffset
                             )
                         }

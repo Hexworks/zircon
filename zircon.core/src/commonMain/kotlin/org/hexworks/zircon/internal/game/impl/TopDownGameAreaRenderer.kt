@@ -5,20 +5,21 @@ import org.hexworks.zircon.api.data.BlockTileType.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.isOpaque
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile
 import org.hexworks.zircon.internal.game.GameAreaRenderer
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 // TODO: test this
-class TopDownGameAreaRenderer : GameAreaRenderer {
+class TopDownGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
 
     private val blockOrder = listOf(TOP, CONTENT, BOTTOM)
 
     override fun render(
-        gameArea: InternalGameArea<out Tile, out Block<out Tile>>,
+        gameArea: InternalGameArea<T, B>,
         graphics: DrawWindow,
-        fillerTile: Tile
+        fillerTile: T
     ) {
         val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
 
@@ -41,8 +42,8 @@ class TopDownGameAreaRenderer : GameAreaRenderer {
                                         visibleSize = visibleSize,
                                         offsetPosition = pos - visibleOffset,
                                         blockTileType = order,
-                                        tile.toBuilder()
-                                    ).build()
+                                        tile = tile
+                                    )
                                 )
                                 if (tile.isOpaque) {
                                     break@stacking

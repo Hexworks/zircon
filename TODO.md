@@ -14,9 +14,9 @@
 
 - [ ] Implement Rexpaint loading
 - [ ] Implement animation loading
-- [ ] Refactor java-sytle builders to kotlin builder dsls
+- [x] Refactor java-sytle builders to kotlin builder dsls
 - [ ] Check the rest of the code for Javaesque patterns and refactor them
-
+- [ ] Make life easier for Java users
 
 ## Korge features to ask about
 
@@ -34,6 +34,7 @@
 - All MPP targets supported
 - Obsolete configurations dropped
 - add to the docs that the GameComponent was removed and now a ComponentRenderer can be created instead
+- `TextBox` was removed as it was made redundant by `HBox` / `VBox`
 - Code example with improved builders:
 ```kotlin
 ComponentStyleSetBuilder.newBuilder()

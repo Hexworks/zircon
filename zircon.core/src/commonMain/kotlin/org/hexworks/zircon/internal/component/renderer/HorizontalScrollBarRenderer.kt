@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 
 @Suppress("DuplicatedCode")
@@ -27,15 +27,26 @@ class HorizontalScrollBarRenderer : ComponentRenderer<ScrollBar> {
         (0..totalScrollBarWidth).forEach { idx ->
             when {
                 idx < lowBarPosition -> drawWindow.draw(
-                    Tile.createCharacterTile(' ', disabledStyleSet),
+                    characterTile {
+                        character = ' '
+                        styleSet = disabledStyleSet
+                    },
                     Position.create(idx, 0)
                 )
+
                 idx > highBarPosition -> drawWindow.draw(
-                    Tile.createCharacterTile(' ', disabledStyleSet),
+                    characterTile {
+                        character = ' '
+                        styleSet = disabledStyleSet
+                    },
                     Position.create(idx, 0)
                 )
+
                 else -> drawWindow.draw(
-                    Tile.createCharacterTile(' ', invertedDefaultStyleSet),
+                    characterTile {
+                        character = ' '
+                        styleSet = invertedDefaultStyleSet
+                    },
                     Position.create(idx, 0)
                 )
             }

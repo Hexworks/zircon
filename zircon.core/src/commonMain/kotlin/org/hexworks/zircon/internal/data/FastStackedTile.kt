@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.data
 
 
-import org.hexworks.zircon.api.builder.data.GraphicalTileBuilder
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
@@ -13,8 +12,6 @@ import org.hexworks.zircon.internal.resource.TileType
  * This **fast** [StackedTile] implementation foregoes validation and it allows mutation of its state.
  * Only use it if you need the speed and you can be really cautious.
  */
-@Suppress("RUNTIME_ANNOTATION_NOT_SUPPORTED")
-
 class FastStackedTile(
     initialTiles: List<Tile> = listOf(),
     initialCapacity: Int = initialTiles.size
@@ -45,24 +42,7 @@ class FastStackedTile(
         get() = baseTile.tileType
     override val styleSet: StyleSet
         get() = baseTile.styleSet
-    override val isOpaque: Boolean
-        get() = baseTile.isOpaque
-    override val isUnderlined: Boolean
-        get() = baseTile.isUnderlined
-    override val isCrossedOut: Boolean
-        get() = baseTile.isCrossedOut
-    override val isBlinking: Boolean
-        get() = baseTile.isBlinking
-    override val isVerticalFlipped: Boolean
-        get() = baseTile.isVerticalFlipped
-    override val isHorizontalFlipped: Boolean
-        get() = baseTile.isHorizontalFlipped
-    override val hasBorder: Boolean
-        get() = baseTile.hasBorder
-    override val isEmpty: Boolean
-        get() = baseTile.isEmpty
-    override val isNotEmpty: Boolean
-        get() = baseTile.isNotEmpty
+
     override val cacheKey: String
         get() = baseTile.cacheKey
     override val foregroundColor: TileColor
@@ -127,8 +107,4 @@ class FastStackedTile(
     override fun asImageTileOrNull() = top.asImageTileOrNull()
 
     override fun asGraphicalTileOrNull() = top.asGraphicalTileOrNull()
-
-    override fun toBuilder(): GraphicalTileBuilder {
-        throw UnsupportedOperationException("This operation is not implemented yet")
-    }
 }

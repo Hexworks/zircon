@@ -4,5 +4,5 @@ import org.hexworks.zircon.api.application.AppConfig
 
 object RuntimeConfig {
 
-    var config: AppConfig = AppConfig.defaultConfiguration()
+    var config: AppConfig = AppConfig.defaultAppConfig()
 }

@@ -39,7 +39,7 @@ interface Tileset<S : Any> : Identifiable {
 
     /**
      * Draws the given `tile` using the given [context] at the
-     * given [position]. Does nothing if the [tileO] is not
+     * given [position]. Does nothing if the [tile] is not
      * supported by this [Tileset].
      */
     fun drawTile(tile: Tile, context: S, position: Position)
