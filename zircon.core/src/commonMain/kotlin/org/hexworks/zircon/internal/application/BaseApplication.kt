@@ -24,11 +24,10 @@ abstract class BaseApplication<R : Any, A : Application, V>(
     final override val config: AppConfig,
     final override val tileGrid: TileGrid,
     final override val eventBus: EventBus,
+    val renderer: Renderer<R, A, V>,
     final override val eventScope: ZirconScope = ZirconScope(),
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 ) : InternalApplication {
-
-    abstract val renderer: Renderer<R, A, V>
 
     private val logger = LoggerFactory.getLogger(this::class)
     // 60 FPS by default...can go into app config if necessary

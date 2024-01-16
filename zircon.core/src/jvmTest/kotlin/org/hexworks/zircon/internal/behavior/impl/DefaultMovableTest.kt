@@ -14,7 +14,7 @@ class DefaultMovableTest {
     @Before
     fun setUp() {
         target = DefaultMovable(
-            size = TARGET_SIZE,
+            size = TARGET_SIZE_10x10,
             position = Position.defaultPosition()
         )
     }
@@ -30,7 +30,7 @@ class DefaultMovableTest {
         assertThat(
             target.containsPosition(
                 target.position
-                    .withRelative(Position.create(TARGET_SIZE.height, TARGET_SIZE.width))
+                    .withRelative(Position.create(TARGET_SIZE_10x10.height, TARGET_SIZE_10x10.width))
             )
         )
             .isFalse()
@@ -39,12 +39,12 @@ class DefaultMovableTest {
     @Test
     fun shouldKnowItsSizeCorrectly() {
         assertThat(target.size)
-            .isEqualTo(TARGET_SIZE)
+            .isEqualTo(TARGET_SIZE_10x10)
     }
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        assertThat(target.intersects(DefaultMovable(TARGET_SIZE)))
+        assertThat(target.intersects(DefaultMovable(TARGET_SIZE_10x10)))
             .isTrue()
     }
 
@@ -53,7 +53,8 @@ class DefaultMovableTest {
         assertThat(
             target.intersects(
                 layer {
-                    offset = NON_INTERSECTING_OFFSET
+                    size = TARGET_SIZE_10x10
+                    offset = NON_INTERSECTING_OFFSET_20x20
                 }
             )
         )
@@ -65,7 +66,7 @@ class DefaultMovableTest {
         assertThat(
             target.intersects(
                 layer {
-                    offset = INTERSECTION_OFFSET
+                    offset = INTERSECTION_OFFSET_1x1
                     size = Size.one()
                 }
             )
@@ -86,10 +87,10 @@ class DefaultMovableTest {
     }
 
     companion object {
-        const val DEFAULT_COLS = 10
-        const val DEFAULT_ROWS = 10
-        val TARGET_SIZE = Size.create(DEFAULT_COLS, DEFAULT_ROWS)
-        val INTERSECTION_OFFSET = Position.offset1x1()
-        val NON_INTERSECTING_OFFSET = Position.create(20, 20)
+        const val DEFAULT_COLS_10 = 10
+        const val DEFAULT_ROWS_10 = 10
+        val TARGET_SIZE_10x10 = Size.create(DEFAULT_COLS_10, DEFAULT_ROWS_10)
+        val INTERSECTION_OFFSET_1x1 = Position.offset1x1()
+        val NON_INTERSECTING_OFFSET_20x20 = Position.create(20, 20)
     }
 }

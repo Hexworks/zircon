@@ -27,4 +27,6 @@ sealed class SimpleModifiers : TextureModifier {
 
     override val cacheKey: String
         get() = "Modifier.${this::class.simpleName}"
+
+    override fun toString() = cacheKey
 }

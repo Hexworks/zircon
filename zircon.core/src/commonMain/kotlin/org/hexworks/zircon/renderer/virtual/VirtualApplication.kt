@@ -15,9 +15,8 @@ class VirtualApplication(
     config: AppConfig,
     eventBus: EventBus,
     tileGrid: DefaultTileGrid = DefaultTileGrid(config),
-) : BaseApplication<Char, VirtualApplication, VirtualView>(config, tileGrid, eventBus) {
+) : BaseApplication<Char, VirtualApplication, VirtualView>(config, tileGrid, eventBus, VirtualRenderer(tileGrid)) {
 
-    override val renderer = VirtualRenderer(tileGrid)
     override fun prepareRenderSurface(): Char {
         return ' '
     }

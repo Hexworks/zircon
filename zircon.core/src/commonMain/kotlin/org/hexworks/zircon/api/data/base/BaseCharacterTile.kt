@@ -52,7 +52,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         } else {
             characterTile {
                 character = this@BaseCharacterTile.character
-                this.styleSet = style
+                styleSet = style
             }
         }
     }
@@ -66,7 +66,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         } else {
             return characterTile {
                 character = this@BaseCharacterTile.character
-                this.styleSet = styleSet.withModifiers(modifiers)
+                styleSet = this@BaseCharacterTile.styleSet.withModifiers(modifiers)
             }
         }
     }
@@ -80,7 +80,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         } else {
             return characterTile {
                 character = this@BaseCharacterTile.character
-                this.styleSet = styleSet.withAddedModifiers(modifiers)
+                styleSet = this@BaseCharacterTile.styleSet.withAddedModifiers(modifiers)
             }
         }
     }
@@ -94,7 +94,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         } else {
             return characterTile {
                 character = this@BaseCharacterTile.character
-                this.styleSet = styleSet.withRemovedModifiers(modifiers)
+                styleSet = this@BaseCharacterTile.styleSet.withRemovedModifiers(modifiers)
             }
         }
     }
@@ -105,7 +105,7 @@ abstract class BaseCharacterTile : BaseTile(), CharacterTile {
         } else {
             return characterTile {
                 character = this@BaseCharacterTile.character
-                this.styleSet = styleSet.withNoModifiers()
+                styleSet = this@BaseCharacterTile.styleSet.withNoModifiers()
             }
         }
     }

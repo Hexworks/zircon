@@ -76,9 +76,9 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     fun shouldProperlyAddNewText() {
         target.addRow(buildParagraph { +TEXT })
 
-        val child = target.children.first()
+        val paragraph = target.children.first()
 
-        assertThat((child.children.first() as Paragraph).text).isEqualTo(TEXT)
+        assertThat((paragraph as Paragraph).text).isEqualTo(TEXT)
     }
 
     @Test
@@ -99,7 +99,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
         target.addInlineRow(listOf(testComponent))
 
-        target.addNewRows(ROW_HISTORY_SIZE)
+        target.addNewRows(ROW_HISTORY_SIZE_10)
 
         target.addRow(buildParagraph { +TEXT })
 
@@ -130,7 +130,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     companion object {
         val POSITION_4_5 = Position.create(4, 5)
         val SIZE_40x10 = Size.create(40, 10)
-        const val ROW_HISTORY_SIZE = 15
+        const val ROW_HISTORY_SIZE_10 = 10
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
 

@@ -298,7 +298,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
             .isEqualTo(
                 "DefaultContainer(id=${
                     target.id.toString().substring(0, 4)
-                }, absolutePosition=(2,3), relativePosition=(2,3), size=(4X4), state=DEFAULT, disabled=false)"
+                }, absolutePosition=(x=2,y=3), relativePosition=(x=2,y=3), size=(w=4,h=4), state=DEFAULT, disabled=false)"
             )
     }
 
