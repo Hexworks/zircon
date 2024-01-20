@@ -104,7 +104,7 @@ class KorgeTrueTypeFontTileset(
             for (n in 0 until 256) {
                 tiles += atlas.add(
                     font.renderGlyphToBitmap(
-                        16f,
+                        16.0,
                         CP437Utils.convertCp437toUnicode(n).code,
                         Colors.WHITE
                     ).bmp.toBMP32()
