@@ -2,18 +2,21 @@
 
 ## Must have
 
+- [ ] Implement Rexpaint loading
+- [ ] Implement animation loading
 - [ ] Add remaining tilesets to app config and test them
 - [ ] Retrofit code examples  
 - [ ] Implement texture transform modifiers (crossed-out, underline, border)
 - [ ] Refactor the Markov modifier
-- [ ] Fix the text input component
+- [ ] Fix the buggy components
+  - [ ] radio box won't do the `o` when selected without focus (first click)
+  - [ ] `TextBox` will do an interaction recoloring when `<Space>` is pressed
+  - [ ] `TextBox` cursor is drawn outside the box
+  - [ ] if `CheckBox` is clicked quickly it won't check
 - [ ] Use all code examples to check for bugs
-
 
 ## Nice to have
 
-- [ ] Implement Rexpaint loading
-- [ ] Implement animation loading
 - [x] Refactor java-sytle builders to kotlin builder dsls
 - [ ] Check the rest of the code for Javaesque patterns and refactor them
 - [ ] Make life easier for Java users

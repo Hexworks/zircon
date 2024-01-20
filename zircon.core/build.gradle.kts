@@ -24,9 +24,9 @@ kotlin {
         withJava()
         compilations.all {
             kotlinOptions {
-                apiVersion = "1.5"
-                languageVersion = "1.5"
-                jvmTarget = "11"
+                apiVersion = "1.9"
+                languageVersion = "1.9"
+                jvmTarget = "15"
             }
         }
     }
