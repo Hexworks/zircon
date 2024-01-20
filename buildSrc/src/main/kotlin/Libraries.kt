@@ -18,7 +18,7 @@ object Libraries {
 
     const val snakeYaml = "org.yaml:snakeyaml:$snakeyamlVersion"
 
-    const val korge = "com.soywiz.korlibs.korge2:korge:$korVersion"
+    const val korge = "com.soywiz.korge:korge:$korVersion"
 
     // TEST
     const val kotlinTestCommon = "org.jetbrains.kotlin:kotlin-test-common"
