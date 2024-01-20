@@ -2,6 +2,7 @@ import korlibs.io.async.delay
 import korlibs.io.async.launch
 import korlibs.time.seconds
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations

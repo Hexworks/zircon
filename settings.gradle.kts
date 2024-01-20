@@ -1,4 +1,4 @@
-pluginManagement { repositories {  mavenLocal(); mavenCentral(); google(); gradlePluginPortal()  }  }
+pluginManagement { repositories { mavenLocal(); mavenCentral(); google(); gradlePluginPortal() } }
 
 rootProject.name = "zircon"
 
