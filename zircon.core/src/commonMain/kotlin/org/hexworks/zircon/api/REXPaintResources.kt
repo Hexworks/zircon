@@ -1,9 +1,14 @@
 package org.hexworks.zircon.api
 
+import korlibs.io.async.AsyncByteArrayDeque
 import korlibs.io.file.std.openAsZip
 import korlibs.memory.Buffer
 import korlibs.memory.getInt32
 import korlibs.memory.getInt8
+import korlibs.io.compression.deflate.GZIPNoCrc
+import korlibs.io.compression.uncompress
+import korlibs.io.stream.AsyncOutputStream
+import korlibs.io.stream.readAll
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.color.TileColor
@@ -16,12 +21,15 @@ import org.hexworks.zircon.internal.util.rex.REXCell
 import org.hexworks.zircon.internal.util.rex.REXFile
 import org.hexworks.zircon.internal.util.rex.REXLayer
 
-
 /**
  * Loads a REXPaint file from the given path.
  */
 suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.FILESYSTEM): REXPaintResource {
-    return loadREXFile(loadResource(Resource.create(path, resourceType)).openAsZip().readBytes())
+    val resource = loadResource(Resource.create(path, resourceType))
+
+    val result = AsyncByteArrayDeque();
+    GZIPNoCrc.uncompress(resource.openInputStream(), result)
+    return loadREXFile(result.readAll())
 }
 
 /**
@@ -41,8 +49,8 @@ internal fun ByteArray.toREXFile(): REXFile {
     val buffer = Buffer(this)
     val idx = 0.toProperty()
 
-    val version = buffer.getInt32(idx.getAndIncrement())
-    val numberOfLayers = buffer.getInt32(idx.getAndIncrement())
+    val version = buffer.getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
+    val numberOfLayers = buffer.getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
 
     val layers: MutableList<REXLayer> = mutableListOf()
     for (i in 0 until numberOfLayers) {
@@ -57,8 +65,8 @@ internal fun ByteArray.toREXFile(): REXFile {
  * This automatically generates [REXCell] objects from the data provided.
  */
 internal fun Buffer.toRexLayer(idx: Property<Int>): REXLayer {
-    val width = getInt32(idx.getAndIncrement())
-    val height = getInt32(idx.getAndIncrement())
+    val width = getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
+    val height = getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
 
     val cells: MutableList<REXCell> = mutableListOf()
     for (i in 0 until width * height) {
@@ -73,17 +81,17 @@ internal fun Buffer.toRexLayer(idx: Property<Int>): REXLayer {
  */
 internal fun Buffer.toREXCell(idx: Property<Int>): REXCell {
     return REXCell(
-        character = CP437Utils.convertCp437toUnicode(getInt32(idx.getAndIncrement())),
+        character = CP437Utils.convertCp437toUnicode(getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)),
         foregroundColor = TileColor.create(
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
             255
         ),
         backgroundColor = TileColor.create(
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
             255
         )
     )
