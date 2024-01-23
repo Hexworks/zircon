@@ -18,6 +18,13 @@ plugins {
     id("signing")
 }
 
+val javaVersion = JavaVersion.VERSION_11
+
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+}
+
 kotlin {
 
     jvm {
@@ -26,7 +33,8 @@ kotlin {
             kotlinOptions {
                 apiVersion = "1.9"
                 languageVersion = "1.9"
-                jvmTarget = "15"
+                jvmTarget = javaVersion.toString()
+
             }
         }
     }
