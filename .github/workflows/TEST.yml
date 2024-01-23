@@ -1,0 +1,25 @@
+name: TEST
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  DISPLAY: ":99"
+  JAVA_VERSION: 11
+  JAVA_DISTRIBUTION: zulu
+
+jobs:
+  test:
+    timeout-minutes: 25
+    runs-on: ubuntu-latest
+    steps:
+      - { uses: actions/checkout@v3 }
+      - { name: Set up JDK, uses: actions/setup-java@v3, with: { distribution: "${{ env.JAVA_DISTRIBUTION }}", java-version: "${{ env.JAVA_VERSION }}" } }
+      - { name: Prepare Gradle, uses: gradle/gradle-build-action@ef76a971e2fa3f867b617efd72f2fbd72cf6f8bc } # v2.8.0
+      - { name: Start gradle, run: ./gradlew jvmTest }
