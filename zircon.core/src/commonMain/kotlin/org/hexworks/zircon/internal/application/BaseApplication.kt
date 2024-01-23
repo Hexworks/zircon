@@ -74,7 +74,7 @@ abstract class BaseApplication<R : Any, A : Application, V>(
                         delay(renderIntervalMs - elapsedTimeMs)
                     }
                 } catch (e: Exception) {
-                    logger.error(e) { "Render failed" }
+                    logger.error({ "Render failed" }, e)
                 }
             }
         }
