@@ -23,4 +23,6 @@ jobs:
       - { uses: actions/checkout@v3 }
       - { name: Set up JDK, uses: actions/setup-java@v3, with: { distribution: "${{ env.JAVA_DISTRIBUTION }}", java-version: "${{ env.JAVA_VERSION }}" } }
       - { name: Prepare Gradle, uses: gradle/gradle-build-action@ef76a971e2fa3f867b617efd72f2fbd72cf6f8bc } # v2.8.0
-      - { name: Start gradle, run: ./gradlew jvmTest }
+      - { name: Gradle Test JVM, run: ./gradlew jvmTest }
+      - { name: Gradle Test JS, run: ./gradlew jsTest }
+      #- { name: Gradle Sonarqube, run: ./gradlew sonarqube, if: false }
