@@ -41,8 +41,8 @@ internal fun ByteArray.toREXFile(): REXFile {
     val buffer = Buffer(this)
     val idx = 0.toProperty()
 
-    val version = buffer.getInt32(idx.getAndIncrement())
-    val numberOfLayers = buffer.getInt32(idx.getAndIncrement())
+    val version = buffer.getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
+    val numberOfLayers = buffer.getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
 
     val layers: MutableList<REXLayer> = mutableListOf()
     for (i in 0 until numberOfLayers) {
@@ -57,8 +57,8 @@ internal fun ByteArray.toREXFile(): REXFile {
  * This automatically generates [REXCell] objects from the data provided.
  */
 internal fun Buffer.toRexLayer(idx: Property<Int>): REXLayer {
-    val width = getInt32(idx.getAndIncrement())
-    val height = getInt32(idx.getAndIncrement())
+    val width = getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
+    val height = getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)
 
     val cells: MutableList<REXCell> = mutableListOf()
     for (i in 0 until width * height) {
@@ -73,17 +73,17 @@ internal fun Buffer.toRexLayer(idx: Property<Int>): REXLayer {
  */
 internal fun Buffer.toREXCell(idx: Property<Int>): REXCell {
     return REXCell(
-        character = CP437Utils.convertCp437toUnicode(getInt32(idx.getAndIncrement())),
+        character = CP437Utils.convertCp437toUnicode(getS32LE(idx.getAndIncrement() * Int.SIZE_BYTES)),
         foregroundColor = TileColor.create(
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
             255
         ),
         backgroundColor = TileColor.create(
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
-            getInt8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
+            getS8(idx.getAndIncrement()).toInt() and 0xFF,
             255
         )
     )
