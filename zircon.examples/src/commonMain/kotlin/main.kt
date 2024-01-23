@@ -1,10 +1,6 @@
-import korlibs.io.file.std.openAsZip
 import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.application.withSize
 import org.hexworks.zircon.api.createApplication
-import org.hexworks.zircon.api.resource.Resource
-import org.hexworks.zircon.api.resource.ResourceType
-import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 suspend fun main() {
@@ -12,16 +8,13 @@ suspend fun main() {
     val gridCols = 1920 / tileSize
     val gridRows = 1080 / tileSize
 
-    loadResource(Resource.create("rex_files/xptest.zip", ResourceType.PROJECT))
-
-
-//    createApplication(appConfig {
-//        withSize {
-//            width = gridCols
-//            height = gridRows
-//        }
-//        defaultTileset = BuiltInCP437TilesetResource.valueOf("REX_PAINT_${tileSize}X${tileSize}")
-//        debugMode = true
-//    }).components().start()
+    createApplication(appConfig {
+        withSize {
+            width = gridCols
+            height = gridRows
+        }
+        defaultTileset = BuiltInCP437TilesetResource.valueOf("REX_PAINT_${tileSize}X${tileSize}")
+        debugMode = true
+    }).rex().start()
 
 }
