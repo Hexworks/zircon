@@ -1,16 +1,16 @@
-import Libraries.assertjCore
-import Libraries.cobaltCore
-import Libraries.korge
-import Libraries.kotlinReflect
-import Libraries.kotlinTestAnnotationsCommon
-import Libraries.kotlinTestCommon
-import Libraries.kotlinTestJs
-import Libraries.kotlinTestJunit
-import Libraries.kotlinxCollectionsImmutable
-import Libraries.kotlinxCoroutines
-import Libraries.mockitoCore
-import Libraries.mockitoKotlin
-import Libraries.snakeYaml
+import Libraries.ASSERTJ_CORE
+import Libraries.COBALT_CORE
+import Libraries.KORGE
+import Libraries.KOTLIN_REFLECT
+import Libraries.KOTLIN_TEST_ANNOTATIONS_COMMON
+import Libraries.KOTLIN_TEST_COMMON
+import Libraries.KOTLIN_TEST_JS
+import Libraries.KOTLIN_TEST_JUNIT
+import Libraries.KOTLINX_COLLECTIONS_IMMUTABLE
+import Libraries.KOTLINX_COROUTINES
+import Libraries.MOCKITO_CORE
+import Libraries.MOCKITO_KOTLIN
+import Libraries.SNAKE_YAML
 
 plugins {
     kotlin("multiplatform")
@@ -58,19 +58,19 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlinxCoroutines)
-                api(kotlinReflect)
-                api(kotlinxCollectionsImmutable)
+                api(KOTLINX_COROUTINES)
+                api(KOTLIN_REFLECT)
+                api(KOTLINX_COLLECTIONS_IMMUTABLE)
 
-                api(korge)
+                api(KORGE)
 
-                api(cobaltCore)
+                api(COBALT_CORE)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlinTestCommon)
-                implementation(kotlinTestAnnotationsCommon)
+                implementation(KOTLIN_TEST_COMMON)
+                implementation(KOTLIN_TEST_ANNOTATIONS_COMMON)
             }
         }
 
@@ -78,23 +78,23 @@ kotlin {
             dependencies {
                 api(kotlin("reflect"))
 
-                api(snakeYaml)
+                api(SNAKE_YAML)
             }
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlinTestJunit)
+                implementation(KOTLIN_TEST_JUNIT)
 
-                implementation(mockitoCore)
-                implementation(mockitoKotlin)
-                implementation(assertjCore)
+                implementation(MOCKITO_CORE)
+                implementation(MOCKITO_KOTLIN)
+                implementation(ASSERTJ_CORE)
             }
         }
 
         val jsMain by getting {}
         val jsTest by getting {
             dependencies {
-                implementation(kotlinTestJs)
+                implementation(KOTLIN_TEST_JS)
             }
         }
     }
