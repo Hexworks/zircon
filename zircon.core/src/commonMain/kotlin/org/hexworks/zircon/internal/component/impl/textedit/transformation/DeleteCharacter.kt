@@ -14,11 +14,12 @@ class DeleteCharacter(private val deleteKind: DeleteKind) : TextBufferTransforma
 
         when {
             cursor.isAtTheStartOfTheFirstRow() -> {
+                // backspace does nothing when we're at the top left position
                 if (deleteKind == DEL) {
                     deleteFirstCharOfRow(buffer, cursor)
                 }
             }
-            cursor.isAtTheStartOfARow() -> {
+            cursor.isAtTheStartOfNotTheFirstRow() -> {
                 when (deleteKind) {
                     DEL -> {
                         deleteFirstCharOfRow(buffer, cursor)
@@ -59,7 +60,7 @@ class DeleteCharacter(private val deleteKind: DeleteKind) : TextBufferTransforma
 
     private fun deleteFirstCharOfRow(buffer: EditableTextBuffer, cursor: Cursor) {
         val cursorRow = buffer.getRow(cursor.rowIdx)
-        if (cursorRow.isEmpty() && buffer.rowCount() > 1) {
+        if (cursorRow.isEmpty() && buffer.rowCount > 1) {
             buffer.deleteRow(cursor.rowIdx)
         } else if (cursorRow.isNotEmpty()) {
             cursorRow.removeAt(0)

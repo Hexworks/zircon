@@ -39,7 +39,7 @@ abstract class BaseNumberInput(
 ) {
 
     final override var text: String
-        get() = textBuffer.getText()
+        get() = textBuffer.text
         set(value) {
             if (value.length <= maxNumberLength) {
                 val clean = value.replace(Regex("[^\\d]"), "")
@@ -156,7 +156,7 @@ abstract class BaseNumberInput(
     private fun checkAndAddChar(char: Char) {
         val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
         virtualTextBuffer.applyTransformation(InsertCharacter(char))
-        if (virtualTextBuffer.getText().toInt() <= maxValue) {
+        if (virtualTextBuffer.text.toInt() <= maxValue) {
             if (text.length == maxNumberLength) {
                 textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
             }
