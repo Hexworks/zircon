@@ -25,25 +25,8 @@ class TileImageBuilder : Builder<TileImage> {
     var filler: Tile = Tile.empty()
 
     var size: Size = Size.one()
-        set(value) {
-            if (this.size.width > size.width || this.size.height > size.height) {
-                removeOutOfBoundsTiles(size)
-            }
-            field = value
-        }
 
     var tiles: Map<Position, Tile> = mapOf()
-        set(value) {
-            field = value
-            removeOutOfBoundsTiles()
-        }
-
-
-    private fun removeOutOfBoundsTiles(size: Size = this.size) {
-        this.tiles = tiles
-            .filterKeys { size.containsPosition(it) }
-            .toMap()
-    }
 
     override fun build(): TileImage {
         return DefaultTileImage(

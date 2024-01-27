@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.resource
 
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.internal.resource.REXPaintResource
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.hexworks.zircon.internal.util.rex.REXCell
 import org.hexworks.zircon.internal.util.rex.REXFile
 import org.hexworks.zircon.internal.util.rex.REXLayer
@@ -74,7 +74,7 @@ object REXPaintResources {
      */
     internal fun ByteBuffer.toREXCell(): REXCell {
         return REXCell(
-            character = CP437Utils.convertCp437toUnicode(int),
+            character = int.convertCp437toUnicode(),
             foregroundColor = TileColor.create(
                 get().toInt() and 0xFF,
                 get().toInt() and 0xFF,

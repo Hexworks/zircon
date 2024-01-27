@@ -37,7 +37,7 @@ sealed class UIEventResponse(
  * [Pass] is the default [UIEventResponse] which indicates
  * that no event processing happened.
  */
-object Pass : UIEventResponse(false, 0)
+data object Pass : UIEventResponse(false, 0)
 
 /**
  * [Processed] indicates that at least one event handler
@@ -47,7 +47,7 @@ object Pass : UIEventResponse(false, 0)
  * Return this object if you acted on an event but you don't
  * want to tamper with other listeners.
  */
-object Processed : UIEventResponse(true, 1)
+data object Processed : UIEventResponse(true, 1)
 
 /**
  * [PreventDefault] is an [UIEventResponse] which requests
@@ -57,7 +57,7 @@ object Processed : UIEventResponse(true, 1)
  * don't want any default actions to take place (hover effects
  * on components for example).
  */
-object PreventDefault : UIEventResponse(true, 2)
+data object PreventDefault : UIEventResponse(true, 2)
 
 /**
  * [StopPropagation] will not only prevent default actions
@@ -68,6 +68,6 @@ object PreventDefault : UIEventResponse(true, 2)
  * don't want any other listeners to have the chance of
  * handling the event.
  */
-object StopPropagation : UIEventResponse(true, 3)
+data object StopPropagation : UIEventResponse(true, 3)
 
 

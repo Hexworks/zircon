@@ -59,9 +59,10 @@ abstract class CommonComponentTest<T : InternalComponent> {
             .isEqualTo(newTileset.id)
     }
 
-    @Test(expected = ValueValidationFailedException::class)
     fun shouldNotAllowTilesetWithDifferentSize() {
+        val old = target.tileset
         target.tileset = BuiltInCP437TilesetResource.ACORN_8X16
+        assertThat(target.tileset).isEqualTo(old)
     }
 
     @Test

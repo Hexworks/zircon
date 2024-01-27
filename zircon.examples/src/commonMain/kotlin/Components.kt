@@ -20,8 +20,6 @@ import org.hexworks.zircon.api.dsl.plus
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.graphics.BoxType
 
-val DEFAULT_TILESET = CP437TilesetResources.rexPaint16x16()
-
 suspend fun Application.components() = also {
     val screen = tileGrid.toScreen()
 
@@ -66,16 +64,6 @@ suspend fun Application.components() = also {
                 }
                 +"All this stuff has to be done soon, or otherwise I'll stay hungry."
             }
-//            if (DEFAULT_TILESET.size.width == 16) {
-//                label { +"${Symbols.ARROW_DOWN} And this is an icon" }
-//                icon {
-//                    iconTile = Tile.newBuilder()
-//                        .withTileset(GraphicalTilesetResources.nethack16x16())
-//                        .withName("Plate mail")
-//                        .buildGraphicalTile()
-//                    tileset = GraphicalTilesetResources.nethack16x16()
-//                }
-//            }
             progressBar {
                 decorations { +box(title = "Loading...") }
                 numberOfSteps = 10
