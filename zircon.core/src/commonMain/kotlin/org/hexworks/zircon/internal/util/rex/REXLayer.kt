@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.TilesetResource
 
-val TRANSPARENT_BACKGROUND = TileColor.create(255, 0, 255)
+private val REX_TRANSPARENT_BACKGROUND = TileColor.create(255, 0, 255)
 
 /**
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
@@ -32,7 +32,7 @@ data class REXLayer(
             for (x in 0 until width) {
                 // Have to swap x and y due to how image data is stored
                 val cell = cells[x * height + y]
-                if (cell.backgroundColor == TRANSPARENT_BACKGROUND) {
+                if (cell.backgroundColor == REX_TRANSPARENT_BACKGROUND) {
                     // Skip transparent characters
                     continue
                 }

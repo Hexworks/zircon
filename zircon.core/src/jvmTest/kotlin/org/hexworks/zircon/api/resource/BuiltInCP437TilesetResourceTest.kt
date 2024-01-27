@@ -3,7 +3,8 @@ package org.hexworks.zircon.api.resource
 import org.assertj.core.api.Assertions.assertThat
 import org.hexworks.zircon.api.graphics.Symbols
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.CP437Index
+import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.junit.Before
 import org.junit.Test
 
@@ -18,7 +19,7 @@ class BuiltInCP437TilesetResourceTest {
 
     @Test
     fun shouldProperlyConvertCpToUnicode() {
-        assertThat(CP437Utils.convertCp437toUnicode(1).code)
+        assertThat(1.convertCp437toUnicode().code)
             .isEqualTo(Symbols.FACE_WHITE.code)
     }
 
@@ -42,14 +43,14 @@ class BuiltInCP437TilesetResourceTest {
 
     @Test
     fun shouldProperlyFetchCP437IndexForChar() {
-        val result = CP437Utils.fetchCP437IndexForChar('x')
+        val result = 'x'.CP437Index()
 
         assertThat(result).isEqualTo(X_CP437_INDEX)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun shouldNotBeAbleToFetchCP437IndexForInvalidChar() {
-        CP437Utils.fetchCP437IndexForChar(1.toChar())
+        1.toChar().CP437Index()
     }
 
     companion object {

@@ -10,3 +10,4 @@ out/
 node_modules/
 .DS.Store
 kotlin-js-store/
+secring.gpg

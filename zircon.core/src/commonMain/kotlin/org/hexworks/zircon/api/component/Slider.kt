@@ -31,7 +31,7 @@ interface Slider : Component {
     var currentValue: Int
 
     /**
-     * Bindable, current value
+     * Boundable, current value
      */
     val currentValueProperty: Property<Int>
 
@@ -41,7 +41,7 @@ interface Slider : Component {
     var currentStep: Int
 
     /**
-     * Bindable, current step
+     * Boundable, current step
      */
     val currentStepProperty: Property<Int>
 
