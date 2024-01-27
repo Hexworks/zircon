@@ -27,7 +27,6 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 import kotlin.math.min
 
-@Suppress("DuplicatedCode")
 class DefaultTextArea internal constructor(
     initialText: String,
     componentMetadata: ComponentMetadata,
@@ -40,7 +39,7 @@ class DefaultTextArea internal constructor(
     ) {
 
     override var text: String
-        get() = textBuffer.getText()
+        get() = textBuffer.text
         set(value) {
             textBuffer = EditableTextBuffer.create(value)
         }
@@ -83,6 +82,10 @@ class DefaultTextArea internal constructor(
         }
         super.focusTaken()
     }
+
+    // This component shouldn't respond to the activation key (<Spacebar> probably)
+    override fun activated() = Processed
+    override fun deactivated() = Processed
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == TARGET) {
@@ -179,7 +182,7 @@ class DefaultTextArea internal constructor(
 
     private fun refreshVirtualSpaceSize() {
         val (actualWidth, actualHeight) = actualSize
-        val (bufferWidth, bufferHeight) = textBuffer.getBoundingBoxSize()
+        val (bufferWidth, bufferHeight) = textBuffer.boundingBoxSize
         if (bufferWidth >= actualWidth) {
             actualSize = actualSize.withWidth(bufferWidth)
         }

@@ -22,13 +22,13 @@ data class Cursor(
         return direction.moveCursor(this, textBuffer)
     }
 
-    fun isAtTheStartOfTheFirstRow() = rowIdx == 0 && colIdx == 0
+    fun isAtTheStartOfTheFirstRow() = colIdx == 0 && rowIdx == 0
 
-    fun isAtTheStartOfARow() = canMoveLeft().not() && canMoveUp()
+    fun isAtTheStartOfNotTheFirstRow() = colIdx == 0 && rowIdx > 0
 
     fun canMoveUp() = rowIdx > 0
 
-    fun canMoveDown(textBuffer: EditableTextBuffer) = textBuffer.getLastRowIdx() > rowIdx
+    fun canMoveDown(textBuffer: EditableTextBuffer) = textBuffer.lastRowIdx > rowIdx
 
     fun canMoveLeft() = colIdx > 0
 

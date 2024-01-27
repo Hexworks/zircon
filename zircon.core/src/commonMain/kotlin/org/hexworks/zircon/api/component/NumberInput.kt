@@ -16,7 +16,7 @@ interface NumberInput : Component {
     var currentValue: Int
 
     /**
-     * Bindable, current value
+     * Boundable, current value
      */
     val currentValueProperty: Property<Int>
 
