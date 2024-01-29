@@ -20,11 +20,12 @@ class DefaultNumberInputRenderer : ComponentRenderer<DefaultHorizontalNumberInpu
             character = ' '
             styleSet = style
         }
-        drawWindow.size.fetchPositions().forEach { pos ->
-            component.fetchTextBuffer().getCharAtOrNull(pos)?.let { char ->
-                drawWindow.draw(tileTemplate.withCharacter(char), pos)
-            }.orElseGet { drawWindow.draw(tileTemplate, pos) }
-        }
+        // TODO:
+//        drawWindow.size.fetchPositions().forEach { pos ->
+//            component.fetchTextBuffer().getCharAtOrNull(pos)?.let { char ->
+//                drawWindow.draw(tileTemplate.withCharacter(char), pos)
+//            }.orElseGet { drawWindow.draw(tileTemplate, pos) }
+//        }
         drawWindow.applyStyle(style)
     }
 }

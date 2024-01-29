@@ -3,35 +3,35 @@ package org.hexworks.zircon.api.util
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class TextUtilsTest {
+class CharsTest {
 
     @Test
     fun shouldReturnTrueWhenIsControlCharacterIsCalledAndSmallerThan32() {
-        assertThat(TextUtils.isControlCharacter(3.toChar())).isTrue()
+        assertThat(3.toChar().isControlCharacter()).isTrue()
     }
 
     @Test
     fun shouldReturnTrueWhenIsControlCharacterIsCalledAnd127() {
-        assertThat(TextUtils.isControlCharacter(127.toChar())).isTrue()
+        assertThat(127.toChar().isControlCharacter()).isTrue()
     }
 
     @Test
     fun shouldReturnFalseWhenIsControlCharacterIsCalledAndNot127orSmallerThan32() {
-        assertThat(TextUtils.isControlCharacter(32.toChar())).isFalse()
+        assertThat(32.toChar().isControlCharacter()).isFalse()
     }
 
     @Test
     fun shouldReturnTrueWhenIsPrintableCharacterCalledAndNotControlChar() {
-        assertThat(TextUtils.isPrintableCharacter('a')).isTrue()
+        assertThat('a'.isPrintableCharacter()).isTrue()
     }
 
     @Test
     fun shouldReturnTrueWhenIsPrintableCharacterCalledAndNewLine() {
-        assertThat(TextUtils.isPrintableCharacter('\n')).isFalse()
+        assertThat('\n'.isPrintableCharacter()).isFalse()
     }
 
     @Test
     fun shouldReturnFalseWhenIsPrintableCharacterCalledAndControlCharacter() {
-        assertThat(TextUtils.isPrintableCharacter(5.toChar())).isFalse()
+        assertThat(5.toChar().isPrintableCharacter()).isFalse()
     }
 }

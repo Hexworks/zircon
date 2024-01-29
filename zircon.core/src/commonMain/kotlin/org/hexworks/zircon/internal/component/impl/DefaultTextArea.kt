@@ -2,30 +2,30 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.builder.component.componentStyleSet
+import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
-import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.api.util.isNavigationKey
+import org.hexworks.zircon.api.util.isPrintableCharacter
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
-import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.*
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.AddRowBreak
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.DEL
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
+import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.AddRowBreak
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.DeleteBack
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.InsertCharacter
 import org.hexworks.zircon.internal.event.ZirconEvent
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
-import kotlin.math.min
+import kotlin.math.max
 
 class DefaultTextArea internal constructor(
     initialText: String,
@@ -38,20 +38,26 @@ class DefaultTextArea internal constructor(
         renderer = renderingStrategy
     ) {
 
+    private var textEditor = TextEditor.fromText(initialText)
+
     override var text: String
-        get() = textBuffer.text
+        get() = textEditor.text
         set(value) {
-            textBuffer = EditableTextBuffer.create(value)
+            textEditor = TextEditor.fromText(value)
         }
 
-    private var textBuffer = EditableTextBuffer.create(initialText)
+    override var textTiles: List<List<CharacterTile>>
+        get() = textEditor.tiles
+        set(value) {
+            textEditor = TextEditor.fromTiles(value)
+        }
+
 
     init {
-        this.text = initialText
         refreshVirtualSpaceSize()
     }
 
-    override fun textBuffer() = textBuffer
+    fun getTileAtOrNull(position: Position): CharacterTile? = textEditor.getTileAtOrNull(position)
 
     override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
         defaultStyle = styleSet {
@@ -89,17 +95,18 @@ class DefaultTextArea internal constructor(
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == TARGET) {
-            if (isNavigationKey(event)) {
+            if (event.isNavigationKey()) {
                 Pass
             } else {
+                // TODO:
                 when (event.code) {
-                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
-                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
-                    KeyCode.DOWN -> textBuffer.applyTransformation(MoveCursor(DOWN))
-                    KeyCode.UP -> textBuffer.applyTransformation(MoveCursor(UP))
-                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
-                    KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-                    KeyCode.ENTER -> textBuffer.applyTransformation(AddRowBreak())
+//                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
+//                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
+//                    KeyCode.DOWN -> textBuffer.applyTransformation(MoveCursor(DOWN))
+//                    KeyCode.UP -> textBuffer.applyTransformation(MoveCursor(UP))
+//                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
+                    KeyCode.BACKSPACE -> textEditor.applyTransformation(DeleteBack)
+                    KeyCode.ENTER -> textEditor.applyTransformation(AddRowBreak)
                     KeyCode.HOME -> {
                         // TODO
                     }
@@ -110,8 +117,8 @@ class DefaultTextArea internal constructor(
 
                     else -> {
                         event.key.forEach { char ->
-                            if (TextUtils.isPrintableCharacter(char)) {
-                                textBuffer.applyTransformation(InsertCharacter(char))
+                            if (char.isPrintableCharacter()) {
+                                textEditor.applyTransformation(InsertCharacter(characterTile { +char }))
                             }
                         }
                     }
@@ -124,86 +131,30 @@ class DefaultTextArea internal constructor(
         } else Pass
     }
 
-    private fun isNavigationKey(event: KeyboardEvent) =
-        event == TAB || event == REVERSE_TAB
-
     private fun scrollToCursor() {
-        val bufferCursorPos = textBuffer.cursor.position
-        when {
-            bufferCursorOverflowsLeft(bufferCursorPos) -> {
-                val delta = visibleOffset.x - bufferCursorPos.x
-                scrollLeftBy(delta)
-            }
-
-            bufferCursorPosOverlapsRight(bufferCursorPos) -> {
-                val delta = bufferCursorPos.x - visibleOffset.x - visibleSize.width
-                scrollRightBy(delta + 1)
-            }
-
-            bufferCursorOverflowsUp(bufferCursorPos) -> {
-                val delta = visibleOffset.y - bufferCursorPos.y
-                scrollUpBy(delta)
-            }
-
-            bufferCursorPosOverlapsDown(bufferCursorPos) -> {
-                val delta = bufferCursorPos.y - visibleOffset.y - visibleSize.height
-                scrollDownBy(delta + 1)
-            }
-        }
+        // 📕 TODO
     }
 
-    private fun bufferCursorPosOverlapsDown(bufferCursorPos: Position) =
-        bufferCursorPos.y >= visibleOffset.y + visibleSize.height
 
-    private fun bufferCursorOverflowsUp(bufferCursorPos: Position) =
-        bufferCursorPos.y < visibleOffset.y
+    private fun refreshCursor() = whenConnectedToRoot { root ->
 
-    private fun bufferCursorPosOverlapsRight(bufferCursorPos: Position) =
-        bufferCursorPos.x >= visibleOffset.x + visibleSize.width
+        val cursorPos = textEditor.cursor + visibleOffset
 
-    private fun bufferCursorOverflowsLeft(bufferPos: Position) =
-        bufferPos.x < visibleOffset.x
-
-    private fun refreshCursor() {
-        var pos = textBuffer.cursor.position
-            .minus(visibleOffset)
-        pos = pos.withX(min(pos.x, contentSize.width))
-        pos = pos.withY(min(pos.y, contentSize.height))
-        whenConnectedToRoot { root ->
-            root.eventBus.publish(
-                event = RequestCursorAt(
-                    position = pos.withRelative(position + contentOffset),
-                    emitter = this
-                ),
-                eventScope = root.eventScope
-            )
-        }
+        root.eventBus.publish(
+            event = RequestCursorAt(
+                position = cursorPos, // 📕 TODO
+                emitter = this
+            ),
+            eventScope = root.eventScope
+        )
     }
 
     private fun refreshVirtualSpaceSize() {
-        val (actualWidth, actualHeight) = actualSize
-        val (bufferWidth, bufferHeight) = textBuffer.boundingBoxSize
-        if (bufferWidth >= actualWidth) {
-            actualSize = actualSize.withWidth(bufferWidth)
+        val (visibleWidth, visibleHeight) = visibleSize
+        val (editorWidth, editorHeight) = textEditor.size
+        actualSize = size {
+            width = max(visibleWidth, editorWidth)
+            height = max(visibleHeight, editorHeight)
         }
-        if (bufferHeight >= actualHeight) {
-            actualSize = actualSize.withHeight(bufferHeight)
-        }
-    }
-
-    companion object {
-        val TAB = KeyboardEvent(
-            type = KeyboardEventType.KEY_RELEASED,
-            key = "\t",
-            code = KeyCode.TAB
-        )
-
-        val REVERSE_TAB = KeyboardEvent(
-            type = KeyboardEventType.KEY_RELEASED,
-            key = "\t",
-            code = KeyCode.TAB,
-            shiftDown = true
-        )
-
     }
 }

@@ -19,8 +19,8 @@ class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
         }
         drawWindow.size.fetchPositions().forEach { pos ->
             val fixedPos = pos + component.visibleOffset
-            component.textBuffer().getCharAtOrNull(fixedPos)?.let { char ->
-                drawWindow.draw(tileTemplate.withCharacter(char), pos)
+            component.getTileAtOrNull(fixedPos)?.let { tile ->
+                drawWindow.draw(tileTemplate.withCharacter(tile.character), pos)
             }.orElseGet { drawWindow.draw(tileTemplate, pos) }
         }
     }

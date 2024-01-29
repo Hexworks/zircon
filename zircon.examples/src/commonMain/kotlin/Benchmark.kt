@@ -3,7 +3,7 @@ import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSITileColor
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import kotlin.random.Random
 
 var currIdx = 0
@@ -19,7 +19,7 @@ fun Application.benchmark() = also {
             for (y in 1 until grid.height) {
                 grid.draw(
                     characterTile {
-                        +CP437Utils.convertCp437toUnicode(random.nextInt(0, 255))
+                        +random.nextInt(0, 255).convertCp437toUnicode()
                         withStyleSet {
                             backgroundColor = ANSITileColor.random()
                             foregroundColor = ANSITileColor.random()

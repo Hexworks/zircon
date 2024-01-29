@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
 import org.hexworks.zircon.renderer.korge.toRGBA
 import kotlin.reflect.KClass
@@ -105,7 +105,7 @@ class KorgeTrueTypeFontTileset(
                 tiles += atlas.add(
                     font.renderGlyphToBitmap(
                         16.0,
-                        CP437Utils.convertCp437toUnicode(n).code,
+                        n.convertCp437toUnicode().code,
                         Colors.WHITE
                     ).bmp.toBMP32()
                 ).slice

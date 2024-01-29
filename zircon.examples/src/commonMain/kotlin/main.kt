@@ -15,5 +15,5 @@ suspend fun main() {
         }
         defaultTileset = BuiltInCP437TilesetResource.valueOf("REX_PAINT_${tileSize}X${tileSize}")
         debugMode = true
-    }).rex().start()
+    }).test().start()
 }

@@ -4,13 +4,12 @@ import korlibs.io.compression.deflate.GZIP
 import korlibs.io.compression.uncompress
 import korlibs.io.stream.FastByteArrayInputStream
 import korlibs.io.stream.openFastStream
-import korlibs.memory.getInt8
 import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.internal.resource.REXPaintResource
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.hexworks.zircon.internal.util.rex.REXCell
 import org.hexworks.zircon.internal.util.rex.REXFile
 import org.hexworks.zircon.internal.util.rex.REXLayer
@@ -104,7 +103,7 @@ internal fun FastByteArrayInputStream.nextRexLayer(): REXLayer {
 
 internal fun FastByteArrayInputStream.nextRexCell(): REXCell {
     return REXCell(
-        character = CP437Utils.convertCp437toUnicode(readS32LE()),
+        character = readS32LE().convertCp437toUnicode(),
         foregroundColor = TileColor.create(
             readS8() and 0xFF,
             readS8() and 0xFF,

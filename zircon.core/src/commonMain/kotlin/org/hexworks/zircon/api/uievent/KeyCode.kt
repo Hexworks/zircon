@@ -2,7 +2,7 @@
 
 package org.hexworks.zircon.api.uievent
 
-import org.hexworks.zircon.api.util.TextUtils
+import org.hexworks.zircon.api.util.isPrintableCharacter
 
 enum class KeyCode(
     /**
@@ -209,7 +209,7 @@ enum class KeyCode(
      */
     fun toCharOrNull(): Char? {
         val char = code.toChar()
-        return if (TextUtils.isPrintableCharacter(char)) {
+        return if (char.isPrintableCharacter()) {
             char
         } else null
 

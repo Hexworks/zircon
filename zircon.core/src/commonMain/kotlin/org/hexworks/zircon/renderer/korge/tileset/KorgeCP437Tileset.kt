@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
 import org.hexworks.zircon.api.resource.ResourceType
-import org.hexworks.zircon.internal.util.CP437Utils
+import org.hexworks.zircon.internal.util.CP437Index
 import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
 import org.hexworks.zircon.renderer.korge.toRGBA
 import kotlin.reflect.KClass
@@ -71,7 +71,7 @@ class KorgeCP437Tileset(
                     finalTile = modifier.transform(finalTile)
                 }
             }
-            val idx = CP437Utils.fetchCP437IndexForChar(finalTile.character)
+            val idx = finalTile.character.CP437Index()
             val fgSlice = tiles[idx]
 
             val px = position.x * widthF
