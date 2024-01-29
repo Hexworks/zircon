@@ -15,15 +15,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.api.util.TextUtils
-import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.LEFT
-import org.hexworks.zircon.internal.component.impl.textedit.cursor.MovementDirection.RIGHT
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.BACKSPACE
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.DeleteCharacter.DeleteKind.DEL
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.InsertCharacter
-import org.hexworks.zircon.internal.component.impl.textedit.transformation.MoveCursor
+
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 //TODO: Finish minValue impl. and bug fixing
@@ -39,19 +31,19 @@ abstract class BaseNumberInput(
 ) {
 
     final override var text: String
-        get() = textBuffer.text
+        get() = ""// TODO: textBuffer.text
         set(value) {
-            if (value.length <= maxNumberLength) {
-                val clean = value.replace(Regex("[^\\d]"), "")
-                textBuffer = when {
-                    clean == "" -> EditableTextBuffer.create("")
-                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, textBuffer.cursor)
-                    else -> textBuffer
-                }
-            }
+//            if (value.length <= maxNumberLength) {
+//                val clean = value.replace(Regex("[^\\d]"), "")
+//                textBuffer = when {
+//                    clean == "" -> EditableTextBuffer.create("")
+//                    clean.toInt() <= maxValue -> EditableTextBuffer.create(clean, textBuffer.cursor)
+//                    else -> textBuffer
+//                }
+//            }
         }
 
-    protected var textBuffer = EditableTextBuffer.create("$initialValue")
+//    protected var textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
@@ -83,8 +75,6 @@ abstract class BaseNumberInput(
             currentValue--
         }
     }
-
-    override fun fetchTextBuffer() = textBuffer
 
     override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
         defaultStyle = styleSet {
@@ -125,25 +115,25 @@ abstract class BaseNumberInput(
             if (isNavigationKey(event)) {
                 Pass
             } else {
-                when (event.code) {
-                    KeyCode.ENTER -> {
-                        saveModifications()
-                        clearFocus()
-                    }
+//                when (event.code) {
+//                    KeyCode.ENTER -> {
+//                        saveModifications()
+//                        clearFocus()
+//                    }
 
-                    KeyCode.ESCAPE -> clearFocus()
-                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
-                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
-                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
-                    KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-                    else -> {
-                        event.key.forEach { char ->
-                            if (TextUtils.isDigitCharacter(char)) {
-                                checkAndAddChar(char)
-                            }
-                        }
-                    }
-                }
+//                    KeyCode.ESCAPE -> clearFocus()
+//                    KeyCode.RIGHT -> textBuffer.applyTransformation(MoveCursor(RIGHT))
+//                    KeyCode.LEFT -> textBuffer.applyTransformation(MoveCursor(LEFT))
+//                    KeyCode.DELETE -> textBuffer.applyTransformation(DeleteCharacter(DEL))
+//                    KeyCode.BACKSPACE -> textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+//                    else -> {
+//                        event.key.forEach { char ->
+//                            if (Chars.isDigitCharacter(char)) {
+//                                checkAndAddChar(char)
+//                            }
+//                        }
+//                    }
+//                }
                 refreshCursor()
                 Processed
             }
@@ -154,19 +144,19 @@ abstract class BaseNumberInput(
         event == TAB || event == REVERSE_TAB
 
     private fun checkAndAddChar(char: Char) {
-        val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
-        virtualTextBuffer.applyTransformation(InsertCharacter(char))
-        if (virtualTextBuffer.text.toInt() <= maxValue) {
-            if (text.length == maxNumberLength) {
-                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
-            }
-            textBuffer.applyTransformation(InsertCharacter(char))
-        } else {
-            textBuffer.getCharAtOrNull(textBuffer.cursor.position)?.let {
-                textBuffer.applyTransformation(DeleteCharacter(DEL))
-            }.orElseGet { textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
-            checkAndAddChar(char)
-        }
+//        val virtualTextBuffer = EditableTextBuffer.create(text, textBuffer.cursor)
+//        virtualTextBuffer.applyTransformation(InsertCharacter(char))
+//        if (virtualTextBuffer.text.toInt() <= maxValue) {
+//            if (text.length == maxNumberLength) {
+//                textBuffer.applyTransformation(DeleteCharacter(BACKSPACE))
+//            }
+//            textBuffer.applyTransformation(InsertCharacter(char))
+//        } else {
+//            textBuffer.getCharAtOrNull(textBuffer.cursor.position)?.let {
+//                textBuffer.applyTransformation(DeleteCharacter(DEL))
+//            }.orElseGet { textBuffer.applyTransformation(DeleteCharacter(BACKSPACE)) }
+//            checkAndAddChar(char)
+//        }
     }
 
     private fun computeNumberValue() {

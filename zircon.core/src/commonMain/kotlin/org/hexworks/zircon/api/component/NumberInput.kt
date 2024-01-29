@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.component
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.internal.component.impl.textedit.EditableTextBuffer
 
 
 interface NumberInput : Component {
@@ -19,9 +18,6 @@ interface NumberInput : Component {
      * Boundable, current value
      */
     val currentValueProperty: Property<Int>
-
-    // TODO: do we need to expose this?
-    fun fetchTextBuffer(): EditableTextBuffer
 
     fun incrementCurrentValue()
 

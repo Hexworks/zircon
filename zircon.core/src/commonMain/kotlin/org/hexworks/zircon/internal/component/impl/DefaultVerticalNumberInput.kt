@@ -20,18 +20,18 @@ class DefaultVerticalNumberInput internal constructor(
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.height)
 
     override fun refreshCursor() {
-        var pos = textBuffer.cursor.position
-        pos = pos.withX(min(pos.x, contentSize.height))
-        pos = pos.withY(0)
-        val invertedPosition = Position.create(pos.y, pos.x)
-        whenConnectedToRoot { root ->
-            root.eventBus.publish(
-                event = ZirconEvent.RequestCursorAt(
-                    position = invertedPosition.withRelative(relativePosition + contentOffset),
-                    emitter = this
-                ),
-                eventScope = root.eventScope
-            )
-        }
+//        var pos = textBuffer.cursor.position
+//        pos = pos.withX(min(pos.x, contentSize.height))
+//        pos = pos.withY(0)
+//        val invertedPosition = Position.create(pos.y, pos.x)
+//        whenConnectedToRoot { root ->
+//            root.eventBus.publish(
+//                event = ZirconEvent.RequestCursorAt(
+//                    position = invertedPosition.withRelative(relativePosition + contentOffset),
+//                    emitter = this
+//                ),
+//                eventScope = root.eventScope
+//            )
+//        }
     }
 }

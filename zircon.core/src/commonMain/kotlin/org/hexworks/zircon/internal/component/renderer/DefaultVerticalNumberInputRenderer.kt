@@ -17,11 +17,12 @@ class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumb
             character = ' '
             styleSet = context.currentStyle
         }
-        drawWindow.size.fetchPositions().forEach { pos ->
-            val invertedPos = Position.create(pos.y, pos.x)
-            component.fetchTextBuffer().getCharAtOrNull(invertedPos)?.let { char ->
-                drawWindow.draw(tileTemplate.withCharacter(char), pos)
-            }.orElseGet { drawWindow.draw(tileTemplate, pos) }
-        }
+        // TODO:
+//        drawWindow.size.fetchPositions().forEach { pos ->
+//            val invertedPos = Position.create(pos.y, pos.x)
+//            component.fetchTextBuffer().getCharAtOrNull(invertedPos)?.let { char ->
+//                drawWindow.draw(tileTemplate.withCharacter(char), pos)
+//            }.orElseGet { drawWindow.draw(tileTemplate, pos) }
+//        }
     }
 }
