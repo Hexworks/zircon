@@ -80,7 +80,7 @@ class TextEditor private constructor(
     val cursor: Position
         get() = state.cursor
 
-    val sizeProperty: Property<Size> = state.size.toProperty()
+    private val sizeProperty: Property<Size> = state.size.toProperty()
 
     var size: Size by sizeProperty.asDelegate()
         private set
@@ -97,20 +97,22 @@ class TextEditor private constructor(
         state = transformation.apply(state)
         size = state.size
         history.add(transformation)
-        historyIdx++
-    }
-
-    fun undo() {
-        if (historyIdx >= 0) {
-            // in case historyIdx is 0 this will return an empty list
-            // TODO: need to test this though!
-            state = history.subList(0, historyIdx)
-                .fold(oldState) { state, tx -> tx.apply(state) }
-            historyIdx--
+        if (historyIdx <= history.lastIndex) {
+            historyIdx++
         }
     }
 
-    fun redo(): Boolean = if (history.size > 0 && historyIdx < history.lastIndex) {
+    fun undo() = if (historyIdx >= 0) {
+        // in case historyIdx is 0 this will return an empty list
+        // TODO: need to test this though!
+        println("history size: ${history.size}, idx: $historyIdx")
+        state = history.subList(0, historyIdx)
+            .fold(oldState) { state, tx -> tx.apply(state) }
+        historyIdx--
+        true
+    } else false
+
+    fun redo() = if (history.size > 0 && historyIdx < history.lastIndex) {
         historyIdx++
         state = history[historyIdx].apply(state)
         true
@@ -156,6 +158,24 @@ val EditorState.cellAtCursor: Cell
         return lines[y].cells[x]
     }
 
+val EditorState.cursorAtEndOfLine: Boolean
+    get() = cellAtCursor is EOLCell
+
+val EditorState.cursorAtStartOfLine: Boolean
+    get() = cursor.x == 0
+
+val EditorState.cursorAtEndOfDocument: Boolean
+    get() = cursorAtEndOfLine && cursor.y == lines.lastIndex
+
+val EditorState.cursorAtStartOfDocument: Boolean
+    get() = cursor == Position.zero()
+
+val EditorState.hasNextLine: Boolean
+    get() {
+        val (lines, cursor) = this
+        return lines.lastIndex > cursor.y
+    }
+
 fun EditorState.cellAt(cursor: Position): Cell? {
     val (lines) = this
     val (x, y) = cursor
@@ -174,6 +194,12 @@ fun Line.cellAt(x: Int): Cell {
     return cells[x]
 }
 
+val Line.hasText: Boolean
+    get() = cells.size > 1
+
+val Line.lastIndex: Int
+    get() = cells.lastIndex
+
 fun String.toEditorState(): EditorState {
     return EditorState(split("\n").map(String::toLine).toMutableList())
 }
@@ -185,9 +211,3 @@ fun String.toLine() = Line.create(map { c ->
         }
     )
 })
-
-val Line.hasText: Boolean
-    get() = cells.size > 1
-
-val Line.lastIndex: Int
-    get() = cells.lastIndex

@@ -62,17 +62,17 @@ class VerticalScrollableList<T>(
         preferredSize = size.withWidth(1)
     }
 
-    private val actualScrollbar: ScrollBar = buildVerticalScrollBar {
-        withPreferredSize {
-            width = 1
-            height = this@buildVerticalScrollBar.size.height - 2
-        }
-        itemsShownAtOnce = size.height
-        numberOfScrollableItems = items.size
-        scrollbarRenderer?.let {
-            componentRenderer = it
-        }
-    }
+//    private val actualScrollbar: ScrollBar = buildVerticalScrollBar {
+//        withPreferredSize {
+//            width = 1
+//            height = this@buildVerticalScrollBar.size.height - 2
+//        }
+//        itemsShownAtOnce = size.height
+//        numberOfScrollableItems = items.size
+//        scrollbarRenderer?.let {
+//            componentRenderer = it
+//        }
+//    }
 
     private val decrementButton = buildButton {
         text = TRIANGLE_UP_POINTING_BLACK.toString()
@@ -87,18 +87,18 @@ class VerticalScrollableList<T>(
     init {
         root.addComponents(scrollPanel, scrollBarVbox)
 
-        decrementButton.processComponentEvents(ComponentEventType.ACTIVATED) {
-            actualScrollbar.decrementValues()
-        }
-        incrementButton.processComponentEvents(ComponentEventType.ACTIVATED) {
-            actualScrollbar.incrementValues()
-        }
+//        decrementButton.processComponentEvents(ComponentEventType.ACTIVATED) {
+//            actualScrollbar.decrementValues()
+//        }
+//        incrementButton.processComponentEvents(ComponentEventType.ACTIVATED) {
+//            actualScrollbar.incrementValues()
+//        }
+//
+//        actualScrollbar.onValueChange {
+//            scrollTo(it.newValue)
+//        }
 
-        actualScrollbar.onValueChange {
-            scrollTo(it.newValue)
-        }
-
-        scrollBarVbox.addComponents(decrementButton, actualScrollbar, incrementButton)
+//        scrollBarVbox.addComponents(decrementButton, actualScrollbar, incrementButton)
 
         displayListFromIndex()
     }

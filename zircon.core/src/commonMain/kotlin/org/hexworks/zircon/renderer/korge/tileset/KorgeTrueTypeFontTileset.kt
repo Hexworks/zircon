@@ -4,11 +4,14 @@ import korlibs.image.atlas.MutableAtlasUnit
 import korlibs.image.atlas.add
 import korlibs.image.bitmap.Bitmap32
 import korlibs.image.bitmap.BmpSlice
+import korlibs.image.bitmap.BmpSlice32
 import korlibs.image.color.Colors
 import korlibs.image.color.RGBA
+import korlibs.image.font.TtfFont
 import korlibs.image.font.readTtfFont
 import korlibs.image.font.renderGlyphToBitmap
 import korlibs.io.async.launchImmediately
+import korlibs.io.file.VfsFile
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
@@ -18,8 +21,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.loadResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.util.convertCp437toUnicode
-import org.hexworks.zircon.renderer.korge.tileset.LoadingState.*
+import org.hexworks.zircon.renderer.korge.tileset.LoadingState.LOADED
 import org.hexworks.zircon.renderer.korge.toRGBA
 import kotlin.reflect.KClass
 
@@ -37,39 +39,40 @@ class KorgeTrueTypeFontTileset(
     private val widthF = width.toFloat()
     private val heightF = height.toFloat()
 
-    private var loadingState = NOT_LOADED
-
     private var atlas: MutableAtlasUnit = MutableAtlasUnit()
-    private var tiles: List<BmpSlice> = mutableListOf()
+    private var tileLookup: MutableMap<Int, BmpSlice> = mutableMapOf()
 
     private val bgSlice = atlas.add(Bitmap32(width, height) { _, _ -> Colors.WHITE }).slice
 
+    private var loadingState = LoadingState.NOT_LOADED
+
+    lateinit var vfsFile: VfsFile
+    lateinit var font: TtfFont
 
     init {
         require(resource.tileType == TileType.CHARACTER_TILE) {
-            "CP437 tilesets only support ${TileType.CHARACTER_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
+            "True Type Font tilesets only support ${TileType.CHARACTER_TILE.name}s. The supplied resource's type was ${resource.tileType.name}."
         }
     }
 
     override fun drawTile(tile: Tile, context: KorgeContext, position: Position) {
-        require(tile is CharacterTile) {
-            "A true type font renderer can only render ${CharacterTile::class.simpleName}s. Offending tile: $tile."
-        }
-        if (loadingState == NOT_LOADED) {
-            loadingState = LOADING
+        if (loadingState == LoadingState.NOT_LOADED) {
+            loadingState = LoadingState.LOADING
             launchImmediately(context.context.coroutineContext) {
                 preload()
-                loadingState = LOADED
             }
         }
         if (loadingState == LOADED) {
+            require(tile is CharacterTile) {
+                "A true type font renderer can only render ${CharacterTile::class.simpleName}s. Offending tile: $tile."
+            }
             var finalTile: CharacterTile = tile
             finalTile.modifiers.filterIsInstance<TileModifier<CharacterTile>>().forEach { modifier ->
                 if (modifier.canTransform(finalTile)) {
                     finalTile = modifier.transform(finalTile)
                 }
             }
-            val fgSlice = tiles.getOrNull(tile.character.code and 0xFF)
+            val fgSlice = tileLookup.getOrPut(tile.character.code) { loadTile(tile.character) }
 
             val px = position.x * widthF
             val py = position.y * heightF
@@ -94,27 +97,25 @@ class KorgeTrueTypeFontTileset(
         }
     }
 
-
     private suspend fun preload() {
-        println("KorgeTileset.preload: ${resource.resourceType}, ${resource.tilesetType}, '${resource.path}'")
         try {
-            val vfsFile = loadResource(resource)
-            val font = vfsFile.readTtfFont()
-            // TODO: add support for all characters in the font
-            for (n in 0 until 256) {
-                tiles += atlas.add(
-                    font.renderGlyphToBitmap(
-                        16.0,
-                        n.convertCp437toUnicode().code,
-                        Colors.WHITE
-                    ).bmp.toBMP32()
-                ).slice
-            }
-
-            println("!! READY: $this : $resource : ${resource.tileType} : ${resource.tilesetType}")
+            vfsFile = loadResource(resource)
+            font = vfsFile.readTtfFont()
+            loadingState = LOADED
         } catch (e: Throwable) {
             e.printStackTrace()
         }
+    }
+
+    private fun loadTile(char: Char): BmpSlice32 {
+        println("Trying to load $char")
+        return atlas.add(
+            font.renderGlyphToBitmap(
+                heightF.toDouble(),
+                char.code,
+                Colors.WHITE
+            ).bmp.toBMP32()
+        ).slice
     }
 
     private fun drawSlice(

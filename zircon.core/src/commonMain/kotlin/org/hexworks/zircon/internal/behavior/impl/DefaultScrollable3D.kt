@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
@@ -13,9 +14,9 @@ class DefaultScrollable3D(
     initialActualSize: Size3D
 ) : Scrollable3D {
 
-    private val scrollable2D = DefaultScrollable(
+    private val scrollable2D = Scrollable.create(
         visibleSize = initialVisibleSize.to2DSize(),
-        initialActualSize = initialActualSize.to2DSize()
+        actualSize = initialActualSize.to2DSize()
     )
 
     override val visibleSize = initialVisibleSize

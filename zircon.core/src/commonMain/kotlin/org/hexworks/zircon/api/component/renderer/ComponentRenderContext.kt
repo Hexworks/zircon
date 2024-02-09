@@ -16,4 +16,10 @@ class ComponentRenderContext<out T : Component>(val component: T) : RenderContex
     val theme: ColorTheme
         get() = component.theme
 
+    operator fun component1() = component
+    operator fun component2() = componentStyle
+    operator fun component3() = currentStyle
+    operator fun component4() = theme
+
+
 }

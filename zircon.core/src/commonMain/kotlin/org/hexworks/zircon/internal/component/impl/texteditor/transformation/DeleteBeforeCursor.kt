@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
-object DeleteBack : Transformation {
+object DeleteBeforeCursor : Transformation {
 
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState
@@ -50,13 +50,13 @@ object DeleteBack : Transformation {
     }
 }
 
-val Position.isAtTopLeft: Boolean
+private val Position.isAtTopLeft: Boolean
     get() = this == Position.zero()
 
-val Position.isAtTheStartOfNotTheFirstRow: Boolean
+private val Position.isAtTheStartOfNotTheFirstRow: Boolean
     get() = this.x == 0 && this.y > 0
 
-val EditorState.canDeleteCharInLine: Boolean
+private val EditorState.canDeleteCharInLine: Boolean
     get() {
         val (_, cursor) = this
         val (x) = cursor

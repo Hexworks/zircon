@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.data.CharacterTile
 
