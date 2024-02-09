@@ -13,7 +13,7 @@ class DefaultScrollableTest {
     @Before
     fun setUp() {
         target = DefaultScrollable(
-            visibleSize = VISIBLE_SPACE_SIZE,
+            initialVisibleSize = VISIBLE_SPACE_SIZE,
             initialActualSize = VIRTUAL_SPACE_SIZE
         )
     }

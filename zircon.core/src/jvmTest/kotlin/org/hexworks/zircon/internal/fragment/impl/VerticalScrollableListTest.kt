@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.convertCharacterTilesToString
-import org.hexworks.zircon.internal.component.renderer.VerticalScrollBarRenderer
+import org.hexworks.zircon.internal.component.renderer.DefaultVerticalScrollBarRenderer
 import org.hexworks.zircon.internal.renderer.TestRenderer
 import org.junit.Ignore
 import org.junit.Test
@@ -26,7 +26,7 @@ class VerticalScrollableListTest {
         graphics.size,
         Position.zero(),
         (1..20).map { "Item $it" },
-        scrollbarRenderer = TestScrollbarRenderer
+        scrollbarRenderer = TestScrollbarRendererDefault
     )
     private val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
         withComponentContainer {
@@ -182,7 +182,7 @@ private val TAB = KeyboardEvent(
     code = KeyCode.TAB
 )
 
-private object TestScrollbarRenderer : VerticalScrollBarRenderer() {
+private object TestScrollbarRendererDefault : DefaultVerticalScrollBarRenderer() {
     override val aboveBarCharacter = '|'
     override val belowBarCharacter = '|'
     override val barCharacter = '+'

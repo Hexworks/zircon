@@ -14,24 +14,25 @@ class BoundedFifoQueue<T : Any> private constructor(
 
     private val observable = DefaultObservable<T>()
 
-    val elements = currentElements.toList()
+    val elements: List<T>
+        get() = currentElements.toList()
     val size: Int
-        get() = elements.size
+        get() = currentElements.size
     val lastIndex: Int
-        get() = elements.lastIndex
+        get() = currentElements.lastIndex
 
 
-    operator fun get(index: Int) = elements[index]
+    operator fun get(index: Int) = currentElements[index]
 
     fun add(element: T) {
-        currentElements.add(0, element)
+        currentElements.add(element)
         if (currentElements.size > maxElements) {
-            observable.notifyObservers(currentElements.removeLast())
+            observable.notifyObservers(currentElements.removeAt(0))
         }
     }
 
     fun subList(fromIndex: Int, toIndex: Int): List<T> {
-        return elements.subList(fromIndex, toIndex)
+        return currentElements.subList(fromIndex, toIndex)
     }
 
     fun onKick(fn: (element: T) -> Unit) = observable.addObserver(fn)

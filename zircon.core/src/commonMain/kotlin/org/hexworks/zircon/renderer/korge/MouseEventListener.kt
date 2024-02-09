@@ -31,6 +31,7 @@ class MouseEventListener(
             upAnywhere { processMouseEvent(it) }
             down { processMouseEvent(it) }
             downOutside { processMouseEvent(it) }
+            scroll { processMouseEvent(it) }
         }
     }
 
