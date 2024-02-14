@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
 import org.assertj.core.api.Assertions.assertThat
-import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.appConfig
@@ -53,9 +52,11 @@ class TileGridScreenTest {
         assertThat(grid.tileset.id).isEqualTo(expectedFont.id)
     }
 
-    @Test(expected = ValueValidationFailedException::class)
-    fun shouldProperlyThrowExceptionWhenTyringToSetNonCompatibleFont() {
+    @Test
+    fun shouldNotSetTilesetWhenSizeIsIncompatible() {
+        val old = target.tileset
         target.tileset = BuiltInCP437TilesetResource.BISASAM_20X20
+        assertThat(target.tileset).isEqualTo(old)
     }
 
     @Test
