@@ -28,6 +28,9 @@ kotlin {
             api(libs.kotlin.reflect)
             api(libs.kotlinx.collections.immutable)
             api(libs.kotlin.logging)
+
+            api(libs.cobalt.core)
+            api(libs.korge.core)
         }
 
         jvmMain.dependencies {
