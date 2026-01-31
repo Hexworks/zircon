@@ -1,0 +1,17 @@
+package org.hexworks.zircon.api.resource.base
+
+import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.resource.TilesetResource
+
+/**
+ * Base class for implementing [TilesetResource]s.
+ */
+abstract class BaseTilesetResource : TilesetResource {
+
+    override val id: UUID = UUID.randomUUID()
+
+    override fun toString(): String {
+        return "TilesetResource(id=$id, size=$size, tileType=$tileType, tilesetType=$tilesetType, resourceType=$resourceType, path=$path)"
+    }
+
+}
