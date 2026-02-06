@@ -13,8 +13,10 @@ interface Resource {
     companion object {
         fun create(
             path: String,
-            resourceType: ResourceType = ResourceType.FILESYSTEM,
+            resourceType: ResourceType,
         ): Resource = DefaultResource(resourceType, path)
     }
 }
+
+
 

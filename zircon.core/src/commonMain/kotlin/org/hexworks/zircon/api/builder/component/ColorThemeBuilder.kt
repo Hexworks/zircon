@@ -1,20 +1,20 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
-class ColorThemeBuilder: Builder<ColorTheme> {
+class ColorThemeBuilder : Builder<ColorTheme> {
 
     var name: String = "anonymous"
-    var primaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
-    var secondaryForegroundColor: TileColor = TileColor.defaultForegroundColor()
-    var primaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
-    var secondaryBackgroundColor: TileColor = TileColor.defaultBackgroundColor()
-    var accentColor: TileColor = TileColor.defaultForegroundColor()
+    var primaryForegroundColor: Color = Color.defaultForegroundColor()
+    var secondaryForegroundColor: Color = Color.defaultForegroundColor()
+    var primaryBackgroundColor: Color = Color.defaultBackgroundColor()
+    var secondaryBackgroundColor: Color = Color.defaultBackgroundColor()
+    var accentColor: Color = Color.defaultForegroundColor()
 
     override fun build(): ColorTheme = DefaultColorTheme(
         name = name,

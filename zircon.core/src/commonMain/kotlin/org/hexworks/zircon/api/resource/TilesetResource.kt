@@ -8,6 +8,8 @@ import org.hexworks.zircon.api.data.TileType
 
 /**
  * Contains metadata about a tileset for a given [Tile] type.
+ * It is used by Zircon internally to be able to tell whether the currently chosen tileset
+ * is compatible with another and to determine the dimensions of the tileset.
  */
 interface TilesetResource : Identifiable, Resource {
 

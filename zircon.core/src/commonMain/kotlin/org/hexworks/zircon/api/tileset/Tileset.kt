@@ -4,7 +4,6 @@ import org.hexworks.zircon.api.behavior.Identifiable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.reflect.KClass
 
 /**

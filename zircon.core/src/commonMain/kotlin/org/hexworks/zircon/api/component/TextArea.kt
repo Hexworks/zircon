@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 
 /**
  * A [TextArea] is an editable text box.

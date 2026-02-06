@@ -1,29 +1,29 @@
 package org.hexworks.zircon.api.modifier
 
+import org.hexworks.zircon.api.data.Tile
+
 /**
  * Represents the built-in SimpleModifiers supported by zircon.
  */
-sealed class SimpleModifiers : TextureModifier {
-
-    /**
-     * Displays an underline below the tile.
-     */
-    object Underline : SimpleModifiers()
+sealed class SimpleModifiers : TileModifier<Tile> {
 
     /**
      * Will make the tile blink.
      */
-    object Blink : SimpleModifiers()
-
-    /**
-     * Displays a horizontal line in the middle of the tile (from left to right).
-     */
-    object CrossedOut : SimpleModifiers()
+    object Blink : SimpleModifiers() {
+        override fun transform(tile: Tile): Tile {
+            TODO("Not yet implemented")
+        }
+    }
 
     /**
      * Prevents the tile content from rendering (will only render the background).
      */
-    object Hidden : SimpleModifiers()
+    object Hidden : SimpleModifiers() {
+        override fun transform(tile: Tile): Tile {
+            TODO("Not yet implemented")
+        }
+    }
 
     override val cacheKey: String
         get() = "Modifier.${this::class.simpleName}"

@@ -4,10 +4,10 @@ import korlibs.io.compression.deflate.GZIP
 import korlibs.io.compression.uncompress
 import korlibs.io.stream.FastByteArrayInputStream
 import korlibs.io.stream.openFastStream
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color.Companion.create as color
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceType
-import org.hexworks.zircon.api.resource.loadResource
+import org.hexworks.zircon.api.resource.load
 import org.hexworks.zircon.internal.resource.REXPaintResource
 import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.hexworks.zircon.internal.util.rex.REXCell
@@ -56,10 +56,17 @@ import org.hexworks.zircon.internal.util.rex.REXLayer
 // If you don't like working with binary, an alternative is to export images to one of the available text-based formats: TXT, CSV, or XML (see Appendix E).
 
 /**
+ * Loads a REXPaint file using the given [Resource].
+ */
+suspend fun loadREXFile(resource: Resource): REXPaintResource {
+    return loadREXFile(resource.load().readBytes().uncompress(GZIP))
+}
+
+/**
  * Loads a REXPaint file from the given path.
  */
 suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.FILESYSTEM): REXPaintResource {
-    return loadREXFile(loadResource(Resource.create(path, resourceType)).readBytes().uncompress(GZIP))
+    return loadREXFile(Resource.create(path, resourceType))
 }
 
 /**
@@ -104,13 +111,13 @@ internal fun FastByteArrayInputStream.nextRexLayer(): REXLayer {
 internal fun FastByteArrayInputStream.nextRexCell(): REXCell {
     return REXCell(
         character = readS32LE().convertCp437toUnicode(),
-        foregroundColor = TileColor.create(
+        foregroundColor = color(
             readS8() and 0xFF,
             readS8() and 0xFF,
             readS8() and 0xFF,
             255
         ),
-        backgroundColor = TileColor.create(
+        backgroundColor = color(
             readS8() and 0xFF,
             readS8() and 0xFF,
             readS8() and 0xFF,

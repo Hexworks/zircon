@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.application
 
 import org.hexworks.cobalt.core.api.behavior.DisposeState
-import org.hexworks.cobalt.core.api.behavior.DisposedByHand
+import org.hexworks.cobalt.core.api.behavior.DisposedManually
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.EventBus
@@ -38,7 +38,7 @@ class NoOpApplication(
     }
 
     object NoOpSubscription : Subscription {
-        override val disposeState: DisposeState = DisposedByHand
+        override val disposeState: DisposeState = DisposedManually
 
         override fun dispose(disposeState: DisposeState) {}
 

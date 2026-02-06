@@ -22,10 +22,12 @@ sealed class TilesetType {
     object GraphicalTileset : TilesetType()
 
     /**
-     * Use this tileset type when you want to implement your own tileset loading mechanism
+     * Use this tileset type when you want to implement your own tileset loading mechanism.
+     * Zircon will use the `toString` function internally on the [key] object so make sure
+     * that you implement it.
      */
-    data class CustomTileset(
-        val name: String
+    data class CustomTileset<T>(
+        val key: T
     ) : TilesetType()
 
     companion object

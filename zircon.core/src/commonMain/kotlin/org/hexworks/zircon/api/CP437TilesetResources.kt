@@ -1,9 +1,9 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.*
 import org.hexworks.zircon.internal.resource.CP437TilesetResource
-import org.hexworks.zircon.api.resource.ResourceType
 
 /**
  * This object can be used to load either built-in CP437 [TilesetResource]s
@@ -382,38 +382,18 @@ object CP437TilesetResources {
      */
     fun rexPaint20x20(): TilesetResource = REX_PAINT_20X20
 
-    /**
-     * Use this function if you want to load a [TilesetResource]
-     * from the filesystem.
-     */
-    fun loadTilesetFromFilesystem(
+    fun load(
         width: Int,
         height: Int,
-        path: String
+        path: String,
+        resourceType: ResourceType
     ): TilesetResource {
         return CP437TilesetResource(
             width = width,
             height = height,
             path = path,
-            resourceType = ResourceType.FILESYSTEM
+            resourceType = resourceType
         )
     }
 
-    /**
-     * Use this function if you want to load a [TilesetResource]
-     * which is bundled into a jar file which you build from
-     * your application.
-     */
-    fun loadTilesetFromJar(
-        width: Int,
-        height: Int,
-        path: String
-    ): TilesetResource {
-        return CP437TilesetResource(
-            width = width,
-            height = height,
-            path = path,
-            resourceType = ResourceType.PROJECT
-        )
-    }
 }

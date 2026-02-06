@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.

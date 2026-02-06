@@ -1,22 +1,8 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.builder.component.colorTheme
-import org.hexworks.zircon.api.color.TileColor.Companion.transparent
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 
 object ColorThemes {
-
-    /**
-     * The empty theme has transparent colors for all colors.
-     */
-    fun empty() = colorTheme {
-        name = "empty"
-        accentColor = transparent()
-        primaryForegroundColor = transparent()
-        secondaryForegroundColor = transparent()
-        primaryBackgroundColor = transparent()
-        secondaryBackgroundColor = transparent()
-    }
 
     /**
      * This is a null object for color themes indicating that no

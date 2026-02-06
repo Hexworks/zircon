@@ -1,11 +1,15 @@
 package org.hexworks.zircon.api.extensions
 
-import org.hexworks.zircon.api.data.CharacterTile
-import org.hexworks.zircon.api.data.GraphicalTile
-import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.modifier.Border
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
+
+
+val Tile.isOpaque: Boolean
+    //! TODO: implement this properly
+    get() = this.asCharacterTileOrNull()?.isOpaque ?: false
 
 /**
  * Returns this [Tile] as a [CharacterTile] if possible.
@@ -50,17 +54,8 @@ fun Tile.asGraphicalTileOrElse(orElse: (Tile) -> GraphicalTile): GraphicalTile {
 val CharacterTile.isOpaque: Boolean
     get() = backgroundColor.isOpaque
 
-val CharacterTile.isUnderlined: Boolean
-    get() = modifiers.contains(Underline)
-
-val CharacterTile.isCrossedOut: Boolean
-    get() = modifiers.contains(CrossedOut)
-
 val CharacterTile.isBlinking: Boolean
     get() = modifiers.contains(Blink)
-
-val CharacterTile.hasBorder: Boolean
-    get() = modifiers.any { it is Border }
 
 /**
  * Tells whether this [Tile] **is** an empty [Tile]

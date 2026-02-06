@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.extensions.toTileGraphics
 import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.Layer
