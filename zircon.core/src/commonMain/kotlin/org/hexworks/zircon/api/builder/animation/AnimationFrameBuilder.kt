@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class AnimationFrameBuilder : Builder<AnimationFrame> {

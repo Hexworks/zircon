@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.util.markovchain
 
 
 import org.hexworks.zircon.api.behavior.Identifiable
-import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChainNode
 import kotlin.random.Random
 

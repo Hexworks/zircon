@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultVerticalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 

@@ -9,11 +9,24 @@ import org.hexworks.zircon.api.application.NoOpApplication
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
-import org.hexworks.zircon.internal.renderer.Renderer
-import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetLoader
-import org.hexworks.zircon.renderer.korge.KorgeApplication
-import org.hexworks.zircon.renderer.korge.KorgeRenderer
-import org.hexworks.zircon.renderer.korge.tileset.KorgeContext
+import org.hexworks.zircon.internal.tileset.DefaultTilesetLoader
+import org.hexworks.zircon.renderer.virtual.VirtualApplication
+
+/**
+ * Creates a new [TileGrid] with a [NoOpApplication] implementation
+ * (eg: no continuous rendering). Use this if you embed a [TileGrid] into your
+ * own application, and you have your own renderer.
+ */
+fun createTileGrid(
+    config: AppConfig = defaultAppConfig(),
+    eventBus: EventBus = EventBus.create()
+): TileGrid = DefaultTileGrid(config).apply {
+    application = NoOpApplication(
+        config = config,
+        eventBus = eventBus,
+        eventScope = ZirconScope()
+    )
+}
 
 /**
  * Creates and starts a new application (see [startApplication])
@@ -38,11 +51,10 @@ suspend fun startApplication(
     eventBus: EventBus = EventBus.create(),
     tileGrid: TileGrid = createTileGrid(config),
 ): Application {
-    val app = KorgeApplication(
+    val app = VirtualApplication(
         config = config,
         eventBus = eventBus,
         tileGrid = tileGrid.asInternal(),
-        renderer = createRenderer(config, tileGrid)
     )
     app.start()
     return app
@@ -60,45 +72,28 @@ fun createApplication(
     eventBus: EventBus = EventBus.create(),
 ): Application {
     val tileGrid = createTileGrid(config)
-    return KorgeApplication(
+    return VirtualApplication(
         config = config,
         eventBus = eventBus,
         tileGrid = tileGrid.asInternal(),
-        renderer = createRenderer(config, tileGrid)
     )
 }
 
 
-/**
- * Creates a new instance of the default [Renderer] implementation using the given parameters.
- *
- * This factory method uses sensible defaults, and it is fine to call it without parameters.
- *
- * Also make sure that all the objects you pass use the same [AppConfig].
- */
-fun createRenderer(
-    config: AppConfig = defaultAppConfig(),
-    tileGrid: TileGrid = createTileGrid(config),
-): KorgeRenderer = KorgeRenderer(
-    tileGrid = tileGrid.asInternal(),
-    // TODO: use tileset loaders from config
-    tilesetLoader = DefaultTilesetLoader(
-        config.tilesetFactories.filter { it.targetType == KorgeContext::class }.fastCastTo()
-    ),
-)
-
-/**
- * Creates a new [TileGrid] with a [NoOpApplication] implementation
- * (eg: no continuous rendering). Use this if you embed a [TileGrid] into your
- * own application, and you have your own renderer.
- */
-fun createTileGrid(
-    config: AppConfig = defaultAppConfig(),
-    eventBus: EventBus = EventBus.create()
-): TileGrid = DefaultTileGrid(config).apply {
-    application = NoOpApplication(
-        config = config,
-        eventBus = eventBus,
-        eventScope = ZirconScope()
-    )
-}
+///**
+// * Creates a new instance of the default [Renderer] implementation using the given parameters.
+// *
+// * This factory method uses sensible defaults, and it is fine to call it without parameters.
+// *
+// * Also make sure that all the objects you pass use the same [AppConfig].
+// */
+//fun createRenderer(
+//    config: AppConfig = defaultAppConfig(),
+//    tileGrid: TileGrid = createTileGrid(config),
+//): KorgeRenderer = KorgeRenderer(
+//    tileGrid = tileGrid.asInternal(),
+//    // TODO: use tileset loaders from config
+//    tilesetLoader = DefaultTilesetLoader(
+//        config.tilesetFactories.filter { it.targetType == KorgeContext::class }.fastCastTo()
+//    ),
+//)

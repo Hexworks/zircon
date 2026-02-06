@@ -7,25 +7,12 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Al
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.modifier.Border
 import org.hexworks.zircon.internal.component.renderer.decoration.*
 
 /**
  * This object contains functions for creating component decorations.
  */
 object ComponentDecorations {
-
-    /**
-     * Can be used to draw a border around a [Component]. A border is
-     * [RenderingMode.NON_INTERACTIVE] by default.
-     */
-    fun border(
-        border: Border = org.hexworks.zircon.api.builder.modifier.border {  },
-        renderingMode: RenderingMode = NON_INTERACTIVE
-    ): ComponentDecorationRenderer = BorderDecorationRenderer(
-        border = border,
-        renderingMode = renderingMode
-    )
 
     /**
      * Can be used to draw a box (using box drawing characters) around a [Component].

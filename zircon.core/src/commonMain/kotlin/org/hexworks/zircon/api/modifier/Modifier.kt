@@ -13,5 +13,8 @@ import org.hexworks.zircon.api.grid.TileGrid
  * Use [TextureModifier]s, when you want a graphical effect, like glow, flipping,
  * cropping, etc. Use [TileModifier] when you want tile variations, or more elaborate
  * effects, like [FadeIn], [FadeOut] or [Markov].
+ *
+ * Note that Zircon comes with built-in [TileModifier]s, but you'll have to create
+ * your own [TextureModifier]s and their corresponding renderers.
  */
 interface Modifier : Cacheable

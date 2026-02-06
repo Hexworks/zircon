@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.data.Tile
  * [Tile] for the [org.hexworks.zircon.internal.renderer.Renderer].
  * **Note that** this is an ephemeral change and won't modify any persistent state.
  */
+//! TODO: implement tile modifier states and modifier chaining
 interface TileModifier<T : Tile> : Modifier {
 
     /**

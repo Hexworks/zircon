@@ -10,16 +10,13 @@ import org.hexworks.zircon.api.resource.ResourceType
  */
 object ImageDictionaryTilesetResources {
 
-    /**
-     * Use this function if you want to load a [TilesetResource]
-     * from the filesystem.
-     */
-    fun loadTilesetFromFilesystem(
-        path: String
+    fun load(
+        path: String,
+        resourceType: ResourceType
     ): TilesetResource {
         return ImageDictionaryTilesetResource(
             path = path,
-            resourceType = ResourceType.FILESYSTEM
+            resourceType = resourceType
         )
     }
 

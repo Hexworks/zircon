@@ -1,29 +1,17 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.builder.modifier.BorderBuilder
 import org.hexworks.zircon.api.modifier.*
-import org.hexworks.zircon.api.modifier.SimpleModifiers.*
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Hidden
 
 /**
  * This object contains factory methods for the [Modifier]s supported by Zircon.
  */
 object Modifiers {
 
-    fun underline(): Modifier = Underline
-
     fun blink(): Modifier = Blink
 
-    fun crossedOut(): Modifier = CrossedOut
-
     fun hidden(): Modifier = Hidden
-
-    /**
-     * Shorthand for the default border which is:
-     * - a simple border
-     * - on all sides (top, right, bottom, left)
-     * @see BorderBuilder if you want to create custom borders
-     */
-    fun border(): Border = org.hexworks.zircon.api.builder.modifier.border {  }
 
     /**
      * Provides a fade in effect for the tile that has this modifier.

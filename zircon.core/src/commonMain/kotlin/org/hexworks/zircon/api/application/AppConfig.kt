@@ -6,8 +6,10 @@ import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
@@ -18,7 +20,7 @@ import kotlin.reflect.KClass
 /**
  * Object that encapsulates the configuration parameters for an [Application].
  */
-data class AppConfig internal constructor(
+data class AppConfig(
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).

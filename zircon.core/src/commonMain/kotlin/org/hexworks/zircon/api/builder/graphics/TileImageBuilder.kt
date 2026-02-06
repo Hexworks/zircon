@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**

@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVBox
 import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import kotlin.math.max
 
 @ZirconDsl

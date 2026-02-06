@@ -1,5 +1,7 @@
 package org.hexworks.zircon.api.uievent
 
+import org.hexworks.cobalt.events.api.EventDescriptor
+import org.hexworks.cobalt.events.api.EventSource
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.screen.Screen
@@ -19,5 +21,5 @@ data class ComponentEvent(
     /**
      * The type of the [ComponentEvent].
      */
-    override val type: ComponentEventType
+    override val type: ComponentEventType,
 ) : UIEvent

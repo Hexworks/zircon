@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.resource.base.BaseTilesetResource
 
 /**
  * Tileset resource for true type fonts which can be used with
- * [org.hexworks.zircon.api.data.CharacterTile]s.
+ * [org.hexworks.zircon.api.data.tile.CharacterTile] s.
  */
 internal class TrueTypeTilesetResource(
     override val width: Int,
