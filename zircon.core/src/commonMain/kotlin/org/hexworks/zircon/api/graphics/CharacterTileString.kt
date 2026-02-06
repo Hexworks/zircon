@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.tile.CharacterTile
 
 /**
  * A [CharacterTileString] is an aggregation of [CharacterTile]s. You can draw a

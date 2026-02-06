@@ -3,6 +3,8 @@ package org.hexworks.zircon.api.component.builder.base
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.BindingAction
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ComponentAlignments
@@ -90,10 +92,10 @@ abstract class BaseComponentBuilder<T : Component>(
      * when it is attached to a parent or not. Use this if you want
      * to apply custom themes or styles to your attached component.
      */
-    var updateOnAttach: Boolean
-        get() = props.updateOnAttach
+    var bindingAction: BindingAction
+        get() = props.bindingAction
         set(value) {
-            props.updateOnAttach = value
+            props.bindingAction = value
         }
 
     /**
@@ -273,7 +275,7 @@ abstract class BaseComponentBuilder<T : Component>(
     )
 
     protected open fun createMetadata(): ComponentMetadata {
-        if (updateOnAttach.not()) {
+        if (bindingAction != UpdateOnBind) {
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
             }
@@ -285,7 +287,7 @@ abstract class BaseComponentBuilder<T : Component>(
             relativePosition = position,
             size = size,
             name = name,
-            updateOnAttach = updateOnAttach,
+            bindingAction = bindingAction,
             themeProperty = colorThemeProperty,
             componentStyleSetProperty = componentStyleSetProperty,
             tilesetProperty = tilesetProperty,

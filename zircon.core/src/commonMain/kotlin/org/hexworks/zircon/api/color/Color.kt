@@ -3,8 +3,10 @@
 package org.hexworks.zircon.api.color
 
 import org.hexworks.zircon.api.behavior.Cacheable
+import org.hexworks.zircon.api.color.Color.Companion.DEFAULT_FACTOR
+import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.color.DefaultTileColor
+import org.hexworks.zircon.internal.color.DefaultColor
 
 /**
  * A [Color] represents the colors of a [Tile]. You can choose to create your own
@@ -18,7 +20,6 @@ interface Color : Cacheable {
     val red: Int
     val green: Int
     val blue: Int
-    @Deprecated("Don't use alpha, as it is not supported at this moment")
     val alpha: Int
 
     val isOpaque: Boolean
@@ -111,17 +112,16 @@ interface Color : Cacheable {
         /**
          * The default foreground color is `WHITE`.
          */
-        fun defaultForegroundColor() = ANSIColor.WHITE
+        fun defaultForegroundColor() = DefaultAnsiPalette[ANSIColor.WHITE]
 
         /**
          * The default background color is `BLACK`.
          */
-        fun defaultBackgroundColor() = ANSIColor.BLACK
+        fun defaultBackgroundColor() = DefaultAnsiPalette[ANSIColor.BLACK]
 
         /**
          * Shorthand for a [Color] which is fully transparent.
          */
-        @Deprecated("Transparency is not supported at the moment")
         fun transparent() = TRANSPARENT
 
         fun defaultAlpha() = DEFAULT_ALPHA
@@ -131,7 +131,7 @@ interface Color : Cacheable {
         /**
          * Parses a string into a color. Formats:
          *  * *blue* - Constant value from the [ANSIColor] enum
-         *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultTileColor] color entry by
+         *  * *#1a1a1a* - Hash character followed by three hex-decimal tuples; creates a [DefaultColor] color entry by
          *  parsing the tuples as Red, Green and Blue.
          */
         @Suppress("DEPRECATION")
@@ -141,7 +141,7 @@ interface Color : Cacheable {
                     val r = cleanValue.substring(1, 3).toInt(16)
                     val g = cleanValue.substring(3, 5).toInt(16)
                     val b = cleanValue.substring(5, 7).toInt(16)
-                    create(r, g, b)
+                    return create(r, g, b)
                 } catch (e: Exception) {
                     throw IllegalArgumentException("Unknown color definition '$cleanValue'", e)
                 }
@@ -152,7 +152,7 @@ interface Color : Cacheable {
          * Creates a new [Color].
          */
         fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): Color {
-            return DefaultTileColor(red, green, blue, alpha)
+            return DefaultColor(red, green, blue, alpha)
         }
 
         private val TRANSPARENT = create(0, 0, 0, 0)

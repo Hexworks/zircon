@@ -13,7 +13,7 @@ kotlin {
     //iosX64()
     //iosArm64()
     //iosSimulatorArm64()
-    linuxX64()
+    // linuxX64() - disabled: korge-core doesn't support linuxX64
     js(IR) {
         browser {
             testTask {

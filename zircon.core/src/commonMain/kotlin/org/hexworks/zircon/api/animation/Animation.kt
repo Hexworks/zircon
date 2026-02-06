@@ -45,5 +45,9 @@ interface Animation : Identifiable {
 
     data object InfiniteLoop : LoopKind()
 
-    data class FiniteLoop(val count: Int) : LoopKind()
+    data class FiniteLoop(val count: Int) : LoopKind() {
+        init {
+            require(count > 0) { "Loop count must be greater than 0!" }
+        }
+    }
 }

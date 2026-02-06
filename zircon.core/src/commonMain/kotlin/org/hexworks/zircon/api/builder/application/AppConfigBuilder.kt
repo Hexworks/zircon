@@ -7,19 +7,19 @@ import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.application.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
 import org.hexworks.zircon.api.application.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.application.TilesetFactoryBuilder.Companion.DEFAULT_TILESET_FACTORIES
 import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.renderer.Renderer
 import kotlin.reflect.KClass
 
@@ -133,7 +133,9 @@ class AppConfigBuilder : Builder<AppConfig> {
      * before using the default [TilesetLoader] of the [Renderer].
      */
     internal val tilesetFactories: MutableMap<Pair<TileType, TilesetType>, TilesetFactory<*>> =
-        DEFAULT_TILESET_FACTORIES.associateBy { it.supportedTileType to it.supportedTilesetType }.toMutableMap()
+        mutableMapOf()
+    //! TODO: move these to the korge implementation
+//        DEFAULT_TILESET_FACTORIES.associateBy { it.supportedTileType to it.supportedTilesetType }.toMutableMap()
 
     /**
      * If set [textureModifierSupports] will contain the list of [TextureTransformer]s to try to use

@@ -25,7 +25,7 @@ abstract class BaseContainerBuilder<T : Container>(
         relativePosition = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,
         name = name,
-        updateOnAttach = updateOnAttach,
+        bindingAction = bindingAction,
         themeProperty = colorThemeProperty,
         componentStyleSetProperty = componentStyleSetProperty,
         tilesetProperty = tilesetProperty,

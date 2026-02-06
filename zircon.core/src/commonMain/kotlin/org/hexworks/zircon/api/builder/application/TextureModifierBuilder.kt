@@ -7,8 +7,7 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.TextureTransformer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
-import org.hexworks.zircon.internal.tileset.impl.DefaultTextureTransformer
+import org.hexworks.zircon.internal.tileset.DefaultTextureTransformer
 import kotlin.reflect.KClass
 
 @ZirconDsl

@@ -1,20 +1,14 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
-import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 
 /**
  * This object can be used to load either built-in true type [TilesetResource]s or external ones.
  */
 object TrueTypeFontResources {
-
-    // These fonts come from Google Fonts
-    // https://fonts.google.com/
-    fun ubuntuMono(height: Int): TilesetResource = BuiltInTrueTypeFontResource.UBUNTU_MONO.toTilesetResource(height)
-
-    fun inconsolata(height: Int): TilesetResource = BuiltInTrueTypeFontResource.INCONSOLATA.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
@@ -103,38 +97,17 @@ object TrueTypeFontResources {
      */
     fun attWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
 
-    /**
-     * Use this function if you want to load a [TilesetResource]
-     * from the filesystem.
-     */
-    fun loadTilesetFromFilesystem(
+    fun load(
         width: Int,
         height: Int,
-        path: String
+        path: String,
+        resourceType: ResourceType
     ): TilesetResource {
         return TrueTypeTilesetResource(
             width = width,
             height = height,
             path = path,
-            resourceType = ResourceType.FILESYSTEM
-        )
-    }
-
-    /**
-     * Use this function if you want to load a [TilesetResource]
-     * which is bundled into a jar file which you build from
-     * your application.
-     */
-    fun loadTilesetFromJar(
-        width: Int,
-        height: Int,
-        path: String
-    ): TilesetResource {
-        return TrueTypeTilesetResource(
-            width = width,
-            height = height,
-            path = path,
-            resourceType = ResourceType.PROJECT
+            resourceType = resourceType
         )
     }
 }

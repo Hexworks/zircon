@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class LabelBuilder : ComponentWithTextBuilder<Label>(

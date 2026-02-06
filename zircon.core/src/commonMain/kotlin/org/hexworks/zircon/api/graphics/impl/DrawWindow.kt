@@ -118,7 +118,9 @@ class DrawWindow(
     }
 
     fun applyStyle(styleSet: StyleSet) {
-        transform { _, tile -> tile.withStyle(styleSet) }
+        transform { _, tile ->
+            tile.withStyle(styleSet)
+        }
     }
 
     fun clear() {

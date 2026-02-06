@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.component
 
-import korlibs.math.roundDecimalPlaces
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.builder.component.buildHeader
 import org.hexworks.zircon.api.builder.component.buildListItem
@@ -8,7 +7,6 @@ import org.hexworks.zircon.api.builder.component.buildParagraph
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.graphics.TextWrap
 import kotlin.math.ceil
-import kotlin.math.roundToInt
 
 /**
  * A [LogArea] provides the possibility to display a stream of messages. The messages are

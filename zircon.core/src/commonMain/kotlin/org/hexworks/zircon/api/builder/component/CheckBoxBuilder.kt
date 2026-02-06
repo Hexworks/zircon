@@ -1,13 +1,14 @@
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.CheckBox
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment.RIGHT
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxAlignment
 import org.hexworks.zircon.internal.component.renderer.DefaultCheckBoxRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox>(
@@ -16,7 +17,7 @@ class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox>(
     reservedSpace = DefaultCheckBoxRenderer.DECORATION_WIDTH
 ) {
 
-    var labelAlignment: CheckBoxAlignment = CheckBoxAlignment.RIGHT
+    var labelAlignment: CheckBoxAlignment = RIGHT
 
     override fun build(): CheckBox {
         return DefaultCheckBox(

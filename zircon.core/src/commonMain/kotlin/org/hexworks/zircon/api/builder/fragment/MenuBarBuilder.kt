@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.MenuBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
@@ -14,7 +15,6 @@ import org.hexworks.zircon.api.fragment.menu.MenuSelection
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
 
 

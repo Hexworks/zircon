@@ -13,12 +13,6 @@ enum class BuiltInTrueTypeFontResource(
 ) {
 
     /**
-     * These fonts are taken from Google Fonts.
-     */
-    UBUNTU_MONO("ubuntu_mono", { it.div(2) }),
-    INCONSOLATA("inconsolata", { it.div(2) }),
-
-    /**
      * These fonts are part of the Ultimate Oldschool PC Font Pack and licensed under
      * Creative Commons Attribution-ShareAlike 4.0 International License.
      * See: https://int10h.org/oldschool-pc-fonts/readme/

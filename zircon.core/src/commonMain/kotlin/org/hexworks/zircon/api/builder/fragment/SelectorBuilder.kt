@@ -6,10 +6,10 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 
 @ZirconDsl

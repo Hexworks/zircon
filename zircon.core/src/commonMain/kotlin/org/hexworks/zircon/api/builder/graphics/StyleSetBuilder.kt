@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.color.TileColor
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier

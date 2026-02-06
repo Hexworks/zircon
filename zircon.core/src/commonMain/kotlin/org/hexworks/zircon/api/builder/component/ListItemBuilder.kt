@@ -3,10 +3,10 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.ListItem
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
 import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class ListItemBuilder : ComponentWithTextBuilder<ListItem>(

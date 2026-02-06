@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.component.data
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.BindingAction
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -17,7 +19,7 @@ data class ComponentMetadata(
     val relativePosition: Position,
     val size: Size,
     val name: String = "",
-    val updateOnAttach: Boolean = true,
+    val bindingAction: BindingAction = UpdateOnBind,
     // properties
     val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.unknown().toProperty(),

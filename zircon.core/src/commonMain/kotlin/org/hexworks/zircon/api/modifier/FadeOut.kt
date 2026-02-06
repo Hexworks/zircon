@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.modifier
 
 import korlibs.time.DateTime
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 
 data class FadeOut(
     private val steps: Int = 20,

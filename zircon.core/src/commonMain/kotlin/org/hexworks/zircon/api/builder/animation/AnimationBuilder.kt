@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.builder.animation
 
 import org.hexworks.zircon.api.animation.Animation
+import org.hexworks.zircon.api.animation.Animation.FiniteLoop
+import org.hexworks.zircon.api.animation.Animation.LoopKind
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.PositionBuilder
@@ -9,37 +11,37 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimation
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
-import org.hexworks.zircon.internal.dsl.ZirconDsl
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.DurationUnit.MILLISECONDS
+import kotlin.time.toDuration
 
 
 private const val DEFAULT_FPS = 15L
 
 @ZirconDsl
-class AnimationBuilder (
+class AnimationBuilder(
     private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
     private val positions: MutableList<Position> = mutableListOf(),
-    private var tick: Long = 1000L / DEFAULT_FPS,
+    private var tick: Duration = (1000L / DEFAULT_FPS).toDuration(MILLISECONDS),
     private var uniqueFrameCount: Int = -1
 ) : Builder<Animation> {
 
     var totalFrameCount: Int = -1
         private set
 
-    var loopCount: Int = 1
+    var loopKind: LoopKind = FiniteLoop(1)
         set(value) {
-            require(value >= 0) {
-                "Loop count must be greater than or equal to 0!"
-            }
             field = value
         }
 
     var fps: Long
-        get() = 1000L / tick
+        get() = 1000L / tick.inWholeMilliseconds
         set(value) {
             require(value > 0) {
                 "Fps must be greater than 0!"
             }
-            tick = 1000L / fps
+            tick = (1000L / fps).toDuration(MILLISECONDS)
         }
 
     var position: Position = Position.zero()
@@ -71,7 +73,7 @@ class AnimationBuilder (
         return DefaultAnimation(
             frames = frames,
             tick = tick,
-            loopCount = loopCount,
+            loopKind = loopKind,
             uniqueFrameCount = uniqueFrameCount,
             totalFrameCount = totalFrameCount
         )
