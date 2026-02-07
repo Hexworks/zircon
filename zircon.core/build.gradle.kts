@@ -10,10 +10,6 @@ version = "2.0.0"
 
 kotlin {
     jvm {}
-    //iosX64()
-    //iosArm64()
-    //iosSimulatorArm64()
-    // linuxX64() - disabled: korge-core doesn't support linuxX64
     js(IR) {
         browser {
             testTask {
@@ -40,6 +36,11 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotest.assertions.core)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.mockk)
         }
     }
 }
