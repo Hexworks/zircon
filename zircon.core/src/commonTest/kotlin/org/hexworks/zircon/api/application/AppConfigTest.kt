@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.application
 import org.hexworks.zircon.api.application.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
 import org.hexworks.zircon.api.application.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
 import org.hexworks.zircon.api.builder.application.*
-import org.hexworks.zircon.api.builder.application.TilesetFactoryBuilder.Companion.DEFAULT_TILESET_FACTORIES
 import org.hexworks.zircon.api.modifier.TextureModifier
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -39,7 +38,7 @@ class AppConfigTest {
                 iconPath = null,
                 debugConfig = DEFAULT_DEBUG_CONFIG,
                 shortcutsConfig = DEFAULT_SHORTCUTS_CONFIG,
-                tilesetFactories = DEFAULT_TILESET_FACTORIES,
+                tilesetFactories = listOf(),
                 textureModifierStrategies = mapOf(),
                 customProperties = mapOf(),
             ), actual

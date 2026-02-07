@@ -20,8 +20,7 @@ package org.hexworks.zircon.api.data
  *
  *</pre>
  */
-@Suppress("DataClassPrivateConstructor")
-data class Position3D private constructor(
+data class Position3D(
     val x: Int,
     val y: Int,
     val z: Int

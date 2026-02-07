@@ -17,7 +17,6 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
-import org.hexworks.zircon.api.graphics.impl.clear
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 class DefaultTab internal constructor(
