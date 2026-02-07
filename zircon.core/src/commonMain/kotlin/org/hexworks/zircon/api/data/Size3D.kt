@@ -17,8 +17,7 @@ package org.hexworks.zircon.api.data
  * (yLength, y axis, positive direction)
  *
  */
-@Suppress("DataClassPrivateConstructor")
-data class Size3D private constructor(
+data class Size3D(
     val xLength: Int,
     val yLength: Int,
     val zLength: Int

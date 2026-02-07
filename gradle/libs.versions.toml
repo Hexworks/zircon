@@ -7,9 +7,11 @@ cobalt-core = "2.0.0"
 korge-core = "5.1.0"
 
 vanniktechMavenPublish = "0.34.0"
-detekt = "1.23.7"
+detekt = "2.0.0-alpha.1"
 slf4j = "2.0.17"
 logback = "1.5.22"
+kotest = "6.0.0.M1"
+mockk = "1.14.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -17,6 +19,9 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlin-logging" }
 
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 cobalt-core = { module = "org.hexworks.cobalt:cobalt.core", version.ref = "cobalt-core" }
 korge-core = { module = "com.soywiz.korge:korge-core", version.ref = "korge-core" }

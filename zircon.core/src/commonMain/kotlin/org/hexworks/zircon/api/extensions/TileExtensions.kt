@@ -57,6 +57,9 @@ val CharacterTile.isOpaque: Boolean
 val CharacterTile.isBlinking: Boolean
     get() = modifiers.contains(Blink)
 
+val Tile.isBlinking: Boolean
+    get() = this.asCharacterTileOrNull()?.isBlinking ?: false
+
 /**
  * Tells whether this [Tile] **is** an empty [Tile]
  * (it is the [Tile.empty] instance).

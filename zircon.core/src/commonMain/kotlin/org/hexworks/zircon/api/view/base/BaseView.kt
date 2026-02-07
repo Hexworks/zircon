@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 
 abstract class BaseView(
     private val tileGrid: TileGrid,
-    final override var theme: ColorTheme
+    final override var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
 ) : View, ColorThemeOverride by ColorThemeOverride.create(theme) {
 
     final override val screen = Screen.create(tileGrid)

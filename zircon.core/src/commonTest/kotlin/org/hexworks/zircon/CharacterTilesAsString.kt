@@ -2,6 +2,7 @@ package org.hexworks.zircon
 
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.asCharacterTileOrElse
 import org.hexworks.zircon.api.graphics.TileComposite
 
 /**

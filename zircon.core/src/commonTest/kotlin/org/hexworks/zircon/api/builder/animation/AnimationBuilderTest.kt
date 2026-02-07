@@ -1,6 +1,8 @@
 package org.hexworks.zircon.api.builder.animation
 
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.animation.Animation
+import org.hexworks.zircon.api.animation.Animation.FiniteLoop
 import org.hexworks.zircon.api.data.Position
 import kotlin.test.Test
 
@@ -11,7 +13,7 @@ class AnimationBuilderTest {
         animation {
             fps = 60
             position = Position.offset1x1()
-            loopCount = 0
+            loopKind = FiniteLoop(1)
             frame {
                 withSize {
                     width = 20

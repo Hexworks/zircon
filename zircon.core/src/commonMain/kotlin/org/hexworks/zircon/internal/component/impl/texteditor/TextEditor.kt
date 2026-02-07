@@ -24,7 +24,7 @@ data object EOLCell : Cell() {
     override fun toString() = "{EOL}"
 }
 
-data class Line internal constructor(
+data class Line(
     val cells: List<Cell>,
 ) {
 
