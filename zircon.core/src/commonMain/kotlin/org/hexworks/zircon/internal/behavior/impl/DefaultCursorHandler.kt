@@ -1,9 +1,11 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position.Companion.defaultPosition
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
+import kotlin.math.max
 import kotlin.math.min
+import org.hexworks.zircon.api.data.Position.Companion.create as position
 
 class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
 
@@ -27,14 +29,12 @@ class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
             this.cursorPosition = cursorPosition
         }
 
-    override var cursorPosition = Position.defaultPosition()
+    override var cursorPosition = defaultPosition()
         set(value) {
-            require(value.hasNegativeComponent.not()) {
-                "Can't put the cursor at a negative position: $value"
-            }
-            field = cursorPosition
-                .withX(min(value.x, cursorSpaceSize.width - 1))
-                .withY(min(value.y, cursorSpaceSize.height - 1))
+            field = position(
+                x = max(0, min(value.x, cursorSpaceSize.width - 1)),
+                y = max(0, min(value.y, cursorSpaceSize.height - 1))
+            )
         }
 
     override fun moveCursorForward() {
