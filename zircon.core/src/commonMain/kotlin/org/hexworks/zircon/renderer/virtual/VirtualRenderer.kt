@@ -1,6 +1,5 @@
 package org.hexworks.zircon.renderer.virtual
 
-import korlibs.time.DateTimeRange
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.application.tilesetFactory
@@ -36,11 +35,9 @@ class VirtualRenderer(
 
     private val tileset = VirtualTileset()
     private val contents = "".toProperty()
+
     @OptIn(ExperimentalTime::class)
     private var lastRender: Long = Clock.System.now().toEpochMilliseconds()
-
-
-
 
     override fun create(): VirtualView {
         return VirtualView(contents)
