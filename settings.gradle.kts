@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
+        google()
     }
 }
 
@@ -16,3 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "zircon"
 
 include(":zircon.core")
+include(":zircon.korge")
+include(":zircon.examples.korge")
