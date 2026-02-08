@@ -1,8 +1,10 @@
 package org.hexworks.zircon.api.resource
 
+import korlibs.io.dynamic.dyn
 import korlibs.io.file.VfsFile
 import korlibs.io.file.std.localCurrentDirVfs
 import korlibs.io.file.std.resourcesVfs
+import korlibs.io.serialization.yaml.Yaml
 
 suspend fun Resource.load(): VfsFile {
     val resource = this
@@ -24,3 +26,5 @@ suspend fun Resource.loadResourceFile(): VfsFile = load().apply {
 
 
 fun VfsFile.loadFile(name: String): VfsFile = this[name]
+
+fun String.asYaml() = Yaml.decode(this).dyn

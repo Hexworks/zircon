@@ -4,7 +4,7 @@ kotlinx-collections-immutable = "0.4.0"
 kotlin-logging = "7.0.3"
 
 cobalt-core = "2.0.0"
-korge-core = "5.1.0"
+korge = "6.0.0"
 
 vanniktechMavenPublish = "0.34.0"
 detekt = "2.0.0-alpha.1"
@@ -24,11 +24,13 @@ kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 cobalt-core = { module = "org.hexworks.cobalt:cobalt.core", version.ref = "cobalt-core" }
-korge-core = { module = "com.soywiz.korge:korge-core", version.ref = "korge-core" }
+korge-core = { module = "com.soywiz.korge:korge-core", version.ref = "korge" }
+korge-all = { module = "com.soywiz.korge:korge", version.ref = "korge" }
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 [plugins]
+korge = { id = "com.soywiz.korge", version.ref = "korge" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

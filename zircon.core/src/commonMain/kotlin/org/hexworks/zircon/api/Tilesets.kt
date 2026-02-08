@@ -7,7 +7,6 @@ import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.ImageDictionaryTilesetResource
 import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 
-
 fun loadCP437TilesetResource(
     width: Int,
     height: Int,
