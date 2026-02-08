@@ -28,4 +28,6 @@ enum class ANSIColor(
     BRIGHT_MAGENTA(95, 105),
     BRIGHT_CYAN(96, 106),
     BRIGHT_WHITE(97, 107);
+
+    companion object
 }
