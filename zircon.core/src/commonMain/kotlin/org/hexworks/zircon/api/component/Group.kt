@@ -20,21 +20,9 @@ interface Group<T : Component> : ComponentProperties {
     fun addComponent(component: T): AttachedComponent
 
     /**
-     * Builds a [Component] using the given component [Builder]
-     * and adds it to this [ComponentContainer].
-     */
-    fun addComponent(builder: Builder<T>): AttachedComponent = addComponent(builder.build())
-
-    /**
      * Adds the given [Component]s to this [ComponentContainer].
      * @see addComponent
      */
     fun addComponents(vararg components: T): List<AttachedComponent>
-
-    /**
-     * Adds the given [Component]s to this [ComponentContainer].
-     * @see addComponent
-     */
-    fun addComponents(vararg components: Builder<T>): List<AttachedComponent> = components.map(::addComponent)
 
 }

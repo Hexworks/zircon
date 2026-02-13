@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.color.Color.Companion.transparent
 import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -35,7 +34,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             highlightedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.primaryBackgroundColor
@@ -51,7 +50,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
             }
             disabledStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 
@@ -64,7 +63,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
         target = DefaultCheckBox(
             componentMetadata = ComponentMetadata(
                 size = SIZE_20X1,
-                relativePosition = POSITION_2_3,
+                position = POSITION_2_3,
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
@@ -126,7 +125,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.activated()
@@ -137,7 +136,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.focusGiven()

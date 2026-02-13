@@ -124,24 +124,22 @@ class AppConfigBuilder : Builder<AppConfig> {
     var shortcutsConfig: ShortcutsConfig = DEFAULT_SHORTCUTS_CONFIG
 
     /**
-     * If set, contains custom properties that plugin authors can set and access.
-     */
-    internal val customProperties = mutableMapOf<AppConfigKey<*>, Any>()
-
-    /**
      * If set [tilesetFactories] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    internal val tilesetFactories: MutableMap<Pair<TileType, TilesetType>, TilesetFactory<*>> =
+    var tilesetFactories: MutableMap<Pair<TileType, TilesetType>, TilesetFactory<*>> =
         mutableMapOf()
-    //! TODO: move these to the korge implementation
-//        DEFAULT_TILESET_FACTORIES.associateBy { it.supportedTileType to it.supportedTilesetType }.toMutableMap()
 
     /**
      * If set [textureModifierSupports] will contain the list of [TextureTransformer]s to try to use
      * before using the default [TextureTransformer] of the [Renderer].
      */
-    internal val textureModifierSupports = mutableMapOf<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>()
+    var textureModifierSupports = mutableMapOf<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>()
+
+    /**
+     * If set, contains custom properties that plugin authors can set and access.
+     */
+    internal val customProperties = mutableMapOf<AppConfigKey<*>, Any>()
 
     override fun build() = AppConfig(
         blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
@@ -166,7 +164,9 @@ class AppConfigBuilder : Builder<AppConfig> {
 }
 
 fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
-    return AppConfigBuilder().apply(init).build()
+    return AppConfigBuilder().apply {
+
+    }.apply(init).build()
 }
 
 /**

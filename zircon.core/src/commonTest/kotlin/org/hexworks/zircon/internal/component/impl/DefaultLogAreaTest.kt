@@ -57,7 +57,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
         target = DefaultLogArea(
             componentMetadata = ComponentMetadata(
                 size = SIZE_40x10,
-                relativePosition = POSITION_4_5,
+                position = POSITION_4_5,
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),

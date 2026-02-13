@@ -10,6 +10,7 @@ import org.hexworks.zircon.api.behavior.TextOverride
  * state in a [RadioButtonGroup].
  */
 interface RadioButton : Component, Selectable, TextOverride {
+    //! TODO: use enums?
     val key: String
     val state: RadioButtonState
 

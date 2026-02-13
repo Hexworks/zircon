@@ -11,5 +11,5 @@ interface InternalCursorHandler : CursorHandler {
     /**
      * Returns the [Size] of the (virtual) space the cursor can occupy.
      */
-    var cursorSpaceSize: Size
+    override var cursorSpaceSize: Size
 }

@@ -18,4 +18,6 @@ rootProject.name = "zircon"
 
 include(":zircon.core")
 include(":zircon.korge")
+include(":zircon.compose")
 include(":zircon.examples.korge")
+include(":zircon.examples.compose")

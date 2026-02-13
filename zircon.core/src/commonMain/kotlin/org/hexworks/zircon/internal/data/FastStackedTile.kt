@@ -10,9 +10,11 @@ import org.hexworks.zircon.api.modifier.Modifier
  * This **fast** [StackedTile] implementation foregoes validation and it allows mutation of its state.
  * Only use it if you need the speed and you can be really cautious.
  */
+//! TODO: check implementation
 class FastStackedTile(
     initialTiles: List<Tile> = listOf(),
-    initialCapacity: Int = initialTiles.size
+    initialCapacity: Int = initialTiles.size,
+
 ) : StackedTile {
 
     override val modifiers: Set<Modifier>
@@ -25,6 +27,8 @@ class FastStackedTile(
     private val actualTiles = ArrayDeque<Tile>(initialCapacity).apply {
         addAll(initialTiles)
     }
+
+    override val rest: List<Tile> = actualTiles.drop(1)
 
     override val tiles: List<Tile> = actualTiles
 
@@ -54,18 +58,5 @@ class FastStackedTile(
     override val cacheKey: String
         get() = baseTile.cacheKey
 
-    override fun withPushedTile(tile: Tile): StackedTile = FastStackedTile(
-        initialTiles = tiles.plus(tile)
-    )
-
-    override fun withBaseTile(tile: Tile): StackedTile = FastStackedTile(
-        initialTiles = tiles.toMutableList().apply {
-            set(0, tile)
-        }
-    )
-
-    override fun withRemovedTile(tile: Tile): StackedTile = FastStackedTile(
-        initialTiles = tiles.minus(tile)
-    )
 
 }

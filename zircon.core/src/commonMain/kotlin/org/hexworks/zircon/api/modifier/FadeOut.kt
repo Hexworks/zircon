@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.modifier
 
 import korlibs.time.DateTime
+import org.hexworks.zircon.api.color.extensions.darkenByPercent
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 

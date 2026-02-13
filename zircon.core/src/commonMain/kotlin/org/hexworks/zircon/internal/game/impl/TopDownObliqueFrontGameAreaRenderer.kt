@@ -1,6 +1,12 @@
 package org.hexworks.zircon.internal.game.impl
 
+import org.hexworks.zircon.api.behavior.extensions.height
+import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.data.*
+import org.hexworks.zircon.api.data.extensions.getTileByType
+import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withRelativeZ
 import org.hexworks.zircon.api.extensions.isOpaque
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile

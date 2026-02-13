@@ -35,8 +35,8 @@ class TestRenderer(
         application = ApplicationStub()
     }
     private val mainView = object : BaseView(tileGrid) {}
-    private val closedValueProperty: Property<Boolean> = false.toProperty()
-    override val closedValue: ObservableValue<Boolean> get() = closedValueProperty
+    private val closedPropertyBacking: Property<Boolean> = false.toProperty()
+    override val closedProperty: ObservableValue<Boolean> get() = closedPropertyBacking
 
     init {
         mainView.dock()
@@ -80,9 +80,9 @@ class TestRenderer(
     override fun dispatch(event: UIEvent): UIEventResponse = (mainView.screen as UIEventDispatcher).dispatch(event)
 
     override fun close() {
-        if (!closedValueProperty.value) {
+        if (!closedPropertyBacking.value) {
             tileGrid.close()
-            closedValueProperty.value = true
+            closedPropertyBacking.value = true
         }
     }
 }

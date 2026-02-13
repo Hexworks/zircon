@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
+import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.internal.component.impl.texteditor.EditorState
 import org.hexworks.zircon.internal.component.impl.texteditor.Transformation
 import org.hexworks.zircon.internal.component.impl.texteditor.lastIndex

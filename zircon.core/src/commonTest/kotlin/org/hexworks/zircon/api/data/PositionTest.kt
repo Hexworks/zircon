@@ -28,12 +28,12 @@ class PositionTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        Position.unknown().isUnknown shouldBe true
+        Position.UNKNOWN.isUnknown shouldBe true
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        Position.unknown().isNotUnknown shouldBe false
+        Position.UNKNOWN.isNotUnknown shouldBe false
     }
 
     @Test
@@ -172,22 +172,22 @@ class PositionTest {
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithX() {
-        Position.create(1, 0).withX(0) shouldBeSameInstanceAs Position.zero()
+        Position.create(1, 0).withX(0) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeX() {
-        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs Position.zero()
+        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithY() {
-        Position.create(0, 1).withY(0) shouldBeSameInstanceAs Position.zero()
+        Position.create(0, 1).withY(0) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeY() {
-        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs Position.zero()
+        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs 
     }
 
     @Test

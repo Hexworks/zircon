@@ -14,7 +14,7 @@ interface TextArea : Component, Scrollable {
     var text: String
 
     /**
-     * The styled text this [TextArea] contains.
+     * The [CharacterTile]s this [TextArea] contains.
      */
     var textTiles: List<List<CharacterTile>>
 

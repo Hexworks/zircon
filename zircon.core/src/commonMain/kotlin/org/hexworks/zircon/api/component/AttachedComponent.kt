@@ -6,8 +6,9 @@ package org.hexworks.zircon.api.component
 interface AttachedComponent : Component {
 
     /**
-     * Detaches the underlying [Component] from the [ComponentContainer] it is
-     * attached to and returns the [Component].
+     * Detaches the underlying [Component] from the [ComponentContainer].
+     * Detaching a [Component] will reset it to its default state so that
+     * it can be re-attached later (possibly to a different [ComponentContainer]).
      */
     fun detach(): Component
 

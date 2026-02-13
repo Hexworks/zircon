@@ -7,11 +7,7 @@ import org.hexworks.zircon.api.component.Group
 interface InternalGroup<T : Component> : Group<T> {
 
     /**
-     * Removes the given [Component] from this [ComponentContainer].
-     * *Note that* this function is applied recursively until
-     * it either traverses the whole component tree or finds
-     * the component to remove.
-     * @return `true` if change happened, `false` if not
+     * Removes the given [Component] from this [InternalGroup] (if present)
      */
     fun removeComponent(component: Component)
 }

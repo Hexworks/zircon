@@ -29,7 +29,7 @@ class DefaultTab internal constructor(
         text = initialText
         this.key = key
         preferredSize = Size.create(width, 3)
-        componentStyleSet = ComponentStyleSet.defaultStyleSet()
+        componentStyleSet = ComponentStyleSet.DEFAULT_STYLE
         componentRenderer = ComponentRenderer { graphics, ctx ->
             graphics.drawText(ctx.component.text, ctx.currentStyle)
         }
@@ -49,7 +49,7 @@ class DefaultTab internal constructor(
             }
             val filler = Tile.defaultTile().withStyle(style)
             graphics.fill(filler)
-            graphics.drawText(ctx.component.text, style, Position.offset1x1())
+            graphics.drawText(ctx.component.text, style, Position.OFFSET_1X1)
         }
     }
 
@@ -64,7 +64,7 @@ class DefaultTab internal constructor(
         tabButton.selectedProperty.onChange { (_, isSelected) ->
             currentAttachment.apply {
                 detach()
-                moveTo(Position.defaultPosition())
+                moveTo(Position.ZERO)
             }
             currentAttachment = if (isSelected) {
                 root.addComponent(this.label)
@@ -78,7 +78,7 @@ class DefaultTab internal constructor(
     private fun DrawWindow.drawText(
         text: String,
         style: StyleSet,
-        position: Position = Position.defaultPosition()
+        position: Position = Position.ZERO
     ) {
         clear()
         draw(

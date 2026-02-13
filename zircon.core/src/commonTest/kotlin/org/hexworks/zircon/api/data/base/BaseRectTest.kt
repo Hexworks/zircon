@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.data.base
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import kotlin.test.Test
 
@@ -11,7 +10,7 @@ class BaseRectTest {
     @Test
     fun shouldSplitRect() {
         val size = Size.create(100, 100)
-        val rect = Rect.create(Position.create(0, 0), size)
+        val rect = Boundable.create(Position.create(0, 0), size)
 
         val splitedRectsHorizontal = rect.splitHorizontal(50)
         val splitedRectsVertical = rect.splitVertical(80)

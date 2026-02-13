@@ -1,11 +1,15 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Scrollable
+import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
+import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
+import org.hexworks.zircon.api.behavior.extensions.scrollTo
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.ScrollDirection.VERTICAL
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.data.extensions.withY
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.isNavigationKey

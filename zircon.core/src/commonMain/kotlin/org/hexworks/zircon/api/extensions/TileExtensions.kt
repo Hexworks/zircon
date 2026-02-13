@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.extensions
 
+import org.hexworks.zircon.api.color.extensions.isOpaque
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.data.tile.GraphicalTile

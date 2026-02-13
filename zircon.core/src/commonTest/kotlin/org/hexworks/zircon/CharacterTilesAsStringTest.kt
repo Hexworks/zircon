@@ -13,7 +13,7 @@ class CharacterTilesAsStringTest {
     private fun pos(x: Int, y: Int) = Position.create(x, y)
     private fun charTile(char: Char) = characterTile { +char }
 
-    private fun tileComposite(tiles: Map<Position, Tile>, size: Size = Size.zero()) = DefaultTileComposite(tiles, size)
+    private fun tileComposite(tiles: Map<Position, Tile>, size: Size = Size.ZERO) = DefaultTileComposite(tiles, size)
 
     @Test
     fun empty() {

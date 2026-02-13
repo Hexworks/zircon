@@ -28,23 +28,23 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnOffset1x1() {
-        assertEquals(Position.offset1x1(), Position.create(1, 1))
+        assertEquals(Position.OFFSET_1X1, Position.create(1, 1))
     }
 
     @Test
     fun shouldProperlyReturnZero() {
-        assertEquals(Position.zero(), Position.create(0, 0))
+        assertEquals(, Position.create(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnDefaultPosition() {
-        assertEquals(Position.defaultPosition(), Position.create(0, 0))
+        assertEquals(Position.ZERO, Position.create(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnUnknown() {
         assertEquals(
-            Position.unknown(),
+            Position.UNKNOWN,
             Position.create(
                 Int.MAX_VALUE, Int.MAX_VALUE
             )
@@ -93,7 +93,7 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnDefault3DPosition() {
-        assertEquals(Position3D.defaultPosition(), Position3D.defaultPosition())
+        assertEquals(Position3D.ZERO, Position3D.ZERO)
     }
 
     @Test

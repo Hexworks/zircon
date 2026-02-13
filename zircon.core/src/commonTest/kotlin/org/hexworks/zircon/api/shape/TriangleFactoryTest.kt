@@ -11,7 +11,7 @@ class TriangleFactoryTest {
     @Test
     fun shouldProperlyDrawTriangle() {
         TriangleFactory.buildTriangle(
-            p1 = Position.offset1x1(),
+            p1 = Position.OFFSET_1X1,
             p2 = Position.create(4, 1),
             p3 = Position.create(4, 4)
         ) shouldContainExactly listOf(

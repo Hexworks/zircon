@@ -9,9 +9,4 @@ interface HasSize {
 
     val size: Size
 
-    val width: Int
-        get() = size.width
-
-    val height: Int
-        get() = size.height
 }

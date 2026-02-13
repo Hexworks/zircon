@@ -45,41 +45,6 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
         drawArea: Size
     )
 
-    /**
-     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`,
-     * and [Position.zero] as `drawPosition`
-     */
-    fun draw(tileMap: Map<Position, Tile>)
-
-    /**
-     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`.
-     */
-    fun draw(
-        tileMap: Map<Position, Tile>,
-        drawPosition: Position
-    )
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
-     */
-    fun draw(tileComposite: TileComposite)
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
-     */
-    fun draw(
-        tileComposite: TileComposite,
-        drawPosition: Position
-    )
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be used as the [Map].
-     */
-    fun draw(
-        tileComposite: TileComposite,
-        drawPosition: Position,
-        drawArea: Size
-    )
 
     /**
      * Transforms all of the [Tile]s in this [DrawSurface] with the given
@@ -88,17 +53,4 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      */
     fun transform(transformer: (Position, Tile) -> Tile)
 
-    /**
-     * Applies the given [styleSet] to all currently present [Tile]s in this
-     * [DrawSurface].
-     * If you want to apply a style to a subset only take a look at
-     * [TileGraphics.toDrawWindow].
-     */
-    fun applyStyle(styleSet: StyleSet)
-
-    /**
-     * Fills the empty parts of this [DrawSurface] with the given [filler] [Tile].
-     * A [Position] is considered empty if there is no [Tile] in it.
-     */
-    fun fill(filler: Tile)
 }

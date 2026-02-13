@@ -18,6 +18,6 @@ data class AroundAlignmentStrategy(
 ) : AlignmentStrategy {
 
     override fun calculatePosition(size: Size): Position {
-        return alignmentType.alignAround(other.rect, size)
+        return alignmentType.alignAround(other, size)
     }
 }

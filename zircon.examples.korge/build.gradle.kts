@@ -10,6 +10,7 @@ kotlin {
     }
     js(IR) {
         browser()
+
     }
 
     sourceSets {
@@ -24,7 +25,6 @@ kotlin {
 tasks.withType<JavaExec> {
     jvmArgs(
         "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
-        "--add-opens", "java.desktop/sun.awt.X11=ALL-UNNAMED",
         "--add-opens", "java.desktop/java.awt=ALL-UNNAMED",
         "--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED",
         "--add-opens", "java.base/java.lang=ALL-UNNAMED",

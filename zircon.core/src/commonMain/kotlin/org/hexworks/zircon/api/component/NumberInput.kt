@@ -7,16 +7,13 @@ import org.hexworks.cobalt.events.api.Subscription
 
 interface NumberInput : Component {
 
+    //! TODO: why this?
     var text: String
 
     /**
      * Current value with respect to the maxValue
      */
     var currentValue: Int
-
-    /**
-     * Boundable, current value
-     */
     val currentValueProperty: Property<Int>
 
     fun incrementCurrentValue()

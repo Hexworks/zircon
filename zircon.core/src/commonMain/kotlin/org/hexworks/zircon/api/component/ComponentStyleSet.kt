@@ -9,13 +9,8 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * will be used when a [Component]'s [ComponentState] changes.
  * @see ComponentState
  */
+//! TODO: Rename this
 interface ComponentStyleSet {
-
-    val isUnknown: Boolean
-        get() = this === UNKNOWN
-
-    val isNotUnknown: Boolean
-        get() = isUnknown.not()
 
     /**
      * Returns the [StyleSet] for the given `state`.
@@ -25,23 +20,20 @@ interface ComponentStyleSet {
     companion object {
 
         // TODO: is this OK?
-        private val UNKNOWN = componentStyleSet { }
+        val UNKNOWN = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]
          * for all states.
          */
-        fun defaultStyleSet() = componentStyleSet { }
+        val DEFAULT_STYLE = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.empty]
          * for all states.
          */
-        fun empty() = componentStyleSet {
+        val EMPTY = componentStyleSet {
             defaultStyle = StyleSet.empty()
         }
-
-        fun unknown() = UNKNOWN
-
     }
 }
