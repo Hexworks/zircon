@@ -7,7 +7,6 @@ cobalt-core = "2.0.0"
 korge = "6.0.0"
 
 vanniktechMavenPublish = "0.34.0"
-detekt = "2.0.0-alpha.1"
 slf4j = "2.0.17"
 logback = "1.5.22"
 kotest = "6.0.0.M1"
@@ -33,4 +32,3 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 korge = { id = "com.soywiz.korge", version.ref = "korge" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
