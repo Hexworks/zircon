@@ -18,6 +18,6 @@ data class WithinAlignmentStrategy(
 ) : AlignmentStrategy {
 
     override fun calculatePosition(size: Size): Position {
-        return alignmentType.alignWithin(other.rect, size)
+        return alignmentType.alignWithin(other, size)
     }
 }

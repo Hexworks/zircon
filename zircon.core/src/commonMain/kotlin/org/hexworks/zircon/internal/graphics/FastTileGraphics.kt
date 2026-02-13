@@ -3,6 +3,8 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.extensions.isEmpty
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.graphics.TileComposite
@@ -57,25 +59,10 @@ class FastTileGraphics(
             }
     }
 
-    override fun draw(tileComposite: TileComposite) {
-        if (tileComposite is FastTileGraphics && tileComposite.size == size) {
-            tileComposite.arr.copyInto(arr)
-        } else super.draw(tileComposite)
-    }
 
     override fun clear() {
         arr = arrayOfNulls(size.width * size.height)
         tiles = ArrayBackedTileMap(size, arr)
-    }
-
-    override fun fill(filler: Tile) {
-        if (filler.isNotEmpty) {
-            for (i in arr.indices) {
-                if (arr[i] == null) {
-                    arr[i] = Entry(i.pos, filler)
-                }
-            }
-        }
     }
 
     override fun transform(transformer: (Position, Tile) -> Tile) {
@@ -92,10 +79,4 @@ class FastTileGraphics(
     private val Position.index: Int
         get() = size.width * y + x
 
-    private val Int.pos: Position
-        get() {
-            val y = this / size.width
-            val x = this - (y * size.width)
-            return Position.create(x, y)
-        }
 }

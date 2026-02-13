@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.extensions.height
+import org.hexworks.zircon.api.behavior.extensions.moveUpBy
 import org.hexworks.zircon.api.builder.component.buildHbox
 import org.hexworks.zircon.api.builder.component.buildLabel
 import org.hexworks.zircon.api.component.AttachedComponent

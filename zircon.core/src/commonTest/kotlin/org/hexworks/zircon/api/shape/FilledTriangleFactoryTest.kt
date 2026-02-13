@@ -12,7 +12,7 @@ class FilledTriangleFactoryTest {
     fun shouldProperlyFillTriangle() {
         // TODO: fix algo!
         FilledTriangleFactory.buildFilledTriangle(
-            p1 = Position.offset1x1(),
+            p1 = Position.OFFSET_1X1,
             p2 = Position.create(5, 1),
             p3 = Position.create(5, 5)
         ) shouldContainExactly listOf(
@@ -37,7 +37,7 @@ class FilledTriangleFactoryTest {
     fun shouldProperlyFillIrregularTriangle() {
         // TODO: fix triangle fill algo
         FilledTriangleFactory.buildFilledTriangle(
-            p1 = Position.offset1x1(),
+            p1 = Position.OFFSET_1X1,
             p2 = Position.create(4, 2),
             p3 = Position.create(3, 6)
         ) shouldContainExactly listOf(

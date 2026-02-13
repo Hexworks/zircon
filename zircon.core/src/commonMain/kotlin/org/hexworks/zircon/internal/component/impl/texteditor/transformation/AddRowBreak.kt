@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
 object AddRowBreak : Transformation {

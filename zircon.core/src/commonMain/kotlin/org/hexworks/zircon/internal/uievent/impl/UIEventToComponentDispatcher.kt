@@ -29,7 +29,7 @@ class UIEventToComponentDispatcher(
     private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
 
-    private var lastMousePosition = Position.unknown()
+    private var lastMousePosition = Position.UNKNOWN
     private var lastHoveredComponent: InternalComponent = root
 
     private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig

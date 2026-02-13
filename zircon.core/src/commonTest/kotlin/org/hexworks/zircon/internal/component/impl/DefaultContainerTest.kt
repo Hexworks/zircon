@@ -34,7 +34,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     override lateinit var target: DefaultContainer
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSet.empty()
+        get() = ComponentStyleSet.EMPTY
 
     private val badTileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
@@ -45,7 +45,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         target = DefaultContainer(
             metadata = ComponentMetadata(
                 size = SIZE_4x4,
-                relativePosition = POSITION_2_3,
+                position = POSITION_2_3,
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
@@ -81,7 +81,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 32
                 height = 16
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val panelHeader = buildHeader {
@@ -158,7 +158,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 32
                 height = 16
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val panel1 = buildPanel {
@@ -170,7 +170,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 16
                 height = 10
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val header0 = buildHeader {
@@ -269,7 +269,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val applicationStub = ApplicationStub()
         val root = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = Position.defaultPosition(),
+                position = Position.ZERO,
                 size = Size.create(50, 50),
             ),
             application = applicationStub,
@@ -297,7 +297,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldReturnUnknownStylesWhenThemeApplied() {
-        target.convertColorTheme(DEFAULT_THEME) shouldBeSameInstanceAs ComponentStyleSet.unknown()
+        target.convertColorTheme(DEFAULT_THEME) shouldBeSameInstanceAs ComponentStyleSet.UNKNOWN
     }
 
     @Test

@@ -12,7 +12,7 @@ class AnimationBuilderTest {
     fun when_an_animation_is_built_then_its_contents_are_ok() {
         animation {
             fps = 60
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
             loopKind = FiniteLoop(1)
             frame {
                 withSize {

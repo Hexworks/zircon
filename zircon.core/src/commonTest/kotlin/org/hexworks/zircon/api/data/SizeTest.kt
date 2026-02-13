@@ -35,7 +35,7 @@ class SizeTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        Size.unknown().isUnknown shouldBe true
+        Size.UNKNOWN.isUnknown shouldBe true
     }
 
     @Test

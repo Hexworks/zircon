@@ -4,9 +4,13 @@ import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
+import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withHeight
+import org.hexworks.zircon.api.data.extensions.withRelativeWidth
+import org.hexworks.zircon.api.data.extensions.withWidth
 import org.hexworks.zircon.api.fragment.ScrollableList
 import org.hexworks.zircon.api.graphics.Symbols.TRIANGLE_DOWN_POINTING_BLACK
 import org.hexworks.zircon.api.graphics.Symbols.TRIANGLE_UP_POINTING_BLACK
@@ -76,12 +80,12 @@ class VerticalScrollableList<T>(
 
     private val decrementButton = buildButton {
         text = TRIANGLE_UP_POINTING_BLACK.toString()
-        preferredSize = Size.one()
+        preferredSize = Size.ONE
     }
 
     private val incrementButton = buildButton {
         text = TRIANGLE_DOWN_POINTING_BLACK.toString()
-        preferredSize = Size.one()
+        preferredSize = Size.ONE
     }
 
     init {

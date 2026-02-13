@@ -63,19 +63,19 @@ class TileGridScreenTest {
 
     @Test
     fun shouldBeDrawnWhenCharacterSet() {
-        target.draw(CHAR, Position.offset1x1())
-        target.getTileAtOrNull(Position.offset1x1())!! shouldBe CHAR
+        target.draw(CHAR, Position.OFFSET_1X1)
+        target.getTileAtOrNull(Position.OFFSET_1X1)!! shouldBe CHAR
 
     }
 
     @Test
     fun shouldClearProperlyWhenClearIsCalled() {
-        target.draw(CHAR, Position.offset1x1())
+        target.draw(CHAR, Position.OFFSET_1X1)
         target.display()
 
         target.clear()
 
-        target.getTileAtOrNull(Position.offset1x1()) shouldNotBe CHAR
+        target.getTileAtOrNull(Position.OFFSET_1X1) shouldNotBe CHAR
     }
 
     @Test
@@ -86,7 +86,7 @@ class TileGridScreenTest {
                 height = 4
             }
         }.apply {
-            draw(characterTile { character = 'x' }, Position.offset1x1())
+            draw(characterTile { character = 'x' }, Position.OFFSET_1X1)
         }.asInternal()
 
         val button = buildButton {

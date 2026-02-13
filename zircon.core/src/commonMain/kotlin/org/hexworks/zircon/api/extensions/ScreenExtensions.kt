@@ -13,14 +13,14 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 fun Screen.useComponentBuilder(fn: PanelBuilder.() -> Unit) {
     val builder = PanelBuilder().apply {
         preferredSize = size
-        position = Position.defaultPosition()
+        position = Position.ZERO
     }
     fn(builder)
     // we need to make sure that these were not tampered with
     builder.apply {
         componentRenderer = NoOpComponentRenderer()
         preferredSize = size
-        position = Position.defaultPosition()
+        position = Position.ZERO
     }
 
     addComponent(builder.build())

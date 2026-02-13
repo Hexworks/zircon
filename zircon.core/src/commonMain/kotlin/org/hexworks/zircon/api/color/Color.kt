@@ -3,7 +3,8 @@
 package org.hexworks.zircon.api.color
 
 import org.hexworks.zircon.api.behavior.Cacheable
-import org.hexworks.zircon.api.color.Color.Companion.DEFAULT_FACTOR
+import org.hexworks.zircon.api.color.ANSIColor.BLACK
+import org.hexworks.zircon.api.color.ANSIColor.WHITE
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.color.DefaultColor
@@ -22,111 +23,30 @@ interface Color : Cacheable {
     val blue: Int
     val alpha: Int
 
-    val isOpaque: Boolean
-        get() = alpha == 255
-
-    /**
-     * Returns a new [Color] which is desaturated by the [DEFAULT_FACTOR] (.7).
-     */
-    fun desaturate(): Color = desaturate(defaultFactor())
-
-    /**
-     * Returns a new [Color] which is desaturated by [factor].
-     */
-    fun desaturate(factor: Double): Color
-
-    /**
-     * Returns a new [Color] which is tinted by the [DEFAULT_FACTOR] (.7).
-     */
-    fun tint(): Color = tint(defaultFactor())
-
-    /**
-     * Returns a new [Color] which is tinted by [factor].
-     */
-    fun tint(factor: Double): Color
-
-    /**
-     * Returns a new [Color] which is shaded by the [DEFAULT_FACTOR] (.7).
-     */
-    fun shade(): Color = shade(defaultFactor())
-
-    /**
-     * Returns a new [Color] which is shaded by [factor].
-     */
-    fun shade(factor: Double): Color
-
-    /**
-     * Returns a new [Color] which is toned by the [DEFAULT_FACTOR] (.7).
-     */
-    fun tone(): Color = tone(defaultFactor())
-
-    /**
-     * Returns a new [Color] which is toned by [factor].
-     */
-    fun tone(factor: Double): Color
-
-    /**
-     * Returns a new [Color] which is the inversion of this one.
-     */
-    fun invert(): Color
-
-    /**
-     * Returns a new [Color] which is darkened by the given [percentage].
-     * The number must be between `0` and `1`.
-     */
-    fun darkenByPercent(percentage: Double): Color
-
-    /**
-     * Returns a new [Color] which is lightened by the given [percentage].
-     * The number must be between `0` and `1`.
-     */
-    fun lightenByPercent(percentage: Double): Color
-
-    /**
-     * Creates a copy of this [Color] with the given [alpha].
-     */
-    fun withAlpha(alpha: Int): Color
-
-    /**
-     * Creates a copy of this [Color] with the given [red].
-     */
-    fun withRed(red: Int): Color
-
-    /**
-     * Creates a copy of this [Color] with the given [green].
-     */
-    fun withGreen(green: Int): Color
-
-    /**
-     * Creates a copy of this [Color] with the given [blue].
-     */
-    fun withBlue(blue: Int): Color
-
-    /**
-     * Creates a new [ColorInterpolator] with the receiver color as low color and the other color as high color.
-     */
-    fun interpolateTo(other: Color): ColorInterpolator
+    val component1: Int
+        get() = red
+    val component2: Int
+        get() = green
+    val component3: Int
+        get() = blue
+    val component4: Int
+        get() = alpha
 
     companion object {
 
         /**
          * The default foreground color is `WHITE`.
          */
-        fun defaultForegroundColor() = DefaultAnsiPalette[ANSIColor.WHITE]
+        val DEFAULT_FOREGROUND_COLOR = DefaultAnsiPalette[WHITE]
 
         /**
          * The default background color is `BLACK`.
          */
-        fun defaultBackgroundColor() = DefaultAnsiPalette[ANSIColor.BLACK]
+        val DEFAULT_BACKGROUND_COLOR = DefaultAnsiPalette[BLACK]
 
-        /**
-         * Shorthand for a [Color] which is fully transparent.
-         */
-        fun transparent() = TRANSPARENT
-
-        fun defaultAlpha() = DEFAULT_ALPHA
-
-        fun defaultFactor() = DEFAULT_FACTOR
+        val TRANSPARENT = create(0, 0, 0, 0)
+        const val DEFAULT_ALPHA = 255
+        const val DEFAULT_FACTOR = 0.7
 
         /**
          * Parses a string into a color. Formats:
@@ -155,9 +75,5 @@ interface Color : Cacheable {
             return DefaultColor(red, green, blue, alpha)
         }
 
-        private val TRANSPARENT = create(0, 0, 0, 0)
-
-        const val DEFAULT_ALPHA = 255
-        const val DEFAULT_FACTOR = 0.7
     }
 }

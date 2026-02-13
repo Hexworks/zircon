@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -26,13 +27,13 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
     var text: String = NO_VALUE
         set(value) {
             field = value
-            if (size.isUnknown) {
+            if (size.isSizeUnknown) {
                 size = Size.create(text.length, 1)
             }
         }
 
     var textWrap: TextWrap = WRAP
-    var size: Size = Size.unknown()
+    var size: Size = Size.UNKNOWN
     var styleSet: StyleSet = StyleSet.defaultStyle()
     val modifiers: MutableSet<Modifier> = mutableSetOf()
 

@@ -9,9 +9,11 @@ import org.hexworks.zircon.api.builder.Builder
  * Note that a [ComponentContainer] won't enforce consistency: the child
  * themes can be changed individually, but they will be overwritten whenever
  * the [ComponentContainer]'s theme changes.
+ *
  * @see Component
  * @see ColorThemeOverride
  */
+//! TODO: Add a parameter to ignore theme override?
 interface ComponentContainer : ColorThemeOverride {
 
     /**
@@ -20,34 +22,6 @@ interface ComponentContainer : ColorThemeOverride {
      * contain components within itself.
      */
     fun addComponent(component: Component): AttachedComponent
-
-    /**
-     * Builds a [Component] using the given component [Builder]
-     * and adds it to this [ComponentContainer].
-     */
-    fun addComponent(builder: Builder<Component>): AttachedComponent = addComponent(builder.build())
-
-    /**
-     * Adds the given [Component]s to this [ComponentContainer].
-     * @see addComponent
-     */
-    fun addComponents(vararg components: Component): List<AttachedComponent> = components.map(::addComponent)
-
-    /**
-     * Adds the given [Component]s to this [ComponentContainer].
-     * @see addComponent
-     */
-    fun addComponents(vararg components: Builder<Component>): List<AttachedComponent> = components.map(::addComponent)
-
-    /**
-     * Adds the [Fragment.root] of the given [Fragment] to this [ComponentContainer].
-     */
-    fun addFragment(fragment: Fragment): AttachedComponent = addComponent(fragment.root)
-
-    /**
-     * Adds the [Fragment.root] of the given [Fragment] to this [ComponentContainer].
-     */
-    fun addFragments(vararg fragments: Fragment): List<AttachedComponent> = fragments.map(::addFragment)
 
     /**
      * Detaches all child components and returns them.

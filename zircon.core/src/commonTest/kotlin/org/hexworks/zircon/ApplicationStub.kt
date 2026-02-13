@@ -17,9 +17,9 @@ class ApplicationStub : InternalApplication {
     override var eventScope: ZirconScope = ZirconScope()
     override lateinit var tileGrid: TileGrid
 
-    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closedProperty: Property<Boolean> = false.toProperty()
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
     }
 
     override suspend fun start() {

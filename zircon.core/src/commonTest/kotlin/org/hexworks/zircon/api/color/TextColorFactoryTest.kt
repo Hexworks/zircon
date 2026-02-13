@@ -8,7 +8,7 @@ class TextColorFactoryTest {
 
     @Test
     fun shouldGiveBackWhiteAsDefaultForegroundColor() {
-        Color.defaultForegroundColor() shouldBe DefaultAnsiPalette[ANSIColor.WHITE]
-        Color.defaultBackgroundColor() shouldBe DefaultAnsiPalette[ANSIColor.BLACK]
+        Color.DEFAULT_FOREGROUND_COLOR shouldBe DefaultAnsiPalette[ANSIColor.WHITE]
+        Color.DEFAULT_BACKGROUND_COLOR shouldBe DefaultAnsiPalette[ANSIColor.BLACK]
     }
 }

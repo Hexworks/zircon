@@ -13,13 +13,13 @@ import org.hexworks.zircon.internal.event.ZirconScope
 
 interface RootContainer : InternalContainer {
 
-    // the Root Container is always attached
-    override val isAttached: Boolean
-        get() = true
-
     // since the RootContainer is always attached it is safe
     // to add a reference to the corresponding Application
     val application: Application
+
+    // the Root Container is always attached
+    override val isAttached: Boolean
+        get() = true
 
     val eventBus: EventBus
         get() = application.asInternal().eventBus
@@ -36,14 +36,5 @@ interface RootContainer : InternalContainer {
     fun calculatePathTo(component: InternalComponent): List<InternalComponent>
 
     fun fetchComponentByPositionOrNull(absolutePosition: Position): InternalComponent?
-
-    override fun addComponent(builder: Builder<Component>): AttachedComponent =
-        addComponent(builder.build())
-
-    override fun addComponents(vararg components: Component): List<AttachedComponent> =
-        components.map(::addComponent)
-
-    override fun addComponents(vararg components: Builder<Component>): List<AttachedComponent> =
-        components.map(::addComponent)
 
 }

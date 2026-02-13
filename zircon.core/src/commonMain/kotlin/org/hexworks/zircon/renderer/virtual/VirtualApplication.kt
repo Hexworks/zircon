@@ -3,7 +3,7 @@ package org.hexworks.zircon.renderer.virtual
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.Application
-import org.hexworks.zircon.internal.application.BaseApplication
+import org.hexworks.zircon.internal.application.ContinuousRenderingApplication
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.renderer.virtual.VirtualRenderer.VirtualView
@@ -16,7 +16,7 @@ class VirtualApplication(
     config: AppConfig,
     eventBus: EventBus,
     tileGrid: InternalTileGrid = DefaultTileGrid(config),
-) : BaseApplication<Char, VirtualApplication, VirtualView>(config, tileGrid, eventBus, VirtualRenderer(tileGrid)) {
+) : ContinuousRenderingApplication<Char, VirtualApplication, VirtualView>(config, tileGrid, eventBus, VirtualRenderer(tileGrid)) {
 
     override fun prepareRenderSurface(): Char {
         return ' '

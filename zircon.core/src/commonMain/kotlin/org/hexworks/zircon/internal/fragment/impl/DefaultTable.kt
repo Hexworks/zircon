@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
@@ -38,10 +39,10 @@ class DefaultTable<M : Any> internal constructor(
     private val dataPanelHeight = if (addHeader) height - 1 else height
     private val selectedElements: ListProperty<M> = emptyList<M>().toProperty()
 
-    override val selectedRowsValue: ObservableList<M> = selectedElements
+    override val selectedRowsProperty: ObservableList<M> = selectedElements
 
     override val selectedRows: List<M>
-        get() = selectedRowsValue.value
+        get() = selectedRowsProperty.value
 
     private val width: Int = columns.sumOf { it.width } + ((columns.size - 1) * colSpacing)
 

@@ -11,7 +11,6 @@ import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 interface AnimationFrame {
 
     val size: Size
-
     val layers: List<Layer>
 
     /**

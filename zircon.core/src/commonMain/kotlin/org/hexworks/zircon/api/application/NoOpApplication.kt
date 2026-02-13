@@ -23,7 +23,7 @@ class NoOpApplication(
     override lateinit var tileGrid: TileGrid
 
 
-    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closedProperty: Property<Boolean> = false.toProperty()
 
     override suspend fun start() {
     }
@@ -34,7 +34,7 @@ class NoOpApplication(
 
     override fun asInternal() = this
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
     }
 
     object NoOpSubscription : Subscription {

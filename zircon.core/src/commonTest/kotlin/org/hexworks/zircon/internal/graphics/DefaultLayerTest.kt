@@ -33,14 +33,14 @@ class DefaultLayerTest {
         val tile = Tile.defaultTile().withCharacter('x')
             .withBackgroundColor(DefaultAnsiPalette[ANSIColor.RED])
             .withForegroundColor(DefaultAnsiPalette[ANSIColor.BLUE])
-        target.draw(tile, Position.offset1x1())
+        target.draw(tile, Position.OFFSET_1X1)
 
-        target.tiles.toMap() shouldBe mapOf(Position.offset1x1() to tile)
+        target.tiles.toMap() shouldBe mapOf(Position.OFFSET_1X1 to tile)
     }
 
     @Test
     fun shouldProperlySetOffset() {
-        val expectedOffset = Position.defaultPosition()
+        val expectedOffset = Position.ZERO
         target.moveTo(expectedOffset)
         target.position shouldBe expectedOffset
     }
@@ -92,7 +92,7 @@ class DefaultLayerTest {
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))
-        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.one()))
+        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.ONE))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
             .withRelativeX(-1)

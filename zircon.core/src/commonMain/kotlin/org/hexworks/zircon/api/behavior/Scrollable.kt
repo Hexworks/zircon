@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 
 /**
@@ -13,13 +14,13 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
 interface Scrollable {
 
     /**
-     * the [Size] of the virtual space this [Scrollable] can scroll through
+     * The [Size] of the virtual space this [Scrollable] can scroll through.
      */
     var actualSize: Size
     val actualSizeProperty: Property<Size>
 
     /**
-     * the size of the visible part of this [Scrollable3D].
+     * The size of the visible part of this [Scrollable3D].
      */
     val visibleSize: Size
 
@@ -29,76 +30,13 @@ interface Scrollable {
     var visibleOffset: Position
     val visibleOffsetProperty: Property<Position>
 
-    /**
-     * Scrolls this [Scrollable] right by one tile.
-     * Has no effect if the bounds are already reached.
-     * @return the current `visibleOffset`
-     */
-    fun scrollOneRight(): Position
-
-    /**
-     * Scrolls this [Scrollable] left by one tile.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollOneLeft(): Position
-
-    /**
-     * Scrolls this [Scrollable] up by one tile.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollOneUp(): Position
-
-    /**
-     * Scrolls this [Scrollable] down by one tile.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollOneDown(): Position
-
-    /**
-     * Scrolls this [Scrollable] by [columns] width to the right.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollRightBy(columns: Int): Position
-
-    /**
-     * Scrolls this [Scrollable] by [columns] to the left.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollLeftBy(columns: Int): Position
-
-    /**
-     * Scrolls this [Scrollable] by [rows] up.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollUpBy(rows: Int): Position
-
-    /**
-     * Scrolls this [Scrollable] by [rows] down.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollDownBy(rows: Int): Position
-
-    /**
-     * Scrolls this [Scrollable] to the provided position.
-     * Has no effect if the bounds are already reached.
-     * @return the current [visibleOffset]
-     */
-    fun scrollTo(position: Position): Position
-
     companion object {
 
         fun create(
             visibleSize: Size,
             actualSize: Size
         ): Scrollable {
-            require(actualSize.toRect().containsBoundable(visibleSize.toRect())) {
+            require(visibleSize.width <= actualSize.width && visibleSize.height <= actualSize.height){
                 "Visible size cannot be bigger than actual size"
             }
             return DefaultScrollable(visibleSize, actualSize)

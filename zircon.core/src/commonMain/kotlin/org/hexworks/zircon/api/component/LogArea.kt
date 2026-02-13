@@ -37,7 +37,7 @@ interface LogArea : Component, Clearable {
     )
 
     /**
-     * Adds a row level component to the log
+     * Adds a row-level component to the log
      */
     fun addRow(
         row: Component,
@@ -45,26 +45,3 @@ interface LogArea : Component, Clearable {
     )
 }
 
-fun LogArea.addParagraph(text: String) {
-    val width = minOf(this.contentSize.width, text.length)
-    val height = ceil(text.length.toDouble().div(width)).toInt()
-
-    addRow(buildParagraph {
-        +text
-        withPreferredSize {
-            this.width = width
-            this.height = height
-        }
-        textWrap = TextWrap.WORD_WRAP
-    })
-}
-
-fun LogArea.addHeader(text: String) {
-    addRow(buildHeader {
-        +text
-    })
-}
-
-fun LogArea.addListItem(text: String) {
-    addRow(buildListItem { +text })
-}
