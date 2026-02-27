@@ -12,9 +12,9 @@ class LineFactoryTest {
             fromPoint = Position.create(0, 0),
             toPoint = Position.create(2, 0)
         ) shouldContainExactly listOf(
-            Position.defaultPosition(),
-            Position.defaultPosition().withRelativeX(1),
-            Position.defaultPosition().withRelativeX(2)
+            Position.DEFAULT_POSITION,
+            Position.DEFAULT_POSITION.withRelativeX(1),
+            Position.DEFAULT_POSITION.withRelativeX(2)
         )
     }
 
@@ -24,9 +24,9 @@ class LineFactoryTest {
             fromPoint = Position.create(2, 0),
             toPoint = Position.create(0, 0)
         ) shouldContainExactly listOf(
-            Position.defaultPosition().withRelativeX(2),
-            Position.defaultPosition().withRelativeX(1),
-            Position.defaultPosition()
+            Position.DEFAULT_POSITION.withRelativeX(2),
+            Position.DEFAULT_POSITION.withRelativeX(1),
+            Position.DEFAULT_POSITION
         )
     }
 
@@ -36,9 +36,9 @@ class LineFactoryTest {
             fromPoint = Position.create(0, 0),
             toPoint = Position.create(0, 2)
         ) shouldContainExactly listOf(
-            Position.defaultPosition(),
-            Position.defaultPosition().withRelativeY(1),
-            Position.defaultPosition().withRelativeY(2)
+            Position.DEFAULT_POSITION,
+            Position.DEFAULT_POSITION.withRelativeY(1),
+            Position.DEFAULT_POSITION.withRelativeY(2)
         )
     }
 
@@ -48,9 +48,9 @@ class LineFactoryTest {
             fromPoint = Position.create(0, 2),
             toPoint = Position.create(0, 0)
         ) shouldContainExactly listOf(
-            Position.defaultPosition().withRelativeY(2),
-            Position.defaultPosition().withRelativeY(1),
-            Position.defaultPosition()
+            Position.DEFAULT_POSITION.withRelativeY(2),
+            Position.DEFAULT_POSITION.withRelativeY(1),
+            Position.DEFAULT_POSITION
         )
     }
 

@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 @ZirconDsl
 class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
 
-    override var position: Position = Position.zero()
+    override var position: Position = 
 
     var width: Int? = null
 

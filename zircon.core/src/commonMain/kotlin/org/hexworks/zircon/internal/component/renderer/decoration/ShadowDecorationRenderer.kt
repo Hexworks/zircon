@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.renderer.decoration
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.color.Color.Companion.transparent
+import org.hexworks.zircon.api.color.Color.Companion.TRANSPARENT
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
@@ -23,7 +23,7 @@ data class ShadowDecorationRenderer(
     private val shadowTile = characterTile {
         character = shadowChar
         withStyleSet {
-            backgroundColor = transparent()
+            backgroundColor = TRANSPARENT
             foregroundColor = Color.create(100, 100, 100)
         }
     }

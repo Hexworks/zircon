@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
@@ -74,7 +73,7 @@ class DrawWindowTest {
         val subFiller = FILLER_UNDERSCORE.withCharacter('x')
 
         val result = target
-            .toDrawWindow(Rect.create(Position.offset1x1(), Size.create(2, 1)))
+            .toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size.create(2, 1)))
         result.fill(subFiller)
 
         val chars = backend.size.fetchPositions().map {
@@ -106,7 +105,7 @@ class DrawWindowTest {
         private val BACKEND_SIZE_5X5 = Size.create(5, 5)
         private val FILLER_UNDERSCORE = Tile.defaultTile().withCharacter('_')
 
-        val BOUNDS_1TO1_3X3 = Rect.create(Position.offset1x1(), Size.create(3, 3))
+        val BOUNDS_1TO1_3X3 = Boundable.create(Position.OFFSET_1X1, Size.create(3, 3))
     }
 
 }

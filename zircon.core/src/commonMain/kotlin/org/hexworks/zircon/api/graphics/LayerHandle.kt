@@ -20,16 +20,4 @@ interface LayerHandle : Layer, Movable {
      */
     fun moveByLevel(level: Int): Boolean
 
-    /**
-     * Moves this [Layer] up by one level.
-     * @return `true` if the operation was successful `false` if not
-     */
-    fun moveOneLevelUp(): Boolean = moveByLevel(1)
-
-    /**
-     * Moves this [Layer] down by one level.
-     * @return `true` if the operation was successful `false` if not
-     */
-    fun moveOneLevelDown(): Boolean = moveByLevel(-1)
-
 }

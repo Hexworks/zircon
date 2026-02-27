@@ -81,7 +81,7 @@ abstract class BaseNumberInput(
         }
         disabledStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         focusedStyle = styleSet {
             foregroundColor = colorTheme.primaryBackgroundColor

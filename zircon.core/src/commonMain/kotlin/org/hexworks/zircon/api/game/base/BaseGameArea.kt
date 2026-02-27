@@ -17,7 +17,7 @@ import org.hexworks.zircon.internal.game.InternalGameArea
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D,
-    initialVisibleOffset: Position3D = Position3D.defaultPosition(),
+    initialVisibleOffset: Position3D = Position3D.DEFAULT_POSITION,
     initialContents: Map<Position3D, B> = mapOf(),
     initialFilters: Iterable<GameAreaTileFilter<T>>,
     private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
@@ -27,7 +27,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
 ) : InternalGameArea<T, B>, Scrollable3D by scrollable3D {
 
     final override val visibleOffsetValue: ObservableValue<Position3D>
-        get() = scrollable3D.visibleOffsetValue
+        get() = scrollable3D.visibleOffsetProperty
 
     final override val filter = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
 

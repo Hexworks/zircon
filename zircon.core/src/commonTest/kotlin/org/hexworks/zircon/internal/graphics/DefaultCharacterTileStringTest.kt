@@ -237,7 +237,7 @@ class DefaultCharacterTileStringTest {
                 +TEXT
                 textWrap = NO_WRAPPING
                 size = surface.size
-            }, Position.offset1x1()
+            }, Position.OFFSET_1X1
         )
 
         surface.fetchCharacters() shouldContainExactly listOf(

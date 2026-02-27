@@ -16,7 +16,7 @@ class HorizontalTabBarBuilder(
     size: Size = Size.unknown(),
     defaultSelected: String? = null,
     tabs: List<TabBuilder> = listOf(),
-    position: Position = Position.zero()
+    position: Position = 
 ) : TabBarBuilder(
     size = size,
     defaultSelected = defaultSelected,

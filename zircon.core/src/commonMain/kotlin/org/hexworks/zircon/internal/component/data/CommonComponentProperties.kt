@@ -30,7 +30,7 @@ data class CommonComponentProperties<T : Component>(
     var bindingAction: BindingAction = UpdateOnBind,
     // can be changed runtime
     val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
-    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.unknown().toProperty(),
+    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
     val disabledProperty: Property<Boolean> = false.toProperty()

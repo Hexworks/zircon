@@ -150,7 +150,7 @@ abstract class BaseSlider(
     override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.primaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         highlightedStyle = styleSet {
             foregroundColor = colorTheme.primaryBackgroundColor

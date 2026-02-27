@@ -302,7 +302,7 @@ abstract class BaseComponentBuilder<T : Component>(
         }
     }
 
-    protected infix fun Size.fitsWithin(other: Size) = other.toRect().containsBoundable(toRect())
+    protected infix fun Size.fitsWithin(other: Size) = other.toBoundable().containsBoundable(toBoundable())
 
     private infix fun Int.doesntFitWithin(size: Size) = this > size.width * size.height
 

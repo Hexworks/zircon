@@ -21,5 +21,5 @@ class ComponentRenderContext<out T : Component>(val component: T) : RenderContex
     operator fun component3() = currentStyle
     operator fun component4() = theme
 
-
+    override fun toString(): String = "ComponentRenderContext(component=$component, componentStyle=$componentStyle, currentStyle=$currentStyle, theme=$theme)"
 }

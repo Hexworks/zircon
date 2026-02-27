@@ -19,7 +19,7 @@ class DefaultStackedTileTest {
         character = '1'
         withStyleSet {
             foregroundColor = DefaultAnsiPalette[ANSIColor.RED]
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
@@ -27,14 +27,14 @@ class DefaultStackedTileTest {
         character = '2'
         withStyleSet {
             foregroundColor = DefaultAnsiPalette[ANSIColor.GREEN]
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
     private val t3 = characterTile {
         character = '3'
         withStyleSet {
             foregroundColor = DefaultAnsiPalette[ANSIColor.BLUE]
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 

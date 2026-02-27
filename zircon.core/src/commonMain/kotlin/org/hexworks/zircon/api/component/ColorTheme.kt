@@ -4,6 +4,8 @@ import org.hexworks.zircon.api.builder.component.colorTheme
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.color.extensions.darkenByPercent
+import org.hexworks.zircon.api.color.extensions.desaturate
 import org.hexworks.zircon.api.component.data.ComponentState
 
 /**
@@ -55,11 +57,6 @@ interface ColorTheme {
      */
     val accentColor: Color
 
-    val isUnknown: Boolean
-        get() = this === UNKNOWN
-
-    val isNotUnknown: Boolean
-        get() = isUnknown.not()
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default
@@ -68,7 +65,7 @@ interface ColorTheme {
     fun toInteractiveStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = accentColor
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         highlightedStyle = styleSet {
             foregroundColor = secondaryForegroundColor
@@ -84,7 +81,7 @@ interface ColorTheme {
         }
         disabledStyle = styleSet {
             foregroundColor = accentColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
@@ -110,11 +107,11 @@ interface ColorTheme {
     fun toPrimaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = primaryForegroundColor
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         disabledStyle = styleSet {
             foregroundColor = primaryForegroundColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
@@ -125,17 +122,17 @@ interface ColorTheme {
     fun toSecondaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = secondaryForegroundColor
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         disabledStyle = styleSet {
             foregroundColor = secondaryForegroundColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = Color.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
     companion object {
 
-        private val UNKNOWN = colorTheme {
+        val UNKNOWN = colorTheme {
             name = "unknown"
         }
 

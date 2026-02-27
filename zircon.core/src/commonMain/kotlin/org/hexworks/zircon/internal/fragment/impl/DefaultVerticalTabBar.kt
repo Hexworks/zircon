@@ -51,7 +51,7 @@ class DefaultVerticalTabBar internal constructor(
 
         group.selectedButtonProperty.onChange { (_, newValue) ->
             newValue?.let { button ->
-                currentContent?.detach()?.moveTo(Position.defaultPosition())
+                currentContent?.detach()?.moveTo(Position.DEFAULT_POSITION)
                 currentContent = content.addComponent(lookup.getValue(button.key).content)
             }
         }

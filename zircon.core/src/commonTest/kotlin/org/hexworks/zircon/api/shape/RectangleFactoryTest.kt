@@ -10,7 +10,7 @@ class RectangleFactoryTest {
     @Test
     fun shouldProperlyDrawRectangle() {
         RectangleFactory.buildRectangle(
-            topLeft = Position.offset1x1(),
+            topLeft = Position.OFFSET_1X1,
             size = Size.create(3, 3)
         ) shouldContainExactly listOf(
             Position.create(x = 1, y = 1),

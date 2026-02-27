@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.component.data.ComponentState.*
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.uievent.MouseEvent
@@ -38,11 +37,11 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             highlightedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             focusedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryBackgroundColor
@@ -59,7 +58,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
         rendererStub = ComponentRendererStub(DefaultToggleButtonRenderer())
         drawWindow = tileGraphics {
             size = SIZE_15X1
-        }.toDrawWindow(Rect.create(size = SIZE_15X1))
+        }.toDrawWindow(Boundable.create(size = SIZE_15X1))
 
         target = DefaultToggleButton(
             componentMetadata = ComponentMetadata(
@@ -134,7 +133,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         rendererStub.clear()
@@ -146,7 +145,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.focusGiven()

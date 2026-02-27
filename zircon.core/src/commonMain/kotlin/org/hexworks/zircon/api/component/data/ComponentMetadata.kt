@@ -22,7 +22,7 @@ data class ComponentMetadata(
     val bindingAction: BindingAction = UpdateOnBind,
     // properties
     val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
-    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.unknown().toProperty(),
+    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
     val disabledProperty: Property<Boolean> = false.toProperty()

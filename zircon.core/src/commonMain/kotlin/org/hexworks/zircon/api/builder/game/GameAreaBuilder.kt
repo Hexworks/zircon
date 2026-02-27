@@ -22,7 +22,7 @@ class GameAreaBuilder<T : Tile, B : Block<T>> : Builder<GameArea<T, B>> {
         }
 
     var visibleSize: Size3D = Size3D.one()
-    var visibleOffset: Position3D = Position3D.defaultPosition()
+    var visibleOffset: Position3D = Position3D.DEFAULT_POSITION
     var blocks: Map<Position3D, B> = mapOf()
     var filters: List<GameAreaTileFilter<T>> = listOf()
 

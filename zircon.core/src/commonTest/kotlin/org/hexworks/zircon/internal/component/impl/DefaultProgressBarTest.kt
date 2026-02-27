@@ -31,7 +31,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 

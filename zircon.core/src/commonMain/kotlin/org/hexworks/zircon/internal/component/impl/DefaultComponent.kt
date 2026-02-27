@@ -8,18 +8,23 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
+import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.extensions.isNotUnknown
+import org.hexworks.zircon.api.component.extensions.isUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -41,8 +46,10 @@ abstract class DefaultComponent(
     private val renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
     private val movable: Movable = DefaultMovable(
-        position = metadata.relativePosition,
-        size = metadata.size
+        Boundable.create(
+            position = metadata.relativePosition,
+            size = metadata.size
+        ).toProperty()
     )
 ) : InternalComponent,
     ComponentEventSource by uiEventProcessor,
@@ -69,7 +76,7 @@ abstract class DefaultComponent(
         get() = position
     final override var relativePosition: Position = metadata.relativePosition
         private set
-    final override val relativeBounds: Rect
+    final override val relativeBounds: Boundable
         get() = rect.withPosition(relativePosition)
     final override val contentOffset: Position by lazy { renderer.contentPosition }
     final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
@@ -174,6 +181,7 @@ abstract class DefaultComponent(
         moveTo(originalPosition)
     }
 
+    //! TODO: maybe keep this in the interface so that it can be overridden
     override fun moveBy(position: Position) = moveTo(this.position + position)
 
     override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
@@ -187,7 +195,7 @@ abstract class DefaultComponent(
     override fun asInternalComponent(): InternalComponent = this
 
     override fun clearCustomStyle() {
-        componentStyleSet = ComponentStyleSet.defaultStyleSet()
+        componentStyleSet = ComponentStyleSet.DEFAULT_STYLE
     }
 
     final override fun requestFocus(): Boolean {

@@ -37,7 +37,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             highlightedStyle = styleSet {
                 backgroundColor = DEFAULT_THEME.accentColor
@@ -151,7 +151,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         rendererStub.clear()
@@ -163,7 +163,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.focusGiven()
@@ -179,7 +179,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.focusGiven()
         rendererStub.clear()
         target.mouseReleased(
-            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, ),
             phase = UIEventPhase.TARGET
         )
 

@@ -30,7 +30,7 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.primaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 

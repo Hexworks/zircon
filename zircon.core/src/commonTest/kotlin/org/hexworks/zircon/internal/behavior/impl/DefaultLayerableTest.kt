@@ -68,9 +68,9 @@ class DefaultLayerableTest {
 
         val tile = buildTile('x')
 
-        layer.draw(tile, Position.defaultPosition())
+        layer.draw(tile, Position.DEFAULT_POSITION)
 
-        layer.tiles shouldBe mapOf(Position.defaultPosition() to tile)
+        layer.tiles shouldBe mapOf(Position.DEFAULT_POSITION to tile)
     }
 
     @Test
@@ -82,9 +82,9 @@ class DefaultLayerableTest {
 
         val tile = buildTile('x')
 
-        layer.draw(tile, Position.defaultPosition())
+        layer.draw(tile, Position.DEFAULT_POSITION)
 
-        layer.tiles.toMap() shouldBe mapOf(Position.defaultPosition() to tile)
+        layer.tiles.toMap() shouldBe mapOf(Position.DEFAULT_POSITION to tile)
     }
 
     @Test
@@ -117,7 +117,7 @@ class DefaultLayerableTest {
         target.addLayer(oldLayer)
         target.setLayerAt(0, newLayer)
 
-        oldLayer.draw(oldTile, Position.defaultPosition())
+        oldLayer.draw(oldTile, Position.DEFAULT_POSITION)
 
         target.layers shouldContainExactly listOf(newLayer)
     }
@@ -135,7 +135,7 @@ class DefaultLayerableTest {
         target.addLayer(oldLayer).removeLayer()
         target.addLayer(newLayer)
 
-        oldLayer.draw(buildTile('z'), Position.defaultPosition())
+        oldLayer.draw(buildTile('z'), Position.DEFAULT_POSITION)
 
         target.layers shouldContainExactly listOf(newLayer)
     }

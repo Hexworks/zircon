@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
@@ -11,6 +12,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
@@ -74,7 +76,7 @@ open class DefaultContainer(
 
     final override fun asInternalComponent(): InternalContainer = this
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.unknown()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = ComponentStyleSet.UNKNOWN
 
     override fun acceptsFocus() = false
 
@@ -92,21 +94,21 @@ open class DefaultContainer(
         require(component.isAttached.not()) {
             "Component $component is already attached to a parent. Please detach it first."
         }
-        val originalRect = component.rect
+        val originalBoundable= component
         tileset.checkCompatibilityWith(component.tileset)
         val newPosition = component.absolutePosition + contentOffset + absolutePosition
         if (RuntimeConfig.config.shouldCheckBounds()) {
-            val contentBounds = contentSize.toRect()
+            val contentBounds = contentSize.toBoundable()
             require(contentBounds.containsBoundable(originalRect)) {
                 """Adding out of bounds component $component 
                         |to the container $this with content bounds $contentBounds
                         | is not allowed.""".trimMargin()
             }
-            val newRect = originalRect.withPosition(newPosition)
+            val newBoundable= originalBoundable.withPosition(newPosition)
             children.firstOrNull { it.intersects(newRect) }?.let {
                 throw IllegalArgumentException(
                     """You can't add a component to a container which intersects with other components.
-                        | $newRect is intersecting with $component.""".trimMargin()
+                        | $newBoundableis intersecting with $component.""".trimMargin()
                 )
             }
         }

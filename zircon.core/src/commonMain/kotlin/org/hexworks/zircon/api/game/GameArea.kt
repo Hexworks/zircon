@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 /**

@@ -41,7 +41,7 @@ class ModalBuilder<T : ModalResult> :
             "Can't build a modal without a content component."
         }
         val component = contentComponent!!
-        require(size.toRect().containsBoundable(component.rect)) {
+        require(size.toBoundable().containsBoundable(component.rect)) {
             "The component $component doesn't fit within the modal of size $size."
         }
         if (centeredDialog) {

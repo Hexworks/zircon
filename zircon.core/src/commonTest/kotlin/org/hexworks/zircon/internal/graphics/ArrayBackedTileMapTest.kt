@@ -105,9 +105,9 @@ class ArrayBackedTileMapTest {
             arr = arr
         )
         val copy = target.createCopy()
-        arr[0] = Entry(Position.zero(), FILLER)
+        arr[0] = Entry(, FILLER)
 
-        assertTrue(copy[Position.zero()] === null)
+        assertTrue(copy[] === null)
     }
 
     companion object {

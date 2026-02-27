@@ -37,6 +37,13 @@ class TileGridScreen(
             initialTheme = tileGrid.config.defaultColorTheme,
             application = tileGrid.application
         ),
+    /**
+     * The [bufferGrid] is this Screen instance's private grid that is modified
+     * whenever the user interacts with this Screen. Zircon always has a "default"
+     * tile grid that is the one that gets rendered on the user's display.
+     * When we [display] this screen we simply delegate all grid operations to
+     * this Screen's bufferGrid. This is why we have 2 tile grids.
+     */
     private val bufferGrid: InternalTileGrid = DefaultTileGrid(
         config = tileGrid.config,
         layerable = ComponentsLayerable(
@@ -68,6 +75,8 @@ class TileGridScreen(
 
     private val eventBus = application.eventBus
     private val eventScope = application.eventScope
+    private val notAlreadyDisplayed: Boolean
+        get() = activeScreenId != id
 
     val root = componentContainer.flattenedTree.first()
 
@@ -121,30 +130,29 @@ class TileGridScreen(
     }
 
     override fun display() {
-        if (activeScreenId != id) {
-            eventBus.publish(
-                event = ScreenSwitch(id, this),
-                eventScope = eventScope
-            )
-            activate()
-            MouseEventType.values().forEach { eventType ->
-                tileGrid.handleMouseEvents(eventType) { event, phase ->
-                    process(event, phase)
-                }.keepWhile(isActive)
+        if (notAlreadyDisplayed) {
+            switchScreenTo(this)
+
+            MouseEventType.entries.forEach { eventType ->
+                tileGrid.handleMouseEvents(eventType, this::process) keepWhile isActive
             }
-            KeyboardEventType.values().forEach { eventType ->
-                tileGrid.handleKeyboardEvents(eventType) { event, phase ->
-                    process(event, phase)
-                }.keepWhile(isActive)
+
+            KeyboardEventType.entries.forEach { eventType ->
+                tileGrid.handleKeyboardEvents(eventType, this::process) keepWhile isActive
             }
+
             eventBus.simpleSubscribeTo(RequestCursorAt, eventScope) { (position) ->
                 tileGrid.isCursorVisible = true
                 tileGrid.cursorPosition = position
-            }.keepWhile(isActive)
+            } keepWhile isActive
+
             eventBus.simpleSubscribeTo(HideCursor, eventScope) {
                 tileGrid.isCursorVisible = false
-            }.keepWhile(isActive)
-            tileGrid.delegateTo(bufferGrid)
+            } keepWhile isActive
+
+            // 📘 Displaying means delegating all grid operations to
+            // this Screen's bufferGrid
+            tileGrid delegateTo bufferGrid
         }
     }
 
@@ -160,6 +168,14 @@ class TileGridScreen(
         componentContainer.addModal(modal)
     }
 
+    private fun switchScreenTo(screen: InternalScreen) {
+        eventBus.publish(
+            event = ScreenSwitch(screen.id, screen),
+            eventScope = eventScope
+        )
+        activate()
+    }
+
     companion object {
 
         private val LOGGER = LoggerFactory.getLogger(TileGrid::class)
@@ -171,7 +187,7 @@ class TileGridScreen(
             application: Application
         ): ModalComponentContainer {
             val metadata = ComponentMetadata(
-                relativePosition = Position.defaultPosition(),
+                relativePosition = Position.DEFAULT_POSITION,
                 size = initialSize,
                 name = "Modal Component Container",
                 tilesetProperty = initialTileset.toProperty(),

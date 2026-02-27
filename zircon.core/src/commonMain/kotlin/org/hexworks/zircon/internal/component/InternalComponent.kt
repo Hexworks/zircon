@@ -19,16 +19,22 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 /**
  * A [InternalComponent] represents the internal API of the [Component] interface which adds
- * functionality which will be used by Zircon internally. This makes it possible to have
+ * functionality which Zircon will use internally. This makes it possible to have
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
 interface InternalComponent :
     Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
+    /**
+     * This is possibly `null` if the component is not attached to a root.
+     */
     var root: RootContainer?
     val rootValue: ObservableValue<RootContainer?>
 
+    /**
+     * @see root
+     */
     var parent: InternalContainer?
     val parentProperty: Property<InternalContainer?>
     val hasParent: ObservableValue<Boolean>
@@ -45,9 +51,10 @@ interface InternalComponent :
         get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.flattenedTree }
 
     /**
-     * The position that was set when the component was originally built. This might have changed during the
-     * lifetime of the component, especially if it was added to a parent.
+     * The position that was set when the component was originally built. The current position can change
+     * during the lifetime of the component, especially if it was added to a parent.
      */
+    //! TODO: figure out why we need this
     val originalPosition: Position
 
     val isAttached: Boolean
@@ -58,6 +65,7 @@ interface InternalComponent :
     /**
      * Tells how the [Component]'s observable properties should be
      * handled when the component is attached.
+     * E.g.: should they get updated from the new parent's properties
      */
     val bindingAction: BindingAction
 

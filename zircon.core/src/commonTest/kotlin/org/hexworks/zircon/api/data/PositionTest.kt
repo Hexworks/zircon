@@ -172,22 +172,22 @@ class PositionTest {
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithX() {
-        Position.create(1, 0).withX(0) shouldBeSameInstanceAs Position.zero()
+        Position.create(1, 0).withX(0) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeX() {
-        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs Position.zero()
+        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithY() {
-        Position.create(0, 1).withY(0) shouldBeSameInstanceAs Position.zero()
+        Position.create(0, 1).withY(0) shouldBeSameInstanceAs 
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeY() {
-        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs Position.zero()
+        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs 
     }
 
     @Test

@@ -6,12 +6,12 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTitleOverride
 /**
  * Represents an object that has a visual [title] that can be changed.
  */
-interface TitleOverride {
+interface TitleOverride : HasTitle {
 
     /**
      * The (mutable) title.
      */
-    var title: String
+    override var title: String
 
     /**
      * A [Property] that wraps the [title] and offers data binding and

@@ -33,14 +33,14 @@ class DefaultLayerTest {
         val tile = Tile.defaultTile().withCharacter('x')
             .withBackgroundColor(DefaultAnsiPalette[ANSIColor.RED])
             .withForegroundColor(DefaultAnsiPalette[ANSIColor.BLUE])
-        target.draw(tile, Position.offset1x1())
+        target.draw(tile, Position.OFFSET_1X1)
 
-        target.tiles.toMap() shouldBe mapOf(Position.offset1x1() to tile)
+        target.tiles.toMap() shouldBe mapOf(Position.OFFSET_1X1 to tile)
     }
 
     @Test
     fun shouldProperlySetOffset() {
-        val expectedOffset = Position.defaultPosition()
+        val expectedOffset = Position.DEFAULT_POSITION
         target.moveTo(expectedOffset)
         target.position shouldBe expectedOffset
     }

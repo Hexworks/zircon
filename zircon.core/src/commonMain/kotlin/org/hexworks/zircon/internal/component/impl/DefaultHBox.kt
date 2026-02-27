@@ -22,7 +22,7 @@ open class DefaultHBox(
     TitleOverride by TitleOverride.create(initialTitle) {
 
     private var filledUntil = Position.create(0, 0)
-    private var availableSpace = contentSize.toRect()
+    private var availableSpace = contentSize.toBoundable()
 
     override val remainingSpace: Int
         get() = availableSpace.width

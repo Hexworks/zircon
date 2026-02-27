@@ -3,8 +3,11 @@ package org.hexworks.zircon.api.behavior
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 
 /**
- * Represents a GUI element which can receive focus. When a GUI element
- * is focused, it will receive activation events (Space bar by default).
+ * Represents a GUI element that can receive focus. When a GUI element
+ * is focused, it can be activated by activation events (Space bar by default).
+ * For example, pressing the spacebar when a button is focused will trigger the
+ * button's action.
+ *
  * A [Focusable] needs to be [Identifiable] as well to allow easy identification
  * and lookup.
  */

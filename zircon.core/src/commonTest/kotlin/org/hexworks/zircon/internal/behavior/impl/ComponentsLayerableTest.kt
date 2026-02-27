@@ -37,10 +37,10 @@ class ComponentsLayerableTest {
         application = ApplicationStub()
         rootContainer = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = Position.zero(),
+                relativePosition = ,
                 size = SIZE_4X2,
                 tilesetProperty = CP437TilesetResources.bisasam16x16().toProperty(),
-                componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty(),
+                componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty(),
                 themeProperty = ColorThemes.adriftInDreams().toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(

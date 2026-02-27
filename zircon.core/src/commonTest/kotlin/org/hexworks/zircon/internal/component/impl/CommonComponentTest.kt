@@ -34,7 +34,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val SIZE_3_4 = Size.create(3, 4)
     val SIZE_10_4 = Size.create(10, 4)
     val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
-    val COMPONENT_STYLES = ComponentStyleSet.defaultStyleSet()
+    val COMPONENT_STYLES = ComponentStyleSet.DEFAULT_STYLE
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
         relativePosition = POSITION_2_3,
         size = SIZE_3_4,
@@ -79,7 +79,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     open fun shouldProperlyHandleMouseClicked() {
         rendererStub.clear()
 
-        target.mouseClicked(MouseEvent(MOUSE_CLICKED, 1, Position.zero()), TARGET)
+        target.mouseClicked(MouseEvent(MOUSE_CLICKED, 1, ), TARGET)
     }
 
 
@@ -88,7 +88,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedUp(
-            event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, Position.zero()),
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, ),
             phase = TARGET
         )
     }
@@ -98,7 +98,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedDown(
-            event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.zero()),
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, ),
             phase = TARGET
         )
     }
@@ -108,7 +108,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseDragged(
-            event = MouseEvent(MOUSE_DRAGGED, 1, Position.zero()),
+            event = MouseEvent(MOUSE_DRAGGED, 1, ),
             phase = TARGET
         )
     }
@@ -118,7 +118,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseMoved(
-            event = MouseEvent(MOUSE_MOVED, 1, Position.zero()),
+            event = MouseEvent(MOUSE_MOVED, 1, ),
             phase = TARGET
         )
     }
@@ -154,7 +154,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         val event = MouseEvent(
             type = MOUSE_PRESSED,
             button = 1,
-            position = Position.defaultPosition()
+            position = Position.DEFAULT_POSITION
         )
 
         target.process(event, TARGET)

@@ -39,7 +39,7 @@ class DefaultTileImageTest {
             tileset = CP437TilesetResources.aduDhabi16x16()
         }
             .withTileAt(Position.create(1, 1), defaultTile().withCharacter('x'))
-            .combineWith(other, Position.offset1x1())
+            .combineWith(other, Position.OFFSET_1X1)
             .toTileGraphics()
 
         IMAGE_3X3.getTileAtOrNull(FILLED_POS) shouldBe FILLER_TILE_A
@@ -52,14 +52,14 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyCreateCopyWithTileAt() {
-        val result = IMAGE_3X3.withTileAt(Position.offset1x1(), NEW_TILE_B)
+        val result = IMAGE_3X3.withTileAt(Position.OFFSET_1X1, NEW_TILE_B)
 
-        result.getTileAtOrNull(Position.offset1x1()) shouldBe NEW_TILE_B
+        result.getTileAtOrNull(Position.OFFSET_1X1) shouldBe NEW_TILE_B
     }
 
     @Test
     fun shouldProperlyCreateSubImage() {
-        val result = IMAGE_3X3.toSubImage(Position.offset1x1(), Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size.create(2, 1))
 
         result.tiles.toMap() shouldBe mapOf(
             Position.create(0, 0) to FILLER_TILE_A
@@ -110,7 +110,7 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyFetchCellsBy() {
-        val result = IMAGE_3X3.toSubImage(Position.offset1x1(), Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size.create(2, 1))
 
         result.tiles.toMap() shouldBe mapOf(
             Position.create(0, 0) to FILLER_TILE_A

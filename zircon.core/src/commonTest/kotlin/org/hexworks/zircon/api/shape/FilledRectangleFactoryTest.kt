@@ -10,7 +10,7 @@ class FilledRectangleFactoryTest {
     @Test
     fun shouldProperlyFillRectangle() {
         val result = FilledRectangleFactory.buildFilledRectangle(
-            topLeft = Position.offset1x1(),
+            topLeft = Position.OFFSET_1X1,
             size = Size.create(3, 3)
         )
 

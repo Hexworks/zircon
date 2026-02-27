@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType.*
@@ -90,9 +89,9 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldMoveByProperly() {
-        target.moveBy(Position.offset1x1())
+        target.moveBy(Position.OFFSET_1X1)
 
-        target.relativePosition shouldBe POSITION_2_3.withRelative(Position.offset1x1())
+        target.relativePosition shouldBe POSITION_2_3.withRelative(Position.OFFSET_1X1)
     }
 
     @Test
@@ -109,12 +108,12 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        target.containsBoundable(Rect.create(POSITION_2_3, SIZE_4x4 - Size.one())) shouldBe true
+        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 - Size.one())) shouldBe true
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        target.containsBoundable(Rect.create(POSITION_2_3, SIZE_4x4 + Size.one())) shouldBe false
+        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 + Size.one())) shouldBe false
     }
 
     @Test
@@ -124,7 +123,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldNotContainPositionWhichIsContained() {
-        target.containsPosition(POSITION_2_3 - Position.offset1x1()) shouldBe false
+        target.containsPosition(POSITION_2_3 - Position.OFFSET_1X1) shouldBe false
     }
 
     @Test
@@ -137,7 +136,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         }
 
         target.process(
-            event = MouseEvent(MOUSE_CLICKED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_CLICKED, 1, Position.DEFAULT_POSITION),
             phase = BUBBLE
         )
 
@@ -147,7 +146,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_hovered_Then_it_has_mouse_over_style() {
         target.mouseEntered(
-            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.DEFAULT_POSITION),
             phase = TARGET
         )
 
@@ -157,12 +156,12 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset() {
         target.mouseEntered(
-            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.DEFAULT_POSITION),
             phase = TARGET
         )
 
         target.mouseExited(
-            event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_EXITED, 1, Position.DEFAULT_POSITION),
             phase = TARGET
         )
 
@@ -174,7 +173,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         target.focusGiven()
 
         target.mouseExited(
-            event = MouseEvent(MOUSE_EXITED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_EXITED, 1, Position.DEFAULT_POSITION),
             phase = TARGET
         )
 

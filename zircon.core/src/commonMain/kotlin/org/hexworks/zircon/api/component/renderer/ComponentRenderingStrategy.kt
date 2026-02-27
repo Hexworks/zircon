@@ -8,6 +8,14 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 /**
  * Strategy for applying decorations and rendering
  * [org.hexworks.zircon.api.component.Component]s.
+ * The typical steps for rendering are:
+ * - Creating a [org.hexworks.zircon.api.graphics.impl.DrawWindow] over the
+ *   [org.hexworks.zircon.api.graphics.DrawSurface] of the component.
+ * - Applying decorations by using [DecorationRenderer]s.
+ * - Applying post-processing by using [ComponentPostProcessor]s.
+ *
+ * A component consists of the content area, and decorations.
+ * Use [contentPosition] to determine where the content area starts
  */
 interface ComponentRenderingStrategy<T : Component> {
 

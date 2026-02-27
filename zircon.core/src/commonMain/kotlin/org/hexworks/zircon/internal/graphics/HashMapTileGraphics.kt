@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.extensions.isEmpty
 import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -36,15 +37,6 @@ class HashMapTileGraphics(
     override fun transform(transformer: (Position, Tile) -> Tile) {
         tiles.forEach { (pos, tile) ->
             tiles[pos] = transformer(pos, tile)
-        }
-    }
-
-    override fun fill(filler: Tile) {
-        size.fetchPositions().forEach { pos ->
-            val tile = tiles[pos]
-            if (tile == null || tile.isEmpty) {
-                tiles[pos] = filler
-            }
         }
     }
 

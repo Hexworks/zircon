@@ -18,7 +18,7 @@ import org.hexworks.zircon.internal.graphics.DefaultLayer
  * Use this to build [Layer]s. Defaults are:
  * - size: [Size.one()]
  * - filler: [Tile.empty()]
- * - offset: [Position.defaultPosition()]
+ * - offset: [Position.DEFAULT_POSITION]
  * - has no text image by default
  */
 @ZirconDsl
@@ -26,7 +26,7 @@ class LayerBuilder : Builder<Layer> {
 
     var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
     var size: Size = Size.unknown()
-    var offset: Position = Position.defaultPosition()
+    var offset: Position = Position.DEFAULT_POSITION
     var tileGraphics: TileGraphics? = null
     var filler: Tile = Tile.empty()
 

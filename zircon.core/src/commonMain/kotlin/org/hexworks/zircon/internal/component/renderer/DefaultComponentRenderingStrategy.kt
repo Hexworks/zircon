@@ -1,22 +1,27 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
+import org.hexworks.zircon.api.data.Position.Companion.DEFAULT_POSITION
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 
 class DefaultComponentRenderingStrategy<T : Component>(
+
     /**
      * The [ComponentRenderer] which will be used to render
      * the *content* of this [Component].
      */
     val componentRenderer: ComponentRenderer<in T>,
+
     /**
      * The [ComponentDecorationRenderer]s this [Component] has.
      */
     val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
+
     /**
      * The [ComponentPostProcessor]s this [Component] has.
      */
@@ -26,18 +31,18 @@ class DefaultComponentRenderingStrategy<T : Component>(
     override val contentPosition: Position = decorationRenderers.asSequence()
         .map {
             it.offset
-        }.fold(Position.defaultPosition(), Position::plus)
+        }.fold(DEFAULT_POSITION, Position::plus)
 
     override fun render(component: T, graphics: TileGraphics) {
         if (component.isHidden.not()) {
-            var currentOffset = Position.defaultPosition()
+            var currentOffset = DEFAULT_POSITION
             var currentSize = graphics.size
 
 
             val componentArea = graphics.toDrawWindow(
-                Rect.create(
+                Boundable.create(
                     position = decorationRenderers
-                        .map { it.offset }.fold(Position.zero(), Position::plus),
+                        .map { it.offset }.fold(DEFAULT_POSITION, Position::plus),
                     size = graphics.size - decorationRenderers
                         .map { it.occupiedSize }.fold(Size.zero(), Size::plus)
                 )
@@ -49,7 +54,7 @@ class DefaultComponentRenderingStrategy<T : Component>(
             )
 
             decorationRenderers.forEach { renderer ->
-                val bounds = Rect.create(currentOffset, currentSize)
+                val bounds = Boundable.create(currentOffset, currentSize)
                 renderer.render(graphics.toDrawWindow(bounds), ComponentDecorationRenderContext(component))
                 currentOffset += renderer.offset
                 currentSize -= renderer.occupiedSize

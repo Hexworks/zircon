@@ -81,7 +81,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 32
                 height = 16
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val panelHeader = buildHeader {
@@ -158,7 +158,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 32
                 height = 16
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val panel1 = buildPanel {
@@ -170,7 +170,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
                 width = 16
                 height = 10
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
         }.asInternalComponent()
 
         val header0 = buildHeader {
@@ -269,7 +269,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         val applicationStub = ApplicationStub()
         val root = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = Position.defaultPosition(),
+                relativePosition = Position.DEFAULT_POSITION,
                 size = Size.create(50, 50),
             ),
             application = applicationStub,
@@ -297,7 +297,7 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldReturnUnknownStylesWhenThemeApplied() {
-        target.convertColorTheme(DEFAULT_THEME) shouldBeSameInstanceAs ComponentStyleSet.unknown()
+        target.convertColorTheme(DEFAULT_THEME) shouldBeSameInstanceAs ComponentStyleSet.UNKNOWN
     }
 
     @Test

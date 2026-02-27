@@ -44,7 +44,7 @@ class DefaultAnimationRunnerTest {
                 size = Size.one()
                 repeatCount = 1
             }
-            position = Position.offset1x1()
+            position = Position.OFFSET_1X1
             loopKind = Animation.InfiniteLoop
             fps = 1
         }

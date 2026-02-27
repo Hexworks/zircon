@@ -29,7 +29,7 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 

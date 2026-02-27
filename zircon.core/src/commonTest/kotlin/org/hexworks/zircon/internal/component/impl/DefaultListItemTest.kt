@@ -27,7 +27,7 @@ class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 

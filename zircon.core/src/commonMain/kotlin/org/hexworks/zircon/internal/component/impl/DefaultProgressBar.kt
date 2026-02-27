@@ -30,7 +30,7 @@ class DefaultProgressBar internal constructor(
     override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 

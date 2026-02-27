@@ -87,14 +87,14 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
         fun empty() = EMPTY
 
         private val DEFAULT_STYLE: StyleSet = DefaultStyleSet(
-            foregroundColor = Color.defaultForegroundColor(),
-            backgroundColor = Color.defaultBackgroundColor(),
+            foregroundColor = Color.DEFAULT_FOREGROUND_COLOR,
+            backgroundColor = Color.DEFAULT_BACKGROUND_COLOR,
             modifiers = setOf()
         )
 
         private val EMPTY: StyleSet = DefaultStyleSet(
-            foregroundColor = Color.transparent(),
-            backgroundColor = Color.transparent(),
+            foregroundColor = Color.TRANSPARENT,
+            backgroundColor = Color.TRANSPARENT,
             modifiers = setOf()
         )
     }

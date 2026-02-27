@@ -5,7 +5,6 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.toTileGraphics
@@ -33,11 +32,7 @@ open class DefaultLayer internal constructor(
 
     final override val size: Size
         get() = backend.size
-    final override val width: Int
-        get() = backend.size.width
-    final override val height: Int
-        get() = backend.size.height
-    final override val rect: Rect
+    final override val rect: Boundable
         get() = movable.rect
 
     final override val hiddenProperty = false.toProperty()
@@ -132,7 +127,7 @@ open class DefaultLayer internal constructor(
 
     final override fun toResized(newSize: Size, filler: Tile) = backend.toResized(newSize, filler)
 
-    final override fun toDrawWindow(rect: Rect) = DrawWindow(rect, backend)
+    final override fun toDrawWindow(rect: Boundable) = DrawWindow(rect, backend)
 
     override fun toString(): String {
         return backend.toString()

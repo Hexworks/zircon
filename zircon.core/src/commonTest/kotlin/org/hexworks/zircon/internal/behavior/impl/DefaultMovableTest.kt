@@ -15,13 +15,13 @@ class DefaultMovableTest {
     fun setUp() {
         target = DefaultMovable(
             size = TARGET_SIZE_10x10,
-            position = Position.defaultPosition()
+            position = Position.DEFAULT_POSITION
         )
     }
 
     @Test
     fun shouldContainPositionWhenThereIsNoOffsetAndSizeIsBiggerThanPos() {
-        target.containsPosition(Position.defaultPosition()) shouldBe true
+        target.containsPosition(Position.DEFAULT_POSITION) shouldBe true
     }
 
     @Test
@@ -56,7 +56,7 @@ class DefaultMovableTest {
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         target.intersects(
             layer {
-                offset = INTERSECTION_OFFSET_1x1
+                offset = INTERSECTION_Color.TRANSPARENT
                 size = Size.one()
             }
         ) shouldBe true
@@ -76,7 +76,7 @@ class DefaultMovableTest {
         const val DEFAULT_COLS_10 = 10
         const val DEFAULT_ROWS_10 = 10
         val TARGET_SIZE_10x10 = Size.create(DEFAULT_COLS_10, DEFAULT_ROWS_10)
-        val INTERSECTION_OFFSET_1x1 = Position.offset1x1()
+        val INTERSECTION_Color.TRANSPARENT = Position.OFFSET_1X1
         val NON_INTERSECTING_OFFSET_20x20 = Position.create(20, 20)
     }
 }

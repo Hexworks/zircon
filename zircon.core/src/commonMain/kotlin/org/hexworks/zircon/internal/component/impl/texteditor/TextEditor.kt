@@ -39,7 +39,7 @@ data class Line(
 
 data class EditorState(
     val lines: List<Line>,
-    val cursor: Position = Position.zero()
+    val cursor: Position = 
 )
 
 class TextEditor private constructor(
@@ -135,7 +135,7 @@ class TextEditor private constructor(
             return TextEditor(
                 EditorState(
                     lines = lines,
-                    cursor = Position.zero()
+                    cursor = 
                 )
             )
         }
@@ -168,7 +168,7 @@ val EditorState.cursorAtEndOfDocument: Boolean
     get() = cursorAtEndOfLine && cursor.y == lines.lastIndex
 
 val EditorState.cursorAtStartOfDocument: Boolean
-    get() = cursor == Position.zero()
+    get() = cursor == 
 
 val EditorState.hasNextLine: Boolean
     get() {

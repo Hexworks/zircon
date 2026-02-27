@@ -10,11 +10,11 @@ import org.hexworks.zircon.internal.component.impl.DefaultColorTheme
 class ColorThemeBuilder : Builder<ColorTheme> {
 
     var name: String = "anonymous"
-    var primaryForegroundColor: Color = Color.defaultForegroundColor()
-    var secondaryForegroundColor: Color = Color.defaultForegroundColor()
-    var primaryBackgroundColor: Color = Color.defaultBackgroundColor()
-    var secondaryBackgroundColor: Color = Color.defaultBackgroundColor()
-    var accentColor: Color = Color.defaultForegroundColor()
+    var primaryForegroundColor: Color = Color.DEFAULT_FOREGROUND_COLOR
+    var secondaryForegroundColor: Color = Color.DEFAULT_FOREGROUND_COLOR
+    var primaryBackgroundColor: Color = Color.DEFAULT_BACKGROUND_COLOR
+    var secondaryBackgroundColor: Color = Color.DEFAULT_BACKGROUND_COLOR
+    var accentColor: Color = Color.DEFAULT_FOREGROUND_COLOR
 
     override fun build(): ColorTheme = DefaultColorTheme(
         name = name,

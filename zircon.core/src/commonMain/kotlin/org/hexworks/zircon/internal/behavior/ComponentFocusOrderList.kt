@@ -4,7 +4,8 @@ import org.hexworks.zircon.internal.component.InternalComponent
 
 /**
  * Stores a doubly linked list of the focusable components of a component tree
- * and allows operations on them.
+ * and allows operations on them. This can be used to implement focus handling
+ * for components.
  */
 interface ComponentFocusOrderList {
 
@@ -13,12 +14,12 @@ interface ComponentFocusOrderList {
     fun isFocused(component: InternalComponent) = component == focusedComponent
 
     /**
-     * Returns the next component to focus.
+     * Returns the next component that can be focused.
      */
     fun findNext(): InternalComponent
 
     /**
-     * Returns the previous component to focus.
+     * Returns the previous component that can be focused.
      */
     fun findPrevious(): InternalComponent
 

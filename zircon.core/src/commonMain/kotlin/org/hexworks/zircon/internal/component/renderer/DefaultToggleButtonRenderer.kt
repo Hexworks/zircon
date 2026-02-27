@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.component.renderer
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSIColor
+import org.hexworks.zircon.api.color.extensions.withAlpha
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer

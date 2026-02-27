@@ -16,7 +16,7 @@ import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 class VerticalTabBarBuilder(
     size: Size = Size.unknown(),
     defaultSelected: String? = null,
-    position: Position = Position.zero(),
+    position: Position = ,
     tabs: List<TabBuilder> = listOf(),
 ) : TabBarBuilder(
     size = size,

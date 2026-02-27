@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.grid
 
 import org.hexworks.zircon.api.animation.AnimationRunner
 import org.hexworks.zircon.api.behavior.*
+import org.hexworks.zircon.api.behavior.extensions.height
+import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.Layer

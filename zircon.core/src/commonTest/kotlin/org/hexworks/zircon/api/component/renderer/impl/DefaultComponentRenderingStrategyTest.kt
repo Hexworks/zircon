@@ -178,8 +178,8 @@ class DefaultComponentRenderingStrategyTest {
 
     private fun createComponentMetadata(size: Size) = ComponentMetadata(
         size = size,
-        relativePosition = Position.defaultPosition(),
+        relativePosition = Position.DEFAULT_POSITION,
         tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),
-        componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty()
+        componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty()
     )
 }

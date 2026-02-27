@@ -6,125 +6,30 @@ import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
-import kotlin.math.max
-import kotlin.math.min
+import org.hexworks.zircon.api.data.extensions.to2DSize
 
 class DefaultScrollable3D(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D
 ) : Scrollable3D {
 
-    private val scrollable2D = Scrollable.create(
+    override val scrollable2D = Scrollable.create(
         visibleSize = initialVisibleSize.to2DSize(),
         actualSize = initialActualSize.to2DSize()
     )
 
     override val visibleSize = initialVisibleSize
-    override val actualSize = initialActualSize
+    override val actualSizeProperty = initialActualSize.toProperty()
+    override var actualSize by actualSizeProperty.asDelegate()
 
     init {
         checkSizes(initialActualSize)
     }
 
-    override val visibleOffsetValue = Position3D.from2DPosition(Position.defaultPosition()).toProperty()
-    override var visibleOffset by visibleOffsetValue.asDelegate()
-
-    override fun scrollOneRight() = Position3D.from2DPosition(
-        position = scrollable2D.scrollOneRight(),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollOneLeft() = Position3D.from2DPosition(
-        position = scrollable2D.scrollOneLeft(),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollOneForward() = Position3D.from2DPosition(
-        position = scrollable2D.scrollOneDown(),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollOneBackward() = Position3D.from2DPosition(
-        position = scrollable2D.scrollOneUp(),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollOneUp(): Position3D {
-        if (visibleSize.zLength + visibleOffset.z < actualSize.zLength) {
-            this.visibleOffset = visibleOffset.withRelativeZ(1)
-        }
-        return visibleOffset
-    }
-
-    override fun scrollOneDown(): Position3D {
-        if (visibleOffset.z > 0) {
-            visibleOffset = visibleOffset.withRelativeZ(-1)
-        }
-        return visibleOffset
-    }
-
-    override fun scrollRightBy(x: Int) = Position3D.from2DPosition(
-        position = scrollable2D.scrollRightBy(x),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollLeftBy(x: Int) = Position3D.from2DPosition(
-        position = scrollable2D.scrollLeftBy(x),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollForwardBy(y: Int) = Position3D.from2DPosition(
-        position = scrollable2D.scrollDownBy(y),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollBackwardBy(y: Int) = Position3D.from2DPosition(
-        position = scrollable2D.scrollUpBy(y),
-        z = visibleOffset.z
-    ).apply {
-        visibleOffset = this
-    }
-
-    override fun scrollUpBy(z: Int): Position3D {
-        require(z >= 0) {
-            "You can only scroll up by a positive amount!"
-        }
-        val levelToScrollTo = visibleOffset.z + z
-        val lastScrollableLevel = actualSize.zLength - visibleSize.zLength
-        visibleOffset = visibleOffset.copy(z = min(levelToScrollTo, lastScrollableLevel))
-        return visibleOffset
-    }
-
-    override fun scrollDownBy(z: Int): Position3D {
-        require(z >= 0) {
-            "You can only scroll down by a positive amount!"
-        }
-        val levelToScrollTo = visibleOffset.z - z
-        visibleOffset = visibleOffset.copy(z = max(0, levelToScrollTo))
-        return visibleOffset
-    }
-
-    override fun scrollTo(position3D: Position3D) {
-        require(actualSize.containsPosition(position3D))
-        {
-            "new position $position3D has to be within the actual size $actualSize"
-        }
-        visibleOffset = position3D
-    }
+    override val visibleOffsetProperty = Position3D.from2DPosition(
+        position = Position.DEFAULT_POSITION
+    ).toProperty()
+    override var visibleOffset by visibleOffsetProperty.asDelegate()
 
     private fun checkSizes(newSize: Size3D) {
         require(newSize.xLength >= visibleSize.xLength) {

@@ -75,7 +75,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     }
 
     final override fun render(context: C) {
-        if (closed.not()) {
+        if (!closed) {
             val now = DateTime.nowUnixMillisLong()
             beforeRenderDataProp.value = RenderData(now)
             processInputEvents()

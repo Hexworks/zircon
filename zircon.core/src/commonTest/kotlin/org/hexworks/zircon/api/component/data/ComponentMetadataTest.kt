@@ -17,7 +17,7 @@ class ComponentMetadataTest {
                 relativePosition = Position.create(-1, 0),
                 size = Size.zero(),
                 tilesetProperty = BuiltInCP437TilesetResource.WANDERLUST_16X16.toProperty(),
-                componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty()
+                componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty()
             )
         }
     }

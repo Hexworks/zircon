@@ -36,7 +36,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             highlightedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.primaryBackgroundColor
@@ -52,7 +52,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
             }
             disabledStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 
@@ -118,7 +118,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     @Test
     fun shouldProperlyHandleMousePress() {
         target.mouseEntered(
-            event = MouseEvent(MOUSE_ENTERED, 1, Position.defaultPosition()),
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.DEFAULT_POSITION),
             phase = UIEventPhase.TARGET
         )
         target.activated()
@@ -131,7 +131,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
         target.focusGiven()
         target.activated()
         target.mouseReleased(
-            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.defaultPosition()),
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.DEFAULT_POSITION),
             phase = UIEventPhase.TARGET
         )
 

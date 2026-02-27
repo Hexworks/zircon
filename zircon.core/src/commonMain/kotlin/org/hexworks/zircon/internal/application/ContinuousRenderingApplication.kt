@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.application
 import korlibs.time.DateTime
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import org.hexworks.cobalt.databinding.api.binding.bindNot
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.EventBus
@@ -20,7 +19,7 @@ import org.hexworks.zircon.internal.renderer.Renderer
  * if your rendering library doesn't support continuous rendering, or you want
  * to have a custom implementation.
  */
-abstract class BaseApplication<R : Any, A : Application, V>(
+abstract class ContinuousRenderingApplication<R : Any, A : Application, V>(
     final override val config: AppConfig,
     final override val tileGrid: TileGrid,
     final override val eventBus: EventBus,
@@ -45,8 +44,6 @@ abstract class BaseApplication<R : Any, A : Application, V>(
         get() = closedValue.value
     final override val closedValue: Property<Boolean> = false.toProperty()
 
-    private val running = closedValue.bindNot()
-
     init {
         coroutineScope.launch {
             for (cmd in channel) {
@@ -61,7 +58,7 @@ abstract class BaseApplication<R : Any, A : Application, V>(
 
     private fun startRenderLoop() {
         renderLoop = executeCommand {
-            while (running.value) {
+            while (!closed) {
                 try {
                     val now = DateTime.nowUnixMillisLong()
                     val elapsedTimeMs = now - lastRender
@@ -82,8 +79,8 @@ abstract class BaseApplication<R : Any, A : Application, V>(
     }
 
     override fun close() {
+        closedValue.value = true
         executeCommand {
-            closedValue.value = true
             renderLoop?.cancel()
             renderer.close()
             tileGrid.close()

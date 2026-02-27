@@ -35,7 +35,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             highlightedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.primaryBackgroundColor
@@ -51,7 +51,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
             }
             disabledStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 
@@ -126,7 +126,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.activated()
@@ -137,7 +137,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.zero()),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
             phase = UIEventPhase.TARGET
         )
         target.focusGiven()

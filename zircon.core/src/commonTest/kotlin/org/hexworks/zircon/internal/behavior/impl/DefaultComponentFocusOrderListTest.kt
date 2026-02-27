@@ -34,10 +34,10 @@ class DefaultComponentFocusOrderListTest {
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = Position.zero(),
+                relativePosition = ,
                 size = Size.create(100, 100),
                 tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),
-                componentStyleSetProperty = ComponentStyleSet.defaultStyleSet().toProperty()
+                componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub

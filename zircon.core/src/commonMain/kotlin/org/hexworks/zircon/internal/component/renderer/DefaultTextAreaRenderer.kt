@@ -4,6 +4,8 @@ import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.extensions.containsPosition
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.event.ZirconEvent

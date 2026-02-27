@@ -27,7 +27,7 @@ class DefaultLabelTest : ComponentImplementationTest<DefaultLabel>() {
         get() = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
         }
 

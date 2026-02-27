@@ -51,7 +51,7 @@ object DeleteBeforeCursor : Transformation {
 }
 
 private val Position.isAtTopLeft: Boolean
-    get() = this == Position.zero()
+    get() = this == 
 
 private val Position.isAtTheStartOfNotTheFirstRow: Boolean
     get() = this.x == 0 && this.y > 0

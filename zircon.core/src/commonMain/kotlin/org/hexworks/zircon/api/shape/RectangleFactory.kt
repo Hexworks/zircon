@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.shape
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 
 object RectangleFactory : ShapeFactory<RectangleParameters> {
 

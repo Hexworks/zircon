@@ -72,7 +72,7 @@ class DefaultTextArea internal constructor(
         }
         disabledStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         // 📙 Note that the following 3 are the same because otherwise the component
         // would react to hover making it flicker when it is already focused.

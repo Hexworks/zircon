@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.offset1x1
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size.Companion.one
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
@@ -48,7 +47,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         rendererStub = ComponentRendererStub()
         drawWindow = tileGraphics {
             size = SIZE_3_4
-        }.toDrawWindow(Rect.create(size = SIZE_3_4))
+        }.toDrawWindow(Boundable.create(size = SIZE_3_4))
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
             metadata = ComponentMetadata(
@@ -166,12 +165,12 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
                 width = 2
                 height = 3
             }
-            position = offset1x1()
+            position = OFFSET_1X1
             tileset = TILESET_REX_PAINT_20X20
         }.asInternalComponent()
 
         val label = buildLabel {
-            position = offset1x1()
+            position = OFFSET_1X1
             preferredSize = one()
             tileset = TILESET_REX_PAINT_20X20
         }.asInternalComponent()

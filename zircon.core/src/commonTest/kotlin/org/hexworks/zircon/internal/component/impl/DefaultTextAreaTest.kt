@@ -41,7 +41,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
             }
             disabledStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = transparent()
+                backgroundColor = Color.TRANSPARENT
             }
             focusedStyle = styleSet {
                 foregroundColor = DEFAULT_THEME.primaryBackgroundColor
@@ -217,7 +217,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
         rendererStub.render(drawWindow, ComponentRenderContext(target))
-        val character = drawWindow.getTileAtOrNull(Position.defaultPosition())
+        val character = drawWindow.getTileAtOrNull(Position.DEFAULT_POSITION)
 
         character?.asCharacterTileOrNull()?.character shouldBe UPDATE_TEXT
     }

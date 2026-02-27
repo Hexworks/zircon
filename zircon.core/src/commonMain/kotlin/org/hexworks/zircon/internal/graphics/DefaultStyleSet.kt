@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
 data class DefaultStyleSet(
-    override val foregroundColor: Color = Color.defaultForegroundColor(),
-    override val backgroundColor: Color = Color.defaultBackgroundColor(),
+    override val foregroundColor: Color = Color.DEFAULT_FOREGROUND_COLOR,
+    override val backgroundColor: Color = Color.DEFAULT_BACKGROUND_COLOR,
     override val modifiers: Set<Modifier> = setOf()
 ) : StyleSet {
 

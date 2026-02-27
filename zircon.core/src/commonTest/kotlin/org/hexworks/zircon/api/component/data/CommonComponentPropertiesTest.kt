@@ -14,7 +14,7 @@ class CommonComponentPropertiesTest {
     fun shouldHaveProperDefaults() {
         val result = CommonComponentProperties<Component>()
 
-        result.componentStyleSet shouldBe ComponentStyleSet.unknown()
+        result.componentStyleSet shouldBe ComponentStyleSet.UNKNOWN
         result.tileset shouldBe TilesetResource.unknown()
         result.decorationRenderers shouldBe listOf<ComponentDecorationRenderer>()
 

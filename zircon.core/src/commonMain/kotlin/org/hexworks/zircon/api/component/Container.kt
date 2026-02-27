@@ -4,9 +4,10 @@ import org.hexworks.zircon.internal.component.InternalContainer
 
 /**
  * A [Container] is a [Component] that can contain other components.
- * Those components will be bounded by this container.
- * You can add other [Container]s to a container but you can't add
+ * Those components will be within the bounds of this container.
+ * You can add other [Container]s to a container, but you can't add
  * components to a [Component].
+ *
  * @see ComponentContainer
  * @see Component
  */

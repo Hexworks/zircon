@@ -74,9 +74,9 @@ abstract class TileGraphicsTest {
 
     @Test
     fun When_setting_a_tile_within_bounds_Then_it_should_be_set() {
-        target.draw(FILLER, Position.offset1x1())
+        target.draw(FILLER, Position.OFFSET_1X1)
 
-        target.getTileAtOrNull(Position.offset1x1())!! shouldBe FILLER
+        target.getTileAtOrNull(Position.OFFSET_1X1)!! shouldBe FILLER
     }
 
     @Test
@@ -189,7 +189,7 @@ abstract class TileGraphicsTest {
             .withForegroundColor(DefaultAnsiPalette[ANSIColor.GREEN])
             .withBackgroundColor(DefaultAnsiPalette[ANSIColor.YELLOW])
 
-        target.toDrawWindow(Rect.create(Position.offset1x1(), Size.one()))
+        target.toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size.one()))
             .applyStyle(new)
 
         target.size.fetchPositions().map {
