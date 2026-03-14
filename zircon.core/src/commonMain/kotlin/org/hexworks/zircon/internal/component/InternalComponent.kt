@@ -4,6 +4,7 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.behavior.Boundable
 
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -45,22 +46,13 @@ interface InternalComponent :
     val children: ObservableList<out InternalComponent>
 
     /**
-     * Contains `this` component and all of its descendants
-     */
-    val flattenedTree: Collection<InternalComponent>
-        get() = listOf(this) + children.map { it.asInternalComponent() }.flatMap { it.flattenedTree }
-
-    /**
      * The position that was set when the component was originally built. The current position can change
      * during the lifetime of the component, especially if it was added to a parent.
+     * We store its [originalPosition] because if we detach a component we need to know what its original
+     * settings were.
+     * @see org.hexworks.zircon.api.component.AttachedComponent.detach
      */
-    //! TODO: figure out why we need this
     val originalPosition: Position
-
-    val isAttached: Boolean
-        get() = parent != null
-    val isAttachedToRoot: Boolean
-        get() = root != null
 
     /**
      * Tells how the [Component]'s observable properties should be
@@ -75,14 +67,5 @@ interface InternalComponent :
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
      */
     fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
-
-    /**
-     * Runs [fn] only if this [Component] [isAttachedToRoot] or it **is** a root.
-     */
-    fun whenConnectedToRoot(fn: (root: RootContainer) -> Unit) {
-        if (isAttachedToRoot || this is RootContainer) {
-            root?.let(fn)
-        }
-    }
 
 }

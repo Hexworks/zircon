@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -11,29 +12,43 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
-import org.hexworks.zircon.api.builder.data.position
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
-import org.hexworks.zircon.api.component.data.ComponentState.*
+import org.hexworks.zircon.api.component.data.ComponentState.ACTIVE
+import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
+import org.hexworks.zircon.api.component.data.ComponentState.DISABLED
+import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
+import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
 import org.hexworks.zircon.api.component.extensions.isNotUnknown
 import org.hexworks.zircon.api.component.extensions.isUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.extensions.asInvariant
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.extensions.withRelativeX
-import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.ComponentEventSource
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.*
+import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.ACTIVATED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.DEACTIVATED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_GIVEN
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.FOCUS_TAKEN
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_ENTERED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_EXITED
+import org.hexworks.zircon.internal.component.impl.DefaultComponent.EventType.MOUSE_RELEASED
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
@@ -41,16 +56,22 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 
 @Suppress("UNCHECKED_CAST")
-abstract class DefaultComponent(
+open class DefaultComponent(
     metadata: ComponentMetadata,
     private val renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
-    private val movable: Movable = DefaultMovable(
-        Boundable.create(
-            position = metadata.relativePosition,
-            size = metadata.size
-        ).toProperty()
-    )
+    //? 📙 Note that this is using the relativePosition, but a Component
+    //? is never attached by default, so there is really no difference between relative
+    //? and absolute. In practice this is the absolute position as soon as the
+    //? component is attached
+    override val absoluteBoundsProperty: Property<Boundable> = Boundable.create(
+        position = metadata.relativePosition,
+        size = metadata.size
+    ).toProperty(),
+    private val movable: Movable = DefaultMovable(absoluteBoundsProperty),
+    override val positionProperty: ObservableValue<Position>,
+    override val relativePositionProperty: ObservableValue<Position>,
+    override val relativeBoundsProperty: ObservableValue<Boundable>
 ) : InternalComponent,
     ComponentEventSource by uiEventProcessor,
     Movable by movable,
@@ -61,30 +82,36 @@ abstract class DefaultComponent(
     final override val id: UUID = UUID.randomUUID()
     final override val name: String = metadata.name
 
-    // component state and position
+    //#region Component hierarchy and state properties
     final override val rootValue: Property<RootContainer?> = null.toProperty()
     final override var root: RootContainer? by rootValue.asDelegate()
+
     final override val parentProperty: Property<InternalContainer?> = null.toProperty()
     final override var parent: InternalContainer? by parentProperty.asDelegate()
+
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it != null }
     final override val hasFocusValue = false.toProperty()
     final override val hasFocus: Boolean by hasFocusValue.asDelegate()
+    //#endregion
 
-    // positioning
+    //#region Positioning
     final override val originalPosition: Position = metadata.relativePosition
-    final override val absolutePosition: Position
-        get() = position
     final override var relativePosition: Position = metadata.relativePosition
         private set
+
+    override val absoluteBounds: Boundable by absoluteBoundsProperty.asDelegate()
     final override val relativeBounds: Boundable
-        get() = rect.withPosition(relativePosition)
+        //! TODO: bug?
+        get() = absoluteBounds
+
     final override val contentOffset: Position by lazy { renderer.contentPosition }
     final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
+    //#endregion
 
+    //#region Common properties
     final override val componentStateValue = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateValue.asDelegate()
 
-    // Common properties
     final override val themeProperty = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
@@ -103,15 +130,16 @@ abstract class DefaultComponent(
 
     final override val disabledProperty = metadata.disabledProperty
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
+    //#endregion
 
-
-    // Misc
+    //#region Misc
     final override val bindingAction = metadata.bindingAction
     override val children: ObservableList<out InternalComponent> = persistentListOf<InternalComponent>().toProperty()
+    //#endregion
 
     init {
-        val updateState: (Boolean) -> Unit = {
-            componentState = if (it) {
+        val updateState: (ObservableValueChanged<Boolean>) -> Unit = { (_, isDisabled) ->
+            componentState = if (isDisabled) {
                 logger.debug { "Component disabled. Applying disabled style." }
                 DISABLED
             } else {
@@ -119,78 +147,84 @@ abstract class DefaultComponent(
                 DEFAULT
             }
         }
-        val updateTheme: (ColorTheme) -> Unit = {
-            if (it.isNotUnknown) {
-                componentStyleSet = convertColorTheme(it)
+
+        val updateTheme: (ObservableValueChanged<ColorTheme>) -> Unit = { (_, newTheme) ->
+            if (newTheme.isNotUnknown) {
+                componentStyleSet = convertColorTheme(newTheme)
             }
         }
-        val updateStyle: (ComponentStyleSet) -> Unit = {
-            if (it.isNotUnknown) {
-                componentStyleSet = it
+
+        val updateStyle: (ObservableValueChanged<ComponentStyleSet>) -> Unit = { (_, newStyle) ->
+            if (newStyle.isNotUnknown) {
+                componentStyleSet = newStyle
             }
         }
-        disabledProperty.onChange {
-            updateState(it.newValue)
+
+
+        disabledProperty.onChange(updateState)
+        themeProperty.onChange(updateTheme)
+        componentStyleSetProperty.onChange(updateStyle)
+        componentState = if (isDisabled) DISABLED else DEFAULT
+
+        if (componentStyleSet.isUnknown and theme.isNotUnknown) {
+            componentStyleSet = convertColorTheme(theme)
         }
-        themeProperty.onChange {
-            updateTheme(it.newValue)
-        }
-        componentStyleSetProperty.onChange {
-            updateStyle(it.newValue)
-        }
-        updateState(isDisabled)
-        if (componentStyleSet.isUnknown) {
-            updateTheme(theme)
-        }
+    }
+
+    //#region Object overrides
+    override fun toString(): String {
+        val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
+        return "${name.ifBlank { this::class.simpleName }}(id=${id.toString().substring(0, 4)}, " +
+                "position=$position, relativePosition=$relativePosition, size=$size, " +
+                "state=$componentState, disabled=$isDisabled$text)"
+    }
+
+    final override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null) return false
+        if (this::class != other::class) return false
+        if (other !is DefaultComponent) return false
+        return id == other.id
+    }
+
+    final override fun hashCode(): Int {
+        return id.hashCode()
+    }
+    //#endregion
+
+    override fun render(): TileGraphics = FastTileGraphics(
+        initialSize = size,
+        initialTileset = tileset
+    ).also { tg ->
+        renderer.asInvariant().render(this@DefaultComponent, tg)
     }
 
     // TODO: 💡 optimize this by doing a render whenever the component changes
-    override fun render(): TileGraphics {
-        val tg = FastTileGraphics(
-            initialSize = size,
-            initialTileset = tileset
-        )
-        (renderer as ComponentRenderingStrategy<Component>).render(
-            this, tg
-        )
-        return tg
-    }
+    override fun render(graphics: TileGraphics) = renderer.asInvariant().render(this, graphics)
 
-    override fun render(graphics: TileGraphics) {
-        (renderer as ComponentRenderingStrategy<Component>).render(this, graphics)
-    }
-
-    // MOVABLE
-
+    /**
+     * Moves this component to the given **absolute** position
+     */
     override fun moveTo(position: Position): Boolean {
         parent?.let { parent ->
-            val newBounds = movable.rect.withPosition(position)
+            val newBounds = movable.withPosition(position)
+            //! TODO: make it configurable to throw or ignore here
             require(parent.containsBoundable(newBounds)) {
                 "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."
             }
         }
-        val diff = position - absolutePosition
+        val diff = position - this.position
         movable.moveTo(position)
         relativePosition += diff
         return true
     }
 
+    //#region Component state and events
     override fun resetState() {
         clearFocus()
         componentState = DEFAULT
         moveTo(originalPosition)
     }
-
-    //! TODO: maybe keep this in the interface so that it can be overridden
-    override fun moveBy(position: Position) = moveTo(this.position + position)
-
-    override fun moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
-
-    override fun moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
-
-    override fun moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
-
-    override fun moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
 
     override fun asInternalComponent(): InternalComponent = this
 
@@ -201,20 +235,24 @@ abstract class DefaultComponent(
     final override fun requestFocus(): Boolean {
         whenConnectedToRoot { root ->
             root.eventBus.publish(
-                event = RequestFocusFor(this, this),
+                event = RequestFocusFor(
+                    component = this,
+                    emitter = this
+                ),
                 eventScope = root.eventScope
             )
         }
         return hasFocusValue.value
     }
 
-    final override fun clearFocus() {
-        whenConnectedToRoot { root ->
-            root.eventBus.publish(
-                event = ClearFocus(this, this),
-                eventScope = root.eventScope
-            )
-        }
+    final override fun clearFocus() = whenConnectedToRoot { root ->
+        root.eventBus.publish(
+            event = ClearFocus(
+                component = this,
+                emitter = this
+            ),
+            eventScope = root.eventScope
+        )
     }
 
     override fun focusGiven() = whenEnabled {
@@ -260,24 +298,6 @@ abstract class DefaultComponent(
         Processed
     }
 
-    override fun toString(): String {
-        val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
-        return "${name.ifBlank { this::class.simpleName }}(id=${id.toString().substring(0, 4)}, " +
-                "absolutePosition=$absolutePosition, relativePosition=$relativePosition, size=$size, " +
-                "state=$componentState, disabled=$isDisabled$text)"
-    }
-
-    final override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null) return false
-        if (this::class != other::class) return false
-        other as DefaultComponent
-        return id == other.id
-    }
-
-    final override fun hashCode(): Int {
-        return id.hashCode()
-    }
 
     private fun updateComponentState(eventType: EventType) {
         val key = ComponentStateKey(
@@ -299,7 +319,9 @@ abstract class DefaultComponent(
             }
         }
     }
+    //#endregion
 
+    //#region Inner classes
     enum class EventType {
         FOCUS_GIVEN, FOCUS_TAKEN, MOUSE_ENTERED, MOUSE_EXITED, MOUSE_PRESSED, MOUSE_RELEASED, ACTIVATED, DEACTIVATED
     }
@@ -309,6 +331,7 @@ abstract class DefaultComponent(
         val isFocused: Boolean,
         val eventType: EventType
     )
+    //#endregion
 
     companion object {
 
@@ -332,10 +355,10 @@ abstract class DefaultComponent(
             // this particular case can happen when the user is pressing a button which
             // on its action callback removes the focus from it
             ComponentStateKey(ACTIVE, false, DEACTIVATED) to HIGHLIGHTED,
-            // This happens when space is pressed on a component then the user presses tab (and focus is lost)
+            // This happens when space is pressed on a component, then the user presses tab (and focus is lost)
             ComponentStateKey(ACTIVE, true, FOCUS_TAKEN) to DEFAULT,
-            // this happens when a component is removed when clicked in a HBox and
-            // the next (to its right) component gets realigned
+            // this happens when a component is removed when clicked in an HBox (or something similar)
+            // and the next (to its right) component gets realigned
             ComponentStateKey(DEFAULT, false, MOUSE_RELEASED) to HIGHLIGHTED,
             // these happen when a modal window is opened when a button is clicked
             ComponentStateKey(HIGHLIGHTED, true, FOCUS_TAKEN) to DEFAULT,

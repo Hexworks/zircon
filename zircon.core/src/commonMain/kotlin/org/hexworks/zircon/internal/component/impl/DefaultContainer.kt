@@ -52,6 +52,8 @@ open class DefaultContainer(
      * and let Zircon do the heavy lifting for you.
      */
     override fun addComponent(component: Component): InternalAttachedComponent {
+        //! TODO: refactor this as this function also moves the component and it is
+        //! totally not seen here
         val ic = checkIfCanAdd(component)
         val parent = this
         val attachment = DefaultAttachedComponent(ic, parent)

@@ -18,7 +18,6 @@ interface Movable : Boundable {
     override val size: Size
     val sizeValue: ObservableValue<Size>
 
-
     /**
      * Sets the position of this [Movable].
      * @return `true` if the operation was successful, `false` if not

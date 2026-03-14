@@ -111,41 +111,50 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * @see ComponentEventSource
  * @see Focusable
  */
+//! TODO: add minimum size
 interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
-    val rect: Any
-
     /**
-     * The absolute position of this [Component], e.g.: the [Position] relative to the
+     * The **absolute** position of this [Component], e.g.: the [Position] relative to the
      * top left corner of the grid it is displayed on. This value is context-dependent,
      * and it is calculated based on the parent it is attached to.
      */
-    val absolutePosition: Position
+    override val position: Position
+    val positionProperty: ObservableValue<Position>
 
     /**
      * The relative position is the position of the top left corner of this [Component]
      * relative to the [contentOffset] of its parent.
      */
     val relativePosition: Position
+    val relativePositionProperty: ObservableValue<Position>
 
     /**
-     * The position of the top left corner of the **content area** (where the component
-     * is rendered without the decorations) relative to the top left corner of this
-     * [Component]. In other words the content offset is the sum of the offset positions
-     * for each decoration.
+     * The bounds of this [Component] relative to the top left corner of the grid it is
+     * displayed on.
      */
-    val contentOffset: Position
-
-    /**
-     * The [Size] of the content of this [Component]. In other words the content
-     * size is the total size of the component minus the size of its decorations.
-     */
-    val contentSize: Size
+    val absoluteBounds: Boundable
+    val absoluteBoundsProperty: ObservableValue<Boundable>
 
     /**
      * The bounds of this [Component] relative to its parent.
      */
     val relativeBounds: Boundable
+    val relativeBoundsProperty: ObservableValue<Boundable>
+
+    /**
+     * The position of the top left corner of the **content area** (where the component
+     * is rendered without the decorations) relative to the top left corner of this
+     * [Component]. In other words, the content offset is the sum of the offset positions
+     * for each decoration.
+     */
+    val contentOffset: Position
+
+    /**
+     * The [Size] of the content of this [Component]. In other words, the content
+     * size is the total size of the component minus the size of its decorations.
+     */
+    val contentSize: Size
 
     /**
      * The current style based on [componentStyleSet] according to the current [componentState].
@@ -153,8 +162,8 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     val currentStyle: StyleSet
         get() = componentStyleSet.fetchStyleFor(componentState)
 
-    val componentStateValue: ObservableValue<ComponentState>
     val componentState: ComponentState
+    val componentStateValue: ObservableValue<ComponentState>
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
@@ -175,6 +184,14 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      */
     fun clearCustomStyle()
 
+    /**
+     * Resets this component to its original state as it was initially created. This means
+     * - Its focus is cleared
+     * - Its state is reset to [ComponentState.DEFAULT]
+     * - It is moved back to its original position
+     *
+     * @see AttachedComponent.detach
+     */
     fun resetState()
 
     companion object
