@@ -59,7 +59,7 @@ class TopDownObliqueFrontGameAreaRendererTest {
                 Position3D.create(0, 2, 0) to BOTTOM,
             ),
             actual = target.generateFrontSequence(
-                visibleOffset = Position3D.DEFAULT_POSITION,
+                visibleOffset = Position3D.ZERO,
                 startPos = Position3D.create(0, 4, 2)
             ).toList()
         )
@@ -81,7 +81,7 @@ class TopDownObliqueFrontGameAreaRendererTest {
                 Position3D.create(0, 0, 0) to BOTTOM,
             ),
             actual = target.generateFrontSequence(
-                visibleOffset = Position3D.DEFAULT_POSITION,
+                visibleOffset = Position3D.ZERO,
                 startPos = Position3D.create(0, 2, 2)
             ).toList()
         )
@@ -103,7 +103,7 @@ class TopDownObliqueFrontGameAreaRendererTest {
                 Position3D.create(0, 0, 2) to BACK
             ),
             actual = target.generateTopSequence(
-                visibleOffset = Position3D.DEFAULT_POSITION,
+                visibleOffset = Position3D.ZERO,
                 startPos = Position3D.create(0, 2, 4)
             ).toList()
         )
@@ -125,7 +125,7 @@ class TopDownObliqueFrontGameAreaRendererTest {
                 Position3D.create(0, 0, 0) to BACK,
             ),
             actual = target.generateTopSequence(
-                visibleOffset = Position3D.DEFAULT_POSITION,
+                visibleOffset = Position3D.ZERO,
                 startPos = Position3D.create(0, 2, 2)
             ).toList()
         )

@@ -23,6 +23,7 @@ interface Layerable {
      * [Layerable] accepts is [Layerable.size] - [Layer.position] + [Layer.size]
      */
     val size: Size
+    val bounds: Boundable
 
     /**
      * Returns the [Layer] at the given [level] (if present).

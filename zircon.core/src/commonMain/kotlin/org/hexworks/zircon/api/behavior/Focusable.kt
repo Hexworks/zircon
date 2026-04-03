@@ -17,7 +17,7 @@ interface Focusable : Identifiable {
      * Tells whether this [Focusable] has focus or not.
      */
     val hasFocus: Boolean
-    val hasFocusValue: ObservableValue<Boolean>
+    val hasFocusProperty: ObservableValue<Boolean>
 
     /**
      * Requests focus for this [Focusable]. The success of the request depends on

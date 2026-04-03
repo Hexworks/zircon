@@ -12,14 +12,14 @@ import org.hexworks.zircon.internal.data.PixelPosition
 /**
  * Tells whether this [Position] is `UNKNOWN`.
  */
-val Position.isUnknown: Boolean
-    get() = this === Position.unknown()
+val Position.isPositionUnknown: Boolean
+    get() = this === Position.UNKNOWN
 
 /**
  * Tells whether this [Position] is not `UNKNOWN`.
  */
-val Position.isNotUnknown: Boolean
-    get() = this !== Position.unknown()
+val Position.isPositionNotUnknown: Boolean
+    get() = this !== Position.UNKNOWN
 
 /**
  * Tells whether this [Position] has a negative component (x or y) or not.
@@ -36,7 +36,7 @@ fun Position.withX(x: Int): Position =
     if (this.x == x) {
         this
     } else if (x == 0 && y == 0) {
-        
+        Position.ZERO
     } else {
         create(x, y, this)
     }
@@ -49,7 +49,7 @@ fun Position.withY(y: Int): Position =
     if (this.y == y) {
         this
     } else if (x == 0 && y == 0) {
-        
+        Position.ZERO
     } else {
         create(x, y, this)
     }

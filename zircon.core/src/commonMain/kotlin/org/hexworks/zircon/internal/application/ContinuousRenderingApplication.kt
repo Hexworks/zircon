@@ -41,8 +41,8 @@ abstract class ContinuousRenderingApplication<R : Any, A : Application, V>(
     private var renderLoop: Job? = null
 
     final override val closed: Boolean
-        get() = closedValue.value
-    final override val closedValue: Property<Boolean> = false.toProperty()
+        get() = closedProperty.value
+    final override val closedProperty: Property<Boolean> = false.toProperty()
 
     init {
         coroutineScope.launch {
@@ -79,7 +79,7 @@ abstract class ContinuousRenderingApplication<R : Any, A : Application, V>(
     }
 
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
         executeCommand {
             renderLoop?.cancel()
             renderer.close()

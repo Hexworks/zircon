@@ -217,7 +217,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     fun shouldRefreshDrawSurfaceIfSetText() {
         target.text = UPDATE_TEXT.toString()
         rendererStub.render(drawWindow, ComponentRenderContext(target))
-        val character = drawWindow.getTileAtOrNull(Position.DEFAULT_POSITION)
+        val character = drawWindow.getTileAtOrNull(Position.ZERO)
 
         character?.asCharacterTileOrNull()?.character shouldBe UPDATE_TEXT
     }

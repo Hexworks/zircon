@@ -20,5 +20,5 @@ interface Selector<T : Any> : Fragment {
     val valuesProperty: ListProperty<T>
 
     val selected: T
-    val selectedValue: ObservableValue<T>
+    val selectedProperty: ObservableValue<T>
 }

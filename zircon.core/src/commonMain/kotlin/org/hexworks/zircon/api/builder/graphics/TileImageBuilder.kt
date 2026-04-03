@@ -6,8 +6,10 @@ import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.TileImage
+import org.hexworks.zircon.api.graphics.extensions.withFiller
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
@@ -24,7 +26,7 @@ class TileImageBuilder : Builder<TileImage> {
     var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
     var filler: Tile = Tile.empty()
 
-    var size: Size = Size.one()
+    var size: Size = Size.ONE
 
     var tiles: Map<Position, Tile> = mapOf()
 

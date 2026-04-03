@@ -23,8 +23,8 @@ import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.data.ComponentState.DISABLED
 import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
-import org.hexworks.zircon.api.component.extensions.isNotUnknown
-import org.hexworks.zircon.api.component.extensions.isUnknown
+import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
+import org.hexworks.zircon.api.component.extensions.isStyleNotUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.extensions.asInvariant
 import org.hexworks.zircon.api.data.Position
@@ -56,22 +56,15 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 
 @Suppress("UNCHECKED_CAST")
-open class DefaultComponent(
+abstract class DefaultComponent(
     metadata: ComponentMetadata,
     private val renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
-    //? 📙 Note that this is using the relativePosition, but a Component
-    //? is never attached by default, so there is really no difference between relative
-    //? and absolute. In practice this is the absolute position as soon as the
-    //? component is attached
-    override val absoluteBoundsProperty: Property<Boundable> = Boundable.create(
-        position = metadata.relativePosition,
+    override val boundsProperty: Property<Boundable> = Boundable.create(
+        position = metadata.position,
         size = metadata.size
     ).toProperty(),
-    private val movable: Movable = DefaultMovable(absoluteBoundsProperty),
-    override val positionProperty: ObservableValue<Position>,
-    override val relativePositionProperty: ObservableValue<Position>,
-    override val relativeBoundsProperty: ObservableValue<Boundable>
+    private val movable: Movable = DefaultMovable(boundsProperty),
 ) : InternalComponent,
     ComponentEventSource by uiEventProcessor,
     Movable by movable,
@@ -83,34 +76,35 @@ open class DefaultComponent(
     final override val name: String = metadata.name
 
     //#region Component hierarchy and state properties
-    final override val rootValue: Property<RootContainer?> = null.toProperty()
-    final override var root: RootContainer? by rootValue.asDelegate()
+    final override val rootProperty: Property<RootContainer?> = null.toProperty()
+    final override var root: RootContainer? by rootProperty.asDelegate()
 
     final override val parentProperty: Property<InternalContainer?> = null.toProperty()
     final override var parent: InternalContainer? by parentProperty.asDelegate()
 
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it != null }
-    final override val hasFocusValue = false.toProperty()
-    final override val hasFocus: Boolean by hasFocusValue.asDelegate()
+    final override val hasFocusProperty = false.toProperty()
+    final override val hasFocus: Boolean by hasFocusProperty.asDelegate()
     //#endregion
 
     //#region Positioning
-    final override val originalPosition: Position = metadata.relativePosition
-    final override var relativePosition: Position = metadata.relativePosition
-        private set
+    final override val originalPosition: Position = metadata.position
 
-    override val absoluteBounds: Boundable by absoluteBoundsProperty.asDelegate()
-    final override val relativeBounds: Boundable
-        //! TODO: bug?
-        get() = absoluteBounds
+    override val positionProperty: ObservableValue<Position> = boundsProperty.bindTransform(Boundable::position)
+    override val bounds: Boundable by boundsProperty.asDelegate()
 
-    final override val contentOffset: Position by lazy { renderer.contentPosition }
-    final override val contentSize: Size by lazy { renderer.calculateContentSize(size) }
+    final override val contentOffset = renderer.contentPosition
+    final override val contentSize: Size = renderer.calculateContentSize(size)
+
+    final override val contentBoundsProperty = boundsProperty.bindTransform { (pos) ->
+        Boundable.create(pos + contentOffset, contentSize)
+    }
+    final override val contentBounds: Boundable by contentBoundsProperty.asDelegate()
     //#endregion
 
     //#region Common properties
-    final override val componentStateValue = DEFAULT.toProperty()
-    final override var componentState: ComponentState by componentStateValue.asDelegate()
+    final override val componentStateProperty = DEFAULT.toProperty()
+    final override var componentState: ComponentState by componentStateProperty.asDelegate()
 
     final override val themeProperty = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
@@ -149,24 +143,23 @@ open class DefaultComponent(
         }
 
         val updateTheme: (ObservableValueChanged<ColorTheme>) -> Unit = { (_, newTheme) ->
-            if (newTheme.isNotUnknown) {
+            if (newTheme.isColorNotUnknown) {
                 componentStyleSet = convertColorTheme(newTheme)
             }
         }
 
         val updateStyle: (ObservableValueChanged<ComponentStyleSet>) -> Unit = { (_, newStyle) ->
-            if (newStyle.isNotUnknown) {
+            if (newStyle.isStyleNotUnknown) {
                 componentStyleSet = newStyle
             }
         }
-
 
         disabledProperty.onChange(updateState)
         themeProperty.onChange(updateTheme)
         componentStyleSetProperty.onChange(updateStyle)
         componentState = if (isDisabled) DISABLED else DEFAULT
 
-        if (componentStyleSet.isUnknown and theme.isNotUnknown) {
+        if (componentStyleSet.isStyleNotUnknown and theme.isColorNotUnknown) {
             componentStyleSet = convertColorTheme(theme)
         }
     }
@@ -175,7 +168,7 @@ open class DefaultComponent(
     override fun toString(): String {
         val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
         return "${name.ifBlank { this::class.simpleName }}(id=${id.toString().substring(0, 4)}, " +
-                "position=$position, relativePosition=$relativePosition, size=$size, " +
+                "position=$position, size=$size, " +
                 "state=$componentState, disabled=$isDisabled$text)"
     }
 
@@ -205,17 +198,15 @@ open class DefaultComponent(
     /**
      * Moves this component to the given **absolute** position
      */
+    //! TODO: Refactor to return result class instead of Boolean
     override fun moveTo(position: Position): Boolean {
         parent?.let { parent ->
             val newBounds = movable.withPosition(position)
-            //! TODO: make it configurable to throw or ignore here
             require(parent.containsBoundable(newBounds)) {
-                "Can't move Component $this with new bounds $newBounds out of its parent's bounds $parent."
+                "Can't move Component $this with new bounds ($newBounds) out of its parent's bounds: $parent."
             }
         }
-        val diff = position - this.position
         movable.moveTo(position)
-        relativePosition += diff
         return true
     }
 
@@ -242,7 +233,7 @@ open class DefaultComponent(
                 eventScope = root.eventScope
             )
         }
-        return hasFocusValue.value
+        return hasFocusProperty.value
     }
 
     final override fun clearFocus() = whenConnectedToRoot { root ->
@@ -257,12 +248,12 @@ open class DefaultComponent(
 
     override fun focusGiven() = whenEnabled {
         updateComponentState(FOCUS_GIVEN)
-        hasFocusValue.value = true
+        hasFocusProperty.value = true
     }
 
     override fun focusTaken() = whenEnabled {
         updateComponentState(FOCUS_TAKEN)
-        hasFocusValue.value = false
+        hasFocusProperty.value = false
     }
 
     override fun acceptsFocus() = isDisabled.not()
@@ -302,7 +293,7 @@ open class DefaultComponent(
     private fun updateComponentState(eventType: EventType) {
         val key = ComponentStateKey(
             oldState = componentState,
-            isFocused = hasFocusValue.value,
+            isFocused = hasFocusProperty.value,
             eventType = eventType
         )
         logger.debug {

@@ -64,7 +64,7 @@ class DefaultTab internal constructor(
         tabButton.selectedProperty.onChange { (_, isSelected) ->
             currentAttachment.apply {
                 detach()
-                moveTo(Position.DEFAULT_POSITION)
+                moveTo(Position.ZERO)
             }
             currentAttachment = if (isSelected) {
                 root.addComponent(this.label)
@@ -78,7 +78,7 @@ class DefaultTab internal constructor(
     private fun DrawWindow.drawText(
         text: String,
         style: StyleSet,
-        position: Position = Position.DEFAULT_POSITION
+        position: Position = Position.ZERO
     ) {
         clear()
         draw(

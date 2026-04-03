@@ -13,10 +13,10 @@ import kotlin.jvm.JvmStatic
 interface Movable : Boundable {
 
     override val position: Position
-    val positionValue: ObservableValue<Position>
+    val positionProperty: ObservableValue<Position>
 
     override val size: Size
-    val sizeValue: ObservableValue<Size>
+    val sizeProperty: ObservableValue<Size>
 
     /**
      * Sets the position of this [Movable].

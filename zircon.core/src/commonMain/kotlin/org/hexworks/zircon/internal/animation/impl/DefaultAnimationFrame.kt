@@ -19,7 +19,7 @@ internal data class DefaultAnimationFrame(
     override val repeatCount: Int
 ) : InternalAnimationFrame {
 
-    override var position: Position = Position.DEFAULT_POSITION
+    override var position: Position = Position.ZERO
         set(value) {
             field = value
             layers.forEach { it.moveTo(value) }
@@ -29,8 +29,7 @@ internal data class DefaultAnimationFrame(
 
     override fun displayOn(layerable: Layerable) {
         layerable as? InternalLayerable ?: error(Layerable.WRONG_LAYER_TYPE_MSG)
-        val layerableBoundable = layerable.size.toBoundable()
-        require(layers.all { layerableBoundable.containsBoundable(it.boundable) }) {
+        require(layers.all(layerable.bounds::containsBoundable)) {
             "Can't add Animation to Layerable, because its layers are out of bounds."
         }
         remove()

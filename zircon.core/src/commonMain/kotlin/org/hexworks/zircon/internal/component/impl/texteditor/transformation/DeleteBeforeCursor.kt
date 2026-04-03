@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
 import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
 object DeleteBeforeCursor : Transformation {
@@ -51,7 +52,7 @@ object DeleteBeforeCursor : Transformation {
 }
 
 private val Position.isAtTopLeft: Boolean
-    get() = this == 
+    get() = this == Position.ZERO
 
 private val Position.isAtTheStartOfNotTheFirstRow: Boolean
     get() = this.x == 0 && this.y > 0

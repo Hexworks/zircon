@@ -49,13 +49,13 @@ class ComponentStub(
     override var root: RootContainer?
         get() = error("not implemented")
         set(_) {}
-    override val rootValue: ObservableValue<RootContainer?>
+    override val rootProperty: ObservableValue<RootContainer?>
         get() = error("not implemented")
 
     override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
     override val hasFocus: Boolean
         get() = false
-    override val hasFocusValue: ObservableValue<Boolean>
+    override val hasFocusProperty: ObservableValue<Boolean>
         get() = false.toProperty()
 
     override val parentProperty: Property<InternalContainer?> = null.toProperty()
@@ -65,7 +65,7 @@ class ComponentStub(
     override var parent: InternalContainer? by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it != null }
 
-    override val boundableValue: ObservableValue<Rect>
+    override val boundableProperty: ObservableValue<Rect>
         get() = error("not implemented")
 
     override val isAttached: Boolean
@@ -77,8 +77,8 @@ class ComponentStub(
         get() = persistentListOf<InternalComponent>().toProperty()
     override val originalPosition: Position
         get() = error("not implemented")
-    override val relativeBounds: Boundable= Boundable.create(size = Size.zero())
-    override val componentStateValue: ObservableValue<ComponentState>
+    override val relativeBounds: Boundable= Boundable.create(size = Size.ZERO)
+    override val componentStateProperty: ObservableValue<ComponentState>
         get() = error("not implemented")
 
     override val hiddenProperty = false.toProperty()
@@ -178,7 +178,7 @@ class ComponentStub(
         error("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override val closedValue: ObservableValue<Boolean>
+    override val closedProperty: ObservableValue<Boolean>
         get() = TODO("Not yet implemented")
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {

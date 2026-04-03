@@ -28,12 +28,12 @@ class PositionTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        Position.unknown().isUnknown shouldBe true
+        Position.UNKNOWN.isUnknown shouldBe true
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        Position.unknown().isNotUnknown shouldBe false
+        Position.UNKNOWN.isNotUnknown shouldBe false
     }
 
     @Test

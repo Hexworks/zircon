@@ -15,13 +15,13 @@ class DefaultMovableTest {
     fun setUp() {
         target = DefaultMovable(
             size = TARGET_SIZE_10x10,
-            position = Position.DEFAULT_POSITION
+            position = Position.ZERO
         )
     }
 
     @Test
     fun shouldContainPositionWhenThereIsNoOffsetAndSizeIsBiggerThanPos() {
-        target.containsPosition(Position.DEFAULT_POSITION) shouldBe true
+        target.containsPosition(Position.ZERO) shouldBe true
     }
 
     @Test
@@ -57,14 +57,14 @@ class DefaultMovableTest {
         target.intersects(
             layer {
                 offset = INTERSECTION_Color.TRANSPARENT
-                size = Size.one()
+                size = Size.ONE
             }
         ) shouldBe true
     }
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
-        target.containsBoundable(DefaultMovable(Size.one())) shouldBe true
+        target.containsBoundable(DefaultMovable(Size.ONE)) shouldBe true
     }
 
     @Test

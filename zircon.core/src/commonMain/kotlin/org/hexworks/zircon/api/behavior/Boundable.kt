@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.behavior.extensions.x
 import org.hexworks.zircon.api.behavior.extensions.y
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position.Companion.DEFAULT_POSITION
+import org.hexworks.zircon.api.data.Position.Companion.ZERO
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.data.DefaultBoundable
 
@@ -85,7 +85,7 @@ interface Boundable : HasSize {
      */
     infix fun containsBoundable(other: Boundable): Boolean {
         val (otherPos, otherSize) = other
-        var (otherX, otherY) = otherPos
+        val (otherX, otherY) = otherPos
         var (otherWidth, otherHeight) = otherSize
         var w = width
         var h = height
@@ -116,7 +116,7 @@ interface Boundable : HasSize {
 
     companion object {
 
-        fun create(position: Position = DEFAULT_POSITION, size: Size): Boundable {
+        fun create(position: Position = ZERO, size: Size): Boundable {
             return DefaultBoundable(position, size)
         }
     }

@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
@@ -41,7 +42,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     protected var beforeRenderData: RenderData by beforeRenderDataProp.asDelegate()
     protected var afterRenderData: RenderData by afterRenderDataProp.asDelegate()
 
-    override val closedValue: ObservableValue<Boolean>
+    override val closedProperty: ObservableValue<Boolean>
         get() = isClosed
 
     final override fun close() {

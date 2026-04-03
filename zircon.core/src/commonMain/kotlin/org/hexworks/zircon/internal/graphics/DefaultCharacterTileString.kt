@@ -1,8 +1,13 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheEndOfTheLine
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheLastRow
+import org.hexworks.zircon.api.behavior.extensions.moveCursorForward
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap

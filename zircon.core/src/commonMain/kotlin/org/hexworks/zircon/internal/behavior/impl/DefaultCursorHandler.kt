@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
-import org.hexworks.zircon.api.data.Position.Companion.DEFAULT_POSITION
+import org.hexworks.zircon.api.data.Position.Companion.ZERO
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import kotlin.math.max
@@ -17,7 +17,7 @@ class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
             this.cursorPosition = cursorPosition
         }
 
-    override var cursorPosition = DEFAULT_POSITION
+    override var cursorPosition = ZERO
         set(value) {
             field = position(
                 x = max(0, min(value.x, cursorSpaceSize.width - 1)),

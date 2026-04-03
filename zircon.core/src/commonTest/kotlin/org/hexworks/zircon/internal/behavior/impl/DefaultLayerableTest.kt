@@ -40,7 +40,7 @@ class DefaultLayerableTest {
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_Then_it_is_not_present() {
         val layer = layer {
-            size = Size.one()
+            size = Size.ONE
         }
 
         target.addLayer(layer)
@@ -52,7 +52,7 @@ class DefaultLayerableTest {
     @Test
     fun Given_a_layerable_When_a_layer_is_removed_with_the_handle_Then_it_is_not_present() {
         val layer = layer {
-            size = Size.one()
+            size = Size.ONE
         }
 
         target.addLayer(layer).removeLayer()
@@ -68,9 +68,9 @@ class DefaultLayerableTest {
 
         val tile = buildTile('x')
 
-        layer.draw(tile, Position.DEFAULT_POSITION)
+        layer.draw(tile, Position.ZERO)
 
-        layer.tiles shouldBe mapOf(Position.DEFAULT_POSITION to tile)
+        layer.tiles shouldBe mapOf(Position.ZERO to tile)
     }
 
     @Test
@@ -82,9 +82,9 @@ class DefaultLayerableTest {
 
         val tile = buildTile('x')
 
-        layer.draw(tile, Position.DEFAULT_POSITION)
+        layer.draw(tile, Position.ZERO)
 
-        layer.tiles.toMap() shouldBe mapOf(Position.DEFAULT_POSITION to tile)
+        layer.tiles.toMap() shouldBe mapOf(Position.ZERO to tile)
     }
 
     @Test
@@ -117,7 +117,7 @@ class DefaultLayerableTest {
         target.addLayer(oldLayer)
         target.setLayerAt(0, newLayer)
 
-        oldLayer.draw(oldTile, Position.DEFAULT_POSITION)
+        oldLayer.draw(oldTile, Position.ZERO)
 
         target.layers shouldContainExactly listOf(newLayer)
     }
@@ -135,7 +135,7 @@ class DefaultLayerableTest {
         target.addLayer(oldLayer).removeLayer()
         target.addLayer(newLayer)
 
-        oldLayer.draw(buildTile('z'), Position.DEFAULT_POSITION)
+        oldLayer.draw(buildTile('z'), Position.ZERO)
 
         target.layers shouldContainExactly listOf(newLayer)
     }
@@ -254,7 +254,7 @@ class DefaultLayerableTest {
 
     private fun buildLayer(char: Char = ' '): InternalLayer {
         return layer {
-            size = Size.one()
+            size = Size.ONE
         }.asInternal().apply {
             fill(Tile.defaultTile().withCharacter(char))
         }

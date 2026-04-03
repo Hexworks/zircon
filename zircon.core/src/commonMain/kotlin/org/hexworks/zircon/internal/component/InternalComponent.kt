@@ -31,7 +31,14 @@ interface InternalComponent :
      * This is possibly `null` if the component is not attached to a root.
      */
     var root: RootContainer?
-    val rootValue: ObservableValue<RootContainer?>
+    val rootProperty: ObservableValue<RootContainer?>
+    /**
+     * Tells whether this [Component] is attached to a [org.hexworks.zircon.api.component.Container].
+     */
+    val isAttached: Boolean
+        get() = parent != null
+
+
 
     /**
      * @see root

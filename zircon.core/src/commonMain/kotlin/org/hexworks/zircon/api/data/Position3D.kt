@@ -87,7 +87,7 @@ data class Position3D(
             z = z
         )
 
-        val DEFAULT_POSITION = create(0, 0, 0)
+        val ZERO = create(0, 0, 0)
         val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

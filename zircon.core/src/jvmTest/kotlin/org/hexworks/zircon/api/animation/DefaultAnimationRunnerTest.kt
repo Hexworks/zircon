@@ -41,7 +41,7 @@ class DefaultAnimationRunnerTest {
     fun shouldReturnInfiniteWhenAnimationIsInfinite() {
         val infiniteAnimation = animation {
             frame {
-                size = Size.one()
+                size = Size.ONE
                 repeatCount = 1
             }
             position = Position.OFFSET_1X1

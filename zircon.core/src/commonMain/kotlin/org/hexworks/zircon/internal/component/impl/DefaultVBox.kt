@@ -1,12 +1,18 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.TitleOverride
+import org.hexworks.zircon.api.behavior.extensions.height
+import org.hexworks.zircon.api.behavior.extensions.moveDownBy
+import org.hexworks.zircon.api.behavior.extensions.moveUpBy
+import org.hexworks.zircon.api.behavior.extensions.withRelativeHeight
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.toBoundable
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 
@@ -65,7 +71,7 @@ class DefaultVBox internal constructor(
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
-        require(availableSpace.containsBoundable(component.rect)) {
+        require(availableSpace.containsBoundable(component)) {
             "There is not enough space ${availableSpace.size} left in $this to add $component as a child."
         }
 

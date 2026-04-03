@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 @ZirconDsl
 class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
 
-    override var position: Position = 
+    override var position: Position = Position.ZERO
 
     var width: Int? = null
 
@@ -68,7 +68,7 @@ class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
             position = position,
             width = width ?: calculateWidth(),
             valuesProperty = valuesProperty,
-            selectedValue = (defaultSelected ?: valuesProperty.first()).toProperty(),
+            selectedProperty = (defaultSelected ?: valuesProperty.first()).toProperty(),
             centeredText = centeredText,
             toStringMethod = toStringMethod,
             clickable = clickableLabel

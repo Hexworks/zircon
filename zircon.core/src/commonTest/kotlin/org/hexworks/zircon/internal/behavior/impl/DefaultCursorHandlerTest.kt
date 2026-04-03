@@ -19,7 +19,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun defaultCursorPositionShouldBeDefaultPosition() {
-        target.cursorPosition shouldBe Position.DEFAULT_POSITION
+        target.cursorPosition shouldBe Position.ZERO
     }
 
     @Test
@@ -43,14 +43,14 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldClampToZeroWithNegativeY() {
-        target.cursorPosition = Position.DEFAULT_POSITION.withY(-1)
+        target.cursorPosition = Position.ZERO.withY(-1)
 
         target.cursorPosition.y shouldBe 0
     }
 
     @Test
     fun shouldClampZeroWithNegativeX() {
-        target.cursorPosition = Position.DEFAULT_POSITION.withX(-1)
+        target.cursorPosition = Position.ZERO.withX(-1)
 
         target.cursorPosition.x shouldBe 0
     }

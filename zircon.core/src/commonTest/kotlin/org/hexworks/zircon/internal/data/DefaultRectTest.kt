@@ -26,23 +26,23 @@ class DefaultRectTest {
     @Test
     fun shouldProperlyCopyWithPosition() {
         val pos = Position.create(2, 3)
-        val target = Boundable.create(Position.OFFSET_1X1, Size.one())
+        val target = Boundable.create(Position.OFFSET_1X1, Size.ONE)
 
-        target.withPosition(pos) shouldBe Boundable.create(pos, Size.one())
+        target.withPosition(pos) shouldBe Boundable.create(pos, Size.ONE)
     }
 
     @Test
     fun shouldProperlyCopyWithRelativePosition() {
         val pos = Position.create(2, 3)
-        val target = Boundable.create(Position.OFFSET_1X1, Size.one())
+        val target = Boundable.create(Position.OFFSET_1X1, Size.ONE)
 
-        target.withRelativePosition(pos) shouldBe Boundable.create(pos + Position.OFFSET_1X1, Size.one())
+        target.withRelativePosition(pos) shouldBe Boundable.create(pos + Position.OFFSET_1X1, Size.ONE)
     }
 
     @Test
     fun shouldProperlyCopyWithSize() {
         val size = Size.create(2, 3)
-        val target = Boundable.create(Position.OFFSET_1X1, Size.one())
+        val target = Boundable.create(Position.OFFSET_1X1, Size.ONE)
 
         target.withSize(size) shouldBe Boundable.create(Position.OFFSET_1X1, size)
     }
@@ -50,9 +50,9 @@ class DefaultRectTest {
     @Test
     fun shouldProperlyCopyWithRelativeSize() {
         val size = Size.create(2, 3)
-        val target = Boundable.create(Position.OFFSET_1X1, Size.one())
+        val target = Boundable.create(Position.OFFSET_1X1, Size.ONE)
 
-        target.withRelativeSize(size) shouldBe Boundable.create(Position.OFFSET_1X1, Size.one() + size)
+        target.withRelativeSize(size) shouldBe Boundable.create(Position.OFFSET_1X1, Size.ONE + size)
     }
 
 }

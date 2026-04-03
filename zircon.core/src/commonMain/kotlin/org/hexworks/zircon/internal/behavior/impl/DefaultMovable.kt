@@ -1,9 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
-import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.extensions.withPosition
@@ -11,24 +9,19 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 
 class DefaultMovable(
-    private val boundableValue: Property<Boundable>
+    private val boundableProperty: Property<Boundable>
 ) : Movable {
 
-    private val boundable: Boundable by boundableValue.asDelegate()
+    private val boundable: Boundable by boundableProperty.asDelegate()
 
-    override val positionValue = boundableValue.value.position.toProperty().apply {
-        updateFrom(boundableValue.bindTransform { it.position })
-    }
-    override val position: Position by positionValue.asDelegate()
+    override val positionProperty = boundableProperty.bindTransform(Boundable::position)
+    override val position: Position by positionProperty.asDelegate()
 
-    override val sizeValue = boundableValue.value.size.toProperty().apply {
-        updateFrom(boundableValue.bindTransform { it.size })
-    }
-    override val size: Size by sizeValue.asDelegate()
-
+    override val sizeProperty = boundableProperty.bindTransform(Boundable::size)
+    override val size: Size by sizeProperty.asDelegate()
 
     override fun moveTo(position: Position): Boolean {
-        boundableValue.value = boundable.withPosition(position)
+        boundableProperty.value = boundable.withPosition(position)
         return true
     }
 

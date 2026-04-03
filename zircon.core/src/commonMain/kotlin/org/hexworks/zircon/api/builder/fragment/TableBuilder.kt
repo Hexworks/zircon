@@ -26,7 +26,7 @@ import org.hexworks.zircon.internal.fragment.impl.TableColumn
 @ZirconDsl
 class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
 
-    override var position: Position = 
+    override var position: Position = Position.ZERO
 
     var data: ObservableList<T> = listOf<T>().toProperty()
     var columns: List<TableColumn<T, *, *>> = listOf()

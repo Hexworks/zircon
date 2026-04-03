@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.color.Color.Companion.transparent
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -43,7 +42,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         }.toDrawWindow()
         target = DefaultProgressBar(
             componentMetadata = ComponentMetadata(
-                relativePosition = POSITION_2_3,
+                position = POSITION_2_3,
                 size = SIZE_10X1,
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()

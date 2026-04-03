@@ -3,6 +3,7 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
 
 class ArrayBackedTileMap(
     private val dimensions: Size,

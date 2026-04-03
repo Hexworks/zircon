@@ -16,7 +16,7 @@ abstract class BasePosition : Position {
      */
     override operator fun plus(other: Position): Position {
         checkType(this, other)
-        if (other == ) {
+        if (other == Position.ZERO) {
             return this
         }
         return when (this) {
@@ -41,7 +41,7 @@ abstract class BasePosition : Position {
      */
     override operator fun minus(other: Position): Position {
         checkType(this, other)
-        if (other == ) {
+        if (other == Position.ZERO) {
             return this
         }
         return when (this) {

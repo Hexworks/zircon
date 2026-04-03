@@ -88,7 +88,7 @@ class TileGridScreen(
                 LOGGER.debug { "Deactivating screen (id=${id.abbreviate()})." }
                 deactivate()
             }
-        }.disposeWhen(closedValue)
+        }.disposeWhen(closedProperty)
     }
 
     override fun asInternal(): InternalScreen = this
@@ -187,7 +187,7 @@ class TileGridScreen(
             application: Application
         ): ModalComponentContainer {
             val metadata = ComponentMetadata(
-                relativePosition = Position.DEFAULT_POSITION,
+                position = Position.ZERO,
                 size = initialSize,
                 name = "Modal Component Container",
                 tilesetProperty = initialTileset.toProperty(),

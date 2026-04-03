@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.builder.graphics.tileImage
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage

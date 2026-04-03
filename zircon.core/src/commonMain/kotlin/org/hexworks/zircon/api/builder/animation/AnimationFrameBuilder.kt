@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
@@ -16,7 +18,7 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
     /**
      * The size of this frame.
      */
-    var size: Size = Size.unknown()
+    var size: Size = Size.UNKNOWN
 
     /**
      * How many times this frame will be repeated.
@@ -25,11 +27,11 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
 
     fun layer(init: LayerBuilder.() -> Unit) =
         LayerBuilder().apply {
-            if (this@AnimationFrameBuilder.size.isNotUnknown) {
+            if (this@AnimationFrameBuilder.size.isSizeNotUnknown) {
                 size = this@AnimationFrameBuilder.size
             }
         }.apply(init).build().also { layer ->
-            if (size.isUnknown) {
+            if (size.isSizeUnknown) {
                 size = layer.size
             }
         }
@@ -39,7 +41,7 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
     }
 
     override fun build(): AnimationFrame {
-        require(size.isNotUnknown) {
+        require(size.isSizeNotUnknown) {
             "An animation frame must have a size"
         }
         return DefaultAnimationFrame(

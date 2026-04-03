@@ -9,7 +9,6 @@ import org.hexworks.zircon.api.builder.component.buildVbox
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.bottomLeftOf
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.ComponentRendererStub
@@ -34,7 +33,7 @@ class DefaultComponentFocusOrderListTest {
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = ,
+                position = ,
                 size = Size.create(100, 100),
                 tilesetProperty = CP437TilesetResources.aduDhabi16x16().toProperty(),
                 componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty()

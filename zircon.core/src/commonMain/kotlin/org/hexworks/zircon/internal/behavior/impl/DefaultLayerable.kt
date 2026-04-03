@@ -6,7 +6,9 @@ import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 
 import org.hexworks.cobalt.events.api.Subscription
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.internal.behavior.InternalLayerable
@@ -18,6 +20,7 @@ class DefaultLayerable(
 ) : InternalLayerable {
 
     override val size: Size = initialSize
+    override val bounds: Boundable = initialSize.toBoundable()
     override val layers: ListProperty<InternalLayer> = persistentListOf<InternalLayer>().toProperty()
     override val renderables: List<Renderable>
         get() = layers

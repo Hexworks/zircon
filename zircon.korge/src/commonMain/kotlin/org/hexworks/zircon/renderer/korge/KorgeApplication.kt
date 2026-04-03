@@ -31,8 +31,8 @@ class KorgeApplication(
     private val scene = renderer.create()
 
     override val closed: Boolean
-        get() = closedValue.value
-    override val closedValue: Property<Boolean> = false.toProperty()
+        get() = closedProperty.value
+    override val closedProperty: Property<Boolean> = false.toProperty()
 
     override suspend fun start() {
         val size = Size(tileGrid.widthInPixels, tileGrid.heightInPixels)
@@ -57,7 +57,7 @@ class KorgeApplication(
     override fun asInternal(): InternalApplication = this
 
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
         tileGrid.close()
     }
 }

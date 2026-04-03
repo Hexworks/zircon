@@ -22,7 +22,7 @@ class DefaultVerticalSlider internal constructor(
 ) {
 
     override fun getMousePosition(event: MouseEvent): Int {
-        return event.position.minus(absolutePosition + contentOffset).y
+        return event.position.minus(position + contentOffset).y
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {

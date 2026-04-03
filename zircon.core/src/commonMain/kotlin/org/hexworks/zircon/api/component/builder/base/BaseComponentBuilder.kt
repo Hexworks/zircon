@@ -13,10 +13,15 @@ import org.hexworks.zircon.api.builder.data.PositionBuilder
 import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
+import org.hexworks.zircon.api.component.extensions.isStyleNotUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.ComponentEvent
@@ -26,6 +31,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.data.CommonComponentProperties
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
+import kotlin.require
 
 /**
  * This class can be used as a base class for creating builders for [Component]s.
@@ -66,8 +72,8 @@ abstract class BaseComponentBuilder<T : Component>(
     open var preferredSize: Size
         get() = props.preferredSize
         set(value) {
-            if (preferredContentSize.isNotUnknown) {
-                preferredContentSize = Size.unknown()
+            if (preferredContentSize.isSizeNotUnknown) {
+                preferredContentSize = Size.UNKNOWN
             }
             props.preferredSize = value
         }
@@ -81,8 +87,8 @@ abstract class BaseComponentBuilder<T : Component>(
     open var preferredContentSize: Size
         get() = props.preferredContentSize
         set(value) {
-            if (preferredSize.isNotUnknown) {
-                preferredSize = Size.unknown()
+            if (preferredSize.isSizeNotUnknown) {
+                preferredSize = Size.UNKNOWN
             }
             props.preferredContentSize = value
         }
@@ -175,9 +181,9 @@ abstract class BaseComponentBuilder<T : Component>(
      * - If neither one of those are set it defaults to [Size.one]
      */
     val contentSize: Size
-        get() = if (preferredSize.isUnknown) {
-            if (preferredContentSize.isUnknown) {
-                Size.one()
+        get() = if (preferredSize.isSizeUnknown) {
+            if (preferredContentSize.isSizeUnknown) {
+                Size.ONE
             } else preferredContentSize
         } else preferredSize - decorationRenderers.occupiedSize
 
@@ -189,8 +195,8 @@ abstract class BaseComponentBuilder<T : Component>(
      * - If neither one of those are set it defaults to [contentSize] + [occupiedSize]
      */
     val size: Size
-        get() = if (preferredSize.isUnknown) {
-            if (preferredContentSize.isUnknown) {
+        get() = if (preferredSize.isSizeUnknown) {
+            if (preferredContentSize.isSizeUnknown) {
                 contentSize + decorationRenderers.occupiedSize
             } else preferredContentSize + decorationRenderers.occupiedSize
         } else preferredSize
@@ -209,7 +215,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * The [Size] that's occupied by [decorationRenderers].
      */
     val List<ComponentDecorationRenderer>.occupiedSize
-        get() = this.map { it.occupiedSize }.fold(Size.zero(), Size::plus)
+        get() = this.map { it.occupiedSize }.fold(Size.ZERO, Size::plus)
 
     /**
      * Aligns the resulting [Component] within the [tileGrid] using the
@@ -279,12 +285,12 @@ abstract class BaseComponentBuilder<T : Component>(
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
             }
-            require(colorTheme.isNotUnknown || componentStyleSet.isNotUnknown) {
+            require(colorTheme.isColorNotUnknown || componentStyleSet.isStyleNotUnknown) {
                 "When not updating on attach a component must either have its own theme or component style set"
             }
         }
         return ComponentMetadata(
-            relativePosition = position,
+            position = position,
             size = size,
             name = name,
             bindingAction = bindingAction,

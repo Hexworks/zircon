@@ -36,7 +36,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     val TILESET_REX_PAINT_20X20 = CP437TilesetResources.rexPaint20x20()
     val COMPONENT_STYLES = ComponentStyleSet.DEFAULT_STYLE
     val COMMON_COMPONENT_METADATA = ComponentMetadata(
-        relativePosition = POSITION_2_3,
+        position = POSITION_2_3,
         size = SIZE_3_4,
         tilesetProperty = TILESET_REX_PAINT_20X20.toProperty(),
         componentStyleSetProperty = COMPONENT_STYLES.toProperty()
@@ -154,7 +154,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         val event = MouseEvent(
             type = MOUSE_PRESSED,
             button = 1,
-            position = Position.DEFAULT_POSITION
+            position = Position.ZERO
         )
 
         target.process(event, TARGET)

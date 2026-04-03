@@ -135,8 +135,5 @@ interface ColorTheme {
         val UNKNOWN = colorTheme {
             name = "unknown"
         }
-
-        fun unknown() = UNKNOWN
-
     }
 }

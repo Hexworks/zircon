@@ -17,11 +17,11 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
 
     private val logger = LoggerFactory.getLogger(this::class)
     private var listeners = persistentHashMapOf<UIEventType, PersistentList<InputEventSubscription>>()
-    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closedProperty: Property<Boolean> = false.toProperty()
     override val id: UUID = UUID.randomUUID()
 
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
         listeners.flatMap { it.value }.forEach {
             it.dispose()
         }

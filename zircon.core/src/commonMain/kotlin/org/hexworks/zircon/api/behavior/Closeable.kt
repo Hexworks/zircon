@@ -9,8 +9,8 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 interface Closeable {
 
     val closed: Boolean
-        get() = closedValue.value
-    val closedValue: ObservableValue<Boolean>
+        get() = closedProperty.value
+    val closedProperty: ObservableValue<Boolean>
 
     /**
      * Closes this [Closeable].

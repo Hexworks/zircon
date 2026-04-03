@@ -11,19 +11,19 @@ import kotlin.math.min
 /**
  * Tells whether this [Size] **is** the same as [Size.unknown].
  */
-val Size.isUnknown: Boolean
-    get() = this === Size.unknown()
+val Size.isSizeUnknown: Boolean
+    get() = this === Size.UNKNOWN
 
 /**
  * Tells whether this [Size] **is not** the same as [Size.unknown].
  */
-val Size.isNotUnknown: Boolean
-    get() = this !== Size.unknown()
+val Size.isSizeNotUnknown: Boolean
+    get() = this !== Size.UNKNOWN
 
 /**
- * Returns this [Size] or [other] if this size [isUnknown].
+ * Returns this [Size] or [other] if this size [isSizeUnknown].
  */
-fun Size.orElse(other: Size) = if (isUnknown) other else this
+fun Size.orElse(other: Size) = if (isSizeUnknown) other else this
 
 /**
  * Creates a list of [Position]s in the order in which they should
@@ -62,11 +62,11 @@ fun Size.fetchPositions(): Iterable<Position> = Iterable {
  */
 fun Size.fetchBoundingBoxPositions(): Set<Position> {
     return RectangleFactory
-        .buildRectangle(Position.DEFAULT_POSITION, this)
+        .buildRectangle(Position.ZERO, this)
         .positions
 }
 
-fun Size.fetchTopLeftPosition(): Position = Position.TOP_LEFT_CORNER
+fun Size.fetchTopLeftPosition(): Position = Position.ZERO
 
 fun Size.fetchTopRightPosition(): Position = Position.create(width - 1, 0)
 

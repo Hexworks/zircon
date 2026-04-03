@@ -120,27 +120,21 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      * and it is calculated based on the parent it is attached to.
      */
     override val position: Position
-    val positionProperty: ObservableValue<Position>
+    override val positionProperty: ObservableValue<Position>
 
     /**
-     * The relative position is the position of the top left corner of this [Component]
-     * relative to the [contentOffset] of its parent.
+     * The **total** size of this [Component], e.g.: the [Size] of the content area plus the
+     * size of all decorations.
      */
-    val relativePosition: Position
-    val relativePositionProperty: ObservableValue<Position>
+    override val size: Size
+    override val sizeProperty: ObservableValue<Size>
 
     /**
      * The bounds of this [Component] relative to the top left corner of the grid it is
      * displayed on.
      */
-    val absoluteBounds: Boundable
-    val absoluteBoundsProperty: ObservableValue<Boundable>
-
-    /**
-     * The bounds of this [Component] relative to its parent.
-     */
-    val relativeBounds: Boundable
-    val relativeBoundsProperty: ObservableValue<Boundable>
+    val bounds: Boundable
+    val boundsProperty: ObservableValue<Boundable>
 
     /**
      * The position of the top left corner of the **content area** (where the component
@@ -157,13 +151,20 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     val contentSize: Size
 
     /**
+     * The **absolute** bounds of the content area of this [Component].
+     * E.g.: [Component.position] + [Component.contentOffset], [Component.contentSize].
+     */
+    val contentBounds: Boundable
+    val contentBoundsProperty: ObservableValue<Boundable>
+
+    /**
      * The current style based on [componentStyleSet] according to the current [componentState].
      */
     val currentStyle: StyleSet
         get() = componentStyleSet.fetchStyleFor(componentState)
 
     val componentState: ComponentState
-    val componentStateValue: ObservableValue<ComponentState>
+    val componentStateProperty: ObservableValue<ComponentState>
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set

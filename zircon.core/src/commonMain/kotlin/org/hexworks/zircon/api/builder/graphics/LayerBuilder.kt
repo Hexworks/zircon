@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -16,17 +17,17 @@ import org.hexworks.zircon.internal.graphics.DefaultLayer
 
 /**
  * Use this to build [Layer]s. Defaults are:
- * - size: [Size.one()]
+ * - size: [Size.ONE]
  * - filler: [Tile.empty()]
- * - offset: [Position.DEFAULT_POSITION]
+ * - offset: [Position.ZERO]
  * - has no text image by default
  */
 @ZirconDsl
 class LayerBuilder : Builder<Layer> {
 
     var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var size: Size = Size.unknown()
-    var offset: Position = Position.DEFAULT_POSITION
+    var size: Size = Size.UNKNOWN
+    var offset: Position = Position.ZERO
     var tileGraphics: TileGraphics? = null
     var filler: Tile = Tile.empty()
 
@@ -37,7 +38,7 @@ class LayerBuilder : Builder<Layer> {
                 initialContents = graphics
             )
         } ?: run {
-            require(size.isNotUnknown) {
+            require(size.isSizeNotUnknown) {
                 "A Layer must has a size if it doesn't have a tile graphics."
             }
             DefaultLayer(

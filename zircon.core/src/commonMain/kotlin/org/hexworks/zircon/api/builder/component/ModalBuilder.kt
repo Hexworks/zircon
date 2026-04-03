@@ -3,10 +3,13 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.modal.DefaultModal
@@ -14,6 +17,7 @@ import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
 import kotlin.jvm.JvmName
+import kotlin.require
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
@@ -28,20 +32,21 @@ class ModalBuilder<T : ModalResult> :
     private var shouldCloseWith: T? = null
 
     override fun build(): Modal<T> {
+        val modalBounds = size.toBoundable()
         require(tileset.isNotUnknown) {
             "Since a Modal has no parent it must have its own tileset"
         }
-        require(colorTheme.isNotUnknown || componentStyleSet.isNotUnknown) {
+        require(colorTheme.isColorNotUnknown || componentStyleSet.isSizeNotUnknown) {
             "Since a Modal has no parent it must have its own color theme or component style set"
         }
-        require(size.isNotUnknown) {
+        require(size.isSizeNotUnknown) {
             "Can't build a modal without knowing the size of the parent."
         }
         require(contentComponent != null) {
             "Can't build a modal without a content component."
         }
         val component = contentComponent!!
-        require(size.toBoundable().containsBoundable(component.rect)) {
+        require(modalBounds.containsBoundable(component.bounds)) {
             "The component $component doesn't fit within the modal of size $size."
         }
         if (centeredDialog) {

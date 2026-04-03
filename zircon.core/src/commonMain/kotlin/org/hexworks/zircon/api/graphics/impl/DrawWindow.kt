@@ -88,7 +88,7 @@ class DrawWindow(
     }
 
     fun draw(tileComposite: TileComposite) {
-        draw(tileComposite.tiles, Position.DEFAULT_POSITION, size)
+        draw(tileComposite.tiles, Position.ZERO, size)
     }
 
     fun draw(tileComposite: TileComposite, drawPosition: Position = ZERO) {
@@ -96,7 +96,7 @@ class DrawWindow(
     }
 
     fun draw(tileMap: Map<Position, Tile>) {
-        draw(tileMap, Position.DEFAULT_POSITION, size)
+        draw(tileMap, Position.ZERO, size)
     }
 
     fun draw(tileMap: Map<Position, Tile>, drawPosition: Position = ZERO) {

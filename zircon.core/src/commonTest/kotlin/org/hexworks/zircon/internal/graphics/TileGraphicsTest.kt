@@ -189,7 +189,7 @@ abstract class TileGraphicsTest {
             .withForegroundColor(DefaultAnsiPalette[ANSIColor.GREEN])
             .withBackgroundColor(DefaultAnsiPalette[ANSIColor.YELLOW])
 
-        target.toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size.one()))
+        target.toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size.ONE))
             .applyStyle(new)
 
         target.size.fetchPositions().map {

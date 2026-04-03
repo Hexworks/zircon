@@ -49,7 +49,7 @@ class ComposeApplication(
     override val closed: Boolean
         get() = _closed.value
 
-    override val closedValue: Property<Boolean>
+    override val closedProperty: Property<Boolean>
         get() = _closed
 
     private var exitApplication: (() -> Unit)? = null

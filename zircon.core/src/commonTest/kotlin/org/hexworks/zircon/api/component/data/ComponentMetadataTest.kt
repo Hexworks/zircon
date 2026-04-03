@@ -14,8 +14,8 @@ class ComponentMetadataTest {
     fun shouldThrowExceptionWhenCreatingAndPositionIsNegative() {
         shouldThrow<IllegalArgumentException> {
             ComponentMetadata(
-                relativePosition = Position.create(-1, 0),
-                size = Size.zero(),
+                position = Position.create(-1, 0),
+                size = Size.ZERO,
                 tilesetProperty = BuiltInCP437TilesetResource.WANDERLUST_16X16.toProperty(),
                 componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty()
             )

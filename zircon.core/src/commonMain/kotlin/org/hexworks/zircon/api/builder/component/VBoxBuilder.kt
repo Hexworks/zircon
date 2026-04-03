@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
@@ -36,7 +37,7 @@ class VBoxBuilder : BaseContainerBuilder<VBox>(
     @Suppress("DuplicatedCode")
     override fun calculateContentSize(): Size {
         if (childrenToAdd.isEmpty()) {
-            return Size.one()
+            return Size.ONE
         }
         var height = 0
         var maxWidth = 0

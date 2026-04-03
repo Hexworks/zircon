@@ -76,7 +76,7 @@ class BlockBuilder<T : Tile> : Builder<Block<T>> {
         }
         return DefaultBlock(
             emptyTile = emptyTile!!,
-            initialTiles = tilesMap.toPersistentMap()
+            tiles = tilesMap.toMutableMap()
         )
     }
 }

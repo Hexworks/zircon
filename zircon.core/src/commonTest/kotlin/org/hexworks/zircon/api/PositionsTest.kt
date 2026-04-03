@@ -38,13 +38,13 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnDefaultPosition() {
-        assertEquals(Position.DEFAULT_POSITION, Position.create(0, 0))
+        assertEquals(Position.ZERO, Position.create(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnUnknown() {
         assertEquals(
-            Position.unknown(),
+            Position.UNKNOWN,
             Position.create(
                 Int.MAX_VALUE, Int.MAX_VALUE
             )
@@ -93,7 +93,7 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnDefault3DPosition() {
-        assertEquals(Position3D.DEFAULT_POSITION, Position3D.DEFAULT_POSITION)
+        assertEquals(Position3D.ZERO, Position3D.ZERO)
     }
 
     @Test

@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
-    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closedProperty: Property<Boolean> = false.toProperty()
 
     private val id = UUID.randomUUID()
     private val debug = RuntimeConfig.config.debugMode
@@ -64,7 +64,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     }
 
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
         animations.forEach { (_, animation) ->
             stop(animation)
         }

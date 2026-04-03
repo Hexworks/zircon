@@ -27,7 +27,7 @@ class DefaultScrollable3D(
     }
 
     override val visibleOffsetProperty = Position3D.from2DPosition(
-        position = Position.DEFAULT_POSITION
+        position = Position.ZERO
     ).toProperty()
     override var visibleOffset by visibleOffsetProperty.asDelegate()
 

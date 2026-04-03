@@ -15,7 +15,7 @@ class DefaultTilesetLoader<T : Any>(
     factories: List<TilesetFactory<T>>,
 ) : TilesetLoader<T>, Closeable {
 
-    override val closedValue: Property<Boolean> = false.toProperty()
+    override val closedProperty: Property<Boolean> = false.toProperty()
 
     private val factoryLookup: Map<Pair<TileType, TilesetType>, TilesetFactory<T>> =
         factories.associateBy { it.supportedTileType to it.supportedTilesetType }
@@ -35,7 +35,7 @@ class DefaultTilesetLoader<T : Any>(
     }
 
     override fun close() {
-        closedValue.value = true
+        closedProperty.value = true
         tilesetCache.clear()
     }
 

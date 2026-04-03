@@ -44,7 +44,7 @@ class AnimationBuilder(
             tick = (1000L / fps).toDuration(MILLISECONDS)
         }
 
-    var position: Position = 
+    var position: Position = Position.ZERO
 
     fun frame(init: AnimationFrameBuilder.() -> Unit) =
         AnimationFrameBuilder().apply(init).build().apply {

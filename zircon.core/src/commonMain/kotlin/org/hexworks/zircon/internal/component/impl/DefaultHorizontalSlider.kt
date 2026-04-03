@@ -4,7 +4,12 @@ import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import kotlin.math.roundToInt
 
 class DefaultHorizontalSlider internal constructor(
@@ -22,7 +27,7 @@ class DefaultHorizontalSlider internal constructor(
 ) {
 
     override fun getMousePosition(event: MouseEvent): Int {
-        return event.position.minus(absolutePosition + contentOffset).x
+        return event.position.minus(position + contentOffset).x
     }
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
@@ -32,18 +37,22 @@ class DefaultHorizontalSlider internal constructor(
                     incrementCurrentValue()
                     Processed
                 }
+
                 KeyCode.LEFT -> {
                     decrementCurrentValue()
                     Processed
                 }
+
                 KeyCode.UP -> {
                     addToCurrentValue(valuePerStep.roundToInt())
                     Processed
                 }
+
                 KeyCode.DOWN -> {
                     subtractToCurrentValue(valuePerStep.roundToInt())
                     Processed
                 }
+
                 else -> Pass
             }
         } else Pass

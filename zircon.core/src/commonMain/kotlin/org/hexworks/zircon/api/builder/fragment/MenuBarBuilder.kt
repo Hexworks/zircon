@@ -21,7 +21,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
 @ZirconDsl
 class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 
-    override var position: Position = 
+    override var position: Position = Position.ZERO
 
     var screen: Screen? = null
     var menuElements: List<DropdownMenu<T>> = listOf()

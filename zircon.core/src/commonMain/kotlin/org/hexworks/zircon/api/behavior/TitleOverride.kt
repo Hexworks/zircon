@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.behavior.impl.DefaultTitleOverride
 
@@ -23,9 +24,11 @@ interface TitleOverride : HasTitle {
 
     companion object {
 
+        fun create(initialTitle: String = ""): TitleOverride = DefaultTitleOverride(initialTitle.toProperty())
+
         /**
          * Creates a new [TitleOverride] object with a default title value of `""`.
          */
-        fun create(initialTitle: String = ""): TitleOverride = DefaultTitleOverride(initialTitle)
+        fun create(initialTitle: Property<String> = "".toProperty()): TitleOverride = DefaultTitleOverride(initialTitle)
     }
 }

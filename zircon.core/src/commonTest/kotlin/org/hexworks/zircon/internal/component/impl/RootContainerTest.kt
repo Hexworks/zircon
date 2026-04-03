@@ -14,7 +14,6 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Position.Companion.offset1x1
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size.Companion.one
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
@@ -51,7 +50,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
         target = DefaultRootContainer(
             metadata = ComponentMetadata(
-                relativePosition = POSITION_2_3,
+                position = POSITION_2_3,
                 size = SIZE_3_4,
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty(),
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty()

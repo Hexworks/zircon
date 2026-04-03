@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.graphics.Symbols
 class DefaultSelector<T : Any> internal constructor(
     position: Position,
     width: Int,
-    override val selectedValue: Property<T>,
+    override val selectedProperty: Property<T>,
     override val valuesProperty: ListProperty<T>,
     private val centeredText: Boolean = true,
     private val toStringMethod: (T) -> String = Any::toString,
@@ -27,10 +27,10 @@ class DefaultSelector<T : Any> internal constructor(
 
     override val values: List<T> by valuesProperty.asDelegate()
 
-    private val indexProperty = values.indexOf(selectedValue.value).toProperty()
+    private val indexProperty = values.indexOf(selectedProperty.value).toProperty()
 
     override val selected: T
-        get() = selectedValue.value
+        get() = selectedProperty.value
 
     private lateinit var leftButton: Button
     private lateinit var rightButton: Button
@@ -38,7 +38,7 @@ class DefaultSelector<T : Any> internal constructor(
     private val labelSize: Size = Size.create(width - 2, 1)
 
     init {
-        selectedValue.updateFrom(indexProperty) { values[it] }
+        selectedProperty.updateFrom(indexProperty) { values[it] }
     }
 
     override val root: HBox = buildHbox {

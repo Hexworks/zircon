@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.behavior.impl.DefaultCanBeHidden
 
@@ -13,6 +14,8 @@ interface CanBeHidden {
 
     companion object {
 
-        fun create(initialIsHidden: Boolean = false): CanBeHidden = DefaultCanBeHidden(initialIsHidden)
+        fun create(initialIsHidden: Boolean = false): CanBeHidden = create(initialIsHidden.toProperty())
+
+        fun create(hiddenProperty: Property<Boolean>): CanBeHidden = DefaultCanBeHidden(hiddenProperty)
     }
 }

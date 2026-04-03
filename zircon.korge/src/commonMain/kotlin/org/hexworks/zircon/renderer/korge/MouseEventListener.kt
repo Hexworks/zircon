@@ -15,7 +15,7 @@ class MouseEventListener(
     private val logger = LoggerFactory.getLogger(this::class)
     private val events = mutableListOf<Pair<org.hexworks.zircon.api.uievent.MouseEvent, UIEventPhase>>()
 
-    private var lastMouseLocation = Position.unknown()
+    private var lastMouseLocation = Position.UNKNOWN
 
     fun drainEvents(): Iterable<Pair<org.hexworks.zircon.api.uievent.MouseEvent, UIEventPhase>> {
         return events.toList().also {

@@ -40,7 +40,7 @@ class DefaultLayerTest {
 
     @Test
     fun shouldProperlySetOffset() {
-        val expectedOffset = Position.DEFAULT_POSITION
+        val expectedOffset = Position.ZERO
         target.moveTo(expectedOffset)
         target.position shouldBe expectedOffset
     }
@@ -92,7 +92,7 @@ class DefaultLayerTest {
         val OFFSET = Position.create(5, 5)
         val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
         val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))
-        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.one()))
+        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.ONE))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
             .withRelativeX(-1)

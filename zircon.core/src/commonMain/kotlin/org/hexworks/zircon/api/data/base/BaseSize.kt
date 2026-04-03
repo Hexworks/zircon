@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api.data.base
 
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import kotlin.math.max
 
@@ -8,10 +7,6 @@ import kotlin.math.max
  * Base class for implementing [Size].
  */
 abstract class BaseSize : Size {
-
-    override val rect: Boundableby lazy {
-        Boundable.create(Position.DEFAULT_POSITION, this)
-    }
 
     override operator fun plus(other: Size) = Size.create(width + other.width, height + other.height)
 

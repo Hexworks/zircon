@@ -26,7 +26,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     override lateinit var target: DefaultComponent
 
     override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSet.empty()
+        get() = ComponentStyleSet.EMPTY
 
     lateinit var appliedColorTheme: ColorTheme
 
@@ -37,7 +37,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         target = object : DefaultComponent(
             metadata = ComponentMetadata(
                 size = DefaultContainerTest.SIZE_4x4,
-                relativePosition = POSITION_2_3,
+                position = POSITION_2_3,
                 componentStyleSetProperty = COMPONENT_STYLES.toProperty(),
                 tilesetProperty = TILESET_REX_PAINT_20X20.toProperty()
             ),
@@ -49,7 +49,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
             override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
                 appliedColorTheme = colorTheme
-                return ComponentStyleSet.empty()
+                return ComponentStyleSet.EMPTY
             }
 
             override fun acceptsFocus(): Boolean {
@@ -108,12 +108,12 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @Test
     fun shouldContainBoundableWhichIsContained() {
-        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 - Size.one())) shouldBe true
+        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 - Size.ONE)) shouldBe true
     }
 
     @Test
     fun shouldNotContainBoundableWhichIsContained() {
-        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 + Size.one())) shouldBe false
+        target.containsBoundable(Boundable.create(POSITION_2_3, SIZE_4x4 + Size.ONE)) shouldBe false
     }
 
     @Test
@@ -136,7 +136,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         }
 
         target.process(
-            event = MouseEvent(MOUSE_CLICKED, 1, Position.DEFAULT_POSITION),
+            event = MouseEvent(MOUSE_CLICKED, 1, Position.ZERO),
             phase = BUBBLE
         )
 
@@ -146,7 +146,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_hovered_Then_it_has_mouse_over_style() {
         target.mouseEntered(
-            event = MouseEvent(MOUSE_ENTERED, 1, Position.DEFAULT_POSITION),
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.ZERO),
             phase = TARGET
         )
 
@@ -156,12 +156,12 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun When_a_component_is_no_longer_hovered_and_has_no_focus_Then_style_is_reset() {
         target.mouseEntered(
-            event = MouseEvent(MOUSE_ENTERED, 1, Position.DEFAULT_POSITION),
+            event = MouseEvent(MOUSE_ENTERED, 1, Position.ZERO),
             phase = TARGET
         )
 
         target.mouseExited(
-            event = MouseEvent(MOUSE_EXITED, 1, Position.DEFAULT_POSITION),
+            event = MouseEvent(MOUSE_EXITED, 1, Position.ZERO),
             phase = TARGET
         )
 
@@ -173,7 +173,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
         target.focusGiven()
 
         target.mouseExited(
-            event = MouseEvent(MOUSE_EXITED, 1, Position.DEFAULT_POSITION),
+            event = MouseEvent(MOUSE_EXITED, 1, Position.ZERO),
             phase = TARGET
         )
 

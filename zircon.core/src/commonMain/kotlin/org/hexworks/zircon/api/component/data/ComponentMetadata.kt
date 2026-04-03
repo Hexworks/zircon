@@ -17,12 +17,12 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 data class ComponentMetadata(
     // TODO: next big thing is to make these observable too
-    val relativePosition: Position,
+    val position: Position,
     val size: Size,
     val name: String = "",
     val bindingAction: BindingAction = UpdateOnBind,
     // properties
-    val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
+    val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
@@ -46,9 +46,8 @@ data class ComponentMetadata(
 
 
     init {
-        require(relativePosition.hasNegativeComponent.not()) {
-            "Can't have a Component with a relative position ($relativePosition) which has a " +
-                    "negative dimension."
+        require(position.hasNegativeComponent.not()) {
+            "Can't have a Component with a position ($position) which has a negative dimension."
         }
     }
 }

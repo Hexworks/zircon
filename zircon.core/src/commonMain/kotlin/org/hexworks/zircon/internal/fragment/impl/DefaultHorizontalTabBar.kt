@@ -12,6 +12,7 @@ import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeHeight
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
@@ -50,7 +51,7 @@ class DefaultHorizontalTabBar internal constructor(
 
         group.selectedButtonProperty.onChange { (_, newValue) ->
             newValue?.let { button ->
-                currentContent?.detach()?.moveTo(Position.DEFAULT_POSITION)
+                currentContent?.detach()?.moveTo(Position.ZERO)
                 currentContent = content.addComponent(lookup.getValue(button.key).content)
             }
         }

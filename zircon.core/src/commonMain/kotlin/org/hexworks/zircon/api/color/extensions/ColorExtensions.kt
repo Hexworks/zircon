@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.color.extensions
 
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.color.Color.Companion.DEFAULT_FACTOR
-import org.hexworks.zircon.api.color.Color.Companion.defaultFactor
 import org.hexworks.zircon.api.color.ColorInterpolator
 import org.hexworks.zircon.internal.color.DefaultColor
 import org.hexworks.zircon.internal.color.DefaultColorInterpolator
@@ -13,7 +12,7 @@ val Color.isOpaque: Boolean
 /**
  * Returns a new [Color] which is desaturated by the [DEFAULT_FACTOR] (.7).
  */
-fun Color.desaturate(): Color = desaturate(defaultFactor())
+fun Color.desaturate(): Color = desaturate(DEFAULT_FACTOR)
 
 /**
  * Returns a new [Color] which is desaturated by [factor].
@@ -29,7 +28,7 @@ fun Color.desaturate(factor: Double): Color {
 /**
  * Returns a new [Color] which is tinted by the [DEFAULT_FACTOR] (.7).
  */
-fun Color.tint(): Color = tint(defaultFactor())
+fun Color.tint(): Color = tint(Color.DEFAULT_FACTOR)
 
 /**
  * Returns a new [Color] which is tinted by [factor].
@@ -43,7 +42,7 @@ fun Color.tint(factor: Double): Color {
 /**
  * Returns a new [Color] which is shaded by the [DEFAULT_FACTOR] (.7).
  */
-fun Color.shade(): Color = shade(defaultFactor())
+fun Color.shade(): Color = shade(Color.DEFAULT_FACTOR)
 
 /**
  * Returns a new [Color] which is shaded by [factor].
@@ -57,7 +56,7 @@ fun Color.shade(factor: Double): Color {
 /**
  * Returns a new [Color] which is toned by the [DEFAULT_FACTOR] (.7).
  */
-fun Color.tone(): Color = tone(defaultFactor())
+fun Color.tone(): Color = tone(Color.DEFAULT_FACTOR)
 
 /**
  * Returns a new [Color] which is toned by [factor].

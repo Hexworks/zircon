@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color.Companion.transparent
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 //TODO: Finish minValue impl. and bug fixing

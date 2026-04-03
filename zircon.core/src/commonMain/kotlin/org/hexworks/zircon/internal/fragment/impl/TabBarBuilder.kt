@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.fragment.TabBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
 
 abstract class TabBarBuilder(
     var size: Size,
@@ -13,7 +14,7 @@ abstract class TabBarBuilder(
 ) {
 
     protected fun checkCommonProperties() {
-        require(size.isNotUnknown) {
+        require(size.isSizeNotUnknown) {
             "A tab bar must has a size"
         }
         require(size > Size.create(3, 3)) {

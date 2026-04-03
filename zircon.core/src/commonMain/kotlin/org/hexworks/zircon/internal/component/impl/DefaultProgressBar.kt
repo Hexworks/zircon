@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color.Companion.transparent
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.data.ComponentMetadata

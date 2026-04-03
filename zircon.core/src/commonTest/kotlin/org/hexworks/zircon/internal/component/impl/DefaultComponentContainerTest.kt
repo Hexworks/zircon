@@ -42,7 +42,7 @@ class DefaultComponentContainerTest {
         target = DefaultComponentContainer(
             DefaultRootContainer(
                 metadata = ComponentMetadata(
-                    relativePosition = Position.DEFAULT_POSITION,
+                    position = Position.ZERO,
                     size = SIZE,
                     tilesetProperty = TILESET.toProperty(),
                     componentStyleSetProperty = buildStyles().toProperty()

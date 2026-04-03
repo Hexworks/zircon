@@ -23,7 +23,7 @@ class MouseEventListener(
     private val logger = LoggerFactory.getLogger(this::class)
     private val events = mutableListOf<Pair<ZirconMouseEvent, UIEventPhase>>()
 
-    private var lastMouseLocation = Position.unknown()
+    private var lastMouseLocation = Position.UNKNOWN
     private var isDragging = false
 
     /**
