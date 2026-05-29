@@ -46,7 +46,7 @@ enum class MouseEventType : UIEventType {
     MOUSE_DRAGGED,
 
     /**
-     * The mouse cursor has been moved onto a component but no buttons have been pushed.
+     * The mouse cursor has been moved onto a component, but no buttons have been pushed.
      */
     MOUSE_MOVED
 }

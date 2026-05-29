@@ -3,9 +3,8 @@ package org.hexworks.zircon.internal.util
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 
 /**
- * Queue that has a fixed maximum size. After this
- * size is reached the oldest added element is removed
- * whenever a new element is added
+ * Queue that has a fixed maximum size. After this size is reached, the
+ * oldest added element is removed whenever a new element is added
  */
 class BoundedFifoQueue<T : Any> private constructor(
     private val currentElements: MutableList<T>,

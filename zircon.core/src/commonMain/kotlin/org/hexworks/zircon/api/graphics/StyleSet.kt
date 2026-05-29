@@ -2,32 +2,33 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.behavior.Copiable
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.internal.graphics.DefaultStyleSet
 
 /**
- * Represents style information which is handled by Zircon like
+ * Represents style information that is handled by Zircon like
  * - background color
  * - foreground color and
  * - modifiers
  * and a set of useful operations on them.
  */
+//! TODO: rename this to something better to finally remove the Lanterna legacy naming
 interface StyleSet : Cacheable, Copiable<StyleSet> {
 
-    val foregroundColor: TileColor
-    val backgroundColor: TileColor
+    val foregroundColor: Color
+    val backgroundColor: Color
     val modifiers: Set<Modifier>
 
     /**
      * Creates a copy of this [StyleSet] with the given foreground color.
      */
-    fun withForegroundColor(foregroundColor: TileColor): StyleSet
+    fun withForegroundColor(foregroundColor: Color): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given background color.
      */
-    fun withBackgroundColor(backgroundColor: TileColor): StyleSet
+    fun withBackgroundColor(backgroundColor: Color): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
@@ -85,15 +86,15 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          */
         fun empty() = EMPTY
 
-        private val DEFAULT_STYLE = DefaultStyleSet(
-            foregroundColor = TileColor.defaultForegroundColor(),
-            backgroundColor = TileColor.defaultBackgroundColor(),
+        private val DEFAULT_STYLE: StyleSet = DefaultStyleSet(
+            foregroundColor = Color.DEFAULT_FOREGROUND_COLOR,
+            backgroundColor = Color.DEFAULT_BACKGROUND_COLOR,
             modifiers = setOf()
         )
 
-        private val EMPTY = DefaultStyleSet(
-            foregroundColor = TileColor.transparent(),
-            backgroundColor = TileColor.transparent(),
+        private val EMPTY: StyleSet = DefaultStyleSet(
+            foregroundColor = Color.TRANSPARENT,
+            backgroundColor = Color.TRANSPARENT,
             modifiers = setOf()
         )
     }

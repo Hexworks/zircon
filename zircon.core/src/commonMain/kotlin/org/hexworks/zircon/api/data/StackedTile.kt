@@ -10,9 +10,8 @@ import org.hexworks.zircon.internal.data.DefaultStackedTile
  * (form bottom to top) without having to use [Layer]s.
  *
  * A [StackedTile] must have at least **one** [Tile] in its stack ([tiles])
- * therefore any implementation of this interface must ensure this property.
+ * therefore, any implementation of this interface must ensure this property.
  *
- * @since 2020.2.0-RELEASE
  * @see Tile
  */
 
@@ -24,6 +23,11 @@ interface StackedTile : Tile {
     val baseTile: Tile
 
     /**
+     * The [Tile]s that are stacked on top of the [baseTile].
+     */
+    val rest: List<Tile>
+
+    /**
      * The [Tile] on top of this stack. This tile is always visible.
      */
     val top: Tile
@@ -33,22 +37,6 @@ interface StackedTile : Tile {
      */
     val tiles: List<Tile>
 
-    /**
-     * Returns a new [StackedTile] that has its [baseTile] replaced by the given [tile].
-     */
-    fun withBaseTile(tile: Tile): StackedTile
-
-    /**
-     * Returns a new [StackedTile] that's the copy of this one, with the given
-     * [tile] pushed on top of the stack.
-     */
-    fun withPushedTile(tile: Tile): StackedTile
-
-    /**
-     * Returns a new [StackedTile] that's the copy of this one, with the given
-     * [tile] removed.
-     */
-    fun withRemovedTile(tile: Tile): StackedTile
 
     companion object {
 

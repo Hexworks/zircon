@@ -2,6 +2,8 @@ package org.hexworks.zircon.internal.component.data
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.BindingAction
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.ColorTheme
@@ -21,14 +23,14 @@ data class CommonComponentProperties<T : Component>(
     var name: String = "",
     var alignmentStrategy: AlignmentStrategy = ComponentAlignments.positionalAlignment(0, 0),
     var decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
-    var preferredContentSize: Size = Size.unknown(),
-    var preferredSize: Size = Size.unknown(),
+    var preferredContentSize: Size = Size.UNKNOWN,
+    var preferredSize: Size = Size.UNKNOWN,
     var componentRenderer: ComponentRenderer<out T> = NoOpComponentRenderer(),
     var postProcessors: List<ComponentPostProcessor<T>> = listOf(),
-    var updateOnAttach: Boolean = true,
+    var bindingAction: BindingAction = UpdateOnBind,
     // can be changed runtime
-    val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
-    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.unknown().toProperty(),
+    val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
+    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
     val disabledProperty: Property<Boolean> = false.toProperty()

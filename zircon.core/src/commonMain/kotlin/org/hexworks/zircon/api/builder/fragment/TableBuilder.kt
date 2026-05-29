@@ -15,18 +15,18 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTable
 import org.hexworks.zircon.internal.fragment.impl.TableColumn
 
 @ZirconDsl
 class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
 
-    override var position: Position = Position.zero()
+    override var position: Position = Position.ZERO
 
     var data: ObservableList<T> = listOf<T>().toProperty()
     var columns: List<TableColumn<T, *, *>> = listOf()

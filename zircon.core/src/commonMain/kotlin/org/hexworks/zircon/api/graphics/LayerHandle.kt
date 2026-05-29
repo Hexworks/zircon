@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.behavior.Movable
 
 /**
- * Represents a [Layer] which is attached to a [Layerable] objects and
+ * Represents a [Layer] that is attached to a [Layerable] object and
  * has additional functionality related to the [Layerable] such as [removeLayer].
  */
 interface LayerHandle : Layer, Movable {
@@ -19,17 +19,5 @@ interface LayerHandle : Layer, Movable {
      * @return `true` if the operation was successful `false` if not
      */
     fun moveByLevel(level: Int): Boolean
-
-    /**
-     * Moves this [Layer] up by one level.
-     * @return `true` if the operation was successful `false` if not
-     */
-    fun moveOneLevelUp(): Boolean = moveByLevel(1)
-
-    /**
-     * Moves this [Layer] down by one level.
-     * @return `true` if the operation was successful `false` if not
-     */
-    fun moveOneLevelDown(): Boolean = moveByLevel(-1)
 
 }

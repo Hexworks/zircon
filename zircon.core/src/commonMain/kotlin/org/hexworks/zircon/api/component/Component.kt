@@ -2,15 +2,15 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.Focusable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Rect
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.uievent.ComponentEventSource
 import org.hexworks.zircon.api.uievent.UIEventSource
-import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
 
 /**
@@ -20,7 +20,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * Components are organized into a tree structure of [Component] elements nested in each other.
  * The component hierarchy **always** has a [Container] at its root. A child [Component]
  * is **always** bounded by its parent. Containers are branches in this tree while [Component]s
- * are leaves. So for example a panel which is intended to be able to hold other components
+ * are leaves. So for example, a panel which is intended to be able to hold other components
  * like a label or a checkbox is a [Container] while a label which is only intended to
  * display information is just a [Component].
  *
@@ -30,45 +30,132 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * The [Component] abstraction implements the **Composite** design pattern with [Component]
  * and [Container].
  *
+ * Visualization:
+ *
+ * ### Box Model
+ *
+ * A [Component] uses a box model where [ComponentDecorationRenderer][org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer]s
+ * wrap the content area. The [ComponentRenderer][org.hexworks.zircon.api.component.renderer.ComponentRenderer]
+ * draws inside the content area.
+ *
+ * ```
+ * absolutePosition (position on the grid)
+ * |
+ * v
+ * ╔═══╡ Box Decoration ╞═════════╗
+ * ║■<── Content offset           ║░
+ * ║↑                             ║░
+ * ║|                             ║░
+ * ║|                             ║░
+ * ║|                             ║░
+ * ║├─ content height             ║░
+ * ║|                             ║░
+ * ║|                             ║░
+ * ║↓                             ║░
+ * ║■ <─ content size (width) ─> ■║░
+ * ╚══════════════════════════════╝░
+ *  ░░░░░░░░Shadow decoration░░░░░░░
+ * ■ <─────  size (width)   ─────> ■
+ * ```
+ *
+ * - [contentOffset] = sum of all `ComponentDecorationRenderer.offset` values
+ * - [contentSize] = [size][org.hexworks.zircon.api.behavior.HasSize.size] - sum of all `ComponentDecorationRenderer.occupiedSize` values
+ *
+ * ### Rendering Pipeline
+ *
+ * (via [ComponentRenderingStrategy][org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy])
+ *
+ * 1. A `DrawWindow` is created over the content area and the `ComponentRenderer` renders content into it
+ * 2. `ComponentDecorationRenderer`s render their layers (outermost first, each getting a progressively smaller `DrawWindow`)
+ * 3. `ComponentPostProcessor`s post-process the content area
+ *
+ * ### Parent-Child Positioning
+ *
+ * Children are positioned relative to the parent's content area:
+ *
+ * ```
+ * Parent (absolutePosition = (3, 2))
+ * +----------------------------------------------+
+ * |   +== parent decoration ===================+ |
+ * |   H                                        H |
+ * |   H   parent content area (contentSize)    H |
+ * |   H                                        H |
+ * |   H   child.relativePosition = (2, 1)      H |
+ * |   H   |                                    H |
+ * |   H   v                                    H |
+ * |   H   +--------------------+               H |
+ * |   H   |  child decoration  |               H |
+ * |   H   |  +--------------+  |               H |
+ * |   H   |  | child        |  |               H |
+ * |   H   |  | content area |  |               H |
+ * |   H   |  +--------------+  |               H |
+ * |   H   +--------------------+               H |
+ * |   H                                        H |
+ * |   +=========================================+ |
+ * +----------------------------------------------+
+ * ```
+ *
+ * ```
+ * child.absolutePosition = parent.absolutePosition
+ *                        + parent.contentOffset
+ *                        + child.relativePosition
+ *
+ * Example: (3,2) + (1,1) + (2,1) = (6, 4)
+ * ```
+ *
+ * [relativeBounds] = `Rect(relativePosition, size)` (bounds of this component relative to its parent)
+ *
  * @see Container
  * @see ComponentContainer
  * @see UIEventSource
  * @see ComponentEventSource
  * @see Focusable
  */
+//! TODO: add minimum size
 interface Component : ComponentEventSource, ComponentProperties, Focusable, Movable, UIEventSource {
 
     /**
-     * The absolute position of this [Component], eg: the [Position] relative to the
-     * top left corner of the grid it is displayed on. This value is context
-     * dependent and it is calculated based on the parent it is attached to.
+     * The **absolute** position of this [Component], e.g.: the [Position] relative to the
+     * top left corner of the grid it is displayed on. This value is context-dependent,
+     * and it is calculated based on the parent it is attached to.
      */
-    val absolutePosition: Position
+    override val position: Position
+    override val positionProperty: ObservableValue<Position>
 
     /**
-     * The relative position is the position of the top left corner of this [Component]
-     * relative to the [contentOffset] of its parent.
+     * The **total** size of this [Component], e.g.: the [Size] of the content area plus the
+     * size of all decorations.
      */
-    val relativePosition: Position
+    override val size: Size
+    override val sizeProperty: ObservableValue<Size>
+
+    /**
+     * The bounds of this [Component] relative to the top left corner of the grid it is
+     * displayed on.
+     */
+    val bounds: Boundable
+    val boundsProperty: ObservableValue<Boundable>
 
     /**
      * The position of the top left corner of the **content area** (where the component
      * is rendered without the decorations) relative to the top left corner of this
-     * [Component]. In other words the content offset is the sum of the offset positions
+     * [Component]. In other words, the content offset is the sum of the offset positions
      * for each decoration.
      */
     val contentOffset: Position
 
     /**
-     * The [Size] of the content of this [Component]. In other words the content
+     * The [Size] of the content of this [Component]. In other words, the content
      * size is the total size of the component minus the size of its decorations.
      */
     val contentSize: Size
 
     /**
-     * The bounds of this [Component] relative to its parent.
+     * The **absolute** bounds of the content area of this [Component].
+     * E.g.: [Component.position] + [Component.contentOffset], [Component.contentSize].
      */
-    val relativeBounds: Rect
+    val contentBounds: Boundable
+    val contentBoundsProperty: ObservableValue<Boundable>
 
     /**
      * The current style based on [componentStyleSet] according to the current [componentState].
@@ -76,8 +163,8 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     val currentStyle: StyleSet
         get() = componentStyleSet.fetchStyleFor(componentState)
 
-    val componentStateValue: ObservableValue<ComponentState>
     val componentState: ComponentState
+    val componentStateProperty: ObservableValue<ComponentState>
 
     /**
      * The [ComponentStyleSet] of this [Component]. Note that if you set
@@ -98,6 +185,14 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
      */
     fun clearCustomStyle()
 
+    /**
+     * Resets this component to its original state as it was initially created. This means
+     * - Its focus is cleared
+     * - Its state is reset to [ComponentState.DEFAULT]
+     * - It is moved back to its original position
+     *
+     * @see AttachedComponent.detach
+     */
     fun resetState()
 
     companion object

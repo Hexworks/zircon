@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
  * Interface that adds functionality for overriding tilesets used
- * in its implementors (components, layers, etc).
+ * in its implementors (components, layers, etc.).
  */
 interface TilesetOverride : TilesetHolder {
 

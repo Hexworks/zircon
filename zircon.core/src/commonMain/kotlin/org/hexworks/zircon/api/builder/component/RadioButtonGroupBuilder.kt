@@ -4,10 +4,10 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.hexworks.zircon.internal.config.RuntimeConfig
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {

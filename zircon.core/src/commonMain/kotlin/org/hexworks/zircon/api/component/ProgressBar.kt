@@ -8,7 +8,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 interface ProgressBar : Component {
 
     /**
-     * Range (0..value) of the [ProgressBar]
+     * Range (`0 ..value`) of the [ProgressBar]
      */
     val range: Int
 
@@ -18,7 +18,7 @@ interface ProgressBar : Component {
     val numberOfSteps: Int
 
     /**
-     * Indicates if the current progress is displayed next to the progress bar
+     * Indicates if the current progress is displayed on the progress bar
      */
     val displayPercentValueOfProgress: Boolean
 
@@ -26,22 +26,17 @@ interface ProgressBar : Component {
      * Current progress with respect to the maxValue
      */
     var progress: Double
-
-    /**
-     * Bindable, current progress
-     */
     val progressProperty: Property<Double>
 
     fun increment() = incrementBy(1)
-
     fun decrement() = decrementBy(1)
 
     fun incrementBy(value: Int) {
-        progressProperty.value = progressProperty.value + value
+        progressProperty.value += value
     }
 
     fun decrementBy(value: Int) {
-        progressProperty.value = progressProperty.value - value
+        progressProperty.value -= value
     }
 
 

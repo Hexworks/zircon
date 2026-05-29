@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer

@@ -7,9 +7,9 @@ import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.graphics.TileGraphics
 
 /**
- * Represents an object which can contain multiple [Layer]s which are specialized
- * [TileGraphics] objects which can be displayed above each other within the [Layerable] object.
- * Indexing is done from bottom to top, eg: calling [addLayer] with a [Layerable] which
+ * Represents an object that can contain multiple [Layer]s which are specialized
+ * [TileGraphics] objects that can be displayed above each other within the [Layerable] object.
+ * Indexing is done from bottom to top, e.g.: calling [addLayer] with a [Layerable] which
  * has only one [Layer] (at index `0`) will add the new [Layer] at index `1`.
  * [Layerable] also implements [Clearable]. In this context [clear] can be used to remove
  * all layers.
@@ -23,6 +23,7 @@ interface Layerable {
      * [Layerable] accepts is [Layerable.size] - [Layer.position] + [Layer.size]
      */
     val size: Size
+    val bounds: Boundable
 
     /**
      * Returns the [Layer] at the given [level] (if present).
@@ -42,6 +43,7 @@ interface Layerable {
     /**
      * Sets the given [Layer] in this [Layerable] at the given [level].
      */
+    //! TODO: what happens when setting at the wrong level (negative or out of bounds)?
     fun setLayerAt(level: Int, layer: Layer): LayerHandle
 
     companion object {

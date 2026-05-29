@@ -1,9 +1,10 @@
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Size
 
 /**
- * Represents an object which manipulates a cursor. All operations which work with
+ * Represents an object that manipulates a cursor. All operations that work with
  * [Position]s are relative to the [CursorHandler]'s position.
  */
 interface CursorHandler {
@@ -19,36 +20,8 @@ interface CursorHandler {
     var cursorPosition: Position
 
     /**
-     * Tells whether the cursor is at the end of the line.
+     * Returns the [Size] of the (virtual) space the cursor can occupy.
      */
-    val isCursorAtTheEndOfTheLine: Boolean
+    val cursorSpaceSize: Size
 
-    /**
-     * Tells whether the cursor is at the start of the line.
-     */
-    val isCursorAtTheStartOfTheLine: Boolean
-
-    /**
-     * Tells whether the cursor is at the first (index 0) row.
-     */
-    val isCursorAtTheFirstRow: Boolean
-
-    /**
-     * Tells whether the cursor is at the last row.
-     */
-    val isCursorAtTheLastRow: Boolean
-
-    /**
-     * Moves the cursor one [Position] to the right. If the [Position] would be out
-     * of bound regards to columns, the cursor will be moved the the 0th position
-     * in the next row or left where it was if there is no next row.
-     */
-    fun moveCursorForward()
-
-    /**
-     * Moves the cursor one [Position] to the left. If the [Position] would be out
-     * of bounds regards to columns, the cursor will be moved the the last position
-     * in the previous row or left where it was if there is no previous row.
-     */
-    fun moveCursorBackward()
 }

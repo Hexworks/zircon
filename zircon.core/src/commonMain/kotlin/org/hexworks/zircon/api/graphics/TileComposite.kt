@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
 /**
- * Represents an object which is composed of [Tile]s and has a [Size].
+ * Represents an object that is composed of [Tile]s and has a [Size].
  */
 interface TileComposite : HasSize {
 

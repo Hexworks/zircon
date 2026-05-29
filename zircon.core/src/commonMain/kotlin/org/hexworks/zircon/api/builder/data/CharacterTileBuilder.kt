@@ -2,10 +2,9 @@ package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.internal.data.DefaultCharacterTile
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builds [CharacterTile]s.
@@ -20,7 +19,7 @@ class CharacterTileBuilder : Builder<CharacterTile> {
     var styleSet: StyleSet = StyleSet.defaultStyle()
 
     override fun build(): CharacterTile {
-        return DefaultCharacterTile(
+        return CharacterTile(
             character = character,
             styleSet = styleSet,
         )

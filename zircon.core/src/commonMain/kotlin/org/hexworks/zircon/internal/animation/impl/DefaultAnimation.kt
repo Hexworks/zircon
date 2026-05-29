@@ -2,27 +2,30 @@ package org.hexworks.zircon.internal.animation.impl
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.orElse
+import org.hexworks.zircon.api.animation.Animation
+import org.hexworks.zircon.api.animation.Animation.InfiniteLoop
+import org.hexworks.zircon.api.animation.Animation.LoopKind
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
+import kotlin.math.max
+import kotlin.time.Duration
 
 internal class DefaultAnimation(
-    override val tick: Long,
-    override val loopCount: Int,
+    override val tick: Duration,
+    override val loopKind: LoopKind,
     override val totalFrameCount: Int,
     override val uniqueFrameCount: Int,
     frames: List<InternalAnimationFrame>
 ) : InternalAnimation {
 
     override val id: UUID = UUID.randomUUID()
+    override val isLoopedIndefinitely = loopKind is InfiniteLoop
 
-    override val isLoopedIndefinitely = loopCount == 0
-
-    private val infiniteLoop = loopCount == 0
-    private var currentLoopCount = loopCount
     private val framesInOrder = mutableListOf<InternalAnimationFrame>()
 
     private var currentFrame: InternalAnimationFrame? = null
+    private var loopState = loopKind
 
     private val flattenedFrames = frames.flatMap { frame ->
         (0 until frame.repeatCount).map { frame }
@@ -44,7 +47,7 @@ internal class DefaultAnimation(
         }
         return currentFrame?.let { currentFrame ->
             if (framesInOrder.isEmpty()) {
-                currentLoopCount--
+                loopKind.decrementFrameCount()
                 framesInOrder.addAll(flattenedFrames)
             }
             currentFrame.displayOn(layerable)
@@ -56,6 +59,16 @@ internal class DefaultAnimation(
         currentFrame?.let(InternalAnimationFrame::remove)
     }
 
-    private fun hasNextFrame() = infiniteLoop || currentLoopCount > 0
+    private fun hasNextFrame() = loopState.hasNextFrame
 
+    private fun LoopKind.decrementFrameCount() = when(this) {
+        is InfiniteLoop -> this
+        is Animation.FiniteLoop -> copy(count = max(0, count - 1))
+    }
+
+    private val LoopKind.hasNextFrame: Boolean
+        get() = when(this) {
+            is Animation.InfiniteLoop -> true
+            is Animation.FiniteLoop -> count > 0
+        }
 }

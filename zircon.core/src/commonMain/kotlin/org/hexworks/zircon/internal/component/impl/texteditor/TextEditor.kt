@@ -4,9 +4,9 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.size
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.internal.util.BoundedFifoQueue
 
 sealed class Cell
@@ -24,7 +24,7 @@ data object EOLCell : Cell() {
     override fun toString() = "{EOL}"
 }
 
-data class Line internal constructor(
+data class Line(
     val cells: List<Cell>,
 ) {
 
@@ -39,7 +39,7 @@ data class Line internal constructor(
 
 data class EditorState(
     val lines: List<Line>,
-    val cursor: Position = Position.zero()
+    val cursor: Position = Position.ZERO
 )
 
 class TextEditor private constructor(
@@ -135,7 +135,7 @@ class TextEditor private constructor(
             return TextEditor(
                 EditorState(
                     lines = lines,
-                    cursor = Position.zero()
+                    cursor = Position.ZERO
                 )
             )
         }
@@ -168,7 +168,7 @@ val EditorState.cursorAtEndOfDocument: Boolean
     get() = cursorAtEndOfLine && cursor.y == lines.lastIndex
 
 val EditorState.cursorAtStartOfDocument: Boolean
-    get() = cursor == Position.zero()
+    get() = cursor == Position.ZERO
 
 val EditorState.hasNextLine: Boolean
     get() {

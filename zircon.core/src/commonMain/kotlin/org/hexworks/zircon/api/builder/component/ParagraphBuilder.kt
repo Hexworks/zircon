@@ -3,12 +3,12 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
 import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
@@ -25,7 +25,7 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
     var typingEffectSpeedInMs: Long = 0
 
     override fun build(): Paragraph {
-        props.postProcessors = props.postProcessors + if (typingEffectSpeedInMs > 0) {
+        props.postProcessors += if (typingEffectSpeedInMs > 0) {
             listOf(TypingEffectPostProcessor(typingEffectSpeedInMs))
         } else {
             listOf()

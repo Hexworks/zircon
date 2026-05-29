@@ -1,14 +1,19 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheEndOfTheLine
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheLastRow
+import org.hexworks.zircon.api.behavior.extensions.moveCursorForward
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withX
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileString internal constructor(
+data class DefaultCharacterTileString (
     override val characterTiles: List<CharacterTile>,
     override val size: Size,
     private val textWrap: TextWrap
@@ -37,7 +42,7 @@ data class DefaultCharacterTileString internal constructor(
 
                     //the word is bigger then 1 line when this happens we should character wrap
                     if (wordSize > cols) {
-                        nextWord.forEach { tc ->
+                        nextWord.forEach { tc: CharacterTile ->
                             tiles[cursorHandler.cursorPosition] = tc
                             cursorHandler.moveCursorForward()
                         }
@@ -45,7 +50,7 @@ data class DefaultCharacterTileString internal constructor(
 
                     //this means we can plunk the word on our line
                     if (spaceRemaining >= wordSize) {
-                        nextWord.forEach { tc ->
+                        nextWord.forEach { tc: CharacterTile ->
                             tiles[cursorHandler.cursorPosition] = tc
                             cursorHandler.moveCursorForward()
                         }
@@ -64,7 +69,7 @@ data class DefaultCharacterTileString internal constructor(
 
                         if (spaceRemaining >= wordSize) {
                             //this means we can plunk the word on our line
-                            nextWord.forEach { tc ->
+                            nextWord.forEach { tc: CharacterTile ->
                                 tiles[cursorHandler.cursorPosition] = tc
                                 cursorHandler.moveCursorForward()
                             }

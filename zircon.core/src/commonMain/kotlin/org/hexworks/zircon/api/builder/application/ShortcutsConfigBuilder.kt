@@ -2,10 +2,10 @@ package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.application.ShortcutsConfig
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.uievent.KeyboardEventType
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * [Builder] for creating [ShortcutsConfig]s.

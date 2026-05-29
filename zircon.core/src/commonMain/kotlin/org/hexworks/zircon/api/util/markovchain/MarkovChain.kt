@@ -5,6 +5,7 @@ import org.hexworks.zircon.internal.util.markovchain.DefaultMarkovChain
 /**
  * Represents a markov chain.
  */
+//! TODO: create a builder dsl that allows for the easy construction of markov chains
 interface MarkovChain<T : Any> {
 
     /**

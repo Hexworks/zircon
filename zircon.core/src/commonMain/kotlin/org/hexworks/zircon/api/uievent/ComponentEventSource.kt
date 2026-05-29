@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentState
 
 /**
- * An [ComponentEventSource] is an object which emits [ComponentEvent]s and can be used to listen to
- * those events. Note that [ComponentEvent]s don't support [UIEventPhase]s.
+ * An [ComponentEventSource] is an object that emits [ComponentEvent]s and can be used
+ * to listen to those events. Note that [ComponentEvent]s don't support [UIEventPhase]s.
  */
 interface ComponentEventSource {
 

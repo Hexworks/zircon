@@ -2,7 +2,9 @@ package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
-import org.hexworks.zircon.api.color.ANSITileColor
+import org.hexworks.zircon.api.color.ANSIColor
+import org.hexworks.zircon.api.color.extensions.withAlpha
+import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
@@ -30,8 +32,8 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
 
         val isToggled = context.component.isSelected
         val theme = context.component.theme
-        val toggledBackground = ANSITileColor.GRAY.withAlpha(0)
-        val untoggledBackground = ANSITileColor.GRAY.withAlpha(0)
+        val toggledBackground = DefaultAnsiPalette[ANSIColor.GRAY].withAlpha(0)
+        val untoggledBackground = DefaultAnsiPalette[ANSIColor.GRAY].withAlpha(0)
         val bar = characterTile {
             character = SINGLE_LINE_HORIZONTAL
             withStyleSet {

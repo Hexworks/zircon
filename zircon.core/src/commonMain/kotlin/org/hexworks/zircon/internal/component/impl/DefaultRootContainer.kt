@@ -12,8 +12,8 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Processed
-import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.component.extensions.flattenedTree
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
@@ -29,7 +29,7 @@ class DefaultRootContainer(
     override val componentTree = persistentListOf(this as InternalComponent).toProperty()
 
     init {
-        eventBus.simpleSubscribeTo<ComponentAdded>(eventScope) { (parent, component) ->
+        eventBus.simpleSubscribeTo(ComponentAdded, eventScope) { (parent, component) ->
             componentTree.transformValue { items ->
                 val parentIdx = items.indexOf(parent)
                 val result = if (parentIdx > -1) {
@@ -39,7 +39,7 @@ class DefaultRootContainer(
                 result
             }
         }
-        eventBus.simpleSubscribeTo<ComponentRemoved>(eventScope) { (_, component) ->
+        eventBus.simpleSubscribeTo(ComponentRemoved, eventScope) { (_, component) ->
             componentTree.transformValue { items ->
                 val result = if (items.indexOf(component) > -1) {
                     val toRemove = component.flattenedTree
@@ -51,12 +51,16 @@ class DefaultRootContainer(
         }
     }
 
-    override fun addComponent(component: Component): InternalAttachedComponent {
-        val attachment = super<DefaultContainer>.addComponent(component)
-        val ic = component.asInternalComponent()
-        ic.flattenedTree.forEach {
+    /**
+     * We override [addComponent] in the root container as it performs some special
+     * functions such as setting the [root] reference to `this`.
+     */
+    override fun addComponent(component: Component) = component.asInternalComponent().let { ic ->
+        val componentToAdd = component.asInternalComponent()
+        componentToAdd.flattenedTree.forEach {
             it.root = this
         }
+        val attachment = super.addComponent(componentToAdd)
         eventBus.publish(
             event = ComponentAdded(
                 parent = this,
@@ -65,15 +69,15 @@ class DefaultRootContainer(
             ),
             eventScope = eventScope
         )
-        return attachment
+        attachment
     }
 
+    //! TODO: clarify why this accepts focus and returns Processed
     override fun acceptsFocus() = true
-
     override fun focusGiven() = Processed
-
     override fun focusTaken() = Processed
 
+    //! TODO: clarify why we do this
     override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor

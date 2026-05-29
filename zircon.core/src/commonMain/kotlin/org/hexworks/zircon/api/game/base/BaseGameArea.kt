@@ -2,12 +2,14 @@ package org.hexworks.zircon.api.game.base
 
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.Scrollable3D
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable3D
 import org.hexworks.zircon.internal.game.GameAreaState
@@ -17,7 +19,7 @@ import org.hexworks.zircon.internal.game.InternalGameArea
 abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D,
-    initialVisibleOffset: Position3D = Position3D.defaultPosition(),
+    initialVisibleOffset: Position3D = Position3D.ZERO,
     initialContents: Map<Position3D, B> = mapOf(),
     initialFilters: Iterable<GameAreaTileFilter<T>>,
     private val scrollable3D: DefaultScrollable3D = DefaultScrollable3D(
@@ -26,8 +28,8 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     )
 ) : InternalGameArea<T, B>, Scrollable3D by scrollable3D {
 
-    final override val visibleOffsetValue: ObservableValue<Position3D>
-        get() = scrollable3D.visibleOffsetValue
+    final override val visibleOffsetProperty: Property<Position3D>
+        get() = scrollable3D.visibleOffsetProperty
 
     final override val filter = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
 
@@ -48,7 +50,7 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     override var disposeState: DisposeState = NotDisposed
         internal set
 
-    private val offsetChangedSubscription = visibleOffsetValue.onChange { (_, newValue) ->
+    private val offsetChangedSubscription = visibleOffsetProperty.onChange { (_, newValue) ->
         state = state.copy(visibleOffset = newValue)
     }
 

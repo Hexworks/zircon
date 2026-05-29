@@ -6,23 +6,21 @@ import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.renderer.Renderer
-import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.resource.TilesetType
 import kotlin.jvm.JvmName
 import kotlin.reflect.KClass
 
 /**
  * Object that encapsulates the configuration parameters for an [Application].
- * This includes properties such as the shape of the cursor, the color of the cursor
- * and if the cursor should blink or not.
  */
-data class AppConfig internal constructor(
+data class AppConfig(
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).

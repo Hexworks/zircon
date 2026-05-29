@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState
 
 /**
  * A radio button is a [Selectable] that can only be selected once.
@@ -11,6 +10,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButto
  * state in a [RadioButtonGroup].
  */
 interface RadioButton : Component, Selectable, TextOverride {
+    //! TODO: use enums?
     val key: String
     val state: RadioButtonState
+
+    enum class RadioButtonState {
+        PRESSED,
+        SELECTED,
+        NOT_SELECTED
+    }
 }

@@ -1,8 +1,10 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 
 internal enum class BuiltInGraphicalTilesetResource(
     private val tilesetName: String,

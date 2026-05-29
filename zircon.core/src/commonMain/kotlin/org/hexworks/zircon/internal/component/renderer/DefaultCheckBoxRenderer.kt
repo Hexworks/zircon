@@ -1,10 +1,16 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.component.CheckBox
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment.LEFT
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment.RIGHT
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.CHECKED
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.CHECKING
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.UNCHECKED
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.UNCHECKING
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
-import org.hexworks.zircon.internal.component.impl.DefaultCheckBox.CheckBoxState.*
 
 @Suppress("DuplicatedCode")
 class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
@@ -26,8 +32,8 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
                         text
                     }
                 when (labelAlignment) {
-                    DefaultCheckBox.CheckBoxAlignment.LEFT -> "$clearedText $checkBox"
-                    DefaultCheckBox.CheckBoxAlignment.RIGHT -> "$checkBox $clearedText"
+                    LEFT -> "$clearedText $checkBox"
+                    RIGHT -> "$checkBox $clearedText"
                 }
             }
 

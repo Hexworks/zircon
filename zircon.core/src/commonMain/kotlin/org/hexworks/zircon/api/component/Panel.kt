@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.behavior.TitleOverride
  * A simple [Container] for [Component]s that can contain a [title]
  * and doesn't align its children.
  * Note that the [title] will only be visible if the [Panel] is decorated with
- * a box.
+ * a decoration that implements [org.hexworks.zircon.api.behavior.HasTitle]
  * @see ComponentDecorations
  * @see Container
  */

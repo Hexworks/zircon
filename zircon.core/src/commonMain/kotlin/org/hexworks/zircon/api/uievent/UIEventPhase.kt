@@ -18,8 +18,9 @@ enum class UIEventPhase {
     /**
      * The target phase is when the target receives the event.
      * Note that for [TileGrid]s and [Screen]s this is the only phase
-     * which will happen. Happens after [CAPTURE] and before [BUBBLE]
+     * that will happen. Happens after [CAPTURE] and before [BUBBLE]
      */
+    //! TODO: clarify why this is the only phase for grid/screen
     TARGET,
 
     /**

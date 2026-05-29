@@ -4,9 +4,13 @@ import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CanBeHidden
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.graphics.TileGraphics
-
+import org.hexworks.zircon.api.graphics.DrawSurface
 /**
  * Represents an object that can be rendered on the screen at a specific ([Renderable.position]).
+ * Differs from a [TileGraphics] in that it doesn't expose its internals (its tiles) and it can't be
+ * drawn upon (doesn't implement [DrawSurface]). Can be converted into one using [render].
+ * [Renderable]s are mainly used in the [org.hexworks.zircon.api.component.Component] and
+ * [org.hexworks.zircon.api.graphics.Layer] abstractions so their main purpose is not writing but reading.
  */
 interface Renderable : Boundable, CanBeHidden, TilesetOverride {
 

@@ -1,12 +1,13 @@
 package org.hexworks.zircon.api.uievent
 
+import org.hexworks.cobalt.events.api.EventSource
 import org.hexworks.cobalt.events.api.Subscription
 
 /**
- * An [UIEventSource] is an object which emits [UIEvent]s and can be used to listen to
+ * An [UIEventSource] is an object that emits [UIEvent]s and can be used to listen to
  * those events.
  */
-interface UIEventSource {
+interface UIEventSource : EventSource {
 
     /**
      * Adds the given [handler] for mouse events. Use this if you selectively

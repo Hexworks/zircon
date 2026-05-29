@@ -4,9 +4,14 @@ import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.data.extensions.containsPosition
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.event.ZirconEvent
+import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
+import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 
 class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
 
@@ -21,6 +26,7 @@ class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
 
         drawWindow.size.fetchPositions().forEach { pos ->
             val fixedPos = pos + component.visibleOffset
+            val x = component.getTileAtOrNull(fixedPos)
             component.getTileAtOrNull(fixedPos)?.let { tile ->
                 drawWindow.draw(tileTemplate.withCharacter(tile.character), pos)
             }.orElseGet { drawWindow.draw(tileTemplate, pos) }
@@ -31,9 +37,9 @@ class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
         if (component.hasFocus && drawWindow.size.containsPosition(cursorPos)) {
             component.whenConnectedToRoot { root ->
                 root.eventBus.publish(
-                    event = ZirconEvent.RequestCursorAt(
+                    event = RequestCursorAt(
                         position = component.position + cursorPos,
-                        emitter = this
+                        emitter = component
                     ),
                     eventScope = root.eventScope
                 )
@@ -41,7 +47,7 @@ class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
         } else {
             component.whenConnectedToRoot { root ->
                 root.eventBus.publish(
-                    event = ZirconEvent.HideCursor(this),
+                    event = HideCursor(component),
                     eventScope = root.eventScope
                 )
             }

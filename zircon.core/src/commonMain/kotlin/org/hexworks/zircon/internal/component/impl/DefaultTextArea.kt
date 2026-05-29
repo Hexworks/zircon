@@ -1,26 +1,50 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.Scrollable
+import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
+import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
+import org.hexworks.zircon.api.behavior.extensions.scrollOneLeft
+import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
+import org.hexworks.zircon.api.behavior.extensions.scrollRightBy
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.TileColor.Companion.transparent
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.withY
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
-import org.hexworks.zircon.api.uievent.*
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.Pass
+import org.hexworks.zircon.api.uievent.PreventDefault
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.util.isNavigationKey
 import org.hexworks.zircon.api.util.isPrintableCharacter
+import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.component.impl.texteditor.EditorState
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
-import org.hexworks.zircon.internal.component.impl.texteditor.transformation.*
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.AddRowBreak
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.DeleteAtCursor
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.DeleteBeforeCursor
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.InsertCharacter
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorDown
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorLeft
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorRight
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorTo
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorToLineEnd
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorToLineStart
+import org.hexworks.zircon.internal.component.impl.texteditor.transformation.MoveCursorUp
 import org.hexworks.zircon.internal.event.ZirconEvent
 import kotlin.math.abs
 import kotlin.math.max
@@ -57,7 +81,7 @@ class DefaultTextArea internal constructor(
         resizeIfNecessary()
         actualSizeProperty.onChange { (_, newValue) ->
             val lastOkIndex = newValue.height - 1;
-            if(lastOkIndex < visibleOffset.y) {
+            if (lastOkIndex < visibleOffset.y) {
                 visibleOffset = visibleOffset.withY(lastOkIndex)
             }
         }
@@ -72,7 +96,7 @@ class DefaultTextArea internal constructor(
         }
         disabledStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         // 📙 Note that the following 3 are the same because otherwise the component
         // would react to hover making it flicker when it is already focused.

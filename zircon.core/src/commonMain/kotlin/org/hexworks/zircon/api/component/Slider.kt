@@ -8,41 +8,21 @@ import org.hexworks.cobalt.events.api.Subscription
  * A [Slider] is a [Component] that can be used to select
  * values from a range of numbers with a visual sliding mechanism.
  */
+//! TODO: document this better
 interface Slider : Component {
 
-    /**
-     * Maximum value of the [Slider]
-     */
-    val maxValue: Int
-
-    /**
-     * Minimum value of the [Slider]
-     */
     val minValue: Int
+    val maxValue: Int
 
     /**
      * Number of visible steps
      */
     val numberOfSteps: Int
 
-    /**
-     * Current value with respect to the maxValue
-     */
     var currentValue: Int
-
-    /**
-     * Boundable, current value
-     */
     val currentValueProperty: Property<Int>
 
-    /**
-     * Current step with respect to the number of steps
-     */
     var currentStep: Int
-
-    /**
-     * Boundable, current step
-     */
     val currentStepProperty: Property<Int>
 
     fun decrementCurrentValue()
@@ -51,12 +31,12 @@ interface Slider : Component {
     fun incrementCurrentStep()
 
     /**
-     * Callback called when value changes
+     * Callback called when [currentValue] changes
      */
     fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 
     /**
-     * Callback called when step changes
+     * Callback called when [numberOfSteps] changes
      */
     fun onStepChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 }

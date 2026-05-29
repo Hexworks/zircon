@@ -48,10 +48,10 @@ class DefaultComponentContainer(
         logger.debug { "Activating component container." }
         isActive.value = true
         refreshFocusables()
-        root.eventBus.simpleSubscribeTo<ComponentAdded>(root.eventScope) {
+        root.eventBus.simpleSubscribeTo(ComponentAdded, root.eventScope) {
             refreshFocusables()
         }.keepWhile(isActive)
-        root.eventBus.simpleSubscribeTo<ComponentRemoved>(root.eventScope) {
+        root.eventBus.simpleSubscribeTo(ComponentRemoved, root.eventScope) {
             refreshFocusables()
         }.keepWhile(isActive)
     }

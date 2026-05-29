@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.behavior
 
 /**
- * Represents an object which holds [text].
+ * Represents an object that holds [text].
  */
 interface HasText {
 

@@ -6,12 +6,12 @@ import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.BlockTileType.*
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.internal.data.DefaultBlock
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 /**
  * Builds [Block]s.
- * Has no [Tile]s for either sides by default.
+ * Has no [Tile]s for either side by default.
  * Setting an [emptyTile] is **mandatory** and has no default.
  */
 @ZirconDsl
@@ -62,7 +62,7 @@ class BlockBuilder<T : Tile> : Builder<Block<T>> {
         set(value) {
             tilesMap[CONTENT] = value
         }
-    
+
     var tiles: Map<BlockTileType, T>
         get() = tilesMap.toMap()
         set(value) {
@@ -76,7 +76,7 @@ class BlockBuilder<T : Tile> : Builder<Block<T>> {
         }
         return DefaultBlock(
             emptyTile = emptyTile!!,
-            initialTiles = tilesMap.toPersistentMap()
+            tiles = tilesMap.toMutableMap()
         )
     }
 }

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.AlignmentStrategy
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.Container
+import org.hexworks.zircon.api.component.extensions.relativeBounds
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.alignment.AroundAlignmentStrategy

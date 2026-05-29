@@ -12,10 +12,15 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  */
 interface InternalComponentContainer : ComponentContainer, RenderableContainer, UIEventDispatcher {
 
+    /**
+     * Tells whether this [InternalComponentContainer] is active (e.g.: whether it is listening to events)
+     * @see activate
+     * @see deactivate
+     */
     val isActive: ObservableValue<Boolean>
 
     /**
-     * Holds the component tree rooted at this [RootContainer] flattened into an [ObservableList].
+     * Holds the component tree rooted at this [InternalComponentContainer] flattened into an [Iterable].
      */
     val flattenedTree: Iterable<InternalComponent>
 

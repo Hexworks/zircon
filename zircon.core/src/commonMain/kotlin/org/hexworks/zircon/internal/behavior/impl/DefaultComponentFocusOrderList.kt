@@ -2,9 +2,9 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.behavior.Focusable
 import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
-import org.hexworks.zircon.internal.behavior.Focusable
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
 

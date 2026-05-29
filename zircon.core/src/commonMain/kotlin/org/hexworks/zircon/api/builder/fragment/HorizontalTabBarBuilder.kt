@@ -1,22 +1,24 @@
 package org.hexworks.zircon.api.builder.fragment
 
+import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeHeight
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 
 @ZirconDsl
 class HorizontalTabBarBuilder(
-    size: Size = Size.unknown(),
+    size: Size = Size.UNKNOWN,
     defaultSelected: String? = null,
     tabs: List<TabBuilder> = listOf(),
-    position: Position = Position.zero()
+    position: Position = Position.ZERO
 ) : TabBarBuilder(
     size = size,
     defaultSelected = defaultSelected,

@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.animation
 
 /**
- * Represents an [Animation] which is currently running and adds
+ * Represents an [Animation] that is currently running and adds
  * additional functionality to it.
  */
 
@@ -23,7 +23,7 @@ interface AnimationHandle : Animation {
     val isInfinite: Boolean
 
     /**
-     * Adds a callback which will be called when the [Animation] finishes.
+     * Adds a callback that will be called when the [Animation] finishes.
      */
     fun onFinished(fn: (AnimationHandle) -> Unit)
 

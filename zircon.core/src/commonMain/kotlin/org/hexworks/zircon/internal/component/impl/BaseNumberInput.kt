@@ -1,12 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
-import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.TileColor.Companion.transparent
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -15,7 +14,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
-
+import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 //TODO: Finish minValue impl. and bug fixing
@@ -43,7 +42,7 @@ abstract class BaseNumberInput(
 //            }
         }
 
-//    protected var textBuffer = EditableTextBuffer.create("$initialValue")
+    //    protected var textBuffer = EditableTextBuffer.create("$initialValue")
     abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
@@ -83,7 +82,7 @@ abstract class BaseNumberInput(
         }
         disabledStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         focusedStyle = styleSet {
             foregroundColor = colorTheme.primaryBackgroundColor

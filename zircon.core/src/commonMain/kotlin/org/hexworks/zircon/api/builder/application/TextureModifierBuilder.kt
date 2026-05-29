@@ -3,11 +3,11 @@ package org.hexworks.zircon.api.builder.application
 import org.hexworks.zircon.api.application.TextureModifierStrategy
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.TextureModifier
 import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.TextureTransformer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
-import org.hexworks.zircon.internal.tileset.impl.DefaultTextureTransformer
+import org.hexworks.zircon.internal.tileset.DefaultTextureTransformer
 import kotlin.reflect.KClass
 
 @ZirconDsl
@@ -17,7 +17,8 @@ class TextureModifierBuilder<T : Any, C : Any> : Builder<TextureModifierStrategy
     var targetType: KClass<T>? = null
     var transformer: TextureTransformer<T, C>? = null
 
-    private var transformerFunction: ((texture: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>)? = null
+    private var transformerFunction: (
+        (texture: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>)? = null
 
     fun transformer(fn: (context: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>) {
         transformerFunction = fn
@@ -36,7 +37,8 @@ class TextureModifierBuilder<T : Any, C : Any> : Builder<TextureModifierStrategy
         return TextureModifierStrategy(
             modifierType = modifierType!!,
             targetType = targetType!!,
-            transformer = transformer ?: DefaultTextureTransformer(targetType!!, transformerFunction!!)
+            transformer = transformer
+                ?: DefaultTextureTransformer(targetType!!, transformerFunction!!)
         )
     }
 }

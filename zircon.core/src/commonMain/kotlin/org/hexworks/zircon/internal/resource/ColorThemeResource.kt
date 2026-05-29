@@ -1,12 +1,14 @@
 package org.hexworks.zircon.internal.resource
 
 import org.hexworks.zircon.api.builder.component.colorTheme
-import org.hexworks.zircon.api.color.ANSITileColor
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.ANSIColor
+import org.hexworks.zircon.api.color.ANSIColor.*
+import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.extensions.copy
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_DARK_BASE
 import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SOLARIZED_LIGHT_BASE
+import org.hexworks.zircon.api.color.Color.Companion.fromString as color
 
 @Suppress("SpellCheckingInspection")
 enum class ColorThemeResource(private val colorTheme: ColorTheme) {
@@ -19,11 +21,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     DEFAULT(
         colorTheme {
             name = "Default"
-            accentColor = ANSITileColor.BRIGHT_GREEN
-            primaryForegroundColor = ANSITileColor.BRIGHT_MAGENTA
-            secondaryForegroundColor = ANSITileColor.BRIGHT_BLUE
-            primaryBackgroundColor = ANSITileColor.BRIGHT_YELLOW
-            secondaryBackgroundColor = ANSITileColor.BRIGHT_RED
+            accentColor = DefaultAnsiPalette[BRIGHT_GREEN]
+            primaryForegroundColor = DefaultAnsiPalette[BRIGHT_MAGENTA]
+            secondaryForegroundColor = DefaultAnsiPalette[BRIGHT_BLUE]
+            primaryBackgroundColor = DefaultAnsiPalette[BRIGHT_YELLOW]
+            secondaryBackgroundColor = DefaultAnsiPalette[BRIGHT_RED]
         }
     ),
 
@@ -37,11 +39,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     HEXWORKS(
         colorTheme {
             name = "Hexworks"
-            accentColor = TileColor.fromString("#52b61d")
-            primaryForegroundColor = TileColor.fromString("#b1d5d7")
-            secondaryForegroundColor = TileColor.fromString("#91b5b7")
-            primaryBackgroundColor = TileColor.fromString("#5c335a")
-            secondaryBackgroundColor = TileColor.fromString("#341139")
+            accentColor = color("#52b61d")
+            primaryForegroundColor = color("#b1d5d7")
+            secondaryForegroundColor = color("#91b5b7")
+            primaryBackgroundColor = color("#5c335a")
+            secondaryBackgroundColor = color("#341139")
         }
     ),
 
@@ -57,11 +59,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     STALE_SUNSET(
         colorTheme {
             name = "Stale Sunset"
-            accentColor = TileColor.fromString("#ffe377")
-            primaryForegroundColor = TileColor.fromString("#cdba76")
-            secondaryForegroundColor = TileColor.fromString("#bda576")
-            primaryBackgroundColor = TileColor.fromString("#52484e")
-            secondaryBackgroundColor = TileColor.fromString("#292442")
+            accentColor = color("#ffe377")
+            primaryForegroundColor = color("#cdba76")
+            secondaryForegroundColor = color("#bda576")
+            primaryBackgroundColor = color("#52484e")
+            secondaryBackgroundColor = color("#292442")
         }
     ),
 
@@ -77,11 +79,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     AFTERNOON_HAZE(
         colorTheme {
             name = "Afternoon Haze"
-            accentColor = TileColor.fromString("#b0523f")
-            primaryForegroundColor = TileColor.fromString("#2f6f87")
-            secondaryForegroundColor = TileColor.fromString("#243a56")
-            primaryBackgroundColor = TileColor.fromString("#cbbfb2")
-            secondaryBackgroundColor = TileColor.fromString("#0d1221")
+            accentColor = color("#b0523f")
+            primaryForegroundColor = color("#2f6f87")
+            secondaryForegroundColor = color("#243a56")
+            primaryBackgroundColor = color("#cbbfb2")
+            secondaryBackgroundColor = color("#0d1221")
         }
     ),
 
@@ -97,11 +99,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     WINTER_WONDERLAND(
         colorTheme {
             name = "Winter Wonderland"
-            accentColor = TileColor.fromString("#8bcadd")
-            primaryForegroundColor = TileColor.fromString("#d6e1e9")
-            secondaryForegroundColor = TileColor.fromString("#a7bcc9")
-            primaryBackgroundColor = TileColor.fromString("#2c4a78")
-            secondaryBackgroundColor = TileColor.fromString("#20284e")
+            accentColor = color("#8bcadd")
+            primaryForegroundColor = color("#d6e1e9")
+            secondaryForegroundColor = color("#a7bcc9")
+            primaryBackgroundColor = color("#2c4a78")
+            secondaryBackgroundColor = color("#20284e")
         }
     ),
 
@@ -117,11 +119,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     PETITE(
         colorTheme {
             name = "Petite"
-            accentColor = TileColor.fromString("#f8f4e4")
-            primaryForegroundColor = TileColor.fromString("#efd98d")
-            secondaryForegroundColor = TileColor.fromString("#c5af63")
-            primaryBackgroundColor = TileColor.fromString("#272f3b")
-            secondaryBackgroundColor = TileColor.fromString("#181b22")
+            accentColor = color("#f8f4e4")
+            primaryForegroundColor = color("#efd98d")
+            secondaryForegroundColor = color("#c5af63")
+            primaryBackgroundColor = color("#272f3b")
+            secondaryBackgroundColor = color("#181b22")
         }
     ),
 
@@ -137,11 +139,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     WAVERATOR(
         colorTheme {
             name = "Waverator"
-            accentColor = TileColor.fromString("#cbffd8")
-            primaryForegroundColor = TileColor.fromString("#70d38b")
-            secondaryForegroundColor = TileColor.fromString("#53a788")
-            primaryBackgroundColor = TileColor.fromString("#23313d")
-            secondaryBackgroundColor = TileColor.fromString("#0c0d14")
+            accentColor = color("#cbffd8")
+            primaryForegroundColor = color("#70d38b")
+            secondaryForegroundColor = color("#53a788")
+            primaryBackgroundColor = color("#23313d")
+            secondaryBackgroundColor = color("#0c0d14")
         }
     ),
 
@@ -152,11 +154,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     JUSTPARCHMENT(
         colorTheme {
             name = "Justparchment"
-            accentColor = TileColor.fromString("#524839")
-            primaryForegroundColor = TileColor.fromString("#73654a")
-            secondaryForegroundColor = TileColor.fromString("#8b7d62")
-            primaryBackgroundColor = TileColor.fromString("#e6ceac")
-            secondaryBackgroundColor = TileColor.fromString("#292418")
+            accentColor = color("#524839")
+            primaryForegroundColor = color("#73654a")
+            secondaryForegroundColor = color("#8b7d62")
+            primaryBackgroundColor = color("#e6ceac")
+            secondaryBackgroundColor = color("#292418")
         }
     ),
 
@@ -168,11 +170,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     AMMO(
         colorTheme {
             name = "Ammo"
-            accentColor = TileColor.fromString("#eeffcc")
-            primaryForegroundColor = TileColor.fromString("#bedc7f")
-            secondaryForegroundColor = TileColor.fromString("#4d8061")
-            primaryBackgroundColor = TileColor.fromString("#112318")
-            secondaryBackgroundColor = TileColor.fromString("#040c06")
+            accentColor = color("#eeffcc")
+            primaryForegroundColor = color("#bedc7f")
+            secondaryForegroundColor = color("#4d8061")
+            primaryBackgroundColor = color("#112318")
+            secondaryBackgroundColor = color("#040c06")
         }
     ),
 
@@ -184,11 +186,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     NYX(
         colorTheme {
             name = "Nyx"
-            accentColor = TileColor.fromString("#f6d6bd")
-            primaryForegroundColor = TileColor.fromString("#c3a38a")
-            secondaryForegroundColor = TileColor.fromString("#997577")
-            primaryBackgroundColor = TileColor.fromString("#20394f")
-            secondaryBackgroundColor = TileColor.fromString("#0f2a3f")
+            accentColor = color("#f6d6bd")
+            primaryForegroundColor = color("#c3a38a")
+            secondaryForegroundColor = color("#997577")
+            primaryBackgroundColor = color("#20394f")
+            secondaryBackgroundColor = color("#0f2a3f")
         }
     ),
 
@@ -199,11 +201,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     SLSO(
         colorTheme {
             name = "SLSO"
-            accentColor = TileColor.fromString("#ffaa5e")
-            primaryForegroundColor = TileColor.fromString("#ffecd6")
-            secondaryForegroundColor = TileColor.fromString("#ffd4a3")
-            primaryBackgroundColor = TileColor.fromString("#203c56")
-            secondaryBackgroundColor = TileColor.fromString("#0d2b45")
+            accentColor = color("#ffaa5e")
+            primaryForegroundColor = color("#ffecd6")
+            secondaryForegroundColor = color("#ffd4a3")
+            primaryBackgroundColor = color("#203c56")
+            secondaryBackgroundColor = color("#0d2b45")
         }
     ),
 
@@ -214,11 +216,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     BEYOND_THE_SEA(
         colorTheme {
             name = "Beyond The Sea"
-            accentColor = TileColor.fromString("#f4fff7")
-            primaryForegroundColor = TileColor.fromString("#aceed1")
-            secondaryForegroundColor = TileColor.fromString("#6bd0b5")
-            primaryBackgroundColor = TileColor.fromString("#313b55")
-            secondaryBackgroundColor = TileColor.fromString("#1e1a2a")
+            accentColor = color("#f4fff7")
+            primaryForegroundColor = color("#aceed1")
+            secondaryForegroundColor = color("#6bd0b5")
+            primaryBackgroundColor = color("#313b55")
+            secondaryBackgroundColor = color("#1e1a2a")
         }
     ),
 
@@ -229,11 +231,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     FOREST_GLOW(
         colorTheme {
             name = "Forest Glow"
-            accentColor = TileColor.fromString("#deca54")
-            primaryForegroundColor = TileColor.fromString("#97933a")
-            secondaryForegroundColor = TileColor.fromString("#5f6d43")
-            primaryBackgroundColor = TileColor.fromString("#1f2c3d")
-            secondaryBackgroundColor = TileColor.fromString("#00070d")
+            accentColor = color("#deca54")
+            primaryForegroundColor = color("#97933a")
+            secondaryForegroundColor = color("#5f6d43")
+            primaryBackgroundColor = color("#1f2c3d")
+            secondaryBackgroundColor = color("#00070d")
         }
     ),
 
@@ -244,11 +246,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     CHERRY_BEAR(
         colorTheme {
             name = "Cherry Bear"
-            accentColor = TileColor.fromString("#fbb396")
-            primaryForegroundColor = TileColor.fromString("#bc6a6a")
-            secondaryForegroundColor = TileColor.fromString("#a35454")
-            primaryBackgroundColor = TileColor.fromString("#472a36")
-            secondaryBackgroundColor = TileColor.fromString("#0d0c11")
+            accentColor = color("#fbb396")
+            primaryForegroundColor = color("#bc6a6a")
+            secondaryForegroundColor = color("#a35454")
+            primaryBackgroundColor = color("#472a36")
+            secondaryBackgroundColor = color("#0d0c11")
         }
     ),
 
@@ -259,11 +261,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     SUPERNOVA(
         colorTheme {
             name = "Supernova"
-            accentColor = TileColor.fromString("#ffce9c")
-            primaryForegroundColor = TileColor.fromString("#cf7862")
-            secondaryForegroundColor = TileColor.fromString("#a75252")
-            primaryBackgroundColor = TileColor.fromString("#3d203b")
-            secondaryBackgroundColor = TileColor.fromString("#1a080e")
+            accentColor = color("#ffce9c")
+            primaryForegroundColor = color("#cf7862")
+            secondaryForegroundColor = color("#a75252")
+            primaryBackgroundColor = color("#3d203b")
+            secondaryBackgroundColor = color("#1a080e")
         }
     ),
 
@@ -275,11 +277,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     RUST(
         colorTheme {
             name = "Rust"
-            accentColor = TileColor.fromString("#ffe2c6")
-            primaryForegroundColor = TileColor.fromString("#f0bb9c")
-            secondaryForegroundColor = TileColor.fromString("#e18866")
-            primaryBackgroundColor = TileColor.fromString("#712f30")
-            secondaryBackgroundColor = TileColor.fromString("#230000")
+            accentColor = color("#ffe2c6")
+            primaryForegroundColor = color("#f0bb9c")
+            secondaryForegroundColor = color("#e18866")
+            primaryBackgroundColor = color("#712f30")
+            secondaryBackgroundColor = color("#230000")
         }
     ),
 
@@ -290,11 +292,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     CURSED_TURKEY(
         colorTheme {
             name = "Cursed Turkey"
-            accentColor = TileColor.fromString("#d7ac64")
-            primaryForegroundColor = TileColor.fromString("#df8c00")
-            secondaryForegroundColor = TileColor.fromString("#db7209")
-            primaryBackgroundColor = TileColor.fromString("#b32a12")
-            secondaryBackgroundColor = TileColor.fromString("#1e110c")
+            accentColor = color("#d7ac64")
+            primaryForegroundColor = color("#df8c00")
+            secondaryForegroundColor = color("#db7209")
+            primaryBackgroundColor = color("#b32a12")
+            secondaryBackgroundColor = color("#1e110c")
         }
     ),
 
@@ -305,11 +307,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     MOLTEN(
         colorTheme {
             name = "Molten"
-            accentColor = TileColor.fromString("#fd724e")
-            primaryForegroundColor = TileColor.fromString("#a02f40")
-            secondaryForegroundColor = TileColor.fromString("#5f2f45")
-            primaryBackgroundColor = TileColor.fromString("#261b2e")
-            secondaryBackgroundColor = TileColor.fromString("#201727")
+            accentColor = color("#fd724e")
+            primaryForegroundColor = color("#a02f40")
+            secondaryForegroundColor = color("#5f2f45")
+            primaryBackgroundColor = color("#261b2e")
+            secondaryBackgroundColor = color("#201727")
         }
     ),
 
@@ -320,11 +322,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     STORMY_RED(
         colorTheme {
             name = "Stormy Red"
-            accentColor = TileColor.fromString("#a95a3f")
-            primaryForegroundColor = TileColor.fromString("#f8eebf")
-            secondaryForegroundColor = TileColor.fromString("#edbb70")
-            primaryBackgroundColor = TileColor.fromString("#3a5043")
-            secondaryBackgroundColor = TileColor.fromString("#242828")
+            accentColor = color("#a95a3f")
+            primaryForegroundColor = color("#f8eebf")
+            secondaryForegroundColor = color("#edbb70")
+            primaryBackgroundColor = color("#3a5043")
+            secondaryBackgroundColor = color("#242828")
         }
     ),
 
@@ -335,11 +337,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     STORMY_GREEN(
         colorTheme {
             name = "Stormy Green"
-            accentColor = TileColor.fromString("#7f9860")
-            primaryForegroundColor = TileColor.fromString("#f8eebf")
-            secondaryForegroundColor = TileColor.fromString("#edbb70")
-            primaryBackgroundColor = TileColor.fromString("#3a5043")
-            secondaryBackgroundColor = TileColor.fromString("#242828")
+            accentColor = color("#7f9860")
+            primaryForegroundColor = color("#f8eebf")
+            secondaryForegroundColor = color("#edbb70")
+            primaryBackgroundColor = color("#3a5043")
+            secondaryBackgroundColor = color("#242828")
         }
     ),
 
@@ -350,11 +352,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     OIL(
         colorTheme {
             name = "Oil"
-            accentColor = TileColor.fromString("#c69fa5")
-            primaryForegroundColor = TileColor.fromString("#fbf5ef")
-            secondaryForegroundColor = TileColor.fromString("#f2d3ab")
-            primaryBackgroundColor = TileColor.fromString("#494d7e")
-            secondaryBackgroundColor = TileColor.fromString("#272744")
+            accentColor = color("#c69fa5")
+            primaryForegroundColor = color("#fbf5ef")
+            secondaryForegroundColor = color("#f2d3ab")
+            primaryBackgroundColor = color("#494d7e")
+            secondaryBackgroundColor = color("#272744")
         }
     ),
 
@@ -366,11 +368,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     NATURES_ATMOSPHERE(
         colorTheme {
             name = "Nature's Atmosphere"
-            accentColor = TileColor.fromString("#a6a220")
-            primaryForegroundColor = TileColor.fromString("#efbe8e")
-            secondaryForegroundColor = TileColor.fromString("#a6d3ff")
-            primaryBackgroundColor = TileColor.fromString("#45619e")
-            secondaryBackgroundColor = TileColor.fromString("#040404")
+            accentColor = color("#a6a220")
+            primaryForegroundColor = color("#efbe8e")
+            secondaryForegroundColor = color("#a6d3ff")
+            primaryBackgroundColor = color("#45619e")
+            secondaryBackgroundColor = color("#040404")
         }
     ),
 
@@ -381,11 +383,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     INFINITE_IKEA(
         colorTheme {
             name = "Infinite IKEA"
-            accentColor = TileColor.fromString("#f6d76b")
-            primaryForegroundColor = TileColor.fromString("#f6f0f7")
-            secondaryForegroundColor = TileColor.fromString("#45a9ff")
-            primaryBackgroundColor = TileColor.fromString("#104a7d")
-            secondaryBackgroundColor = TileColor.fromString("#12223c")
+            accentColor = color("#f6d76b")
+            primaryForegroundColor = color("#f6f0f7")
+            secondaryForegroundColor = color("#45a9ff")
+            primaryBackgroundColor = color("#104a7d")
+            secondaryBackgroundColor = color("#12223c")
         }
     ),
 
@@ -396,11 +398,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     FIRE_WEEDS(
         colorTheme {
             name = "Fire Weeds"
-            accentColor = TileColor.fromString("#e2d6fe")
-            primaryForegroundColor = TileColor.fromString("#fea631")
-            secondaryForegroundColor = TileColor.fromString("#e5371b")
-            primaryBackgroundColor = TileColor.fromString("#630f19")
-            secondaryBackgroundColor = TileColor.fromString("#060013")
+            accentColor = color("#e2d6fe")
+            primaryForegroundColor = color("#fea631")
+            secondaryForegroundColor = color("#e5371b")
+            primaryBackgroundColor = color("#630f19")
+            secondaryBackgroundColor = color("#060013")
         }
     ),
 
@@ -411,11 +413,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     POLA(
         colorTheme {
             name = "Pola"
-            accentColor = TileColor.fromString("#ebf9ff")
-            primaryForegroundColor = TileColor.fromString("#acd6f6")
-            secondaryForegroundColor = TileColor.fromString("#52a5de")
-            primaryBackgroundColor = TileColor.fromString("#18284a")
-            secondaryBackgroundColor = TileColor.fromString("#070810")
+            accentColor = color("#ebf9ff")
+            primaryForegroundColor = color("#acd6f6")
+            secondaryForegroundColor = color("#52a5de")
+            primaryBackgroundColor = color("#18284a")
+            secondaryBackgroundColor = color("#070810")
         }
     ),
 
@@ -426,11 +428,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     SPANISH_SUNSET(
         colorTheme {
             name = "Spanish Sunset"
-            accentColor = TileColor.fromString("#fd724e")
-            primaryForegroundColor = TileColor.fromString("#f5ddbc")
-            secondaryForegroundColor = TileColor.fromString("#fabb64")
-            primaryBackgroundColor = TileColor.fromString("#a02f40")
-            secondaryBackgroundColor = TileColor.fromString("#5f2f45")
+            accentColor = color("#fd724e")
+            primaryForegroundColor = color("#f5ddbc")
+            secondaryForegroundColor = color("#fabb64")
+            primaryBackgroundColor = color("#a02f40")
+            secondaryBackgroundColor = color("#5f2f45")
         }
     ),
 
@@ -441,11 +443,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     DISCORD(
         colorTheme {
             name = "Discord"
-            accentColor = TileColor.fromString("#7289da")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#99aab5")
-            primaryBackgroundColor = TileColor.fromString("#2c2f33")
-            secondaryBackgroundColor = TileColor.fromString("#23272a")
+            accentColor = color("#7289da")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#99aab5")
+            primaryBackgroundColor = color("#2c2f33")
+            secondaryBackgroundColor = color("#23272a")
         }
     ),
 
@@ -456,11 +458,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     AFTER_DARK(
         colorTheme {
             name = "After Dark"
-            accentColor = TileColor.fromString("#bb9a67")
-            primaryForegroundColor = TileColor.fromString("#a07c43")
-            secondaryForegroundColor = TileColor.fromString("#776131")
-            primaryBackgroundColor = TileColor.fromString("#272b29")
-            secondaryBackgroundColor = TileColor.fromString("#161c20")
+            accentColor = color("#bb9a67")
+            primaryForegroundColor = color("#a07c43")
+            secondaryForegroundColor = color("#776131")
+            primaryBackgroundColor = color("#272b29")
+            secondaryBackgroundColor = color("#161c20")
         }
     ),
 
@@ -472,11 +474,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     ADRIFT_IN_DREAMS(
         colorTheme {
             name = "Adrift In Dreams"
-            accentColor = TileColor.fromString("#CFF09E")
-            primaryForegroundColor = TileColor.fromString("#A8DBA8")
-            secondaryForegroundColor = TileColor.fromString("#79BD9A")
-            primaryBackgroundColor = TileColor.fromString("#3B8686")
-            secondaryBackgroundColor = TileColor.fromString("#0B486B")
+            accentColor = color("#CFF09E")
+            primaryForegroundColor = color("#A8DBA8")
+            secondaryForegroundColor = color("#79BD9A")
+            primaryBackgroundColor = color("#3B8686")
+            secondaryBackgroundColor = color("#0B486B")
         }
     ),
 
@@ -487,11 +489,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     LET_THEM_EAT_CAKE(
         colorTheme {
             name = "Let Them Eat Cake"
-            accentColor = TileColor.fromString("#C5E0DC")
-            primaryForegroundColor = TileColor.fromString("#ECE5CE")
-            secondaryForegroundColor = TileColor.fromString("#F1D4AF")
-            primaryBackgroundColor = TileColor.fromString("#E08E79")
-            secondaryBackgroundColor = TileColor.fromString("#774F38")
+            accentColor = color("#C5E0DC")
+            primaryForegroundColor = color("#ECE5CE")
+            secondaryForegroundColor = color("#F1D4AF")
+            primaryBackgroundColor = color("#E08E79")
+            secondaryBackgroundColor = color("#774F38")
         }
     ),
 
@@ -503,11 +505,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     TECH_LIGHT(
         colorTheme {
             name = "Tech Light"
-            accentColor = TileColor.fromString("#D1E751")
-            primaryForegroundColor = TileColor.fromString("#FFFFFF")
-            secondaryForegroundColor = TileColor.fromString("#FFFFFF")
-            primaryBackgroundColor = TileColor.fromString("#26ADE4")
-            secondaryBackgroundColor = TileColor.fromString("#000000")
+            accentColor = color("#D1E751")
+            primaryForegroundColor = color("#FFFFFF")
+            secondaryForegroundColor = color("#FFFFFF")
+            primaryBackgroundColor = color("#26ADE4")
+            secondaryBackgroundColor = color("#000000")
         }
     ),
 
@@ -518,11 +520,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     HEADACHE(
         colorTheme {
             name = "Headache"
-            accentColor = TileColor.fromString("#BF4D28")
-            primaryForegroundColor = TileColor.fromString("#F6F7BD")
-            secondaryForegroundColor = TileColor.fromString("#E6AC27")
-            primaryBackgroundColor = TileColor.fromString("#80BCA3")
-            secondaryBackgroundColor = TileColor.fromString("#655643")
+            accentColor = color("#BF4D28")
+            primaryForegroundColor = color("#F6F7BD")
+            secondaryForegroundColor = color("#E6AC27")
+            primaryBackgroundColor = color("#80BCA3")
+            secondaryBackgroundColor = color("#655643")
         }
     ),
 
@@ -534,11 +536,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     GAMEBOOKERS(
         colorTheme {
             name = "Gamebookers"
-            accentColor = TileColor.fromString("#FF9900")
-            primaryForegroundColor = TileColor.fromString("#E9E9E9")
-            secondaryForegroundColor = TileColor.fromString("#BCBCBC")
-            primaryBackgroundColor = TileColor.fromString("#3299BB")
-            secondaryBackgroundColor = TileColor.fromString("#424242")
+            accentColor = color("#FF9900")
+            primaryForegroundColor = color("#E9E9E9")
+            secondaryForegroundColor = color("#BCBCBC")
+            primaryBackgroundColor = color("#3299BB")
+            secondaryBackgroundColor = color("#424242")
         }
     ),
 
@@ -550,11 +552,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     ENTRAPPED_IN_A_PALETTE(
         colorTheme {
             name = "Entrapped In A Palette"
-            accentColor = TileColor.fromString("#7B3B3B")
-            primaryForegroundColor = TileColor.fromString("#B9D7D9")
-            secondaryForegroundColor = TileColor.fromString("#668284")
-            primaryBackgroundColor = TileColor.fromString("#493736")
-            secondaryBackgroundColor = TileColor.fromString("#2A2829")
+            accentColor = color("#7B3B3B")
+            primaryForegroundColor = color("#B9D7D9")
+            secondaryForegroundColor = color("#668284")
+            primaryBackgroundColor = color("#493736")
+            secondaryBackgroundColor = color("#2A2829")
         }
     ),
 
@@ -566,11 +568,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     WAR(
         colorTheme {
             name = "War"
-            accentColor = TileColor.fromString("#F21D41")
-            primaryForegroundColor = TileColor.fromString("#EBEBBC")
-            secondaryForegroundColor = TileColor.fromString("#BCE3C5")
-            primaryBackgroundColor = TileColor.fromString("#82B3AE")
-            secondaryBackgroundColor = TileColor.fromString("#230F2B")
+            accentColor = color("#F21D41")
+            primaryForegroundColor = color("#EBEBBC")
+            secondaryForegroundColor = color("#BCE3C5")
+            primaryBackgroundColor = color("#82B3AE")
+            secondaryBackgroundColor = color("#230F2B")
         }
     ),
 
@@ -581,11 +583,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     CAPTURED_BY_PIRATES(
         colorTheme {
             name = "Captured By Pirates"
-            accentColor = TileColor.fromString("#AB9597")
-            primaryForegroundColor = TileColor.fromString("#FFFBF0")
-            secondaryForegroundColor = TileColor.fromString("#968F4B")
-            primaryBackgroundColor = TileColor.fromString("#7A6248")
-            secondaryBackgroundColor = TileColor.fromString("#030506")
+            accentColor = color("#AB9597")
+            primaryForegroundColor = color("#FFFBF0")
+            secondaryForegroundColor = color("#968F4B")
+            primaryBackgroundColor = color("#7A6248")
+            secondaryBackgroundColor = color("#030506")
         }
     ),
 
@@ -596,11 +598,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     GHOST_OF_A_CHANCE(
         colorTheme {
             name = "Ghost Of A Chance"
-            accentColor = TileColor.fromString("#95AC54")
-            primaryForegroundColor = TileColor.fromString("#F6F1CB")
-            secondaryForegroundColor = TileColor.fromString("#DFD4A7")
-            primaryBackgroundColor = TileColor.fromString("#7F7C69")
-            secondaryBackgroundColor = TileColor.fromString("#29210A")
+            accentColor = color("#95AC54")
+            primaryForegroundColor = color("#F6F1CB")
+            secondaryForegroundColor = color("#DFD4A7")
+            primaryBackgroundColor = color("#7F7C69")
+            secondaryBackgroundColor = color("#29210A")
         }
     ),
 
@@ -611,11 +613,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     AFTER_THE_HEIST(
         colorTheme {
             name = "After The Heist"
-            accentColor = TileColor.fromString("#b86A6A")
-            primaryForegroundColor = TileColor.fromString("#F8EDD1")
-            secondaryForegroundColor = TileColor.fromString("#C5CFC6")
-            primaryBackgroundColor = TileColor.fromString("#9D9D93")
-            secondaryBackgroundColor = TileColor.fromString("#474843")
+            accentColor = color("#b86A6A")
+            primaryForegroundColor = color("#F8EDD1")
+            secondaryForegroundColor = color("#C5CFC6")
+            primaryBackgroundColor = color("#9D9D93")
+            secondaryBackgroundColor = color("#474843")
         }
     ),
 
@@ -626,11 +628,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     PABLO_NERUDA(
         colorTheme {
             name = "Pablo Neruda"
-            accentColor = TileColor.fromString("#E6324B")
-            primaryForegroundColor = TileColor.fromString("#F2E3C6")
-            secondaryForegroundColor = TileColor.fromString("#FFC6A5")
-            primaryBackgroundColor = TileColor.fromString("#353634")
-            secondaryBackgroundColor = TileColor.fromString("#2B2B2B")
+            accentColor = color("#E6324B")
+            primaryForegroundColor = color("#F2E3C6")
+            secondaryForegroundColor = color("#FFC6A5")
+            primaryBackgroundColor = color("#353634")
+            secondaryBackgroundColor = color("#2B2B2B")
         }
     ),
 
@@ -641,11 +643,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     OLIVE_LEAF_TEA(
         colorTheme {
             name = "Olive Leaf Tea"
-            accentColor = TileColor.fromString("#e99A44")
-            primaryForegroundColor = TileColor.fromString("#EAE7D1")
-            secondaryForegroundColor = TileColor.fromString("#CCC58E")
-            primaryBackgroundColor = TileColor.fromString("#7B8455")
-            secondaryBackgroundColor = TileColor.fromString("#485C2B")
+            accentColor = color("#e99A44")
+            primaryForegroundColor = color("#EAE7D1")
+            secondaryForegroundColor = color("#CCC58E")
+            primaryBackgroundColor = color("#7B8455")
+            secondaryBackgroundColor = color("#485C2B")
         }
     ),
 
@@ -656,11 +658,11 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     CYBERPUNK(
         colorTheme {
             name = "Cyberpunk"
-            accentColor = TileColor.fromString("#61D6C4")
-            primaryForegroundColor = TileColor.fromString("#71918C")
-            secondaryForegroundColor = TileColor.fromString("#3D615F")
-            primaryBackgroundColor = TileColor.fromString("#25343B")
-            secondaryBackgroundColor = TileColor.fromString("#212429")
+            accentColor = color("#61D6C4")
+            primaryForegroundColor = color("#71918C")
+            secondaryForegroundColor = color("#3D615F")
+            primaryBackgroundColor = color("#25343B")
+            secondaryBackgroundColor = color("#212429")
         }
     ),
 
@@ -669,220 +671,220 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     AFTERGLOW(
         colorTheme {
             name = "Afterglow"
-            accentColor = TileColor.fromString("#ADBA4E")
-            primaryForegroundColor = TileColor.fromString("#DEDEDE")
-            secondaryForegroundColor = TileColor.fromString("#D2D6D6")
-            primaryBackgroundColor = TileColor.fromString("#2F2C2F")
-            secondaryBackgroundColor = TileColor.fromString("#252525")
+            accentColor = color("#ADBA4E")
+            primaryForegroundColor = color("#DEDEDE")
+            secondaryForegroundColor = color("#D2D6D6")
+            primaryBackgroundColor = color("#2F2C2F")
+            secondaryBackgroundColor = color("#252525")
         }
     ),
 
     AMIGA_OS(
         colorTheme {
             name = "Amiga OS"
-            accentColor = TileColor.fromString("#F08000")
-            primaryForegroundColor = TileColor.fromString("#FFFFFF")
-            secondaryForegroundColor = TileColor.fromString("#dddddd")
-            primaryBackgroundColor = TileColor.fromString("#0050A0")
-            secondaryBackgroundColor = TileColor.fromString("#000020")
+            accentColor = color("#F08000")
+            primaryForegroundColor = color("#FFFFFF")
+            secondaryForegroundColor = color("#dddddd")
+            primaryBackgroundColor = color("#0050A0")
+            secondaryBackgroundColor = color("#000020")
         }
     ),
 
     ANCESTRY(
         colorTheme {
             name = "Ancestry"
-            accentColor = TileColor.fromString("#F3B670")
-            primaryForegroundColor = TileColor.fromString("#9CBE30")
-            secondaryForegroundColor = TileColor.fromString("#7A9C0F")
-            primaryBackgroundColor = TileColor.fromString("#706B63")
-            secondaryBackgroundColor = TileColor.fromString("#534D46")
+            accentColor = color("#F3B670")
+            primaryForegroundColor = color("#9CBE30")
+            secondaryForegroundColor = color("#7A9C0F")
+            primaryBackgroundColor = color("#706B63")
+            secondaryBackgroundColor = color("#534D46")
         }
     ),
 
     ARC(
         colorTheme {
             name = "Arc"
-            accentColor = TileColor.fromString("#5294E2")
-            primaryForegroundColor = TileColor.fromString("#FFFFFF")
-            secondaryForegroundColor = TileColor.fromString("#dddddd")
-            primaryBackgroundColor = TileColor.fromString("#4A5664")
-            secondaryBackgroundColor = TileColor.fromString("#303641")
+            accentColor = color("#5294E2")
+            primaryForegroundColor = color("#FFFFFF")
+            secondaryForegroundColor = color("#dddddd")
+            primaryBackgroundColor = color("#4A5664")
+            secondaryBackgroundColor = color("#303641")
         }
     ),
 
     FOREST(
         colorTheme {
             name = "Forest"
-            accentColor = TileColor.fromString("#94E864")
-            primaryForegroundColor = TileColor.fromString("#FFFFFF")
-            secondaryForegroundColor = TileColor.fromString("#dddddd")
-            primaryBackgroundColor = TileColor.fromString("#077A07")
-            secondaryBackgroundColor = TileColor.fromString("#033313")
+            accentColor = color("#94E864")
+            primaryForegroundColor = color("#FFFFFF")
+            secondaryForegroundColor = color("#dddddd")
+            primaryBackgroundColor = color("#077A07")
+            secondaryBackgroundColor = color("#033313")
         }
     ),
 
     LINUX_MINT_DARK(
         colorTheme {
             name = "Linux Mint Dark"
-            accentColor = TileColor.fromString("#8FA876")
-            primaryForegroundColor = TileColor.fromString("#FFFFFF")
-            secondaryForegroundColor = TileColor.fromString("#818181")
-            primaryBackgroundColor = TileColor.fromString("#353535")
-            secondaryBackgroundColor = TileColor.fromString("#2F2F2F")
+            accentColor = color("#8FA876")
+            primaryForegroundColor = color("#FFFFFF")
+            secondaryForegroundColor = color("#818181")
+            primaryBackgroundColor = color("#353535")
+            secondaryBackgroundColor = color("#2F2F2F")
         }
     ),
 
     NORD(
         colorTheme {
             name = "Nord"
-            accentColor = TileColor.fromString("#A3BE8C")
-            primaryForegroundColor = TileColor.fromString("#D8DEE9")
-            secondaryForegroundColor = TileColor.fromString("#81A1C1")
-            primaryBackgroundColor = TileColor.fromString("#3B4252")
-            secondaryBackgroundColor = TileColor.fromString("#2E3440")
+            accentColor = color("#A3BE8C")
+            primaryForegroundColor = color("#D8DEE9")
+            secondaryForegroundColor = color("#81A1C1")
+            primaryBackgroundColor = color("#3B4252")
+            secondaryBackgroundColor = color("#2E3440")
         }
     ),
 
     TRON(
         colorTheme {
             name = "Tron"
-            accentColor = TileColor.fromString("#1EB8EB")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#dddddd")
-            primaryBackgroundColor = TileColor.fromString("#424242")
-            secondaryBackgroundColor = TileColor.fromString("#000000")
+            accentColor = color("#1EB8EB")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#dddddd")
+            primaryBackgroundColor = color("#424242")
+            secondaryBackgroundColor = color("#000000")
         }
     ),
 
     SAIKU(
         colorTheme {
             name = "Saiku"
-            accentColor = TileColor.fromString("#ffffff")
-            primaryForegroundColor = TileColor.fromString("#cccccc")
-            secondaryForegroundColor = TileColor.fromString("#999999")
-            primaryBackgroundColor = TileColor.fromString("#AE1817")
-            secondaryBackgroundColor = TileColor.fromString("#232323")
+            accentColor = color("#ffffff")
+            primaryForegroundColor = color("#cccccc")
+            secondaryForegroundColor = color("#999999")
+            primaryBackgroundColor = color("#AE1817")
+            secondaryBackgroundColor = color("#232323")
         }
     ),
 
     INGRESS_RESISTANCE(
         colorTheme {
             name = "Ingress Resistance"
-            accentColor = TileColor.fromString("#F1C248")
-            primaryForegroundColor = TileColor.fromString("#34EAF5")
-            secondaryForegroundColor = TileColor.fromString("#0492D0")
-            primaryBackgroundColor = TileColor.fromString("#393218")
-            secondaryBackgroundColor = TileColor.fromString("#000E0F")
+            accentColor = color("#F1C248")
+            primaryForegroundColor = color("#34EAF5")
+            secondaryForegroundColor = color("#0492D0")
+            primaryBackgroundColor = color("#393218")
+            secondaryBackgroundColor = color("#000E0F")
         }
     ),
 
     INGRESS_ENLIGHTENED(
         colorTheme {
             name = "Ingress Enlightened"
-            accentColor = TileColor.fromString("#02BF02")
-            primaryForegroundColor = TileColor.fromString("#34EAF5")
-            secondaryForegroundColor = TileColor.fromString("#0492D0")
-            primaryBackgroundColor = TileColor.fromString("#393218")
-            secondaryBackgroundColor = TileColor.fromString("#000E0F")
+            accentColor = color("#02BF02")
+            primaryForegroundColor = color("#34EAF5")
+            secondaryForegroundColor = color("#0492D0")
+            primaryBackgroundColor = color("#393218")
+            secondaryBackgroundColor = color("#000E0F")
         }
     ),
 
     ZENBURN_VANILLA(
         colorTheme {
             name = "Zenburn Vanilla"
-            accentColor = TileColor.fromString("#f0dfaf")
-            primaryForegroundColor = TileColor.fromString("#dcdccc")
-            secondaryForegroundColor = TileColor.fromString("#9fafaf")
-            primaryBackgroundColor = TileColor.fromString("#333333")
-            secondaryBackgroundColor = TileColor.fromString("#1e2320")
+            accentColor = color("#f0dfaf")
+            primaryForegroundColor = color("#dcdccc")
+            secondaryForegroundColor = color("#9fafaf")
+            primaryBackgroundColor = color("#333333")
+            secondaryBackgroundColor = color("#1e2320")
         }
     ),
 
     ZENBURN_PINK(
         colorTheme {
             name = "Zenburn Pink"
-            accentColor = TileColor.fromString("#ecbcbc")
-            primaryForegroundColor = TileColor.fromString("#dcdccc")
-            secondaryForegroundColor = TileColor.fromString("#9fafaf")
-            primaryBackgroundColor = TileColor.fromString("#333333")
-            secondaryBackgroundColor = TileColor.fromString("#1e2320")
+            accentColor = color("#ecbcbc")
+            primaryForegroundColor = color("#dcdccc")
+            secondaryForegroundColor = color("#9fafaf")
+            primaryBackgroundColor = color("#333333")
+            secondaryBackgroundColor = color("#1e2320")
         }
     ),
 
     ZENBURN_GREEN(
         colorTheme {
             name = "Zenburn Green"
-            accentColor = TileColor.fromString("#709080")
-            primaryForegroundColor = TileColor.fromString("#dcdccc")
-            secondaryForegroundColor = TileColor.fromString("#9fafaf")
-            primaryBackgroundColor = TileColor.fromString("#333333")
-            secondaryBackgroundColor = TileColor.fromString("#1e2320")
+            accentColor = color("#709080")
+            primaryForegroundColor = color("#dcdccc")
+            secondaryForegroundColor = color("#9fafaf")
+            primaryBackgroundColor = color("#333333")
+            secondaryBackgroundColor = color("#1e2320")
         }
     ),
 
     MONOKAI_YELLOW(
         colorTheme {
             name = "Monokai Yellow"
-            accentColor = TileColor.fromString("#ffd866")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#ffd866")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
     MONOKAI_PINK(
         colorTheme {
             name = "Monokai Pink"
-            accentColor = TileColor.fromString("#ff6188")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#ff6188")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
     MONOKAI_GREEN(
         colorTheme {
             name = "Monokai Green"
-            accentColor = TileColor.fromString("#a9dc76")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#a9dc76")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
     MONOKAI_ORANGE(
         colorTheme {
             name = "Monokai Orange"
-            accentColor = TileColor.fromString("#fc9867")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#fc9867")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
     MONOKAI_VIOLET(
         colorTheme {
             name = "Monokai Violet"
-            accentColor = TileColor.fromString("#ab9df2")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#ab9df2")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
     MONOKAI_BLUE(
         colorTheme {
             name = "Monokai Blue"
-            accentColor = TileColor.fromString("#78dce8")
-            primaryForegroundColor = TileColor.fromString("#ffffff")
-            secondaryForegroundColor = TileColor.fromString("#fdf9f3")
-            primaryBackgroundColor = TileColor.fromString("#3e3b3f")
-            secondaryBackgroundColor = TileColor.fromString("#2c292d")
+            accentColor = color("#78dce8")
+            primaryForegroundColor = color("#ffffff")
+            secondaryForegroundColor = color("#fdf9f3")
+            primaryBackgroundColor = color("#3e3b3f")
+            secondaryBackgroundColor = color("#2c292d")
         }
     ),
 
@@ -893,112 +895,112 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     SOLARIZED_DARK_YELLOW(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Yellow"
-            accentColor = TileColor.fromString("#b58900")
+            accentColor = color("#b58900")
         }
     ),
 
     SOLARIZED_DARK_ORANGE(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Orange"
-            accentColor = TileColor.fromString("#cb4b16")
+            accentColor = color("#cb4b16")
         }
     ),
 
     SOLARIZED_DARK_RED(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Red"
-            accentColor = TileColor.fromString("#dc322f")
+            accentColor = color("#dc322f")
         }
     ),
 
     SOLARIZED_DARK_MAGENTA(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Magenta"
-            accentColor = TileColor.fromString("#d33682")
+            accentColor = color("#d33682")
         }
     ),
 
     SOLARIZED_DARK_VIOLET(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Violet"
-            accentColor = TileColor.fromString("#6c71c4")
+            accentColor = color("#6c71c4")
         }
     ),
 
     SOLARIZED_DARK_BLUE(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Blue"
-            accentColor = TileColor.fromString("#268bd2")
+            accentColor = color("#268bd2")
         }
     ),
 
     SOLARIZED_DARK_CYAN(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Cyan"
-            accentColor = TileColor.fromString("#2aa198")
+            accentColor = color("#2aa198")
         }
     ),
 
     SOLARIZED_DARK_GREEN(
         SOLARIZED_DARK_BASE.theme.copy {
             name = "Solarized Dark Green"
-            accentColor = TileColor.fromString("#859900")
+            accentColor = color("#859900")
         }
     ),
 
     SOLARIZED_LIGHT_YELLOW(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Yellow"
-            accentColor = TileColor.fromString("#b58900")
+            accentColor = color("#b58900")
         }
     ),
 
     SOLARIZED_LIGHT_ORANGE(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Orange"
-            accentColor = TileColor.fromString("#cb4b16")
+            accentColor = color("#cb4b16")
         }
     ),
 
     SOLARIZED_LIGHT_RED(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Red"
-            accentColor = TileColor.fromString("#dc322f")
+            accentColor = color("#dc322f")
         }
     ),
 
     SOLARIZED_LIGHT_MAGENTA(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Magenta"
-            accentColor = TileColor.fromString("#d33682")
+            accentColor = color("#d33682")
         }
     ),
 
     SOLARIZED_LIGHT_VIOLET(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Violet"
-            accentColor = TileColor.fromString("#6c71c4")
+            accentColor = color("#6c71c4")
         }
     ),
 
     SOLARIZED_LIGHT_BLUE(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Blue"
-            accentColor = TileColor.fromString("#268bd2")
+            accentColor = color("#268bd2")
         }
     ),
 
     SOLARIZED_LIGHT_CYAN(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Cyan"
-            accentColor = TileColor.fromString("#2aa198")
+            accentColor = color("#2aa198")
         }
     ),
 
     SOLARIZED_LIGHT_GREEN(
         SOLARIZED_LIGHT_BASE.theme.copy {
             name = "Solarized Light Green"
-            accentColor = TileColor.fromString("#859900")
+            accentColor = color("#859900")
         }
     );
 
@@ -1007,21 +1009,21 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
     enum class SolarizedBase(val theme: ColorTheme) {
         SOLARIZED_DARK_BASE(
             colorTheme {
-                primaryForegroundColor = TileColor.fromString("#fdf6e3")
+                primaryForegroundColor = color("#fdf6e3")
                 // note that this was made darker because there was not enough contrast
-                secondaryForegroundColor = TileColor.fromString("#cec8b5")
-                primaryBackgroundColor = TileColor.fromString("#073642")
-                secondaryBackgroundColor = TileColor.fromString("#002b36")
+                secondaryForegroundColor = color("#cec8b5")
+                primaryBackgroundColor = color("#073642")
+                secondaryBackgroundColor = color("#002b36")
             }
         ),
 
         SOLARIZED_LIGHT_BASE(
             colorTheme {
-                primaryForegroundColor = TileColor.fromString("#002b36")
+                primaryForegroundColor = color("#002b36")
                 // note that this was made lighter because there was not enough contrast
-                secondaryForegroundColor = TileColor.fromString("#275662")
-                primaryBackgroundColor = TileColor.fromString("#fdf6e3")
-                secondaryBackgroundColor = TileColor.fromString("#eee8d5")
+                secondaryForegroundColor = color("#275662")
+                primaryBackgroundColor = color("#fdf6e3")
+                secondaryBackgroundColor = color("#eee8d5")
             }
         )
     }

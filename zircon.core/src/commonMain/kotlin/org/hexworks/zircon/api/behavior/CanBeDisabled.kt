@@ -1,11 +1,12 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.behavior.impl.DefaultCanBeDisabled
 
 /**
- * Represents an object which supports the notion of disabling. In the case of a component
- * this means that when it is disabled it can't be interacted with (click, press, etc).
+ * Represents an object that supports the notion of disabling. In the case of a component
+ * this means that when it is disabled, it can't be interacted with (click, press, etc.).
  */
 interface CanBeDisabled {
 
@@ -17,6 +18,8 @@ interface CanBeDisabled {
         /**
          * Creates a new [CanBeDisabled] with the default [initialDisabled] value of `false`.
          */
-        fun create(initialDisabled: Boolean = false): CanBeDisabled = DefaultCanBeDisabled(initialDisabled)
+        fun create(initialDisabled: Boolean = false): CanBeDisabled = create(initialDisabled.toProperty())
+
+        fun create(disabledProperty: Property<Boolean>): CanBeDisabled = DefaultCanBeDisabled(disabledProperty)
     }
 }

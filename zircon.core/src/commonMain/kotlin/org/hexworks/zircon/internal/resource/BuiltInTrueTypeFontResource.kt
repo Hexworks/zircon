@@ -13,12 +13,6 @@ enum class BuiltInTrueTypeFontResource(
 ) {
 
     /**
-     * These fonts are taken from Google Fonts.
-     */
-    UBUNTU_MONO("ubuntu_mono", { it.div(2) }),
-    INCONSOLATA("inconsolata", { it.div(2) }),
-
-    /**
      * These fonts are part of the Ultimate Oldschool PC Font Pack and licensed under
      * Creative Commons Attribution-ShareAlike 4.0 International License.
      * See: https://int10h.org/oldschool-pc-fonts/readme/
@@ -51,15 +45,15 @@ enum class BuiltInTrueTypeFontResource(
         const val FONTS_DIR = "/monospace_fonts"
         const val FONTS_EXT = "ttf"
 
-        fun squareFonts(height: Int): List<TilesetResource> = values()
+        fun squareFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(1) == 1 }
             .map { it.toTilesetResource(height) }
 
-        fun wideFonts(height: Int): List<TilesetResource> = values()
+        fun wideFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(2) > 2 }
             .map { it.toTilesetResource(height) }
 
-        fun narrowFonts(height: Int): List<TilesetResource> = values()
+        fun narrowFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(2) < 2 }
             .map { it.toTilesetResource(height) }
     }

@@ -3,9 +3,9 @@ package org.hexworks.zircon.api.builder.grid
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.application.AppConfigBuilder
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.screen.TileGridScreen
 

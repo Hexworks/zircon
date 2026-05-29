@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.util
 
-fun Char.isControlCharacter() = code < 32 || code >= 127
+fun Char.isControlCharacter() = code !in 32..<127
 
 fun Char.isPrintableCharacter() = !isControlCharacter()
 

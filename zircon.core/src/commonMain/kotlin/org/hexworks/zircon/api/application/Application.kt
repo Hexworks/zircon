@@ -12,12 +12,14 @@ import org.hexworks.zircon.internal.application.InternalApplication
 interface Application : Closeable {
 
     /**
-     * The tile grid that's being continuously rendered by this [Application].
+     * The tile grid that's being rendered by this [Application].
      */
     val tileGrid: TileGrid
 
     /**
-     * Starts this application and returns the framework-specific application object.
+     * Starts this application. Starting means that it starts rendering
+     * either continuously or using render hint events. This is an implementation
+     * detail, see the [Application] base classes for more info.
      */
     suspend fun start()
 

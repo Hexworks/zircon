@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 
 /**
  * This class can be used as a base class for creating component builders.
@@ -22,10 +23,10 @@ abstract class BaseContainerBuilder<T : Container>(
         get() = calculateContentSize() + decorationRenderers.occupiedSize
 
     override fun createMetadata() = ComponentMetadata(
-        relativePosition = position,
+        position = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,
         name = name,
-        updateOnAttach = updateOnAttach,
+        bindingAction = bindingAction,
         themeProperty = colorThemeProperty,
         componentStyleSetProperty = componentStyleSetProperty,
         tilesetProperty = tilesetProperty,
@@ -33,7 +34,7 @@ abstract class BaseContainerBuilder<T : Container>(
         disabledProperty = disabledProperty
     )
 
-    private fun hasNoExplicitSize() = preferredContentSize.isUnknown && preferredSize.isUnknown
+    private fun hasNoExplicitSize() = preferredContentSize.isSizeUnknown && preferredSize.isSizeUnknown
 
     /**
      * Creates a new [ChildrenBuilder] using the builder DSL and returns it.

@@ -1,6 +1,9 @@
 package org.hexworks.zircon.api.graphics
 
 
+/**
+ * Contains all the box drawing characters and their corresponding positions.
+ */
 enum class BoxType(
     val topLeft: Char,
     val topRight: Char,

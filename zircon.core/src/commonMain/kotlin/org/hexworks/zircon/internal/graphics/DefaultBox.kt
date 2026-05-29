@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.graphics.Box
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.LineFactory
 

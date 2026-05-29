@@ -1,6 +1,7 @@
 package org.hexworks.zircon.api.animation
 
-import org.hexworks.zircon.internal.behavior.Identifiable
+import org.hexworks.zircon.api.behavior.Identifiable
+import kotlin.time.Duration
 
 /**
  * Represents a series of [AnimationFrame]s that when drawn on the screen
@@ -15,24 +16,38 @@ interface Animation : Identifiable {
     val uniqueFrameCount: Int
 
     /**
-     * How many times this [Animation] will be looped.
-     * `0` stands for an infinite loop (continuous animation).
-     */
-    val loopCount: Int
-
-    /**
      * The *total* number of frames in this animation
      * (including those which are repeated as well).
      */
     val totalFrameCount: Int
 
     /**
-     * Tells how often an [AnimationFrame] should be drawn in milliseconds.
+     * The kind of loop this animation has.
+     * Possible options are [InfiniteLoop, FiniteLoop]
+     * @see LoopKind
      */
-    val tick: Long
+    val loopKind: LoopKind
 
     /**
-     * Tells whether this [Animation] is looped indefinitely.
+     * Tells how often an [AnimationFrame] should be drawn.
+     */
+    val tick: Duration
+
+    /**
+     * Tells whether this [Animation] is looped indefinitely
+     * (e.g.: [loopKind] is [InfiniteLoop])
      */
     val isLoopedIndefinitely: Boolean
+
+    sealed class LoopKind {
+        companion object
+    }
+
+    data object InfiniteLoop : LoopKind()
+
+    data class FiniteLoop(val count: Int) : LoopKind() {
+        init {
+            require(count > 0) { "Loop count must be greater than 0!" }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
@@ -18,7 +19,7 @@ internal data class DefaultAnimationFrame(
     override val repeatCount: Int
 ) : InternalAnimationFrame {
 
-    override var position: Position = Position.defaultPosition()
+    override var position: Position = Position.ZERO
         set(value) {
             field = value
             layers.forEach { it.moveTo(value) }
@@ -28,8 +29,7 @@ internal data class DefaultAnimationFrame(
 
     override fun displayOn(layerable: Layerable) {
         layerable as? InternalLayerable ?: error(Layerable.WRONG_LAYER_TYPE_MSG)
-        val layerableRect = layerable.size.toRect()
-        require(layers.all { layerableRect.containsBoundable(it.rect) }) {
+        require(layers.all(layerable.bounds::containsBoundable)) {
             "Can't add Animation to Layerable, because its layers are out of bounds."
         }
         remove()

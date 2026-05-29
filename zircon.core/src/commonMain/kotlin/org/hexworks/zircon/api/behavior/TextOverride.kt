@@ -7,12 +7,12 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTextOverride
 /**
  * Represents an object that holds (mutable) [text].
  */
-interface TextOverride {
+interface TextOverride : HasText {
 
     /**
      * The (mutable) [text].
      */
-    var text: String
+    override var text: String
 
     /**
      * A [Property] that wraps the [text] and offers data binding and

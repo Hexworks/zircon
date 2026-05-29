@@ -13,13 +13,13 @@ import org.hexworks.zircon.internal.screen.TileGridScreen
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
  * actual [TileGrid]. **Careful!** Only one [Screen] can be `display`ed at a given time. If
- * [Screen.display] is called on a non-active [Screen] it will become active and the previous one
- * will be deactivated.
+ * [Screen.display] is called on a non-active [Screen] it will become active and the
+ * previous one will be deactivated.
  *
  * Use [Screen]s to have multiple views for your app, which can be displayed one at a time.
  *
- * [Screen]s also implement the [ComponentContainer] interface which means that if you want to use
- * [Component]s you'll have to use [Screen]s.
+ * [Screen]s also implement the [ComponentContainer] interface which means that if you want
+ * to use [Component]s you'll have to use [Screen]s.
  */
 interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
@@ -44,7 +44,8 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
      * @see ModalFragment
      * @see Screen.openModal
      */
-    fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) = openModal(modalFragment.root)
+    fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) =
+        openModal(modalFragment.root)
 
     companion object {
 

@@ -1,14 +1,13 @@
 package org.hexworks.zircon.api.builder.application
 
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.data.TileType
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetFactory
-import org.hexworks.zircon.internal.dsl.ZirconDsl
-import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.resource.TilesetType
-import org.hexworks.zircon.internal.tileset.impl.DefaultTilesetFactory
-import org.hexworks.zircon.renderer.korge.tileset.*
+import org.hexworks.zircon.internal.tileset.DefaultTilesetFactory
 import kotlin.reflect.KClass
 
 @ZirconDsl
@@ -45,49 +44,51 @@ class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
         )
     }
 
+    //! TODO: move these to the korge implementation
     companion object {
-        val DEFAULT_TILESET_FACTORIES: List<TilesetFactory<KorgeContext>> = listOf(
-            tilesetFactory {
-                targetType = KorgeContext::class
-                tileType = TileType.CHARACTER_TILE
-                tilesetType = TilesetType.CP437Tileset
-                factoryFunction { resource: TilesetResource ->
-                    KorgeCP437Tileset(
-                        resource = resource,
-                    )
-                }
-            },
-            tilesetFactory {
-                targetType = KorgeContext::class
-                tileType = TileType.GRAPHICAL_TILE
-                tilesetType = TilesetType.GraphicalTileset
-                factoryFunction { resource: TilesetResource ->
-                    KorgeGraphicalTileset(
-                        resource = resource,
-                    )
-                }
-            },
-            tilesetFactory {
-                targetType = KorgeContext::class
-                tileType = TileType.CHARACTER_TILE
-                tilesetType = TilesetType.TrueTypeFont
-                factoryFunction { resource: TilesetResource ->
-                    KorgeTrueTypeFontTileset(
-                        resource = resource,
-                    )
-                }
-            },
-            tilesetFactory {
-                targetType = KorgeContext::class
-                tileType = TileType.IMAGE_TILE
-                tilesetType = TilesetType.GraphicalTileset
-                factoryFunction { resource: TilesetResource ->
-                    KorgeImageDictionaryTileset(
-                        resource = resource,
-                    )
-                }
-            }
-        )
+//        val DEFAULT_TILESET_FACTORIES: List<TilesetFactory<KorgeContext>> = listOf(
+//            tilesetFactory {
+//                targetType = KorgeContext::class
+//                tileType = TileType.CHARACTER_TILE
+//                tilesetType = TilesetType.CP437Tileset
+//                factoryFunction { resource: TilesetResource ->
+//                    KorgeCP437Tileset(
+//                        resource = resource,
+//                    )
+//                }
+//            },
+//            tilesetFactory {
+//                targetType = KorgeContext::class
+//                tileType = TileType.GRAPHICAL_TILE
+//                tilesetType = TilesetType.GraphicalTileset
+//                factoryFunction { resource: TilesetResource ->
+//                    KorgeGraphicalTileset(
+//                        resource = resource,
+//                    )
+//                }
+//            },
+//            tilesetFactory {
+//                targetType = KorgeContext::class
+//                tileType = TileType.CHARACTER_TILE
+//                tilesetType = TilesetType.TrueTypeFont
+//                factoryFunction { resource: TilesetResource ->
+//                    KorgeTrueTypeFontTileset(
+//                        resource = resource,
+//                    )
+//                }
+//            },
+//            tilesetFactory {
+//                targetType = KorgeContext::class
+//                tileType = TileType.IMAGE_TILE
+//                tilesetType = TilesetType.GraphicalTileset
+//                factoryFunction { resource: TilesetResource ->
+//                    KorgeImageDictionaryTileset(
+//                        resource = resource,
+//                    )
+//                }
+//            }
+//        )
+//    }
     }
 }
 

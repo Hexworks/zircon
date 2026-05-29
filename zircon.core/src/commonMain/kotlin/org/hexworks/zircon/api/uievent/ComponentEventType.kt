@@ -16,12 +16,12 @@ enum class ComponentEventType : UIEventType {
     FOCUS_TAKEN,
 
     /**
-     * The component was activated (eg: mouse click, or spacebar press by default).
+     * The component was activated (e.g.: mouse click, or space bar press by default).
      */
     ACTIVATED,
 
     /**
-     * The component was deactivated (eg: mouse release, or spacebar release by default).
+     * The component was deactivated (e.g.: mouse release, or space bar release by default).
      */
     DEACTIVATED
 }

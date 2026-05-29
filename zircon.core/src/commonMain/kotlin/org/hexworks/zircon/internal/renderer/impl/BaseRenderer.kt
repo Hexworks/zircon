@@ -9,6 +9,8 @@ import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.fetchPositions
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.extensions.isOpaque
@@ -40,7 +42,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     protected var beforeRenderData: RenderData by beforeRenderDataProp.asDelegate()
     protected var afterRenderData: RenderData by afterRenderDataProp.asDelegate()
 
-    override val closedValue: ObservableValue<Boolean>
+    override val closedProperty: ObservableValue<Boolean>
         get() = isClosed
 
     final override fun close() {
@@ -74,7 +76,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     }
 
     final override fun render(context: C) {
-        if (closed.not()) {
+        if (!closed) {
             val now = DateTime.nowUnixMillisLong()
             beforeRenderDataProp.value = RenderData(now)
             processInputEvents()
@@ -109,10 +111,11 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
             for ((tile, tileset) in tiles) {
                 var finalTile = tile
                 // 📘 we only draw the cursor on top, that's why we have the last check
-                if (shouldDrawCursor() && tileGrid.cursorPosition == pos && idx == tiles.size) {
-                    finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
-                        .withForegroundColor(finalTile.backgroundColor)
-                }
+                //! TODO: FIX CURSOR HANDLING
+//                if (shouldDrawCursor() && tileGrid.cursorPosition == pos && idx == tiles.size) {
+//                    finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
+//                        .withForegroundColor(finalTile.backgroundColor)
+//                }
                 val finalTileset = tilesetLoader.loadTilesetFrom(tileset)
                 renderTile(
                     context = context,
@@ -142,15 +145,18 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
         }
         if (tile.isNotEmpty) {
             var tempTile = tile
-            tempTile.modifiers.filterIsInstance<TileModifier<Tile>>().forEach { modifier ->
-                if (modifier.canTransform(tempTile)) {
-                    tempTile = modifier.transform(tempTile)
+            if(tempTile is CharacterTile) {
+                //! TODO: add `List<Modifier>`s to all `Tile`s
+                tempTile.modifiers.filterIsInstance<TileModifier<Tile>>().forEach { modifier ->
+                    if (modifier.canTransform(tempTile)) {
+                        tempTile = modifier.transform(tempTile)
+                    }
                 }
+                tempTile = if (tile.isBlinking && blinkOn) {
+                    tile.withBackgroundColor(tile.foregroundColor)
+                        .withForegroundColor(tile.backgroundColor)
+                } else tile
             }
-            tempTile = if (tile.isBlinking && blinkOn) {
-                tile.withBackgroundColor(tile.foregroundColor)
-                    .withForegroundColor(tile.backgroundColor)
-            } else tile
             val finalTileset = when (val finalTile = tempTile) {
                 is TilesetHolder -> tilesetLoader.loadTilesetFrom(finalTile.tileset)
                 else -> tileset

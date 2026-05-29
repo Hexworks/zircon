@@ -2,12 +2,13 @@ package org.hexworks.zircon
 
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.extensions.asCharacterTileOrElse
 import org.hexworks.zircon.api.graphics.TileComposite
 
 /**
  * Converts a collection of character tiles (usually found at [TileComposite.tiles]) into a string.
  */
-fun TileComposite.convertCharacterTilesToString(padToSize: Size = Size.zero()): String {
+fun TileComposite.convertCharacterTilesToString(padToSize: Size = Size.ZERO): String {
     val strings = mutableListOf<StringBuilder>()
     while (strings.size < padToSize.height) {
         val sb = StringBuilder().also { sb -> repeat(padToSize.width) { sb.append(' ') } }

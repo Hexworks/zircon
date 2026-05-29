@@ -1,22 +1,22 @@
 package org.hexworks.zircon.api.graphics
 
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.tile.CharacterTile
 
 /**
  * A [CharacterTileString] is an aggregation of [CharacterTile]s. You can draw a
  * [CharacterTileString] on a [TileGraphics] and you can expect it to behave in a way
- * like handwriting would (if a string does not fit in a line it continues in a new line).
+ * like handwriting would (if a string does not fit on a line, it continues in a new line).
  *
  * Text wrapping is managed by the [TextWrap] enum.
  *
  * If a [CharacterTileString] is too long to fit on a `DrawSurface` the parts which would
  * overflow are truncated instead.
  *
- * If there is no wrapping and the text reaches the end of the line it will also be truncated.
+ * If there is no wrapping and the text reaches the end of the line, it will also be truncated.
  *
- * [CharacterTileString] comes with its own builder and you can create them in a simple
- * way from plain Java [String]s.
+ * [CharacterTileString] comes with its own builder, and you can create them in a simple
+ * way from plain [String]s.
  */
 interface CharacterTileString : Iterable<CharacterTile>, TileComposite {
 

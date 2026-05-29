@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.internal.util.CP437Index
-import org.junit.Test
+import kotlin.test.Test
 
 class SymbolsTest {
 

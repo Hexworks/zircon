@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 
 /**
- * A [DrawSurface] is a [TileComposite] which implements draw and mutation operations such as:
+ * A [DrawSurface] is a [TileComposite] that implements draw and mutation operations such as:
  * - [draw]
  * - [fill]
  * - [transform]
@@ -29,11 +29,11 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
     /**
      * Draws the given [tileMap] onto this [DrawSurface]. If the [tileMap] has [Tile]s
-     * which are not contained within the [size] of this [DrawSurface] they will be ignored.
+     * that are not contained within the [size] of this [DrawSurface] they will be ignored.
      * @param tileMap [Position] -> [Tile] mappings which contains the [Tile]s to draw.
-     *                the [Positions] will be offset with [drawPosition] when drawing
+     *                the [Position]s will be offset with [drawPosition] when drawing
      * @param drawPosition the starting position of the drawing relative to the top left
-     *                     corner of this [DrawSurface]. The default is [Positions.zero].
+     *                     corner of this [DrawSurface]. The default is [Position.zero].
      * @param drawArea the subsection of the [tileMap] to which the [Tile]s should be drawn
      *                 Example: If this [DrawSurface] has the size of (3,3), [drawPosition] is (1,1)
      *                 and [drawArea] is (2,2) the following positions will be overwritten:
@@ -45,41 +45,6 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
         drawArea: Size
     )
 
-    /**
-     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`,
-     * and [Position.zero] as `drawPosition`
-     */
-    fun draw(tileMap: Map<Position, Tile>)
-
-    /**
-     * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`.
-     */
-    fun draw(
-        tileMap: Map<Position, Tile>,
-        drawPosition: Position
-    )
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
-     */
-    fun draw(tileComposite: TileComposite)
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
-     */
-    fun draw(
-        tileComposite: TileComposite,
-        drawPosition: Position
-    )
-
-    /**
-     * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be used as the [Map].
-     */
-    fun draw(
-        tileComposite: TileComposite,
-        drawPosition: Position,
-        drawArea: Size
-    )
 
     /**
      * Transforms all of the [Tile]s in this [DrawSurface] with the given
@@ -88,17 +53,4 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      */
     fun transform(transformer: (Position, Tile) -> Tile)
 
-    /**
-     * Applies the given [styleSet] to all currently present [Tile]s in this
-     * [DrawSurface].
-     * If you want to apply a style to a subset only take a look at
-     * [TileGraphics.toDrawWindow].
-     */
-    fun applyStyle(styleSet: StyleSet)
-
-    /**
-     * Fills the empty parts of this [DrawSurface] with the given [filler] [Tile].
-     * A [Position] is considered empty if there is no [Tile] in it.
-     */
-    fun fill(filler: Tile)
 }

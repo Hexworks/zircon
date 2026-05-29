@@ -1,52 +1,16 @@
-import Libraries.ASSERTJ_CORE
-import Libraries.COBALT_CORE
-import Libraries.KORGE
-import Libraries.KOTLIN_REFLECT
-import Libraries.KOTLIN_TEST_ANNOTATIONS_COMMON
-import Libraries.KOTLIN_TEST_COMMON
-import Libraries.KOTLIN_TEST_JS
-import Libraries.KOTLIN_TEST_JUNIT
-import Libraries.KOTLINX_COLLECTIONS_IMMUTABLE
-import Libraries.KOTLINX_COROUTINES
-import Libraries.MOCKITO_CORE
-import Libraries.MOCKITO_KOTLIN
-import Libraries.SNAKE_YAML
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform")
-    id("maven-publish")
-    id("signing")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-val javaVersion = JavaVersion.VERSION_11
-
-java {
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
+group = "org.hexworks.zircon"
+version = "2.0.0"
 
 kotlin {
-
-    jvm {
-        withJava()
-        compilations.all {
-            kotlinOptions {
-                apiVersion = "1.9"
-                languageVersion = "1.9"
-                jvmTarget = javaVersion.toString()
-
-            }
-        }
-    }
-
+    jvm {}
     js(IR) {
-        compilations.all {
-            kotlinOptions {
-                sourceMap = true
-                moduleKind = "umd"
-                metaInfo = true
-            }
-        }
         browser {
             testTask {
                 useMocha()
@@ -56,60 +20,60 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(KOTLINX_COROUTINES)
-                api(KOTLIN_REFLECT)
-                api(KOTLINX_COLLECTIONS_IMMUTABLE)
+        commonMain.dependencies {
+            api(libs.kotlin.reflect)
+            api(libs.kotlinx.collections.immutable)
+            api(libs.kotlin.logging)
 
-                api(KORGE)
-
-                api(COBALT_CORE)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(KOTLIN_TEST_COMMON)
-                implementation(KOTLIN_TEST_ANNOTATIONS_COMMON)
-            }
+            api(libs.cobalt.core)
+            api(libs.korge.core)
         }
 
-        val jvmMain by getting {
-            dependencies {
-                api(kotlin("reflect"))
-
-                api(SNAKE_YAML)
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(KOTLIN_TEST_JUNIT)
-
-                implementation(MOCKITO_CORE)
-                implementation(MOCKITO_KOTLIN)
-                implementation(ASSERTJ_CORE)
-            }
+        jvmMain.dependencies {
+            api(libs.slf4j)
+            api(libs.logback)
         }
 
-        val jsMain by getting {}
-        val jsTest by getting {
-            dependencies {
-                implementation(KOTLIN_TEST_JS)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotest.assertions.core)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.mockk)
         }
     }
-
 }
+mavenPublishing {
+    publishToMavenCentral()
 
-publishing {
-    publishWith(
-        project = project,
-        module = "zircon.core",
-        desc = "Core component of Zircon."
-    )
-}
+    signAllPublications()
 
-signing {
-    isRequired = false
-    sign(publishing.publications)
+    coordinates(group.toString(), "zircon.core", version.toString())
+
+    pom {
+        name = "ziron.core"
+        description = "Multiplatform utilities library for Kotlin"
+        inceptionYear = "2018"
+        url = "https://github.com/Hexworks/zircon"
+        licenses {
+            license {
+                name = "The Apache Software License, Version 2.0 "
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "repo"
+            }
+        }
+        developers {
+            developer {
+                id = "adam-arold"
+                name = "Adam Arold"
+                url = "https://github.com/adam-arold"
+            }
+        }
+        scm {
+            url = "https://github.com/Hexworks/zircon.git"
+            connection = "git@github.com:Hexworks/zircon.git"
+            developerConnection = "git@github.com:Hexworks/zircon.git"
+        }
+    }
 }

@@ -5,8 +5,9 @@ import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.containsPosition
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.TileComposite
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.graphics.DefaultTileComposite
 
 /**
@@ -17,7 +18,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileComposite
 @ZirconDsl
 class TileCompositeBuilder : Builder<TileComposite> {
 
-    var size: Size = Size.one()
+    var size: Size = Size.ONE
         set(value) {
             if (this.size.width > size.width || this.size.height > size.height) {
                 removeOutOfBoundsTiles(size)

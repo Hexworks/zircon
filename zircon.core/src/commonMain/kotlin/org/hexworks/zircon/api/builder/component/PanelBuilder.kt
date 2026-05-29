@@ -2,11 +2,12 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
+import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultPanel
 import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 
 @ZirconDsl
 class PanelBuilder : BaseContainerBuilder<Panel>(
@@ -25,8 +26,8 @@ class PanelBuilder : BaseContainerBuilder<Panel>(
 
     override fun calculateContentSize(): Size {
         // best effort TODO?
-        val result = childrenToAdd.map { it.size }.fold(Size.zero(), Size::plus)
-        return if (result < Size.one()) Size.one() else result
+        val result = childrenToAdd.map { it.size }.fold(Size.ZERO, Size::plus)
+        return if (result < Size.ONE) Size.ONE else result
     }
 }
 

@@ -29,19 +29,19 @@ class UIEventToComponentDispatcher(
     private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
 
-    private var lastMousePosition = Position.unknown()
+    private var lastMousePosition = Position.UNKNOWN
     private var lastHoveredComponent: InternalComponent = root
 
     private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig
 
     init {
-        root.eventBus.simpleSubscribeTo<RequestFocusFor>(root.eventScope) { (component) ->
+        root.eventBus.simpleSubscribeTo(RequestFocusFor, root.eventScope) { (component) ->
             require(component is InternalComponent) {
                 "Only InternalComponents can be focused."
             }
             focusComponent(component)
         }
-        root.eventBus.simpleSubscribeTo<ClearFocus>(root.eventScope) { (component) ->
+        root.eventBus.simpleSubscribeTo(ClearFocus, root.eventScope) { (component) ->
             if (focusOrderList.isFocused(component as InternalComponent)) {
                 focusComponent(root)
             }

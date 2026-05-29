@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.Fragment
 
 /**
- * A [Selector] is a one line input to select a value of type [T] from a list of values.
+ * A [Selector] is a one-line input to select a value of type [T] from a list of values.
  * It gets a list of objects you can cycle through with a left and a right button.
  *
  * You must provide the total width of the [Fragment] it may take up within its parent,
@@ -20,5 +20,5 @@ interface Selector<T : Any> : Fragment {
     val valuesProperty: ListProperty<T>
 
     val selected: T
-    val selectedValue: ObservableValue<T>
+    val selectedProperty: ObservableValue<T>
 }

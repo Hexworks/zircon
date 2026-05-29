@@ -2,12 +2,12 @@ package org.hexworks.zircon.api.animation
 
 /**
  * The [AnimationRunner] can be used to [start] running [Animation]s.
- * When an [Animation] is started it will be displayed on the screen.
  */
 interface AnimationRunner {
 
     /**
-     * Adds and starts the given [Animation].
+     * Adds the given [Animation] to this [AnimationRunner] and starts it.
+     *
      * @return an [AnimationHandle] which can be used to
      * interact with the running [Animation].
      */

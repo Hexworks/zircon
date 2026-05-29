@@ -16,7 +16,7 @@ class MoveCursorLeftTest {
             foo
         """.trimIndent()
         ).state.copy(
-            cursor = Position.zero()
+            cursor = 
         )
 
         val result = MoveCursorLeft.apply(input)

@@ -3,7 +3,9 @@ package org.hexworks.zircon.api.component
 import org.hexworks.zircon.api.builder.component.colorTheme
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.color.extensions.darkenByPercent
+import org.hexworks.zircon.api.color.extensions.desaturate
 import org.hexworks.zircon.api.component.data.ComponentState
 
 /**
@@ -32,34 +34,29 @@ interface ColorTheme {
      * This color is typically used for the text of non-interactive components
      * that have emphasis on them (like [Header]s).
      */
-    val primaryForegroundColor: TileColor
+    val primaryForegroundColor: Color
 
     /**
      * This color is typically used for the text of non-interactive components
      * that don't have emphasis on them (like [Paragraph]s).
      */
-    val secondaryForegroundColor: TileColor
+    val secondaryForegroundColor: Color
 
     /**
      * This color is typically used for the background of [Container]s.
      */
-    val primaryBackgroundColor: TileColor
+    val primaryBackgroundColor: Color
 
     /**
      * This color is typically used for the root container.
      */
-    val secondaryBackgroundColor: TileColor
+    val secondaryBackgroundColor: Color
 
     /**
      * This color is typically used for the text and decorations of interactive components.
      */
-    val accentColor: TileColor
+    val accentColor: Color
 
-    val isUnknown: Boolean
-        get() = this === UNKNOWN
-
-    val isNotUnknown: Boolean
-        get() = isUnknown.not()
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default
@@ -68,7 +65,7 @@ interface ColorTheme {
     fun toInteractiveStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = accentColor
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         highlightedStyle = styleSet {
             foregroundColor = secondaryForegroundColor
@@ -84,7 +81,7 @@ interface ColorTheme {
         }
         disabledStyle = styleSet {
             foregroundColor = accentColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
@@ -110,11 +107,11 @@ interface ColorTheme {
     fun toPrimaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = primaryForegroundColor
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         disabledStyle = styleSet {
             foregroundColor = primaryForegroundColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
@@ -125,21 +122,18 @@ interface ColorTheme {
     fun toSecondaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = secondaryForegroundColor
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
         disabledStyle = styleSet {
             foregroundColor = secondaryForegroundColor.desaturate(.85).darkenByPercent(.1)
-            backgroundColor = TileColor.transparent()
+            backgroundColor = Color.TRANSPARENT
         }
     }
 
     companion object {
 
-        private val UNKNOWN = colorTheme {
+        val UNKNOWN = colorTheme {
             name = "unknown"
         }
-
-        fun unknown() = UNKNOWN
-
     }
 }

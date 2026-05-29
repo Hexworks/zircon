@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.resource
 
-import org.hexworks.zircon.api.data.ImageTile
+import org.hexworks.zircon.api.data.TileType.IMAGE_TILE
 import org.hexworks.zircon.api.resource.ResourceType
+import org.hexworks.zircon.api.resource.TilesetType.GraphicalTileset
 import org.hexworks.zircon.api.resource.base.BaseTilesetResource
-import org.hexworks.zircon.internal.resource.TilesetType.GraphicalTileset
 
 /**
- * Tileset resource class which can be used with [ImageTile]s.
+ * Tileset resource class which can be used with [org.hexworks.zircon.api.data.tile.ImageTile]s.
  */
 internal class ImageDictionaryTilesetResource(
     override val width: Int = 1,
@@ -15,6 +15,6 @@ internal class ImageDictionaryTilesetResource(
     override val resourceType: ResourceType
 ) : BaseTilesetResource() {
 
-    override val tileType = TileType.IMAGE_TILE
+    override val tileType = IMAGE_TILE
     override val tilesetType = GraphicalTileset
 }

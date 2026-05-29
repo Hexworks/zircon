@@ -2,19 +2,19 @@ package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CanBeHidden
+import org.hexworks.zircon.api.behavior.Identifiable
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.behavior.Identifiable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 
 /**
- * A [Layer] is a [TileGraphics] which can be positioned and moved over a [TileGrid].
+ * A [Layer] is a [TileGraphics] that can be positioned and moved over a [TileGrid].
  * With [Layer]s one can create a quasi 3D effect (like top-down oblique projections).
  */
 interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
 
+    //! TODO: document if the copy will be attached if the original is attached
     override fun createCopy(): Layer
 
     /**

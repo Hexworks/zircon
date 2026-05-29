@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
 class InsertCharacter(private val tile: CharacterTile) : Transformation {

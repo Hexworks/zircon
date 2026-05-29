@@ -1,11 +1,13 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.ResourceType
+import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.resource.base.BaseTilesetResource
 
 /**
  * Tileset resource for true type fonts which can be used with
- * [org.hexworks.zircon.api.data.CharacterTile]s.
+ * [org.hexworks.zircon.api.data.tile.CharacterTile] s.
  */
 internal class TrueTypeTilesetResource(
     override val width: Int,
@@ -15,7 +17,7 @@ internal class TrueTypeTilesetResource(
     val name: String = ""
 ) : BaseTilesetResource() {
 
-    override val tileType = TileType.CHARACTER_TILE
+    override val tileType: TileType = TileType.CHARACTER_TILE
     override val tilesetType: TilesetType = TilesetType.TrueTypeFont
 
     override fun toString() = name.ifBlank { super.toString() }

@@ -9,10 +9,11 @@ import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.view.base.BaseView
 
 /**
- * A [View] is similar to a [Fragment], but instead of being a reusable group of [Component]s with additional
- * UI logic they represent reusable [Screen]s with additional UI logic. Each [View] has its own [screen]
- * that's used to display the contents of the [View]. Whenever a [View] is [dock]ed [Screen.display]
- * will be called under the hood which will effectively replace any previously [dock]ed [View].
+ * A [View] is similar to a [Fragment], but instead of being a reusable group of [Component]s
+ * with additional UI logic they represent reusable [Screen]s with additional UI logic.
+ * Each [View] has its own [screen] that's used to display the contents of the [View].
+ * Whenever a [View] is [dock]ed [Screen.display] will be called under the hood which will
+ * effectively replace any previously [dock]ed [View].
  *
  * [View]s add some lifecycle methods to the mix:
  *
@@ -21,7 +22,7 @@ import org.hexworks.zircon.api.view.base.BaseView
  *
  * Docking works like this:
  *
- * - if there is a currently [dock]ed [View] is is undocked ([onUndock] is called on it)
+ * - If there is a currently [dock]ed [View] it is undocked ([onUndock] is called on it)
  * - [onDock] is called on the [View] that's being [dock]ed
  * - the [View] that's being [dock]ed is displayed on the [Screen]
  *

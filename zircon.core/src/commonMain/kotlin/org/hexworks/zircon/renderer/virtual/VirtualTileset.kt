@@ -1,9 +1,10 @@
 package org.hexworks.zircon.renderer.virtual
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.Tileset
 

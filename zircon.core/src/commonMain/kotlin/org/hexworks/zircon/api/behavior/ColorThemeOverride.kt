@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.behavior.impl.DefaultColorThemeOverride
@@ -27,6 +28,8 @@ interface ColorThemeOverride : HasColorTheme {
         /**
          * Creates a new [ColorThemeOverride] using [initialTheme] for the initial [ColorThemeOverride.theme].
          */
-        fun create(initialTheme: ColorTheme): ColorThemeOverride = DefaultColorThemeOverride(initialTheme)
+        fun create(initialTheme: ColorTheme): ColorThemeOverride = create(initialTheme.toProperty())
+
+        fun create(themeProperty: Property<ColorTheme>): ColorThemeOverride = DefaultColorThemeOverride(themeProperty)
     }
 }

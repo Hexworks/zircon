@@ -2,6 +2,8 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.events.api.CallbackResult
 import org.hexworks.cobalt.events.api.Event
+import org.hexworks.cobalt.events.api.EventDescriptor
+import org.hexworks.cobalt.events.api.EventSource
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.ComponentDecorations.box
@@ -20,6 +22,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Pass
+import kotlin.reflect.KClass
 
 
 class DefaultMenuBar<T : Any> internal constructor(
@@ -89,7 +92,7 @@ class DefaultMenuBar<T : Any> internal constructor(
                 modal.onClosed {
                     eventBus.publish(
                         event = ItemSelectionEvent(
-                            emitter = this,
+                            emitter = modal,
                             menuSelection = it
                         ),
                         eventScope = eventScope
@@ -116,14 +119,20 @@ class DefaultMenuBar<T : Any> internal constructor(
 
     override fun onMenuItemSelected(
         handler: (menuSelection: MenuSelection<T>) -> CallbackResult
-    ): Subscription = eventBus.simpleSubscribeTo<ItemSelectionEvent<T>>(eventScope) {
+    ): Subscription = eventBus.simpleSubscribeTo(ItemSelectionEvent.unsafeCast<ItemSelectionEvent<T>>(), eventScope) {
         handler(it.menuSelection)
     }
 
     private data class ItemSelectionEvent<T : Any>(
-        override val emitter: Any,
+        override val emitter: EventSource,
         val menuSelection: MenuSelection<T>,
-    ) : Event
+    ) : Event {
+        override val key = Companion.key
+        companion object : EventDescriptor<ItemSelectionEvent<*>> {
+            override val key = "ItemSelectionEvent"
+            override val eventType = ItemSelectionEvent::class
+        }
+    }
 
     private val List<DropdownMenuItem<T>>.minMenuWidth: Int
         get() = maxOfOrNull { it.width } ?: 0

@@ -1,19 +1,5 @@
 plugins {
-    id("org.sonarqube") version "3.3"
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.vanniktech.mavenPublish) apply false
 }
 
-allprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven("https://dl.bintray.com/kotlin/kotlinx")
-    }
-}
-
-sonarqube {
-    properties {
-        property("sonar.projectKey", "Hexworks_zircon")
-        property("sonar.organization", "hexworks")
-        property("sonar.host.url", "https://sonarcloud.io")
-    }
-}

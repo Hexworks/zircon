@@ -1,8 +1,7 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.data.CharacterTile
+import org.hexworks.zircon.api.data.tile.CharacterTile
 
 /**
  * A [TextArea] is an editable text box.
@@ -15,7 +14,7 @@ interface TextArea : Component, Scrollable {
     var text: String
 
     /**
-     * The styled text this [TextArea] contains.
+     * The [CharacterTile]s this [TextArea] contains.
      */
     var textTiles: List<List<CharacterTile>>
 

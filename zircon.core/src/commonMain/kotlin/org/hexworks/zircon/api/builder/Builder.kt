@@ -7,7 +7,8 @@ package org.hexworks.zircon.api.builder
  * to the [Builder] when it is created. This ensures that exceptions are not thrown from
  * [build] if its state is inconsistent.
  *
- * All configuration properties in a [Builder] should have a fluent setter like this:
+ * All configuration properties in a [Builder] should have a fluent setter
+ * that allows for method chaining like this:
  *
  * ```kotlin
  * fun withFocusNext(focusNext: KeyboardEventMatcher) = also {

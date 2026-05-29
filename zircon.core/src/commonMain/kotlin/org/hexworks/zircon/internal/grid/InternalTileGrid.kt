@@ -45,7 +45,7 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
     /**
      * Starts delegating all actions to the given [tileGrid].
      */
-    fun delegateTo(tileGrid: InternalTileGrid)
+    infix fun delegateTo(tileGrid: InternalTileGrid)
 
     /**
      * Stops delegating actions to another [TileGrid].

@@ -9,7 +9,7 @@ object TilesetResources {
     fun allTextTilesetsCompatibleWith(tileset: TilesetResource): List<TilesetResource> {
         val width = tileset.width
         val height = tileset.height
-        val result: MutableList<TilesetResource> = BuiltInCP437TilesetResource.values().filter {
+        val result: MutableList<TilesetResource> = BuiltInCP437TilesetResource.entries.filter {
             it.width == width && it.height == height
         }.toMutableList()
         when {

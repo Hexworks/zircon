@@ -6,12 +6,18 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Layerable
+import org.hexworks.zircon.api.behavior.extensions.moveCursorForward
 import org.hexworks.zircon.api.builder.graphics.layer
-import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.toBoundable
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withX
+import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -39,6 +45,7 @@ class DefaultTileGrid(
     ),
     private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalTileGrid,
+    CursorHandler by cursorHandler,
     UIEventProcessor by eventProcessor,
     ViewContainer by ViewContainer.create() {
 
@@ -57,6 +64,8 @@ class DefaultTileGrid(
 
     override val size: Size
         get() = backend.size
+    override val bounds: Boundable
+        get() = backend.size.toBoundable()
 
     override var tileset: TilesetResource
         get() = backend.tileset
@@ -88,17 +97,9 @@ class DefaultTileGrid(
         set(value) {
             cursorHandler.cursorPosition = value
         }
-    override val isCursorAtTheEndOfTheLine: Boolean
-        get() = cursorHandler.isCursorAtTheEndOfTheLine
-    override val isCursorAtTheStartOfTheLine: Boolean
-        get() = cursorHandler.isCursorAtTheStartOfTheLine
-    override val isCursorAtTheFirstRow: Boolean
-        get() = cursorHandler.isCursorAtTheFirstRow
-    override val isCursorAtTheLastRow: Boolean
-        get() = cursorHandler.isCursorAtTheLastRow
 
-    override val closedValue: Property<Boolean> = false.toProperty()
-    override val closed: Boolean by closedValue.asDelegate()
+    override val closedProperty: Property<Boolean> = false.toProperty()
+    override val closed: Boolean by closedProperty.asDelegate()
 
     override fun getTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)
@@ -113,17 +114,9 @@ class DefaultTileGrid(
         }
     }
 
-    override fun moveCursorForward() {
-        cursorHandler.moveCursorForward()
-    }
-
-    override fun moveCursorBackward() {
-        cursorHandler.moveCursorBackward()
-    }
-
     override fun close() {
         animationHandler.close()
-        closedValue.value = true
+        closedProperty.value = true
     }
 
     override fun delegateTo(tileGrid: InternalTileGrid) {
@@ -163,10 +156,6 @@ class DefaultTileGrid(
 
     // DRAW SURFACE
 
-    override fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
-        backend.draw(tileComposite, drawPosition, drawArea)
-    }
-
     override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition, drawArea)
     }
@@ -175,33 +164,10 @@ class DefaultTileGrid(
         backend.draw(tile, drawPosition)
     }
 
-    override fun draw(tileComposite: TileComposite) {
-        backend.draw(tileComposite)
-    }
-
-    override fun draw(tileComposite: TileComposite, drawPosition: Position) {
-        backend.draw(tileComposite, drawPosition)
-    }
-
-    override fun draw(tileMap: Map<Position, Tile>) {
-        backend.draw(tileMap)
-    }
-
-    override fun draw(tileMap: Map<Position, Tile>, drawPosition: Position) {
-        backend.draw(tileMap, drawPosition)
-    }
-
-    override fun fill(filler: Tile) {
-        backend.fill(filler)
-    }
-
     override fun transform(transformer: (Position, Tile) -> Tile) {
         backend.transform(transformer)
     }
 
-    override fun applyStyle(styleSet: StyleSet) {
-        backend.applyStyle(styleSet)
-    }
 
     // LAYERABLE
 

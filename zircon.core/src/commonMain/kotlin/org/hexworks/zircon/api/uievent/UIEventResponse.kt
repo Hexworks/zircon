@@ -55,7 +55,7 @@ data object Processed : UIEventResponse(true, 1)
  *
  * Return this object if you acted on an event and you
  * don't want any default actions to take place (hover effects
- * on components for example).
+ * on components, for example).
  */
 data object PreventDefault : UIEventResponse(true, 2)
 
@@ -64,7 +64,7 @@ data object PreventDefault : UIEventResponse(true, 2)
  * but stops propagation altogether so the event won't reach
  * any other listener.
  *
- * Return this object if you acted on an event and you
+ * Return this object if you acted on an event, and you
  * don't want any other listeners to have the chance of
  * handling the event.
  */

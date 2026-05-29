@@ -3,13 +3,13 @@ package org.hexworks.zircon.internal.util.rex
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.layer
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.TilesetResource
 
-private val REX_TRANSPARENT_BACKGROUND = TileColor.create(255, 0, 255)
+private val REX_TRANSPARENT_BACKGROUND = Color.create(255, 0, 255)
 
 /**
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.

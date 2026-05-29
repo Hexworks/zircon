@@ -1,16 +1,16 @@
 package org.hexworks.zircon.api.tileset
 
+import org.hexworks.zircon.api.behavior.Identifiable
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.behavior.Identifiable
 import kotlin.reflect.KClass
 
 /**
  * A [Tileset] contains the textures of a tileset that can be drawn on the screen.
- * Each tileset has a [targetType] that specifies the object type which will be used
- * when [drawTile] is called. For example in case of Swing [targetType] will be
- * a `Graphics2D` object.
+ * Each tileset has a [targetType] that specifies the type of the object which will
+ * be used when [drawTile] is called. For example in case of Swing [targetType] will
+ * be a `Graphics2D` object.
  *
  * @param S the class of the surface that we'll draw upon (Graphics2D for Swing for example)
  */

@@ -1,0 +1,42 @@
+[versions]
+kotlin = "2.3.10"
+
+kotlinx-collections-immutable = "0.4.0"
+kotlinx-coroutines = "1.10.1"
+
+kotlin-logging = "8.0.01"
+
+cobalt-core = "2.0.0"
+korge = "6.0.0"
+compose = "1.7.3"
+
+vanniktechMavenPublish = "0.34.0"
+slf4j = "2.0.17"
+logback = "1.5.22"
+kotest = "6.0.0.M1"
+mockk = "1.14.2"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlin-logging" }
+
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+cobalt-core = { module = "org.hexworks.cobalt:cobalt.core", version.ref = "cobalt-core" }
+korge-core = { module = "com.soywiz.korge:korge-core", version.ref = "korge" }
+korge-all = { module = "com.soywiz.korge:korge", version.ref = "korge" }
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+[plugins]
+korge = { id = "com.soywiz.korge", version.ref = "korge" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

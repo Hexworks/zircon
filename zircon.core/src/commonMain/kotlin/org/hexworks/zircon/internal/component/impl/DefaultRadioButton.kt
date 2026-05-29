@@ -4,14 +4,13 @@ import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.SELECTED
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.NOT_SELECTED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.PRESSED
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton.RadioButtonState.SELECTED
 
 class DefaultRadioButton internal constructor(
     componentMetadata: ComponentMetadata,
@@ -25,7 +24,6 @@ class DefaultRadioButton internal constructor(
         metadata = componentMetadata,
         renderer = renderingStrategy
     ) {
-
     override var state = NOT_SELECTED
 
     init {
@@ -47,7 +45,7 @@ class DefaultRadioButton internal constructor(
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            state = PRESSED
+            state = RadioButton.RadioButtonState.PRESSED
         }
         super.mousePressed(event, phase)
     }
@@ -67,9 +65,4 @@ class DefaultRadioButton internal constructor(
 
     override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
 
-    enum class RadioButtonState {
-        PRESSED,
-        SELECTED,
-        NOT_SELECTED
-    }
 }

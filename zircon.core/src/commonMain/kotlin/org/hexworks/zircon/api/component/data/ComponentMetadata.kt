@@ -2,11 +2,14 @@ package org.hexworks.zircon.api.component.data
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.BindingAction
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -14,13 +17,13 @@ import org.hexworks.zircon.api.resource.TilesetResource
  */
 data class ComponentMetadata(
     // TODO: next big thing is to make these observable too
-    val relativePosition: Position,
+    val position: Position,
     val size: Size,
     val name: String = "",
-    val updateOnAttach: Boolean = true,
+    val bindingAction: BindingAction = UpdateOnBind,
     // properties
-    val themeProperty: Property<ColorTheme> = ColorTheme.unknown().toProperty(),
-    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.unknown().toProperty(),
+    val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
+    val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
     val disabledProperty: Property<Boolean> = false.toProperty()
@@ -43,9 +46,8 @@ data class ComponentMetadata(
 
 
     init {
-        require(relativePosition.hasNegativeComponent.not()) {
-            "Can't have a Component with a relative position ($relativePosition) which has a " +
-                    "negative dimension."
+        require(position.hasNegativeComponent.not()) {
+            "Can't have a Component with a position ($position) which has a negative dimension."
         }
     }
 }

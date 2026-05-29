@@ -1,8 +1,10 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
+import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
+import org.hexworks.zircon.api.component.renderer.extensions.fetchStyleFor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toCharacterTile

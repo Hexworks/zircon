@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -31,7 +32,7 @@ abstract class ComponentWithTextBuilder<T : Component>(
      * property transformers.
      */
     protected val fixedTextProperty = "".toProperty().apply {
-        updateFrom(textProperty, true) {
+        updateFrom(textProperty, UpdateOnBind) {
             val result = it.withNewLinesStripped()
             fixContentSizeFor(result.length + reservedSpace)
             result

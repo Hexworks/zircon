@@ -21,6 +21,6 @@ class DefaultIcon internal constructor(
 
     override fun acceptsFocus() = false
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.empty()
+    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.EMPTY
 
 }

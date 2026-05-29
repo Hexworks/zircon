@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
-import org.hexworks.zircon.internal.dsl.ZirconDsl
+import org.hexworks.zircon.api.dsl.ZirconDsl
 
 @ZirconDsl
 class DecorationsBuilder : Builder<List<ComponentDecorationRenderer>> {

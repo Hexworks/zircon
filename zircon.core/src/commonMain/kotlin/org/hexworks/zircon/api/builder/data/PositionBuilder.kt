@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.dsl.ZirconDsl
+import org.hexworks.zircon.api.dsl.ZirconDsl
 
 @ZirconDsl
 class PositionBuilder : Builder<Position> {

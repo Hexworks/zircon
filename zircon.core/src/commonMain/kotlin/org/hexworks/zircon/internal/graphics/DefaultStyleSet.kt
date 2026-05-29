@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.graphics
 
-import org.hexworks.zircon.api.color.TileColor
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class DefaultStyleSet internal constructor(
-    override val foregroundColor: TileColor = TileColor.defaultForegroundColor(),
-    override val backgroundColor: TileColor = TileColor.defaultBackgroundColor(),
+data class DefaultStyleSet(
+    override val foregroundColor: Color = Color.DEFAULT_FOREGROUND_COLOR,
+    override val backgroundColor: Color = Color.DEFAULT_BACKGROUND_COLOR,
     override val modifiers: Set<Modifier> = setOf()
 ) : StyleSet {
 
@@ -18,9 +18,9 @@ data class DefaultStyleSet internal constructor(
 
     override fun createCopy() = copy()
 
-    override fun withForegroundColor(foregroundColor: TileColor) = copy(foregroundColor = foregroundColor)
+    override fun withForegroundColor(foregroundColor: Color) = copy(foregroundColor = foregroundColor)
 
-    override fun withBackgroundColor(backgroundColor: TileColor) = copy(backgroundColor = backgroundColor)
+    override fun withBackgroundColor(backgroundColor: Color) = copy(backgroundColor = backgroundColor)
 
     override fun withModifiers(modifiers: Set<Modifier>) = copy(modifiers = modifiers)
 

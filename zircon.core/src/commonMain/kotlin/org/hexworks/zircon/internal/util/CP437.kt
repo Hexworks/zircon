@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.util
 
-import org.hexworks.zircon.internal.tileset.impl.CP437TextureMetadata
+import org.hexworks.zircon.internal.tileset.CP437TextureMetadata
 
 private val UNICODE_TO_CP437_LOOKUP = mapOf(
     Pair(0x263A, 1),

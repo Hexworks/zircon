@@ -3,8 +3,8 @@ package org.hexworks.zircon.api.builder.fragment
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
-import org.hexworks.zircon.internal.dsl.ZirconDsl
 import org.hexworks.zircon.internal.fragment.impl.DefaultTab
 import org.hexworks.zircon.internal.fragment.impl.TabData
 

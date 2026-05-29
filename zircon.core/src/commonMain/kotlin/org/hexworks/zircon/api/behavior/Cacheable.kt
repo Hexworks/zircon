@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.behavior
 
 /**
- * Represents an object which can be cached.
+ * Represents an object that can be cached.
  */
 interface Cacheable {
 

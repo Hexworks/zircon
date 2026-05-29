@@ -1,8 +1,8 @@
 package org.hexworks.zircon.api.tileset
 
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.resource.TileType
-import org.hexworks.zircon.internal.resource.TilesetType
+import org.hexworks.zircon.api.resource.TilesetType
 import kotlin.reflect.KClass
 
 // TODO: document this
