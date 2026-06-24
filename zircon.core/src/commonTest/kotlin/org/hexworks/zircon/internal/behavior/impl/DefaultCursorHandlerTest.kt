@@ -2,9 +2,16 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
-import korlibs.io.lang.assert
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheEndOfTheLine
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheFirstRow
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheLastRow
+import org.hexworks.zircon.api.behavior.extensions.isCursorAtTheStartOfTheLine
+import org.hexworks.zircon.api.behavior.extensions.moveCursorBackward
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withX
+import org.hexworks.zircon.api.data.extensions.withY
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 

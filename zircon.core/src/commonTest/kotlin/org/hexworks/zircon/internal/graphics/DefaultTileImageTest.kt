@@ -12,6 +12,15 @@ import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile.Companion.defaultTile
+import org.hexworks.zircon.api.graphics.extensions.combineWith
+import org.hexworks.zircon.api.graphics.extensions.toSubImage
+import org.hexworks.zircon.api.graphics.extensions.toTileGraphics
+import org.hexworks.zircon.api.graphics.extensions.transform
+import org.hexworks.zircon.api.graphics.extensions.withFiller
+import org.hexworks.zircon.api.graphics.extensions.withNewSize
+import org.hexworks.zircon.api.graphics.extensions.withStyle
+import org.hexworks.zircon.api.graphics.extensions.withTileAt
+import org.hexworks.zircon.api.graphics.extensions.withTileset
 import org.hexworks.zircon.fetchCharacters
 import kotlin.test.Test
 

@@ -18,6 +18,8 @@ import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.relativeToBottomOf
+import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.internal.component.InternalComponent

@@ -9,6 +9,7 @@ group = "org.hexworks.zircon"
 version = "2.0.0"
 
 kotlin {
+    jvmToolchain(21)
     jvm {}
     js(IR) {
         browser {

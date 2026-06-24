@@ -1,9 +1,12 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import io.kotest.matchers.shouldBe
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelative
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -14,8 +17,7 @@ class DefaultMovableTest {
     @BeforeTest
     fun setUp() {
         target = DefaultMovable(
-            size = TARGET_SIZE_10x10,
-            position = Position.ZERO
+            Boundable.create(position = Position.ZERO, size = TARGET_SIZE_10x10).toProperty()
         )
     }
 
@@ -39,7 +41,7 @@ class DefaultMovableTest {
 
     @Test
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundable() {
-        target.intersects(DefaultMovable(TARGET_SIZE_10x10)) shouldBe true
+        target.intersects(DefaultMovable(Boundable.create(size = TARGET_SIZE_10x10).toProperty())) shouldBe true
     }
 
     @Test
@@ -56,7 +58,7 @@ class DefaultMovableTest {
     fun shouldIntersectWhenIntersectIsCalledWithIntersectingBoundableWithOffset() {
         target.intersects(
             layer {
-                offset = INTERSECTION_Color.TRANSPARENT
+                offset = INTERSECTION_OFFSET_1x1
                 size = Size.ONE
             }
         ) shouldBe true
@@ -64,19 +66,19 @@ class DefaultMovableTest {
 
     @Test
     fun shouldContainBoundableWhenCalledWithContainedBoundable() {
-        target.containsBoundable(DefaultMovable(Size.ONE)) shouldBe true
+        target.containsBoundable(DefaultMovable(Boundable.create(size = Size.ONE).toProperty())) shouldBe true
     }
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        target.containsBoundable(DefaultMovable(Size.create(100, 100))) shouldBe false
+        target.containsBoundable(DefaultMovable(Boundable.create(size = Size.create(100, 100)).toProperty())) shouldBe false
     }
 
     companion object {
         const val DEFAULT_COLS_10 = 10
         const val DEFAULT_ROWS_10 = 10
         val TARGET_SIZE_10x10 = Size.create(DEFAULT_COLS_10, DEFAULT_ROWS_10)
-        val INTERSECTION_Color.TRANSPARENT = Position.OFFSET_1X1
+        val INTERSECTION_OFFSET_1x1 = Position.OFFSET_1X1
         val NON_INTERSECTING_OFFSET_20x20 = Position.create(20, 20)
     }
 }

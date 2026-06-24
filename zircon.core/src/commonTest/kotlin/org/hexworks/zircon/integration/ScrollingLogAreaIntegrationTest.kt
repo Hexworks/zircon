@@ -3,7 +3,7 @@ package org.hexworks.zircon.integration
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.buildLogArea
 import org.hexworks.zircon.api.builder.component.buildPanel
-import org.hexworks.zircon.api.component.addParagraph
+import org.hexworks.zircon.api.component.extensions.addParagraph
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.data.Size

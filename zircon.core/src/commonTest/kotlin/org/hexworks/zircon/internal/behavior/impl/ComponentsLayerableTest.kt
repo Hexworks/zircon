@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalLayerable
@@ -36,7 +37,7 @@ class ComponentsLayerableTest {
         application = ApplicationStub()
         rootContainer = DefaultRootContainer(
             metadata = ComponentMetadata(
-                position = ,
+                position = Position.ZERO,
                 size = SIZE_4X2,
                 tilesetProperty = CP437TilesetResources.bisasam16x16().toProperty(),
                 componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty(),

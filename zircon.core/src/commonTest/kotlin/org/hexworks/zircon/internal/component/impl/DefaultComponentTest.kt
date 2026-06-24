@@ -2,6 +2,12 @@ package org.hexworks.zircon.internal.component.impl
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.extensions.moveBy
+import org.hexworks.zircon.api.behavior.extensions.moveDownBy
+import org.hexworks.zircon.api.behavior.extensions.moveLeftBy
+import org.hexworks.zircon.api.behavior.extensions.moveRightBy
+import org.hexworks.zircon.api.behavior.extensions.moveUpBy
 import org.hexworks.zircon.api.builder.component.buildLabel
 import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.component.ColorTheme
@@ -11,8 +17,14 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelative
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.uievent.MouseEvent
-import org.hexworks.zircon.api.uievent.MouseEventType.*
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_CLICKED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_ENTERED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_EXITED
+import org.hexworks.zircon.api.uievent.MouseEventType.MOUSE_PRESSED
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.BUBBLE
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET

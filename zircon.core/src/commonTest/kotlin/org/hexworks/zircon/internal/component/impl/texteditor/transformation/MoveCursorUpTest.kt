@@ -16,7 +16,7 @@ class MoveCursorUpTest {
             foo
         """.trimIndent()
         ).state.copy(
-            cursor = 
+            cursor = Position.ZERO
         )
 
         val result = MoveCursorUp.apply(input)

@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.component.builder.base.withPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.DefaultTileGrid

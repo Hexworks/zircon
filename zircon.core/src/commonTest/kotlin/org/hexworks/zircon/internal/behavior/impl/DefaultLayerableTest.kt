@@ -4,7 +4,11 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.behavior.extensions.moveBy
 import org.hexworks.zircon.api.builder.graphics.layer
+import org.hexworks.zircon.api.graphics.extensions.fill
+import org.hexworks.zircon.api.graphics.extensions.moveOneLevelDown
+import org.hexworks.zircon.api.graphics.extensions.moveOneLevelUp
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position

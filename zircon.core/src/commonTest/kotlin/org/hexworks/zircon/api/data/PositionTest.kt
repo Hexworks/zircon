@@ -8,6 +8,18 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.component.Component
+import org.hexworks.zircon.api.data.extensions.isPositionNotUnknown
+import org.hexworks.zircon.api.data.extensions.isPositionUnknown
+import org.hexworks.zircon.api.data.extensions.relativeToBottomOf
+import org.hexworks.zircon.api.data.extensions.relativeToLeftOf
+import org.hexworks.zircon.api.data.extensions.relativeToRightOf
+import org.hexworks.zircon.api.data.extensions.relativeToTopOf
+import org.hexworks.zircon.api.data.extensions.toPixelPosition
+import org.hexworks.zircon.api.data.extensions.withRelative
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
+import org.hexworks.zircon.api.data.extensions.withX
+import org.hexworks.zircon.api.data.extensions.withY
 import org.hexworks.zircon.internal.data.GridPosition
 import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
@@ -28,12 +40,12 @@ class PositionTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        Position.UNKNOWN.isUnknown shouldBe true
+        Position.UNKNOWN.isPositionUnknown shouldBe true
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        Position.UNKNOWN.isNotUnknown shouldBe false
+        Position.UNKNOWN.isPositionNotUnknown shouldBe false
     }
 
     @Test
@@ -172,22 +184,22 @@ class PositionTest {
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithX() {
-        Position.create(1, 0).withX(0) shouldBeSameInstanceAs 
+        Position.create(1, 0).withX(0) shouldBeSameInstanceAs Position.ZERO
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeX() {
-        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs 
+        Position.create(1, 0).withRelativeX(-1) shouldBeSameInstanceAs Position.ZERO
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithY() {
-        Position.create(0, 1).withY(0) shouldBeSameInstanceAs 
+        Position.create(0, 1).withY(0) shouldBeSameInstanceAs Position.ZERO
     }
 
     @Test
     fun shouldReturnTopLeftWhenNewPosWouldBeTopLeftWithRelativeY() {
-        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs 
+        Position.create(0, 1).withRelativeY(-1) shouldBeSameInstanceAs Position.ZERO
     }
 
     @Test

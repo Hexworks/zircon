@@ -5,6 +5,9 @@ import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
+import org.hexworks.zircon.api.data.extensions.withBaseTile
+import org.hexworks.zircon.api.data.extensions.withPushedTile
+import org.hexworks.zircon.api.data.extensions.withRemovedTile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.extensions.asGraphicalTileOrNull

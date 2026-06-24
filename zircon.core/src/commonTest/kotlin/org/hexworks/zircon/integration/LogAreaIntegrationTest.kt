@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.builder.component.buildButton
 import org.hexworks.zircon.api.builder.component.buildParagraph
 import org.hexworks.zircon.api.builder.component.buildVbox
 import org.hexworks.zircon.api.builder.component.logArea
-import org.hexworks.zircon.api.component.addParagraph
+import org.hexworks.zircon.api.component.extensions.addParagraph
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.data.Size

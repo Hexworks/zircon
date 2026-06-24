@@ -1,6 +1,8 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.*
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.PRESSED
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.SELECTED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.impl.DrawWindow

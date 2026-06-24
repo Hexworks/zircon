@@ -32,5 +32,10 @@ interface Movable : Boundable {
             position: Position = Position.ZERO
         ): Movable =
             DefaultMovable(Boundable.create(position, size).toProperty())
+
+        @JvmStatic
+        fun fromSize(
+           size: Size,
+        ): Movable = DefaultMovable(Boundable.create(size = size).toProperty())
     }
 }

@@ -7,14 +7,6 @@ import org.hexworks.zircon.api.builder.application.DebugConfigBuilder
  */
 class DebugConfig internal constructor(
     /**
-     * If `true` a grid will be displayed around the tiles.
-     */
-    val displayGrid: Boolean,
-    /**
-     * If `true` it will draw the positions of the individual tiles on the tiles
-     */
-    val displayCoordinates: Boolean,
-    /**
      * if `true` no bounds check will be performed when adding/moving components
      */
     val relaxBoundsCheck: Boolean

@@ -4,11 +4,10 @@ import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.ComponentDecorations.side
-import org.hexworks.zircon.api.builder.component.ButtonBuilder
+import org.hexworks.zircon.api.builder.component.buildButton
 import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
-import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.screen.Screen
 
@@ -28,7 +27,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
         }
         screen.addComponent(panel)
 
-        val simpleBtn = ButtonBuilder().apply {
+        val simpleBtn = buildButton {
             +"Button"
             decorations {
                 +side()
@@ -36,14 +35,14 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
             alignment = positionalAlignment(1, 3)
         }
 
-        val boxedBtn = ButtonBuilder().apply {
+        val boxedBtn = buildButton {
             +"Boxed Button"
             decorations {
                 +box()
             }
             alignment = positionalAlignment(1, 5)
         }
-        val tooLongBtn = ButtonBuilder().apply {
+        val tooLongBtn = buildButton {
             +"Too long name for button"
             decorations {
                 +box()
@@ -56,7 +55,7 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
             alignment = positionalAlignment(1, 9)
         }
 
-        val overTheTopBtn = ButtonBuilder().apply {
+        val overTheTopBtn = buildButton {
             +"Over the top button"
             decorations {
                 +box(boxType = BoxType.DOUBLE)
@@ -65,20 +64,9 @@ class ButtonIntegrationTest : ComponentIntegrationTestBase() {
             alignment = positionalAlignment(1, 14)
         }
 
-        screen.addComponent(simpleBtn)
-        simpleBtn.position = Position.create(1, 1)
         panel.addComponent(simpleBtn)
-
-        screen.addComponent(boxedBtn)
-        boxedBtn.position = Position.create(1, 3)
         panel.addComponent(boxedBtn)
-
-        screen.addComponent(tooLongBtn)
-        tooLongBtn.position = Position.create(1, 7)
         panel.addComponent(tooLongBtn)
-
-        screen.addComponent(overTheTopBtn)
-        overTheTopBtn.position = Position.create(1, 12)
         panel.addComponent(overTheTopBtn)
     }
 

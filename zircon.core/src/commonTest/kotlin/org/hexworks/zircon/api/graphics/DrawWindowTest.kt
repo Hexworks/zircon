@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.graphics
 
 import io.kotest.matchers.collections.shouldContainExactly
 import org.hexworks.cobalt.databinding.api.extension.orElse
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.color.ANSIColor
@@ -9,7 +10,11 @@ import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
+import org.hexworks.zircon.api.graphics.extensions.applyStyle
+import org.hexworks.zircon.api.graphics.extensions.fill
+import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.fetchCharacters
 import kotlin.test.BeforeTest

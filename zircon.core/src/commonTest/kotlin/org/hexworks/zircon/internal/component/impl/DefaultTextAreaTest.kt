@@ -4,7 +4,7 @@ import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.color.Color.Companion.transparent
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
+import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import kotlin.test.BeforeTest

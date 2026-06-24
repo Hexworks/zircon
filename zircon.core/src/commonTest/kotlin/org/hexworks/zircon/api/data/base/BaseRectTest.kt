@@ -1,6 +1,11 @@
 package org.hexworks.zircon.api.data.base
 
 import io.kotest.matchers.shouldBe
+import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.extensions.height
+import org.hexworks.zircon.api.behavior.extensions.splitHorizontal
+import org.hexworks.zircon.api.behavior.extensions.splitVertical
+import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import kotlin.test.Test

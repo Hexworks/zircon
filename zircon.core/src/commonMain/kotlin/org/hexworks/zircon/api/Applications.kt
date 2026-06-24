@@ -1,6 +1,5 @@
 package org.hexworks.zircon.api
 
-import korlibs.datastructure.fastCastTo
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.application.AppConfig.Companion.defaultAppConfig
@@ -9,7 +8,6 @@ import org.hexworks.zircon.api.application.NoOpApplication
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
-import org.hexworks.zircon.internal.tileset.DefaultTilesetLoader
 import org.hexworks.zircon.renderer.virtual.VirtualApplication
 
 /**

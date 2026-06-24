@@ -6,6 +6,11 @@ import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe
+import org.hexworks.zircon.api.data.extensions.containsPosition
+import org.hexworks.zircon.api.data.extensions.fetchPositions
+import org.hexworks.zircon.api.data.extensions.minus
+import org.hexworks.zircon.api.data.extensions.plus
+import org.hexworks.zircon.api.data.extensions.to2DSize
 import kotlin.test.Test
 
 class Size3DTest {

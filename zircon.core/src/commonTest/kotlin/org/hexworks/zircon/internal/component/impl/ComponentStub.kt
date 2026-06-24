@@ -12,6 +12,7 @@ import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Boundable
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
@@ -26,14 +27,32 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
-    override val position: Position,
-    override val size: Size,
+    initialPosition: Position,
+    initialSize: Size,
     override var tileset: TilesetResource = BuiltInCP437TilesetResource.REX_PAINT_20X20,
-    override val relativePosition: Position = position,
-    override val contentOffset: Position = position,
-    override val contentSize: Size = size,
     override val id: UUID = UUID.randomUUID(),
 ) : InternalComponent {
+
+    override val boundsProperty: Property<Boundable> = Boundable.create(initialPosition, initialSize).toProperty()
+    override val bounds: Boundable by boundsProperty.asDelegate()
+
+    override val position: Position
+        get() = bounds.position
+    override val absolutePosition: Position
+        get() = position
+    override val positionProperty: ObservableValue<Position> = boundsProperty.bindTransform { it.position }
+
+    override val size: Size
+        get() = bounds.size
+    override val sizeProperty: ObservableValue<Size> = boundsProperty.bindTransform { it.size }
+
+    override val contentOffset: Position = Position.ZERO
+    override val contentSize: Size = initialSize
+    override val contentBoundsProperty: ObservableValue<Boundable> =
+        boundsProperty.bindTransform { Boundable.create(it.position + contentOffset, contentSize) }
+    override val contentBounds: Boundable by contentBoundsProperty.asDelegate()
+
+    override val originalPosition: Position = initialPosition
 
     override val disabledProperty: Property<Boolean> = false.toProperty()
     override var isDisabled: Boolean by disabledProperty.asDelegate()
@@ -42,9 +61,6 @@ class ComponentStub(
     override var theme: ColorTheme by themeProperty.asDelegate()
 
     override fun asInternalComponent() = this
-
-    override val absolutePosition: Position
-        get() = position
 
     override var root: RootContainer?
         get() = error("not implemented")
@@ -59,14 +75,10 @@ class ComponentStub(
         get() = false.toProperty()
 
     override val parentProperty: Property<InternalContainer?> = null.toProperty()
-    override var componentState: ComponentState
-        get() = error("not implemented")
-        set(_) {}
+    override val componentStateProperty: Property<ComponentState> = ComponentState.DEFAULT.toProperty()
+    override var componentState: ComponentState by componentStateProperty.asDelegate()
     override var parent: InternalContainer? by parentProperty.asDelegate()
     override val hasParent = parentProperty.bindTransform { it != null }
-
-    override val boundableProperty: ObservableValue<Rect>
-        get() = error("not implemented")
 
     override val isAttached: Boolean
         get() = parent != null
@@ -75,11 +87,6 @@ class ComponentStub(
 
     override val children: ObservableList<InternalComponent>
         get() = persistentListOf<InternalComponent>().toProperty()
-    override val originalPosition: Position
-        get() = error("not implemented")
-    override val relativeBounds: Boundable= Boundable.create(size = Size.ZERO)
-    override val componentStateProperty: ObservableValue<ComponentState>
-        get() = error("not implemented")
 
     override val hiddenProperty = false.toProperty()
 
@@ -88,16 +95,6 @@ class ComponentStub(
     override val componentStyleSetProperty: Property<ComponentStyleSet> =
         ComponentStyleSet.DEFAULT_STYLE.toProperty()
     override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
-
-    override val width: Int
-        get() = size.width
-    override val height: Int
-        get() = size.height
-    override var rect: Boundable= Boundable.create(position, size)
-    override val x: Int
-        get() = position.x
-    override val y: Int
-        get() = position.y
 
     private val movedToPositions = mutableListOf<Position>()
 
@@ -187,21 +184,9 @@ class ComponentStub(
     }
 
     override fun moveTo(position: Position): Boolean {
-        rect = rect.withPosition(position)
+        boundsProperty.value = bounds.withPosition(position)
         movedToPositions.add(position)
         return true
-    }
-
-    override fun intersects(other: Boundable): Boolean {
-        error("not implemented")
-    }
-
-    override fun containsPosition(position: Position): Boolean {
-        error("not implemented")
-    }
-
-    override fun containsBoundable(other: Boundable): Boolean {
-        error("not implemented")
     }
 
     override fun acceptsFocus(): Boolean {

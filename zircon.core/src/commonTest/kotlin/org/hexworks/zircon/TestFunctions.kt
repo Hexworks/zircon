@@ -1,5 +1,6 @@
 package org.hexworks.zircon
 
+import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.graphics.TileComposite
 

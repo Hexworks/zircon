@@ -7,6 +7,22 @@ import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
+import org.hexworks.zircon.api.data.extensions.fetchBottomLeftPosition
+import org.hexworks.zircon.api.data.extensions.fetchBottomRightPosition
+import org.hexworks.zircon.api.data.extensions.fetchBoundingBoxPositions
+import org.hexworks.zircon.api.data.extensions.fetchPositions
+import org.hexworks.zircon.api.data.extensions.fetchTopLeftPosition
+import org.hexworks.zircon.api.data.extensions.fetchTopRightPosition
+import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
+import org.hexworks.zircon.api.data.extensions.max
+import org.hexworks.zircon.api.data.extensions.min
+import org.hexworks.zircon.api.data.extensions.with
+import org.hexworks.zircon.api.data.extensions.withHeight
+import org.hexworks.zircon.api.data.extensions.withRelative
+import org.hexworks.zircon.api.data.extensions.withRelativeHeight
+import org.hexworks.zircon.api.data.extensions.withRelativeWidth
+import org.hexworks.zircon.api.data.extensions.withWidth
 import kotlin.test.Test
 
 class SizeTest {
@@ -35,12 +51,12 @@ class SizeTest {
 
     @Test
     fun shouldBeUnknownWhenUnknown() {
-        Size.UNKNOWN.isUnknown shouldBe true
+        Size.UNKNOWN.isSizeUnknown shouldBe true
     }
 
     @Test
     fun shouldNotBeUnknownWhenNotUnknown() {
-        Size.create(1, 2).isNotUnknown shouldBe true
+        Size.create(1, 2).isSizeNotUnknown shouldBe true
     }
 
     @Test
@@ -115,35 +131,35 @@ class SizeTest {
 
     @Test
     fun shouldReturnItselfWhenWithXLengthIsCalledAndXLengthIsTheSame() {
-        val target = Size.defaultGridSize()
+        val target = Size.create(60, 30)
         val result = target.withWidth(target.width)
         target shouldBeSameInstanceAs result
     }
 
     @Test
     fun shouldReturnItselfWhenWithYLengthIsCalledAndYLengthIsTheSame() {
-        val target = Size.defaultGridSize()
+        val target = Size.create(60, 30)
         val result = target.withHeight(target.height)
         target shouldBeSameInstanceAs result
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeXLengthIsCalledAndXLengthIsTheSame() {
-        val target = Size.defaultGridSize()
+        val target = Size.create(60, 30)
         val result = target.withRelativeWidth(0)
         target shouldBeSameInstanceAs result
     }
 
     @Test
     fun shouldReturnItselfWhenWithRelativeYLengthIsCalledAndYLengthIsTheSame() {
-        val target = Size.defaultGridSize()
+        val target = Size.create(60, 30)
         val result = target.withRelativeHeight(0)
         target shouldBeSameInstanceAs result
     }
 
     @Test
     fun shouldReturnItselfWhenWithIsCalledAndYLengthAndXLengthIsTheSame() {
-        val target = Size.defaultGridSize()
+        val target = Size.create(60, 30)
         val result = target.with(target)
         target shouldBeSameInstanceAs result
     }

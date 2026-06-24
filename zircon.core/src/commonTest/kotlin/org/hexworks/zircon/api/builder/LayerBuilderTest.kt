@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
+import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile

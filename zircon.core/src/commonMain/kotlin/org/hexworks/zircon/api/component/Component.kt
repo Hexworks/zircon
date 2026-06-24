@@ -123,6 +123,12 @@ interface Component : ComponentEventSource, ComponentProperties, Focusable, Mova
     override val positionProperty: ObservableValue<Position>
 
     /**
+     * The **absolute** position of this [Component] on the grid it is displayed on.
+     * This is an alias for [position] which is always absolute.
+     */
+    val absolutePosition: Position
+
+    /**
      * The **total** size of this [Component], e.g.: the [Size] of the content area plus the
      * size of all decorations.
      */

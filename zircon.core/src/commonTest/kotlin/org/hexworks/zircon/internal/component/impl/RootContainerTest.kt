@@ -4,6 +4,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.ApplicationStub
+import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.component.buildLabel
 import org.hexworks.zircon.api.builder.component.buildPanel
 import org.hexworks.zircon.api.builder.component.buildVbox
@@ -13,9 +14,11 @@ import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
+import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.Position.Companion.OFFSET_1X1
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.Size.Companion.one
+import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
@@ -77,7 +80,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         target.addComponent(box)
 
         target.componentTree.map { it.id } shouldBe
-            listOf(target.id, box.id, foo.id, bar.id)
+                listOf(target.id, box.id, foo.id, bar.id)
     }
 
     @Test
@@ -91,7 +94,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         box.addComponents(foo, bar)
 
         target.componentTree.map { it.id } shouldBe
-            listOf(target.id, box.id, foo.id, bar.id)
+                listOf(target.id, box.id, foo.id, bar.id)
     }
 
     @Test
@@ -101,7 +104,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label = buildLabel {
             position = pos
-            preferredSize = one()
+            preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
         }
 
@@ -133,13 +136,13 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label0 = buildLabel {
             position = label0Pos
-            preferredSize = one()
+            preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
         }
 
         val label1 = buildLabel {
             position = label1Pos
-            preferredSize = one()
+            preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
         }
 
@@ -170,7 +173,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
         val label = buildLabel {
             position = OFFSET_1X1
-            preferredSize = one()
+            preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
         }.asInternalComponent()
 

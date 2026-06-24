@@ -4,8 +4,6 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.behavior.Boundable
-
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -32,12 +30,12 @@ interface InternalComponent :
      */
     var root: RootContainer?
     val rootProperty: ObservableValue<RootContainer?>
+
     /**
      * Tells whether this [Component] is attached to a [org.hexworks.zircon.api.component.Container].
      */
     val isAttached: Boolean
         get() = parent != null
-
 
 
     /**

@@ -12,23 +12,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 class DebugConfigBuilder : Builder<DebugConfig> {
 
     /**
-     * If `true` a grid will be displayed around the tiles.
-     */
-    var displayGrid: Boolean = false
-
-    /**
-     * If `true` it will draw the positions of the individual tiles on the tiles
-     */
-    var displayCoordinates: Boolean = false
-
-    /**
      * if `true` no bounds check will be performed when adding/moving components
      */
     var relaxBoundsCheck: Boolean = false
 
     override fun build() = DebugConfig(
-        displayGrid = displayGrid,
-        displayCoordinates = displayCoordinates,
         relaxBoundsCheck = relaxBoundsCheck
     )
 

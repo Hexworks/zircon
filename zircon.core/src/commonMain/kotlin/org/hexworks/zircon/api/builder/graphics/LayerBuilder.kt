@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
+import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultLayer

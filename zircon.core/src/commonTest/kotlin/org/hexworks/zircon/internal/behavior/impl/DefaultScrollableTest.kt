@@ -2,6 +2,15 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import org.hexworks.zircon.api.behavior.extensions.scrollDownBy
+import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
+import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
+import org.hexworks.zircon.api.behavior.extensions.scrollOneLeft
+import org.hexworks.zircon.api.behavior.extensions.scrollOneRight
+import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
+import org.hexworks.zircon.api.behavior.extensions.scrollRightBy
+import org.hexworks.zircon.api.behavior.extensions.scrollTo
+import org.hexworks.zircon.api.behavior.extensions.scrollUpBy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import kotlin.test.BeforeTest

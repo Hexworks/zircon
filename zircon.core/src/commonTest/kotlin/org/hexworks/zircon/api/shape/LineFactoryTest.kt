@@ -2,6 +2,8 @@ package org.hexworks.zircon.api.shape
 
 import io.kotest.matchers.collections.shouldContainExactly
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import kotlin.test.Test
 
 class LineFactoryTest {

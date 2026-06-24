@@ -70,6 +70,12 @@ abstract class DefaultComponent(
     Movable by movable,
     UIEventProcessor by uiEventProcessor {
 
+    override val absolutePosition: Position
+        get() = position
+
+    val relativePosition: Position
+        get() = parent?.let { position - it.contentBounds.position } ?: position
+
     private val logger = LoggerFactory.getLogger(this::class)
 
     final override val id: UUID = UUID.randomUUID()
@@ -168,7 +174,7 @@ abstract class DefaultComponent(
     override fun toString(): String {
         val text = if (this is TextOverride) ", text=${textProperty.value}" else ""
         return "${name.ifBlank { this::class.simpleName }}(id=${id.toString().substring(0, 4)}, " +
-                "position=$position, size=$size, " +
+                "absolutePosition=$absolutePosition, relativePosition=$relativePosition, size=$size, " +
                 "state=$componentState, disabled=$isDisabled$text)"
     }
 

@@ -37,7 +37,6 @@ data class AppConfig(
      * Default is `true`
      */
     val isClipboardAvailable: Boolean,
-
     /**
      * The tileset to be used when no tileset is specified for the [Application].
      * Default is [CP437TilesetResources.wanderlust16x16]

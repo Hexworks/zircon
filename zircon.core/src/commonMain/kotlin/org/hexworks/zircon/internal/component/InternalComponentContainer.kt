@@ -1,10 +1,8 @@
 package org.hexworks.zircon.internal.component
 
-import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.internal.behavior.RenderableContainer
-import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 
 /**

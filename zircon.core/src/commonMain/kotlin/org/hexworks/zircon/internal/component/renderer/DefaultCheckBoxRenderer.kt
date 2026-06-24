@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment.LEFT
 import org.hexworks.zircon.api.component.CheckBox.CheckBoxAlignment.RIGHT
 import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.CHECKED

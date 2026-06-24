@@ -79,7 +79,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
     open fun shouldProperlyHandleMouseClicked() {
         rendererStub.clear()
 
-        target.mouseClicked(MouseEvent(MOUSE_CLICKED, 1, ), TARGET)
+        target.mouseClicked(MouseEvent(MOUSE_CLICKED, 1, Position.ZERO), TARGET)
     }
 
 
@@ -88,7 +88,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedUp(
-            event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, ),
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_UP, 1, Position.ZERO),
             phase = TARGET
         )
     }
@@ -98,7 +98,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseWheelRotatedDown(
-            event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, ),
+            event = MouseEvent(MOUSE_WHEEL_ROTATED_DOWN, 1, Position.ZERO),
             phase = TARGET
         )
     }
@@ -108,7 +108,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseDragged(
-            event = MouseEvent(MOUSE_DRAGGED, 1, ),
+            event = MouseEvent(MOUSE_DRAGGED, 1, Position.ZERO),
             phase = TARGET
         )
     }
@@ -118,7 +118,7 @@ abstract class CommonComponentTest<T : InternalComponent> {
         rendererStub.clear()
 
         target.mouseMoved(
-            event = MouseEvent(MOUSE_MOVED, 1, ),
+            event = MouseEvent(MOUSE_MOVED, 1, Position.ZERO),
             phase = TARGET
         )
     }

@@ -2,6 +2,9 @@ package org.hexworks.zircon.internal.color
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.color.extensions.shade
+import org.hexworks.zircon.api.color.extensions.tint
+import org.hexworks.zircon.api.color.extensions.tone
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
@@ -21,7 +24,7 @@ class DefaultColorTest {
         result.red shouldBe RED
         result.green shouldBe GREEN
         result.blue shouldBe BLUE
-        result.alpha shouldBe Color.defaultAlpha()
+        result.alpha shouldBe Color.DEFAULT_ALPHA
     }
 
     @Test

@@ -9,7 +9,6 @@ Need info? Check the [Docs][zircon-docs]
 | Support us on [Patreon](https://www.patreon.com/hexworks)
 | [Javadoc / Kdoc](https://hexworks.github.io/zircon/)
 
-[![Circle CI](https://circleci.com/gh/Hexworks/zircon/tree/master.svg?style=shield)](https://circleci.com/gh/Hexworks/zircon/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon.core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.hexworks.zircon/zircon.core)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)

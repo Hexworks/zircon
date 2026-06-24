@@ -6,8 +6,7 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.application.InternalApplication
 
 /**
- * An [Application] enhances a [TileGrid] with continuous rendering,
- * and some additional functionality such as rendering callbacks.
+ * An [Application] enhances a [TileGrid] with rendering and rendering-related functions.
  */
 interface Application : Closeable {
 

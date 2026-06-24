@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -20,6 +21,7 @@ import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
+import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import kotlin.test.BeforeTest
@@ -149,7 +151,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Test
     override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.ZERO),
             phase = UIEventPhase.TARGET
         )
         rendererStub.clear()
@@ -161,7 +163,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
     @Test
     override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
         target.mouseEntered(
-            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, ),
+            event = MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.ZERO),
             phase = UIEventPhase.TARGET
         )
         target.focusGiven()
@@ -177,7 +179,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.focusGiven()
         rendererStub.clear()
         target.mouseReleased(
-            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, ),
+            event = MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.ZERO),
             phase = UIEventPhase.TARGET
         )
 

@@ -5,6 +5,10 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.toPosition
+import org.hexworks.zircon.api.data.extensions.toPosition3D
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,7 +27,7 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnTopLeftCorner() {
-        assertEquals(Position.topLeftCorner(), Position.create(0, 0))
+        assertEquals(Position.ZERO, Position.create(0, 0))
     }
 
     @Test
@@ -33,7 +37,7 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnZero() {
-        assertEquals(, Position.create(0, 0))
+        assertEquals(Position.ZERO, Position.create(0, 0))
     }
 
     @Test

@@ -10,6 +10,9 @@ import kotlin.reflect.KClass
  *
  * Each [TextureTransformer] corresponds to a [TextureModifier]. The transformation
  * of a [Tile] will only happen if [Tile.modifiers] contains the corresponding modifier.
+ *
+ * @param T the texture object that the renderer will draw on (like Graphics2D in Swing)
+ * @param C the rendering context that contains all related objects that are necessary for rendering
  */
 interface TextureTransformer<T : Any, C : Any> {
 

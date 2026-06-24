@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.graphics
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.CP437TilesetResources
+import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.color.ANSIColor
@@ -9,6 +10,9 @@ import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.withRelative
+import org.hexworks.zircon.api.data.extensions.withRelativeX
+import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -90,9 +94,9 @@ class DefaultLayerTest {
             tileset = TILESET
         }
         val OFFSET = Position.create(5, 5)
-        val INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(6, 6))
-        val NON_INTERSECTING_BOUNDABLE = DefaultMovable(Size.create(5, 5))
-        val NON_CONTAINED_BOUNDABLE = DefaultMovable(SIZE.withRelative(Size.ONE))
+        val INTERSECTING_BOUNDABLE =  Movable.fromSize(Size.create(6, 6))
+        val NON_INTERSECTING_BOUNDABLE = Movable.fromSize(Size.create(5, 5))
+        val NON_CONTAINED_BOUNDABLE = Movable.fromSize(SIZE.withRelative(Size.ONE))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION
             .withRelativeX(-1)

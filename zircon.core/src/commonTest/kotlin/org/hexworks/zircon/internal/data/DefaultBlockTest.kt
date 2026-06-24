@@ -4,6 +4,8 @@ import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.builder.data.block
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.isEmpty
+import org.hexworks.zircon.api.data.extensions.top
 import kotlin.test.Test
 
 class DefaultBlockTest {

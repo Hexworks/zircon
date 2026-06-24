@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -128,10 +129,10 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
         panel.isAttached shouldBe true
 
-        panel.absolutePosition shouldBe Position.create(1, 1)
-        panelHeader.absolutePosition shouldBe Position.create(3, 2) // + 1x1 because of the wrapper
-        innerPanel.absolutePosition shouldBe Position.create(3, 4)
-        innerPanelHeader.absolutePosition shouldBe Position.create(5, 5)
+        panel.position shouldBe Position.create(1, 1)
+        panelHeader.position shouldBe Position.create(3, 2) // + 1x1 because of the wrapper
+        innerPanel.position shouldBe Position.create(3, 4)
+        innerPanelHeader.position shouldBe Position.create(5, 5)
     }
 
     @Test
@@ -186,12 +187,12 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
         panel0.addComponent(header0)
 
         header0.isAttached shouldBe true
-        header0.absolutePosition shouldBe Position.create(3, 2)
+        header0.position shouldBe Position.create(3, 2)
 
         panel0.addComponent(panel1)
 
         panel1.isAttached shouldBe true
-        panel1.absolutePosition shouldBe Position.create(3, 3)
+        panel1.position shouldBe Position.create(3, 3)
 
     }
 

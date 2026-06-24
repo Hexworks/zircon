@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.behavior.Cacheable
 /**
  * Represents the texture with the draw context that can be used to draw tiles
  * for a given [Tileset].
- * The [texture] is the actual texture that can be drawn on. (like `Graphics2D` in Swing)
- * The [context] is the draw context that can be used to draw on the [texture].
+ * @param T the texture object that the renderer will draw on (like Graphics2D in Swing)
+ * @param C the rendering context that contains all related objects that are necessary for rendering
  */
 data class TextureContext<T : Any, C : Any>(
     override val cacheKey: String,

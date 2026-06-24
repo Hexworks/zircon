@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.extensions.toCharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap.NO_WRAPPING
 import org.hexworks.zircon.api.graphics.TextWrap.WORD_WRAP
+import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.fetchCharacters
 import kotlin.test.Test
 

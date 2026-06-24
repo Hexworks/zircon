@@ -19,6 +19,7 @@ class DefaultHorizontalNumberInput internal constructor(
     override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
 
     override fun refreshCursor() {
+        // TODO: why is this commented out?
 //        var pos = textBuffer.cursor.position
 //        pos = pos.withX(min(pos.x, contentSize.width))
 //            .withY(0)
