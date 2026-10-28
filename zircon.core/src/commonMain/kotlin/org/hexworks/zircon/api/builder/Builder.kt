@@ -6,11 +6,11 @@ package org.hexworks.zircon.api.builder
  * `button { text = "OK" }`, and every property has a sensible default so [build] never
  * throws for an untouched builder.
  */
-interface Builder<out T> {
+public interface Builder<out T> {
 
     /**
      * Builds an object of type [T].
      */
-    fun build(): T
+    public fun build(): T
 
 }

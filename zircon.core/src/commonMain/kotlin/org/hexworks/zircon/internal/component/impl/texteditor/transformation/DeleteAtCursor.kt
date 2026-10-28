@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
-object DeleteAtCursor : Transformation {
+public object DeleteAtCursor : Transformation {
 
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState

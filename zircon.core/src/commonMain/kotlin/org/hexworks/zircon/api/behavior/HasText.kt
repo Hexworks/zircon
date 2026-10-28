@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.behavior
 /**
  * Represents an object that holds [text].
  */
-interface HasText {
+public interface HasText {
 
-    val text: String
+    public val text: String
 }

@@ -11,12 +11,12 @@ import org.hexworks.zircon.api.uievent.KeyboardEventType
  * [Builder] for creating [ShortcutsConfig]s.
  */
 @ZirconDsl
-class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
+public class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
 
     /**
      * Default is `<Space>` press.
      */
-    var activateFocused: KeyboardEventMatcher = KeyboardEventMatcher(
+    public var activateFocused: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_PRESSED,
         code = KeyCode.SPACE
     )
@@ -24,7 +24,7 @@ class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
     /**
      * Default is `<Space>` release.
      */
-    var deactivateActivated: KeyboardEventMatcher = KeyboardEventMatcher(
+    public var deactivateActivated: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_RELEASED,
         code = KeyCode.SPACE
     )
@@ -32,7 +32,7 @@ class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
     /**
      * Default is `<Tab>` press.
      */
-    var focusNext: KeyboardEventMatcher = KeyboardEventMatcher(
+    public var focusNext: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_PRESSED,
         code = KeyCode.TAB,
         shiftDown = false
@@ -41,13 +41,13 @@ class ShortcutsConfigBuilder : Builder<ShortcutsConfig> {
     /**
      * Default is `<Shift>`+`<Tab>` press.
      */
-    var focusPrevious: KeyboardEventMatcher = KeyboardEventMatcher(
+    public var focusPrevious: KeyboardEventMatcher = KeyboardEventMatcher(
         type = KeyboardEventType.KEY_PRESSED,
         code = KeyCode.TAB,
         shiftDown = true
     )
 
-    override fun build() = ShortcutsConfig(
+    override fun build(): ShortcutsConfig = ShortcutsConfig(
         activateFocused = activateFocused,
         deactivateActivated = deactivateActivated,
         focusNext = focusNext,

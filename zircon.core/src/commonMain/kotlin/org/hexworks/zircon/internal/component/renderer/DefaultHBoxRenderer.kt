@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
-class DefaultHBoxRenderer : ComponentRenderer<HBox> {
+public class DefaultHBoxRenderer : ComponentRenderer<HBox> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<HBox>) {
         drawWindow.fill(Tile.defaultTile())

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.component.hBox
@@ -16,7 +17,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeHeight
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-class DefaultHorizontalTabBar internal constructor(
+public class DefaultHorizontalTabBar internal constructor(
     size: Size,
     defaultSelected: String,
     tabs: List<TabData>

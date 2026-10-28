@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.extensions.isEmpty
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
+import org.hexworks.zircon.internal.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
 
@@ -17,7 +17,7 @@ import org.hexworks.zircon.internal.graphics.ArrayBackedTileMap.Entry
  * This is a fast implementation of [TileGraphics] that sacrifices memory footprint
  * for speed and uses an array behind the scenes.
  */
-class FastTileGraphics(
+public class FastTileGraphics(
     initialSize: Size,
     initialTileset: TilesetResource,
     initialTiles: Map<Position, Tile> = mapOf()
@@ -38,7 +38,7 @@ class FastTileGraphics(
     override var tiles: ArrayBackedTileMap = ArrayBackedTileMap(initialSize, arr)
         private set
 
-    fun contents() = tiles.contents()
+    public fun contents(): Sequence<Map.Entry<Position, Tile>> = tiles.contents()
 
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {

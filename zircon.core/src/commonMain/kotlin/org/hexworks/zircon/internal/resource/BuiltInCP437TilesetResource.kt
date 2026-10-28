@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.resource.TilesetType
  * This enum contains the metadata for the built-in CP437 tilesets.
  */
 @Suppress("SpellCheckingInspection")
-enum class BuiltInCP437TilesetResource(
+public enum class BuiltInCP437TilesetResource(
     private val tilesetName: String,
     override val width: Int,
     override val height: Int,

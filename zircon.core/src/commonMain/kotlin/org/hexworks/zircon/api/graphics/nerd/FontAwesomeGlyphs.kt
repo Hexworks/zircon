@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class FontAwesomeGlyphs(
-    val glyph: Char,
+public enum class FontAwesomeGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

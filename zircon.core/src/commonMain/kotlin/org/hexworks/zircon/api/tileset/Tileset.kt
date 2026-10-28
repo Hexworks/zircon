@@ -14,27 +14,27 @@ import kotlin.reflect.KClass
  *
  * @param S the class of the surface that we'll draw upon (Graphics2D for Swing for example)
  */
-interface Tileset<S : Any> : Identifiable {
+public interface Tileset<S : Any> : Identifiable {
 
     /**
      * The type of the target surface the textures are drawn upon.
      */
-    val targetType: KClass<S>
+    public val targetType: KClass<S>
 
     /**
      * The width of a texture in pixels.
      */
-    val width: Int
+    public val width: Int
 
     /**
      * The height of a texture in pixels.
      */
-    val height: Int
+    public val height: Int
 
     /**
      * width * height
      */
-    val size: Size
+    public val size: Size
         get() = Size(width, height)
 
     /**
@@ -42,5 +42,5 @@ interface Tileset<S : Any> : Identifiable {
      * given [position]. Does nothing if the [tile] is not
      * supported by this [Tileset].
      */
-    fun drawTile(tile: Tile, context: S, position: Position)
+    public fun drawTile(tile: Tile, context: S, position: Position)
 }

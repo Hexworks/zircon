@@ -14,12 +14,12 @@ import org.hexworks.zircon.internal.shape.DefaultShape
  * shades, and characters).
  * Any [Shape] implementation is supposed to be immutable.
  */
-interface Shape : Collection<Position> {
+public interface Shape : Collection<Position> {
 
     /**
      * All the [Position]s this [Shape] contains.
      */
-    val positions: Set<Position>
+    public val positions: Set<Position>
 
     /**
      * Combines two [Shape]s into a new one which means that this operation
@@ -27,14 +27,14 @@ interface Shape : Collection<Position> {
      * **Note that** the original [Shape]s are unmodified, this operation
      * creates a new [Shape].
      */
-    operator fun plus(shape: Shape): Shape {
+    public operator fun plus(shape: Shape): Shape {
         return DefaultShape(positions.plus(shape.positions))
     }
 
     /**
      * Creates a [TileGraphics] from this [Shape] using `tile` to fill the positions.
      */
-    fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics
+    public fun toTileGraphics(tile: Tile, tileset: TilesetResource): TileGraphics
 
     /**
      * Offsets this [Shape] to the default position (column=0,row=0),
@@ -42,5 +42,5 @@ interface Shape : Collection<Position> {
      * will be transformed to `((Position(0, 0), Position(1, 1))`.
      * Returns a new [Shape] with the new positions.
      */
-    fun offsetToDefaultPosition(): Shape
+    public fun offsetToDefaultPosition(): Shape
 }

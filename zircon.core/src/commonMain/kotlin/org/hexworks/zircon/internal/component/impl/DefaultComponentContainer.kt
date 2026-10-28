@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -17,7 +19,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 import org.hexworks.zircon.internal.uievent.impl.UIEventToComponentDispatcher
 
-class DefaultComponentContainer(
+public class DefaultComponentContainer(
     private val root: RootContainer,
     private val focusOrderList: ComponentFocusOrderList = DefaultComponentFocusOrderList(root),
     private val dispatcher: UIEventToComponentDispatcher = UIEventToComponentDispatcher(
@@ -29,7 +31,7 @@ class DefaultComponentContainer(
     ComponentFocusOrderList by focusOrderList,
     UIEventDispatcher by dispatcher {
 
-    override val isActive = false.toProperty()
+    override val isActive: Property<Boolean> = false.toProperty()
     override val flattenedTree: List<InternalComponent>
         get() = root.componentTree
     override val renderables: List<Renderable>

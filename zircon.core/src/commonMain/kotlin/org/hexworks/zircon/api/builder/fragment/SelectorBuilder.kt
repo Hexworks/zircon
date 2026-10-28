@@ -13,42 +13,42 @@ import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultSelector
 
 @ZirconDsl
-class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
+public class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
 
     override var position: Position = Position.ZERO
 
-    var width: Int? = null
+    public var width: Int? = null
 
-    var valuesProperty: ListProperty<T> = listOf<T>().toProperty()
+    public var valuesProperty: ListProperty<T> = listOf<T>().toProperty()
 
     /**
      * Whether the text on the label should be centered.
      */
-    var centeredText: Boolean = true
+    public var centeredText: Boolean = true
 
     /**
      * The method to use for the label text if not ::toString
      */
-    var toStringMethod: (T) -> String = Any::toString
+    public var toStringMethod: (T) -> String = Any::toString
 
     /**
      * When set to true the center component, showing the text, will be an undecorated button that also invokes the
      * callback (else it is just a simple label).
      */
-    var clickableLabel: Boolean = false
+    public var clickableLabel: Boolean = false
 
     /**
      * The value that should be selected by default.
      */
-    var defaultSelected: T? = null
+    public var defaultSelected: T? = null
 
-    var valueList: List<T>
+    public var valueList: List<T>
         get() = valuesProperty.value
         set(value) {
             valuesProperty = value.toProperty()
         }
 
-    val selectedProperty: Property<T?> = null.toProperty()
+    public val selectedProperty: Property<T?> = null.toProperty()
 
     override fun build(): Selector<T> {
         defaultSelected?.let {
@@ -81,7 +81,7 @@ class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
 /**
  * Creates a new [Selector] using the fragment builder DSL and returns it.
  */
-fun <T : Any> selector(
+public fun <T : Any> selector(
     init: SelectorBuilder<T>.() -> Unit
 ): Selector<T> = SelectorBuilder<T>().apply(init).build()
 
@@ -89,6 +89,6 @@ fun <T : Any> selector(
  * Creates a new [Selector] using the fragment builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Selector].
  */
-fun <S : Any> AnyContainerBuilder.selector(
+public fun <S : Any> AnyContainerBuilder.selector(
     init: SelectorBuilder<S>.() -> Unit
 ): Selector<S> = buildFragmentFor(this, SelectorBuilder(), init)

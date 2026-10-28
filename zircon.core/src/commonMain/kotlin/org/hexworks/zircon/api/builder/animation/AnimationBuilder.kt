@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.animation
 
+import org.hexworks.zircon.internal.extensions.asInternal
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.Animation.FiniteLoop
 import org.hexworks.zircon.api.animation.Animation.LoopKind
@@ -19,22 +20,22 @@ import kotlin.time.toDuration
 private const val DEFAULT_FPS = 15L
 
 @ZirconDsl
-class AnimationBuilder(
+public class AnimationBuilder(
     private val frames: MutableList<InternalAnimationFrame> = mutableListOf(),
     private val positions: MutableList<Position> = mutableListOf(),
     private var tick: Duration = (1000L / DEFAULT_FPS).toDuration(MILLISECONDS),
     private var uniqueFrameCount: Int = -1
 ) : Builder<Animation> {
 
-    var totalFrameCount: Int = -1
+    public var totalFrameCount: Int = -1
         private set
 
-    var loopKind: LoopKind = FiniteLoop(1)
+    public var loopKind: LoopKind = FiniteLoop(1)
         set(value) {
             field = value
         }
 
-    var fps: Long
+    public var fps: Long
         get() = 1000L / tick.inWholeMilliseconds
         set(value) {
             require(value > 0) {
@@ -43,15 +44,15 @@ class AnimationBuilder(
             tick = (1000L / fps).toDuration(MILLISECONDS)
         }
 
-    var position: Position = Position.ZERO
+    public var position: Position = Position.ZERO
 
-    fun frame(init: AnimationFrameBuilder.() -> Unit) =
+    public fun frame(init: AnimationFrameBuilder.() -> Unit): AnimationFrame =
         AnimationFrameBuilder().apply(init).build().apply {
             frames.add(asInternal())
             recalculateFrameCountAndLength()
         }
 
-    fun addFrames(frames: List<AnimationFrame>) {
+    public fun addFrames(frames: List<AnimationFrame>) {
         frames.forEach {
             this.frames.add(it.asInternal())
         }
@@ -78,7 +79,7 @@ class AnimationBuilder(
         )
     }
 
-    fun createCopy() = AnimationBuilder(
+    public fun createCopy(): AnimationBuilder = AnimationBuilder(
         frames = frames
             .asSequence()
             .map { frame ->
@@ -102,14 +103,14 @@ class AnimationBuilder(
         uniqueFrameCount = frames.size
     }
 
-    companion object {
-        fun create() = AnimationBuilder()
+    public companion object {
+        public fun create(): AnimationBuilder = AnimationBuilder()
     }
 }
 
 /**
  * Creates a new [AnimationBuilder] using the builder DSL and returns it.
  */
-fun animation(init: AnimationBuilder.() -> Unit): Animation =
+public fun animation(init: AnimationBuilder.() -> Unit): Animation =
     AnimationBuilder.create().apply(init).build()
 

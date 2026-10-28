@@ -20,11 +20,11 @@ import org.hexworks.zircon.internal.graphics.FastTileGraphics
  * - Default `filler` is an `EMPTY` character
  */
 @ZirconDsl
-class TileGraphicsBuilder : Builder<TileGraphics> {
+public class TileGraphicsBuilder : Builder<TileGraphics> {
 
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var size: Size = Size.ONE
-    var tiles: Map<Position, Tile> = mapOf()
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var size: Size = Size.ONE
+    public var tiles: Map<Position, Tile> = mapOf()
         set(value) {
             tiles.forEach { (pos, _) ->
                 require(size.containsPosition(pos)) {
@@ -33,7 +33,7 @@ class TileGraphicsBuilder : Builder<TileGraphics> {
             }
             field = value
         }
-    var filler: Tile = Tile.empty()
+    public var filler: Tile = Tile.empty()
 
     /**
      * Builds a [FastTileGraphics] implementation.
@@ -49,10 +49,10 @@ class TileGraphicsBuilder : Builder<TileGraphics> {
     private fun hasToFill() = filler != Tile.empty()
 }
 
-fun tileGraphics(init: TileGraphicsBuilder.() -> Unit) =
+public fun tileGraphics(init: TileGraphicsBuilder.() -> Unit): TileGraphics =
     TileGraphicsBuilder().apply(init).build()
 
 
-fun TileGraphicsBuilder.withFiller(init: CharacterTileBuilder.() -> Unit) = apply {
+public fun TileGraphicsBuilder.withFiller(init: CharacterTileBuilder.() -> Unit): TileGraphicsBuilder = apply {
     filler = CharacterTileBuilder().apply(init).build()
 }

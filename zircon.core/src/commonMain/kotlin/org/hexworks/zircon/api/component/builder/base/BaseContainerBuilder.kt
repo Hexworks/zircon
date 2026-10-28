@@ -11,18 +11,18 @@ import org.hexworks.zircon.api.data.extensions.isSizeUnknown
  * This class can be used as a base class for creating component builders.
  * If your component has text use [ComponentWithTextBuilder] instead.
  */
-abstract class BaseContainerBuilder<T : Container>(
+public abstract class BaseContainerBuilder<T : Container>(
     initialRenderer: ComponentRenderer<out T>
 ) : BaseComponentBuilder<T>(initialRenderer) {
 
-    var childrenToAdd: List<Component> = listOf()
+    public var childrenToAdd: List<Component> = listOf()
 
-    abstract fun calculateContentSize(): Size
+    public abstract fun calculateContentSize(): Size
 
     private val calculatedSize: Size
         get() = calculateContentSize() + decorationRenderers.occupiedSize
 
-    override fun createMetadata() = ComponentMetadata(
+    override fun createMetadata(): ComponentMetadata = ComponentMetadata(
         position = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,
         name = name,
@@ -39,7 +39,7 @@ abstract class BaseContainerBuilder<T : Container>(
     /**
      * Creates a new [ChildrenBuilder] using the builder DSL and returns it.
      */
-    fun BaseContainerBuilder<T>.children(init: ChildrenBuilder.() -> Unit): List<Component> {
+    public fun BaseContainerBuilder<T>.children(init: ChildrenBuilder.() -> Unit): List<Component> {
         val builder = this
         return ChildrenBuilder().apply(init).build().apply {
             builder.childrenToAdd = this

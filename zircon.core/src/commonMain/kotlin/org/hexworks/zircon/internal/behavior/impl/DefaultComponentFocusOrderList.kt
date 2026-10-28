@@ -8,7 +8,7 @@ import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
 
-class DefaultComponentFocusOrderList(
+public class DefaultComponentFocusOrderList(
     private val root: RootContainer
 ) : ComponentFocusOrderList {
 
@@ -18,9 +18,9 @@ class DefaultComponentFocusOrderList(
     private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(root.id to root)
     private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
-    override fun findNext() = nextsLookup.getValue(focusedComponent.id)
+    override fun findNext(): InternalComponent = nextsLookup.getValue(focusedComponent.id)
 
-    override fun findPrevious() = prevsLookup.getValue(focusedComponent.id)
+    override fun findPrevious(): InternalComponent = prevsLookup.getValue(focusedComponent.id)
 
     override fun focus(component: InternalComponent) {
         logger.debug { "Trying to focus component: $component." }
@@ -90,7 +90,7 @@ class DefaultComponentFocusOrderList(
     private fun isNotAlreadyFocused(focusable: Focusable) =
         focusedComponent.id != focusable.id
 
-    companion object {
+    public companion object {
 
         private val logger = LoggerFactory.getLogger(ComponentFocusOrderList::class)
     }

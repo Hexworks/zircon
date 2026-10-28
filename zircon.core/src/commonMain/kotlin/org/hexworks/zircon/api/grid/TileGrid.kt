@@ -36,17 +36,13 @@ import org.hexworks.zircon.api.graphics.LayerHandle
  * @see UIEventSource
  * @see ViewContainer
  */
-interface TileGrid : AnimationRunner, Clearable, Closeable, DrawSurface, Layerable,
+public interface TileGrid : AnimationRunner, Clearable, Closeable, DrawSurface, Layerable,
     TypingSupport, UIEventSource, ViewContainer {
 
-    val widthInPixels: Int
+    public val widthInPixels: Int
         get() = tileset.width * width
 
-    val heightInPixels: Int
+    public val heightInPixels: Int
         get() = tileset.height * height
 
-    /**
-     * Exposes the internal API of this [TileGrid]
-     */
-    fun asInternal(): InternalTileGrid
 }

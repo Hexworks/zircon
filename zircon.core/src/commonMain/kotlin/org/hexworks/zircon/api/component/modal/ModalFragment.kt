@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.component.Fragment
  * and wraps a [Modal].
  */
 //! TODO: explain this further
-interface ModalFragment<T : ModalResult> : Fragment {
+public interface ModalFragment<T : ModalResult> : Fragment {
 
     override val root: Modal<T>
 }

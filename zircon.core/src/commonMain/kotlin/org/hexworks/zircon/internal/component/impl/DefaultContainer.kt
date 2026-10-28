@@ -21,7 +21,7 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
-open class DefaultContainer(
+public open class DefaultContainer(
     metadata: ComponentMetadata,
     renderer: ComponentRenderingStrategy<out Component>
 ) : InternalContainer, DefaultComponent(
@@ -69,10 +69,9 @@ open class DefaultContainer(
 
     //? A container can't be focused by design. It is a branch node in the
     //? component hierarchy, and we only allow leaves to be focused.
-    override fun acceptsFocus() = false
+    override fun acceptsFocus(): Boolean = false
     override fun focusGiven(): UIEventResponse = Pass
     override fun focusTaken(): UIEventResponse = Pass
-    final override fun asInternalComponent(): InternalContainer = this
 
     //! TODO: why is this UNKNOWN?
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = ComponentStyleSet.UNKNOWN
@@ -109,7 +108,7 @@ open class DefaultContainer(
     }
 
     // TODO: test detachment
-    override fun detachAllComponents() = attachments.toList().map { it.detach() }
+    override fun detachAllComponents(): List<Component> = attachments.toList().map { it.detach() }
 
     private inner class DefaultAttachedComponent(
         override val component: InternalComponent,

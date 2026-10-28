@@ -11,7 +11,7 @@ import org.hexworks.zircon.internal.resource.ColorThemeResource.SolarizedBase.SO
 import org.hexworks.zircon.api.color.Color.Companion.fromString as color
 
 @Suppress("SpellCheckingInspection")
-enum class ColorThemeResource(private val colorTheme: ColorTheme) {
+public enum class ColorThemeResource(private val colorTheme: ColorTheme) {
 
     /**
      * This is a null object for color themes indicating that no
@@ -1004,9 +1004,9 @@ enum class ColorThemeResource(private val colorTheme: ColorTheme) {
         }
     );
 
-    fun getTheme() = colorTheme
+    public fun getTheme(): ColorTheme = colorTheme
 
-    enum class SolarizedBase(val theme: ColorTheme) {
+    public enum class SolarizedBase(public val theme: ColorTheme) {
         SOLARIZED_DARK_BASE(
             colorTheme {
                 primaryForegroundColor = color("#fdf6e3")

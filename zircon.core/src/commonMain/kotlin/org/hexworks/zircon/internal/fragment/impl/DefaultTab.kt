@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
@@ -16,16 +18,16 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.StyleSet
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
-class DefaultTab internal constructor(
+public class DefaultTab internal constructor(
     key: String,
     initialText: String,
     width: Int,
 ) : Tab {
 
-    override val tabButton = radioButton {
+    override val tabButton: RadioButton = radioButton {
         text = initialText
         this.key = key
         preferredSize = Size(width, 3)
@@ -53,7 +55,7 @@ class DefaultTab internal constructor(
         }
     }
 
-    override val root = panel {
+    override val root: Panel = panel {
         preferredSize = tabButton.size
         componentRenderer = NoOpComponentRenderer()
     }

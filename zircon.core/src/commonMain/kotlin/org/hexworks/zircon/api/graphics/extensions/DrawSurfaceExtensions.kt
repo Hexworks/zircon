@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`,
  * and [Position.zero] as `drawPosition`
  */
-fun DrawSurface.draw(tileMap: Map<Position, Tile>) = draw(
+public fun DrawSurface.draw(tileMap: Map<Position, Tile>): Unit = draw(
     tileMap = tileMap,
     drawPosition = ZERO,
     drawArea = this.size
@@ -24,10 +24,10 @@ fun DrawSurface.draw(tileMap: Map<Position, Tile>) = draw(
 /**
  * Same as [draw] with 3 parameters, with the difference that [size] will be used for `drawArea`.
  */
-fun DrawSurface.draw(
+public fun DrawSurface.draw(
     tileMap: Map<Position, Tile>,
     drawPosition: Position
-) = draw(
+): Unit = draw(
     tileMap = tileMap,
     drawPosition = drawPosition,
     drawArea = this.size
@@ -36,7 +36,7 @@ fun DrawSurface.draw(
 /**
  * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
  */
-fun DrawSurface.draw(tileComposite: TileComposite) = draw(
+public fun DrawSurface.draw(tileComposite: TileComposite): Unit = draw(
     tileComposite = tileComposite,
     drawPosition = ZERO,
     drawArea = tileComposite.size
@@ -45,10 +45,10 @@ fun DrawSurface.draw(tileComposite: TileComposite) = draw(
 /**
  * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be use as the [Map].
  */
-fun DrawSurface.draw(
+public fun DrawSurface.draw(
     tileComposite: TileComposite,
     drawPosition: Position
-) = draw(
+): Unit = draw(
     tileComposite = tileComposite,
     drawPosition = drawPosition,
     drawArea = tileComposite.size
@@ -57,11 +57,11 @@ fun DrawSurface.draw(
 /**
  * Same as [draw] with `tileMap`, but [TileComposite.tiles] will be used as the [Map].
  */
-fun DrawSurface.draw(
+public fun DrawSurface.draw(
     tileComposite: TileComposite,
     drawPosition: Position,
     drawArea: Size
-) = draw(
+): Unit = draw(
     tileMap = tileComposite.tiles,
     drawPosition = drawPosition,
     drawArea = drawArea
@@ -73,7 +73,7 @@ fun DrawSurface.draw(
  * If you want to apply a style to a subset only take a look at
  * [TileGraphics.toDrawWindow].
  */
-fun DrawSurface.applyStyle(styleSet: StyleSet) {
+public fun DrawSurface.applyStyle(styleSet: StyleSet) {
     transform { _, tile ->
         tile.withStyle(styleSet)
     }
@@ -83,7 +83,7 @@ fun DrawSurface.applyStyle(styleSet: StyleSet) {
  * Fills the empty parts of this [DrawSurface] with the given [filler] [Tile].
  * A [Position] is considered empty if there is no [Tile] in it.
  */
-fun DrawSurface.fill(filler: Tile) {
+public fun DrawSurface.fill(filler: Tile) {
     if (filler.isNotEmpty) {
         for (pos in size.fetchPositions()) {
             if (getTileAtOrNull(pos)?.isNotEmpty != true) {

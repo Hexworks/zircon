@@ -5,8 +5,8 @@ import org.hexworks.zircon.api.data.Size
 /**
  * Represents an object that has 2D bounds (e.g.: [size])
  */
-interface HasSize {
+public interface HasSize {
 
-    val size: Size
+    public val size: Size
 
 }

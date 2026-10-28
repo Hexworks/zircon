@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.ColorTheme
 /**
  * Represents an object that has a [ColorTheme].
  */
-interface HasColorTheme {
+public interface HasColorTheme {
 
-    val theme: ColorTheme
+    public val theme: ColorTheme
 }

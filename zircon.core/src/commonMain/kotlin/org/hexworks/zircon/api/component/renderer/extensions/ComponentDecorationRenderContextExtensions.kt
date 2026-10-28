@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * For [RenderingMode.INTERACTIVE] the [currentStyle] will be returned,
  * for [RenderingMode.NON_INTERACTIVE] the [defaultStyle].
  */
-fun ComponentDecorationRenderContext.fetchStyleFor(renderingMode: RenderingMode): StyleSet {
+public fun ComponentDecorationRenderContext.fetchStyleFor(renderingMode: RenderingMode): StyleSet {
     if (component.isDisabled) {
         return currentComponentStyle.fetchStyleFor(DISABLED)
     }

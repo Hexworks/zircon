@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Since [org.hexworks.zircon.api.graphics.TileImage]s are immutable, we can use a simple
  * [PersistentMap] to store the tiles that also allows for efficient copying.
  */
-class DefaultTileImage internal constructor(
+public class DefaultTileImage internal constructor(
     override val size: Size,
     override val tileset: TilesetResource,
     initialTiles: Map<Position, Tile>

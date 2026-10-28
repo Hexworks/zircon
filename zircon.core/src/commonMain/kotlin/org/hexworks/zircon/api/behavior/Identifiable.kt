@@ -5,7 +5,7 @@ import org.hexworks.cobalt.core.api.UUID
 /**
  * Represents an object that has a unique UUID.
  */
-interface Identifiable {
+public interface Identifiable {
 
-    val id: UUID
+    public val id: UUID
 }

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.renderer.virtual
 
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.application.tilesetFactory
@@ -13,7 +14,7 @@ import org.hexworks.zircon.renderer.virtual.VirtualRenderer.VirtualView
 import org.hexworks.zircon.internal.util.nowMillis
 
 @Suppress("unused")
-class VirtualRenderer(
+public class VirtualRenderer(
     tileGrid: InternalTileGrid
 ) : BaseRenderer<Char, VirtualView>(
     tileGrid = tileGrid,
@@ -30,7 +31,7 @@ class VirtualRenderer(
     )
 ) {
 
-    val config = RuntimeConfig.config
+    public val config: AppConfig = RuntimeConfig.config
 
     private val tileset = VirtualTileset()
     private val contents = "".toProperty()
@@ -48,9 +49,9 @@ class VirtualRenderer(
         contents.value = tileGrid.backend.toString()
     }
 
-    class VirtualView(
+    public class VirtualView(
         contentsProperty: Property<String>
     ) {
-        val contents: String by contentsProperty.asDelegate()
+        public val contents: String by contentsProperty.asDelegate()
     }
 }

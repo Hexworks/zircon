@@ -22,33 +22,33 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
  * a clean API for [Component]s but enables Zircon and the developers of custom [Component]s
  * to interact with them in a more meaningful manner.
  */
-interface InternalComponent :
+public interface InternalComponent :
     Component, ComponentEventAdapter, KeyboardEventAdapter, MouseEventAdapter, Renderable, UIEventProcessor {
 
     /**
      * This is possibly `null` if the component is not attached to a root.
      */
-    var root: RootContainer?
-    val rootProperty: ObservableValue<RootContainer?>
+    public var root: RootContainer?
+    public val rootProperty: ObservableValue<RootContainer?>
 
     /**
      * Tells whether this [Component] is attached to a [org.hexworks.zircon.api.component.Container].
      */
-    val isAttached: Boolean
+    public val isAttached: Boolean
         get() = parent != null
 
 
     /**
      * @see root
      */
-    var parent: InternalContainer?
-    val parentProperty: Property<InternalContainer?>
-    val hasParent: ObservableValue<Boolean>
+    public var parent: InternalContainer?
+    public val parentProperty: Property<InternalContainer?>
+    public val hasParent: ObservableValue<Boolean>
 
     /**
      * The immediate child [Component]s of this [Component] (if any).
      */
-    val children: ObservableList<out InternalComponent>
+    public val children: ObservableList<out InternalComponent>
 
     /**
      * The position that was set when the component was originally built. The current position can change
@@ -57,20 +57,20 @@ interface InternalComponent :
      * settings were.
      * @see org.hexworks.zircon.api.component.AttachedComponent.detach
      */
-    val originalPosition: Position
+    public val originalPosition: Position
 
     /**
      * Tells how the [Component]'s observable properties should be
      * handled when the component is attached.
      * E.g.: should they get updated from the new parent's properties
      */
-    val bindingAction: BindingAction
+    public val bindingAction: BindingAction
 
     override var componentState: ComponentState
 
     /**
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
      */
-    fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
+    public fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
 }

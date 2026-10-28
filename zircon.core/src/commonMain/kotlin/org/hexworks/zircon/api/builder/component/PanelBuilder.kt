@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultPanel
 import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 
 @ZirconDsl
-class PanelBuilder : BaseContainerBuilder<Panel>(
+public class PanelBuilder : BaseContainerBuilder<Panel>(
     initialRenderer = DefaultPanelRenderer()
 ) {
 
@@ -34,7 +34,7 @@ class PanelBuilder : BaseContainerBuilder<Panel>(
 /**
  * Creates a new [Panel] using the component builder DSL and returns it.
  */
-fun panel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
+public fun panel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
     .apply(init)
     .build()
 
@@ -42,6 +42,6 @@ fun panel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
  * Creates a new [Panel] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Panel].
  */
-fun <T : BaseContainerBuilder<*>> T.panel(
+public fun <T : BaseContainerBuilder<*>> T.panel(
     init: PanelBuilder.() -> Unit
 ): Panel = buildChildFor(this, PanelBuilder(), init)

@@ -6,13 +6,13 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.data.extensions.fetchPositions
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.event.ZirconEvent.HideCursor
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestCursorAt
 
-class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
+public class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultTextArea>) {
         val (component, _, style) = context

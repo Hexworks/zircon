@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.graphics.StyleSet
 
 
-data class ComponentDecorationRenderContext(
+public data class ComponentDecorationRenderContext(
     val component: Component
 ) : RenderContext {
 

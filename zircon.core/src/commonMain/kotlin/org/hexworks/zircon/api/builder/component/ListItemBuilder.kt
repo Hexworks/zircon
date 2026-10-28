@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultListItem
 import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
 
 @ZirconDsl
-class ListItemBuilder : ComponentWithTextBuilder<ListItem>(
+public class ListItemBuilder : ComponentWithTextBuilder<ListItem>(
     initialRenderer = DefaultListItemRenderer(),
     initialText = "",
     reservedSpace = 2
@@ -27,13 +27,13 @@ class ListItemBuilder : ComponentWithTextBuilder<ListItem>(
 /**
  * Creates a new [ListItem] using the component builder DSL and returns it.
  */
-fun listItem(init: ListItemBuilder.() -> Unit): ListItem =
+public fun listItem(init: ListItemBuilder.() -> Unit): ListItem =
     ListItemBuilder().apply(init).build()
 
 /**
  * Creates a new [ListItem] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [ListItem].
  */
-fun <T : BaseContainerBuilder<*>> T.listItem(
+public fun <T : BaseContainerBuilder<*>> T.listItem(
     init: ListItemBuilder.() -> Unit
 ): ListItem = buildChildFor(this, ListItemBuilder(), init)

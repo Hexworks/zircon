@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.resource
 
+import org.hexworks.zircon.api.resource.TilesetResource.Companion.UNKNOWN
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.behavior.Identifiable
 import org.hexworks.zircon.api.data.Size
@@ -11,22 +12,22 @@ import org.hexworks.zircon.api.data.TileType
  * It is used by Zircon internally to be able to tell whether the currently chosen tileset
  * is compatible with another and to determine the dimensions of the tileset.
  */
-interface TilesetResource : Identifiable, Resource {
+public interface TilesetResource : Identifiable, Resource {
 
-    val tileType: TileType
-    val tilesetType: TilesetType
+    public val tileType: TileType
+    public val tilesetType: TilesetType
 
-    val width: Int
-    val height: Int
+    public val width: Int
+    public val height: Int
 
-    val size: Size
+    public val size: Size
         get() = Size(width, height)
 
     /**
      * A [TilesetResource] is compatible with another if they have
      * the same size.
      */
-    infix fun isCompatibleWith(other: TilesetResource): Boolean {
+    public infix fun isCompatibleWith(other: TilesetResource): Boolean {
         return if (other.isUnknown || isUnknown) true else {
             other.tileType == tileType &&
                     other.width == width &&
@@ -37,25 +38,25 @@ interface TilesetResource : Identifiable, Resource {
     /**
      * This function will throw an exception if [other] is not compatible with this tileset.
      */
-    fun checkCompatibilityWith(other: TilesetResource) {
+    public fun checkCompatibilityWith(other: TilesetResource) {
         require(isCompatibleWith(other)) {
             "The supplied tileset: $other is not compatible with this: $this."
         }
     }
 
-    val isUnknown: Boolean
+    public val isUnknown: Boolean
         get() = this === UNKNOWN
 
-    val isNotUnknown: Boolean
+    public val isNotUnknown: Boolean
         get() = isUnknown.not()
 
-    companion object {
+    public companion object {
 
         /**
          * The UNKNOWN tileset resource is an implementation of the
          * [Null Object Pattern](https://en.wikipedia.org/wiki/Null_object_pattern).
          */
-        object UNKNOWN : TilesetResource {
+        public object UNKNOWN : TilesetResource {
             override val tileType: TileType
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val tilesetType: TilesetType
@@ -71,9 +72,9 @@ interface TilesetResource : Identifiable, Resource {
             override val id: UUID
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
 
-            override fun toString() = "UNKNOWN"
+            override fun toString(): String = "UNKNOWN"
         }
 
-        fun unknown() = UNKNOWN
+        public fun unknown(): UNKNOWN = UNKNOWN
     }
 }

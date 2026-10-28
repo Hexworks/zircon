@@ -20,13 +20,13 @@ import org.hexworks.zircon.internal.component.modal.EmptyModalResult
  * [Screen]s also implement the [ComponentContainer] interface which means that if you want
  * to use [Component]s you'll have to use [Screen]s.
  */
-interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
+public interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
 
     /**
      * Moves the contents of this [Screen] to the underlying [TileGrid],
      * effectively displaying them on the user's screen.
      */
-    fun display()
+    public fun display()
 
     /**
      * Opens a new [Modal] window on top of the [Screen]. A modal window blocks access
@@ -34,7 +34,7 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
      * the modal window is closed. A [Modal] returns an arbitrary [ModalResult].
      * If you don't want to return anything from a [Modal] use [EmptyModalResult].
      */
-    fun <T : ModalResult> openModal(modal: Modal<T>)
+    public fun <T : ModalResult> openModal(modal: Modal<T>)
 
     /**
      * Opens a new [Modal] window on top of the [Screen] using the given
@@ -43,7 +43,7 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
      * @see ModalFragment
      * @see Screen.openModal
      */
-    fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) =
+    public fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>): Unit =
         openModal(modalFragment.root)
 
 }

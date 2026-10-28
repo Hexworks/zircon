@@ -4,10 +4,10 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
 
-operator fun Size3D.plus(other: Size3D) =
+public operator fun Size3D.plus(other: Size3D): Size3D =
     Size3D(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 
-operator fun Size3D.minus(other: Size3D) =
+public operator fun Size3D.minus(other: Size3D): Size3D =
     Size3D(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
 
 
@@ -18,7 +18,7 @@ operator fun Size3D.minus(other: Size3D) =
  * - from furthest to closest (y-axis),
  * - from left to right (x-axis)
  */
-fun Size3D.fetchPositions(): Sequence<Position3D> {
+public fun Size3D.fetchPositions(): Sequence<Position3D> {
     return sequence {
         (0 until zLength).flatMap { z ->
             (0 until yLength).flatMap { y ->
@@ -33,7 +33,7 @@ fun Size3D.fetchPositions(): Sequence<Position3D> {
 /**
  * Tells whether this [Size3D] contains the given [Position3D].
  */
-fun Size3D.containsPosition(position: Position3D): Boolean {
+public fun Size3D.containsPosition(position: Position3D): Boolean {
     val (x, y, z) = position
     return x in 0 until xLength && yLength > y && y >= 0 && zLength > z && z >= 0
 }
@@ -42,6 +42,6 @@ fun Size3D.containsPosition(position: Position3D): Boolean {
  * Transforms this [Size3D] to a [Size]. Note that
  * the `zLength` component is lost during the conversion!
  */
-fun Size3D.to2DSize() = Size(xLength, yLength)
+public fun Size3D.to2DSize(): Size = Size(xLength, yLength)
 
 

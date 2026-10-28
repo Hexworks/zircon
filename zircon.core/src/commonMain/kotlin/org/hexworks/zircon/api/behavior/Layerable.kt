@@ -14,39 +14,39 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * [Layerable] also implements [Clearable]. In this context [clear] can be used to remove
  * all layers.
  */
-interface Layerable {
+public interface Layerable {
 
-    val layers: ObservableList<out Layer>
+    public val layers: ObservableList<out Layer>
 
     /**
      * The area this [Layerable] covers. This means that the maximum size for a [Layer] this
      * [Layerable] accepts is [Layerable.size] - [Layer.position] + [Layer.size]
      */
-    val size: Size
-    val bounds: Boundable
+    public val size: Size
+    public val bounds: Boundable
 
     /**
      * Returns the [Layer] at the given [level] (if present).
      */
-    fun getLayerAtOrNull(level: Int): LayerHandle?
+    public fun getLayerAtOrNull(level: Int): LayerHandle?
 
     /**
      * Adds a layer on top of the currently present layers.
      */
-    fun addLayer(layer: Layer): LayerHandle
+    public fun addLayer(layer: Layer): LayerHandle
 
     /**
      * Inserts the given [Layer] into this [Layerable] at the given [level].
      */
-    fun insertLayerAt(level: Int, layer: Layer): LayerHandle
+    public fun insertLayerAt(level: Int, layer: Layer): LayerHandle
 
     /**
      * Sets the given [Layer] in this [Layerable] at the given [level].
      */
     //! TODO: what happens when setting at the wrong level (negative or out of bounds)?
-    fun setLayerAt(level: Int, layer: Layer): LayerHandle
+    public fun setLayerAt(level: Int, layer: Layer): LayerHandle
 
-    companion object {
+    public companion object {
 
         internal const val WRONG_LAYER_TYPE_MSG =
             "The supplied Layer does not implement required interface: InternalLayer."

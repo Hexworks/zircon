@@ -14,7 +14,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 
 @ZirconDsl
-class HorizontalTabBarBuilder(
+public class HorizontalTabBarBuilder(
     size: Size = Size.UNKNOWN,
     defaultSelected: String? = null,
     tabs: List<TabBuilder> = listOf(),
@@ -26,11 +26,11 @@ class HorizontalTabBarBuilder(
     position = position
 ), FragmentBuilder<TabBar> {
 
-    fun HorizontalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
+    public fun HorizontalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
         tabs = tabs + TabBuilder().apply(init)
     }
 
-    val contentSize: Size
+    public val contentSize: Size
         get() = size.withRelativeHeight(-3)
 
 
@@ -52,7 +52,7 @@ class HorizontalTabBarBuilder(
  * Creates a new [TabBar] using the fragment builder DSL and returns it.
  */
 
-fun horizontalTabBar(
+public fun horizontalTabBar(
     init: HorizontalTabBarBuilder.() -> Unit
 ): TabBar = HorizontalTabBarBuilder().apply(init).build()
 
@@ -61,6 +61,6 @@ fun horizontalTabBar(
  * receiver [BaseContainerBuilder] it and returns the [TabBar].
  */
 
-fun AnyContainerBuilder.horizontalTabBar(
+public fun AnyContainerBuilder.horizontalTabBar(
     init: HorizontalTabBarBuilder.() -> Unit
 ): TabBar = buildFragmentFor(this, HorizontalTabBarBuilder(), init)

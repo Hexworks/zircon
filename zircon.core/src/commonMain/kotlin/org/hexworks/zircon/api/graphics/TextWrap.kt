@@ -4,7 +4,7 @@ package org.hexworks.zircon.api.graphics
  * Represents the possible word wrapping options for
  * [CharacterTileString]s.
  */
-enum class TextWrap {
+public enum class TextWrap {
     NO_WRAPPING,
 
     /**

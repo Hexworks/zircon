@@ -3,9 +3,9 @@ package org.hexworks.zircon.api.shape
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.shape.DefaultShape
 
-object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
+public object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
 
-    override fun createShape(shapeParameters: TriangleParameters) = shapeParameters.let { (p1, p2, p3) ->
+    override fun createShape(shapeParameters: TriangleParameters): Shape = shapeParameters.let { (p1, p2, p3) ->
 
         // The algorithm described here is used
         // http://www-users.mat.uni.torun.pl/~wrona/3d_tutor/tri_fillers.html
@@ -88,7 +88,7 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
-    fun buildFilledTriangle(params: TriangleParameters) = createShape(params)
+    public fun buildFilledTriangle(params: TriangleParameters): Shape = createShape(params)
 
     /**
      * Creates the points for a filled triangle. The triangle will be delimited by
@@ -97,9 +97,9 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
      * *Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
-    fun buildFilledTriangle(
+    public fun buildFilledTriangle(
         p1: Position,
         p2: Position,
         p3: Position
-    ) = buildFilledTriangle(TriangleParameters(p1, p2, p3))
+    ): Shape = buildFilledTriangle(TriangleParameters(p1, p2, p3))
 }

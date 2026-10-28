@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
-object DeleteBeforeCursor : Transformation {
+public object DeleteBeforeCursor : Transformation {
 
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState

@@ -19,17 +19,17 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
 
 
 @ZirconDsl
-class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
+public class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 
     override var position: Position = Position.ZERO
 
-    var screen: Screen? = null
-    var menuElements: List<DropdownMenu<T>> = listOf()
-    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var width: Int = -1
-    var spacing: Int = 1
-    var onMenuItemSelected: ((menuSelection: MenuSelection<T>) -> CallbackResult)? = null
+    public var screen: Screen? = null
+    public var menuElements: List<DropdownMenu<T>> = listOf()
+    public var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var width: Int = -1
+    public var spacing: Int = 1
+    public var onMenuItemSelected: ((menuSelection: MenuSelection<T>) -> CallbackResult)? = null
 
     override fun build(): MenuBar<T> {
         require(menuElements.isNotEmpty()) {
@@ -66,7 +66,7 @@ class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 /**
  * Creates a new [MenuBar] using the fragment builder DSL and returns it.
  */
-fun <T : Any> menuBar(
+public fun <T : Any> menuBar(
     init: MenuBarBuilder<T>.() -> Unit
 ): MenuBar<T> = MenuBarBuilder<T>().apply(init).build()
 
@@ -75,19 +75,19 @@ fun <T : Any> menuBar(
  * receiver [BaseContainerBuilder] it and returns the [MenuBar].
  */
 
-fun <T : Any> AnyContainerBuilder.menuBar(
+public fun <T : Any> AnyContainerBuilder.menuBar(
     init: MenuBarBuilder<T>.() -> Unit
 ): MenuBar<T> = buildFragmentFor(this, MenuBarBuilder(), init)
 
 
-fun <T : Any> MenuBarBuilder<T>.dropdownMenu(init: DropdownMenuBuilder<T>.() -> Unit) {
+public fun <T : Any> MenuBarBuilder<T>.dropdownMenu(init: DropdownMenuBuilder<T>.() -> Unit) {
     val builder = DropdownMenuBuilder<T>()
     init(builder)
     this.menuElements = menuElements + builder.build()
 }
 
 
-fun <T : Any> DropdownMenuBuilder<T>.menuItem(init: DropdownMenuItemBuilder<T>.() -> Unit) {
+public fun <T : Any> DropdownMenuBuilder<T>.menuItem(init: DropdownMenuItemBuilder<T>.() -> Unit) {
     val builder = DropdownMenuItemBuilder<T>()
     init(builder)
     children = children + builder.build()

@@ -4,10 +4,10 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
 
-class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumberInput> {
+public class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumberInput> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultVerticalNumberInput>) {
         val component = context.component

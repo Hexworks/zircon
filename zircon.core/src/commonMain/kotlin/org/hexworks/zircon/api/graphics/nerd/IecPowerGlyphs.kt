@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class IecPowerGlyphs(
-    val glyph: Char,
+public enum class IecPowerGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

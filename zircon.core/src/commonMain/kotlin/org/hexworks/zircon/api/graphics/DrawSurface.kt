@@ -15,14 +15,14 @@ import org.hexworks.zircon.api.data.Tile
  * - [clear]
  * A [DrawSurface] also has its own [tileset].
  */
-interface DrawSurface : Clearable, TileComposite, TilesetOverride {
+public interface DrawSurface : Clearable, TileComposite, TilesetOverride {
 
     /**
      * Draws the given [Tile] on this [DrawSurface] at the given [drawPosition].
      * Drawing the empty tile ([Tile.empty]) will result in the deletion of the
      * [Tile] at [drawPosition].
      */
-    fun draw(
+    public fun draw(
         tile: Tile,
         drawPosition: Position
     )
@@ -39,7 +39,7 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      *                 and [drawArea] is (2,2) the following positions will be overwritten:
      *                 [(1,1), (2,1), (1,2), (2,2)]
      */
-    fun draw(
+    public fun draw(
         tileMap: Map<Position, Tile>,
         drawPosition: Position,
         drawArea: Size
@@ -51,6 +51,6 @@ interface DrawSurface : Clearable, TileComposite, TilesetOverride {
      * [transformer] and overwrites them with the results of calling
      * [transformer].
      */
-    fun transform(transformer: (Position, Tile) -> Tile)
+    public fun transform(transformer: (Position, Tile) -> Tile)
 
 }

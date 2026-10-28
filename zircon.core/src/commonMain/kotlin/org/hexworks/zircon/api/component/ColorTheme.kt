@@ -23,46 +23,46 @@ import org.hexworks.zircon.api.component.data.ComponentState
  * @see ComponentState and
  * @see ComponentStyleSet for more info
  */
-interface ColorTheme {
+public interface ColorTheme {
 
     /**
      * A unique name for this [ColorTheme].
      */
-    val name: String
+    public val name: String
 
     /**
      * This color is typically used for the text of non-interactive components
      * that have emphasis on them (like [Header]s).
      */
-    val primaryForegroundColor: Color
+    public val primaryForegroundColor: Color
 
     /**
      * This color is typically used for the text of non-interactive components
      * that don't have emphasis on them (like [Paragraph]s).
      */
-    val secondaryForegroundColor: Color
+    public val secondaryForegroundColor: Color
 
     /**
      * This color is typically used for the background of [Container]s.
      */
-    val primaryBackgroundColor: Color
+    public val primaryBackgroundColor: Color
 
     /**
      * This color is typically used for the root container.
      */
-    val secondaryBackgroundColor: Color
+    public val secondaryBackgroundColor: Color
 
     /**
      * This color is typically used for the text and decorations of interactive components.
      */
-    val accentColor: Color
+    public val accentColor: Color
 
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default
      * for interactive components (eg: [Button]s, [ToggleButton]s and so on).
      */
-    fun toInteractiveStyle(): ComponentStyleSet = componentStyleSet {
+    public fun toInteractiveStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = accentColor
             backgroundColor = Color.TRANSPARENT
@@ -89,7 +89,7 @@ interface ColorTheme {
      * Creates a [ComponentStyleSet] which is intended to be used as a default
      * for containers (eg: [Panel]s, [HBox]es, [VBox]es.
      */
-    fun toContainerStyle(): ComponentStyleSet = componentStyleSet {
+    public fun toContainerStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = secondaryForegroundColor
             backgroundColor = primaryBackgroundColor
@@ -104,7 +104,7 @@ interface ColorTheme {
      * Creates a [ComponentStyleSet] which is intended to be used as a default
      * for emphasized content (eg: [Header]s).
      */
-    fun toPrimaryContentStyle(): ComponentStyleSet = componentStyleSet {
+    public fun toPrimaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = primaryForegroundColor
             backgroundColor = Color.TRANSPARENT
@@ -119,7 +119,7 @@ interface ColorTheme {
      * Creates a [ComponentStyleSet] which is intended to be used as a default
      * for non-emphasized content (eg: [Label]s, [Paragraph]s, and so on).
      */
-    fun toSecondaryContentStyle(): ComponentStyleSet = componentStyleSet {
+    public fun toSecondaryContentStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = secondaryForegroundColor
             backgroundColor = Color.TRANSPARENT
@@ -130,9 +130,9 @@ interface ColorTheme {
         }
     }
 
-    companion object {
+    public companion object {
 
-        val UNKNOWN = colorTheme {
+        public val UNKNOWN: ColorTheme = colorTheme {
             name = "unknown"
         }
     }

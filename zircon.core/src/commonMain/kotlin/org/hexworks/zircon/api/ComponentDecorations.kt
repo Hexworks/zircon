@@ -12,14 +12,14 @@ import org.hexworks.zircon.internal.component.renderer.decoration.*
 /**
  * This object contains functions for creating component decorations.
  */
-object ComponentDecorations {
+public object ComponentDecorations {
 
     /**
      * Can be used to draw a box (using box drawing characters) around a [Component].
      * **Note that** the [title] will only be displayed for a [Component] if it is wrapped
      * with a box. This decoration uses [RenderingMode.NON_INTERACTIVE] by default.
      */
-    fun box(
+    public fun box(
         boxType: BoxType = BoxType.SINGLE,
         title: String = "",
         renderingMode: RenderingMode = NON_INTERACTIVE,
@@ -36,7 +36,7 @@ object ComponentDecorations {
      * [leftSideCharacter] and [rightSideCharacter]. This decoration will use
      * [RenderingMode.INTERACTIVE] by default.
      */
-    fun side(
+    public fun side(
         leftSideCharacter: Char = '[',
         rightSideCharacter: Char = ']',
         renderingMode: RenderingMode = RenderingMode.INTERACTIVE
@@ -50,14 +50,14 @@ object ComponentDecorations {
      * Can be used to draw a shadow around a [Component]. The shadow is drawn
      * around the bottom and the right sides.
      */
-    fun shadow(): ComponentDecorationRenderer = ShadowDecorationRenderer()
+    public fun shadow(): ComponentDecorationRenderer = ShadowDecorationRenderer()
 
     /**
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      * @param value the margin to add to all sides (top, right, bottom and left)
      */
 
-    fun margin(
+    public fun margin(
         value: Int
     ): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = value,
@@ -70,7 +70,7 @@ object ComponentDecorations {
      * Can be used to add margin to a [Component]. Padding is measured in tiles.
      */
 
-    fun margin(
+    public fun margin(
         top: Int,
         right: Int,
         bottom: Int,
@@ -88,7 +88,7 @@ object ComponentDecorations {
      * @param y vertical margin (top and bottom)
      */
 
-    fun margin(
+    public fun margin(
         y: Int,
         x: Int
     ): ComponentDecorationRenderer = MarginDecorationRenderer(
@@ -103,7 +103,7 @@ object ComponentDecorations {
      * when a [Component] has decorations by default.
      */
 
-    fun noDecoration(): ComponentDecorationRenderer = MarginDecorationRenderer(
+    public fun noDecoration(): ComponentDecorationRenderer = MarginDecorationRenderer(
         top = 0,
         right = 0,
         bottom = 0,

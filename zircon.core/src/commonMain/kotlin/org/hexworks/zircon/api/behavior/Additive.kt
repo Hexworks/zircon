@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.behavior
 
-interface Additive<T> {
-    operator fun plus(other: T): T
-    operator fun minus(other: T): T
+public interface Additive<T> {
+    public operator fun plus(other: T): T
+    public operator fun minus(other: T): T
 }

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe

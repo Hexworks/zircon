@@ -6,18 +6,18 @@ import org.hexworks.zircon.api.resource.TilesetType
 import kotlin.reflect.KClass
 
 // TODO: document this
-interface TilesetFactory<S : Any> {
+public interface TilesetFactory<S : Any> {
 
     /**
      * The type of the surface the textures are drawn upon.
      */
-    val targetType: KClass<S>
+    public val targetType: KClass<S>
 
-    val supportedTileType: TileType
-    val supportedTilesetType: TilesetType
+    public val supportedTileType: TileType
+    public val supportedTilesetType: TilesetType
 
     /**
      * Creates a [Tileset] for the given [TilesetResource].
      */
-    fun create(resource: TilesetResource): Tileset<S>
+    public fun create(resource: TilesetResource): Tileset<S>
 }

@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-class VerticalSliderBuilder :
+public class VerticalSliderBuilder :
     SliderBuilder<Slider>(VerticalSliderRenderer()) {
 
     override var numberOfSteps: Int = 10
@@ -40,13 +40,13 @@ class VerticalSliderBuilder :
 /**
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
-fun verticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
+public fun verticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
     VerticalSliderBuilder().apply(init).build()
 
 /**
  * Creates a new [Slider] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Slider].
  */
-fun <T : BaseContainerBuilder<*>> T.verticalSlider(
+public fun <T : BaseContainerBuilder<*>> T.verticalSlider(
     init: VerticalSliderBuilder.() -> Unit
 ): Slider = buildChildFor(this, VerticalSliderBuilder(), init)

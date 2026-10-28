@@ -8,16 +8,16 @@ import org.hexworks.zircon.api.data.Tile
  * **Note that** this is an ephemeral change and won't modify any persistent state.
  */
 //! TODO: implement tile modifier states and modifier chaining
-interface TileModifier<T : Tile> : Modifier {
+public interface TileModifier<T : Tile> : Modifier {
 
     /**
      * Transforms the given [Tile] and returns the result.
      */
-    fun transform(tile: T): T
+    public fun transform(tile: T): T
 
     /**
      * Tells whether the given `tile` can be transformed by
      * this modifier or not.
      */
-    fun canTransform(tile: Tile): Boolean = false
+    public fun canTransform(tile: Tile): Boolean = false
 }

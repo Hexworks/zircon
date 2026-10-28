@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 /**
  * Strategy for applying decorations and rendering [org.hexworks.zircon.api.component.Component]s.
  * The typical steps for rendering are:
- * - Creating a [org.hexworks.zircon.api.graphics.impl.DrawWindow] over the
+ * - Creating a [org.hexworks.zircon.api.graphics.DrawWindow] over the
  *   [org.hexworks.zircon.api.graphics.DrawSurface] of the component.
  * - Applying decorations by using [DecorationRenderer]s.
  * - Applying post-processing by using [ComponentPostProcessor]s.
@@ -21,7 +21,7 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * remove decorations. This was a deliberate decision to ensure that the rendering process
  * is predictable and consistent.
  */
-interface ComponentRenderingStrategy<T : Component> {
+public interface ComponentRenderingStrategy<T : Component> {
 
     /**
      * The [Position] where the content of the rendered [Component] starts
@@ -29,17 +29,17 @@ interface ComponentRenderingStrategy<T : Component> {
      * the content position is the sum of the offset positions for each
      * decoration.
      */
-    val contentPosition: Position
+    public val contentPosition: Position
 
     /**
      * Renders the given [component] onto the given [graphics].
      */
-    fun render(component: T, graphics: TileGraphics)
+    public fun render(component: T, graphics: TileGraphics)
 
     /**
      * Calculates the [Size] of the content area of the [Component] which is
      * rendered. In other words, the content size is the total size of
      * the component minus the size of the decorations.
      */
-    fun calculateContentSize(componentSize: Size): Size
+    public fun calculateContentSize(componentSize: Size): Size
 }

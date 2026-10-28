@@ -24,7 +24,7 @@ import kotlin.contracts.contract
  * This implementation of [UIEventDispatcher] dispatches [UIEvent]s
  * to [Component]s.
  */
-class UIEventToComponentDispatcher(
+public class UIEventToComponentDispatcher(
     private val root: RootContainer,
     private val focusOrderList: ComponentFocusOrderList
 ) : UIEventDispatcher {
@@ -186,7 +186,7 @@ class UIEventToComponentDispatcher(
      *   trying the default actions.
      */
     @ExperimentalContracts
-    fun executePhase(
+    public fun executePhase(
         component: InternalComponent,
         event: UIEvent,
         phase: UIEventPhase,
@@ -284,7 +284,7 @@ class UIEventToComponentDispatcher(
         return result
     }
 
-    companion object {
+    public companion object {
 
         internal val logger = LoggerFactory.getLogger(UIEventToComponentDispatcher::class)
 

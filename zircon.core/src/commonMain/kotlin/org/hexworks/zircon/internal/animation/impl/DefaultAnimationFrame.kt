@@ -47,5 +47,4 @@ internal data class DefaultAnimationFrame(
         }
     }
 
-    override fun asInternal() = this
 }

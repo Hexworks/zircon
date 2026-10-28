@@ -22,13 +22,13 @@ import kotlin.require
 
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
-class ModalBuilder<T : ModalResult> :
+public class ModalBuilder<T : ModalResult> :
     BaseComponentBuilder<Modal<T>>(DefaultModalRenderer()) {
 
-    var darkenPercent: Double = 0.0
-    var centeredDialog: Boolean = false
-    var contentComponent: Component? = null
-    var onClosed: (T) -> Unit = {}
+    public var darkenPercent: Double = 0.0
+    public var centeredDialog: Boolean = false
+    public var contentComponent: Component? = null
+    public var onClosed: (T) -> Unit = {}
 
     private var shouldCloseWith: T? = null
 
@@ -80,21 +80,21 @@ class ModalBuilder<T : ModalResult> :
 /**
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
-fun <T : ModalResult> modal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
+public fun <T : ModalResult> modal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
     ModalBuilder<T>().apply(init).build()
 
 /**
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
 @JvmName("buildModalWithNoResult")
-fun modal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModalResult> =
+public fun modal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModalResult> =
     ModalBuilder<EmptyModalResult>().apply(init).build()
 
 /**
  * Creates a new [Modal] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Modal].
  */
-fun <T : BaseContainerBuilder<*>, M : ModalResult> T.modal(
+public fun <T : BaseContainerBuilder<*>, M : ModalResult> T.modal(
     init: ModalBuilder<M>.() -> Unit
 ): Modal<M> = buildChildFor(this, ModalBuilder(), init)
 
@@ -103,6 +103,6 @@ fun <T : BaseContainerBuilder<*>, M : ModalResult> T.modal(
  * adds it to the receiver [BaseContainerBuilder] it and returns the [Modal].
  */
 @JvmName("modalWithNoResult")
-fun <T : BaseContainerBuilder<*>> T.modal(
+public fun <T : BaseContainerBuilder<*>> T.modal(
     init: ModalBuilder<EmptyModalResult>.() -> Unit
 ): Modal<EmptyModalResult> = buildChildFor(this, ModalBuilder(), init)

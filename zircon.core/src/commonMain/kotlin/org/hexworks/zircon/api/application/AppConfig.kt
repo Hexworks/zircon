@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
 /**
  * Object that encapsulates the configuration parameters for an [Application].
  */
-data class AppConfig(
+public data class AppConfig(
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).
@@ -108,7 +108,7 @@ data class AppConfig(
      * Tells whether bounds check should be performed or not.
      * This depends on the various debug mode configurations.
      */
-    fun shouldCheckBounds() = !debugMode || !debugConfig.relaxBoundsCheck
+    public fun shouldCheckBounds(): Boolean = !debugMode || !debugConfig.relaxBoundsCheck
 
     /**
      * Retrieves a custom property set earlier using [AppConfigBuilder.customProperties]. If this property was
@@ -116,7 +116,7 @@ data class AppConfig(
      *
      * **Note that** you probably don't need to call this API.
      */
-    fun <T : Any> getOrNull(key: AppConfigKey<T>): T? {
+    public fun <T : Any> getOrNull(key: AppConfigKey<T>): T? {
         val value: Any? = customProperties[key]
         // This is actually a safe cast because of the way `withProperty` is defined.
         @Suppress("UNCHECKED_CAST")
@@ -129,13 +129,13 @@ data class AppConfig(
      *
      * **Note that** you probably don't need to call this API.
      */
-    fun <T : Any> getOrElse(key: AppConfigKey<T>, orElse: (key: AppConfigKey<T>) -> T): T {
+    public fun <T : Any> getOrElse(key: AppConfigKey<T>, orElse: (key: AppConfigKey<T>) -> T): T {
         return getOrNull(key) ?: orElse(key)
     }
 
-    companion object {
+    public companion object {
 
-        fun defaultAppConfig() = AppConfigBuilder().build()
+        public fun defaultAppConfig(): AppConfig = AppConfigBuilder().build()
 
     }
 }
@@ -143,17 +143,17 @@ data class AppConfig(
 /**
  * Creates a new [AppConfig] using the builder DSL and returns it.
  */
-fun appConfig(init: AppConfigBuilder.() -> Unit = {}): AppConfig =
+public fun appConfig(init: AppConfigBuilder.() -> Unit = {}): AppConfig =
     AppConfigBuilder().apply(init).build()
 
 @JvmName("filterTilesetsByType")
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(type: KClass<T>): Map<Pair<TileType, TilesetType>, TilesetFactory<T>> {
+public fun <T : Any> Map<Pair<TileType, TilesetType>, TilesetFactory<*>>.filterByType(type: KClass<T>): Map<Pair<TileType, TilesetType>, TilesetFactory<T>> {
     return this.filterValues { it.targetType == type } as Map<Pair<TileType, TilesetType>, TilesetFactory<T>>
 }
 
 @JvmName("filterModifiersByType")
 @Suppress("UNCHECKED_CAST")
-fun <T : Any, C : Any> Map<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>.filterByType(type: KClass<T>): Map<KClass<out TextureModifier>, TextureModifierStrategy<T, C>> {
+public fun <T : Any, C : Any> Map<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>.filterByType(type: KClass<T>): Map<KClass<out TextureModifier>, TextureModifierStrategy<T, C>> {
     return this.filterValues { it.targetType == type } as Map<KClass<out TextureModifier>, TextureModifierStrategy<T, C>>
 }

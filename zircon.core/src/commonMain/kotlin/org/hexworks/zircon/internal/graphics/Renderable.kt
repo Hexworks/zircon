@@ -12,16 +12,16 @@ import org.hexworks.zircon.api.graphics.DrawSurface
  * [Renderable]s are mainly used in the [org.hexworks.zircon.api.component.Component] and
  * [org.hexworks.zircon.api.graphics.Layer] abstractions so their main purpose is not writing but reading.
  */
-interface Renderable : Boundable, CanBeHidden, TilesetOverride {
+public interface Renderable : Boundable, CanBeHidden, TilesetOverride {
 
     /**
      * Renders this [Renderable] to a [TileGraphics].
      */
-    fun render(): TileGraphics
+    public fun render(): TileGraphics
 
     /**
      * Renders this [Renderable] on top of the given [graphics].
      */
-    fun render(graphics: TileGraphics)
+    public fun render(graphics: TileGraphics)
 
 }

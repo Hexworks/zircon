@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.Binding
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -11,7 +12,7 @@ import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
 import org.hexworks.zircon.internal.extensions.disposeAll
 
-class DefaultGroup<T : Component> internal constructor(
+public class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,
@@ -21,10 +22,10 @@ class DefaultGroup<T : Component> internal constructor(
 
     private val componentBindings: ComponentBindings = mutableMapOf()
 
-    override val disabledProperty = initialIsDisabled.toProperty()
-    override val hiddenProperty = initialIsHidden.toProperty()
-    override val themeProperty = initialTheme.toProperty()
-    override val tilesetProperty = initialTileset.toProperty(validator = { oldValue, newValue ->
+    override val disabledProperty: Property<Boolean> = initialIsDisabled.toProperty()
+    override val hiddenProperty: Property<Boolean> = initialIsHidden.toProperty()
+    override val themeProperty: Property<ColorTheme> = initialTheme.toProperty()
+    override val tilesetProperty: Property<TilesetResource> = initialTileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
     })
 
@@ -49,7 +50,7 @@ class DefaultGroup<T : Component> internal constructor(
         }
     }
 
-    override fun addComponents(vararg components: T) = components.map(::addComponent)
+    override fun addComponents(vararg components: T): List<AttachedComponent> = components.map(::addComponent)
 
     override fun removeComponent(component: Component) {
         componentBindings.remove(component)

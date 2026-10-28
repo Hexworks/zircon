@@ -7,11 +7,11 @@ import org.hexworks.zircon.api.uievent.*
  * by long-lived objects. See [KeyboardEventType]. This class is part of the internal
  * API so don't call any of these methods, it is the library's job to do so.
  */
-interface KeyboardEventAdapter {
+public interface KeyboardEventAdapter {
 
-    fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
+    public fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
 
-    fun keyTyped(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
+    public fun keyTyped(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
 
-    fun keyReleased(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
+    public fun keyReleased(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = Pass
 }

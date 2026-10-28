@@ -5,4 +5,4 @@ import org.hexworks.cobalt.core.api.UUID
 /**
  * Abbreviates this [UUID].
  */
-fun UUID.abbreviate() = this.toString().subSequence(0, 4)
+public fun UUID.abbreviate(): CharSequence = this.toString().subSequence(0, 4)

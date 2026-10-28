@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTextOverride
 /**
  * Represents an object that holds (mutable) [text].
  */
-interface TextOverride : HasText {
+public interface TextOverride : HasText {
 
     /**
      * The (mutable) [text].
@@ -20,19 +20,19 @@ interface TextOverride : HasText {
      *
      * @see Property
      */
-    val textProperty: Property<String>
+    public val textProperty: Property<String>
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [TextOverride] with the default value of `""` for [text].
          */
-        fun create(initialText: String = ""): TextOverride = DefaultTextOverride(initialText.toProperty())
+        public fun create(initialText: String = ""): TextOverride = DefaultTextOverride(initialText.toProperty())
 
         /**
          * Creates a new [TextOverride] from a [Property].
          */
-        fun create(property: Property<String>): TextOverride = DefaultTextOverride(property)
+        public fun create(property: Property<String>): TextOverride = DefaultTextOverride(property)
     }
 
 }

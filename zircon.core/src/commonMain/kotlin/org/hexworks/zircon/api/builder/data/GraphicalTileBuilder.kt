@@ -15,12 +15,12 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
  * - Default tileset comes from the [RuntimeConfig]
  */
 @ZirconDsl
-class GraphicalTileBuilder : Builder<GraphicalTile> {
+public class GraphicalTileBuilder : Builder<GraphicalTile> {
 
-    var name: String = " "
-    var tags: Set<String> = setOf()
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var modifiers: Set<Modifier> = setOf()
+    public var name: String = " "
+    public var tags: Set<String> = setOf()
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var modifiers: Set<Modifier> = setOf()
 
     override fun build(): GraphicalTile {
         return GraphicalTile(
@@ -32,6 +32,6 @@ class GraphicalTileBuilder : Builder<GraphicalTile> {
     }
 }
 
-fun graphicalTile(init: GraphicalTileBuilder.() -> Unit): GraphicalTile {
+public fun graphicalTile(init: GraphicalTileBuilder.() -> Unit): GraphicalTile {
     return GraphicalTileBuilder().apply(init).build()
 }

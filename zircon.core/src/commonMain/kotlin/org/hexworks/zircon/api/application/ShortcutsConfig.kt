@@ -7,26 +7,26 @@ import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
  * These are the shortcuts that Zircon will use for component activation / deactivation
  * and focus handling (next / previous).
  */
-class ShortcutsConfig internal constructor(
+public class ShortcutsConfig internal constructor(
     /**
      * Default is `<Space>` press.
      */
-    val activateFocused: KeyboardEventMatcher,
+    public val activateFocused: KeyboardEventMatcher,
     /**
      * Default is `<Space>` release.
      */
-    val deactivateActivated: KeyboardEventMatcher,
+    public val deactivateActivated: KeyboardEventMatcher,
     /**
      * Default is `<Tab>` press.
      */
-    val focusNext: KeyboardEventMatcher,
+    public val focusNext: KeyboardEventMatcher,
     /**
      * Default is `<Shift>`+`<Tab>` press.
      */
-    val focusPrevious: KeyboardEventMatcher
+    public val focusPrevious: KeyboardEventMatcher
 ) {
-    companion object {
+    public companion object {
 
-        val DEFAULT_SHORTCUTS_CONFIG = ShortcutsConfigBuilder().build()
+        public val DEFAULT_SHORTCUTS_CONFIG: ShortcutsConfig = ShortcutsConfigBuilder().build()
     }
 }

@@ -6,10 +6,10 @@ import org.hexworks.zircon.api.fragment.menu.DropdownMenuItem
 
 
 @ZirconDsl
-class DropdownMenuItemBuilder<T : Any> : Builder<DropdownMenuItem<T>> {
+public class DropdownMenuItemBuilder<T : Any> : Builder<DropdownMenuItem<T>> {
 
-    var label: String = ""
-    var key: T? = null
+    public var label: String = ""
+    public var key: T? = null
 
     override fun build(): DropdownMenuItem<T> {
         require(label.isNotEmpty()) {

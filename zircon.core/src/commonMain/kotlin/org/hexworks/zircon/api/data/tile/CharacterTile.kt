@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class CharacterTile(
+public data class CharacterTile(
     val character: Char,
     override val styleSet: StyleSet = StyleSet.defaultStyle(),
 ) : Tile, StyleSet, HasStyle<CharacterTile> {
@@ -92,7 +92,7 @@ data class CharacterTile(
         }
     }
 
-    fun withCharacter(character: Char): CharacterTile {
+    public fun withCharacter(character: Char): CharacterTile {
         return if (this.character == character) {
             this
         } else {

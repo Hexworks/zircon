@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.palette.BasePalette
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 
-object Windows10ConsolePalette : BasePalette<ANSIColor>(
+public object Windows10ConsolePalette : BasePalette<ANSIColor>(
     BLACK to color(12, 12, 12),
     RED to color(197, 15, 31),
     GREEN to color(19, 161, 14),

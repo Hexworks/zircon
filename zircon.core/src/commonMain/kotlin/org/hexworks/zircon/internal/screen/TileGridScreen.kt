@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
@@ -28,7 +29,7 @@ import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
-class TileGridScreen(
+public class TileGridScreen(
     private val tileGrid: InternalTileGrid,
     private val componentContainer: ModalComponentContainer =
         buildComponentContainer(
@@ -68,12 +69,12 @@ class TileGridScreen(
     // yet, and we only need this to determine whether this Screen is the active
     // one or not, so a random id will do fine by default
     private var activeScreenId = UUID.randomUUID()
-    override val id = UUID.randomUUID()
+    override val id: UUID = UUID.randomUUID()
 
     private val notAlreadyDisplayed: Boolean
         get() = activeScreenId != id
 
-    val root = componentContainer.flattenedTree.first()
+    public val root: InternalComponent = componentContainer.flattenedTree.first()
 
     init {
         eventBus.simpleSubscribeTo(ScreenSwitch, eventScope) { (screenId) ->
@@ -86,7 +87,6 @@ class TileGridScreen(
         }.disposeWhen(closedProperty)
     }
 
-    override fun asInternal(): InternalScreen = this
 
     // note that events / event listeners on the screen itself are only handled
     // if the main container is active (otherwise a modal is open and they would
@@ -171,7 +171,7 @@ class TileGridScreen(
         activate()
     }
 
-    companion object {
+    public companion object {
 
         private val LOGGER = LoggerFactory.getLogger(TileGrid::class)
 

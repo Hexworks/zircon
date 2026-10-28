@@ -7,11 +7,11 @@ import org.hexworks.zircon.api.modifier.SimpleModifiers.Hidden
 /**
  * This object contains factory methods for the [Modifier]s supported by Zircon.
  */
-object Modifiers {
+public object Modifiers {
 
-    fun blink(): Modifier = Blink
+    public fun blink(): Modifier = Blink
 
-    fun hidden(): Modifier = Hidden
+    public fun hidden(): Modifier = Hidden
 
     /**
      * Provides a fade in effect for the tile that has this modifier.
@@ -20,7 +20,7 @@ object Modifiers {
      * @param timeMs the time (in milliseconds) the effect takes
      * when the effect finishes.
      */
-    fun fadeIn(
+    public fun fadeIn(
         steps: Int = 20,
         timeMs: Long = 2000,
     ): Modifier = FadeIn(steps, timeMs)
@@ -31,13 +31,13 @@ object Modifiers {
      * @param steps the number of frames for the fade effect
      * @param timeMs the time (in milliseconds) the effect takes
      */
-    fun fadeOut(
+    public fun fadeOut(
         steps: Int = 20,
         timeMs: Long = 2000
     ): Modifier = FadeOut(steps, timeMs)
 
     // TODO: move all of this into a builder
-    fun fadeInOut(
+    public fun fadeInOut(
         stepsFadeIn: Int = 20,
         timeMsFadeIn: Long = 2000,
         timeMsBeforeFadingOut: Long = 5000,
@@ -52,6 +52,6 @@ object Modifiers {
      * Keeps the tile that has this modifier hidden until [timeMs] milliseconds pass
      * after adding the tile to a grid.
      */
-    fun delay(timeMs: Long): Modifier = Delay(timeMs)
+    public fun delay(timeMs: Long): Modifier = Delay(timeMs)
 
 }

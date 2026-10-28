@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.color.Palette
  * @property entries the entries of this palette
  * Make sure that you pass a Map that contains all enum entries!
  */
-abstract class BasePalette<E : Enum<E>>(
+public abstract class BasePalette<E : Enum<E>>(
     vararg entries: Pair<E, Color>
 ) : Palette<E> {
     private val map = entries.toMap()
-    override val keys = map.keys
-    override val colors = map.values.toSet()
+    override val keys: Set<E> = map.keys
+    override val colors: Set<Color> = map.values.toSet()
 
-    override fun get(key: E) = map[key] ?: error("No color for key '$key' found!")
+    override fun get(key: E): Color = map[key] ?: error("No color for key '$key' found!")
 }

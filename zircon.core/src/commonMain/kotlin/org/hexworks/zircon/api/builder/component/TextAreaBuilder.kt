@@ -9,11 +9,11 @@ import org.hexworks.zircon.internal.component.impl.DefaultTextArea
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 
 @ZirconDsl
-class TextAreaBuilder : BaseComponentBuilder<TextArea>(
+public class TextAreaBuilder : BaseComponentBuilder<TextArea>(
     initialRenderer = DefaultTextAreaRenderer(),
 ) {
 
-    var text: String = ""
+    public var text: String = ""
 
     override fun build(): TextArea {
         return DefaultTextArea(
@@ -27,13 +27,13 @@ class TextAreaBuilder : BaseComponentBuilder<TextArea>(
 /**
  * Creates a new [TextArea] using the component builder DSL and returns it.
  */
-fun textArea(init: TextAreaBuilder.() -> Unit): TextArea =
+public fun textArea(init: TextAreaBuilder.() -> Unit): TextArea =
     TextAreaBuilder().apply(init).build()
 
 /**
  * Creates a new [TextArea] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [TextArea].
  */
-fun <T : BaseContainerBuilder<*>> T.textArea(
+public fun <T : BaseContainerBuilder<*>> T.textArea(
     init: TextAreaBuilder.() -> Unit
 ): TextArea = buildChildFor(this, TextAreaBuilder(), init)

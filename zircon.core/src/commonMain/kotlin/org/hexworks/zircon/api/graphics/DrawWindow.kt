@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.graphics.impl
+package org.hexworks.zircon.api.graphics
 
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.graphics.characterTileString
@@ -26,12 +26,12 @@ import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
  * will be visible in both.
  */
 //! TODO: move this to internal?
-class DrawWindow(
+public class DrawWindow(
     boundable: Boundable,
     private val backend: TileGraphics
 ) : TileComposite {
 
-    override val size = boundable.size
+    override val size: Size = boundable.size
     override val tiles: Map<Position, Tile>
         get() {
             val result = mutableMapOf<Position, Tile>()
@@ -75,35 +75,35 @@ class DrawWindow(
         return getTileAtOrNull(position) ?: orElse(position)
     }
 
-    fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
+    public fun draw(tileMap: Map<Position, Tile>, drawPosition: Position, drawArea: Size) {
         backend.draw(tileMap, drawPosition + offset, drawArea)
     }
 
-    fun draw(tile: Tile, drawPosition: Position = ZERO) {
+    public fun draw(tile: Tile, drawPosition: Position = ZERO) {
         backend.draw(tile, drawPosition + offset)
     }
 
-    fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
+    public fun draw(tileComposite: TileComposite, drawPosition: Position, drawArea: Size) {
         draw(tileComposite.tiles, drawPosition, drawArea)
     }
 
-    fun draw(tileComposite: TileComposite) {
+    public fun draw(tileComposite: TileComposite) {
         draw(tileComposite.tiles, Position.ZERO, size)
     }
 
-    fun draw(tileComposite: TileComposite, drawPosition: Position = ZERO) {
+    public fun draw(tileComposite: TileComposite, drawPosition: Position = ZERO) {
         draw(tileComposite.tiles, drawPosition, size)
     }
 
-    fun draw(tileMap: Map<Position, Tile>) {
+    public fun draw(tileMap: Map<Position, Tile>) {
         draw(tileMap, Position.ZERO, size)
     }
 
-    fun draw(tileMap: Map<Position, Tile>, drawPosition: Position = ZERO) {
+    public fun draw(tileMap: Map<Position, Tile>, drawPosition: Position = ZERO) {
         draw(tileMap, drawPosition, size)
     }
 
-    fun fill(filler: Tile) {
+    public fun fill(filler: Tile) {
         offsetPositions.forEach { pos ->
             val tile = backend.tiles[pos]
             if (tile == null || tile.isEmpty) {
@@ -112,7 +112,7 @@ class DrawWindow(
         }
     }
 
-    fun transform(transformer: (Position, Tile) -> Tile) {
+    public fun transform(transformer: (Position, Tile) -> Tile) {
         positions.forEach { pos ->
             backend.getTileAtOrNull(pos + offset)?.let { tile ->
                 draw(transformer(pos, tile), pos)
@@ -120,13 +120,13 @@ class DrawWindow(
         }
     }
 
-    fun applyStyle(styleSet: StyleSet) {
+    public fun applyStyle(styleSet: StyleSet) {
         transform { _, tile ->
             tile.withStyle(styleSet)
         }
     }
 
-    fun clear() {
+    public fun clear() {
         offsetPositions.forEach { pos ->
             backend.draw(Tile.empty(), pos)
         }
@@ -136,7 +136,7 @@ class DrawWindow(
      * Fills this [DrawWindow] with the given [text] and [style].
      * Overwrites any existing content.
      */
-    fun fillWithText(
+    public fun fillWithText(
         text: String,
         style: StyleSet,
         textWrap: TextWrap = TextWrap.WRAP
@@ -153,7 +153,7 @@ class DrawWindow(
         applyStyle(style)
     }
 
-    fun toDrawWindow(rect: Boundable) = backend.toDrawWindow(
+    public fun toDrawWindow(rect: Boundable): DrawWindow = backend.toDrawWindow(
         Boundable.create(
             position = offset + rect.position,
             size = size.min(rect.size)

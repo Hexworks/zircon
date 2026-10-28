@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.uievent
 
-data class KeyboardEvent(
+public data class KeyboardEvent(
     override val type: KeyboardEventType,
     val code: KeyCode,
     val key: String,

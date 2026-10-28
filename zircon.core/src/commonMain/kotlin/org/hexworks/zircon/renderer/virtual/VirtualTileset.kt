@@ -1,5 +1,6 @@
 package org.hexworks.zircon.renderer.virtual
 
+import kotlin.reflect.KClass
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
@@ -8,12 +9,12 @@ import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.tileset.TextureContext
 import org.hexworks.zircon.api.tileset.Tileset
 
-class VirtualTileset : Tileset<Char> {
+public class VirtualTileset : Tileset<Char> {
 
-    override val width = 16
-    override val height = 16
-    override val targetType = Char::class
-    override val id = UUID.randomUUID()
+    override val width: Int = 16
+    override val height: Int = 16
+    override val targetType: KClass<Char> = Char::class
+    override val id: UUID = UUID.randomUUID()
 
     override fun drawTile(tile: Tile, context: Char, position: Position) {
         fetchTextureForTile(tile)

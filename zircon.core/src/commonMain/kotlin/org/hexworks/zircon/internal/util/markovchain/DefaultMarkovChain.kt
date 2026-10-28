@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.util.markovchain
 import org.hexworks.zircon.api.util.markovchain.MarkovChain
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 
-class DefaultMarkovChain<T : Any> internal constructor(
+public class DefaultMarkovChain<T : Any> internal constructor(
     private val firstNode: MarkovChainNode<T>
 ) : MarkovChain<T> {
 

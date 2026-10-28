@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class IndentationGlyphs(
-    val glyph: Char,
+public enum class IndentationGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

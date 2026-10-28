@@ -6,4 +6,4 @@ import org.hexworks.zircon.api.data.Tile
 
 
 // TODO: document this
-interface GameComponent<T : Tile, B : Block<T>> : Component
+public interface GameComponent<T : Tile, B : Block<T>> : Component

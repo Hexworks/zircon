@@ -20,7 +20,7 @@ package org.hexworks.zircon.api.data
  *
  *</pre>
  */
-data class Position3D(
+public data class Position3D(
     val x: Int,
     val y: Int,
     val z: Int
@@ -53,7 +53,7 @@ data class Position3D(
      * so `Position3D(x = 1, y = 1, z = 1).plus(Position3D(x = 2, y = 2, z = 2))` will be
      * `Position3D(x = 3, y = 3, z = 3)`.
      */
-    operator fun plus(other: Position3D) = Position3D(
+    public operator fun plus(other: Position3D): Position3D = Position3D(
         x = this.x + other.x,
         y = this.y + other.y,
         z = this.z + other.z
@@ -64,26 +64,26 @@ data class Position3D(
      * so `Position3D(x = 3, y = 3, z = 3).minus(Position3D(x = 2, y = 2, z = 2))` will be
      * `Position3D(x = 1, y = 1, z = 1)`.
      */
-    operator fun minus(other: Position3D) = Position3D(
+    public operator fun minus(other: Position3D): Position3D = Position3D(
         x = this.x - other.x,
         y = this.y - other.y,
         z = this.z - other.z
     )
 
-    companion object {
+    public companion object {
 
 
         /**
          * Creates a new [Position3D] from a [Position].
          * If `y` is not supplied it defaults to `0` (ground level).
          */
-        fun from2DPosition(position: Position, z: Int = 0) = Position3D(
+        public fun from2DPosition(position: Position, z: Int = 0): Position3D = Position3D(
             x = position.x,
             y = position.y,
             z = z
         )
 
-        val ZERO = Position3D(0, 0, 0)
-        val UNKNOWN = Position3D(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        public val ZERO: Position3D = Position3D(0, 0, 0)
+        public val UNKNOWN: Position3D = Position3D(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

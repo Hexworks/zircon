@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class PomiconsGlyphs(
-    val glyph: Char,
+public enum class PomiconsGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

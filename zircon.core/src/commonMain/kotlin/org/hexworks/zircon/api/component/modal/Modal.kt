@@ -12,18 +12,18 @@ import org.hexworks.zircon.internal.component.modal.EmptyModalResult
  * use [EmptyModalResult].
  * [Modal]s can be opened on top of each other.
  */
-interface Modal<T : ModalResult> : Component {
+public interface Modal<T : ModalResult> : Component {
 
     /**
      * A value between `0` and `1` that will be used to darken the area
      * outside the [Modal] when it is opened.
      */
-    val darkenPercent: Double
+    public val darkenPercent: Double
 
     /**
      * Closes this [Modal] with a given [result].
      */
-    fun close(result: T)
+    public fun close(result: T)
 
-    fun onClosed(fn: (T) -> Unit)
+    public fun onClosed(fn: (T) -> Unit)
 }

@@ -15,9 +15,9 @@ import org.hexworks.zircon.internal.graphics.DefaultTileComposite
  * - Default [Size] is `ONE` (1x1).
  */
 @ZirconDsl
-class TileCompositeBuilder : Builder<TileComposite> {
+public class TileCompositeBuilder : Builder<TileComposite> {
 
-    var size: Size = Size.ONE
+    public var size: Size = Size.ONE
         set(value) {
             if (this.size.width > size.width || this.size.height > size.height) {
                 removeOutOfBoundsTiles(size)
@@ -25,7 +25,7 @@ class TileCompositeBuilder : Builder<TileComposite> {
             field = value
         }
 
-    var tiles: Map<Position, Tile> = mapOf()
+    public var tiles: Map<Position, Tile> = mapOf()
         set(value) {
             field = value
             removeOutOfBoundsTiles()
@@ -45,6 +45,6 @@ class TileCompositeBuilder : Builder<TileComposite> {
 /**
  * Creates a new [TileCompositeBuilder] using the builder DSL and returns it.
  */
-fun tileComposite(init: TileCompositeBuilder.() -> Unit): TileComposite =
+public fun tileComposite(init: TileCompositeBuilder.() -> Unit): TileComposite =
     TileCompositeBuilder().apply(init).build()
 

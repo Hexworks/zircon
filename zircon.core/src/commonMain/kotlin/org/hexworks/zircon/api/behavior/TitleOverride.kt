@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultTitleOverride
 /**
  * Represents an object that has a visual [title] that can be changed.
  */
-interface TitleOverride : HasTitle {
+public interface TitleOverride : HasTitle {
 
     /**
      * The (mutable) title.
@@ -20,15 +20,15 @@ interface TitleOverride : HasTitle {
      *
      * @see Property
      */
-    val titleProperty: Property<String>
+    public val titleProperty: Property<String>
 
-    companion object {
+    public companion object {
 
-        fun create(initialTitle: String = ""): TitleOverride = DefaultTitleOverride(initialTitle.toProperty())
+        public fun create(initialTitle: String = ""): TitleOverride = DefaultTitleOverride(initialTitle.toProperty())
 
         /**
          * Creates a new [TitleOverride] object with a default title value of `""`.
          */
-        fun create(initialTitle: Property<String> = "".toProperty()): TitleOverride = DefaultTitleOverride(initialTitle)
+        public fun create(initialTitle: Property<String> = "".toProperty()): TitleOverride = DefaultTitleOverride(initialTitle)
     }
 }

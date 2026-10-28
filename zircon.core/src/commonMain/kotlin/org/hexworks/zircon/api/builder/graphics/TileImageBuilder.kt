@@ -20,14 +20,14 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
  * - Default `filler` is an `EMPTY` character
  */
 @ZirconDsl
-class TileImageBuilder : Builder<TileImage> {
+public class TileImageBuilder : Builder<TileImage> {
 
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var filler: Tile = Tile.empty()
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var filler: Tile = Tile.empty()
 
-    var size: Size = Size.ONE
+    public var size: Size = Size.ONE
 
-    var tiles: Map<Position, Tile> = mapOf()
+    public var tiles: Map<Position, Tile> = mapOf()
 
     override fun build(): TileImage {
         return DefaultTileImage(
@@ -41,10 +41,10 @@ class TileImageBuilder : Builder<TileImage> {
 /**
  * Creates a new [TileImageBuilder] using the builder DSL and returns it.
  */
-fun tileImage(init: TileImageBuilder.() -> Unit): TileImage =
+public fun tileImage(init: TileImageBuilder.() -> Unit): TileImage =
     TileImageBuilder().apply(init).build()
 
 
-fun TileImageBuilder.withFiller(init: CharacterTileBuilder.() -> Unit) = apply {
+public fun TileImageBuilder.withFiller(init: CharacterTileBuilder.() -> Unit): TileImageBuilder = apply {
     filler = CharacterTileBuilder().apply(init).build()
 }

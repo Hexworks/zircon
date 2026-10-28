@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.palette.BasePalette
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 
-object EclipseTerminalPalette : BasePalette<ANSIColor>(
+public object EclipseTerminalPalette : BasePalette<ANSIColor>(
     BLACK to color(0, 0, 0),
     RED to color(205, 0, 0),
     GREEN to color(0, 205, 0),

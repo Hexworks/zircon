@@ -9,11 +9,11 @@ import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
 
 @ZirconDsl
-class LogAreaBuilder : BaseComponentBuilder<LogArea>(
+public class LogAreaBuilder : BaseComponentBuilder<LogArea>(
     initialRenderer = DefaultLogAreaRenderer()
 ) {
 
-    var logRowHistorySize: Int = 100
+    public var logRowHistorySize: Int = 100
 
 
     override fun build(): LogArea {
@@ -27,14 +27,14 @@ class LogAreaBuilder : BaseComponentBuilder<LogArea>(
 /**
  * Creates a new [LogArea] using the component builder DSL and returns it.
  */
-fun logArea(init: LogAreaBuilder.() -> Unit): LogArea =
+public fun logArea(init: LogAreaBuilder.() -> Unit): LogArea =
     LogAreaBuilder().apply(init).build()
 
 /**
  * Creates a new [LogArea] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [LogArea].
  */
-fun <T : BaseContainerBuilder<*>> T.logArea(
+public fun <T : BaseContainerBuilder<*>> T.logArea(
     init: LogAreaBuilder.() -> Unit
 ): LogArea = buildChildFor(this, LogAreaBuilder(), init)
 

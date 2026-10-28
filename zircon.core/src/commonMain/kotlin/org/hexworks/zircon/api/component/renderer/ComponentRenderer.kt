@@ -8,4 +8,4 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * It is a specialization of the [DecorationRenderer] as the mechanism is the same, but the
  * [ComponentRenderer] will draw the innermost part of the component (its content).
  */
-fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>>
+public fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>>

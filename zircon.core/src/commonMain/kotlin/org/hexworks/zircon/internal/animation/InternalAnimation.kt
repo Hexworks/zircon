@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.animation
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.behavior.Layerable
 
-interface InternalAnimation : Animation {
+public interface InternalAnimation : Animation {
 
     /**
      * Displays the next frame on the given [layerable]. If there
@@ -11,11 +11,11 @@ interface InternalAnimation : Animation {
      * return `false`
      * @return `true` if a frame was displayed, `false` if not.
      */
-    fun displayNextFrame(layerable: Layerable): Boolean
+    public fun displayNextFrame(layerable: Layerable): Boolean
 
     /**
      * Removes the current frame from the screen (if it is displayed).
      */
-    fun removeCurrentFrame()
+    public fun removeCurrentFrame()
 
 }

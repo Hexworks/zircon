@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * Interface that adds functionality for overriding tilesets used
  * in its implementors (components, layers, etc.).
  */
-interface TilesetOverride : TilesetHolder {
+public interface TilesetOverride : TilesetHolder {
 
     /**
      * The (mutable) tileset value.
@@ -20,6 +20,6 @@ interface TilesetOverride : TilesetHolder {
      *
      * @see Property
      */
-    val tilesetProperty: Property<TilesetResource>
+    public val tilesetProperty: Property<TilesetResource>
 
 }

@@ -8,93 +8,93 @@ import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 /**
  * This object can be used to load either built-in true type [TilesetResource]s or external ones.
  */
-object TrueTypeFontResources {
+public object TrueTypeFontResources {
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun amstrad(height: Int): TilesetResource = BuiltInTrueTypeFontResource.AMSTRAD.toTilesetResource(height)
+    public fun amstrad(height: Int): TilesetResource = BuiltInTrueTypeFontResource.AMSTRAD.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun amstradNarrow(height: Int): TilesetResource =
+    public fun amstradNarrow(height: Int): TilesetResource =
         BuiltInTrueTypeFontResource.AMSTRAD_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
+    public fun ibmBios(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun ibmBiosNarrow(height: Int): TilesetResource =
+    public fun ibmBiosNarrow(height: Int): TilesetResource =
         BuiltInTrueTypeFontResource.IBM_BIOS_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun ibmBiosWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS_WIDE.toTilesetResource(height)
+    public fun ibmBiosWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.IBM_BIOS_WIDE.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun tandy(height: Int): TilesetResource = BuiltInTrueTypeFontResource.TANDY.toTilesetResource(height)
+    public fun tandy(height: Int): TilesetResource = BuiltInTrueTypeFontResource.TANDY.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun tandyNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.TANDY_NARROW.toTilesetResource(height)
+    public fun tandyNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.TANDY_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun kaypro(height: Int): TilesetResource = BuiltInTrueTypeFontResource.KAYPRO.toTilesetResource(height)
+    public fun kaypro(height: Int): TilesetResource = BuiltInTrueTypeFontResource.KAYPRO.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun kayproNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.KAYPRO_NARROW.toTilesetResource(height)
+    public fun kayproNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.KAYPRO_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun vtech(height: Int): TilesetResource = BuiltInTrueTypeFontResource.VTECH.toTilesetResource(height)
+    public fun vtech(height: Int): TilesetResource = BuiltInTrueTypeFontResource.VTECH.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun vtechNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.VTECH_NARROW.toTilesetResource(height)
+    public fun vtechNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.VTECH_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun ibmPs2Narrow(height: Int): TilesetResource =
+    public fun ibmPs2Narrow(height: Int): TilesetResource =
         BuiltInTrueTypeFontResource.IBM_PS2_NARROW.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun att(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT.toTilesetResource(height)
+    public fun att(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    fun attWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
+    public fun attWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
 
 }

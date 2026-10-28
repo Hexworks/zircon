@@ -7,15 +7,15 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCanBeHidden
 /**
  * Represents an object which can be visually hidden (invisible).
  */
-interface CanBeHidden {
+public interface CanBeHidden {
 
-    var isHidden: Boolean
-    val hiddenProperty: Property<Boolean>
+    public var isHidden: Boolean
+    public val hiddenProperty: Property<Boolean>
 
-    companion object {
+    public companion object {
 
-        fun create(initialIsHidden: Boolean = false): CanBeHidden = create(initialIsHidden.toProperty())
+        public fun create(initialIsHidden: Boolean = false): CanBeHidden = create(initialIsHidden.toProperty())
 
-        fun create(hiddenProperty: Property<Boolean>): CanBeHidden = DefaultCanBeHidden(hiddenProperty)
+        public fun create(hiddenProperty: Property<Boolean>): CanBeHidden = DefaultCanBeHidden(hiddenProperty)
     }
 }

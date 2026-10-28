@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.renderer.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
+import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -22,12 +25,14 @@ import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
 
-abstract class BaseRenderer<C : Any, V : Any>(
-    protected val tileGrid: InternalTileGrid,
+public abstract class BaseRenderer<C : Any, V : Any>(
+    tileGrid: TileGrid,
     private val tilesetLoader: TilesetLoader<C>
 ) : Renderer<C, V> {
 
-    private val config = tileGrid.config
+    protected val tileGrid: InternalTileGrid = tileGrid.asInternal()
+
+    private val config = this.tileGrid.config
     private val gridPositions = tileGrid.size.fetchPositions().toList()
     private val isClosed = false.toProperty()
 
@@ -49,11 +54,11 @@ abstract class BaseRenderer<C : Any, V : Any>(
         doClose()
     }
 
-    final override fun beforeRender(listener: (RenderData) -> Unit) = beforeRenderDataProp.onChange {
+    final override fun beforeRender(listener: (RenderData) -> Unit): Subscription = beforeRenderDataProp.onChange {
         listener(it.newValue)
     }
 
-    final override fun afterRender(listener: (RenderData) -> Unit) = afterRenderDataProp.onChange {
+    final override fun afterRender(listener: (RenderData) -> Unit): Subscription = afterRenderDataProp.onChange {
         listener(it.newValue)
     }
 

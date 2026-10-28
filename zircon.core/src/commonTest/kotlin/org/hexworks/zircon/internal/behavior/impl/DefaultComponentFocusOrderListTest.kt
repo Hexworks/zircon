@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.zircon.internal.extensions.asInternalComponent
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus

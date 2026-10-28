@@ -11,11 +11,11 @@ import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
 import kotlin.math.max
 
 @ZirconDsl
-class VBoxBuilder : BaseContainerBuilder<VBox>(
+public class VBoxBuilder : BaseContainerBuilder<VBox>(
     initialRenderer = DefaultVBoxRenderer()
 ) {
 
-    var spacing: Int = 0
+    public var spacing: Int = 0
         set(value) {
             require(value >= 0) {
                 "Can't use a negative spacing"
@@ -57,13 +57,13 @@ class VBoxBuilder : BaseContainerBuilder<VBox>(
 /**
  * Creates a new [VBox] using the component builder DSL and returns it.
  */
-fun vBox(init: VBoxBuilder.() -> Unit): VBox =
+public fun vBox(init: VBoxBuilder.() -> Unit): VBox =
     VBoxBuilder().apply(init).build()
 
 /**
  * Creates a new [VBox] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [VBox].
  */
-fun <T : BaseContainerBuilder<*>> T.vBox(
+public fun <T : BaseContainerBuilder<*>> T.vBox(
     init: VBoxBuilder.() -> Unit
 ): VBox = buildChildFor(this, VBoxBuilder(), init)

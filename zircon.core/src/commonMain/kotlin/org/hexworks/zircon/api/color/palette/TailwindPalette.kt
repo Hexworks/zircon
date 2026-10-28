@@ -32,8 +32,8 @@ import org.hexworks.zircon.api.color.Palette
  * and naming conventions.
  * @see <a href="https://v3.tailwindcss.com/docs/customizing-colors">Tailwind CSS Colors</a>
  */
-enum class TailwindPalette(
-    val color: Color
+public enum class TailwindPalette(
+    public val color: Color
 ) {
     // Slate
     SLATE_50(color("#f8fafc")),
@@ -321,10 +321,10 @@ enum class TailwindPalette(
     ROSE_900(color("#881337")),
     ROSE_950(color("#4c0519"));
 
-    companion object : Palette<TailwindPalette> {
-        override val keys = entries.toSet()
-        override val colors = entries.map { it.color }.toSet()
+    public companion object : Palette<TailwindPalette> {
+        override val keys: Set<TailwindPalette> = entries.toSet()
+        override val colors: Set<Color> = entries.map { it.color }.toSet()
 
-        override fun get(key: TailwindPalette) = key.color
+        override fun get(key: TailwindPalette): Color = key.color
     }
 }

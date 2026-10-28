@@ -11,4 +11,4 @@ import org.hexworks.zircon.api.behavior.TextOverride
  * - [Label]
  * - [Icon]
  */
-interface Header : Component, TextOverride
+public interface Header : Component, TextOverride

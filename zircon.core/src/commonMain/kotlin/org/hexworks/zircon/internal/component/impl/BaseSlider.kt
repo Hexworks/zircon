@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.logging.api.Logger
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
@@ -23,7 +26,7 @@ import org.hexworks.zircon.api.uievent.UIEventResponse
 import kotlin.math.roundToInt
 import kotlin.math.truncate
 
-abstract class BaseSlider(
+public abstract class BaseSlider(
     final override val minValue: Int,
     final override val maxValue: Int,
     final override val numberOfSteps: Int,
@@ -37,10 +40,10 @@ abstract class BaseSlider(
     private val range: Int = maxValue - minValue
     protected val valuePerStep: Double = range.toDouble() / numberOfSteps.toDouble()
 
-    final override val currentValueProperty = minValue.toProperty()
+    final override val currentValueProperty: Property<Int> = minValue.toProperty()
     override var currentValue: Int by currentValueProperty.asDelegate()
 
-    final override val currentStepProperty = 0.toProperty()
+    final override val currentStepProperty: Property<Int> = 0.toProperty()
     override var currentStep: Int by currentStepProperty.asDelegate()
 
     init {
@@ -119,9 +122,9 @@ abstract class BaseSlider(
         currentValue = calculatedValue.roundToInt()
     }
 
-    abstract fun getMousePosition(event: MouseEvent): Int
+    public abstract fun getMousePosition(event: MouseEvent): Int
 
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
@@ -130,7 +133,7 @@ abstract class BaseSlider(
         } else Pass
     }
 
-    override fun mouseDragged(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseDragged(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
             componentState = ComponentState.ACTIVE
@@ -141,7 +144,7 @@ abstract class BaseSlider(
 
     abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 
-    override fun activated() = whenEnabledRespondWith {
+    override fun activated(): UIEventResponse = whenEnabledRespondWith {
         if (isDisabled) {
             LOGGER.warn { "Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped." }
             Pass
@@ -152,7 +155,7 @@ abstract class BaseSlider(
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.primaryForegroundColor
             backgroundColor = Color.TRANSPARENT
@@ -179,7 +182,7 @@ abstract class BaseSlider(
         return currentStepProperty.onChange(fn)
     }
 
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(Slider::class)
+    public companion object {
+        public val LOGGER: Logger = LoggerFactory.getLogger(Slider::class)
     }
 }

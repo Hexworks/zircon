@@ -7,10 +7,10 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.Symbols.DOUBLE_LINE_VERTICAL
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
 @Suppress("DuplicatedCode")
-class HorizontalSliderRenderer : ComponentRenderer<Slider> {
+public class HorizontalSliderRenderer : ComponentRenderer<Slider> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<Slider>) {
 

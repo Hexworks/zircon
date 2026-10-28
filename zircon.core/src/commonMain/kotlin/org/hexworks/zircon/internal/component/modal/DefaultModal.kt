@@ -13,7 +13,7 @@ import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
 
-open class DefaultModal<T : ModalResult> internal constructor(
+public open class DefaultModal<T : ModalResult> internal constructor(
     componentMetadata: ComponentMetadata,
     override val darkenPercent: Double,
     renderingStrategy: ComponentRenderingStrategy<Modal<out ModalResult>>
@@ -22,7 +22,7 @@ open class DefaultModal<T : ModalResult> internal constructor(
     renderer = renderingStrategy
 ), Observable<T> by DefaultObservable() {
 
-    final override var closed = false
+    final override var closed: Boolean = false
         private set
 
     override fun close(result: T) {
@@ -36,7 +36,7 @@ open class DefaultModal<T : ModalResult> internal constructor(
         addObserver(fn)
     }
 
-    override fun acceptsFocus() = true
+    override fun acceptsFocus(): Boolean = true
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         return componentStyleSet {

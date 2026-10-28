@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.resource
+package org.hexworks.zircon.api.resource
 
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -8,12 +8,12 @@ import org.hexworks.zircon.internal.util.rex.REXFile
 /**
  * This class can be used to load Zircon [Layer]s from [REXFile]s.
  */
-class REXPaintResource(private val rexFile: REXFile) {
+public class REXPaintResource internal constructor(private val rexFile: REXFile) {
 
     /**
      * Converts this [REXPaintResource] to a list of [Layer]s.
      */
-    fun toLayerList(tileset: TilesetResource = RuntimeConfig.config.defaultTileset): List<Layer> {
+    public fun toLayerList(tileset: TilesetResource = RuntimeConfig.config.defaultTileset): List<Layer> {
         return this.rexFile.layers.map { it.toLayer(tileset) }.toList()
     }
 }

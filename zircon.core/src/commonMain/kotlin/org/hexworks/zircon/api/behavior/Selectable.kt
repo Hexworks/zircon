@@ -7,9 +7,9 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultSelectable
 /**
  * Represents an object that supports the notion of selection.
  */
-interface Selectable {
+public interface Selectable {
 
-    var isSelected: Boolean
+    public var isSelected: Boolean
 
     /**
      * A [Property] that wraps the [isSelected] value and offers data binding and
@@ -17,15 +17,15 @@ interface Selectable {
      *
      * @see Property
      */
-    val selectedProperty: Property<Boolean>
+    public val selectedProperty: Property<Boolean>
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [Selectable] with the default [initialSelected] value of `false`.
          */
-        fun create(initialSelected: Boolean = false): Selectable = create(initialSelected.toProperty())
+        public fun create(initialSelected: Boolean = false): Selectable = create(initialSelected.toProperty())
 
-        fun create(selectedProperty: Property<Boolean>): Selectable = DefaultSelectable(selectedProperty)
+        public fun create(selectedProperty: Property<Boolean>): Selectable = DefaultSelectable(selectedProperty)
     }
 }

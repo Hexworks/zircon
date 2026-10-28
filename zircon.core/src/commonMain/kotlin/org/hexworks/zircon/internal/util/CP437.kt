@@ -261,7 +261,7 @@ private val UNICODE_TO_CP437_LOOKUP = mapOf(
 )
 private val CP437_TO_UNICODE_LOOKUP = UNICODE_TO_CP437_LOOKUP.map { Pair(it.value, it.key) }.toMap()
 
-val CP437_METADATA = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
+public val CP437_METADATA: Map<Char, List<CP437TextureMetadata>> = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
     val x = index.rem(16)
     val y = index.div(16)
     Pair(
@@ -280,12 +280,12 @@ val CP437_METADATA = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
 /**
  * Converts a cp437 index to its `char` representation.
  */
-fun Int.convertCp437toUnicode(): Char = CP437_TO_UNICODE_LOOKUP[this]?.toChar() ?: ' '
+public fun Int.convertCp437toUnicode(): Char = CP437_TO_UNICODE_LOOKUP[this]?.toChar() ?: ' '
 
 /**
  * Fetches the cp437 index of a [Char].
  */
-fun Char.CP437Index(): Int {
+public fun Char.CP437Index(): Int {
     return UNICODE_TO_CP437_LOOKUP[code]
         ?: throw IllegalArgumentException(
             "No CP437 character found for char: '$this'. " +

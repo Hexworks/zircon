@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.builder.base
 
+import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -36,11 +37,11 @@ import kotlin.require
  * If your component has text use [ComponentWithTextBuilder] instead.
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseComponentBuilder<T : Component>(
+public abstract class BaseComponentBuilder<T : Component>(
     initialRenderer: ComponentRenderer<out T>
 ) : Builder<T>, ComponentEventSource {
 
-    protected var props: CommonComponentProperties<T> = CommonComponentProperties(
+    internal var props: CommonComponentProperties<T> = CommonComponentProperties(
         componentRenderer = initialRenderer
     )
         private set
@@ -49,13 +50,13 @@ abstract class BaseComponentBuilder<T : Component>(
      * The name of this component. Not mandatory, but if present it will
      * be used for debug purposes.
      */
-    var name: String = ""
+    public var name: String = ""
 
     /**
      * This [AlignmentStrategy] will be used then the component
      * is aligned within its parent.
      */
-    var alignment: AlignmentStrategy
+    public var alignment: AlignmentStrategy
         get() = props.alignmentStrategy
         set(value) {
             props.alignmentStrategy = value
@@ -67,7 +68,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * can be set at any given time.
      * Encompasses the [contentSize] and the [occupiedSize].
      */
-    open var preferredSize: Size
+    public open var preferredSize: Size
         get() = props.preferredSize
         set(value) {
             if (preferredContentSize.isSizeNotUnknown) {
@@ -82,7 +83,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * can be set at any given time.
      * This doesn't contain [occupiedSize].
      */
-    open var preferredContentSize: Size
+    public open var preferredContentSize: Size
         get() = props.preferredContentSize
         set(value) {
             if (preferredSize.isSizeNotUnknown) {
@@ -96,7 +97,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * when it is attached to a parent or not. Use this if you want
      * to apply custom themes or styles to your attached component.
      */
-    var bindingAction: BindingAction
+    public var bindingAction: BindingAction
         get() = props.bindingAction
         set(value) {
             props.bindingAction = value
@@ -105,48 +106,48 @@ abstract class BaseComponentBuilder<T : Component>(
     /**
      * The renderer which will be used to render the resulting component.
      */
-    var componentRenderer: ComponentRenderer<out T>
+    public var componentRenderer: ComponentRenderer<out T>
         get() = props.componentRenderer
         set(value) {
             props.componentRenderer = value
         }
 
     // properties
-    val colorThemeProperty: Property<ColorTheme>
+    public val colorThemeProperty: Property<ColorTheme>
         get() = props.themeProperty
-    var colorTheme: ColorTheme
+    public var colorTheme: ColorTheme
         get() = props.theme
         set(value) {
             props.theme = value
         }
 
-    val componentStyleSetProperty: Property<ComponentStyleSet>
+    public val componentStyleSetProperty: Property<ComponentStyleSet>
         get() = props.componentStyleSetProperty
-    var componentStyleSet: ComponentStyleSet
+    public var componentStyleSet: ComponentStyleSet
         get() = props.componentStyleSet
         set(value) {
             props.componentStyleSet = value
         }
 
-    val tilesetProperty: Property<TilesetResource>
+    public val tilesetProperty: Property<TilesetResource>
         get() = props.tilesetProperty
-    var tileset: TilesetResource
+    public var tileset: TilesetResource
         get() = props.tileset
         set(value) {
             props.tileset = value
         }
 
-    val disabledProperty: Property<Boolean>
+    public val disabledProperty: Property<Boolean>
         get() = props.disabledProperty
-    var isDisabled: Boolean
+    public var isDisabled: Boolean
         get() = props.isDisabled
         set(value) {
             props.isDisabled = value
         }
 
-    val hiddenProperty: Property<Boolean>
+    public val hiddenProperty: Property<Boolean>
         get() = props.hiddenProperty
-    var isHidden: Boolean
+    public var isHidden: Boolean
         get() = props.isHidden
         set(value) {
             props.isHidden = value
@@ -154,18 +155,18 @@ abstract class BaseComponentBuilder<T : Component>(
 
     // --== calculated fields ==--
 
-    val title: String
+    public val title: String
         get() = this.decorationRenderers
             .filterIsInstance<BoxDecorationRenderer>()
             .firstOrNull()?.title ?: ""
 
-    val contentWidth: Int
+    public val contentWidth: Int
         get() = contentSize.width
 
-    val contentHeight: Int
+    public val contentHeight: Int
         get() = contentSize.height
 
-    var position: Position
+    public var position: Position
         get() = alignment.calculatePosition(size)
         set(value) {
             alignment = ComponentAlignments.positionalAlignment(value)
@@ -178,7 +179,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * - If [preferredSize] is set it will be [preferredSize] - [occupiedSize]
      * - If neither one of those are set it defaults to [Size.one]
      */
-    val contentSize: Size
+    public val contentSize: Size
         get() = if (preferredSize.isSizeUnknown) {
             if (preferredContentSize.isSizeUnknown) {
                 Size.ONE
@@ -192,7 +193,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * - If [preferredContentSize] is set it will be [preferredContentSize] + [occupiedSize]
      * - If neither one of those are set it defaults to [contentSize] + [occupiedSize]
      */
-    val size: Size
+    public val size: Size
         get() = if (preferredSize.isSizeUnknown) {
             if (preferredContentSize.isSizeUnknown) {
                 contentSize + decorationRenderers.occupiedSize
@@ -203,7 +204,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * Sets the decorations that should be used for the component.
      * This also forces a recalculation of [contentSize]
      */
-    var decorationRenderers: List<ComponentDecorationRenderer>
+    public var decorationRenderers: List<ComponentDecorationRenderer>
         get() = props.decorationRenderers
         set(value) {
             props.decorationRenderers = value.reversed()
@@ -212,14 +213,14 @@ abstract class BaseComponentBuilder<T : Component>(
     /**
      * The [Size] that's occupied by [decorationRenderers].
      */
-    val List<ComponentDecorationRenderer>.occupiedSize
+    public val List<ComponentDecorationRenderer>.occupiedSize: Size
         get() = this.map { it.occupiedSize }.fold(Size.ZERO, Size::plus)
 
     /**
      * Aligns the resulting [Component] within the [tileGrid] using the
      * given [alignment]. Shorthand for `alignment = alignmentWithin(tileGrid, alignment)`.
      */
-    fun alignWithin(tileGrid: TileGrid, alignment: ComponentAlignment) {
+    public fun alignWithin(tileGrid: TileGrid, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentWithin(tileGrid, alignment)
     }
 
@@ -227,7 +228,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * Aligns the resulting [Component] within the [container] using the
      * given [alignment]. Shorthand for `alignment = alignmentWithin(container, alignment)`.
      */
-    fun alignWithin(container: Container, alignment: ComponentAlignment) {
+    public fun alignWithin(container: Container, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentWithin(container, alignment)
     }
 
@@ -235,7 +236,7 @@ abstract class BaseComponentBuilder<T : Component>(
      * Aligns the resulting [Component] around the [component] using the
      * given [alignment]. Shorthand for `alignment = alignmentAround(component, alignment)`.
      */
-    fun alignAround(component: Component, alignment: ComponentAlignment) {
+    public fun alignAround(component: Component, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentAround(component, alignment)
     }
 
@@ -269,7 +270,7 @@ abstract class BaseComponentBuilder<T : Component>(
         return this
     }
 
-    protected fun createRenderingStrategy() = DefaultComponentRenderingStrategy(
+    protected fun createRenderingStrategy(): ComponentRenderingStrategy<T> = DefaultComponentRenderingStrategy(
         decorationRenderers = decorationRenderers,
         componentRenderer = componentRenderer as ComponentRenderer<T>,
         componentPostProcessors = props.postProcessors
@@ -303,7 +304,7 @@ abstract class BaseComponentBuilder<T : Component>(
         }
     }
 
-    protected infix fun Size.fitsWithin(other: Size) = other.toBoundable().containsBoundable(toBoundable())
+    protected infix fun Size.fitsWithin(other: Size): Boolean = other.toBoundable().containsBoundable(toBoundable())
 
     private infix fun Int.doesntFitWithin(size: Size) = this > size.width * size.height
 
@@ -341,14 +342,14 @@ abstract class BaseComponentBuilder<T : Component>(
 /**
  * Creates a new [DecorationsBuilder] using the builder DSL and returns it.
  */
-fun <T : Component> BaseComponentBuilder<T>.decorations(init: DecorationsBuilder.() -> Unit) {
+public fun <T : Component> BaseComponentBuilder<T>.decorations(init: DecorationsBuilder.() -> Unit) {
     decorationRenderers = DecorationsBuilder().apply(init).build()
 }
 
 /**
  * Overwrites the current list of [ComponentDecorationRenderer]s with the given [decoration].
  */
-var BaseComponentBuilder<out Component>.decoration: ComponentDecorationRenderer?
+public var BaseComponentBuilder<out Component>.decoration: ComponentDecorationRenderer?
     get() = null
     set(value) {
         value?.let {
@@ -359,7 +360,7 @@ var BaseComponentBuilder<out Component>.decoration: ComponentDecorationRenderer?
 
 
 
-fun <T : Component> BaseComponentBuilder<T>.withComponentRenderer(init: ComponentRenderer<T>) {
+public fun <T : Component> BaseComponentBuilder<T>.withComponentRenderer(init: ComponentRenderer<T>) {
     apply {
         componentRenderer = init
     }

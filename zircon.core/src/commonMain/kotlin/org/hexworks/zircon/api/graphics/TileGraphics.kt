@@ -12,4 +12,4 @@ import org.hexworks.zircon.api.behavior.Copiable
  * and to be able to [createCopy] from this object.
  */
 //! TODO: Delete this as we no longer need it
-interface TileGraphics : Copiable<TileGraphics>, DrawSurface
+public interface TileGraphics : Copiable<TileGraphics>, DrawSurface

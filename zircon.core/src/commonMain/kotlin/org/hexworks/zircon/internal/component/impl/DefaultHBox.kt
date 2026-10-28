@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.behavior.extensions.moveLeftBy
 import org.hexworks.zircon.api.behavior.extensions.moveRightBy
@@ -16,7 +17,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 
-open class DefaultHBox(
+public open class DefaultHBox(
     componentMetadata: ComponentMetadata,
     initialTitle: String,
     private val spacing: Int,
@@ -68,7 +69,7 @@ open class DefaultHBox(
         availableSpace = availableSpace.withRelativeWidth(delta)
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
         require(availableSpace.containsBoundable(component)) {

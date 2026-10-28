@@ -5,9 +5,9 @@ import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.graphics.InternalLayer
 
-interface InternalLayerable : Layerable, RenderableContainer {
+public interface InternalLayerable : Layerable, RenderableContainer {
 
     override val layers: ObservableList<out InternalLayer>
 
-    fun removeLayer(layer: Layer): Boolean
+    public fun removeLayer(layer: Layer): Boolean
 }

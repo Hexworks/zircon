@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -7,7 +8,7 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import kotlin.math.roundToInt
 
-class DefaultVerticalSlider internal constructor(
+public class DefaultVerticalSlider internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<Slider>,
     minValue: Int,
@@ -25,7 +26,7 @@ class DefaultVerticalSlider internal constructor(
         return event.position.minus(position + contentOffset).y
     }
 
-    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             when (event.code) {
                 KeyCode.UP -> {

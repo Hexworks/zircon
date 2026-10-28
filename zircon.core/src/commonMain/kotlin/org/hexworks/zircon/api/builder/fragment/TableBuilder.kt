@@ -21,27 +21,27 @@ import org.hexworks.zircon.api.fragment.Table
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import org.hexworks.zircon.internal.fragment.impl.DefaultTable
-import org.hexworks.zircon.internal.fragment.impl.TableColumn
+import org.hexworks.zircon.api.fragment.TableColumn
 
 @ZirconDsl
-class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
+public class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
 
     override var position: Position = Position.ZERO
 
-    var data: ObservableList<T> = listOf<T>().toProperty()
-    var columns: List<TableColumn<T, *, *>> = listOf()
-    var height: Int = 2
-    var rowSpacing: Int = 0
-    var colSpacing: Int = 0
-    var addHeader: Boolean = true
+    public var data: ObservableList<T> = listOf<T>().toProperty()
+    public var columns: List<TableColumn<T, *, *>> = listOf()
+    public var height: Int = 2
+    public var rowSpacing: Int = 0
+    public var colSpacing: Int = 0
+    public var addHeader: Boolean = true
 
     /**
      * Renderer that will be used to render the selected row. Override this if
      * you want to differentiate the selected row visually.
      */
-    var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer()
+    public var selectedRowRenderer: ComponentRenderer<HBox> = DefaultHBoxRenderer()
 
-    fun <V : Any, C : Component> TableBuilder<T>.column(init: TableColumnBuilder<T, V, C>.() -> Unit) {
+    public fun <V : Any, C : Component> TableBuilder<T>.column(init: TableColumnBuilder<T, V, C>.() -> Unit) {
         columns = columns + TableColumnBuilder<T, V, C>().apply(init).build()
     }
 
@@ -52,7 +52,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
      * - [TableColumnBuilder.width]
      * The rest will be set for you.
      */
-    fun TableBuilder<T>.textColumn(init: TableColumnBuilder<T, String, Label>.() -> Unit) {
+    public fun TableBuilder<T>.textColumn(init: TableColumnBuilder<T, String, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder<T, String, Label>()
             .apply(init)
             .also { builder ->
@@ -73,7 +73,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
      * - [TableColumnBuilder.width]
      * The rest will be set for you.
      */
-    fun TableBuilder<T>.numberColumn(init: TableColumnBuilder<T, Number, Label>.() -> Unit) {
+    public fun TableBuilder<T>.numberColumn(init: TableColumnBuilder<T, Number, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder<T, Number, Label>()
             .apply(init)
             .also { builder ->
@@ -93,7 +93,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
      * - a [TableColumnBuilder.valueProvider]
      * The rest will be set for you.
      */
-    fun TableBuilder<T>.observableTextColumn(init: TableColumnBuilder<T, ObservableValue<String>, Label>.() -> Unit) {
+    public fun TableBuilder<T>.observableTextColumn(init: TableColumnBuilder<T, ObservableValue<String>, Label>.() -> Unit) {
         columns = columns + TableColumnBuilder<T, ObservableValue<String>, Label>()
             .apply(init)
             .also { builder ->
@@ -113,7 +113,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
      * - a [TableColumnBuilder.valueProvider]
      * The rest will be set for you.
      */
-    fun TableBuilder<T>.iconColumn(init: TableColumnBuilder<T, Tile, Icon>.() -> Unit) {
+    public fun TableBuilder<T>.iconColumn(init: TableColumnBuilder<T, Tile, Icon>.() -> Unit) {
         columns = columns +
                 TableColumnBuilder<T, Tile, Icon>()
                     .apply(init).also { builder ->
@@ -158,7 +158,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
  * Creates a new [Table] using the fragment builder DSL and returns it.
  */
 
-fun <T : Any> table(
+public fun <T : Any> table(
     init: TableBuilder<T>.() -> Unit
 ): Table<T> = TableBuilder<T>().apply(init).build()
 
@@ -167,7 +167,7 @@ fun <T : Any> table(
  * receiver [BaseContainerBuilder] it and returns the [Table].
  */
 
-fun <T : Any> AnyContainerBuilder.table(
+public fun <T : Any> AnyContainerBuilder.table(
     init: TableBuilder<T>.() -> Unit
 ): Table<T> = buildFragmentFor(this, TableBuilder(), init)
 

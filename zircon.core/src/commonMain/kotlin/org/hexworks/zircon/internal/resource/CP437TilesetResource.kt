@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.resource
 import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetType
-import org.hexworks.zircon.api.resource.base.BaseTilesetResource
+import org.hexworks.zircon.internal.resource.base.BaseTilesetResource
 
 /**
  * CP437 Tileset resource class which can be used with [org.hexworks.zircon.api.data.tile.CharacterTile]s.

@@ -1,27 +1,28 @@
 package org.hexworks.zircon.internal.game.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
+import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.BlockTileType.*
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.extensions.isOpaque
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile
-import org.hexworks.zircon.internal.game.GameAreaRenderer
-import org.hexworks.zircon.internal.game.InternalGameArea
+import org.hexworks.zircon.api.game.GameAreaRenderer
 
 // TODO: test this
-class TopDownGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
+public class TopDownGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
 
     private val blockOrder = listOf(TOP, CONTENT, BOTTOM)
 
     override fun render(
-        gameArea: InternalGameArea<T, B>,
+        gameArea: GameArea<T, B>,
         graphics: DrawWindow,
         fillerTile: T
     ) {
-        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
+        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.asInternal().state
 
         for (x in 0 until visibleSize.xLength) {
             for (y in 0 until visibleSize.yLength) {

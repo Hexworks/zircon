@@ -17,23 +17,23 @@ import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import kotlin.reflect.KProperty1
 
-class DefaultComponentRenderingStrategy<T : Component>(
+public class DefaultComponentRenderingStrategy<T : Component>(
 
     /**
      * The [ComponentRenderer] which will be used to render
      * the *content* of this [Component].
      */
-    val componentRenderer: ComponentRenderer<in T>,
+    public val componentRenderer: ComponentRenderer<in T>,
 
     /**
      * The [ComponentDecorationRenderer]s this [Component] has.
      */
-    val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
+    public val decorationRenderers: List<ComponentDecorationRenderer> = listOf(),
 
     /**
      * The [ComponentPostProcessor]s this [Component] has.
      */
-    val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()
+    public val componentPostProcessors: List<ComponentPostProcessor<T>> = listOf()
 ) : ComponentRenderingStrategy<T> {
 
     override val contentPosition: Position = decorationRenderers.foldPositionBy(ComponentDecorationRenderer::offset)

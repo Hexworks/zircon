@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.internal.extensions.asInternalComponent
+import org.hexworks.zircon.internal.extensions.asInternal
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs

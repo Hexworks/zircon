@@ -10,4 +10,4 @@ import org.hexworks.zircon.api.builder.application.AppConfigBuilder
  * @see AppConfig.getOrNull
  * @see AppConfig.getOrElse
  */
-interface AppConfigKey<T>
+public interface AppConfigKey<T>

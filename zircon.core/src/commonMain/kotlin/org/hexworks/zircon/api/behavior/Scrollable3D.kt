@@ -8,28 +8,28 @@ import org.hexworks.zircon.api.data.Size3D
  * A [Scrollable3D] object has a visible 3D space which might be smaller than its real size.
  * A 3D scrollable maintains a visible "cube" of its content.
  */
-interface Scrollable3D {
+public interface Scrollable3D {
 
     /**
      * The [Size3D] of the virtual space this [Scrollable3D] can scroll through.
      */
-    var actualSize: Size3D
-    val actualSizeProperty: Property<Size3D>
+    public var actualSize: Size3D
+    public val actualSizeProperty: Property<Size3D>
 
     /**
      * Returns the size of the visible part of this [Scrollable3D].
      */
-    val visibleSize: Size3D
+    public val visibleSize: Size3D
 
     /**
      * The offset where the visible part of this [Scrollable3D] starts.
      */
-    var visibleOffset: Position3D
-    val visibleOffsetProperty: Property<Position3D>
+    public var visibleOffset: Position3D
+    public val visibleOffsetProperty: Property<Position3D>
 
     /**
      * The 2D scrollable of this [Scrollable3D].
      */
-    val scrollable2D: Scrollable
+    public val scrollable2D: Scrollable
 
 }

@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.resource
 import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetType
-import org.hexworks.zircon.api.resource.base.BaseTilesetResource
+import org.hexworks.zircon.internal.resource.base.BaseTilesetResource
 
 /**
  * Tileset resource for true type fonts which can be used with

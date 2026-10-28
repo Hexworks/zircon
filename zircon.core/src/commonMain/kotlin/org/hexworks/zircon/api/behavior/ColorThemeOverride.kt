@@ -8,7 +8,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultColorThemeOverride
 /**
  * Represents an object that has a [ColorTheme] that can be changed.
  */
-interface ColorThemeOverride : HasColorTheme {
+public interface ColorThemeOverride : HasColorTheme {
 
     /**
      * The (mutable) [ColorTheme].
@@ -21,15 +21,15 @@ interface ColorThemeOverride : HasColorTheme {
      *
      * @see Property
      */
-    val themeProperty: Property<ColorTheme>
+    public val themeProperty: Property<ColorTheme>
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [ColorThemeOverride] using [initialTheme] for the initial [ColorThemeOverride.theme].
          */
-        fun create(initialTheme: ColorTheme): ColorThemeOverride = create(initialTheme.toProperty())
+        public fun create(initialTheme: ColorTheme): ColorThemeOverride = create(initialTheme.toProperty())
 
-        fun create(themeProperty: Property<ColorTheme>): ColorThemeOverride = DefaultColorThemeOverride(themeProperty)
+        public fun create(themeProperty: Property<ColorTheme>): ColorThemeOverride = DefaultColorThemeOverride(themeProperty)
     }
 }

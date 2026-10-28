@@ -7,10 +7,10 @@ package org.hexworks.zircon.api.component
  * A [Fragment] usually contains view logic that works with the controls that are
  * present in [root].
  */
-interface Fragment {
+public interface Fragment {
 
     /**
      * The [Component] this [Fragment] contains.
      */
-    val root: Component
+    public val root: Component
 }

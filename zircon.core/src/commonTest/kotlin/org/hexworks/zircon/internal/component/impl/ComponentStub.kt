@@ -60,7 +60,6 @@ class ComponentStub(
     override val themeProperty: Property<ColorTheme> = RuntimeConfig.config.defaultColorTheme.toProperty()
     override var theme: ColorTheme by themeProperty.asDelegate()
 
-    override fun asInternalComponent() = this
 
     override var root: RootContainer?
         get() = error("not implemented")

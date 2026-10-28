@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.color.palette.BasePalette
 
-object DefaultAnsiPalette : BasePalette<ANSIColor>(
+public object DefaultAnsiPalette : BasePalette<ANSIColor>(
     BLACK to Color.create(0, 0, 0),
     RED to Color.create(196, 0, 0),
     GREEN to Color.create(0, 196, 0),

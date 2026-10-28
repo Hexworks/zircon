@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.modifier.Modifier
  * Only use it if you need the speed and you can be really cautious.
  */
 //! TODO: check implementation
-class FastStackedTile(
+public class FastStackedTile(
     initialTiles: List<Tile> = listOf(),
     initialCapacity: Int = initialTiles.size,
 
@@ -38,15 +38,15 @@ class FastStackedTile(
     override val top: Tile
         get() = tiles.last()
 
-    fun addFirst(tile: Tile) {
+    public fun addFirst(tile: Tile) {
         actualTiles.addFirst(tile)
     }
 
-    fun addLast(tile: Tile) {
+    public fun addLast(tile: Tile) {
         actualTiles.addLast(tile)
     }
 
-    fun setLast(tile: Tile) {
+    public fun setLast(tile: Tile) {
         actualTiles.removeLast()
         actualTiles.addLast(tile)
     }

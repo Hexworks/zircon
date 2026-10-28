@@ -15,55 +15,55 @@ import org.hexworks.zircon.internal.data.DefaultBlock
  * Setting an [emptyTile] is **mandatory** and has no default.
  */
 @ZirconDsl
-class BlockBuilder<T : Tile> : Builder<Block<T>> {
+public class BlockBuilder<T : Tile> : Builder<Block<T>> {
 
     private var tilesMap: MutableMap<BlockTileType, T> = mutableMapOf()
 
-    var emptyTile: T? = null
+    public var emptyTile: T? = null
 
-    var top: T
+    public var top: T
         get() = tilesMap[TOP] ?: error("No top tile present")
         set(value) {
             tilesMap[TOP] = value
         }
 
-    var bottom: T
+    public var bottom: T
         get() = tilesMap[BOTTOM] ?: error("No bottom tile present")
         set(value) {
             tilesMap[BOTTOM] = value
         }
 
-    var front: T
+    public var front: T
         get() = tilesMap[FRONT] ?: error("No front tile present")
         set(value) {
             tilesMap[FRONT] = value
         }
 
-    var back: T
+    public var back: T
         get() = tilesMap[BACK] ?: error("No back tile present")
         set(value) {
             tilesMap[BACK] = value
         }
 
-    var left: T
+    public var left: T
         get() = tilesMap[LEFT] ?: error("No left tile present")
         set(value) {
             tilesMap[LEFT] = value
         }
 
-    var right: T
+    public var right: T
         get() = tilesMap[RIGHT] ?: error("No right tile present")
         set(value) {
             tilesMap[RIGHT] = value
         }
 
-    var content: T
+    public var content: T
         get() = tilesMap[CONTENT] ?: error("No content tile present")
         set(value) {
             tilesMap[CONTENT] = value
         }
 
-    var tiles: Map<BlockTileType, T>
+    public var tiles: Map<BlockTileType, T>
         get() = tilesMap.toMap()
         set(value) {
             tilesMap = value.toMutableMap()
@@ -84,6 +84,6 @@ class BlockBuilder<T : Tile> : Builder<Block<T>> {
 /**
  * Creates a new [Block] using the builder DSL and returns it.
  */
-fun <T : Tile> block(init: BlockBuilder<T>.() -> Unit): Block<T> {
+public fun <T : Tile> block(init: BlockBuilder<T>.() -> Unit): Block<T> {
     return BlockBuilder<T>().apply(init).build()
 }

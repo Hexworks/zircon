@@ -6,19 +6,19 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultTab
-import org.hexworks.zircon.internal.fragment.impl.TabData
+import org.hexworks.zircon.api.fragment.TabData
 
 
 @ZirconDsl
-class TabBuilder : FragmentBuilder<TabData>, Builder<TabData> {
+public class TabBuilder : FragmentBuilder<TabData>, Builder<TabData> {
 
     override var position: Position
         get() = error("Can't get the position of a tab")
         set(_) = error("Can't set the position of a tab")
 
-    var key: String? = null
-    var label: String? = null
-    var content: Component? = null
+    public var key: String? = null
+    public var label: String? = null
+    public var content: Component? = null
 
     internal var width: Int? = null
 

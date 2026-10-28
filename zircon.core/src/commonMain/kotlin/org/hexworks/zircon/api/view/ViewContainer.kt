@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.view.DefaultViewContainer
  * [Fragment]s, but instead of being reusable groups of [Component]s they are
  * used for creating reusable [Screen]s.
  */
-interface ViewContainer {
+public interface ViewContainer {
 
     /**
      * Docks a [View] to this [ViewContainer]. When a [View] is [dock]ed
@@ -18,11 +18,11 @@ interface ViewContainer {
      * called on it. After that [View.onDock] will be called on the
      * new [view].
      */
-    fun dock(view: View)
+    public fun dock(view: View)
 
-    companion object {
+    public companion object {
 
-        fun create(): ViewContainer {
+        public fun create(): ViewContainer {
             return DefaultViewContainer()
         }
     }

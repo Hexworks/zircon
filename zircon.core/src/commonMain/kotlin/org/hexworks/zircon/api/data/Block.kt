@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.behavior.Copiable
  * If you want to have multiple [Tile]s in any side (or as the content) try using a [StackedTile].
  */
 
-interface Block<T : Tile> : Copiable<Block<T>> {
-    val emptyTile: T
-    val tiles: MutableMap<BlockTileType, T>
+public interface Block<T : Tile> : Copiable<Block<T>> {
+    public val emptyTile: T
+    public val tiles: MutableMap<BlockTileType, T>
 }

@@ -9,16 +9,16 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.shape.LineFactory
 
-data class ShadowDecorationRenderer(
+public data class ShadowDecorationRenderer(
     private val shadowChar: Char = DEFAULT_SHADOW_CHAR
 ) : ComponentDecorationRenderer {
 
-    override val offset = Position(0, 0)
+    override val offset: Position = Position(0, 0)
 
-    override val occupiedSize = Size(1, 1)
+    override val occupiedSize: Size = Size(1, 1)
 
     private val shadowTile = characterTile {
         character = shadowChar
@@ -46,8 +46,8 @@ data class ShadowDecorationRenderer(
         )
     }
 
-    companion object {
+    public companion object {
 
-        const val DEFAULT_SHADOW_CHAR = Symbols.BLOCK_SPARSE
+        public const val DEFAULT_SHADOW_CHAR: Char = Symbols.BLOCK_SPARSE
     }
 }

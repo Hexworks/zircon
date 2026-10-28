@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.shape.DefaultShape
 import kotlin.math.abs
 
-object LineFactory : ShapeFactory<LineParameters> {
+public object LineFactory : ShapeFactory<LineParameters> {
 
     override fun createShape(shapeParameters: LineParameters): Shape {
         //http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
@@ -82,7 +82,7 @@ object LineFactory : ShapeFactory<LineParameters> {
         return result
     }
 
-    fun buildLine(lineParams: LineParameters) = createShape(lineParams)
+    public fun buildLine(lineParams: LineParameters): Shape = createShape(lineParams)
 
-    fun buildLine(fromPoint: Position, toPoint: Position) = buildLine(LineParameters(fromPoint, toPoint))
+    public fun buildLine(fromPoint: Position, toPoint: Position): Shape = buildLine(LineParameters(fromPoint, toPoint))
 }

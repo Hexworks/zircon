@@ -13,7 +13,7 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
-class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
+public class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
     private val logger = LoggerFactory.getLogger(this::class)
     private var listeners = persistentHashMapOf<UIEventType, PersistentList<InputEventSubscription>>()
@@ -138,9 +138,9 @@ class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventS
     }
 
 
-    inner class InputEventSubscription(
+    public inner class InputEventSubscription(
         private val eventType: UIEventType,
-        val listener: (UIEvent, UIEventPhase) -> UIEventResponse
+        public val listener: (UIEvent, UIEventPhase) -> UIEventResponse
     ) : Subscription {
 
         override var disposeState: DisposeState = NotDisposed

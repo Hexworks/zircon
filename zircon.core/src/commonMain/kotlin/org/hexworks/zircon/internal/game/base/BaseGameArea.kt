@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.game.base
+package org.hexworks.zircon.internal.game.base
 
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
@@ -16,7 +16,7 @@ import org.hexworks.zircon.internal.game.GameAreaState
 import org.hexworks.zircon.internal.game.InternalGameArea
 
 
-abstract class BaseGameArea<T : Tile, B : Block<T>>(
+public abstract class BaseGameArea<T : Tile, B : Block<T>>(
     initialVisibleSize: Size3D,
     initialActualSize: Size3D,
     initialVisibleOffset: Position3D = Position3D.ZERO,
@@ -31,12 +31,12 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
     final override val visibleOffsetProperty: Property<Position3D>
         get() = scrollable3D.visibleOffsetProperty
 
-    final override val filter = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
+    final override val filter: GameAreaTileFilter<T> = initialFilters.fold(GameAreaTileFilter.identity(), GameAreaTileFilter<T>::plus)
 
     // 📙 Note that this was necessary back in the day when Zircon supported Java and we needed
     // to have consistent snapshots for thread safety. Now we don't need that anymore as with coroutines
     // we don't have this problem anymore, but we left this as-is.
-    override var state = GameAreaState(
+    override var state: GameAreaState<T, B> = GameAreaState(
         blocks = initialContents.toMutableMap(),
         actualSize = initialActualSize,
         visibleSize = initialVisibleSize,
@@ -59,9 +59,9 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         this.disposeState = disposeState
     }
 
-    override fun hasBlockAt(position: Position3D) = blocks.containsKey(position)
+    override fun hasBlockAt(position: Position3D): Boolean = blocks.containsKey(position)
 
-    override fun fetchBlockAtOrNull(position: Position3D) = blocks[position]
+    override fun fetchBlockAtOrNull(position: Position3D): B? = blocks[position]
 
     override fun setBlockAt(position: Position3D, block: B) {
         if (actualSize.containsPosition(position)) {
@@ -69,6 +69,5 @@ abstract class BaseGameArea<T : Tile, B : Block<T>>(
         }
     }
 
-    override fun asInternal() = this
 
 }

@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.data.ComponentState.entries
 import org.hexworks.zircon.api.component.data.ComponentState.values
 import org.hexworks.zircon.api.graphics.StyleSet
 
-data class DefaultComponentStyleSet(
+public data class DefaultComponentStyleSet(
     private val styles: Map<ComponentState, StyleSet>
 ) : ComponentStyleSet {
 
@@ -16,5 +16,5 @@ data class DefaultComponentStyleSet(
         }
     }
 
-    override fun fetchStyleFor(state: ComponentState) = styles[state] ?: error("")
+    override fun fetchStyleFor(state: ComponentState): StyleSet = styles[state] ?: error("")
 }

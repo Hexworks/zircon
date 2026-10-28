@@ -11,9 +11,9 @@ import org.hexworks.zircon.api.data.Tile
  * before rendering. This can be used for example to apply a depth effect or some other
  * visual effect (such as fog) that doesn't have game logic in it and only adds visuals.
  */
-interface GameAreaTileFilter<T : Tile> {
+public interface GameAreaTileFilter<T : Tile> {
 
-    fun transform(
+    public fun transform(
         visibleSize: Size3D,
         offsetPosition: Position3D,
         blockTileType: BlockTileType,
@@ -24,7 +24,7 @@ interface GameAreaTileFilter<T : Tile> {
      * Allows the chaining of [GameAreaTileFilter]s eg: `filter0 + filter1`
      * will apply `filter0` and then `filter1`.
      */
-    operator fun plus(other: GameAreaTileFilter<T>): GameAreaTileFilter<T> {
+    public operator fun plus(other: GameAreaTileFilter<T>): GameAreaTileFilter<T> {
         return CompositeGameAreaTileFilter(this, other)
     }
 
@@ -53,8 +53,8 @@ interface GameAreaTileFilter<T : Tile> {
         }
     }
 
-    companion object {
-        fun <T : Tile> identity(): GameAreaTileFilter<T> = object : GameAreaTileFilter<T> {
+    public companion object {
+        public fun <T : Tile> identity(): GameAreaTileFilter<T> = object : GameAreaTileFilter<T> {
             override fun transform(
                 visibleSize: Size3D,
                 offsetPosition: Position3D,

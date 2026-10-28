@@ -9,8 +9,8 @@ import kotlin.reflect.KClass
  * @param T the texture object that the renderer will draw on (like Graphics2D in Swing)
  * @param C the rendering context that contains all related objects that are necessary for rendering
  */
-class TextureModifierStrategy<T : Any, C : Any> internal constructor(
-    val modifierType: KClass<out TextureModifier>,
-    val targetType: KClass<T>,
-    val transformer: TextureTransformer<T, C>
+public class TextureModifierStrategy<T : Any, C : Any> internal constructor(
+    public val modifierType: KClass<out TextureModifier>,
+    public val targetType: KClass<T>,
+    public val transformer: TextureTransformer<T, C>
 )

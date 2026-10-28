@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.modifier.Modifier
 
-data class DefaultStackedTile(
+public data class DefaultStackedTile(
     override val baseTile: Tile,
     override val rest: PersistentList<Tile> = persistentListOf()
 ) : StackedTile, Tile by baseTile {

@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * This enum contains the metadata for the built-in True Type fonts.
  */
 @Suppress("SpellCheckingInspection")
-enum class BuiltInTrueTypeFontResource(
+public enum class BuiltInTrueTypeFontResource(
     private val fileName: String,
     private val ratioFn: (Int) -> Int
 ) {
@@ -32,7 +32,7 @@ enum class BuiltInTrueTypeFontResource(
     VTECH("vtech", { it }),
     VTECH_NARROW("vtech", { it.div(2) });
 
-    fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
+    public fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
         path = "$FONTS_DIR/$fileName.$FONTS_EXT",
         width = ratioFn(height),
         height = height,
@@ -40,20 +40,20 @@ enum class BuiltInTrueTypeFontResource(
         name = name
     )
 
-    companion object {
+    public companion object {
 
-        const val FONTS_DIR = "/monospace_fonts"
-        const val FONTS_EXT = "ttf"
+        public const val FONTS_DIR: String = "/monospace_fonts"
+        public const val FONTS_EXT: String = "ttf"
 
-        fun squareFonts(height: Int): List<TilesetResource> = entries
+        public fun squareFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(1) == 1 }
             .map { it.toTilesetResource(height) }
 
-        fun wideFonts(height: Int): List<TilesetResource> = entries
+        public fun wideFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(2) > 2 }
             .map { it.toTilesetResource(height) }
 
-        fun narrowFonts(height: Int): List<TilesetResource> = entries
+        public fun narrowFonts(height: Int): List<TilesetResource> = entries
             .filter { it.ratioFn(2) < 2 }
             .map { it.toTilesetResource(height) }
     }

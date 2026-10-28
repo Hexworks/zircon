@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.fragment.TableColumn
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -22,7 +23,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
  * The **internal** default implementation of [Table].
  */
 @Suppress("UNCHECKED_CAST")
-class DefaultTable<M : Any> internal constructor(
+public class DefaultTable<M : Any> internal constructor(
     position: Position,
     /**
      * The height this fragment will use. Keep in mind that the first row will be used as header row.
@@ -48,7 +49,7 @@ class DefaultTable<M : Any> internal constructor(
 
     private lateinit var dataPanel: VBox
 
-    override val root = vBox {
+    override val root: VBox = vBox {
         val size = Size(
             width = width,
             height = height
@@ -65,7 +66,7 @@ class DefaultTable<M : Any> internal constructor(
         }
     }
 
-    override val size = root.size
+    override val size: Size = root.size
 
     init {
         reloadData()

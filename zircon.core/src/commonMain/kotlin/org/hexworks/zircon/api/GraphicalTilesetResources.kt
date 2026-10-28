@@ -9,8 +9,8 @@ import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
  * This object can be used to load either built-in graphical
  * [TilesetResource]s or external ones.
  */
-object GraphicalTilesetResources {
+public object GraphicalTilesetResources {
 
-    fun nethack16x16(): TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16
+    public fun nethack16x16(): TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16
 
 }

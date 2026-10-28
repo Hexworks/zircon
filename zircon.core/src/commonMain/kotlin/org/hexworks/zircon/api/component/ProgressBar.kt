@@ -5,37 +5,37 @@ import org.hexworks.cobalt.databinding.api.property.Property
 /**
  * A [ProgressBar] visualizes the progress of an operation.
  */
-interface ProgressBar : Component {
+public interface ProgressBar : Component {
 
     /**
      * Range (`0 ..value`) of the [ProgressBar]
      */
-    val range: Int
+    public val range: Int
 
     /**
      * Number of visible steps
      */
-    val numberOfSteps: Int
+    public val numberOfSteps: Int
 
     /**
      * Indicates if the current progress is displayed on the progress bar
      */
-    val displayPercentValueOfProgress: Boolean
+    public val displayPercentValueOfProgress: Boolean
 
     /**
      * Current progress with respect to the maxValue
      */
-    var progress: Double
-    val progressProperty: Property<Double>
+    public var progress: Double
+    public val progressProperty: Property<Double>
 
-    fun increment() = incrementBy(1)
-    fun decrement() = decrementBy(1)
+    public fun increment(): Unit = incrementBy(1)
+    public fun decrement(): Unit = decrementBy(1)
 
-    fun incrementBy(value: Int) {
+    public fun incrementBy(value: Int) {
         progressProperty.value += value
     }
 
-    fun decrementBy(value: Int) {
+    public fun decrementBy(value: Int) {
         progressProperty.value -= value
     }
 

@@ -6,14 +6,14 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
  * Represents an object that supports the notion of closing.
  * After closing an object, its resources are freed, and it is no longer usable.
  */
-interface Closeable {
+public interface Closeable {
 
-    val closed: Boolean
+    public val closed: Boolean
         get() = closedProperty.value
-    val closedProperty: ObservableValue<Boolean>
+    public val closedProperty: ObservableValue<Boolean>
 
     /**
      * Closes this [Closeable].
      */
-    fun close()
+    public fun close()
 }

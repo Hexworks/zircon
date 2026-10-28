@@ -1,229 +1,230 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 
-object ColorThemes {
+public object ColorThemes {
 
     /**
      * This is a null object for color themes indicating that no
      * theme is chosen.
      */
-    fun defaultTheme() = ColorThemeResource.DEFAULT.getTheme()
+    public fun defaultTheme(): ColorTheme = ColorThemeResource.DEFAULT.getTheme()
 
     /**
      * This is the theme that was made by Hexworks.
      */
-    fun hexworks() = ColorThemeResource.HEXWORKS.getTheme()
+    public fun hexworks(): ColorTheme = ColorThemeResource.HEXWORKS.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
      */
-    fun adriftInDreams() = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
+    public fun adriftInDreams(): ColorTheme = ColorThemeResource.ADRIFT_IN_DREAMS.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/49963/let_them_eat_cake
      */
-    fun letThemEatCake() = ColorThemeResource.LET_THEM_EAT_CAKE.getTheme()
+    public fun letThemEatCake(): ColorTheme = ColorThemeResource.LET_THEM_EAT_CAKE.getTheme()
 
     /**
      * Taken from
      * https://www.colourlovers.com/palette/15/tech_light
      */
-    fun techLight() = ColorThemeResource.TECH_LIGHT.getTheme()
+    public fun techLight(): ColorTheme = ColorThemeResource.TECH_LIGHT.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/953498/Headache
      */
-    fun headache() = ColorThemeResource.HEADACHE.getTheme()
+    public fun headache(): ColorTheme = ColorThemeResource.HEADACHE.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/148712/Gamebookers
      */
-    fun gamebookers() = ColorThemeResource.GAMEBOOKERS.getTheme()
+    public fun gamebookers(): ColorTheme = ColorThemeResource.GAMEBOOKERS.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/903157/Entrapped_InAPalette
      */
-    fun entrappedInAPalette() = ColorThemeResource.ENTRAPPED_IN_A_PALETTE.getTheme()
+    public fun entrappedInAPalette(): ColorTheme = ColorThemeResource.ENTRAPPED_IN_A_PALETTE.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/678929/War
      */
-    fun war() = ColorThemeResource.WAR.getTheme()
+    public fun war(): ColorTheme = ColorThemeResource.WAR.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/557832/Captured_By_Pirates
      */
-    fun capturedByPirates() = ColorThemeResource.CAPTURED_BY_PIRATES.getTheme()
+    public fun capturedByPirates(): ColorTheme = ColorThemeResource.CAPTURED_BY_PIRATES.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
      */
-    fun ghostOfAChance() = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme()
+    public fun ghostOfAChance(): ColorTheme = ColorThemeResource.GHOST_OF_A_CHANCE.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/1585870/after_the_heist
      */
-    fun afterTheHeist() = ColorThemeResource.AFTER_THE_HEIST.getTheme()
+    public fun afterTheHeist(): ColorTheme = ColorThemeResource.AFTER_THE_HEIST.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/731302/pablo_neruda
      */
-    fun pabloNeruda() = ColorThemeResource.PABLO_NERUDA.getTheme()
+    public fun pabloNeruda(): ColorTheme = ColorThemeResource.PABLO_NERUDA.getTheme()
 
     /**
      * Taken from
      * http://www.colourlovers.com/palette/2031222/Olive_Leaf_Tea
      */
-    fun oliveLeafTea() = ColorThemeResource.OLIVE_LEAF_TEA.getTheme()
+    public fun oliveLeafTea(): ColorTheme = ColorThemeResource.OLIVE_LEAF_TEA.getTheme()
 
     /**
      * Taken from
      * https://www.colourlovers.com/palette/2420454/cyberpunk
      */
-    fun cyberpunk() = ColorThemeResource.CYBERPUNK.getTheme()
+    public fun cyberpunk(): ColorTheme = ColorThemeResource.CYBERPUNK.getTheme()
 
     // These come from the Slack themes: https://slackthemes.net
-    fun afterglow() = ColorThemeResource.AFTERGLOW.getTheme()
+    public fun afterglow(): ColorTheme = ColorThemeResource.AFTERGLOW.getTheme()
 
-    fun amigaOs() = ColorThemeResource.AMIGA_OS.getTheme()
+    public fun amigaOs(): ColorTheme = ColorThemeResource.AMIGA_OS.getTheme()
 
-    fun ancestry() = ColorThemeResource.ANCESTRY.getTheme()
+    public fun ancestry(): ColorTheme = ColorThemeResource.ANCESTRY.getTheme()
 
-    fun arc() = ColorThemeResource.ARC.getTheme()
+    public fun arc(): ColorTheme = ColorThemeResource.ARC.getTheme()
 
-    fun forest() = ColorThemeResource.FOREST.getTheme()
+    public fun forest(): ColorTheme = ColorThemeResource.FOREST.getTheme()
 
-    fun linuxMintDark() = ColorThemeResource.LINUX_MINT_DARK.getTheme()
+    public fun linuxMintDark(): ColorTheme = ColorThemeResource.LINUX_MINT_DARK.getTheme()
 
-    fun nord() = ColorThemeResource.NORD.getTheme()
+    public fun nord(): ColorTheme = ColorThemeResource.NORD.getTheme()
 
-    fun tron() = ColorThemeResource.TRON.getTheme()
+    public fun tron(): ColorTheme = ColorThemeResource.TRON.getTheme()
 
-    fun saiku() = ColorThemeResource.SAIKU.getTheme()
+    public fun saiku(): ColorTheme = ColorThemeResource.SAIKU.getTheme()
 
-    fun ingressResistance() = ColorThemeResource.INGRESS_RESISTANCE.getTheme()
+    public fun ingressResistance(): ColorTheme = ColorThemeResource.INGRESS_RESISTANCE.getTheme()
 
-    fun ingressEnlightened() = ColorThemeResource.INGRESS_ENLIGHTENED.getTheme()
+    public fun ingressEnlightened(): ColorTheme = ColorThemeResource.INGRESS_ENLIGHTENED.getTheme()
 
     /**
      * Taken from the official Zenburn page.
      */
-    fun zenburnVanilla() = ColorThemeResource.ZENBURN_VANILLA.getTheme()
+    public fun zenburnVanilla(): ColorTheme = ColorThemeResource.ZENBURN_VANILLA.getTheme()
 
-    fun zenburnPink() = ColorThemeResource.ZENBURN_PINK.getTheme()
+    public fun zenburnPink(): ColorTheme = ColorThemeResource.ZENBURN_PINK.getTheme()
 
-    fun zenburnGreen() = ColorThemeResource.ZENBURN_GREEN.getTheme()
+    public fun zenburnGreen(): ColorTheme = ColorThemeResource.ZENBURN_GREEN.getTheme()
 
     //Taken form the official Monokai page.
 
-    fun monokaiYellow() = ColorThemeResource.MONOKAI_YELLOW.getTheme()
+    public fun monokaiYellow(): ColorTheme = ColorThemeResource.MONOKAI_YELLOW.getTheme()
 
-    fun monokaiPink() = ColorThemeResource.MONOKAI_PINK.getTheme()
+    public fun monokaiPink(): ColorTheme = ColorThemeResource.MONOKAI_PINK.getTheme()
 
-    fun monokaiGreen() = ColorThemeResource.MONOKAI_GREEN.getTheme()
+    public fun monokaiGreen(): ColorTheme = ColorThemeResource.MONOKAI_GREEN.getTheme()
 
-    fun monokaiOrange() = ColorThemeResource.MONOKAI_ORANGE.getTheme()
+    public fun monokaiOrange(): ColorTheme = ColorThemeResource.MONOKAI_ORANGE.getTheme()
 
-    fun monokaiViolet() = ColorThemeResource.MONOKAI_VIOLET.getTheme()
+    public fun monokaiViolet(): ColorTheme = ColorThemeResource.MONOKAI_VIOLET.getTheme()
 
-    fun monokaiBlue() = ColorThemeResource.MONOKAI_BLUE.getTheme()
+    public fun monokaiBlue(): ColorTheme = ColorThemeResource.MONOKAI_BLUE.getTheme()
 
     // All Solarized themes are taken from:
     // http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/
 
-    fun solarizedDarkYellow() = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme()
+    public fun solarizedDarkYellow(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_YELLOW.getTheme()
 
-    fun solarizedDarkOrange() = ColorThemeResource.SOLARIZED_DARK_ORANGE.getTheme()
+    public fun solarizedDarkOrange(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_ORANGE.getTheme()
 
-    fun solarizedDarkRed() = ColorThemeResource.SOLARIZED_DARK_RED.getTheme()
+    public fun solarizedDarkRed(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_RED.getTheme()
 
-    fun solarizedDarkMagenta() = ColorThemeResource.SOLARIZED_DARK_MAGENTA.getTheme()
+    public fun solarizedDarkMagenta(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_MAGENTA.getTheme()
 
-    fun solarizedDarkViolet() = ColorThemeResource.SOLARIZED_DARK_VIOLET.getTheme()
+    public fun solarizedDarkViolet(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_VIOLET.getTheme()
 
-    fun solarizedDarkBlue() = ColorThemeResource.SOLARIZED_DARK_BLUE.getTheme()
+    public fun solarizedDarkBlue(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_BLUE.getTheme()
 
-    fun solarizedDarkCyan() = ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme()
+    public fun solarizedDarkCyan(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_CYAN.getTheme()
 
-    fun solarizedDarkGreen() = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme()
+    public fun solarizedDarkGreen(): ColorTheme = ColorThemeResource.SOLARIZED_DARK_GREEN.getTheme()
 
-    fun solarizedLightYellow() = ColorThemeResource.SOLARIZED_LIGHT_YELLOW.getTheme()
+    public fun solarizedLightYellow(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_YELLOW.getTheme()
 
-    fun solarizedLightOrange() = ColorThemeResource.SOLARIZED_LIGHT_ORANGE.getTheme()
+    public fun solarizedLightOrange(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_ORANGE.getTheme()
 
-    fun solarizedLightRed() = ColorThemeResource.SOLARIZED_LIGHT_RED.getTheme()
+    public fun solarizedLightRed(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_RED.getTheme()
 
-    fun solarizedLightMagenta() = ColorThemeResource.SOLARIZED_LIGHT_MAGENTA.getTheme()
+    public fun solarizedLightMagenta(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_MAGENTA.getTheme()
 
-    fun solarizedLightViolet() = ColorThemeResource.SOLARIZED_LIGHT_VIOLET.getTheme()
+    public fun solarizedLightViolet(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_VIOLET.getTheme()
 
-    fun solarizedLightBlue() = ColorThemeResource.SOLARIZED_LIGHT_BLUE.getTheme()
+    public fun solarizedLightBlue(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_BLUE.getTheme()
 
-    fun solarizedLightCyan() = ColorThemeResource.SOLARIZED_LIGHT_CYAN.getTheme()
+    public fun solarizedLightCyan(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_CYAN.getTheme()
 
-    fun solarizedLightGreen() = ColorThemeResource.SOLARIZED_LIGHT_GREEN.getTheme()
+    public fun solarizedLightGreen(): ColorTheme = ColorThemeResource.SOLARIZED_LIGHT_GREEN.getTheme()
 
-    fun staleSunset() = ColorThemeResource.STALE_SUNSET.getTheme()
+    public fun staleSunset(): ColorTheme = ColorThemeResource.STALE_SUNSET.getTheme()
 
-    fun afternoonHaze() = ColorThemeResource.AFTERNOON_HAZE.getTheme()
+    public fun afternoonHaze(): ColorTheme = ColorThemeResource.AFTERNOON_HAZE.getTheme()
 
-    fun winterWonderland() = ColorThemeResource.WINTER_WONDERLAND.getTheme()
+    public fun winterWonderland(): ColorTheme = ColorThemeResource.WINTER_WONDERLAND.getTheme()
 
-    fun petite() = ColorThemeResource.PETITE.getTheme()
+    public fun petite(): ColorTheme = ColorThemeResource.PETITE.getTheme()
 
-    fun waverator() = ColorThemeResource.WAVERATOR.getTheme()
+    public fun waverator(): ColorTheme = ColorThemeResource.WAVERATOR.getTheme()
 
-    fun justparchment() = ColorThemeResource.JUSTPARCHMENT.getTheme()
+    public fun justparchment(): ColorTheme = ColorThemeResource.JUSTPARCHMENT.getTheme()
 
-    fun ammo() = ColorThemeResource.AMMO.getTheme()
+    public fun ammo(): ColorTheme = ColorThemeResource.AMMO.getTheme()
 
-    fun nyx() = ColorThemeResource.NYX.getTheme()
+    public fun nyx(): ColorTheme = ColorThemeResource.NYX.getTheme()
 
-    fun slso() = ColorThemeResource.SLSO.getTheme()
+    public fun slso(): ColorTheme = ColorThemeResource.SLSO.getTheme()
 
-    fun beyondTheSea() = ColorThemeResource.BEYOND_THE_SEA.getTheme()
+    public fun beyondTheSea(): ColorTheme = ColorThemeResource.BEYOND_THE_SEA.getTheme()
 
-    fun forestGlow() = ColorThemeResource.FOREST_GLOW.getTheme()
+    public fun forestGlow(): ColorTheme = ColorThemeResource.FOREST_GLOW.getTheme()
 
-    fun cherryBear() = ColorThemeResource.CHERRY_BEAR.getTheme()
+    public fun cherryBear(): ColorTheme = ColorThemeResource.CHERRY_BEAR.getTheme()
 
-    fun supernova() = ColorThemeResource.SUPERNOVA.getTheme()
+    public fun supernova(): ColorTheme = ColorThemeResource.SUPERNOVA.getTheme()
 
-    fun rust() = ColorThemeResource.RUST.getTheme()
+    public fun rust(): ColorTheme = ColorThemeResource.RUST.getTheme()
 
-    fun cursedTurkey() = ColorThemeResource.CURSED_TURKEY.getTheme()
+    public fun cursedTurkey(): ColorTheme = ColorThemeResource.CURSED_TURKEY.getTheme()
 
-    fun molten() = ColorThemeResource.MOLTEN.getTheme()
+    public fun molten(): ColorTheme = ColorThemeResource.MOLTEN.getTheme()
 
-    fun stormyRed() = ColorThemeResource.STORMY_RED.getTheme()
+    public fun stormyRed(): ColorTheme = ColorThemeResource.STORMY_RED.getTheme()
 
-    fun stormyGreen() = ColorThemeResource.STORMY_GREEN.getTheme()
+    public fun stormyGreen(): ColorTheme = ColorThemeResource.STORMY_GREEN.getTheme()
 
-    fun oil() = ColorThemeResource.OIL.getTheme()
+    public fun oil(): ColorTheme = ColorThemeResource.OIL.getTheme()
 
-    fun naturesAtmosphere() = ColorThemeResource.NATURES_ATMOSPHERE.getTheme()
+    public fun naturesAtmosphere(): ColorTheme = ColorThemeResource.NATURES_ATMOSPHERE.getTheme()
 
-    fun infiniteIkea() = ColorThemeResource.INFINITE_IKEA.getTheme()
+    public fun infiniteIkea(): ColorTheme = ColorThemeResource.INFINITE_IKEA.getTheme()
 
-    fun fireWeeds() = ColorThemeResource.FIRE_WEEDS.getTheme()
+    public fun fireWeeds(): ColorTheme = ColorThemeResource.FIRE_WEEDS.getTheme()
 
-    fun pola() = ColorThemeResource.POLA.getTheme()
+    public fun pola(): ColorTheme = ColorThemeResource.POLA.getTheme()
 
-    fun spanishSunset() = ColorThemeResource.SPANISH_SUNSET.getTheme()
+    public fun spanishSunset(): ColorTheme = ColorThemeResource.SPANISH_SUNSET.getTheme()
 
-    fun discord() = ColorThemeResource.DISCORD.getTheme()
+    public fun discord(): ColorTheme = ColorThemeResource.DISCORD.getTheme()
 
-    fun afterDark() = ColorThemeResource.AFTER_DARK.getTheme()
+    public fun afterDark(): ColorTheme = ColorThemeResource.AFTER_DARK.getTheme()
 
 }

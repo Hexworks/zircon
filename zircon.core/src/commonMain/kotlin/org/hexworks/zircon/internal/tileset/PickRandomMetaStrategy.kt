@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.tileset.TextureMetadata
 import kotlin.random.Random
 
 
-class PickRandomMetaStrategy<T : Tile> : MetadataPickingStrategy<T> {
+public class PickRandomMetaStrategy<T : Tile> : MetadataPickingStrategy<T> {
 
     private val random = Random(23425632)
 

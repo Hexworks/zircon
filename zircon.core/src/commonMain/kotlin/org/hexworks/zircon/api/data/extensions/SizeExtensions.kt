@@ -11,26 +11,26 @@ import kotlin.math.min
 /**
  * Tells whether this [Size] **is** the same as [Size.unknown].
  */
-val Size.isSizeUnknown: Boolean
+public val Size.isSizeUnknown: Boolean
     get() = this === Size.UNKNOWN
 
 /**
  * Tells whether this [Size] **is not** the same as [Size.unknown].
  */
-val Size.isSizeNotUnknown: Boolean
+public val Size.isSizeNotUnknown: Boolean
     get() = this !== Size.UNKNOWN
 
 /**
  * Returns this [Size] or [other] if this size [isSizeUnknown].
  */
-fun Size.orElse(other: Size) = if (isSizeUnknown) other else this
+public fun Size.orElse(other: Size): Size = if (isSizeUnknown) other else this
 
 /**
  * Creates a list of [Position]s in the order in which they should
  * be iterated when drawing (first rows, then columns in those rows).
  */
 //! TODO: make this a property instead of a function
-fun Size.fetchPositions(): Iterable<Position> = Iterable {
+public fun Size.fetchPositions(): Iterable<Position> = Iterable {
     var currY = 0
     var currX = 0
     val endX = width
@@ -60,24 +60,24 @@ fun Size.fetchPositions(): Iterable<Position> = Iterable {
  * will have a bounding box of
  * `[(0, 0), (1, 0), (2, 0), (0, 1), (2, 1), (0, 2), (1, 2), (2, 2)]`
  */
-fun Size.fetchBoundingBoxPositions(): Set<Position> {
+public fun Size.fetchBoundingBoxPositions(): Set<Position> {
     return RectangleFactory
         .buildRectangle(Position.ZERO, this)
         .positions
 }
 
-fun Size.fetchTopLeftPosition(): Position = Position.ZERO
+public fun Size.fetchTopLeftPosition(): Position = Position.ZERO
 
-fun Size.fetchTopRightPosition(): Position = Position(width - 1, 0)
+public fun Size.fetchTopRightPosition(): Position = Position(width - 1, 0)
 
-fun Size.fetchBottomLeftPosition(): Position = Position(0, height - 1)
+public fun Size.fetchBottomLeftPosition(): Position = Position(0, height - 1)
 
-fun Size.fetchBottomRightPosition(): Position = Position(width - 1, height - 1)
+public fun Size.fetchBottomRightPosition(): Position = Position(width - 1, height - 1)
 
 /**
  * Creates a new size based on this size, but with a different width.
  */
-fun Size.withWidth(width: Int): Size {
+public fun Size.withWidth(width: Int): Size {
     if (this.width == width) {
         return this
     }
@@ -87,7 +87,7 @@ fun Size.withWidth(width: Int): Size {
 /**
  * Creates a new size based on this size, but with a different height.
  */
-fun Size.withHeight(height: Int): Size {
+public fun Size.withHeight(height: Int): Size {
     if (this.height == height) {
         return this
     }
@@ -100,7 +100,7 @@ fun Size.withHeight(height: Int): Size {
  * calling it with a positive delta will return
  * a grid size <code>delta</code> number of width wider and for negative numbers shorter.
  */
-fun Size.withRelativeWidth(delta: Int): Size {
+public fun Size.withRelativeWidth(delta: Int): Size {
     if (delta == 0) {
         return this
     }
@@ -113,7 +113,7 @@ fun Size.withRelativeWidth(delta: Int): Size {
  * it with a positive delta will return
  * a grid size <code>delta</code> number of height longer and for negative numbers shorter.
  */
-fun Size.withRelativeHeight(delta: Int): Size {
+public fun Size.withRelativeHeight(delta: Int): Size {
     if (delta == 0) {
         return this
     }
@@ -124,7 +124,7 @@ fun Size.withRelativeHeight(delta: Int): Size {
  * Creates a new [Size] object representing a size based on this object's size but with a delta applied.
  * This is the same as calling `withRelativeXLength(delta.getXLength()).withRelativeYLength(delta.getYLength())`
  */
-fun Size.withRelative(delta: Size): Size {
+public fun Size.withRelative(delta: Size): Size {
     return this.withRelativeHeight(delta.height).withRelativeWidth(delta.width)
 }
 
@@ -132,7 +132,7 @@ fun Size.withRelative(delta: Size): Size {
  * Takes a different [Size] and returns a new [Size] that has the largest dimensions of the two,
  * measured separately. So calling 3x5 on a 5x3 will return 5x5.
  */
-fun Size.max(other: Size): Size {
+public fun Size.max(other: Size): Size {
     return withWidth(max(width, other.width))
         .withHeight(max(height, other.height))
 }
@@ -141,7 +141,7 @@ fun Size.max(other: Size): Size {
  * Takes a different [Size] and returns a new [Size] that has the smallest dimensions of the two,
  * measured separately. So calling 3x5 on a 5x3 will return 3x3.
  */
-fun Size.min(other: Size): Size {
+public fun Size.min(other: Size): Size {
     return withWidth(min(width, other.width))
         .withHeight(min(height, other.height))
 }
@@ -152,7 +152,7 @@ fun Size.min(other: Size): Size {
  * to the same size; it will keep the same object
  * in memory instead of swapping it out every cycle.
  */
-fun Size.with(size: Size): Size {
+public fun Size.with(size: Size): Size {
     if (equals(size)) {
         return this
     }
@@ -163,20 +163,20 @@ fun Size.with(size: Size): Size {
  * Tells whether this [Size] contains the given [Position].
  * Works in the same way as [Boundable.containsPosition].
  */
-fun Size.containsPosition(position: Position): Boolean = position.x < width && position.y < height
+public fun Size.containsPosition(position: Position): Boolean = position.x < width && position.y < height
 
 /**
  * Converts this [Size] to a [Position]:
  * [Size.width] to [Position.x] and [Size.height] to [Position.y]
  */
-fun Size.toPosition(): Position = Position(width, height)
+public fun Size.toPosition(): Position = Position(width, height)
 
 /**
  * Converts this [Size] to a [Rect] with the given [Position].
  */
-fun Size.toBoundable(position: Position = Position.ZERO): Boundable = Boundable.create(position, this)
+public fun Size.toBoundable(position: Position = Position.ZERO): Boundable = Boundable.create(position, this)
 
 /**
  * Creates a new [Size3D] from this [Size] and the given [zLength].
  */
-fun Size.toSize3D(zLength: Int = 0) = Size3D.from2DSize(this, zLength)
+public fun Size.toSize3D(zLength: Int = 0): Size3D = Size3D.from2DSize(this, zLength)

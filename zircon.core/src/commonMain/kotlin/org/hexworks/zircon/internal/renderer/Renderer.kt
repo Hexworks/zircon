@@ -21,33 +21,33 @@ import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
  * @param C The type of the render context
  * @param V The type of the view object returned from [create]
  */
-interface Renderer<C : Any, V> : Closeable {
+public interface Renderer<C : Any, V> : Closeable {
 
     /**
      *  Called when the [Renderer] is first created. Returns
      *  the UI View object that this [Renderer] will draw upon.
      */
-    fun create(): V
+    public fun create(): V
 
     /**
      * Called when the [Renderer] should render with the appropriate
      * framework-specific object that can be used for rendering.
      */
-    fun render(context: C)
+    public fun render(context: C)
 
     /**
      * Adds a callback which will be called **before** every render.
      * **Note that** this operation should be **very fast** otherwise it will
      * block the rendering. Very fast is `<1ms`.
      */
-    fun beforeRender(listener: (RenderData) -> Unit): Subscription
+    public fun beforeRender(listener: (RenderData) -> Unit): Subscription
 
     /**
      * Adds a callback which will be called **after** every render.
      * **Note that** this operation should be **very fast** otherwise it will
      * block the rendering. Very fast is `<1ms`.
      */
-    fun afterRender(listener: (RenderData) -> Unit): Subscription
+    public fun afterRender(listener: (RenderData) -> Unit): Subscription
 
     /**
      * Called when the [Renderer] is destroyed.

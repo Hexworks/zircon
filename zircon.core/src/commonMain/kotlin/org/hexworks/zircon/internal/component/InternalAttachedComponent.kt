@@ -2,9 +2,9 @@ package org.hexworks.zircon.internal.component
 
 import org.hexworks.zircon.api.component.AttachedComponent
 
-interface InternalAttachedComponent : InternalComponent, AttachedComponent {
+public interface InternalAttachedComponent : InternalComponent, AttachedComponent {
 
-    val component: InternalComponent
-    val parentContainer: InternalContainer
+    public val component: InternalComponent
+    public val parentContainer: InternalContainer
 
 }

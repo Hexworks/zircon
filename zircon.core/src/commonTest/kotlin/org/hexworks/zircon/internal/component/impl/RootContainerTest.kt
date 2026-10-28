@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.internal.extensions.asInternalComponent
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -18,7 +19,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.OFFSET_1X1
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.event.ZirconScope

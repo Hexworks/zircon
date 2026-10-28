@@ -14,11 +14,11 @@ import org.hexworks.zircon.api.component.Fragment
  * Optionally you can specify if the text on the label should be centered, default is `true`.
  * If the `toString` method of [T] is not well suited for the label, you can pass a different one.
  */
-interface Selector<T : Any> : Fragment {
+public interface Selector<T : Any> : Fragment {
 
-    val values: List<T>
-    val valuesProperty: ListProperty<T>
+    public val values: List<T>
+    public val valuesProperty: ListProperty<T>
 
-    val selected: T
-    val selectedProperty: ObservableValue<T>
+    public val selected: T
+    public val selectedProperty: ObservableValue<T>
 }

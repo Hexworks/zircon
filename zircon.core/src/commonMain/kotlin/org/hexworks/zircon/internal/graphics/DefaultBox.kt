@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.shape.LineFactory
 
-class DefaultBox internal constructor(
+public class DefaultBox internal constructor(
     size: Size,
     style: StyleSet,
     override val boxType: BoxType,
@@ -54,5 +54,5 @@ class DefaultBox internal constructor(
         draw(verticalChar.withCharacter(boxType.bottomRight), Position(size.width - 1, size.height - 1))
     }
 
-    override fun toString() = backend.toString()
+    override fun toString(): String = backend.toString()
 }

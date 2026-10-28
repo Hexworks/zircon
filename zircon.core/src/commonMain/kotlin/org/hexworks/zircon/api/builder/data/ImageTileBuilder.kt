@@ -14,11 +14,11 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
  * - Default tileset comes from [RuntimeConfig]
  */
 @ZirconDsl
-class ImageTileBuilder : Builder<ImageTile> {
+public class ImageTileBuilder : Builder<ImageTile> {
 
-    var name: String = " "
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var modifiers: Set<Modifier> = setOf()
+    public var name: String = " "
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var modifiers: Set<Modifier> = setOf()
 
     override fun build(): ImageTile {
         return ImageTile(
@@ -29,6 +29,6 @@ class ImageTileBuilder : Builder<ImageTile> {
     }
 }
 
-fun imageTile(init: ImageTileBuilder.() -> Unit): ImageTile {
+public fun imageTile(init: ImageTileBuilder.() -> Unit): ImageTile {
     return ImageTileBuilder().apply(init).build()
 }

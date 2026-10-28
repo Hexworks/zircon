@@ -18,9 +18,9 @@ import org.hexworks.zircon.api.data.tile.CharacterTile
  * [CharacterTileString] comes with its own builder, and you can create them in a simple
  * way from plain [String]s.
  */
-interface CharacterTileString : Iterable<CharacterTile>, TileComposite {
+public interface CharacterTileString : Iterable<CharacterTile>, TileComposite {
 
-    val characterTiles: List<CharacterTile>
+    public val characterTiles: List<CharacterTile>
 
     /**
      * Creates a new [CharacterTileString] which contains the contents of `this` one
@@ -29,12 +29,12 @@ interface CharacterTileString : Iterable<CharacterTile>, TileComposite {
      * **Note that** the [TextWrap] form the original (`this`) string will be used in the
      * resulting string, and their sizes will be added together.
      */
-    operator fun plus(other: CharacterTileString): CharacterTileString
+    public operator fun plus(other: CharacterTileString): CharacterTileString
 
     /**
      * Returns a new [CharacterTileString] with the given [size] using the
      * contents of `this` one. The new [CharacterTileString] will get truncated
      * if [size] is smaller than the size of this one.
      */
-    fun withSize(size: Size): CharacterTileString
+    public fun withSize(size: Size): CharacterTileString
 }

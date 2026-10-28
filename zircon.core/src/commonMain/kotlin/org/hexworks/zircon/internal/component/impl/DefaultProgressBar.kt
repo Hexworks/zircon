@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
@@ -11,7 +13,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-class DefaultProgressBar internal constructor(
+public class DefaultProgressBar internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<ProgressBar>,
     override val range: Int,
@@ -22,19 +24,19 @@ class DefaultProgressBar internal constructor(
     renderer = renderingStrategy
 ) {
 
-    override val progressProperty = 0.0.toProperty()
+    override val progressProperty: Property<Double> = 0.0.toProperty()
     override var progress: Double by progressProperty.asDelegate()
 
-    override fun acceptsFocus() = false
+    override fun acceptsFocus(): Boolean = false
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
             backgroundColor = Color.TRANSPARENT
         }
     }
 
-    fun getProgressBarState(): ProgressBarState {
+    public fun getProgressBarState(): ProgressBarState {
         val currentProgress = min(range.toDouble(), progress)
         val currentProgressInPercent = ((currentProgress / range.toDouble()) * 100).roundToInt()
         val currentStep = ((currentProgress / range.toDouble()) * numberOfSteps).toInt()
@@ -42,5 +44,5 @@ class DefaultProgressBar internal constructor(
         return ProgressBarState(currentProgression, currentProgressInPercent)
     }
 
-    data class ProgressBarState(val currentProgression: Int, val currentProgressInPercent: Int)
+    public data class ProgressBarState(val currentProgression: Int, val currentProgressInPercent: Int)
 }

@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
@@ -20,7 +23,7 @@ import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
 
 @Suppress("DuplicatedCode")
-class DefaultCheckBox internal constructor(
+public class DefaultCheckBox internal constructor(
     componentMetadata: ComponentMetadata,
     textProperty: Property<String>,
     override val labelAlignment: CheckBoxAlignment = RIGHT,
@@ -32,7 +35,7 @@ class DefaultCheckBox internal constructor(
     Selectable by Selectable.create(),
     TextOverride by TextOverride.create(textProperty) {
 
-    override var checkBoxState = UNCHECKED
+    override var checkBoxState: CheckBoxState = UNCHECKED
         private set
 
     private var pressing = false
@@ -43,7 +46,7 @@ class DefaultCheckBox internal constructor(
         }
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             pressing = false
             this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
@@ -51,24 +54,24 @@ class DefaultCheckBox internal constructor(
         super.mouseExited(event, phase)
     }
 
-    override fun activated() = whenEnabled {
+    override fun activated(): UIEventResponse = whenEnabled {
         pressing = true
         this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
         super.activated()
     }
 
-    override fun deactivated() = whenEnabled {
+    override fun deactivated(): UIEventResponse = whenEnabled {
         pressing = false
         isSelected = isSelected.not()
         this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
         super.deactivated()
     }
 
-    override fun focusTaken() = whenEnabled {
+    override fun focusTaken(): UIEventResponse = whenEnabled {
         pressing = false
         super.focusTaken()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()
 
 }

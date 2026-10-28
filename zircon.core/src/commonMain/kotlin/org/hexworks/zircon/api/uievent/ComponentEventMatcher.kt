@@ -1,18 +1,18 @@
 package org.hexworks.zircon.api.uievent
 
-data class ComponentEventMatcher(
+public data class ComponentEventMatcher(
     val type: ComponentEventType? = null
 ) {
 
-    fun matches(event: ComponentEvent): Boolean {
+    public fun matches(event: ComponentEvent): Boolean {
         return type == event.type
     }
 
-    companion object {
+    public companion object {
 
-        fun create(
+        public fun create(
             type: ComponentEventType? = null
-        ) = ComponentEventMatcher(
+        ): ComponentEventMatcher = ComponentEventMatcher(
             type = type
         )
     }

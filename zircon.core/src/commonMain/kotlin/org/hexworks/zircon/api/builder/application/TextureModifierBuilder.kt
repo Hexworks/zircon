@@ -11,16 +11,16 @@ import org.hexworks.zircon.internal.tileset.DefaultTextureTransformer
 import kotlin.reflect.KClass
 
 @ZirconDsl
-class TextureModifierBuilder<T : Any, C : Any> : Builder<TextureModifierStrategy<T, C>> {
+public class TextureModifierBuilder<T : Any, C : Any> : Builder<TextureModifierStrategy<T, C>> {
 
-    var modifierType: KClass<out TextureModifier>? = null
-    var targetType: KClass<T>? = null
-    var transformer: TextureTransformer<T, C>? = null
+    public var modifierType: KClass<out TextureModifier>? = null
+    public var targetType: KClass<T>? = null
+    public var transformer: TextureTransformer<T, C>? = null
 
     private var transformerFunction: (
         (texture: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>)? = null
 
-    fun transformer(fn: (context: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>) {
+    public fun transformer(fn: (context: TextureContext<T, C>, tile: Tile) -> TextureContext<T, C>) {
         transformerFunction = fn
     }
 

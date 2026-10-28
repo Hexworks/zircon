@@ -11,11 +11,11 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols.SINGLE_LINE_HORIZONTAL
 import org.hexworks.zircon.api.graphics.Symbols.TRIPLE_BAR
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
 import kotlin.math.max
 
-class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
+public class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultToggleButton>) {
         val text = context.component.text
@@ -72,8 +72,8 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
         )
     }
 
-    companion object {
+    public companion object {
         private const val ELLIPSIS = "..."
-        const val DECORATION_WIDTH = 3
+        public const val DECORATION_WIDTH: Int = 3
     }
 }

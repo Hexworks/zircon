@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.extensions.darkenByPercent
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 
-data class FadeIn(
+public data class FadeIn(
     private val steps: Int = 20,
     private val timeMs: Long = 2000,
 ) : TileModifier<CharacterTile>, Fade {
@@ -21,7 +21,7 @@ data class FadeIn(
         return currentStep == steps
     }
 
-    override fun canTransform(tile: Tile) = tile is CharacterTile
+    override fun canTransform(tile: Tile): Boolean = tile is CharacterTile
 
     override fun transform(tile: CharacterTile): CharacterTile {
         if (isFirstRender()) {

@@ -8,11 +8,11 @@ import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.UNCHECKED
 import org.hexworks.zircon.api.component.CheckBox.CheckBoxState.UNCHECKING
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 
 @Suppress("DuplicatedCode")
-class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
+public class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultCheckBox>) {
         val state = context.component.checkBoxState
@@ -42,15 +42,15 @@ class DefaultCheckBoxRenderer : ComponentRenderer<DefaultCheckBox> {
         )
     }
 
-    companion object {
+    public companion object {
         private const val ELLIPSIS = "..."
         private const val CHECKING_BUTTON = "[+]"
         private const val UNCHECKING_BUTTON = "[-]"
         private const val CHECKED_BUTTON = "[*]"
         private const val UNCHECKED_BUTTON = "[ ]"
 
-        const val BUTTON_WIDTH = CHECKING_BUTTON.length
-        const val DECORATION_WIDTH = BUTTON_WIDTH + 1
+        public const val BUTTON_WIDTH: Int = CHECKING_BUTTON.length
+        public const val DECORATION_WIDTH: Int = BUTTON_WIDTH + 1
 
         private val STATES = mapOf(
             Pair(UNCHECKED, UNCHECKED_BUTTON),

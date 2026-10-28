@@ -7,4 +7,4 @@ import org.hexworks.zircon.api.data.Tile
  * that transforms the actual texture represented by
  * a [Tile] before rendering.
  */
-interface TextureModifier : Modifier
+public interface TextureModifier : Modifier

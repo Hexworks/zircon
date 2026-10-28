@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
 
-class DefaultRadioButtonGroup internal constructor(
+public class DefaultRadioButtonGroup internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,
@@ -60,5 +60,5 @@ class DefaultRadioButtonGroup internal constructor(
         return handle
     }
 
-    override fun addComponents(vararg components: RadioButton) = components.map(::addComponent)
+    override fun addComponents(vararg components: RadioButton): List<AttachedComponent> = components.map(::addComponent)
 }

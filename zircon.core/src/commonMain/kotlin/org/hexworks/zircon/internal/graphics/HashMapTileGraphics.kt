@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.extensions.isEmpty
-import org.hexworks.zircon.api.graphics.base.BaseTileGraphics
+import org.hexworks.zircon.internal.graphics.base.BaseTileGraphics
 import org.hexworks.zircon.api.resource.TilesetResource
 
-class HashMapTileGraphics(
+public class HashMapTileGraphics(
     initialSize: Size,
     initialTileset: TilesetResource,
     initialTiles: Map<Position, Tile> = mapOf()
@@ -17,7 +17,7 @@ class HashMapTileGraphics(
     initialTileset = initialTileset
 ) {
 
-    override val tiles = initialTiles.toMutableMap()
+    override val tiles: MutableMap<Position, Tile> = initialTiles.toMutableMap()
 
     override fun draw(tile: Tile, drawPosition: Position) {
         if (size.containsPosition(drawPosition)) {

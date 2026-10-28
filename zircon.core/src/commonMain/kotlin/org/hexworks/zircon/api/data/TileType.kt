@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.data
 /**
  * Contains the possible types of [Tile]s.
  */
-enum class TileType {
+public enum class TileType {
     /**
      * Represents a [Tile] that contains a character (like an `x`).
      */
@@ -25,5 +25,5 @@ enum class TileType {
      */
     IMAGE_TILE;
 
-    companion object
+    public companion object
 }

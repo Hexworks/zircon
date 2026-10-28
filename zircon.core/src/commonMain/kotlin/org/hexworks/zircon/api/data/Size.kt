@@ -8,24 +8,24 @@ import org.hexworks.zircon.internal.data.DefaultSize
  * This class is immutable and cannot change its internal state after creation.
  * [Size] supports destructuring to [width] and [height].
  */
-interface Size : Comparable<Size>, Additive<Size> {
+public interface Size : Comparable<Size>, Additive<Size> {
 
-    val width: Int
-    val height: Int
+    public val width: Int
+    public val height: Int
 
     override operator fun plus(other: Size): Size
 
     override operator fun minus(other: Size): Size
 
-    operator fun component1() = width
+    public operator fun component1(): Int = width
 
-    operator fun component2() = height
+    public operator fun component2(): Int = height
 
-    companion object {
+    public companion object {
         /**
          * Creates a new [Size] using the given `width` (width) and `height` (height).
          */
-        operator fun invoke(width: Int, height: Int): Size = DefaultSize(width, height)
+        public operator fun invoke(width: Int, height: Int): Size = DefaultSize(width, height)
 
         //? This can also be called "IDENTITY". In abstract algebra an Additive type
         //? with a zero element is a Monoid (under addition), but we want to keep the
@@ -33,9 +33,9 @@ interface Size : Comparable<Size>, Additive<Size> {
         //? in Kotlin that says "if a class implements Additive, its `companion object`
         //? also must implement `Identity<T>` since Kotlin doesn't support typeclasses
         //? so it would be pointless anyway.
-        val ZERO = invoke(0, 0)
-        val ONE = invoke(1, 1)
-        val DEFAULT_GRID_SIZE = invoke(60, 30)
-        val UNKNOWN = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
+        public val ZERO: Size = invoke(0, 0)
+        public val ONE: Size = invoke(1, 1)
+        public val DEFAULT_GRID_SIZE: Size = invoke(60, 30)
+        public val UNKNOWN: Size = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

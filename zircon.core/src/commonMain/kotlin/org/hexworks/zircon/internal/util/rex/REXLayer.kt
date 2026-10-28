@@ -14,7 +14,7 @@ private val REX_TRANSPARENT_BACKGROUND = Color.create(255, 0, 255)
 /**
  * Represents a REX Paint Layer, which contains its size information (width, height) and a [List] of [REXCell]s.
  */
-data class REXLayer(
+public data class REXLayer(
     val width: Int,
     val height: Int,
     val cells: List<REXCell>
@@ -22,7 +22,7 @@ data class REXLayer(
     /**
      * Returns itself as a [REXLayer].
      */
-    fun toLayer(tileset: TilesetResource): Layer {
+    public fun toLayer(tileset: TilesetResource): Layer {
         val layer = layer {
             this.tileset = tileset
             size = Size(width, height)

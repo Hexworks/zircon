@@ -8,44 +8,44 @@ import kotlin.time.Duration
  * after each other become an animation.
  */
 
-interface Animation : Identifiable {
+public interface Animation : Identifiable {
 
     /**
      * The number of [AnimationFrame]s that are in this animation.
      */
-    val uniqueFrameCount: Int
+    public val uniqueFrameCount: Int
 
     /**
      * The *total* number of frames in this animation
      * (including those which are repeated as well).
      */
-    val totalFrameCount: Int
+    public val totalFrameCount: Int
 
     /**
      * The kind of loop this animation has.
      * Possible options are [InfiniteLoop, FiniteLoop]
      * @see LoopKind
      */
-    val loopKind: LoopKind
+    public val loopKind: LoopKind
 
     /**
      * Tells how often an [AnimationFrame] should be drawn.
      */
-    val tick: Duration
+    public val tick: Duration
 
     /**
      * Tells whether this [Animation] is looped indefinitely
      * (e.g.: [loopKind] is [InfiniteLoop])
      */
-    val isLoopedIndefinitely: Boolean
+    public val isLoopedIndefinitely: Boolean
 
-    sealed class LoopKind {
-        companion object
+    public sealed class LoopKind {
+        public companion object
     }
 
-    data object InfiniteLoop : LoopKind()
+    public data object InfiniteLoop : LoopKind()
 
-    data class FiniteLoop(val count: Int) : LoopKind() {
+    public data class FiniteLoop(val count: Int) : LoopKind() {
         init {
             require(count > 0) { "Loop count must be greater than 0!" }
         }

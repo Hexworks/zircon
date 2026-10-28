@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeY
  * Contains the possible alignment options for a [Boundable] object
  * relative to other [Boundable] objects.
  */
-enum class ComponentAlignment(
+public enum class ComponentAlignment(
     private val withinFn: (other: Boundable, target: Size) -> Position,
     private val aroundFn: (other: Boundable, target: Size) -> Position
 ) {
@@ -82,7 +82,7 @@ enum class ComponentAlignment(
      * Returns the [Position] which can be used to properly align a boundable
      * with [target] size **within** [other].
      */
-    fun alignWithin(other: Boundable, target: Size): Position {
+    public fun alignWithin(other: Boundable, target: Size): Position {
         return withinFn(other, target)
     }
 
@@ -90,7 +90,7 @@ enum class ComponentAlignment(
      * Returns the [Position] which can be used to properly align a boundable
      * with [target] size **around** [other].
      */
-    fun alignAround(other: Boundable, target: Size): Position {
+    public fun alignAround(other: Boundable, target: Size): Position {
         return aroundFn(other, target)
     }
 }

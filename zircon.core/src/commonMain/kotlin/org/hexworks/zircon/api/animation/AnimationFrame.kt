@@ -8,15 +8,14 @@ import org.hexworks.zircon.internal.animation.InternalAnimationFrame
  * Stores information about a single animation frame.
  */
 
-interface AnimationFrame {
+public interface AnimationFrame {
 
-    val size: Size
-    val layers: List<Layer>
+    public val size: Size
+    public val layers: List<Layer>
 
     /**
      * How many times this frame will be repeated.
      */
-    val repeatCount: Int
+    public val repeatCount: Int
 
-    fun asInternal(): InternalAnimationFrame
 }

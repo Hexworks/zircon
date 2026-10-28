@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.shape.DefaultShape
 import kotlin.math.abs
 
-object EllipseFactory : ShapeFactory<EllipseParameters> {
+public object EllipseFactory : ShapeFactory<EllipseParameters> {
 
     override fun createShape(shapeParameters: EllipseParameters): Shape {
         val xc = shapeParameters.center.x
@@ -59,9 +59,9 @@ object EllipseFactory : ShapeFactory<EllipseParameters> {
         return DefaultShape(result)
     }
 
-    fun buildEllipse(ellipseParams: EllipseParameters) = createShape(ellipseParams)
+    public fun buildEllipse(ellipseParams: EllipseParameters): Shape = createShape(ellipseParams)
 
-    fun buildEllipse(fromPosition: Position, toPosition: Position): Shape {
+    public fun buildEllipse(fromPosition: Position, toPosition: Position): Shape {
         if (fromPosition == toPosition) {
             // Need to return here otherwise blows up.
             return DefaultShape(mutableSetOf())

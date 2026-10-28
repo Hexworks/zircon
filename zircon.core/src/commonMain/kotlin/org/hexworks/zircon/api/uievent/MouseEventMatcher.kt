@@ -2,13 +2,13 @@ package org.hexworks.zircon.api.uievent
 
 import org.hexworks.zircon.api.data.Position
 
-data class MouseEventMatcher(
+public data class MouseEventMatcher(
     val type: MouseEventType? = null,
     val button: Int? = null,
     val position: Position? = null
 ) {
 
-    fun matches(event: MouseEvent): Boolean {
+    public fun matches(event: MouseEvent): Boolean {
         var result = true
         type?.let {
             result = result && it == event.type
@@ -22,13 +22,13 @@ data class MouseEventMatcher(
         return result
     }
 
-    companion object {
+    public companion object {
 
-        fun create(
+        public fun create(
             type: MouseEventType? = null,
             button: Int? = null,
             position: Position? = null
-        ) = MouseEventMatcher(
+        ): MouseEventMatcher = MouseEventMatcher(
             type = type,
             button = button,
             position = position

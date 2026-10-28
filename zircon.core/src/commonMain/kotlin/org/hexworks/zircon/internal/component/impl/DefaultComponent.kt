@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.value.BindingAction
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.extensions.withPosition
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
@@ -56,7 +58,7 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
 
 @Suppress("UNCHECKED_CAST")
-abstract class DefaultComponent(
+public abstract class DefaultComponent(
     metadata: ComponentMetadata,
     private val renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
@@ -73,7 +75,7 @@ abstract class DefaultComponent(
     override val absolutePosition: Position
         get() = position
 
-    val relativePosition: Position
+    public val relativePosition: Position
         get() = parent?.let { position - it.contentBounds.position } ?: position
 
     private val logger = LoggerFactory.getLogger(this::class)
@@ -89,7 +91,7 @@ abstract class DefaultComponent(
     final override var parent: InternalContainer? by parentProperty.asDelegate()
 
     final override val hasParent: ObservableValue<Boolean> = parentProperty.bindTransform { it != null }
-    final override val hasFocusProperty = false.toProperty()
+    final override val hasFocusProperty: Property<Boolean> = false.toProperty()
     final override val hasFocus: Boolean by hasFocusProperty.asDelegate()
     //#endregion
 
@@ -99,41 +101,41 @@ abstract class DefaultComponent(
     override val positionProperty: ObservableValue<Position> = boundsProperty.bindTransform(Boundable::position)
     override val bounds: Boundable by boundsProperty.asDelegate()
 
-    final override val contentOffset = renderer.contentPosition
+    final override val contentOffset: Position = renderer.contentPosition
     final override val contentSize: Size = renderer.calculateContentSize(size)
 
-    final override val contentBoundsProperty = boundsProperty.bindTransform { (pos) ->
+    final override val contentBoundsProperty: ObservableValue<Boundable> = boundsProperty.bindTransform { (pos) ->
         Boundable.create(pos + contentOffset, contentSize)
     }
     final override val contentBounds: Boundable by contentBoundsProperty.asDelegate()
     //#endregion
 
     //#region Common properties
-    final override val componentStateProperty = DEFAULT.toProperty()
+    final override val componentStateProperty: Property<ComponentState> = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateProperty.asDelegate()
 
-    final override val themeProperty = metadata.themeProperty
+    final override val themeProperty: Property<ColorTheme> = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
-    final override val componentStyleSetProperty = metadata.componentStyleSetProperty
+    final override val componentStyleSetProperty: Property<ComponentStyleSet> = metadata.componentStyleSetProperty
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
 
-    final override val tilesetProperty = metadata.tileset.toProperty(validator = { oldValue, newValue ->
+    final override val tilesetProperty: Property<TilesetResource> = metadata.tileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
     }).apply {
         updateFrom(metadata.tilesetProperty)
     }
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
-    final override val hiddenProperty = metadata.hiddenProperty
+    final override val hiddenProperty: Property<Boolean> = metadata.hiddenProperty
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    final override val disabledProperty = metadata.disabledProperty
+    final override val disabledProperty: Property<Boolean> = metadata.disabledProperty
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
     //#endregion
 
     //#region Misc
-    final override val bindingAction = metadata.bindingAction
+    final override val bindingAction: BindingAction = metadata.bindingAction
     override val children: ObservableList<out InternalComponent> = persistentListOf<InternalComponent>().toProperty()
     //#endregion
 
@@ -199,7 +201,7 @@ abstract class DefaultComponent(
     }
 
     // TODO: 💡 optimize this by doing a render whenever the component changes
-    override fun render(graphics: TileGraphics) = renderer.asInvariant().render(this, graphics)
+    override fun render(graphics: TileGraphics): Unit = renderer.asInvariant().render(this, graphics)
 
     /**
      * Moves this component to the given **absolute** position
@@ -223,7 +225,6 @@ abstract class DefaultComponent(
         moveTo(originalPosition)
     }
 
-    override fun asInternalComponent(): InternalComponent = this
 
     override fun clearCustomStyle() {
         componentStyleSet = ComponentStyleSet.DEFAULT_STYLE
@@ -242,7 +243,7 @@ abstract class DefaultComponent(
         return hasFocusProperty.value
     }
 
-    final override fun clearFocus() = whenConnectedToRoot { root ->
+    final override fun clearFocus(): Unit = whenConnectedToRoot { root ->
         root.eventBus.publish(
             event = ClearFocus(
                 component = this,
@@ -252,45 +253,45 @@ abstract class DefaultComponent(
         )
     }
 
-    override fun focusGiven() = whenEnabled {
+    override fun focusGiven(): UIEventResponse = whenEnabled {
         updateComponentState(FOCUS_GIVEN)
         hasFocusProperty.value = true
     }
 
-    override fun focusTaken() = whenEnabled {
+    override fun focusTaken(): UIEventResponse = whenEnabled {
         updateComponentState(FOCUS_TAKEN)
         hasFocusProperty.value = false
     }
 
-    override fun acceptsFocus() = isDisabled.not()
+    override fun acceptsFocus(): Boolean = isDisabled.not()
 
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             updateComponentState(MOUSE_ENTERED)
             Processed
         } else Pass
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             updateComponentState(MOUSE_EXITED)
             Processed
         } else Pass
     }
 
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             updateComponentState(MOUSE_RELEASED)
             Processed
         } else Pass
     }
 
-    override fun activated() = whenEnabledRespondWith {
+    override fun activated(): UIEventResponse = whenEnabledRespondWith {
         updateComponentState(ACTIVATED)
         Processed
     }
 
-    override fun deactivated() = whenEnabledRespondWith {
+    override fun deactivated(): UIEventResponse = whenEnabledRespondWith {
         updateComponentState(DEACTIVATED)
         Processed
     }
@@ -319,20 +320,20 @@ abstract class DefaultComponent(
     //#endregion
 
     //#region Inner classes
-    enum class EventType {
+    public enum class EventType {
         FOCUS_GIVEN, FOCUS_TAKEN, MOUSE_ENTERED, MOUSE_EXITED, MOUSE_PRESSED, MOUSE_RELEASED, ACTIVATED, DEACTIVATED
     }
 
-    data class ComponentStateKey(
+    public data class ComponentStateKey(
         val oldState: ComponentState,
         val isFocused: Boolean,
         val eventType: EventType
     )
     //#endregion
 
-    companion object {
+    public companion object {
 
-        protected val COMPONENT_STATE_TRANSITIONS = mapOf(
+        protected val COMPONENT_STATE_TRANSITIONS: Map<ComponentStateKey, ComponentState> = mapOf(
             ComponentStateKey(DEFAULT, false, FOCUS_GIVEN) to FOCUSED,
             ComponentStateKey(DEFAULT, false, MOUSE_ENTERED) to HIGHLIGHTED,
             ComponentStateKey(HIGHLIGHTED, true, MOUSE_EXITED) to FOCUSED,

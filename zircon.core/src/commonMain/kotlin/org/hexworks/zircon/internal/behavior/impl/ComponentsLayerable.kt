@@ -8,7 +8,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
  * Extends an [InternalLayerable] with additional [renderables] taken form an [InternalComponentContainer]
  * to enable smooth rendering of both.
  */
-class ComponentsLayerable(
+public class ComponentsLayerable(
     private val componentContainer: InternalComponentContainer,
     private val layerable: InternalLayerable
 ) : InternalLayerable by layerable {

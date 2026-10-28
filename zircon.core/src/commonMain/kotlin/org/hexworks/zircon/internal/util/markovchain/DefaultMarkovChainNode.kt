@@ -4,7 +4,7 @@ import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.util.markovchain.MarkovChainNode
 import kotlin.random.Random
 
-class DefaultMarkovChainNode<T : Any> internal constructor(
+public class DefaultMarkovChainNode<T : Any> internal constructor(
     private var data: T? = null,
     private val random: Random = Random(5234321)
 ) : MarkovChainNode<T> {
@@ -27,7 +27,7 @@ class DefaultMarkovChainNode<T : Any> internal constructor(
         return this
     }
 
-    override fun data() = this.data ?: error("Data has no value")
+    override fun data(): T = this.data ?: error("Data has no value")
 
     override fun dataOrNull(): T? = this.data
 
@@ -45,7 +45,7 @@ class DefaultMarkovChainNode<T : Any> internal constructor(
         return this
     }
 
-    companion object {
+    public companion object {
 
         private const val accuracy = 10000
     }

@@ -6,12 +6,12 @@ import org.hexworks.zircon.internal.resource.DefaultResource
  * Represents a resource (file or directory) that can be loaded into
  * Zircon e.g.: tileset files, animation files, etc.
  */
-interface Resource {
-    val resourceType: ResourceType
-    val path: String
+public interface Resource {
+    public val resourceType: ResourceType
+    public val path: String
 
-    companion object {
-        fun create(
+    public companion object {
+        public fun create(
             path: String,
             resourceType: ResourceType,
         ): Resource = DefaultResource(resourceType, path)

@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.extensions.toTileImage
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.TileImage
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
 /**
  * This function can be used to create an editable "window" over the underlying [TileGraphics].
@@ -22,7 +22,7 @@ import org.hexworks.zircon.api.graphics.impl.DrawWindow
  * of (2, 2) and writing to it will write to the original graphics' surface, offset
  * by Position(1, 1).
  */
-fun TileGraphics.toDrawWindow(
+public fun TileGraphics.toDrawWindow(
     boundable: Boundable = size.toBoundable()
 ): DrawWindow = DrawWindow(
     boundable = boundable,
@@ -36,7 +36,7 @@ fun TileGraphics.toDrawWindow(
  * **Note that** if this object is already a [Layer] this function has no effect.
  * @param offset the offset for the new [Layer], `(0, 0)` by default
  */
-fun TileGraphics.toLayer(
+public fun TileGraphics.toLayer(
     offset: Position = ZERO
 ): Layer = this as? Layer ?: layer {
     this.offset = offset
@@ -49,7 +49,7 @@ fun TileGraphics.toLayer(
  * it needs to fill in empty areas. The copy will be independent of the
  * one this method is invoked on, so modifying one will not affect the other.
  */
-fun TileGraphics.toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())
+public fun TileGraphics.toResized(newSize: Size): TileGraphics = toResized(newSize, Tile.empty())
 
 /**
  * Returns a copy of this image resized to a new size and using
@@ -57,7 +57,7 @@ fun TileGraphics.toResized(newSize: Size): TileGraphics = toResized(newSize, Til
  * and we need to fill in empty areas. The copy will be independent of
  * the one this method is invoked on, so modifying one will not affect the other.
  */
-fun TileGraphics.toResized(newSize: Size, filler: Tile): TileGraphics {
+public fun TileGraphics.toResized(newSize: Size, filler: Tile): TileGraphics {
     val newTiles = mutableMapOf<Position, Tile>()
     val positions = newSize.fetchPositions().toSet()
     tiles.forEach { (pos, tile) ->
@@ -77,4 +77,4 @@ fun TileGraphics.toResized(newSize: Size, filler: Tile): TileGraphics {
  * which means that changes to one are not reflected in the
  * other.
  */
-fun TileGraphics.toTileImage(): TileImage = tiles.toTileImage(size, tileset)
+public fun TileGraphics.toTileImage(): TileImage = tiles.toTileImage(size, tileset)

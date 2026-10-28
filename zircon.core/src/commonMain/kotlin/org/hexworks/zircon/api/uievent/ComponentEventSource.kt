@@ -8,13 +8,13 @@ import org.hexworks.zircon.api.component.data.ComponentState
  * An [ComponentEventSource] is an object that emits [ComponentEvent]s and can be used
  * to listen to those events. Note that [ComponentEvent]s don't support [UIEventPhase]s.
  */
-interface ComponentEventSource {
+public interface ComponentEventSource {
 
     /**
      * Adds the given [handler] for [ComponentEvent]s. Use this if you selectively
      * respond to events.
      */
-    fun handleComponentEvents(
+    public fun handleComponentEvents(
         eventType: ComponentEventType,
         handler: (event: ComponentEvent) -> UIEventResponse
     ): Subscription
@@ -23,7 +23,7 @@ interface ComponentEventSource {
      * Adds the given [handler] for [ComponentEvent]s. Use this if you handle all
      * events.
      */
-    fun processComponentEvents(
+    public fun processComponentEvents(
         eventType: ComponentEventType,
         handler: (event: ComponentEvent) -> Unit
     ): Subscription
@@ -34,7 +34,7 @@ interface ComponentEventSource {
      * @see ComponentState.ACTIVE
      * @return a [Subscription] that can be used to cancel this listener
      */
-    fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
+    public fun onActivated(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.ACTIVATED, fn)
     }
 
@@ -45,7 +45,7 @@ interface ComponentEventSource {
      * @see ComponentState.FOCUSED
      * @return a [Subscription] that can be used to cancel this listener
      */
-    fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
+    public fun onDeactivated(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.DEACTIVATED, fn)
     }
 
@@ -56,7 +56,7 @@ interface ComponentEventSource {
      * @see Component.hasFocus
      * @return a [Subscription] that can be used to cancel this listener
      */
-    fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
+    public fun onFocusGiven(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.FOCUS_GIVEN, fn)
     }
 
@@ -67,7 +67,7 @@ interface ComponentEventSource {
      * @see Component.hasFocus
      * @return a [Subscription] that can be used to cancel this listener
      */
-    fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
+    public fun onFocusTaken(fn: (ComponentEvent) -> Unit): Subscription {
         return processComponentEvents(ComponentEventType.FOCUS_TAKEN, fn)
     }
 

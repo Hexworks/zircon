@@ -16,23 +16,23 @@ import org.hexworks.zircon.internal.color.DefaultColor
  * @see ANSIColor
  * @see Palette
  */
-interface Color : Cacheable {
+public interface Color : Cacheable {
 
-    val red: Int
-    val green: Int
-    val blue: Int
-    val alpha: Int
+    public val red: Int
+    public val green: Int
+    public val blue: Int
+    public val alpha: Int
 
-    val component1: Int
+    public val component1: Int
         get() = red
-    val component2: Int
+    public val component2: Int
         get() = green
-    val component3: Int
+    public val component3: Int
         get() = blue
-    val component4: Int
+    public val component4: Int
         get() = alpha
 
-    companion object {
+    public companion object {
 
         // Getters, not stored values: DefaultAnsiPalette's initializer calls Color.create,
         // so storing these here would create a class-initialization cycle.
@@ -40,16 +40,16 @@ interface Color : Cacheable {
         /**
          * The default foreground color is `WHITE`.
          */
-        val DEFAULT_FOREGROUND_COLOR: Color get() = DefaultAnsiPalette[WHITE]
+        public val DEFAULT_FOREGROUND_COLOR: Color get() = DefaultAnsiPalette[WHITE]
 
         /**
          * The default background color is `BLACK`.
          */
-        val DEFAULT_BACKGROUND_COLOR: Color get() = DefaultAnsiPalette[BLACK]
+        public val DEFAULT_BACKGROUND_COLOR: Color get() = DefaultAnsiPalette[BLACK]
 
-        val TRANSPARENT = create(0, 0, 0, 0)
-        const val DEFAULT_ALPHA = 255
-        const val DEFAULT_FACTOR = 0.7
+        public val TRANSPARENT: Color = create(0, 0, 0, 0)
+        public const val DEFAULT_ALPHA: Int = 255
+        public const val DEFAULT_FACTOR: Double = 0.7
 
         /**
          * Parses a string into a color. Formats:
@@ -58,7 +58,7 @@ interface Color : Cacheable {
          *  parsing the tuples as Red, Green and Blue.
          */
         @Suppress("DEPRECATION")
-        fun fromString(value: String): Color {
+        public fun fromString(value: String): Color {
             value.trim { it <= ' ' }.let { cleanValue ->
                 try {
                     val r = cleanValue.substring(1, 3).toInt(16)
@@ -74,7 +74,7 @@ interface Color : Cacheable {
         /**
          * Creates a new [Color].
          */
-        fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): Color {
+        public fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): Color {
             return DefaultColor(red, green, blue, alpha)
         }
 

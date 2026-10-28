@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.view.View
 import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.api.view.base.BaseView
 
-class DefaultViewContainer : ViewContainer {
+public class DefaultViewContainer : ViewContainer {
 
     private var currentView: View? = null
 

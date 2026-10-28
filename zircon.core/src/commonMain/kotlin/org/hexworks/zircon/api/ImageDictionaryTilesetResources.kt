@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.resource.ResourceType
  * This object can be used to load either built-in Image Dictionary
  * [TilesetResource]s or external ones.
  */
-object ImageDictionaryTilesetResources {
+public object ImageDictionaryTilesetResources {
 
 
 }

@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.containsPosition
 
-class ArrayBackedTileMap(
+public class ArrayBackedTileMap(
     private val dimensions: Size,
     private val arr: Array<Map.Entry<Position, Tile>?>
 ) : AbstractMap<Position, Tile>() {
@@ -22,15 +22,15 @@ class ArrayBackedTileMap(
     override val values: Collection<Tile>
         get() = arr.asSequence().filterNotNull().map { it.value }.toList()
 
-    override fun containsKey(key: Position) = get(key) != null
+    override fun containsKey(key: Position): Boolean = get(key) != null
 
-    override fun containsValue(value: Tile) = arr.any { it?.value == value }
+    override fun containsValue(value: Tile): Boolean = arr.any { it?.value == value }
 
-    override fun get(key: Position) = key.index?.let { arr[it]?.value }
+    override fun get(key: Position): Tile? = key.index?.let { arr[it]?.value }
 
-    override fun isEmpty() = arr.isEmpty()
+    override fun isEmpty(): Boolean = arr.isEmpty()
 
-    fun contents(): Sequence<Map.Entry<Position, Tile>> = sequence {
+    public fun contents(): Sequence<Map.Entry<Position, Tile>> = sequence {
         for (i in arr.indices) {
             arr[i]?.let { entry ->
                 yield(entry)
@@ -38,7 +38,7 @@ class ArrayBackedTileMap(
         }
     }
 
-    fun createCopy() = ArrayBackedTileMap(
+    public fun createCopy(): ArrayBackedTileMap = ArrayBackedTileMap(
         dimensions = dimensions,
         arr = arr.copyOf()
     )
@@ -51,7 +51,7 @@ class ArrayBackedTileMap(
             } else null
         }
 
-    class Entry(
+    public class Entry(
         override val key: Position,
         override val value: Tile
     ) : Map.Entry<Position, Tile>

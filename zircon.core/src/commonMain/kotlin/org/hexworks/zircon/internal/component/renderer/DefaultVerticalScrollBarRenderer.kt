@@ -12,10 +12,10 @@ import org.hexworks.zircon.api.builder.graphics.withFiller
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.Symbols
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
 
-class DefaultVerticalScrollBarRenderer internal constructor() : ComponentRenderer<DefaultVerticalScrollBar> {
+public class DefaultVerticalScrollBarRenderer internal constructor() : ComponentRenderer<DefaultVerticalScrollBar> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultVerticalScrollBar>) {
         // 📘 Note that we know that a vertical scroll bar will have a width of `1` so we don't check it

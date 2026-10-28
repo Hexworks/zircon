@@ -12,13 +12,13 @@ import org.hexworks.zircon.internal.game.impl.GameAreaComponentRenderer
  * A [ComponentRenderer] that draws [gameArea] with the given [projectionMode],
  * using [fillerTile] where the area has nothing to show.
  */
-fun <C : Component, T : Tile, B : Block<T>> gameAreaComponentRenderer(
+public fun <C : Component, T : Tile, B : Block<T>> gameAreaComponentRenderer(
     gameArea: GameArea<T, B>,
     projectionMode: ObservableValue<ProjectionMode>,
     fillerTile: T
 ): ComponentRenderer<C> = GameAreaComponentRenderer(gameArea, projectionMode, fillerTile)
 
-fun <C : Component, T : Tile, B : Block<T>> gameAreaComponentRenderer(
+public fun <C : Component, T : Tile, B : Block<T>> gameAreaComponentRenderer(
     gameArea: GameArea<T, B>,
     projectionMode: ProjectionMode,
     fillerTile: T

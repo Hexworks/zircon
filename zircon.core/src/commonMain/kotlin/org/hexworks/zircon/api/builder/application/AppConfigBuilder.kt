@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.application
 
+import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.GraphicalTilesetResources
@@ -23,16 +24,16 @@ import org.hexworks.zircon.internal.renderer.Renderer
 import kotlin.reflect.KClass
 
 
-const val DEFAULT_BLINK_LENGTH = 500L
-const val DEFAULT_IS_CURSOR_BLINKING = false
-const val DEFAULT_CLIPBOARD_AVAILABLE = false
-val DEFAULT_TILESET = CP437TilesetResources.rogueYun16x16()
-val DEFAULT_GRAPHICAL_TILESET = GraphicalTilesetResources.nethack16x16()
-val DEFAULT_COLOR_THEME = ColorThemes.gamebookers()
-const val DEFAULT_DEBUG_MODE = false
-val DEFAULT_SIZE = Size(80, 40)
-const val DEFAULT_FULL_SCREEN = false
-const val DEFAULT_TITLE = "Zircon Application"
+public const val DEFAULT_BLINK_LENGTH: Long = 500L
+public const val DEFAULT_IS_CURSOR_BLINKING: Boolean = false
+public const val DEFAULT_CLIPBOARD_AVAILABLE: Boolean = false
+public val DEFAULT_TILESET: TilesetResource = CP437TilesetResources.rogueYun16x16()
+public val DEFAULT_GRAPHICAL_TILESET: TilesetResource = GraphicalTilesetResources.nethack16x16()
+public val DEFAULT_COLOR_THEME: ColorTheme = ColorThemes.gamebookers()
+public const val DEFAULT_DEBUG_MODE: Boolean = false
+public val DEFAULT_SIZE: Size = Size(80, 40)
+public const val DEFAULT_FULL_SCREEN: Boolean = false
+public const val DEFAULT_TITLE: String = "Zircon Application"
 
 /**
  * This *builder* class can be used to build [AppConfig] instances. This builder
@@ -40,107 +41,107 @@ const val DEFAULT_TITLE = "Zircon Application"
  * @see AppConfig for all the default values.
  */
 @ZirconDsl
-class AppConfigBuilder : Builder<AppConfig> {
+public class AppConfigBuilder : Builder<AppConfig> {
 
     /**
      * The amount of time (in milliseconds) that should pass before the next
      * blink of the cursor (if cursor is displayed and blink is used).
      * Default is `500`
      */
-    var blinkLengthInMilliSeconds: Long = DEFAULT_BLINK_LENGTH
+    public var blinkLengthInMilliSeconds: Long = DEFAULT_BLINK_LENGTH
 
     /**
      * Controls whether the cursor should be blinking when rendered.
      * Default is `false`
      */
-    var isCursorBlinking: Boolean = DEFAULT_IS_CURSOR_BLINKING
+    public var isCursorBlinking: Boolean = DEFAULT_IS_CURSOR_BLINKING
 
     /**
      * Can be used to control the availability of the clipboard.
      * Default is `true`
      */
-    var isClipboardAvailable: Boolean = DEFAULT_CLIPBOARD_AVAILABLE
+    public var isClipboardAvailable: Boolean = DEFAULT_CLIPBOARD_AVAILABLE
 
     /**
      * The tileset to be used when no tileset is specified for the [Application].
      * Default is [CP437TilesetResources.wanderlust16x16]
      */
-    var defaultTileset: TilesetResource = DEFAULT_TILESET
+    public var defaultTileset: TilesetResource = DEFAULT_TILESET
 
     /**
      * The default graphical tileset to be used when no graphical tileset is specified.
      * Default is [GraphicalTilesetResources.nethack16x16]
      */
-    var defaultGraphicalTileset: TilesetResource = DEFAULT_GRAPHICAL_TILESET
+    public var defaultGraphicalTileset: TilesetResource = DEFAULT_GRAPHICAL_TILESET
 
     /**
      * The default [ColorTheme] to be used when no color theme is specified.
      * Default is [ColorThemes.defaultTheme]
      */
-    var defaultColorTheme: ColorTheme = DEFAULT_COLOR_THEME
+    public var defaultColorTheme: ColorTheme = DEFAULT_COLOR_THEME
 
     /**
      * Can be used to switch debug mode on or off.
      * Default is `false`.
      */
-    var debugMode: Boolean = DEFAULT_DEBUG_MODE
+    public var debugMode: Boolean = DEFAULT_DEBUG_MODE
 
     /**
      * Controls the [Size] of the resulting tile grid when the [Application]
      * is started.
      * Default is `80x40`
      */
-    var size: Size = DEFAULT_SIZE
+    public var size: Size = DEFAULT_SIZE
 
     /**
      * Controls if the [Application] will be full screen or not.
      * Default is `false`
      */
-    var fullScreen: Boolean = DEFAULT_FULL_SCREEN
+    public var fullScreen: Boolean = DEFAULT_FULL_SCREEN
 
     /**
      * Sets the title of the application window.
      * Default is `"Zircon Application"`
      */
-    var title: String = DEFAULT_TITLE
+    public var title: String = DEFAULT_TITLE
 
     /**
      * If set [iconPath] will contain the path of the resource that points
      * to an icon image that will be used in the application window.
      */
-    var iconPath: String? = null
+    public var iconPath: String? = null
 
     /**
      * Sets the [DebugConfig] to be used when [debugMode] is `true`.
      * By default, all settings are `false`.
      */
-    var debugConfig: DebugConfig = DEFAULT_DEBUG_CONFIG
+    public var debugConfig: DebugConfig = DEFAULT_DEBUG_CONFIG
 
     /**
      * Determines the [ShortcutsConfig] to be used for built-in shortcuts.
      * @see ShortcutsConfig for defaults
      */
-    var shortcutsConfig: ShortcutsConfig = DEFAULT_SHORTCUTS_CONFIG
+    public var shortcutsConfig: ShortcutsConfig = DEFAULT_SHORTCUTS_CONFIG
 
     /**
      * If set [tilesetFactories] will contain the list of [TilesetLoaders][TilesetLoader] to try to use
      * before using the default [TilesetLoader] of the [Renderer].
      */
-    var tilesetFactories: MutableMap<Pair<TileType, TilesetType>, TilesetFactory<*>> =
+    public var tilesetFactories: MutableMap<Pair<TileType, TilesetType>, TilesetFactory<*>> =
         mutableMapOf()
 
     /**
      * If set [textureModifierSupports] will contain the list of [TextureTransformer]s to try to use
      * before using the default [TextureTransformer] of the [Renderer].
      */
-    var textureModifierSupports = mutableMapOf<KClass<out TextureModifier>, TextureModifierStrategy<*, *>>()
+    public var textureModifierSupports: MutableMap<KClass<out TextureModifier>, TextureModifierStrategy<*, *>> = mutableMapOf()
 
     /**
      * If set, contains custom properties that plugin authors can set and access.
      */
     internal val customProperties = mutableMapOf<AppConfigKey<*>, Any>()
 
-    override fun build() = AppConfig(
+    override fun build(): AppConfig = AppConfig(
         blinkLengthInMilliSeconds = blinkLengthInMilliSeconds,
         isCursorBlinking = isCursorBlinking,
         isClipboardAvailable = isClipboardAvailable,
@@ -162,7 +163,7 @@ class AppConfigBuilder : Builder<AppConfig> {
     }
 }
 
-fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
+public fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
     return AppConfigBuilder().apply {
 
     }.apply(init).build()
@@ -184,16 +185,16 @@ fun appConfig(init: AppConfigBuilder.() -> Unit): AppConfig {
  *
  * @sample org.hexworks.zircon.api.application.AppConfigTest
  */
-fun <T : Any> AppConfigBuilder.customProperty(init: CustomPropertyBuilder<T>.() -> Unit) {
+public fun <T : Any> AppConfigBuilder.customProperty(init: CustomPropertyBuilder<T>.() -> Unit) {
     val (key, value) = CustomPropertyBuilder<T>().apply(init).build()
     customProperties[key] = value
 }
 
-fun AppConfigBuilder.shortcutsConfig(init: ShortcutsConfigBuilder.() -> Unit) {
+public fun AppConfigBuilder.shortcutsConfig(init: ShortcutsConfigBuilder.() -> Unit) {
     shortcutsConfig = ShortcutsConfigBuilder().apply(init).build()
 }
 
-fun AppConfigBuilder.debugConfig(init: DebugConfigBuilder.() -> Unit) {
+public fun AppConfigBuilder.debugConfig(init: DebugConfigBuilder.() -> Unit) {
     debugConfig = DebugConfigBuilder().apply(init).build()
 }
 
@@ -201,7 +202,7 @@ fun AppConfigBuilder.debugConfig(init: DebugConfigBuilder.() -> Unit) {
  * Sets a custom [TilesetFactory] that will be used by the tileset loader. There can be only one
  * [TilesetFactory] for a combination of [TileType] + [TilesetType]
  */
-fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit) {
+public fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit) {
     val result = TilesetFactoryBuilder<S>().apply(init).build()
     tilesetFactories[result.supportedTileType to result.supportedTilesetType] = result
 }
@@ -210,7 +211,7 @@ fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() 
  * Adds support for the given texture modifier.
  * 📘 *Note that* you don't need to add support for [TileModifier]s as they are self-contained.
  */
-fun <T : Any, C : Any> AppConfigBuilder.textureModifier(init: TextureModifierBuilder<T, C>.() -> Unit) {
+public fun <T : Any, C : Any> AppConfigBuilder.textureModifier(init: TextureModifierBuilder<T, C>.() -> Unit) {
     val result = TextureModifierBuilder<T, C>().apply(init).build()
     textureModifierSupports[result.modifierType] = result
 }

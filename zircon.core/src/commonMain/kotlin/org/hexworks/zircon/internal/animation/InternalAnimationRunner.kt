@@ -8,16 +8,16 @@ import org.hexworks.zircon.api.behavior.Layerable
 /**
  * Specialized [AnimationRunner] which is used by Zircon internally.
  */
-interface InternalAnimationRunner : AnimationRunner, Closeable {
+public interface InternalAnimationRunner : AnimationRunner, Closeable {
 
     /**
      * Updates the [Animation]s this [AnimationRunner] has
      * with the given [currentTimeMs] using the given [layerable].
      */
-    fun updateAnimations(currentTimeMs: Long, layerable: Layerable)
+    public fun updateAnimations(currentTimeMs: Long, layerable: Layerable)
 
     /**
      * Stops the given [InternalAnimation].
      */
-    fun stop(animation: InternalAnimation)
+    public fun stop(animation: InternalAnimation)
 }

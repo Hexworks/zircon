@@ -6,7 +6,7 @@ import org.hexworks.zircon.internal.component.impl.texteditor.EditorState
 import org.hexworks.zircon.internal.component.impl.texteditor.Transformation
 import org.hexworks.zircon.internal.component.impl.texteditor.lastIndex
 
-object MoveCursorDown : Transformation {
+public object MoveCursorDown : Transformation {
 
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState

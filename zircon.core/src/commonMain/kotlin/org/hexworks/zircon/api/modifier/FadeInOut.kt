@@ -4,7 +4,7 @@ import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 
-data class FadeInOut(
+public data class FadeInOut(
     private val stepsFadeIn: Int = 20,
     private val timeMsFadeIn: Long = 2000,
     private val timeMsBeforeFadingOut: Long = 5000,
@@ -28,7 +28,7 @@ data class FadeInOut(
     private val fadeOut = FadeOut(stepsFadeOut, timeMsFadeOut)
     private var startNoFadingRender: Long = Long.MIN_VALUE
 
-    override fun canTransform(tile: Tile) = tile is CharacterTile
+    override fun canTransform(tile: Tile): Boolean = tile is CharacterTile
 
     override fun transform(tile: CharacterTile): CharacterTile {
         currentFadeMode = getFadeMode()

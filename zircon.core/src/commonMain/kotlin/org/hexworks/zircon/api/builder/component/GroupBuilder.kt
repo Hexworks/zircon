@@ -10,13 +10,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultGroup
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 @ZirconDsl
-class GroupBuilder<T : Component> : Builder<Group<T>> {
+public class GroupBuilder<T : Component> : Builder<Group<T>> {
 
-    var isDisabled: Boolean = false
-    var isHidden: Boolean = false
-    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var name: String = ""
+    public var isDisabled: Boolean = false
+    public var isHidden: Boolean = false
+    public var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var name: String = ""
 
     override fun build(): Group<T> = DefaultGroup(
         initialIsDisabled = isDisabled,
@@ -30,5 +30,5 @@ class GroupBuilder<T : Component> : Builder<Group<T>> {
 /**
  * Creates a new [Group] using the component builder DSL and returns it.
  */
-fun <T : Component> group(init: GroupBuilder<T>.() -> Unit): Group<T> =
+public fun <T : Component> group(init: GroupBuilder<T>.() -> Unit): Group<T> =
     GroupBuilder<T>().apply(init).build()

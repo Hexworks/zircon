@@ -8,18 +8,18 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCanBeDisabled
  * Represents an object that supports the notion of disabling. In the case of a component
  * this means that when it is disabled, it can't be interacted with (click, press, etc.).
  */
-interface CanBeDisabled {
+public interface CanBeDisabled {
 
-    var isDisabled: Boolean
-    val disabledProperty: Property<Boolean>
+    public var isDisabled: Boolean
+    public val disabledProperty: Property<Boolean>
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [CanBeDisabled] with the default [initialDisabled] value of `false`.
          */
-        fun create(initialDisabled: Boolean = false): CanBeDisabled = create(initialDisabled.toProperty())
+        public fun create(initialDisabled: Boolean = false): CanBeDisabled = create(initialDisabled.toProperty())
 
-        fun create(disabledProperty: Property<Boolean>): CanBeDisabled = DefaultCanBeDisabled(disabledProperty)
+        public fun create(disabledProperty: Property<Boolean>): CanBeDisabled = DefaultCanBeDisabled(disabledProperty)
     }
 }

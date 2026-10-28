@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Tile
 
-class DefaultIcon internal constructor(
+public class DefaultIcon internal constructor(
     componentMetadata: ComponentMetadata,
     override val iconProperty: Property<Tile>,
     renderingStrategy: ComponentRenderingStrategy<Icon>
@@ -19,8 +19,8 @@ class DefaultIcon internal constructor(
 
     override var icon: Tile by iconProperty.asDelegate()
 
-    override fun acceptsFocus() = false
+    override fun acceptsFocus(): Boolean = false
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = ComponentStyleSet.EMPTY
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = ComponentStyleSet.EMPTY
 
 }

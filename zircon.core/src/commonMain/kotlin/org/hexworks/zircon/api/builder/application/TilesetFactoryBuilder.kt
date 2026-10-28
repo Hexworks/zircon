@@ -11,14 +11,14 @@ import org.hexworks.zircon.internal.tileset.DefaultTilesetFactory
 import kotlin.reflect.KClass
 
 @ZirconDsl
-class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
+public class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
 
-    var targetType: KClass<S>? = null
-    var tileType: TileType? = null
-    var tilesetType: TilesetType? = null
+    public var targetType: KClass<S>? = null
+    public var tileType: TileType? = null
+    public var tilesetType: TilesetType? = null
     private var factoryFunction: ((TilesetResource) -> Tileset<S>)? = null
 
-    fun factoryFunction(fn: (TilesetResource) -> Tileset<S>) {
+    public fun factoryFunction(fn: (TilesetResource) -> Tileset<S>) {
         factoryFunction = fn
     }
 
@@ -45,7 +45,7 @@ class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
     }
 
     //! TODO: move these to the korge implementation
-    companion object {
+    public companion object {
 //        val DEFAULT_TILESET_FACTORIES: List<TilesetFactory<KorgeContext>> = listOf(
 //            tilesetFactory {
 //                targetType = KorgeContext::class
@@ -95,5 +95,5 @@ class TilesetFactoryBuilder<S : Any> : Builder<TilesetFactory<S>> {
 /**
  * Creates a new [TilesetFactory] using the builder DSL and returns it.
  */
-fun <S : Any> tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit): TilesetFactory<S> =
+public fun <S : Any> tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit): TilesetFactory<S> =
     TilesetFactoryBuilder<S>().apply(init).build()

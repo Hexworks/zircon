@@ -10,12 +10,12 @@ import org.hexworks.zircon.api.data.extensions.withRelativeY
  * [position]. E.g.: if its current position is (3, 2) and it is moved by
  * (-1, 2), its new position will be (2, 4).
  */
-fun Movable.moveBy(position: Position) = moveTo(this.position + position)
+public fun Movable.moveBy(position: Position): Boolean = moveTo(this.position + position)
 
-fun Movable.moveRightBy(delta: Int) = moveTo(position.withRelativeX(delta))
+public fun Movable.moveRightBy(delta: Int): Boolean = moveTo(position.withRelativeX(delta))
 
-fun Movable.moveLeftBy(delta: Int) = moveTo(position.withRelativeX(-delta))
+public fun Movable.moveLeftBy(delta: Int): Boolean = moveTo(position.withRelativeX(-delta))
 
-fun Movable.moveUpBy(delta: Int) = moveTo(position.withRelativeY(-delta))
+public fun Movable.moveUpBy(delta: Int): Boolean = moveTo(position.withRelativeY(-delta))
 
-fun Movable.moveDownBy(delta: Int) = moveTo(position.withRelativeY(delta))
+public fun Movable.moveDownBy(delta: Int): Boolean = moveTo(position.withRelativeY(delta))

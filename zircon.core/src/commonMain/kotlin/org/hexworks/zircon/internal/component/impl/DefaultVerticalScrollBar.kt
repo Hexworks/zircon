@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.ScrollDirection
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
 import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
@@ -14,7 +17,7 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.isNavigationKey
 
-class DefaultVerticalScrollBar internal constructor(
+public class DefaultVerticalScrollBar internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<ScrollBar>,
     internal val scrollable: Scrollable
@@ -23,43 +26,43 @@ class DefaultVerticalScrollBar internal constructor(
     renderer = renderingStrategy
 ) {
 
-    val actualHeight: Int
+    public val actualHeight: Int
         get() = scrollable.actualSize.height
 
-    val actualWidth: Int
+    public val actualWidth: Int
         get() = scrollable.actualSize.width
 
-    val scrollY: Int
+    public val scrollY: Int
         get() = scrollable.visibleOffset.y
 
-    val scrollX: Int
+    public val scrollX: Int
         get() = scrollable.visibleOffset.x
 
-    val contentHeight: Int
+    public val contentHeight: Int
         get() = contentSize.height
 
-    val contentWidth: Int
+    public val contentWidth: Int
         get() = contentSize.width
 
     /**
      * The ratio of the visible content area (vertical) to the actual size
      * of the [Scrollable].
      */
-    val contentRatioY: Double
+    public val contentRatioY: Double
         get() = scrollable.actualSize.height.toDouble() / contentHeight
 
     /**
      * The ratio of the visible content area (horizontal) to the actual size
      * of the [Scrollable].
      */
-    val contentRatioX: Double
+    public val contentRatioX: Double
         get() = scrollable.actualSize.width.toDouble() / contentWidth
 
-    override val scrollDirection = VERTICAL
+    override val scrollDirection: ScrollDirection = VERTICAL
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()
 
-    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             if (event.isNavigationKey()) {
                 // we don't want to override regular component navigation keys (<Tab>, <Shift>+<Tab> by default)

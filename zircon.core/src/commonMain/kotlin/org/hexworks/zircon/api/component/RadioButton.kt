@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.behavior.TextOverride
  * add an exclusive selection behavior: only one [RadioButton] can be in the [isSelected]
  * state in a [RadioButtonGroup].
  */
-interface RadioButton : Component, Selectable, TextOverride {
+public interface RadioButton : Component, Selectable, TextOverride {
     //! TODO: use enums?
-    val key: String
-    val state: RadioButtonState
+    public val key: String
+    public val state: RadioButtonState
 
-    enum class RadioButtonState {
+    public enum class RadioButtonState {
         PRESSED,
         SELECTED,
         NOT_SELECTED

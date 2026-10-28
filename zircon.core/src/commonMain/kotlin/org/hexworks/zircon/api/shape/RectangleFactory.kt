@@ -5,9 +5,9 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 
-object RectangleFactory : ShapeFactory<RectangleParameters> {
+public object RectangleFactory : ShapeFactory<RectangleParameters> {
 
-    override fun createShape(shapeParameters: RectangleParameters) = shapeParameters.let { (topLeft, size) ->
+    override fun createShape(shapeParameters: RectangleParameters): Shape = shapeParameters.let { (topLeft, size) ->
         val topRight = topLeft.withRelativeX(size.width - 1)
         val bottomRight = topRight.withRelativeY(size.height - 1)
         val bottomLeft = topLeft.withRelativeY(size.height - 1)
@@ -27,7 +27,7 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
-    fun buildRectangle(rectParams: RectangleParameters) = createShape(rectParams)
+    public fun buildRectangle(rectParams: RectangleParameters): Shape = createShape(rectParams)
 
     /**
      * Creates the points for the outline of a rectangle.
@@ -38,5 +38,5 @@ object RectangleFactory : ShapeFactory<RectangleParameters> {
      * **Note that** all resulting shapes will be offset to the top left (0x0) position!
      * @see [org.hexworks.zircon.api.shape.Shape.offsetToDefaultPosition] for more info!
      */
-    fun buildRectangle(topLeft: Position, size: Size) = buildRectangle(RectangleParameters(topLeft, size))
+    public fun buildRectangle(topLeft: Position, size: Size): Shape = buildRectangle(RectangleParameters(topLeft, size))
 }

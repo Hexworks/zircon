@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
 
-abstract class ComponentWithTextBuilder<T : Component>(
+public abstract class ComponentWithTextBuilder<T : Component>(
     initialRenderer: ComponentRenderer<out T>,
     initialText: String = "",
     /**
@@ -17,21 +17,21 @@ abstract class ComponentWithTextBuilder<T : Component>(
     private val reservedSpace: Int = 0
 ) : BaseComponentBuilder<T>(initialRenderer) {
 
-    val textProperty: Property<String> = initialText.toProperty()
+    public val textProperty: Property<String> = initialText.toProperty()
 
     /**
      * The text of the resulting component.
      * **Note that** anything after a new line character is stripped from the text.
      * If you want to use a component that supports multi-line text, try [TextArea].
      */
-    var text: String by textProperty.asDelegate()
+    public var text: String by textProperty.asDelegate()
 
     /**
      * This property is bound to [textProperty] and contains the text that
      * has new lines stripped. It will be removed once cobalt supports
      * property transformers.
      */
-    protected val fixedTextProperty = "".toProperty().apply {
+    protected val fixedTextProperty: Property<String> = "".toProperty().apply {
         updateFrom(textProperty, UpdateOnBind) {
             val result = it.withNewLinesStripped()
             fixContentSizeFor(result.length + reservedSpace)
@@ -43,7 +43,7 @@ abstract class ComponentWithTextBuilder<T : Component>(
         text = initialText
     }
 
-    operator fun String.unaryPlus() {
+    public operator fun String.unaryPlus() {
         this@ComponentWithTextBuilder.text = this
     }
 }

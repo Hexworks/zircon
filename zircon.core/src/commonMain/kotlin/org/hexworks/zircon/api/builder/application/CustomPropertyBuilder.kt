@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 
 @ZirconDsl
-class CustomPropertyBuilder<T : Any> : Builder<Pair<AppConfigKey<T>, T>> {
+public class CustomPropertyBuilder<T : Any> : Builder<Pair<AppConfigKey<T>, T>> {
 
-    var key: AppConfigKey<T>? = null
-    var value: T? = null
+    public var key: AppConfigKey<T>? = null
+    public var value: T? = null
 
     override fun build(): Pair<AppConfigKey<T>, T> {
         requireNotNull(key) {

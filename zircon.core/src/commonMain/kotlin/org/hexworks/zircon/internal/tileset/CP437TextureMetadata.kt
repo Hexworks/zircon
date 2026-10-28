@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.tileset.TextureMetadata
  * [TextureMetadata] interface with [character] as all CP437 textures
  * will correspond to a [character].
  */
-data class CP437TextureMetadata(
+public data class CP437TextureMetadata(
     override val x: Int,
     override val y: Int,
     override val width: Int,

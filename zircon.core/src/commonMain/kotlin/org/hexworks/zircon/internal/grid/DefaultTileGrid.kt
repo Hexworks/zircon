@@ -37,7 +37,7 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
-class DefaultTileGrid(
+public class DefaultTileGrid(
     override val config: AppConfig,
     override var layerable: InternalLayerable = buildLayerable(config.size),
     override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
@@ -172,11 +172,11 @@ class DefaultTileGrid(
 
     override fun getLayerAtOrNull(level: Int): LayerHandle? = layerable.getLayerAtOrNull(level)
 
-    override fun addLayer(layer: Layer) = layerable.addLayer(layer)
+    override fun addLayer(layer: Layer): LayerHandle = layerable.addLayer(layer)
 
-    override fun insertLayerAt(level: Int, layer: Layer) = layerable.insertLayerAt(level, layer)
+    override fun insertLayerAt(level: Int, layer: Layer): LayerHandle = layerable.insertLayerAt(level, layer)
 
-    override fun setLayerAt(level: Int, layer: Layer) = layerable.setLayerAt(level, layer)
+    override fun setLayerAt(level: Int, layer: Layer): LayerHandle = layerable.setLayerAt(level, layer)
 
     override fun removeLayer(layer: Layer): Boolean {
         return layerable.removeLayer(layer)

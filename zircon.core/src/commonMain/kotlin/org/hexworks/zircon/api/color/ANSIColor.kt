@@ -5,9 +5,9 @@ package org.hexworks.zircon.api.color
  * See https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
  * for more info.
  */
-enum class ANSIColor(
-    val fgCode: Int,
-    val bgCode: Int
+public enum class ANSIColor(
+    public val fgCode: Int,
+    public val bgCode: Int
 ) {
     BLACK(30, 40),
     RED(31, 41),
@@ -29,5 +29,5 @@ enum class ANSIColor(
     BRIGHT_CYAN(96, 106),
     BRIGHT_WHITE(97, 107);
 
-    companion object
+    public companion object
 }

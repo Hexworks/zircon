@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * It is a rectangular graphic, or character that can also be drawn on
  * [DrawSurface]s using [DrawSurface.draw].
  */
-interface Tile : Cacheable, HasModifiers<Tile> {
+public interface Tile : Cacheable, HasModifiers<Tile> {
 
     /**
      * The type of this [Tile]:
@@ -20,9 +20,9 @@ interface Tile : Cacheable, HasModifiers<Tile> {
      * - [TileType.IMAGE_TILE]
      * @see TileType
      */
-    val tileType: TileType
+    public val tileType: TileType
 
-    companion object {
+    public companion object {
 
         /**
          * Shorthand for the default character which is:
@@ -31,7 +31,7 @@ interface Tile : Cacheable, HasModifiers<Tile> {
          * - and default background
          * - and no modifiers.
          */
-        fun defaultTile(): CharacterTile = DEFAULT_CHARACTER_TILE
+        public fun defaultTile(): CharacterTile = DEFAULT_CHARACTER_TILE
 
         /**
          * Shorthand for an empty character tile which is:
@@ -40,7 +40,7 @@ interface Tile : Cacheable, HasModifiers<Tile> {
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
+        public fun empty(): CharacterTile = EMPTY_CHARACTER_TILE
 
         private val DEFAULT_CHARACTER_TILE: CharacterTile = CharacterTile(
             character = ' ',

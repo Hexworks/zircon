@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
 
 @ZirconDsl
-class ButtonBuilder : ComponentWithTextBuilder<Button>(
+public class ButtonBuilder : ComponentWithTextBuilder<Button>(
     initialRenderer = DefaultButtonRenderer(),
     initialText = ""
 ) {
@@ -31,13 +31,13 @@ class ButtonBuilder : ComponentWithTextBuilder<Button>(
 /**
  * Creates a new [Button] using the component builder DSL and returns it.
  */
-fun button(init: ButtonBuilder.() -> Unit): Button =
+public fun button(init: ButtonBuilder.() -> Unit): Button =
     ButtonBuilder().apply(init).build()
 
 /**
  * Creates a new [Button] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Button].
  */
-fun <T : BaseContainerBuilder<*>> T.button(
+public fun <T : BaseContainerBuilder<*>> T.button(
     init: ButtonBuilder.() -> Unit
 ): Button = buildChildFor(this, ButtonBuilder(), init)

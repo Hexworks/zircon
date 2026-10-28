@@ -8,44 +8,44 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.internal.util.BoundedFifoQueue
 
-sealed class Cell
+public sealed class Cell
 
-data class TextCell(
+public data class TextCell(
     val content: CharacterTile,
 ) : Cell() {
-    override fun toString() = content.character.toString()
+    override fun toString(): String = content.character.toString()
 }
 
 /**
  * A cell that represents the end of the line.
  */
-data object EOLCell : Cell() {
-    override fun toString() = "{EOL}"
+public data object EOLCell : Cell() {
+    override fun toString(): String = "{EOL}"
 }
 
-data class Line(
+public data class Line(
     val cells: List<Cell>,
 ) {
 
-    override fun toString() = cells.joinToString("")
+    override fun toString(): String = cells.joinToString("")
 
-    companion object {
-        fun create(cells: List<Cell> = listOf()): Line {
+    public companion object {
+        public fun create(cells: List<Cell> = listOf()): Line {
             return Line(cells.filterIsInstance<TextCell>().plus(EOLCell))
         }
     }
 }
 
-data class EditorState(
+public data class EditorState(
     val lines: List<Line>,
     val cursor: Position = Position.ZERO
 )
 
-class TextEditor private constructor(
+public class TextEditor private constructor(
     initialState: EditorState,
 ) {
 
-    var state = initialState
+    public var state: EditorState = initialState
         private set
 
     /**
@@ -66,25 +66,25 @@ class TextEditor private constructor(
      */
     private var historyIdx: Int = -1
 
-    val text: String
+    public val text: String
         get() = state.lines.joinToString("\n") { line ->
             line.cells.filterIsInstance<TextCell>().map { cell -> cell.content.character }.joinToString("")
         }
 
-    val tiles: List<List<CharacterTile>>
+    public val tiles: List<List<CharacterTile>>
         get() = state.lines.map { line ->
             line.cells.filterIsInstance<TextCell>().map { it.content }
         }
 
-    val cursor: Position
+    public val cursor: Position
         get() = state.cursor
 
     private val sizeProperty: Property<Size> = state.size.toProperty()
 
-    var size: Size by sizeProperty.asDelegate()
+    public var size: Size by sizeProperty.asDelegate()
         private set
 
-    fun getTileAtOrNull(position: Position): CharacterTile? {
+    public fun getTileAtOrNull(position: Position): CharacterTile? {
         val (x, y) = position
         val cell = state.lines.getOrNull(y)?.cells?.getOrNull(x)
         return if (cell != null && cell is TextCell) {
@@ -92,7 +92,7 @@ class TextEditor private constructor(
         } else null
     }
 
-    fun applyTransformation(transformation: Transformation) {
+    public fun applyTransformation(transformation: Transformation) {
         state = transformation.apply(state)
         size = state.size
         history.add(transformation)
@@ -101,7 +101,7 @@ class TextEditor private constructor(
         }
     }
 
-    fun undo() = if (historyIdx >= 0) {
+    public fun undo(): Boolean = if (historyIdx >= 0) {
         // in case historyIdx is 0 this will return an empty list
         // TODO: need to test this though!
         println("history size: ${history.size}, idx: $historyIdx")
@@ -111,21 +111,21 @@ class TextEditor private constructor(
         true
     } else false
 
-    fun redo() = if (history.size > 0 && historyIdx < history.lastIndex) {
+    public fun redo(): Boolean = if (history.size > 0 && historyIdx < history.lastIndex) {
         historyIdx++
         state = history[historyIdx].apply(state)
         true
     } else false
 
-    companion object {
+    public companion object {
         /**
          * Creates a new [TextEditor] from the given [text].
          */
-        fun fromText(text: String): TextEditor {
+        public fun fromText(text: String): TextEditor {
             return TextEditor(text.toEditorState())
         }
 
-        fun fromTiles(tiles: List<List<CharacterTile>>): TextEditor {
+        public fun fromTiles(tiles: List<List<CharacterTile>>): TextEditor {
             val lines = tiles.map {
                 Line.create(it.map { tile ->
                     TextCell(tile)
@@ -141,66 +141,66 @@ class TextEditor private constructor(
     }
 }
 
-val EditorState.size: Size
+public val EditorState.size: Size
     get() {
         val lines = this.lines
         return Size(lines.maxBy { it.cells.size }.cells.size, lines.size)
     }
 
-val EditorState.cellAtCursor: Cell
+public val EditorState.cellAtCursor: Cell
     get() {
         val (lines, cursor) = this
         val (x, y) = cursor
         return lines[y].cells[x]
     }
 
-val EditorState.cursorAtEndOfLine: Boolean
+public val EditorState.cursorAtEndOfLine: Boolean
     get() = cellAtCursor is EOLCell
 
-val EditorState.cursorAtStartOfLine: Boolean
+public val EditorState.cursorAtStartOfLine: Boolean
     get() = cursor.x == 0
 
-val EditorState.cursorAtEndOfDocument: Boolean
+public val EditorState.cursorAtEndOfDocument: Boolean
     get() = cursorAtEndOfLine && cursor.y == lines.lastIndex
 
-val EditorState.cursorAtStartOfDocument: Boolean
+public val EditorState.cursorAtStartOfDocument: Boolean
     get() = cursor == Position.ZERO
 
-val EditorState.hasNextLine: Boolean
+public val EditorState.hasNextLine: Boolean
     get() {
         val (lines, cursor) = this
         return lines.lastIndex > cursor.y
     }
 
-fun EditorState.cellAt(cursor: Position): Cell? {
+public fun EditorState.cellAt(cursor: Position): Cell? {
     val (lines) = this
     val (x, y) = cursor
     return lines.getOrNull(y)?.cells?.getOrNull(x)
 }
 
-fun EditorState.lineAt(pos: Position): Line {
+public fun EditorState.lineAt(pos: Position): Line {
     return lines[pos.y]
 }
 
-fun EditorState.lineAt(y: Int): Line {
+public fun EditorState.lineAt(y: Int): Line {
     return lines[y]
 }
 
-fun Line.cellAt(x: Int): Cell {
+public fun Line.cellAt(x: Int): Cell {
     return cells[x]
 }
 
-val Line.hasText: Boolean
+public val Line.hasText: Boolean
     get() = cells.size > 1
 
-val Line.lastIndex: Int
+public val Line.lastIndex: Int
     get() = cells.lastIndex
 
-fun String.toEditorState(): EditorState {
+public fun String.toEditorState(): EditorState {
     return EditorState(split("\n").map(String::toLine).toMutableList())
 }
 
-fun String.toLine() = Line.create(map { c ->
+public fun String.toLine(): Line = Line.create(map { c ->
     TextCell(
         content = characterTile {
             character = c

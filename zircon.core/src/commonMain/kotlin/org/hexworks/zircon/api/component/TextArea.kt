@@ -6,16 +6,16 @@ import org.hexworks.zircon.api.data.tile.CharacterTile
 /**
  * A [TextArea] is an editable text box.
  */
-interface TextArea : Component, Scrollable {
+public interface TextArea : Component, Scrollable {
 
     /**
      * The plain text this [TextArea] contains.
      */
-    var text: String
+    public var text: String
 
     /**
      * The [CharacterTile]s this [TextArea] contains.
      */
-    var textTiles: List<List<CharacterTile>>
+    public var textTiles: List<List<CharacterTile>>
 
 }

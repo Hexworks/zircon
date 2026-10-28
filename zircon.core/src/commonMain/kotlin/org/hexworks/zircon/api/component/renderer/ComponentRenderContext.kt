@@ -5,21 +5,21 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.graphics.StyleSet
 
-class ComponentRenderContext<out T : Component>(val component: T) : RenderContext {
+public class ComponentRenderContext<out T : Component>(public val component: T) : RenderContext {
 
-    val componentStyle: ComponentStyleSet
+    public val componentStyle: ComponentStyleSet
         get() = component.componentStyleSet
 
-    val currentStyle: StyleSet
+    public val currentStyle: StyleSet
         get() = componentStyle.fetchStyleFor(component.componentState)
 
-    val theme: ColorTheme
+    public val theme: ColorTheme
         get() = component.theme
 
-    operator fun component1() = component
-    operator fun component2() = componentStyle
-    operator fun component3() = currentStyle
-    operator fun component4() = theme
+    public operator fun component1(): T = component
+    public operator fun component2(): ComponentStyleSet = componentStyle
+    public operator fun component3(): StyleSet = currentStyle
+    public operator fun component4(): ColorTheme = theme
 
     override fun toString(): String = "ComponentRenderContext(component=$component, componentStyle=$componentStyle, currentStyle=$currentStyle, theme=$theme)"
 }

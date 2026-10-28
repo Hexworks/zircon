@@ -9,25 +9,25 @@ import org.hexworks.zircon.api.data.extensions.withX
 /**
  * Tells whether the cursor is at the end of the line.
  */
-val CursorHandler.isCursorAtTheEndOfTheLine: Boolean
+public val CursorHandler.isCursorAtTheEndOfTheLine: Boolean
     get() = cursorPosition.x == cursorSpaceSize.width - 1
 
 /**
  * Tells whether the cursor is at the start of the line.
  */
-val CursorHandler.isCursorAtTheStartOfTheLine: Boolean
+public val CursorHandler.isCursorAtTheStartOfTheLine: Boolean
     get() = cursorPosition.x == 0
 
 /**
  * Tells whether the cursor is at the first (index 0) row.
  */
-val CursorHandler.isCursorAtTheFirstRow: Boolean
+public val CursorHandler.isCursorAtTheFirstRow: Boolean
     get() = cursorPosition.y == 0
 
 /**
  * Tells whether the cursor is at the last row.
  */
-val CursorHandler.isCursorAtTheLastRow: Boolean
+public val CursorHandler.isCursorAtTheLastRow: Boolean
     get() = cursorPosition.y == cursorSpaceSize.height - 1
 
 /**
@@ -35,7 +35,7 @@ val CursorHandler.isCursorAtTheLastRow: Boolean
  * of bound regards to columns, the cursor will be moved to the 0th position
  * in the next row, or it stays where it was if there is no next row.
  */
-fun CursorHandler.moveCursorForward() {
+public fun CursorHandler.moveCursorForward() {
     this.cursorPosition = cursorPosition.let { (column) ->
         if (cursorIsAtTheEndOfTheLine(column)) {
             cursorPosition.withX(0).withRelativeY(1)
@@ -50,7 +50,7 @@ fun CursorHandler.moveCursorForward() {
  * of bounds regards to columns, the cursor will be moved to the last position
  * in the previous row, or it stays where it was if there is no previous row.
  */
-fun CursorHandler.moveCursorBackward() {
+public fun CursorHandler.moveCursorBackward() {
     this.cursorPosition = cursorPosition.let { (column) ->
         if (cursorIsAtTheStartOfTheLine(column)) {
             if (cursorPosition.y > 0) {

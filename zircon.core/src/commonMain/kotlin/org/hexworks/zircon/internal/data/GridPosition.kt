@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.data
 
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.base.BasePosition
+import org.hexworks.zircon.internal.data.base.BasePosition
 
 /**
  * Represents an (x, y) coordinate on a grid. The actual
@@ -10,18 +10,18 @@ import org.hexworks.zircon.api.data.base.BasePosition
  * a [org.hexworks.zircon.api.resource.TilesetResource] which
  * will be used for drawing on the screen.
  */
-data class GridPosition(
+public data class GridPosition(
     override val x: Int,
     override val y: Int
 ) : BasePosition() {
 
-    override fun toString() = "(x=$x,y=$y)"
+    override fun toString(): String = "(x=$x,y=$y)"
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [GridPosition].
          */
-        fun create(x: Int, y: Int): Position = GridPosition(x, y)
+        public fun create(x: Int, y: Int): Position = GridPosition(x, y)
     }
 }

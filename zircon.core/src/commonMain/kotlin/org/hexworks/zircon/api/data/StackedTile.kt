@@ -15,37 +15,37 @@ import org.hexworks.zircon.internal.data.DefaultStackedTile
  * @see Tile
  */
 
-interface StackedTile : Tile {
+public interface StackedTile : Tile {
 
     /**
      * The [Tile] that's the base of this [StackedTile].
      */
-    val baseTile: Tile
+    public val baseTile: Tile
 
     /**
      * The [Tile]s that are stacked on top of the [baseTile].
      */
-    val rest: List<Tile>
+    public val rest: List<Tile>
 
     /**
      * The [Tile] on top of this stack. This tile is always visible.
      */
-    val top: Tile
+    public val top: Tile
 
     /**
      * Contains all the tiles in this [StackedTile] from top to bottom.
      */
-    val tiles: List<Tile>
+    public val tiles: List<Tile>
 
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [StackedTile] form the given [baseTile] and [rest].
          * @param rest use this parameter if you want to add multiple tiles apart from the [baseTile].
          * [rest] is ordered from bottom to top (vertically)
          */
-        fun create(
+        public fun create(
             baseTile: Tile,
             vararg rest: Tile
         ): StackedTile = DefaultStackedTile(

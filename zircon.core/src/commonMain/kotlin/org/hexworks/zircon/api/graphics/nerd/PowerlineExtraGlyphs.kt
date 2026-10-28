@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class PowerlineExtraGlyphs(
-    val glyph: Char,
+public enum class PowerlineExtraGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

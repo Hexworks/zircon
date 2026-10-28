@@ -5,23 +5,23 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.events.api.Subscription
 
 
-interface NumberInput : Component {
+public interface NumberInput : Component {
 
     //! TODO: why this?
-    var text: String
+    public var text: String
 
     /**
      * Current value with respect to the maxValue
      */
-    var currentValue: Int
-    val currentValueProperty: Property<Int>
+    public var currentValue: Int
+    public val currentValueProperty: Property<Int>
 
-    fun incrementCurrentValue()
+    public fun incrementCurrentValue()
 
-    fun decrementCurrentValue()
+    public fun decrementCurrentValue()
 
     /**
      * Callback called when value changes
      */
-    fun onChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
+    public fun onChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 }

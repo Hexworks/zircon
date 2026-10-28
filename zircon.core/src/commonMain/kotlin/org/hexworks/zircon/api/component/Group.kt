@@ -10,19 +10,19 @@ import org.hexworks.zircon.api.builder.Builder
  * can still be changed individually: the [Group] won't enforce consistency
  * between [Group] elements.
  */
-interface Group<T : Component> : ComponentProperties {
+public interface Group<T : Component> : ComponentProperties {
 
     /**
      * Adds a child [Component] to this [ComponentContainer]. It can either be
      * a leaf component (like a label) or a [Container] which can itself
      * contain components within itself.
      */
-    fun addComponent(component: T): AttachedComponent
+    public fun addComponent(component: T): AttachedComponent
 
     /**
      * Adds the given [Component]s to this [ComponentContainer].
      * @see addComponent
      */
-    fun addComponents(vararg components: T): List<AttachedComponent>
+    public fun addComponents(vararg components: T): List<AttachedComponent>
 
 }

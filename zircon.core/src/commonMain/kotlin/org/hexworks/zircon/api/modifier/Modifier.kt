@@ -17,4 +17,4 @@ import org.hexworks.zircon.api.grid.TileGrid
  * Note that Zircon comes with built-in [TileModifier]s, but you'll have to create
  * your own [TextureModifier]s and their corresponding renderers.
  */
-interface Modifier : Cacheable
+public interface Modifier : Cacheable

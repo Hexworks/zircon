@@ -11,4 +11,4 @@ import org.hexworks.zircon.api.behavior.TitleOverride
  * @see ComponentDecorations
  * @see Container
  */
-interface Panel : Container, TitleOverride
+public interface Panel : Container, TitleOverride

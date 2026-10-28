@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.component.alignment.WithinAlignmentStrategy
 /**
  * This object contains factory functions for creating [AlignmentStrategy] objects.
  */
-object ComponentAlignments {
+public object ComponentAlignments {
 
     /**
      * Calculates the [Position] of the resulting [Component] within
@@ -24,7 +24,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of the [tileGrid].
      */
-    fun alignmentWithin(
+    public fun alignmentWithin(
         tileGrid: TileGrid,
         alignmentType: ComponentAlignment
     ): AlignmentStrategy {
@@ -41,7 +41,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of the [container].
      */
-    fun alignmentWithin(
+    public fun alignmentWithin(
         container: Container,
         alignmentType: ComponentAlignment
     ): AlignmentStrategy {
@@ -58,7 +58,7 @@ object ComponentAlignments {
      * E.g. `TOP_LEFT` will align this [Component] to the top left
      * corner of [component].
      */
-    fun alignmentAround(
+    public fun alignmentAround(
         component: Component,
         alignmentType: ComponentAlignment
     ): AlignmentStrategy {
@@ -73,7 +73,7 @@ object ComponentAlignments {
      * within another one relative to its top left corner
      * using the given [x],[y] coordinates.
      */
-    fun positionalAlignment(x: Int, y: Int): AlignmentStrategy {
+    public fun positionalAlignment(x: Int, y: Int): AlignmentStrategy {
         return positionalAlignment(Position(x, y))
     }
 
@@ -82,7 +82,7 @@ object ComponentAlignments {
      * within another one relative to its top left corner
      * using the given [Position].
      */
-    fun positionalAlignment(position: Position): AlignmentStrategy {
+    public fun positionalAlignment(position: Position): AlignmentStrategy {
         return PositionalAlignmentStrategy(position)
     }
 

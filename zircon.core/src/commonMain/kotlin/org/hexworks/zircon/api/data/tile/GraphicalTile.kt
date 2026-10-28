@@ -7,7 +7,7 @@ import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 
-data class GraphicalTile(
+public data class GraphicalTile(
     override val tileset: TilesetResource,
     override val modifiers: Set<Modifier>,
     val name: String,
@@ -21,15 +21,15 @@ data class GraphicalTile(
 
     override fun createCopy(): GraphicalTile = copy()
 
-    fun withName(name: String): GraphicalTile = if (this.name == name) this else copy(
+    public fun withName(name: String): GraphicalTile = if (this.name == name) this else copy(
         name = name
     )
 
-    fun withTileset(tileset: TilesetResource): GraphicalTile = if (this.tileset == tileset) this else copy(
+    public fun withTileset(tileset: TilesetResource): GraphicalTile = if (this.tileset == tileset) this else copy(
         tileset = tileset
     )
 
-    fun withTags(tags: Set<String>): GraphicalTile = if (this.tags == tags) this else copy(tags = tags)
+    public fun withTags(tags: Set<String>): GraphicalTile = if (this.tags == tags) this else copy(tags = tags)
 
     override fun withModifiers(modifiers: Set<Modifier>): GraphicalTile =
         if (this.modifiers == modifiers) this else copy(

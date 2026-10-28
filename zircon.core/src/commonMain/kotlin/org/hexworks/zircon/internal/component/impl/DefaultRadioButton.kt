@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
@@ -12,7 +15,7 @@ import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.UIEventPhase
 
-class DefaultRadioButton internal constructor(
+public class DefaultRadioButton internal constructor(
     componentMetadata: ComponentMetadata,
     initialText: String,
     override val key: String,
@@ -24,7 +27,7 @@ class DefaultRadioButton internal constructor(
         metadata = componentMetadata,
         renderer = renderingStrategy
     ) {
-    override var state = NOT_SELECTED
+    override var state: RadioButtonState = NOT_SELECTED
 
     init {
         selectedProperty.onChange { (_, newValue) ->
@@ -36,21 +39,21 @@ class DefaultRadioButton internal constructor(
         }
     }
 
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             state = if (isSelected) SELECTED else NOT_SELECTED
         }
         super.mouseExited(event, phase)
     }
 
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             state = RadioButton.RadioButtonState.PRESSED
         }
         super.mousePressed(event, phase)
     }
 
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             state = SELECTED
             isSelected = true
@@ -58,11 +61,11 @@ class DefaultRadioButton internal constructor(
         super.mouseReleased(event, phase)
     }
 
-    override fun activated() = whenEnabledRespondWith {
+    override fun activated(): UIEventResponse = whenEnabledRespondWith {
         isSelected = true
         super.activated()
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toInteractiveStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()
 
 }

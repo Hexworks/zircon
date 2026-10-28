@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.resource.base
+package org.hexworks.zircon.internal.resource.base
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Base class for implementing [TilesetResource]s.
  */
-abstract class BaseTilesetResource : TilesetResource {
+public abstract class BaseTilesetResource : TilesetResource {
 
     override val id: UUID = UUID.randomUUID()
 

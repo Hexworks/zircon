@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.palette.BasePalette
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 
-object VisualStudioCodePalette : BasePalette<ANSIColor>(
+public object VisualStudioCodePalette : BasePalette<ANSIColor>(
     BLACK to color(0, 0, 0),
     RED to color(205, 49, 49),
     GREEN to color(13, 188, 121),

@@ -11,30 +11,30 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
  * A [Focusable] needs to be [Identifiable] as well to allow easy identification
  * and lookup.
  */
-interface Focusable : Identifiable {
+public interface Focusable : Identifiable {
 
     /**
      * Tells whether this [Focusable] has focus or not.
      */
-    val hasFocus: Boolean
-    val hasFocusProperty: ObservableValue<Boolean>
+    public val hasFocus: Boolean
+    public val hasFocusProperty: ObservableValue<Boolean>
 
     /**
      * Requests focus for this [Focusable]. The success of the request depends on
      * whether this [Focusable] [acceptsFocus] or not
      * @return `true` if [hasFocus] `false` if not
      */
-    fun requestFocus(): Boolean
+    public fun requestFocus(): Boolean
 
     /**
      * Clears focus from this [Focusable]. Has no effect if this [Focusable] is not focused.
      * After this operation [hasFocus] will be `false`
      */
-    fun clearFocus()
+    public fun clearFocus()
 
     /**
      * Tells whether this [Focusable] accepts focus right now.
      */
-    fun acceptsFocus(): Boolean
+    public fun acceptsFocus(): Boolean
 
 }

@@ -11,21 +11,21 @@ package org.hexworks.zircon.api.color
  *
  * A [ColorInterpolator] is created with the function [Color.interpolateTo]
  */
-interface ColorInterpolator {
+public interface ColorInterpolator {
 
     /**
      * Represents the lowest value in the color space. A ratio of 0.0 will return this color.
      */
-    val lowColor: Color
+    public val lowColor: Color
 
     /**
      * Represents the highest value in the color space. A ratio of 1.0 will return this color.
      */
-    val highColor: Color
+    public val highColor: Color
 
     /**
      * Returns a new [Color] which is the interpolation between the two colors
      * of the interpolator at the given ratio (between 0.0 and 1.0).
      */
-    fun getColorAtRatio(ratio: Double): Color
+    public fun getColorAtRatio(ratio: Double): Color
 }

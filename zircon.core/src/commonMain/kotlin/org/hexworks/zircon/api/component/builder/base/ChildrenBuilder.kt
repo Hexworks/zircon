@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.dsl.ZirconDsl
 
 @ZirconDsl
-class ChildrenBuilder : Builder<List<Component>> {
+public class ChildrenBuilder : Builder<List<Component>> {
     private val children = mutableListOf<Component>()
 
-    operator fun Component.unaryPlus() {
+    public operator fun Component.unaryPlus() {
         this@ChildrenBuilder.children.add(this)
     }
 

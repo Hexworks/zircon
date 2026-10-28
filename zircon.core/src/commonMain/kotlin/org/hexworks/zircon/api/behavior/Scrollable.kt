@@ -11,28 +11,28 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultScrollable
  * an area of (possibly) larger (`actualSize`) size. `visibleOffset` can be modified
  * to move the window around.
  */
-interface Scrollable {
+public interface Scrollable {
 
     /**
      * The [Size] of the virtual space this [Scrollable] can scroll through.
      */
-    var actualSize: Size
-    val actualSizeProperty: Property<Size>
+    public var actualSize: Size
+    public val actualSizeProperty: Property<Size>
 
     /**
      * The size of the visible part of this [Scrollable3D].
      */
-    val visibleSize: Size
+    public val visibleSize: Size
 
     /**
      * The offset where the visible part of this [Scrollable] starts.
      */
-    var visibleOffset: Position
-    val visibleOffsetProperty: Property<Position>
+    public var visibleOffset: Position
+    public val visibleOffsetProperty: Property<Position>
 
-    companion object {
+    public companion object {
 
-        fun create(
+        public fun create(
             visibleSize: Size,
             actualSize: Size
         ): Scrollable {

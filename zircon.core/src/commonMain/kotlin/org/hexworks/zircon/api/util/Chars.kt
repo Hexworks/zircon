@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.util
 
-fun Char.isControlCharacter() = code !in 32..<127
+public fun Char.isControlCharacter(): Boolean = code !in 32..<127
 
-fun Char.isPrintableCharacter() = !isControlCharacter()
+public fun Char.isPrintableCharacter(): Boolean = !isControlCharacter()
 
-fun Char.isDigitCharacter() = code in 48..57
+public fun Char.isDigitCharacter(): Boolean = code in 48..57

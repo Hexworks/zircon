@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.internal.event.ZirconEvent
 import kotlin.math.min
 
-class DefaultHorizontalNumberInput internal constructor(
+public class DefaultHorizontalNumberInput internal constructor(
     initialValue: Int,
     minValue: Int,
     maxValue: Int,
@@ -16,7 +16,7 @@ class DefaultHorizontalNumberInput internal constructor(
     initialValue, minValue, maxValue, componentMetadata, renderingStrategy
 ) {
 
-    override var maxNumberLength = min(Int.MAX_VALUE.toString().length, size.width)
+    override var maxNumberLength: Int = min(Int.MAX_VALUE.toString().length, size.width)
 
     override fun refreshCursor() {
         // TODO: why is this commented out?

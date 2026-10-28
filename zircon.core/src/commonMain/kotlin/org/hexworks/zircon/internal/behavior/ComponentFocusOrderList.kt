@@ -7,35 +7,35 @@ import org.hexworks.zircon.internal.component.InternalComponent
  * and allows operations on them. This can be used to implement focus handling
  * for components.
  */
-interface ComponentFocusOrderList {
+public interface ComponentFocusOrderList {
 
-    val focusedComponent: InternalComponent
+    public val focusedComponent: InternalComponent
 
-    fun isFocused(component: InternalComponent) = component == focusedComponent
+    public fun isFocused(component: InternalComponent): Boolean = component == focusedComponent
 
     /**
      * Returns the next component that can be focused.
      */
-    fun findNext(): InternalComponent
+    public fun findNext(): InternalComponent
 
     /**
      * Returns the previous component that can be focused.
      */
-    fun findPrevious(): InternalComponent
+    public fun findPrevious(): InternalComponent
 
     /**
      * Focuses the given component (if it is possible).
      */
-    fun focus(component: InternalComponent)
+    public fun focus(component: InternalComponent)
 
     /**
      * Rebuilds the focus order list.
      */
-    fun refreshFocusables()
+    public fun refreshFocusables()
 
     /**
      * Tells whether the given [InternalComponent] is capable of
      * being focused.
      */
-    fun canFocus(component: InternalComponent): Boolean
+    public fun canFocus(component: InternalComponent): Boolean
 }

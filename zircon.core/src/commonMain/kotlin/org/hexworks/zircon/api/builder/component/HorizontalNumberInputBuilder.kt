@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
 import org.hexworks.zircon.internal.component.renderer.DefaultNumberInputRenderer
 
 @ZirconDsl
-class HorizontalNumberInputBuilder :
+public class HorizontalNumberInputBuilder :
     NumberInputBuilder<NumberInput>(
         initialRenderer = DefaultNumberInputRenderer()
     ) {
@@ -34,7 +34,7 @@ class HorizontalNumberInputBuilder :
 /**
  * Creates a new [NumberInput] using the component builder DSL and returns it.
  */
-fun horizontalNumberInput(
+public fun horizontalNumberInput(
     init: HorizontalNumberInputBuilder.() -> Unit
 ): NumberInput =
     HorizontalNumberInputBuilder().apply(init).build()
@@ -43,6 +43,6 @@ fun horizontalNumberInput(
  * Creates a new [NumberInput] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [NumberInput].
  */
-fun <T : BaseContainerBuilder<*>> T.horizontalNumberInput(
+public fun <T : BaseContainerBuilder<*>> T.horizontalNumberInput(
     init: HorizontalNumberInputBuilder.() -> Unit
 ): NumberInput = buildChildFor(this, HorizontalNumberInputBuilder(), init)

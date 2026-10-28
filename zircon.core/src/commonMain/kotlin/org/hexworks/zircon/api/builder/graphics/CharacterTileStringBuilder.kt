@@ -21,9 +21,9 @@ private val NO_VALUE = UUID.randomUUID().toString()
  * - `text` is **mandatory**
  */
 @ZirconDsl
-class CharacterTileStringBuilder : Builder<CharacterTileString> {
+public class CharacterTileStringBuilder : Builder<CharacterTileString> {
 
-    var text: String = NO_VALUE
+    public var text: String = NO_VALUE
         set(value) {
             field = value
             if (size.isSizeUnknown) {
@@ -31,12 +31,12 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
             }
         }
 
-    var textWrap: TextWrap = WRAP
-    var size: Size = Size.UNKNOWN
-    var styleSet: StyleSet = StyleSet.defaultStyle()
-    val modifiers: MutableSet<Modifier> = mutableSetOf()
+    public var textWrap: TextWrap = WRAP
+    public var size: Size = Size.UNKNOWN
+    public var styleSet: StyleSet = StyleSet.defaultStyle()
+    public val modifiers: MutableSet<Modifier> = mutableSetOf()
 
-    operator fun String.unaryPlus() {
+    public operator fun String.unaryPlus() {
         text = this
     }
 
@@ -61,10 +61,10 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
 /**
  * Creates a new [CharacterTileStringBuilder] using the builder DSL and returns it.
  */
-fun characterTileString(init: CharacterTileStringBuilder.() -> Unit): CharacterTileString =
+public fun characterTileString(init: CharacterTileStringBuilder.() -> Unit): CharacterTileString =
     CharacterTileStringBuilder().apply(init).build()
 
 
-fun CharacterTileStringBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) = apply {
+public fun CharacterTileStringBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit): CharacterTileStringBuilder = apply {
     styleSet = StyleSetBuilder().apply(init).build()
 }

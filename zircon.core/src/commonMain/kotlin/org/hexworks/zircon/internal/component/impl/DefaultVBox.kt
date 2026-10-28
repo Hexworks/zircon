@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.behavior.extensions.moveDownBy
@@ -16,7 +17,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 
-class DefaultVBox internal constructor(
+public class DefaultVBox internal constructor(
     componentMetadata: ComponentMetadata,
     initialTitle: String,
     private val spacing: Int,
@@ -68,7 +69,7 @@ class DefaultVBox internal constructor(
         availableSpace = availableSpace.withRelativeHeight(delta)
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toContainerStyle()
 
     private fun checkAvailableSpace(component: Component) =
         require(availableSpace.containsBoundable(component)) {

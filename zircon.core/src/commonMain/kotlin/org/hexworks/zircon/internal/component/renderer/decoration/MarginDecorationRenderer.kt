@@ -6,9 +6,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Re
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.NON_INTERACTIVE
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
-data class MarginDecorationRenderer(
+public data class MarginDecorationRenderer(
     val top: Int,
     val right: Int,
     val bottom: Int,
@@ -16,9 +16,9 @@ data class MarginDecorationRenderer(
     private val renderingMode: RenderingMode = NON_INTERACTIVE
 ) : ComponentDecorationRenderer {
 
-    override val offset = Position(left, top)
+    override val offset: Position = Position(left, top)
 
-    override val occupiedSize = Size(left + right, top + bottom)
+    override val occupiedSize: Size = Size(left + right, top + bottom)
 
     override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
     }

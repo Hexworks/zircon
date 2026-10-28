@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.uievent
 /**
  * Event type for the different kinds of component evens.
  */
-enum class ComponentEventType : UIEventType {
+public enum class ComponentEventType : UIEventType {
 
     /**
      * The component was given focus.

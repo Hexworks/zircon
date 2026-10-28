@@ -12,11 +12,11 @@ import org.hexworks.zircon.internal.graphics.DefaultStyleSet
  * [Color]. Modifiers are empty by default.
  */
 @ZirconDsl
-class StyleSetBuilder : Builder<StyleSet> {
+public class StyleSetBuilder : Builder<StyleSet> {
 
-    var foregroundColor: Color = StyleSet.defaultStyle().foregroundColor
-    var backgroundColor: Color = StyleSet.defaultStyle().backgroundColor
-    var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers
+    public var foregroundColor: Color = StyleSet.defaultStyle().foregroundColor
+    public var backgroundColor: Color = StyleSet.defaultStyle().backgroundColor
+    public var modifiers: Set<Modifier> = StyleSet.defaultStyle().modifiers
 
     override fun build(): StyleSet = DefaultStyleSet(
         foregroundColor = foregroundColor,
@@ -28,5 +28,5 @@ class StyleSetBuilder : Builder<StyleSet> {
 /**
  * Creates a new [StyleSetBuilder] using the builder DSL and returns it.
  */
-fun styleSet(init: StyleSetBuilder.() -> Unit): StyleSet =
+public fun styleSet(init: StyleSetBuilder.() -> Unit): StyleSet =
     StyleSetBuilder().apply(init).build()

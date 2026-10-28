@@ -12,13 +12,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultComponentStyleSet
  * They will be used accordingly when the component's state changes.
  */
 @ZirconDsl
-class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
+public class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
 
-    var defaultStyle: StyleSet = StyleSet.defaultStyle()
-    var highlightedStyle: StyleSet = StyleSet.defaultStyle()
-    var activeStyle: StyleSet = StyleSet.defaultStyle()
-    var disabledStyle: StyleSet = StyleSet.defaultStyle()
-    var focusedStyle: StyleSet = StyleSet.defaultStyle()
+    public var defaultStyle: StyleSet = StyleSet.defaultStyle()
+    public var highlightedStyle: StyleSet = StyleSet.defaultStyle()
+    public var activeStyle: StyleSet = StyleSet.defaultStyle()
+    public var disabledStyle: StyleSet = StyleSet.defaultStyle()
+    public var focusedStyle: StyleSet = StyleSet.defaultStyle()
 
     override fun build(): ComponentStyleSet {
         val styles = mutableMapOf(
@@ -44,5 +44,5 @@ class ComponentStyleSetBuilder : Builder<ComponentStyleSet> {
 /**
  * Creates a new [ComponentStyleSet] using the component builder DSL and returns it.
  */
-fun componentStyleSet(init: ComponentStyleSetBuilder.() -> Unit): ComponentStyleSet =
+public fun componentStyleSet(init: ComponentStyleSetBuilder.() -> Unit): ComponentStyleSet =
     ComponentStyleSetBuilder().apply(init).build()

@@ -13,10 +13,10 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * - Default [StyleSet] comes from [StyleSet.defaultStyle]
  */
 @ZirconDsl
-class CharacterTileBuilder : Builder<CharacterTile> {
+public class CharacterTileBuilder : Builder<CharacterTile> {
 
-    var character: Char = ' '
-    var styleSet: StyleSet = StyleSet.defaultStyle()
+    public var character: Char = ' '
+    public var styleSet: StyleSet = StyleSet.defaultStyle()
 
     override fun build(): CharacterTile {
         return CharacterTile(
@@ -25,15 +25,15 @@ class CharacterTileBuilder : Builder<CharacterTile> {
         )
     }
 
-    operator fun Char.unaryPlus() {
+    public operator fun Char.unaryPlus() {
         character = this
     }
 }
 
-fun characterTile(init: CharacterTileBuilder.() -> Unit): CharacterTile {
+public fun characterTile(init: CharacterTileBuilder.() -> Unit): CharacterTile {
     return CharacterTileBuilder().apply(init).build()
 }
 
-fun CharacterTileBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) {
+public fun CharacterTileBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) {
     this.styleSet = StyleSetBuilder().apply(init).build()
 }

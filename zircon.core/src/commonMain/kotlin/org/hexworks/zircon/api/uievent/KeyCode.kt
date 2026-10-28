@@ -4,11 +4,11 @@ package org.hexworks.zircon.api.uievent
 
 import org.hexworks.zircon.api.util.isPrintableCharacter
 
-enum class KeyCode(
+public enum class KeyCode(
     /**
      * The unicode key code for the given key
      */
-    val code: Int
+    public val code: Int
 ) {
 
     /**
@@ -201,13 +201,13 @@ enum class KeyCode(
     /**
      * Tells whether this is the [UNKNOWN] [KeyCode].
      */
-    val isUnknown: Boolean
+    public val isUnknown: Boolean
         get() = this == UNKNOWN
 
     /**
      * Converts this [KeyCode] to a [Char] if possible.
      */
-    fun toCharOrNull(): Char? {
+    public fun toCharOrNull(): Char? {
         val char = code.toChar()
         return if (char.isPrintableCharacter()) {
             char
@@ -215,19 +215,19 @@ enum class KeyCode(
 
     }
 
-    companion object {
+    public companion object {
 
         /**
          * Returns the corresponding [KeyCode] for the given [char] (if any).
          */
-        fun findByChar(char: Char): KeyCode {
+        public fun findByChar(char: Char): KeyCode {
             return values().firstOrNull { it.code.toChar() == char } ?: UNKNOWN
         }
 
         /**
          * Returns the corresponding [KeyCode] for the given [code] (if any).
          */
-        fun findByCode(code: Int): KeyCode {
+        public fun findByCode(code: Int): KeyCode {
             return values().firstOrNull { it.code == code } ?: UNKNOWN
         }
     }

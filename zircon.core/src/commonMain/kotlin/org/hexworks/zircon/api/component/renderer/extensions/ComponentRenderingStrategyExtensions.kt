@@ -7,5 +7,5 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
  * Casts a covariant [ComponentRenderingStrategy]<out [T]> to an invariant [ComponentRenderingStrategy]<[T]>.
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : Component> ComponentRenderingStrategy<out T>.asInvariant(): ComponentRenderingStrategy<T> =
+public fun <T : Component> ComponentRenderingStrategy<out T>.asInvariant(): ComponentRenderingStrategy<T> =
     this as ComponentRenderingStrategy<T>

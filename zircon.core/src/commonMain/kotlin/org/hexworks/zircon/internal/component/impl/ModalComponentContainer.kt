@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -29,7 +30,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
  * all other containers below it. There can be only one container active at a given time.
  * If no modals are open, the [mainContainer] is active.
  */
-class ModalComponentContainer(
+public class ModalComponentContainer(
     private val metadata: ComponentMetadata,
     private val eventBus: EventBus,
     private val eventScope: ZirconScope,
@@ -49,7 +50,7 @@ class ModalComponentContainer(
     override val renderables: List<Renderable>
         get() = containerStack.flatMap { it.renderables }
 
-    override val isActive = mainContainer.isActive.value.toProperty()
+    override val isActive: Property<Boolean> = mainContainer.isActive.value.toProperty()
 
     override var theme: ColorTheme
         get() = mainContainer.theme
@@ -64,7 +65,7 @@ class ModalComponentContainer(
         containerStack.add(mainContainer)
     }
 
-    fun isMainContainerActive() = mainContainer.isActive.value
+    public fun isMainContainerActive(): Boolean = mainContainer.isActive.value
 
     override fun dispatch(event: UIEvent): UIEventResponse {
         var lastIdx = containerStack.lastIndex
@@ -105,7 +106,7 @@ class ModalComponentContainer(
         return mainContainer.detachAllComponents()
     }
 
-    fun addModal(modal: Modal<out ModalResult>) {
+    public fun addModal(modal: Modal<out ModalResult>) {
         val previousContainer = containerStack.fetchLast()
         previousContainer.deactivate()
         val modalContainer = buildContainer(
@@ -140,7 +141,7 @@ class ModalComponentContainer(
         }
     }
 
-    companion object {
+    public companion object {
 
         private fun buildContainer(
             metadata: ComponentMetadata,

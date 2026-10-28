@@ -8,16 +8,16 @@ import org.hexworks.zircon.api.resource.TilesetResource
  *
  * @param T the type of the draw surface (Swing, for example will use `Graphics2D`)
  */
-interface TilesetLoader<T : Any> {
+public interface TilesetLoader<T : Any> {
 
     /**
      * Loads a [Tileset] for the given [resource].
      */
-    fun loadTilesetFrom(resource: TilesetResource): Tileset<T>
+    public fun loadTilesetFrom(resource: TilesetResource): Tileset<T>
 
     /**
      * Returns true if calling [loadTilesetFrom] for this particular [resource]
      * will likely succeed (e.g.: this loader supports the given tileset)
      */
-    fun canLoadTileset(resource: TilesetResource): Boolean
+    public fun canLoadTileset(resource: TilesetResource): Boolean
 }

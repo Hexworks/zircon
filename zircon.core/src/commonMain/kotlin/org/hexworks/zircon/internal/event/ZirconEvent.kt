@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.event
 
+import kotlin.reflect.KClass
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.cobalt.events.api.EventDescriptor
@@ -12,20 +13,20 @@ import org.hexworks.zircon.internal.component.InternalContainer
 /**
  * Contains all the possible events that Zircon uses internally.
  */
-sealed class ZirconEvent : Event {
+public sealed class ZirconEvent : Event {
 
     /**
      * Cursor is requested at the given `position`.
      */
-    data class RequestCursorAt(
+    public data class RequestCursorAt(
         val position: Position,
         override val emitter: EventSource,
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<RequestCursorAt> {
-            override val key = "RequestCursorAt"
-            override val eventType = RequestCursorAt::class
+        public companion object : EventDescriptor<RequestCursorAt> {
+            override val key: String = "RequestCursorAt"
+            override val eventType: KClass<RequestCursorAt> = RequestCursorAt::class
         }
     }
 
@@ -34,15 +35,15 @@ sealed class ZirconEvent : Event {
      * Requests focus for the given [Component].
      * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
-    data class RequestFocusFor(
+    public data class RequestFocusFor(
         val component: Component,
         override val emitter: EventSource
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<RequestFocusFor> {
-            override val key = "RequestFocusFor"
-            override val eventType = RequestFocusFor::class
+        public companion object : EventDescriptor<RequestFocusFor> {
+            override val key: String = "RequestFocusFor"
+            override val eventType: KClass<RequestFocusFor> = RequestFocusFor::class
         }
     }
 
@@ -50,27 +51,27 @@ sealed class ZirconEvent : Event {
      * Requests to clear focus for the given [Component].
      * @see [org.hexworks.zircon.internal.behavior.ComponentFocusOrderList]
      */
-    data class ClearFocus(
+    public data class ClearFocus(
         val component: Component,
         override val emitter: EventSource
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<ClearFocus> {
-            override val key = "ClearFocus"
-            override val eventType = ClearFocus::class
+        public companion object : EventDescriptor<ClearFocus> {
+            override val key: String = "ClearFocus"
+            override val eventType: KClass<ClearFocus> = ClearFocus::class
         }
     }
 
     /**
      * Hides the cursor
      */
-    data class HideCursor(override val emitter: EventSource) : ZirconEvent() {
-        override val key = Companion.key
+    public data class HideCursor(override val emitter: EventSource) : ZirconEvent() {
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<HideCursor> {
-            override val key = "HideCursor"
-            override val eventType = HideCursor::class
+        public companion object : EventDescriptor<HideCursor> {
+            override val key: String = "HideCursor"
+            override val eventType: KClass<HideCursor> = HideCursor::class
         }
     }
 
@@ -78,47 +79,47 @@ sealed class ZirconEvent : Event {
      * A [org.hexworks.zircon.api.screen.Screen] has been switched to
      * (eg: the `display` function has been called on a Screen data class).
      */
-    data class ScreenSwitch(
+    public data class ScreenSwitch(
         val screenId: UUID,
         override val emitter: EventSource
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<ScreenSwitch> {
-            override val key = "ScreenSwitch"
-            override val eventType = ScreenSwitch::class
+        public companion object : EventDescriptor<ScreenSwitch> {
+            override val key: String = "ScreenSwitch"
+            override val eventType: KClass<ScreenSwitch> = ScreenSwitch::class
         }
     }
 
     /**
      * A [component] was added to a container.
      */
-    data class ComponentAdded(
+    public data class ComponentAdded(
         val parent: InternalContainer,
         val component: InternalComponent,
         override val emitter: EventSource
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<ComponentAdded> {
-            override val key = "ComponentAdded"
-            override val eventType = ComponentAdded::class
+        public companion object : EventDescriptor<ComponentAdded> {
+            override val key: String = "ComponentAdded"
+            override val eventType: KClass<ComponentAdded> = ComponentAdded::class
         }
     }
 
     /**
      * A [component] was removed from a container.
      */
-    data class ComponentRemoved(
+    public data class ComponentRemoved(
         val parent: InternalContainer,
         val component: InternalComponent,
         override val emitter: EventSource
     ) : ZirconEvent() {
-        override val key = Companion.key
+        override val key: String = Companion.key
 
-        companion object : EventDescriptor<ComponentRemoved> {
-            override val key = "ComponentRemoved"
-            override val eventType = ComponentRemoved::class
+        public companion object : EventDescriptor<ComponentRemoved> {
+            override val key: String = "ComponentRemoved"
+            override val eventType: KClass<ComponentRemoved> = ComponentRemoved::class
         }
     }
 

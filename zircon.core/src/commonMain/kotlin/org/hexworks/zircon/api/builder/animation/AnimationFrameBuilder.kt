@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.animation
 
+import org.hexworks.zircon.internal.extensions.asInternal
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
@@ -11,20 +12,20 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationFrame
 
 @ZirconDsl
-class AnimationFrameBuilder : Builder<AnimationFrame> {
+public class AnimationFrameBuilder : Builder<AnimationFrame> {
     private val layers = mutableListOf<Layer>()
 
     /**
      * The size of this frame.
      */
-    var size: Size = Size.UNKNOWN
+    public var size: Size = Size.UNKNOWN
 
     /**
      * How many times this frame will be repeated.
      */
-    var repeatCount: Int = 1
+    public var repeatCount: Int = 1
 
-    fun layer(init: LayerBuilder.() -> Unit) =
+    public fun layer(init: LayerBuilder.() -> Unit): Layer =
         LayerBuilder().apply {
             if (this@AnimationFrameBuilder.size.isSizeNotUnknown) {
                 size = this@AnimationFrameBuilder.size
@@ -35,7 +36,7 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
             }
         }
 
-    fun addLayers(layers: List<Layer>) {
+    public fun addLayers(layers: List<Layer>) {
         this.layers.addAll(layers)
     }
 
@@ -52,6 +53,6 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
 }
 
 
-fun animationFrame(init: AnimationFrameBuilder.() -> Unit) =
+public fun animationFrame(init: AnimationFrameBuilder.() -> Unit): AnimationFrame =
     AnimationFrameBuilder().apply(init).build()
 

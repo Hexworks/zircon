@@ -10,31 +10,31 @@ import kotlin.jvm.JvmStatic
 /**
  * A [Movable] is a [Boundable] object that can change its position.
  */
-interface Movable : Boundable {
+public interface Movable : Boundable {
 
     override val position: Position
-    val positionProperty: ObservableValue<Position>
+    public val positionProperty: ObservableValue<Position>
 
     override val size: Size
-    val sizeProperty: ObservableValue<Size>
+    public val sizeProperty: ObservableValue<Size>
 
     /**
      * Sets the position of this [Movable].
      * @return `true` if the operation was successful, `false` if not
      */
-    fun moveTo(position: Position): Boolean
+    public fun moveTo(position: Position): Boolean
 
-    companion object {
+    public companion object {
 
         @JvmStatic
-        fun create(
+        public fun create(
             size: Size,
             position: Position = Position.ZERO
         ): Movable =
             DefaultMovable(Boundable.create(position, size).toProperty())
 
         @JvmStatic
-        fun fromSize(
+        public fun fromSize(
            size: Size,
         ): Movable = DefaultMovable(Boundable.create(size = size).toProperty())
     }

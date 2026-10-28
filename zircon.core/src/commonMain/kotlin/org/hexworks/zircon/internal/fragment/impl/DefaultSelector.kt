@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Selector
 import org.hexworks.zircon.api.graphics.Symbols
 
-class DefaultSelector<T : Any> internal constructor(
+public class DefaultSelector<T : Any> internal constructor(
     position: Position,
     width: Int,
     override val selectedProperty: Property<T>,

@@ -6,6 +6,6 @@ import org.hexworks.cobalt.events.api.EventScope
 /**
  * This is the [EventScope] that Zircon uses.
  */
-data class ZirconScope(
+public data class ZirconScope(
     private val id: UUID = UUID.randomUUID()
 ) : EventScope

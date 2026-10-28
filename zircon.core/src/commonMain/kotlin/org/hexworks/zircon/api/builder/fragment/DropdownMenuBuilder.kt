@@ -8,9 +8,9 @@ import org.hexworks.zircon.api.fragment.menu.DropdownMenuItem
 
 
 @ZirconDsl
-class DropdownMenuBuilder<T : Any> : FragmentBuilder<DropdownMenu<T>> {
+public class DropdownMenuBuilder<T : Any> : FragmentBuilder<DropdownMenu<T>> {
 
-    var label: String = ""
+    public var label: String = ""
     internal var children: List<DropdownMenuItem<T>> = listOf()
     override var position: Position
         get() = TODO("Not yet implemented")

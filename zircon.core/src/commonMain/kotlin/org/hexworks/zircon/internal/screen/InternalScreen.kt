@@ -8,9 +8,5 @@ import org.hexworks.zircon.internal.uievent.UIEventProcessor
 /**
  * Represents the internal API of a [Screen]
  */
-interface InternalScreen : Screen, InternalTileGrid, InternalComponentContainer, UIEventProcessor {
-    /**
-     * Exposes the internal API of this [Screen]
-     */
-    override fun asInternal(): InternalScreen
+public interface InternalScreen : Screen, InternalTileGrid, InternalComponentContainer, UIEventProcessor {
 }

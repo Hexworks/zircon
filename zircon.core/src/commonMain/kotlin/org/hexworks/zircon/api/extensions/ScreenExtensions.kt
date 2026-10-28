@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
  * [Screen] and [Position] zero, and applies the builder function ([fn]) to it.
  * Note that the size is fixed, and you cannot change it.
  */
-fun Screen.useComponentBuilder(fn: PanelBuilder.() -> Unit) {
+public fun Screen.useComponentBuilder(fn: PanelBuilder.() -> Unit) {
     val builder = PanelBuilder().apply {
         preferredSize = size
         position = Position.ZERO

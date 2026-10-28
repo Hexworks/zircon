@@ -4,17 +4,17 @@ import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.KeyboardEventType
 
-fun KeyboardEvent.isNavigationKey() =
+public fun KeyboardEvent.isNavigationKey(): Boolean =
     this == NAV_NEXT || this == NAV_PREV
 
 
-val NAV_NEXT = KeyboardEvent(
+public val NAV_NEXT: KeyboardEvent = KeyboardEvent(
     type = KeyboardEventType.KEY_RELEASED,
     key = "\t",
     code = KeyCode.TAB
 )
 
-val NAV_PREV = KeyboardEvent(
+public val NAV_PREV: KeyboardEvent = KeyboardEvent(
     type = KeyboardEventType.KEY_RELEASED,
     key = "\t",
     code = KeyCode.TAB,

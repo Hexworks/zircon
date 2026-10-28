@@ -11,6 +11,7 @@ group = "org.hexworks.zircon"
 version = "2.0.0"
 
 kotlin {
+    explicitApi()
     // Pure Kotlin: every target is just a compilation. Android consumers resolve the jvm
     // variant (Java 17 bytecode), so there is no androidTarget here; zircon.compose has one.
     jvm {
@@ -102,3 +103,25 @@ mavenPublishing {
         }
     }
 }
+
+// The public API (org.hexworks.zircon.api) must not mention types from the internal package.
+// The BCV dump lists every public JVM signature, so it is the cheapest place to check.
+val checkApiLeaks by tasks.registering {
+    val dump = layout.projectDirectory.file("api/zircon.core.api")
+    inputs.file(dump)
+    doLast {
+        var current: String? = null
+        val leaks = mutableListOf<String>()
+        dump.asFile.readLines().forEach { line ->
+            if (line.isNotBlank() && !line.first().isWhitespace()) {
+                current = Regex("org/hexworks/zircon/[\\w/$]+").find(line)?.value
+            } else if (current?.startsWith("org/hexworks/zircon/api/") == true && "org/hexworks/zircon/internal/" in line) {
+                leaks += "$current: ${line.trim()}"
+            }
+        }
+        check(leaks.isEmpty()) { "Internal types leak into the public API:\n" + leaks.joinToString("\n") }
+    }
+}
+// apiCheck proves the dump matches the code, so the leak check runs on a verified dump.
+checkApiLeaks.configure { mustRunAfter(tasks.named("apiCheck")) }
+tasks.named("check") { dependsOn(checkApiLeaks) }

@@ -4,7 +4,7 @@ package org.hexworks.zircon.api.data
  * Represents the types of [Tile]s a [Block]
  * can have.
  */
-enum class BlockTileType(
+public enum class BlockTileType(
     /**
      * The ordering of the sides. Only necessary for internal functions
      * when storing the actual tiles. We're not using `ordinal` because

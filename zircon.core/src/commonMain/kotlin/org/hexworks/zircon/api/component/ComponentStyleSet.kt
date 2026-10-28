@@ -10,29 +10,29 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * @see ComponentState
  */
 //! TODO: Rename this
-interface ComponentStyleSet {
+public interface ComponentStyleSet {
 
     /**
      * Returns the [StyleSet] for the given `state`.
      */
-    fun fetchStyleFor(state: ComponentState): StyleSet
+    public fun fetchStyleFor(state: ComponentState): StyleSet
 
-    companion object {
+    public companion object {
 
         // TODO: is this OK?
-        val UNKNOWN = componentStyleSet { }
+        public val UNKNOWN: ComponentStyleSet = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.defaultStyle]
          * for all states.
          */
-        val DEFAULT_STYLE = componentStyleSet { }
+        public val DEFAULT_STYLE: ComponentStyleSet = componentStyleSet { }
 
         /**
          * Returns the empty [ComponentStyleSet] which uses [StyleSet.empty]
          * for all states.
          */
-        val EMPTY = componentStyleSet {
+        public val EMPTY: ComponentStyleSet = componentStyleSet {
             defaultStyle = StyleSet.empty()
         }
     }

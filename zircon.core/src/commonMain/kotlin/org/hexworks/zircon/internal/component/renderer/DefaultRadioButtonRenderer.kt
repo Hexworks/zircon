@@ -5,12 +5,12 @@ import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.PRESSED
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.SELECTED
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
 import kotlin.math.max
 
 @Suppress("DuplicatedCode")
-class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
+public class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultRadioButton>) {
         val state = context.component.state
@@ -27,12 +27,12 @@ class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
         )
     }
 
-    companion object {
+    public companion object {
         private const val ELLIPSIS = "..."
         private const val PRESSED_BUTTON = "<o>"
         private const val SELECTED_BUTTON = "<O>"
         private const val NOT_SELECTED_BUTTON = "< >"
-        const val DECORATION_WIDTH = NOT_SELECTED_BUTTON.length + 1
+        public const val DECORATION_WIDTH: Int = NOT_SELECTED_BUTTON.length + 1
 
         private val STATES = mapOf(
             Pair(PRESSED, PRESSED_BUTTON),

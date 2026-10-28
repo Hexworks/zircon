@@ -13,19 +13,19 @@ import org.hexworks.zircon.api.game.GameAreaTileFilter
 import org.hexworks.zircon.internal.game.impl.DefaultGameArea
 
 @ZirconDsl
-class GameAreaBuilder<T : Tile, B : Block<T>> : Builder<GameArea<T, B>> {
+public class GameAreaBuilder<T : Tile, B : Block<T>> : Builder<GameArea<T, B>> {
 
-    var actualSize: Size3D = Size3D.one()
+    public var actualSize: Size3D = Size3D.one()
         set(value) {
             field = value
             blocks = blocks.filterKeys { actualSize.containsPosition(it) }
                 .toMutableMap()
         }
 
-    var visibleSize: Size3D = Size3D.one()
-    var visibleOffset: Position3D = Position3D.ZERO
-    var blocks: Map<Position3D, B> = mapOf()
-    var filters: List<GameAreaTileFilter<T>> = listOf()
+    public var visibleSize: Size3D = Size3D.one()
+    public var visibleOffset: Position3D = Position3D.ZERO
+    public var blocks: Map<Position3D, B> = mapOf()
+    public var filters: List<GameAreaTileFilter<T>> = listOf()
 
 
     override fun build(): GameArea<T, B> {
@@ -42,5 +42,5 @@ class GameAreaBuilder<T : Tile, B : Block<T>> : Builder<GameArea<T, B>> {
 /**
  * Creates a new [GameAreaBuilder] using the builder DSL and returns it.
  */
-fun <T : Tile, B : Block<T>> gameArea(init: GameAreaBuilder<T, B>.() -> Unit): GameArea<T, B> =
+public fun <T : Tile, B : Block<T>> gameArea(init: GameAreaBuilder<T, B>.() -> Unit): GameArea<T, B> =
     GameAreaBuilder<T, B>().apply(init).build()

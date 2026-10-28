@@ -6,8 +6,8 @@ import org.hexworks.cobalt.core.api.behavior.NotDisposed
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.InternalSubscription
 
-class DefaultSubscription<T : Any>(
-    val listener: (T) -> Unit,
+public class DefaultSubscription<T : Any>(
+    public val listener: (T) -> Unit,
     private var subscriptions: PersistentList<Subscription>
 ) : InternalSubscription<T> {
 

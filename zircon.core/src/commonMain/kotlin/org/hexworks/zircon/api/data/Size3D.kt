@@ -17,7 +17,7 @@ package org.hexworks.zircon.api.data
  * (yLength, y axis, positive direction)
  *
  */
-data class Size3D(
+public data class Size3D(
     val xLength: Int,
     val yLength: Int,
     val zLength: Int
@@ -40,15 +40,15 @@ data class Size3D(
 
     private fun fetchPositionCount(): Long = xLength.toLong() * yLength.toLong() * zLength.toLong()
 
-    companion object {
+    public companion object {
 
-        fun one() = Size3D(1, 1, 1)
+        public fun one(): Size3D = Size3D(1, 1, 1)
 
         /**
          * Creates a new [Size3D] from a [Size].
          * If `zLength` is not supplied, it defaults to `0`.
          */
-        fun from2DSize(size: Size, zLength: Int = 0) = Size3D(
+        public fun from2DSize(size: Size, zLength: Int = 0): Size3D = Size3D(
             xLength = size.width,
             yLength = size.height,
             zLength = zLength

@@ -11,12 +11,12 @@ import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.graphics.DefaultBox
 
 @ZirconDsl
-class BoxBuilder : Builder<Box> {
+public class BoxBuilder : Builder<Box> {
 
-    var size: Size = Size(3, 3)
-    var style: StyleSet = StyleSet.defaultStyle()
-    var boxType: BoxType = BoxType.BASIC
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var size: Size = Size(3, 3)
+    public var style: StyleSet = StyleSet.defaultStyle()
+    public var boxType: BoxType = BoxType.BASIC
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
 
     override fun build(): Box = DefaultBox(
         size = size,
@@ -29,10 +29,10 @@ class BoxBuilder : Builder<Box> {
 /**
  * Creates a new [BoxBuilder] using the builder DSL and returns it.
  */
-fun box(init: BoxBuilder.() -> Unit): Box =
+public fun box(init: BoxBuilder.() -> Unit): Box =
     BoxBuilder().apply(init).build()
 
 
-fun BoxBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) = apply {
+public fun BoxBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit): BoxBuilder = apply {
     style = StyleSetBuilder().apply(init).build()
 }

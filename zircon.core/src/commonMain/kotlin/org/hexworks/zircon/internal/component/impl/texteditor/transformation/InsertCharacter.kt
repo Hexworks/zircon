@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
-class InsertCharacter(private val tile: CharacterTile) : Transformation {
+public class InsertCharacter(private val tile: CharacterTile) : Transformation {
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState
         val (x, y) = cursor

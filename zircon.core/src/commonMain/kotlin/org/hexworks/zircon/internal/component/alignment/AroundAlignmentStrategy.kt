@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.data.Size
  * for which [Boundable.containsPosition] will return `false` when
  * called on [other].
  */
-data class AroundAlignmentStrategy(
+public data class AroundAlignmentStrategy(
     private val other: Boundable,
     private val alignmentType: ComponentAlignment
 ) : AlignmentStrategy {

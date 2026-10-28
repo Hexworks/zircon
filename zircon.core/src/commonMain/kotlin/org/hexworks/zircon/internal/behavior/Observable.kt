@@ -6,11 +6,11 @@ import org.hexworks.cobalt.events.api.Subscription
 /**
  * Represents an object that can be observed for changes.
  */
-interface Observable<T : Any> {
+public interface Observable<T : Any> {
 
-    val subscriptions: PersistentList<InternalSubscription<T>>
+    public val subscriptions: PersistentList<InternalSubscription<T>>
 
-    fun addObserver(callback: (T) -> Unit): Subscription
+    public fun addObserver(callback: (T) -> Unit): Subscription
 
-    fun notifyObservers(event: T)
+    public fun notifyObservers(event: T)
 }

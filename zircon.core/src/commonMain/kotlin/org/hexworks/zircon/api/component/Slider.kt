@@ -9,34 +9,34 @@ import org.hexworks.cobalt.events.api.Subscription
  * values from a range of numbers with a visual sliding mechanism.
  */
 //! TODO: document this better
-interface Slider : Component {
+public interface Slider : Component {
 
-    val minValue: Int
-    val maxValue: Int
+    public val minValue: Int
+    public val maxValue: Int
 
     /**
      * Number of visible steps
      */
-    val numberOfSteps: Int
+    public val numberOfSteps: Int
 
-    var currentValue: Int
-    val currentValueProperty: Property<Int>
+    public var currentValue: Int
+    public val currentValueProperty: Property<Int>
 
-    var currentStep: Int
-    val currentStepProperty: Property<Int>
+    public var currentStep: Int
+    public val currentStepProperty: Property<Int>
 
-    fun decrementCurrentValue()
-    fun incrementCurrentValue()
-    fun decrementCurrentStep()
-    fun incrementCurrentStep()
+    public fun decrementCurrentValue()
+    public fun incrementCurrentValue()
+    public fun decrementCurrentStep()
+    public fun incrementCurrentStep()
 
     /**
      * Callback called when [currentValue] changes
      */
-    fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
+    public fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 
     /**
      * Callback called when [numberOfSteps] changes
      */
-    fun onStepChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
+    public fun onStepChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription
 }

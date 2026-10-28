@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.Component
 /**
  * Represents the states a [Component] can be in.
  */
-enum class ComponentState {
+public enum class ComponentState {
 
     /**
      * Used when the component doesn't have focus, and it is not being interacted.

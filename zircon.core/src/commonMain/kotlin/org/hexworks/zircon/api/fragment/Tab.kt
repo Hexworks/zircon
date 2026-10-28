@@ -12,17 +12,17 @@ import org.hexworks.zircon.api.component.RadioButton
  * when another [Tab] becomes selected.
  */
 
-interface Tab : Fragment {
+public interface Tab : Fragment {
 
-    val tabButton: RadioButton
+    public val tabButton: RadioButton
 
-    var isSelected: Boolean
+    public var isSelected: Boolean
         get() = tabButton.isSelected
         set(value) {
             tabButton.isSelected = value
         }
 
-    val key: String
+    public val key: String
         get() = tabButton.key
 
 }

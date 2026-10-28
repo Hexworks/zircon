@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
 
-data class ImageTile(
+public data class ImageTile(
     val name: String,
     override val tileset: TilesetResource,
     override val modifiers: Set<Modifier> = emptySet()
@@ -20,12 +20,12 @@ data class ImageTile(
 
     override fun createCopy(): ImageTile = copy()
 
-    fun withName(name: String) = imageTile {
+    public fun withName(name: String): ImageTile = imageTile {
         this.name = name
         tileset = this@ImageTile.tileset
     }
 
-    fun withTileset(tileset: TilesetResource) = imageTile {
+    public fun withTileset(tileset: TilesetResource): ImageTile = imageTile {
         name = this@ImageTile.name
         this.tileset = tileset
     }

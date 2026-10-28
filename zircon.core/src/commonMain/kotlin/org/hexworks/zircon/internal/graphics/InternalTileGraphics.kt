@@ -6,4 +6,4 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * Marker interface for [TileGraphics] implementations which Zircon uses internally.
  * Currently this is empty (but it wasn't always the case).
  */
-interface InternalTileGraphics : TileGraphics
+public interface InternalTileGraphics : TileGraphics

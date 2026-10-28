@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 
-class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
+public class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultProgressBar>) {
 

@@ -11,13 +11,13 @@ import org.hexworks.zircon.api.fragment.menu.MenuSelection
  * when clicked.
  */
 
-interface MenuBar<T : Any> : Fragment {
+public interface MenuBar<T : Any> : Fragment {
 
     /**
      * Adds a listener to this [MenuBar] that will be fired whenever
      * a menu item is selected (a button is pressed in a dropdown menu).
      */
-    fun onMenuItemSelected(
+    public fun onMenuItemSelected(
         handler: (menuSelection: MenuSelection<T>) -> CallbackResult
     ): Subscription
 }

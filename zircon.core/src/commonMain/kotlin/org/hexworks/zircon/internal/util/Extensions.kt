@@ -8,12 +8,12 @@ import org.hexworks.zircon.api.data.extensions.containsPosition
 import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.internal.game.GameAreaState
 
-typealias AnyGameArea = GameArea<out Tile, out Block<out Tile>>
+public typealias AnyGameArea = GameArea<out Tile, out Block<out Tile>>
 
-typealias AnyGameAreaState = GameAreaState<out Tile, out Block<out Tile>>
+public typealias AnyGameAreaState = GameAreaState<out Tile, out Block<out Tile>>
 
-typealias RenderSequence = Sequence<Pair<Position3D, BlockTileType>>
+public typealias RenderSequence = Sequence<Pair<Position3D, BlockTileType>>
 
-fun AnyGameAreaState.isPositionVisible(position3D: Position3D): Boolean {
+public fun AnyGameAreaState.isPositionVisible(position3D: Position3D): Boolean {
     return visibleSize.containsPosition(position3D - visibleOffset)
 }

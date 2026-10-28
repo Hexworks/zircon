@@ -15,22 +15,22 @@ import kotlin.math.ceil
  * Currently, the log area scrolls automatically down. When later Zircon provides scrollbars,
  * this behavior will be configurable.
  */
-interface LogArea : Component, Clearable {
+public interface LogArea : Component, Clearable {
 
     /**
      * Adds new empty rows to the log area.
      */
-    fun addNewRows(numberOfRows: Int = 1)
+    public fun addNewRows(numberOfRows: Int = 1)
 
     /**
      * Adds an empty line to the log.
      */
-    fun addEmptyLine()
+    public fun addEmptyLine()
 
     /**
      * Adds the given components as inline elements (within the same row) to the log.
      */
-    fun addInlineRow(
+    public fun addInlineRow(
         row: List<Component>,
         applyTheme: Boolean = true
     )
@@ -38,7 +38,7 @@ interface LogArea : Component, Clearable {
     /**
      * Adds a row-level component to the log
      */
-    fun addRow(
+    public fun addRow(
         row: Component,
         applyTheme: Boolean = true
     )

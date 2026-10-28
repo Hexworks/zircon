@@ -7,8 +7,8 @@ import org.hexworks.cobalt.events.api.Event
  * event propagation (see [UIEventPhase]).
  */
 //! TODO: why don't we implement Event here?
-interface UIEvent {
+public interface UIEvent {
 
-    val type: UIEventType
+    public val type: UIEventType
 
 }

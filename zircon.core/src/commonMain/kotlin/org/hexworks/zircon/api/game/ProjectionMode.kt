@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.game
 
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.internal.game.GameAreaRenderer
 import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
 
 /**
@@ -11,7 +10,7 @@ import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
  * for more info.
  */
 
-enum class ProjectionMode : RendererFactory {
+public enum class ProjectionMode : RendererFactory {
 
     /**
      * Tiles are rendered from top to bottom.
@@ -28,6 +27,6 @@ enum class ProjectionMode : RendererFactory {
     };
 }
 
-interface RendererFactory {
-    fun <T : Tile, B : Block<T>> createRenderer(): GameAreaRenderer<T, B>
+public interface RendererFactory {
+    public fun <T : Tile, B : Block<T>> createRenderer(): GameAreaRenderer<T, B>
 }

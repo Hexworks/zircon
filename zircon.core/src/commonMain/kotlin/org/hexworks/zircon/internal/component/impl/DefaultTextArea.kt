@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
@@ -49,7 +50,7 @@ import org.hexworks.zircon.internal.event.ZirconEvent
 import kotlin.math.abs
 import kotlin.math.max
 
-class DefaultTextArea internal constructor(
+public class DefaultTextArea internal constructor(
     initialText: String,
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<TextArea>
@@ -62,7 +63,7 @@ class DefaultTextArea internal constructor(
 
     private var textEditor = TextEditor.fromText(initialText)
 
-    val editorState: EditorState
+    public val editorState: EditorState
         get() = textEditor.state
 
     override var text: String
@@ -87,9 +88,9 @@ class DefaultTextArea internal constructor(
         }
     }
 
-    fun getTileAtOrNull(position: Position): CharacterTile? = textEditor.getTileAtOrNull(position)
+    public fun getTileAtOrNull(position: Position): CharacterTile? = textEditor.getTileAtOrNull(position)
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryBackgroundColor
             backgroundColor = colorTheme.secondaryForegroundColor
@@ -114,12 +115,12 @@ class DefaultTextArea internal constructor(
         }
     }
 
-    override fun focusGiven() = whenEnabled {
+    override fun focusGiven(): UIEventResponse = whenEnabled {
         refreshCursorAndScroll(KeyCode.UNKNOWN)
         super.focusGiven()
     }
 
-    override fun focusTaken() = whenEnabled {
+    override fun focusTaken(): UIEventResponse = whenEnabled {
         whenConnectedToRoot { root ->
             root.eventBus.publish(
                 event = ZirconEvent.HideCursor(this),
@@ -131,10 +132,10 @@ class DefaultTextArea internal constructor(
 
     // 📙 We need to mark these processed otherwise the component would respond to the
     // activation key (<Spacebar> probably) pressed making it flicker when active
-    override fun activated() = Processed
-    override fun deactivated() = Processed
+    override fun activated(): UIEventResponse = Processed
+    override fun deactivated(): UIEventResponse = Processed
 
-    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == TARGET) {
             if (event.isNavigationKey()) {
                 // we don't want to override regular component navigation keys (<Tab>, <Shift>+<Tab> by default)

@@ -10,13 +10,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
 import org.hexworks.zircon.internal.config.RuntimeConfig
 
 @ZirconDsl
-class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
+public class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
 
-    var isDisabled: Boolean = false
-    var isHidden: Boolean = false
-    var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var radioButtons: List<RadioButton> = listOf()
+    public var isDisabled: Boolean = false
+    public var isHidden: Boolean = false
+    public var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var radioButtons: List<RadioButton> = listOf()
 
     override fun build(): RadioButtonGroup = DefaultRadioButtonGroup(
         initialIsDisabled = isDisabled,
@@ -31,5 +31,5 @@ class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
 /**
  * Creates a new [RadioButtonGroup] using the component builder DSL and returns it.
  */
-fun radioButtonGroup(init: RadioButtonGroupBuilder.() -> Unit): RadioButtonGroup =
+public fun radioButtonGroup(init: RadioButtonGroupBuilder.() -> Unit): RadioButtonGroup =
     RadioButtonGroupBuilder().apply(init).build()

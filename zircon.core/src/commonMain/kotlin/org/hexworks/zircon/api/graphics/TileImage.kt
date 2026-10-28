@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
  * [TileGraphics] objects and its derivatives. Also supports operations for combining with
  * other [TileImage]s and converting to [TileGraphics].
  */
-interface TileImage : TileComposite, TilesetHolder {
+public interface TileImage : TileComposite, TilesetHolder {
 
     /**
      * The [Tile]s this [TileComposite] contains. Note that a [TileImage]

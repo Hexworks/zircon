@@ -5,12 +5,12 @@ import org.hexworks.zircon.api.data.Tile
 /**
  * Represents the built-in SimpleModifiers supported by zircon.
  */
-sealed class SimpleModifiers : TileModifier<Tile> {
+public sealed class SimpleModifiers : TileModifier<Tile> {
 
     /**
      * Will make the tile blink.
      */
-    object Blink : SimpleModifiers() {
+    public object Blink : SimpleModifiers() {
         override fun transform(tile: Tile): Tile {
             TODO("Not yet implemented")
         }
@@ -19,7 +19,7 @@ sealed class SimpleModifiers : TileModifier<Tile> {
     /**
      * Prevents the tile content from rendering (will only render the background).
      */
-    object Hidden : SimpleModifiers() {
+    public object Hidden : SimpleModifiers() {
         override fun transform(tile: Tile): Tile {
             TODO("Not yet implemented")
         }
@@ -28,5 +28,5 @@ sealed class SimpleModifiers : TileModifier<Tile> {
     override val cacheKey: String
         get() = "Modifier.${this::class.simpleName}"
 
-    override fun toString() = cacheKey
+    override fun toString(): String = cacheKey
 }

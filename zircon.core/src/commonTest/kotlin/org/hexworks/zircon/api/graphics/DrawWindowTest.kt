@@ -15,7 +15,6 @@ import org.hexworks.zircon.api.extensions.asCharacterTileOrNull
 import org.hexworks.zircon.api.graphics.extensions.applyStyle
 import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.fetchCharacters
 import kotlin.test.BeforeTest
 import kotlin.test.Test

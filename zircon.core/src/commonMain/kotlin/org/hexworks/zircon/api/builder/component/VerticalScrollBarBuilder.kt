@@ -11,13 +11,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
 import org.hexworks.zircon.internal.component.renderer.DefaultVerticalScrollBarRenderer
 
 @ZirconDsl
-class VerticalScrollBarBuilder(
+public class VerticalScrollBarBuilder(
     initialScrollable: Scrollable
 ) : BaseComponentBuilder<ScrollBar>(
     initialRenderer = DefaultVerticalScrollBarRenderer()
 ) {
 
-    var scrollable: Scrollable = initialScrollable
+    public var scrollable: Scrollable = initialScrollable
 
     override fun build(): ScrollBar {
         val visibleSize = scrollable.visibleSize
@@ -33,14 +33,14 @@ class VerticalScrollBarBuilder(
 /**
  * Creates a new vertical [ScrollBar] using the component builder DSL and returns it.
  */
-fun verticalScrollBar(scrollable: Scrollable, init: VerticalScrollBarBuilder.() -> Unit): ScrollBar =
+public fun verticalScrollBar(scrollable: Scrollable, init: VerticalScrollBarBuilder.() -> Unit): ScrollBar =
     VerticalScrollBarBuilder(scrollable).apply(init).build()
 
 /**
  * Creates a new vertical [ScrollBar] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [ScrollBar].
  */
-fun <T : BaseContainerBuilder<*>> T.verticalScrollBar(
+public fun <T : BaseContainerBuilder<*>> T.verticalScrollBar(
     scrollable: Scrollable,
     init: VerticalScrollBarBuilder.() -> Unit
 ): ScrollBar = buildChildFor(this, VerticalScrollBarBuilder(scrollable), init)

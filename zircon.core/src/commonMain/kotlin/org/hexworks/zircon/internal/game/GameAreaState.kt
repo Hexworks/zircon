@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.game.GameAreaTileFilter
 
-data class GameAreaState<T : Tile, B : Block<T>>(
+public data class GameAreaState<T : Tile, B : Block<T>>(
     val blocks: MutableMap<Position3D, B>,
     val actualSize: Size3D,
     val visibleSize: Size3D,

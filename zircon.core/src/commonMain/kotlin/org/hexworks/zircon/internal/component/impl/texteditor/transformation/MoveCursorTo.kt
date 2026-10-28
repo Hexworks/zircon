@@ -6,7 +6,7 @@ import org.hexworks.zircon.internal.component.impl.texteditor.Transformation
 import org.hexworks.zircon.internal.component.impl.texteditor.lastIndex
 import org.hexworks.zircon.internal.component.impl.texteditor.lineAt
 
-data class MoveCursorTo(
+public data class MoveCursorTo(
     val position: Position
 ) : Transformation {
 

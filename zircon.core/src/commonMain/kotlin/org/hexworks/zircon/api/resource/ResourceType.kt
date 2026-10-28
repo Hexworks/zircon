@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.resource
 
-enum class ResourceType {
+public enum class ResourceType {
     /**
      * Represents a resource on the filesystem (e.g.: a file or a directory)
      */

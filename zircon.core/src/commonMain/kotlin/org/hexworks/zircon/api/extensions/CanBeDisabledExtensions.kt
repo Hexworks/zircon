@@ -7,11 +7,11 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventResponse
 
-fun CanBeDisabled.onDisabledChanged(fn: (ObservableValueChanged<Boolean>) -> Unit): Subscription {
+public fun CanBeDisabled.onDisabledChanged(fn: (ObservableValueChanged<Boolean>) -> Unit): Subscription {
     return disabledProperty.onChange(fn)
 }
 
-var CanBeDisabled.isEnabled: Boolean
+public var CanBeDisabled.isEnabled: Boolean
     get() = isDisabled.not()
     set(value) {
         isDisabled = value.not()

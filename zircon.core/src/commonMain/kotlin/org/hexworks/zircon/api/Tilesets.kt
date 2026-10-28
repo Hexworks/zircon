@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.resource.GraphicalTilesetResource
 import org.hexworks.zircon.internal.resource.ImageDictionaryTilesetResource
 import org.hexworks.zircon.internal.resource.TrueTypeTilesetResource
 
-fun loadCP437TilesetResource(
+public fun loadCP437TilesetResource(
     width: Int,
     height: Int,
     path: String,
@@ -21,7 +21,7 @@ fun loadCP437TilesetResource(
     )
 }
 
-fun loadFontTilesetResource(
+public fun loadFontTilesetResource(
     width: Int,
     height: Int,
     path: String,
@@ -35,7 +35,7 @@ fun loadFontTilesetResource(
     )
 }
 
-fun loadImageDictionaryTilesetResource(
+public fun loadImageDictionaryTilesetResource(
     path: String,
     resourceType: ResourceType
 ): TilesetResource {
@@ -45,7 +45,7 @@ fun loadImageDictionaryTilesetResource(
     )
 }
 
-fun loadGraphicalTilesetResource(
+public fun loadGraphicalTilesetResource(
     width: Int,
     height: Int,
     path: String,

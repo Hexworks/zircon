@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.color.Color.Companion.create as color
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.loadBytes
-import org.hexworks.zircon.internal.resource.REXPaintResource
+import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.internal.util.compression.Gzip
 import org.hexworks.zircon.internal.util.convertCp437toUnicode
 import org.hexworks.zircon.internal.util.io.ByteReader
@@ -56,14 +56,14 @@ import org.hexworks.zircon.internal.util.rex.REXLayer
 /**
  * Loads a REXPaint file using the given [Resource].
  */
-suspend fun loadREXFile(resource: Resource): REXPaintResource {
+public suspend fun loadREXFile(resource: Resource): REXPaintResource {
     return loadREXFile(resource.loadBytes())
 }
 
 /**
  * Loads a REXPaint file from the given path.
  */
-suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.FILESYSTEM): REXPaintResource {
+public suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.FILESYSTEM): REXPaintResource {
     return loadREXFile(Resource.create(path, resourceType))
 }
 
@@ -71,7 +71,7 @@ suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.
  * Loads a REXPaint file from the given [ByteArray]. The bytes may be the gzip stream
  * exactly as REXPaint writes it, or an already decompressed `.xp` payload.
  */
-fun loadREXFile(source: ByteArray): REXPaintResource {
+public fun loadREXFile(source: ByteArray): REXPaintResource {
     val raw = if (Gzip.isGzip(source)) Gzip.decompress(source) else source
     return REXPaintResource(raw.toREXFile())
 }

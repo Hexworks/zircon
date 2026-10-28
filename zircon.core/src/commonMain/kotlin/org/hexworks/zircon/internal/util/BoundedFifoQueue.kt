@@ -1,43 +1,44 @@
 package org.hexworks.zircon.internal.util
 
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 
 /**
  * Queue that has a fixed maximum size. After this size is reached, the
  * oldest added element is removed whenever a new element is added
  */
-class BoundedFifoQueue<T : Any> private constructor(
+public class BoundedFifoQueue<T : Any> private constructor(
     private val currentElements: MutableList<T>,
     private val maxElements: Int
 ) {
 
     private val observable = DefaultObservable<T>()
 
-    val elements: List<T>
+    public val elements: List<T>
         get() = currentElements.toList()
-    val size: Int
+    public val size: Int
         get() = currentElements.size
-    val lastIndex: Int
+    public val lastIndex: Int
         get() = currentElements.lastIndex
 
 
-    operator fun get(index: Int) = currentElements[index]
+    public operator fun get(index: Int): T = currentElements[index]
 
-    fun add(element: T) {
+    public fun add(element: T) {
         currentElements.add(element)
         if (currentElements.size > maxElements) {
             observable.notifyObservers(currentElements.removeAt(0))
         }
     }
 
-    fun subList(fromIndex: Int, toIndex: Int): List<T> {
+    public fun subList(fromIndex: Int, toIndex: Int): List<T> {
         return currentElements.subList(fromIndex, toIndex)
     }
 
-    fun onKick(fn: (element: T) -> Unit) = observable.addObserver(fn)
+    public fun onKick(fn: (element: T) -> Unit): Subscription = observable.addObserver(fn)
 
-    companion object {
-        fun <T : Any> create(
+    public companion object {
+        public fun <T : Any> create(
             elements: List<T> = listOf(),
             maxElements: Int = elements.size
         ): BoundedFifoQueue<T> {

@@ -12,12 +12,12 @@ import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
 
 @ZirconDsl
-class IconBuilder : BaseComponentBuilder<Icon>(
+public class IconBuilder : BaseComponentBuilder<Icon>(
     initialRenderer = DefaultIconRenderer()
 ) {
 
-    var iconProperty: Property<Tile> = Tile.empty().toProperty()
-    var iconTile: Tile
+    public var iconProperty: Property<Tile> = Tile.empty().toProperty()
+    public var iconTile: Tile
         get() = iconProperty.value
         set(value) {
             iconProperty.value = value
@@ -35,13 +35,13 @@ class IconBuilder : BaseComponentBuilder<Icon>(
 /**
  * Creates a new [Icon] using the component builder DSL and returns it.
  */
-fun icon(init: IconBuilder.() -> Unit): Icon =
+public fun icon(init: IconBuilder.() -> Unit): Icon =
     IconBuilder().apply(init).build()
 
 /**
  * Creates a new [Icon] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Icon].
  */
-fun <T : BaseContainerBuilder<*>> T.icon(
+public fun <T : BaseContainerBuilder<*>> T.icon(
     init: IconBuilder.() -> Unit
 ): Icon = buildChildFor(this, IconBuilder(), init)

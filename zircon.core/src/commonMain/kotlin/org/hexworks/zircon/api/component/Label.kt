@@ -13,4 +13,4 @@ import org.hexworks.zircon.api.behavior.TextOverride
  * The semantic difference between a [Label] and a [Paragraph] is that a [Label]
  * contains a single line of text.
  */
-interface Label : Component, TextOverride
+public interface Label : Component, TextOverride

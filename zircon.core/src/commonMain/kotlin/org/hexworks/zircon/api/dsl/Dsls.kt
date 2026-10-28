@@ -31,4 +31,4 @@ internal fun <F : Fragment, B : FragmentBuilder<F>> buildFragmentFor(
 /**
  * Closes a modal that carries no result.
  */
-fun Modal<EmptyModalResult>.close() = close(EmptyModalResult)
+public fun Modal<EmptyModalResult>.close(): Unit = close(EmptyModalResult)

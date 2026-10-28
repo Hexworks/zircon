@@ -4,9 +4,9 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource
 
-object TilesetResources {
+public object TilesetResources {
 
-    fun allTextTilesetsCompatibleWith(tileset: TilesetResource): List<TilesetResource> {
+    public fun allTextTilesetsCompatibleWith(tileset: TilesetResource): List<TilesetResource> {
         val width = tileset.width
         val height = tileset.height
         val result: MutableList<TilesetResource> = BuiltInCP437TilesetResource.entries.filter {

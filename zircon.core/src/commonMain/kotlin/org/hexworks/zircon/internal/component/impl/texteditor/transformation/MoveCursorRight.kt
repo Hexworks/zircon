@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.internal.component.impl.texteditor.*
 
-object MoveCursorRight : Transformation {
+public object MoveCursorRight : Transformation {
 
     override fun apply(editorState: EditorState): EditorState {
         val (lines, cursor) = editorState

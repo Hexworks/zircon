@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Clearable
@@ -14,7 +15,7 @@ import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.internal.behavior.impl.DefaultMovable
 import org.hexworks.zircon.api.behavior.Boundable.Companion.create as boundable
 
-open class DefaultLayer internal constructor(
+public open class DefaultLayer internal constructor(
     initialPosition: Position,
     initialContents: TileGraphics,
     private val movable: Movable = DefaultMovable(
@@ -32,10 +33,9 @@ open class DefaultLayer internal constructor(
     final override val size: Size
         get() = backend.size
 
-    final override val hiddenProperty = false.toProperty()
+    final override val hiddenProperty: Property<Boolean> = false.toProperty()
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
-    override fun asInternal() = this
 
     override fun getAbsoluteTileAtOrNull(position: Position): Tile? {
         return backend.getTileAtOrNull(position)

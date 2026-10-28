@@ -3,12 +3,12 @@ package org.hexworks.zircon.api.uievent
 /**
  * Represents the possible responses to an [UIEvent].
  */
-sealed class UIEventResponse(
+public sealed class UIEventResponse(
     /**
      * Tells whether the [UIEvent] had any effect on
      * the underlying system or not.
      */
-    val eventProcessed: Boolean,
+    public val eventProcessed: Boolean,
     /**
      * How important the given response is compared to
      * the others.
@@ -16,28 +16,28 @@ sealed class UIEventResponse(
     private val precedence: Int
 ) {
 
-    fun hasPrecedenceOver(other: UIEventResponse) = this.precedence > other.precedence
+    public fun hasPrecedenceOver(other: UIEventResponse): Boolean = this.precedence > other.precedence
 
-    fun shouldStopPropagation() = this == StopPropagation
+    public fun shouldStopPropagation(): Boolean = this == StopPropagation
 
-    fun allowsDefaults() = this.hasPrecedenceOver(Processed).not()
+    public fun allowsDefaults(): Boolean = this.hasPrecedenceOver(Processed).not()
 
     /**
      * Picks the [UIEventResponse] which has higher precedence from this
      * one and the [other].
      */
-    fun pickByPrecedence(other: UIEventResponse): UIEventResponse {
+    public fun pickByPrecedence(other: UIEventResponse): UIEventResponse {
         return if (hasPrecedenceOver(other)) this else other
     }
 
-    companion object
+    public companion object
 }
 
 /**
  * [Pass] is the default [UIEventResponse] which indicates
  * that no event processing happened.
  */
-data object Pass : UIEventResponse(false, 0)
+public data object Pass : UIEventResponse(false, 0)
 
 /**
  * [Processed] indicates that at least one event handler
@@ -47,7 +47,7 @@ data object Pass : UIEventResponse(false, 0)
  * Return this object if you acted on an event but you don't
  * want to tamper with other listeners.
  */
-data object Processed : UIEventResponse(true, 1)
+public data object Processed : UIEventResponse(true, 1)
 
 /**
  * [PreventDefault] is an [UIEventResponse] which requests
@@ -57,7 +57,7 @@ data object Processed : UIEventResponse(true, 1)
  * don't want any default actions to take place (hover effects
  * on components, for example).
  */
-data object PreventDefault : UIEventResponse(true, 2)
+public data object PreventDefault : UIEventResponse(true, 2)
 
 /**
  * [StopPropagation] will not only prevent default actions
@@ -68,6 +68,6 @@ data object PreventDefault : UIEventResponse(true, 2)
  * don't want any other listeners to have the chance of
  * handling the event.
  */
-data object StopPropagation : UIEventResponse(true, 3)
+public data object StopPropagation : UIEventResponse(true, 3)
 
 

@@ -16,30 +16,30 @@ import org.hexworks.zircon.internal.game.InternalGameArea
  * If it is no longer used it should be [dispose]d to free resources.
  */
 
-interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
+public interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
 
     /**
      * Contains **all** the currently present [Block]s in this [GameArea].
      */
-    val blocks: Map<Position3D, B>
+    public val blocks: Map<Position3D, B>
 
     /**
      * Tells whether there is an actual [Block] at the given [position].
      * This means that the block in the given position is not a `filler`
      * block.
      */
-    fun hasBlockAt(position: Position3D): Boolean
+    public fun hasBlockAt(position: Position3D): Boolean
 
     /**
      * Returns the [Block] at the given [position] or `null` if no [Block] is present.
      */
-    fun fetchBlockAtOrNull(position: Position3D): B?
+    public fun fetchBlockAtOrNull(position: Position3D): B?
 
     /**
      * Returns the [Block] at the given [position] if present or the result of calling
      * [orElse] with [position] if not.
      */
-    fun fetchBlockAtOrElse(position: Position3D, orElse: (position: Position3D) -> B): B {
+    public fun fetchBlockAtOrElse(position: Position3D, orElse: (position: Position3D) -> B): B {
         return fetchBlockAtOrNull(position) ?: orElse(position)
     }
 
@@ -47,11 +47,10 @@ interface GameArea<T : Tile, B : Block<T>> : Scrollable3D, Disposable {
      * Sets the [Block] at the given [position]. Has no effect
      * if [position] is outside the [actualSize] of this [GameArea].
      */
-    fun setBlockAt(position: Position3D, block: B)
+    public fun setBlockAt(position: Position3D, block: B)
 
-    fun asInternal(): InternalGameArea<T, B>
 
-    companion object {
+    public companion object {
 
         internal fun fetchPositionsWithOffset(offset: Position3D, size: Size3D) =
             size.fetchPositions().map { it.plus(offset) }

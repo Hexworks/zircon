@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.data.Tile
  * *Note that* any kind of [Tile] can be used as the [icon] including
  * graphical tiles.
  */
-interface Icon : Component {
-    var icon: Tile
-    val iconProperty: Property<Tile>
+public interface Icon : Component {
+    public var icon: Tile
+    public val iconProperty: Property<Tile>
 }

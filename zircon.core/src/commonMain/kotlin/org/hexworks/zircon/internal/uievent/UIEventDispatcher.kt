@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.uievent.UIEventType
  * A [UIEventDispatcher] is responsible for dispatching UI events for UI
  * components.
  */
-interface UIEventDispatcher {
+public interface UIEventDispatcher {
 
 
     /**
@@ -18,6 +18,6 @@ interface UIEventDispatcher {
      * for the given [event]'s [UIEventType] or if invoking all listeners returned [Pass].
      * Otherwise [dispatch] will return the [UIEventResponse] with the highest precedence.
      */
-    fun dispatch(event: UIEvent): UIEventResponse
+    public fun dispatch(event: UIEvent): UIEventResponse
 
 }

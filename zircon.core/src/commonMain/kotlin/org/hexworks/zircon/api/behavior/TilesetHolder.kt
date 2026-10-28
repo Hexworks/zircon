@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Represents an object that has a tileset ([TilesetResource]).
  */
-interface TilesetHolder {
+public interface TilesetHolder {
 
-    val tileset: TilesetResource
+    public val tileset: TilesetResource
 }

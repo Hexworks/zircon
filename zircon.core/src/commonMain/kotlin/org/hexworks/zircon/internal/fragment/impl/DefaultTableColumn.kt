@@ -1,9 +1,10 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.fragment.TableColumn
+import org.hexworks.zircon.api.component.Header
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.fragment.TableColumn
 
 /**
  * This class represents the definition of a column in a `Table`. It provides means to get the value
@@ -15,7 +16,7 @@ import org.hexworks.zircon.api.fragment.TableColumn
  * @param C type of the [Component] used to represent each cell
  */
 
-class TableColumn<T : Any, V : Any, C : Component> internal constructor(
+public class DefaultTableColumn<T : Any, V : Any, C : Component> internal constructor(
     override val name: String,
     override val width: Int,
     private val valueProvider: (T) -> V,
@@ -25,10 +26,10 @@ class TableColumn<T : Any, V : Any, C : Component> internal constructor(
     /**
      * The [Component] that can be used as the column's header.
      */
-    override val header = header {
-        +this@TableColumn.name
+    override val header: Header = header {
+        +this@DefaultTableColumn.name
         preferredSize = Size(width, 1)
     }
 
-    override fun renderCellFor(model: T) = cellRenderer(valueProvider(model))
+    override fun renderCellFor(model: T): C = cellRenderer(valueProvider(model))
 }

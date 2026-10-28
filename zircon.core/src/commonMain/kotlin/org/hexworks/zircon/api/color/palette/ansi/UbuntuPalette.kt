@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.palette.BasePalette
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 
-object UbuntuPalette : BasePalette<ANSIColor>(
+public object UbuntuPalette : BasePalette<ANSIColor>(
     BLACK to color(0, 0, 0),
     RED to color(222, 56, 43),
     GREEN to color(57, 181, 74),

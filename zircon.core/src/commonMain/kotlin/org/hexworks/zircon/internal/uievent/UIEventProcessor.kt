@@ -13,17 +13,17 @@ import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
  * the rest of the listeners.
  * Also see [UIEventSource].
  */
-interface UIEventProcessor : UIEventSource, Closeable {
+public interface UIEventProcessor : UIEventSource, Closeable {
 
     /**
      * Processes the given [UIEvent] in the given [phase].
      * @return `true` if the event was consumed and event
      * propagation should stop, `false` if not.
      */
-    fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse
+    public fun process(event: UIEvent, phase: UIEventPhase): UIEventResponse
 
-    companion object {
+    public companion object {
 
-        fun createDefault(): DefaultUIEventProcessor = DefaultUIEventProcessor()
+        public fun createDefault(): DefaultUIEventProcessor = DefaultUIEventProcessor()
     }
 }

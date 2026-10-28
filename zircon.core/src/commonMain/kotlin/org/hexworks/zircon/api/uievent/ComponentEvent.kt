@@ -17,7 +17,7 @@ import org.hexworks.zircon.api.screen.Screen
  * influence the [ComponentEvent] processing by returning [PreventDefault] or
  * [StopPropagation].
  */
-data class ComponentEvent(
+public data class ComponentEvent(
     /**
      * The type of the [ComponentEvent].
      */

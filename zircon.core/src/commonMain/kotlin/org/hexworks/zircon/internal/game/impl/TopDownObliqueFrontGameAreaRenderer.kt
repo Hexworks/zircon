@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.game.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
+import org.hexworks.zircon.api.game.GameArea
 import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.data.*
@@ -8,21 +10,20 @@ import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withRelativeZ
 import org.hexworks.zircon.api.extensions.isOpaque
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.data.FastStackedTile
-import org.hexworks.zircon.internal.game.GameAreaRenderer
-import org.hexworks.zircon.internal.game.InternalGameArea
+import org.hexworks.zircon.api.game.GameAreaRenderer
 import kotlin.math.max
 
 // TODO: test this
-class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
+public class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
 
     override fun render(
-        gameArea: InternalGameArea<T, B>,
+        gameArea: GameArea<T, B>,
         graphics: DrawWindow,
         fillerTile: T
     ) {
-        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.state
+        val (blocks, _, visibleSize, visibleOffset, filter) = gameArea.asInternal().state
 
         for (x in 0 until graphics.width) {
             val projectionSequence = generateProjectionSequence(
@@ -59,7 +60,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
 
     }
 
-    fun generateProjectionSequence(
+    public fun generateProjectionSequence(
         visibleSize: Size3D,
         visibleOffset: Position3D,
         x: Int,
@@ -86,7 +87,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
         } while (counter > 0 && currPos.z >= minZ)
     }
 
-    fun generateFrontSequence(
+    public fun generateFrontSequence(
         visibleOffset: Position3D,
         startPos: Position3D
     ): Sequence<Pair<Position3D, BlockTileType>> = sequence {
@@ -111,7 +112,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
         }
     }
 
-    fun generateTopSequence(
+    public fun generateTopSequence(
         visibleOffset: Position3D,
         startPos: Position3D
     ): Sequence<Pair<Position3D, BlockTileType>> = sequence {

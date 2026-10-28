@@ -14,14 +14,14 @@ import org.hexworks.zircon.internal.data.GridPosition
  * Represents a coordinate on a 2D plane. [Position]
  * destructures into [x] and [y].
  */
-interface Position : Comparable<Position>, Additive<Position> {
+public interface Position : Comparable<Position>, Additive<Position> {
 
-    val x: Int
-    val y: Int
+    public val x: Int
+    public val y: Int
 
-    operator fun component1() = x
+    public operator fun component1(): Int = x
 
-    operator fun component2() = y
+    public operator fun component2(): Int = y
 
     /**
      * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.
@@ -38,37 +38,37 @@ interface Position : Comparable<Position>, Additive<Position> {
     override operator fun minus(other: Position): Position
 
 
-    companion object {
+    public companion object {
 
         /**
          * Creates a new [Position] using the given `x` and `y` values.
          */
-        operator fun invoke(x: Int, y: Int): Position {
+        public operator fun invoke(x: Int, y: Int): Position {
             return GridPosition(x, y)
         }
 
         /**
          * Returns the top left position of the given [Component].
          */
-        fun topLeftOf(component: Component) = component.position
+        public fun topLeftOf(component: Component): Position = component.position
 
         /**
          * Returns the top right position of the given [Component].
          */
-        fun topRightOf(component: Component) = component.position.withRelativeX(component.width)
+        public fun topRightOf(component: Component): Position = component.position.withRelativeX(component.width)
 
         /**
          * Returns the bottom left position of the given [Component].
          */
-        fun bottomLeftOf(component: Component) = component.position.withRelativeY(component.height)
+        public fun bottomLeftOf(component: Component): Position = component.position.withRelativeY(component.height)
 
         /**
          * Returns the bottom right position of the given [Component].
          */
-        fun bottomRightOf(component: Component) = component.position.withRelative(component.size.toPosition())
+        public fun bottomRightOf(component: Component): Position = component.position.withRelative(component.size.toPosition())
 
-        val ZERO = invoke(0, 0)
-        val OFFSET_1X1 = invoke(1, 1)
-        val UNKNOWN = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
+        public val ZERO: Position = invoke(0, 0)
+        public val OFFSET_1X1: Position = invoke(1, 1)
+        public val UNKNOWN: Position = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

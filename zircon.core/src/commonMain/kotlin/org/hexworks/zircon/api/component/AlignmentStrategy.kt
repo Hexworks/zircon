@@ -14,11 +14,11 @@ import org.hexworks.zircon.internal.component.alignment.WithinAlignmentStrategy
  * @see [PositionalAlignmentStrategy]
  * @see [WithinAlignmentStrategy]
  */
-fun interface AlignmentStrategy {
+public fun interface AlignmentStrategy {
 
     /**
      * Calculates the [Position] for an object having
      * the given [size] relative to a [Boundable].
      */
-    fun calculatePosition(size: Size): Position
+    public fun calculatePosition(size: Size): Position
 }

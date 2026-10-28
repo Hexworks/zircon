@@ -8,17 +8,17 @@ import org.hexworks.zircon.api.component.renderer.extensions.fetchStyleFor
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toCharacterTile
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
-data class SideDecorationRenderer(
+public data class SideDecorationRenderer(
     private val leftSideCharacter: Char = '[',
     private val rightSideCharacter: Char = ']',
     private val renderingMode: RenderingMode
 ) : ComponentDecorationRenderer {
 
-    override val offset = Position(1, 0)
+    override val offset: Position = Position(1, 0)
 
-    override val occupiedSize = Size(2, 0)
+    override val occupiedSize: Size = Size(2, 0)
 
     override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
         0.until(drawWindow.height).forEach { idx ->

@@ -14,20 +14,20 @@ import org.hexworks.zircon.internal.data.DefaultBoundable
  * can provide useful information about its geometry relating to other [Boundable]s
  * (like intersection).
  */
-interface Boundable : HasSize {
+public interface Boundable : HasSize {
 
-    val position: Position
+    public val position: Position
     override val size: Size
 
-    operator fun component1() = position
-    operator fun component2() = size
+    public operator fun component1(): Position = position
+    public operator fun component2(): Size = size
 
-    operator fun plus(other: Boundable) = DefaultBoundable(
+    public operator fun plus(other: Boundable): Boundable = DefaultBoundable(
         position = position + other.position,
         size = size + other.size
     )
 
-    operator fun minus(other: Boundable) = DefaultBoundable(
+    public operator fun minus(other: Boundable): Boundable = DefaultBoundable(
         position = position - other.position,
         size = size - other.size
     )
@@ -35,7 +35,7 @@ interface Boundable : HasSize {
     /**
      * Tells whether this [Boundable] intersects with the other [other].
      */
-    infix fun intersects(other: Boundable): Boolean {
+    public infix fun intersects(other: Boundable): Boolean {
         var tw = size.width
         var th = size.height
         var rw = other.width
@@ -60,7 +60,7 @@ interface Boundable : HasSize {
     /**
      * Tells whether [position] is within this boundable's bounds.
      */
-    infix fun containsPosition(position: Position): Boolean {
+    public infix fun containsPosition(position: Position): Boolean {
         val (otherX, otherY) = position
         var width = width
         var height = height
@@ -83,7 +83,7 @@ interface Boundable : HasSize {
      * are within this one's. (If their bounds are the same, it is considered
      * containment).
      */
-    infix fun containsBoundable(other: Boundable): Boolean {
+    public infix fun containsBoundable(other: Boundable): Boolean {
         val (otherPos, otherSize) = other
         val (otherX, otherY) = otherPos
         var (otherWidth, otherHeight) = otherSize
@@ -114,9 +114,9 @@ interface Boundable : HasSize {
         return true
     }
 
-    companion object {
+    public companion object {
 
-        fun create(position: Position = ZERO, size: Size): Boundable {
+        public fun create(position: Position = ZERO, size: Size): Boundable {
             return DefaultBoundable(position, size)
         }
     }

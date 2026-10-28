@@ -33,31 +33,31 @@ import org.hexworks.zircon.api.view.base.BaseView
  * @see TileGrid
  * @see ColorTheme
  */
-interface View : ColorThemeOverride {
+public interface View : ColorThemeOverride {
 
     /**
      * The [Screen] that's used to display the contents of this [View].
      */
-    val screen: Screen
+    public val screen: Screen
 
     /**
      * Docks this [View] to the [screen].
      */
-    fun dock()
+    public fun dock()
 
     /**
      * Replaces this [View] with [view]. Same as calling [dock] on [view].
      */
-    fun replaceWith(view: View)
+    public fun replaceWith(view: View)
 
     /**
      * Callback that will be executed whenever this [View] is [dock]ed.
      */
-    fun onDock() {}
+    public fun onDock() {}
 
     /**
      * Callback that will be executed whenever another [View] is [dock]ed.
      */
-    fun onUndock() {}
+    public fun onUndock() {}
 
 }

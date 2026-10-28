@@ -5,10 +5,10 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
 
-abstract class TabBarBuilder(
-    var size: Size,
-    var defaultSelected: String?,
-    var position: Position,
+public abstract class TabBarBuilder(
+    public var size: Size,
+    public var defaultSelected: String?,
+    public var position: Position,
     internal var tabs: List<TabBuilder>
 ) {
 

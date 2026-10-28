@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
+import org.hexworks.zircon.internal.extensions.asInternal
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

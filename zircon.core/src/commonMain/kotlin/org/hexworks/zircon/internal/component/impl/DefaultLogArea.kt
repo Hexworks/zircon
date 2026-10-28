@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.logging.api.Logger
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.extensions.height
@@ -15,7 +17,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.extensions.abbreviate
 
-class DefaultLogArea internal constructor(
+public class DefaultLogArea internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<LogArea>
 ) : LogArea, DefaultContainer(
@@ -89,9 +91,9 @@ class DefaultLogArea internal constructor(
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = colorTheme.toContainerStyle()
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toContainerStyle()
 
-    companion object {
-        val LOGGER = LoggerFactory.getLogger(LogArea::class)
+    public companion object {
+        public val LOGGER: Logger = LoggerFactory.getLogger(LogArea::class)
     }
 }

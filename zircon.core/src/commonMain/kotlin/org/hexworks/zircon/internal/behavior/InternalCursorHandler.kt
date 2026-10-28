@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.Size
 /**
  * Represents the internal API of a [CursorHandler].
  */
-interface InternalCursorHandler : CursorHandler {
+public interface InternalCursorHandler : CursorHandler {
 
     /**
      * Returns the [Size] of the (virtual) space the cursor can occupy.

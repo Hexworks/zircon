@@ -21,18 +21,18 @@ import org.hexworks.zircon.api.data.Position.Companion.OFFSET_1X1
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.graphics.BoxType
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 
-data class BoxDecorationRenderer(
+public data class BoxDecorationRenderer(
     val boxType: BoxType = BoxType.SINGLE,
     private val titleProperty: Property<String> = "".toProperty(),
     private val renderingMode: RenderingMode = NON_INTERACTIVE,
     private val titleAlignment: Alignment = Alignment.TOP_LEFT
 ) : ComponentDecorationRenderer, HasTitle {
 
-    override val offset = OFFSET_1X1
+    override val offset: Position = OFFSET_1X1
 
-    override val occupiedSize = Size(2, 2)
+    override val occupiedSize: Size = Size(2, 2)
 
     override val title: String by titleProperty.asDelegate()
 

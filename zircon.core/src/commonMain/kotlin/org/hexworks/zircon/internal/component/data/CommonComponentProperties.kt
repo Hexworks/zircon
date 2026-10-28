@@ -19,7 +19,7 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 /**
  * Contains all the common data for component builders.
  */
-data class CommonComponentProperties<T : Component>(
+public data class CommonComponentProperties<T : Component>(
     var name: String = "",
     var alignmentStrategy: AlignmentStrategy = ComponentAlignments.positionalAlignment(0, 0),
     var decorationRenderers: List<ComponentDecorationRenderer> = listOf(),

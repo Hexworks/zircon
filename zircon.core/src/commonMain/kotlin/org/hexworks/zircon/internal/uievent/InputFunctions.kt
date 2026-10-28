@@ -4,7 +4,7 @@ import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.isPrintableCharacter
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 
-fun injectStringAsKeyboardEvents(string: String, tileGrid: InternalTileGrid): UIEventResponse {
+public fun injectStringAsKeyboardEvents(string: String, tileGrid: InternalTileGrid): UIEventResponse {
     return string.filter {
         it.isPrintableCharacter()
     }.flatMap { char ->

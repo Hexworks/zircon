@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.cobalt.events.api.CallbackResult
 import org.hexworks.cobalt.events.api.Event
 import org.hexworks.cobalt.events.api.EventDescriptor
@@ -25,7 +27,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import kotlin.reflect.KClass
 
 
-class DefaultMenuBar<T : Any> internal constructor(
+public class DefaultMenuBar<T : Any> internal constructor(
     private val screen: Screen,
     position: Position,
     width: Int,
@@ -35,7 +37,7 @@ class DefaultMenuBar<T : Any> internal constructor(
     menuElements: List<DropdownMenu<T>>,
 ) : MenuBar<T> {
 
-    override val root = hBox {
+    override val root: HBox = hBox {
         this.position = position
         this.preferredContentSize = Size(width, 1)
         this.colorTheme = theme

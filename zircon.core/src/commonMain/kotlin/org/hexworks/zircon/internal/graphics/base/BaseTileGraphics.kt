@@ -1,5 +1,6 @@
-package org.hexworks.zircon.api.graphics.base
+package org.hexworks.zircon.internal.graphics.base
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.extension.orElseGet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Boundable
@@ -19,7 +20,7 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
-import org.hexworks.zircon.api.graphics.impl.DrawWindow
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.InternalTileGraphics
 
@@ -29,18 +30,18 @@ import org.hexworks.zircon.internal.graphics.InternalTileGraphics
  * All classes which are implementing the [TileGraphics] operations can
  * use this class as a base class.
  */
-abstract class BaseTileGraphics(
+public abstract class BaseTileGraphics(
     initialTileset: TilesetResource,
     initialSize: Size
 ) : InternalTileGraphics, TilesetOverride {
 
-    final override val tilesetProperty = initialTileset.toProperty(validator = { oldValue, newValue ->
+    final override val tilesetProperty: Property<TilesetResource> = initialTileset.toProperty(validator = { oldValue, newValue ->
         oldValue isCompatibleWith newValue
     })
 
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
 
-    final override val size = initialSize
+    final override val size: Size = initialSize
 
     override fun toString(): String {
         val currTiles = tiles

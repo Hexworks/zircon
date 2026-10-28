@@ -25,34 +25,34 @@ import org.hexworks.zircon.api.data.Size
  * ```
 
  */
-interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRenderContext> {
+public interface ComponentDecorationRenderer : DecorationRenderer<ComponentDecorationRenderContext> {
 
     /**
      * The [Position] this renderer offsets the rendering. For example, in the case of
      * a Box renderer which draws a box around the graphics, the offset will be Position(1, 1)
      * because a box takes up 1 column and 1 row on the top and on the left.
      */
-    val offset: Position
+    public val offset: Position
 
     /**
      * The [Size] this resulting decoration will occupy. For example, a Box renderer
      * has an `occupiedSize` of `Size(2, 2)` since a box takes up 2 columns (left, right)
      * and 2 rows (top, down).
      */
-    val occupiedSize: Size
+    public val occupiedSize: Size
 
     /**
      * When in [INTERACTIVE] mode the component decorations will react to [ComponentState]s.
      * In [NON_INTERACTIVE] mode they will use [ComponentState.DEFAULT] only.
      */
-    enum class RenderingMode {
+    public enum class RenderingMode {
         INTERACTIVE, NON_INTERACTIVE
     }
 
     /**
      * Alignment for decorator attributes like box title.
      */
-    enum class Alignment {
+    public enum class Alignment {
         TOP_LEFT,
         TOP_CENTER,
         TOP_RIGHT,

@@ -9,14 +9,14 @@ import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 
 @ZirconDsl
-class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
+public class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
     initialRenderer = DefaultToggleButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH
 ) {
 
     // TODO: pass property?
-    var isSelected: Boolean = false
+    public var isSelected: Boolean = false
 
     override fun build(): ToggleButton {
         return DefaultToggleButton(
@@ -31,13 +31,13 @@ class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
 /**
  * Creates a new [ToggleButton] using the component builder DSL and returns it.
  */
-fun toggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
+public fun toggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
     ToggleButtonBuilder().apply(init).build()
 
 /**
  * Creates a new [ToggleButton] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [ToggleButton].
  */
-fun <T : BaseContainerBuilder<*>> T.toggleButton(
+public fun <T : BaseContainerBuilder<*>> T.toggleButton(
     init: ToggleButtonBuilder.() -> Unit
 ): ToggleButton = buildChildFor(this, ToggleButtonBuilder(), init)

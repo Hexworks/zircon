@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.data.Position
@@ -7,13 +8,13 @@ import org.hexworks.zircon.api.data.Position.Companion.ZERO
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.toBoundable
 
-class DefaultScrollable internal constructor(
+public class DefaultScrollable internal constructor(
     initialVisibleSize: Size,
     initialActualSize: Size
 ) : Scrollable {
 
-    override val visibleSize = initialVisibleSize
-    override val actualSizeProperty =
+    override val visibleSize: Size = initialVisibleSize
+    override val actualSizeProperty: Property<Size> =
         initialActualSize.toProperty(
             optionalName = "Scrollable:actualSize",
             validator = { _, newSize ->
@@ -21,7 +22,7 @@ class DefaultScrollable internal constructor(
             })
     override var actualSize: Size by actualSizeProperty.asDelegate()
 
-    override val visibleOffsetProperty =
+    override val visibleOffsetProperty: Property<Position> =
         ZERO.toProperty(
             optionalName = "Scrollable:visibleOffset",
             validator = { _, newPos ->

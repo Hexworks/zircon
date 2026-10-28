@@ -9,13 +9,13 @@ import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 
 @ZirconDsl
-class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
+public class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
     initialRenderer = DefaultRadioButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
 ) {
 
-    var key: String = ""
+    public var key: String = ""
 
     override fun build(): RadioButton {
         require(key.isNotBlank()) {
@@ -33,13 +33,13 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
 /**
  * Creates a new [RadioButton] using the component builder DSL and returns it.
  */
-fun radioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
+public fun radioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
     RadioButtonBuilder().apply(init).build()
 
 /**
  * Creates a new [RadioButton] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [RadioButton].
  */
-fun <T : BaseContainerBuilder<*>> T.radioButton(
+public fun <T : BaseContainerBuilder<*>> T.radioButton(
     init: RadioButtonBuilder.() -> Unit
 ): RadioButton = buildChildFor(this, RadioButtonBuilder(), init)

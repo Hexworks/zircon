@@ -9,12 +9,12 @@ import org.hexworks.zircon.api.tileset.TileMetadataLoader
  * CP437 has a fixed grid (16x16) of characters so its metadata can be pre-calculated.
  * You can access it through the [cp437Metadata] field.
  */
-class CP437TileMetadataLoader(
+public class CP437TileMetadataLoader(
     private val width: Int,
     private val height: Int
 ) : TileMetadataLoader<CharacterTile> {
 
-    val cp437Metadata: Map<Char, CP437TextureMetadata> =
+    public val cp437Metadata: Map<Char, CP437TextureMetadata> =
         UNICODE_TO_CP437_LOOKUP.map { (unicodeChar, index) ->
             val x = index.rem(16)
             val y = index.div(16)
@@ -42,7 +42,7 @@ class CP437TileMetadataLoader(
         return cp437Metadata[tile.character] ?: emptyTextureMeta
     }
 
-    companion object {
+    public companion object {
         private val UNICODE_TO_CP437_LOOKUP = mapOf(
             Pair(0x263A, 1),
             Pair(0x263B, 2),

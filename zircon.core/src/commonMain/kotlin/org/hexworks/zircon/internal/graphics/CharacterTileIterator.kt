@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.data.tile.CharacterTile
  * Responsible for iterating over a `[<]` and returning a list
  * of [CharacterTile]s that represents a word
  */
-class CharacterTileIterator(private val tileIterator: Iterator<CharacterTile>) : Iterator<List<CharacterTile>> {
+public class CharacterTileIterator(private val tileIterator: Iterator<CharacterTile>) : Iterator<List<CharacterTile>> {
     private var tileStore: CharacterTile? = null
 
 
@@ -45,7 +45,7 @@ class CharacterTileIterator(private val tileIterator: Iterator<CharacterTile>) :
         return textCharacters
     }
 
-    companion object {
+    public companion object {
         //these are the characters that when present mean we have hit the end of the word
         private val WORD_ENDINGS = listOf(' ', '\n', '\t')
     }

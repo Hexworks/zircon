@@ -14,12 +14,12 @@ import kotlin.reflect.KClass
  * @param T the texture object that the renderer will draw on (like Graphics2D in Swing)
  * @param C the rendering context that contains all related objects that are necessary for rendering
  */
-interface TextureTransformer<T : Any, C : Any> {
+public interface TextureTransformer<T : Any, C : Any> {
 
     /**
      * The type of the texture that will be modified by [apply]
      */
-    val targetType: KClass<T>
+    public val targetType: KClass<T>
 
     /**
      * Takes a tileset texture and applies the transformation to it.
@@ -27,5 +27,5 @@ interface TextureTransformer<T : Any, C : Any> {
      * (probably in video memory), so some modifications will not work
      * (for example cropping, flipping)
      */
-    fun apply(texture: TextureContext<T, C>, tile: Tile): TextureContext<T, C>
+    public fun apply(texture: TextureContext<T, C>, tile: Tile): TextureContext<T, C>
 }

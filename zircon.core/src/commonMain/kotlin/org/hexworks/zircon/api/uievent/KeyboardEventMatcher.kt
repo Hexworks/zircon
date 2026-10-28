@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.uievent
 
-data class KeyboardEventMatcher(
+public data class KeyboardEventMatcher(
     val type: KeyboardEventType? = null,
     val key: String? = null,
     val code: KeyCode? = null,
@@ -10,7 +10,7 @@ data class KeyboardEventMatcher(
     val shiftDown: Boolean? = null
 ) {
 
-    fun matches(event: KeyboardEvent): Boolean {
+    public fun matches(event: KeyboardEvent): Boolean {
         var result = true
         type?.let {
             result = result && it == event.type
@@ -36,9 +36,9 @@ data class KeyboardEventMatcher(
         return result
     }
 
-    companion object {
+    public companion object {
 
-        fun create(
+        public fun create(
             type: KeyboardEventType? = null,
             key: String? = null,
             code: KeyCode? = null,
@@ -46,7 +46,7 @@ data class KeyboardEventMatcher(
             altDown: Boolean? = null,
             metaDown: Boolean? = null,
             shiftDown: Boolean? = null
-        ) = KeyboardEventMatcher(
+        ): KeyboardEventMatcher = KeyboardEventMatcher(
             type = type,
             key = key,
             code = code,

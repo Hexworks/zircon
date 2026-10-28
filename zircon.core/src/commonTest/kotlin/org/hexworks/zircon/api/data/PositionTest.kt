@@ -21,7 +21,6 @@ import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.api.data.extensions.withY
 import org.hexworks.zircon.internal.data.GridPosition
-import org.hexworks.zircon.internal.data.PixelPosition
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import kotlin.test.BeforeTest
 import kotlin.test.Test

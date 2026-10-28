@@ -14,61 +14,61 @@ import org.hexworks.zircon.internal.graphics.DefaultStyleSet
  * and a set of useful operations on them.
  */
 //! TODO: rename this to something better to finally remove the Lanterna legacy naming
-interface StyleSet : Cacheable, Copiable<StyleSet> {
+public interface StyleSet : Cacheable, Copiable<StyleSet> {
 
-    val foregroundColor: Color
-    val backgroundColor: Color
-    val modifiers: Set<Modifier>
+    public val foregroundColor: Color
+    public val backgroundColor: Color
+    public val modifiers: Set<Modifier>
 
     /**
      * Creates a copy of this [StyleSet] with the given foreground color.
      */
-    fun withForegroundColor(foregroundColor: Color): StyleSet
+    public fun withForegroundColor(foregroundColor: Color): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given background color.
      */
-    fun withBackgroundColor(backgroundColor: Color): StyleSet
+    public fun withBackgroundColor(backgroundColor: Color): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
      */
-    fun withModifiers(modifiers: Set<Modifier>): StyleSet
+    public fun withModifiers(modifiers: Set<Modifier>): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers.
      */
-    fun withModifiers(vararg modifiers: Modifier): StyleSet =
+    public fun withModifiers(vararg modifiers: Modifier): StyleSet =
         withModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers added.
      */
-    fun withAddedModifiers(modifiers: Set<Modifier>): StyleSet
+    public fun withAddedModifiers(modifiers: Set<Modifier>): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers added.
      */
-    fun withAddedModifiers(vararg modifiers: Modifier): StyleSet =
+    public fun withAddedModifiers(vararg modifiers: Modifier): StyleSet =
         withAddedModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers removed.
      */
-    fun withRemovedModifiers(modifiers: Set<Modifier>): StyleSet
+    public fun withRemovedModifiers(modifiers: Set<Modifier>): StyleSet
 
     /**
      * Creates a copy of this [StyleSet] with the given modifiers removed.
      */
-    fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet =
+    public fun withRemovedModifiers(vararg modifiers: Modifier): StyleSet =
         withRemovedModifiers(modifiers.toSet())
 
     /**
      * Creates a copy of this [StyleSet] with no modifiers.
      */
-    fun withNoModifiers(): StyleSet
+    public fun withNoModifiers(): StyleSet
 
-    companion object {
+    public companion object {
 
         /**
          * Shorthand for the default style which is:
@@ -76,7 +76,7 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * - default background color (black)
          * - no modifiers
          */
-        fun defaultStyle() = DEFAULT_STYLE
+        public fun defaultStyle(): StyleSet = DEFAULT_STYLE
 
         /**
          * Shorthand for the empty style which has:
@@ -84,7 +84,7 @@ interface StyleSet : Cacheable, Copiable<StyleSet> {
          * - and transparent background
          * - and no modifiers.
          */
-        fun empty() = EMPTY
+        public fun empty(): StyleSet = EMPTY
 
         private val DEFAULT_STYLE: StyleSet = DefaultStyleSet(
             foregroundColor = Color.DEFAULT_FOREGROUND_COLOR,

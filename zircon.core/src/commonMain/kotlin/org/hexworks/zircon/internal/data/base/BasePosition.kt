@@ -1,13 +1,13 @@
-package org.hexworks.zircon.api.data.base
+package org.hexworks.zircon.internal.data.base
 
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.data.GridPosition
-import org.hexworks.zircon.internal.data.PixelPosition
+import org.hexworks.zircon.api.data.PixelPosition
 
 /**
  * Base class for [Position] implementations.
  */
-abstract class BasePosition : Position {
+public abstract class BasePosition : Position {
 
     /**
      * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.

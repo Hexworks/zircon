@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 
-data class DefaultCharacterTileString (
+public data class DefaultCharacterTileString (
     override val characterTiles: List<CharacterTile>,
     override val size: Size,
     private val textWrap: TextWrap
@@ -100,7 +100,7 @@ data class DefaultCharacterTileString (
         return tiles.toMap()
     }
 
-    override fun plus(other: CharacterTileString) = DefaultCharacterTileString(
+    override fun plus(other: CharacterTileString): CharacterTileString = DefaultCharacterTileString(
         characterTiles = characterTiles.plus(other.characterTiles),
         textWrap = textWrap,
         size = size + other.size

@@ -12,35 +12,31 @@ import org.hexworks.zircon.internal.graphics.InternalLayer
  * A [Layer] is a [TileGraphics] that can be positioned and moved over a [TileGrid].
  * With [Layer]s one can create a quasi 3D effect (like top-down oblique projections).
  */
-interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
+public interface Layer : Boundable, CanBeHidden, Identifiable, TileGraphics, TilesetOverride {
 
     //! TODO: document if the copy will be attached if the original is attached
     override fun createCopy(): Layer
 
-    /**
-     * Returns this [Layer] as an [InternalLayer] that represents Zircon's internal API.
-     */
-    fun asInternal(): InternalLayer
 
     /**
      * Same as [TileGraphics.getTileAtOrNull] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
-    fun getAbsoluteTileAtOrNull(position: Position): Tile?
+    public fun getAbsoluteTileAtOrNull(position: Position): Tile?
 
     /**
      * Same as [TileGraphics.getTileAtOrElse] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
-    fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile
+    public fun getAbsoluteTileAtOrElse(position: Position, orElse: (position: Position) -> Tile): Tile
 
     /**
      * Same as [TileGraphics.draw] but will consider the given [position]
      * as an absolute position (the position is relative to the top left corner
      * of the screen, not the top left corner of the [Layer]).
      */
-    fun drawAbsoluteTileAt(position: Position, tile: Tile)
+    public fun drawAbsoluteTileAt(position: Position, tile: Tile)
 
 }

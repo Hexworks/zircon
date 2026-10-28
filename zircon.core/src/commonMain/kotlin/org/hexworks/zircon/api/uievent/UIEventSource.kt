@@ -7,13 +7,13 @@ import org.hexworks.cobalt.events.api.Subscription
  * An [UIEventSource] is an object that emits [UIEvent]s and can be used to listen to
  * those events.
  */
-interface UIEventSource : EventSource {
+public interface UIEventSource : EventSource {
 
     /**
      * Adds the given [handler] for mouse events. Use this if you selectively
      * consume events.
      */
-    fun handleMouseEvents(
+    public fun handleMouseEvents(
         eventType: MouseEventType,
         handler: (event: MouseEvent, phase: UIEventPhase) -> UIEventResponse
     ): Subscription
@@ -27,7 +27,7 @@ interface UIEventSource : EventSource {
      * (you never skip/drop events). This means that [processMouseEvents] can
      * be used if you find yourself always returning [Processed] form your event listeners.
      */
-    fun processMouseEvents(
+    public fun processMouseEvents(
         eventType: MouseEventType,
         handler: (event: MouseEvent, phase: UIEventPhase) -> Unit
     ): Subscription
@@ -36,7 +36,7 @@ interface UIEventSource : EventSource {
      * Adds the given [handler] for keyboard events. Use this if you selectively
      * consume events.
      */
-    fun handleKeyboardEvents(
+    public fun handleKeyboardEvents(
         eventType: KeyboardEventType,
         handler: (event: KeyboardEvent, phase: UIEventPhase) -> UIEventResponse
     ): Subscription
@@ -50,7 +50,7 @@ interface UIEventSource : EventSource {
      * (you never skip/drop events). This means that [processKeyboardEvents] can
      * be used if you find yourself always returning [Processed] form your event listeners.
      */
-    fun processKeyboardEvents(
+    public fun processKeyboardEvents(
         eventType: KeyboardEventType,
         handler: (event: KeyboardEvent, phase: UIEventPhase) -> Unit
     ): Subscription

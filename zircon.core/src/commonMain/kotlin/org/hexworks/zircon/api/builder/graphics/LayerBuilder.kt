@@ -22,13 +22,13 @@ import org.hexworks.zircon.internal.graphics.DefaultLayer
  * - has no text image by default
  */
 @ZirconDsl
-class LayerBuilder : Builder<Layer> {
+public class LayerBuilder : Builder<Layer> {
 
-    var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
-    var size: Size = Size.UNKNOWN
-    var offset: Position = Position.ZERO
-    var tileGraphics: TileGraphics? = null
-    var filler: Tile = Tile.empty()
+    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var size: Size = Size.UNKNOWN
+    public var offset: Position = Position.ZERO
+    public var tileGraphics: TileGraphics? = null
+    public var filler: Tile = Tile.empty()
 
     override fun build(): Layer {
         return tileGraphics?.let { graphics ->
@@ -53,15 +53,15 @@ class LayerBuilder : Builder<Layer> {
     }
 }
 
-fun layer(init: LayerBuilder.() -> Unit) =
+public fun layer(init: LayerBuilder.() -> Unit): Layer =
     LayerBuilder().apply(init).build()
 
 
 
-fun LayerBuilder.withTileGraphics(init: TileGraphicsBuilder.() -> Unit) = apply {
+public fun LayerBuilder.withTileGraphics(init: TileGraphicsBuilder.() -> Unit): LayerBuilder = apply {
     tileGraphics = TileGraphicsBuilder().apply(init).build()
 }
 
-fun LayerBuilder.withFiller(init: CharacterTileBuilder.() -> Unit) = apply {
+public fun LayerBuilder.withFiller(init: CharacterTileBuilder.() -> Unit): LayerBuilder = apply {
     filler = CharacterTileBuilder().apply(init).build()
 }

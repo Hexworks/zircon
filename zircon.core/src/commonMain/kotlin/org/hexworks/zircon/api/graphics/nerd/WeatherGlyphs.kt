@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class WeatherGlyphs(
-    val glyph: Char,
+public enum class WeatherGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

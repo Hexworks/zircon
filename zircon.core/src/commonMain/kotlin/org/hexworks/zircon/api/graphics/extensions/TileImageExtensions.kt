@@ -21,7 +21,7 @@ import kotlin.math.max
  * given [position]. Has no effect if [position] is outside
  * this [TileImage]'s [size].
  */
-fun TileImage.withTileAt(position: Position, tile: Tile): TileImage {
+public fun TileImage.withTileAt(position: Position, tile: Tile): TileImage {
     return if (size.containsPosition(position)) {
         DefaultTileImage(
             size = size,
@@ -39,7 +39,7 @@ fun TileImage.withTileAt(position: Position, tile: Tile): TileImage {
  * invoked on, so modifying one will not affect the other.
  */
 //! TODO: what happens if we shrink the TileImage?
-fun TileImage.withNewSize(newSize: Size): TileImage {
+public fun TileImage.withNewSize(newSize: Size): TileImage {
     return withNewSize(newSize, Tile.empty())
 }
 
@@ -51,7 +51,7 @@ fun TileImage.withNewSize(newSize: Size): TileImage {
  * invoked on, so modifying one will not affect the other.
  */
 //! TODO: will this fill empty cells within its original size?
-fun TileImage.withNewSize(newSize: Size, filler: Tile): TileImage {
+public fun TileImage.withNewSize(newSize: Size, filler: Tile): TileImage {
     if (newSize == size) return this
     var newTiles = persistentHashMapOf<Position, Tile>()
     tiles.filterKeys { newSize.containsPosition(it) }
@@ -73,7 +73,7 @@ fun TileImage.withNewSize(newSize: Size, filler: Tile): TileImage {
 /**
  * Fills the empty parts of this [TileImage] with the given `filler`.
  */
-fun TileImage.withFiller(filler: Tile): TileImage {
+public fun TileImage.withFiller(filler: Tile): TileImage {
     if (filler == Tile.empty()) {
         return this
     }
@@ -92,14 +92,14 @@ fun TileImage.withFiller(filler: Tile): TileImage {
  * Applies the given [StyleSet] to the [Tile]s in this [TileImage] and returns
  * a new [TileImage] with the result.
  */
-fun TileImage.withStyle(styleSet: StyleSet): TileImage = transform {
+public fun TileImage.withStyle(styleSet: StyleSet): TileImage = transform {
     it.withStyle(styleSet)
 }
 
 /**
  * Creates a copy of this [TileImage] that uses the given [tileset].
  */
-fun TileImage.withTileset(tileset: TilesetResource): TileImage {
+public fun TileImage.withTileset(tileset: TilesetResource): TileImage {
     return DefaultTileImage(
         size = size,
         tileset = tileset,
@@ -121,7 +121,7 @@ fun TileImage.withTileset(tileset: TilesetResource): TileImage {
  * @param offset The position on the target image where the `tileImage`'s top left corner will be
  */
 //! TODO: why do we use the tileset of the original?
-fun TileImage.combineWith(tileImage: TileImage, offset: Position): TileImage {
+public fun TileImage.combineWith(tileImage: TileImage, offset: Position): TileImage {
     val columns = max(width, offset.x + tileImage.width)
     val rows = max(height, offset.y + tileImage.height)
     val newSize = Size(columns, rows)
@@ -139,7 +139,7 @@ fun TileImage.combineWith(tileImage: TileImage, offset: Position): TileImage {
  * Transforms all of the [Tile]s in this [TileImage] with the given
  * `transformer` and returns a new one with the transformed characters.
  */
-fun TileImage.transform(transformer: (Tile) -> Tile): TileImage {
+public fun TileImage.transform(transformer: (Tile) -> Tile): TileImage {
     var newTiles = tiles
     tiles.forEach { (pos, tile) ->
         newTiles = newTiles.put(pos, transformer.invoke(tile))
@@ -157,7 +157,7 @@ fun TileImage.transform(transformer: (Tile) -> Tile): TileImage {
  * @param size the size of the newly created image.
  * If the new image overflows, an exception is thrown
  */
-fun TileImage.toSubImage(offset: Position, size: Size): TileImage {
+public fun TileImage.toSubImage(offset: Position, size: Size): TileImage {
     var newTiles = persistentHashMapOf<Position, Tile>()
     size.fetchPositions()
         .map { it + offset }
@@ -177,7 +177,7 @@ fun TileImage.toSubImage(offset: Position, size: Size): TileImage {
 /**
  * Returns a copy of this [TileImage] as a [TileGraphics].
  */
-fun TileImage.toTileGraphics(): TileGraphics = tileGraphics {
+public fun TileImage.toTileGraphics(): TileGraphics = tileGraphics {
     size = this@toTileGraphics.size
     tileset = this@toTileGraphics.tileset
     tiles = this@toTileGraphics.tiles

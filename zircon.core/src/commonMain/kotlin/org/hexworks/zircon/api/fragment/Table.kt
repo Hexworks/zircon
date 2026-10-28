@@ -17,18 +17,18 @@ import org.hexworks.zircon.api.data.Size
  * @param M the type of the underlying model representing this table's data.
  */
 
-interface Table<M : Any> : Fragment {
+public interface Table<M : Any> : Fragment {
 
-    val size: Size
+    public val size: Size
 
     /**
      * The elements of the table that are currently selected.
      */
-    val selectedRows: List<M>
+    public val selectedRows: List<M>
 
     /**
      * The elements of the table that are currently selected as [ObservableList].
      */
-    val selectedRowsProperty: ObservableList<M>
+    public val selectedRowsProperty: ObservableList<M>
 
 }

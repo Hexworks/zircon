@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.zircon.internal.extensions.asInternal
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.collection.ListProperty
@@ -15,7 +16,7 @@ import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.graphics.Renderable
 
-class DefaultLayerable(
+public class DefaultLayerable(
     initialSize: Size
 ) : InternalLayerable {
 

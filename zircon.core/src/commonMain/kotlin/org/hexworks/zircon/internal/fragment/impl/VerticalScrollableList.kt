@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ScrollBar
@@ -31,7 +32,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
  * * Each [item][items] can't span multiple lines. It will be clipped if it's too long.
  * * Even if [items] fully fits in [size], a scrollbar will still be displayed.
  */
-class VerticalScrollableList<T>(
+public class VerticalScrollableList<T>(
     private val size: Size,
     position: Position,
     override val items: List<T>,
@@ -52,7 +53,7 @@ class VerticalScrollableList<T>(
      */
     private var topItemIdx: Int = 0
 
-    override val root = hBox {
+    override val root: HBox = hBox {
         preferredSize = size
         this.position = position
     }

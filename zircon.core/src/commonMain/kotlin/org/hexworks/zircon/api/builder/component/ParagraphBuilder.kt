@@ -11,18 +11,18 @@ import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
 
 @ZirconDsl
-class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
+public class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
     initialRenderer = DefaultParagraphRenderer(),
     initialText = ""
 ) {
 
-    var textWrap: TextWrap = TextWrap.WORD_WRAP
+    public var textWrap: TextWrap = TextWrap.WORD_WRAP
         set(value) {
             field = value
             componentRenderer = DefaultParagraphRenderer(value)
         }
 
-    var typingEffectSpeedInMs: Long = 0
+    public var typingEffectSpeedInMs: Long = 0
 
     override fun build(): Paragraph {
         props.postProcessors += if (typingEffectSpeedInMs > 0) {
@@ -41,13 +41,13 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
 /**
  * Creates a new [Paragraph] using the component builder DSL and returns it.
  */
-fun paragraph(init: ParagraphBuilder.() -> Unit): Paragraph =
+public fun paragraph(init: ParagraphBuilder.() -> Unit): Paragraph =
     ParagraphBuilder().apply(init).build()
 
 /**
  * Creates a new [Paragraph] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Paragraph].
  */
-fun <T : BaseContainerBuilder<*>> T.paragraph(
+public fun <T : BaseContainerBuilder<*>> T.paragraph(
     init: ParagraphBuilder.() -> Unit
 ): Paragraph = buildChildFor(this, ParagraphBuilder(), init)

@@ -7,24 +7,24 @@ import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.data.GridPosition
-import org.hexworks.zircon.internal.data.PixelPosition
+import org.hexworks.zircon.api.data.PixelPosition
 
 /**
  * Tells whether this [Position] is `UNKNOWN`.
  */
-val Position.isPositionUnknown: Boolean
+public val Position.isPositionUnknown: Boolean
     get() = this === Position.UNKNOWN
 
 /**
  * Tells whether this [Position] is not `UNKNOWN`.
  */
-val Position.isPositionNotUnknown: Boolean
+public val Position.isPositionNotUnknown: Boolean
     get() = this !== Position.UNKNOWN
 
 /**
  * Tells whether this [Position] has a negative component (x or y) or not.
  */
-val Position.hasNegativeComponent: Boolean
+public val Position.hasNegativeComponent: Boolean
     get() = x < 0 || y < 0
 
 
@@ -32,7 +32,7 @@ val Position.hasNegativeComponent: Boolean
  * Creates a new [Position] object representing a position with the same y index as this but with a
  * supplied x index.
  */
-fun Position.withX(x: Int): Position =
+public fun Position.withX(x: Int): Position =
     if (this.x == x) {
         this
     } else if (x == 0 && y == 0) {
@@ -45,7 +45,7 @@ fun Position.withX(x: Int): Position =
  * Creates a new [Position] object representing a position with the same y index as this but with a
  * supplied y index.
  */
-fun Position.withY(y: Int): Position =
+public fun Position.withY(y: Int): Position =
     if (this.y == y) {
         this
     } else if (x == 0 && y == 0) {
@@ -60,7 +60,7 @@ fun Position.withY(y: Int): Position =
  * delta will returnThis a grid position <code>delta</code> number of x to the right and
  * for negative numbers the same to the left.
  */
-fun Position.withRelativeX(delta: Int): Position = if (delta == 0) this else withX(x + delta)
+public fun Position.withRelativeX(delta: Int): Position = if (delta == 0) this else withX(x + delta)
 
 /**
  * Creates a new [Position] object representing a position on the same x, but with a y offset by a
@@ -68,13 +68,13 @@ fun Position.withRelativeX(delta: Int): Position = if (delta == 0) this else wit
  * will returnThis a grid position <code>delta</code> number of y to the down and for negative
  * numbers the same up.
  */
-fun Position.withRelativeY(delta: Int): Position = if (delta == 0) this else withY(y + delta)
+public fun Position.withRelativeY(delta: Int): Position = if (delta == 0) this else withY(y + delta)
 
 /**
  * Creates a new [Position] object that is translated by an amount of x and y specified by another
  * [Position]. Same as calling `withRelativeY(translate.getYLength()).withRelativeX(translate.getXLength())`.
  */
-fun Position.withRelative(translate: Position): Position = withRelativeY(translate.y).withRelativeX(translate.x)
+public fun Position.withRelative(translate: Position): Position = withRelativeY(translate.y).withRelativeX(translate.x)
 
 
 /**
@@ -82,7 +82,7 @@ fun Position.withRelative(translate: Position): Position = withRelativeY(transla
  * The x coordinate is used to shift right
  * The y coordinate is used to shift up
  */
-fun Position.relativeToTopOf(component: Component): Position = component.position.let { (compX, compY) ->
+public fun Position.relativeToTopOf(component: Component): Position = component.position.let { (compX, compY) ->
     Position(compX + x, maxOf(compY - y, 0))
 }
 
@@ -91,7 +91,7 @@ fun Position.relativeToTopOf(component: Component): Position = component.positio
  * The x coordinate is used to shift right
  * The y coordinate is used to shift down
  */
-fun Position.relativeToRightOf(component: Component): Position = component.position.let { (compX, compY) ->
+public fun Position.relativeToRightOf(component: Component): Position = component.position.let { (compX, compY) ->
     Position(compX + component.width + x, compY + y)
 }
 
@@ -100,7 +100,7 @@ fun Position.relativeToRightOf(component: Component): Position = component.posit
  * The x coordinate is used to shift right
  * The y coordinate is used to shift down
  */
-fun Position.relativeToBottomOf(component: Component) = component.position.let { (compX, compY) ->
+public fun Position.relativeToBottomOf(component: Component): Position = component.position.let { (compX, compY) ->
     Position(compX + x, compY + component.size.height + y)
 }
 
@@ -109,7 +109,7 @@ fun Position.relativeToBottomOf(component: Component) = component.position.let {
  * The x coordinate is used to shift left
  * The y coordinate is used to shift down
  */
-fun Position.relativeToLeftOf(component: Component) = component.position.let { (compX, compY) ->
+public fun Position.relativeToLeftOf(component: Component): Position = component.position.let { (compX, compY) ->
     Position(maxOf(compX - x, 0), compY + y)
 }
 
@@ -118,20 +118,20 @@ fun Position.relativeToLeftOf(component: Component) = component.position.let { (
  * this position is Position(x=2, y=3) it will become
  * Size(x=2, y=3).
  */
-fun Position.toSize(): Size = Size(x, y)
+public fun Position.toSize(): Size = Size(x, y)
 
 /**
  * Creates a new [Position3D] from the [x] and [y] components of this [Position]
  * and the given [z] value.
  */
 
-fun Position.toPosition3D(z: Int): Position3D = Position3D.from2DPosition(this, z)
+public fun Position.toPosition3D(z: Int): Position3D = Position3D.from2DPosition(this, z)
 
 /**
  * Turns this [Position] to a [PixelPosition]. Has no effect if
  * `this` object is a [PixelPosition].
  */
-fun Position.toPixelPosition(tileset: TilesetResource): PixelPosition =
+public fun Position.toPixelPosition(tileset: TilesetResource): PixelPosition =
     this as? PixelPosition
         ?: PixelPosition(x * tileset.width, y * tileset.height)
 

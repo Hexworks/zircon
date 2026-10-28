@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-class HorizontalSliderBuilder : SliderBuilder<Slider>(
+public class HorizontalSliderBuilder : SliderBuilder<Slider>(
     initialRenderer = HorizontalSliderRenderer()
 ) {
 
@@ -41,13 +41,13 @@ class HorizontalSliderBuilder : SliderBuilder<Slider>(
 /**
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
-fun horizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
+public fun horizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
     HorizontalSliderBuilder().apply(init).build()
 
 /**
  * Creates a new [Slider] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Slider].
  */
-fun <T : BaseContainerBuilder<*>> T.horizontalSlider(
+public fun <T : BaseContainerBuilder<*>> T.horizontalSlider(
     init: HorizontalSliderBuilder.() -> Unit
 ): Slider = buildChildFor(this, HorizontalSliderBuilder(), init)

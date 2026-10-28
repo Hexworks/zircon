@@ -7,17 +7,17 @@ import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import kotlin.math.max
 import kotlin.math.min
 
-class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
+public class DefaultCursorHandler(initialCursorSpace: Size) : InternalCursorHandler {
 
-    override var isCursorVisible = false
+    override var isCursorVisible: Boolean = false
 
-    override var cursorSpaceSize = initialCursorSpace
+    override var cursorSpaceSize: Size = initialCursorSpace
         set(value) {
             field = value
             this.cursorPosition = cursorPosition
         }
 
-    override var cursorPosition = ZERO
+    override var cursorPosition: Position = ZERO
         set(value) {
             field = Position(
                 x = max(0, min(value.x, cursorSpaceSize.width - 1)),

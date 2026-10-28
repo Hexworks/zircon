@@ -11,12 +11,11 @@ import org.hexworks.zircon.internal.component.InternalContainer
  * @see ComponentContainer
  * @see Component
  */
-interface Container : Component, ComponentContainer {
+public interface Container : Component, ComponentContainer {
 
     /**
      * The immediate child [Component]s of this [Container].
      */
-    val children: Iterable<Component>
+    public val children: Iterable<Component>
 
-    override fun asInternalComponent(): InternalContainer
 }

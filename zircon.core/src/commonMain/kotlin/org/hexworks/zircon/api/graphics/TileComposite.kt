@@ -8,18 +8,18 @@ import org.hexworks.zircon.api.data.Tile
 /**
  * Represents an object that is composed of [Tile]s and has a [Size].
  */
-interface TileComposite : HasSize {
+public interface TileComposite : HasSize {
 
     /**
      * Represents the tiles in this [TileComposite] as a [Map].
      */
-    val tiles: Map<Position, Tile>
+    public val tiles: Map<Position, Tile>
 
     /**
      * Returns the [Tile] stored at a particular position or `null`
      * if there is no such [Tile].
      */
-    fun getTileAtOrNull(position: Position): Tile? {
+    public fun getTileAtOrNull(position: Position): Tile? {
         return tiles[position]
     }
 
@@ -27,7 +27,7 @@ interface TileComposite : HasSize {
      * Returns the [Tile] stored at a particular position or calls [orElse]
      * if there is no such [Tile].
      */
-    fun getTileAtOrElse(position: Position, orElse: (Position) -> Tile): Tile {
+    public fun getTileAtOrElse(position: Position, orElse: (Position) -> Tile): Tile {
         return getTileAtOrNull(position) ?: orElse(position)
     }
 }

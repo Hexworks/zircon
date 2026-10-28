@@ -1,5 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.zircon.api.component.ComponentStyleSet
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
@@ -18,7 +22,7 @@ import org.hexworks.zircon.internal.component.extensions.whenConnectedToRoot
 import org.hexworks.zircon.internal.event.ZirconEvent
 
 //TODO: Finish minValue impl. and bug fixing
-abstract class BaseNumberInput(
+public abstract class BaseNumberInput(
     initialValue: Int,
     private val minValue: Int,
     private val maxValue: Int,
@@ -43,10 +47,10 @@ abstract class BaseNumberInput(
         }
 
     //    protected var textBuffer = EditableTextBuffer.create("$initialValue")
-    abstract var maxNumberLength: Int
+    public abstract var maxNumberLength: Int
     private var textBeforeModifications = ""
 
-    final override val currentValueProperty = initialValue.toProperty()
+    final override val currentValueProperty: Property<Int> = initialValue.toProperty()
     final override var currentValue: Int by currentValueProperty.asDelegate()
 
     init {
@@ -75,7 +79,7 @@ abstract class BaseNumberInput(
         }
     }
 
-    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryBackgroundColor
             backgroundColor = colorTheme.secondaryForegroundColor
@@ -90,14 +94,14 @@ abstract class BaseNumberInput(
         }
     }
 
-    override fun focusGiven() = whenEnabled {
+    override fun focusGiven(): UIEventResponse = whenEnabled {
         textBeforeModifications = text
         text = ""
         refreshCursor()
         componentState = ComponentState.FOCUSED
     }
 
-    override fun focusTaken() = whenEnabled {
+    override fun focusTaken(): UIEventResponse = whenEnabled {
         text = textBeforeModifications
         computeNumberValue()
         componentState = ComponentState.DEFAULT
@@ -109,7 +113,7 @@ abstract class BaseNumberInput(
         }
     }
 
-    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase) = whenEnabledRespondWith {
+    override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             if (isNavigationKey(event)) {
                 Pass
@@ -177,14 +181,14 @@ abstract class BaseNumberInput(
 
     protected abstract fun refreshCursor()
 
-    companion object {
-        val TAB = KeyboardEvent(
+    public companion object {
+        public val TAB: KeyboardEvent = KeyboardEvent(
             type = KeyboardEventType.KEY_RELEASED,
             key = "\t",
             code = KeyCode.TAB
         )
 
-        val REVERSE_TAB = KeyboardEvent(
+        public val REVERSE_TAB: KeyboardEvent = KeyboardEvent(
             type = KeyboardEventType.KEY_RELEASED,
             key = "\t",
             code = KeyCode.TAB,

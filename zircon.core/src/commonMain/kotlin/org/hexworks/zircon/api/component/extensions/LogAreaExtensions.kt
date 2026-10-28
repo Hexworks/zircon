@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.graphics.TextWrap
 import kotlin.math.ceil
 
-fun LogArea.addParagraph(text: String) {
+public fun LogArea.addParagraph(text: String) {
     val width = minOf(this.contentSize.width, text.length)
     val height = ceil(text.length.toDouble().div(width)).toInt()
 
@@ -19,12 +19,12 @@ fun LogArea.addParagraph(text: String) {
     })
 }
 
-fun LogArea.addHeader(text: String) {
+public fun LogArea.addHeader(text: String) {
     addRow(header {
         +text
     })
 }
 
-fun LogArea.addListItem(text: String) {
+public fun LogArea.addListItem(text: String) {
     addRow(listItem { +text })
 }

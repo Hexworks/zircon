@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 
-class DefaultTilesetLoader<T : Any>(
+public class DefaultTilesetLoader<T : Any>(
     factories: List<TilesetFactory<T>>,
 ) : TilesetLoader<T>, Closeable {
 
@@ -39,8 +39,8 @@ class DefaultTilesetLoader<T : Any>(
         tilesetCache.clear()
     }
 
-    companion object {
-        val TilesetResource.loaderKey
+    public companion object {
+        public val TilesetResource.loaderKey: Pair<TileType, TilesetType>
             get() = tileType to tilesetType
     }
 }

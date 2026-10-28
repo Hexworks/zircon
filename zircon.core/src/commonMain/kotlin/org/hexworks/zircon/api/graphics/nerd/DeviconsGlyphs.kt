@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.graphics.nerd
 
-enum class DeviconsGlyphs(
-    val glyph: Char,
+public enum class DeviconsGlyphs(
+    public val glyph: Char,
 ) {
 
     /**

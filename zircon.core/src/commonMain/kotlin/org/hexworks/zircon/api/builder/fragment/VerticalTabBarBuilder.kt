@@ -15,7 +15,7 @@ import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 
 
 @ZirconDsl
-class VerticalTabBarBuilder(
+public class VerticalTabBarBuilder(
     size: Size = Size.UNKNOWN,
     defaultSelected: String? = null,
     position: Position = Position.ZERO,
@@ -27,9 +27,9 @@ class VerticalTabBarBuilder(
     position = position
 ), FragmentBuilder<TabBar> {
 
-    var tabWidth: Int = -1
+    public var tabWidth: Int = -1
 
-    val contentSize: Size
+    public val contentSize: Size
         get() {
             require(tabWidth >= 3) {
                 "tabWidth must be set before using contentSize"
@@ -37,7 +37,7 @@ class VerticalTabBarBuilder(
             return size.withRelativeWidth(-tabWidth)
         }
 
-    fun VerticalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
+    public fun VerticalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
         require(tabWidth >= 3) {
             "tabWidth must be set before adding tabs"
         }
@@ -65,7 +65,7 @@ class VerticalTabBarBuilder(
 /**
  * Creates a new [TabBar] using the fragment builder DSL and returns it.
  */
-fun verticalTabBar(
+public fun verticalTabBar(
     init: VerticalTabBarBuilder.() -> Unit
 ): TabBar = VerticalTabBarBuilder().apply(init).build()
 
@@ -73,6 +73,6 @@ fun verticalTabBar(
  * Creates a new horizontal [TabBar] using the fragment builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [TabBar].
  */
-fun AnyContainerBuilder.verticalTabBar(
+public fun AnyContainerBuilder.verticalTabBar(
     init: VerticalTabBarBuilder.() -> Unit
 ): TabBar = buildFragmentFor(this, VerticalTabBarBuilder(), init)

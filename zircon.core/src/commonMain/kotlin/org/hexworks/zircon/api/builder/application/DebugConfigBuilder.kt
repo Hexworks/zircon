@@ -9,18 +9,18 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
  * @see DebugConfig for defaults
  */
 @ZirconDsl
-class DebugConfigBuilder : Builder<DebugConfig> {
+public class DebugConfigBuilder : Builder<DebugConfig> {
 
     /**
      * if `true` no bounds check will be performed when adding/moving components
      */
-    var relaxBoundsCheck: Boolean = false
+    public var relaxBoundsCheck: Boolean = false
 
-    override fun build() = DebugConfig(
+    override fun build(): DebugConfig = DebugConfig(
         relaxBoundsCheck = relaxBoundsCheck
     )
 
-    companion object {
-        val DEFAULT_DEBUG_CONFIG = DebugConfigBuilder().build()
+    public companion object {
+        public val DEFAULT_DEBUG_CONFIG: DebugConfig = DebugConfigBuilder().build()
     }
 }

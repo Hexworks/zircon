@@ -10,7 +10,7 @@ import org.hexworks.zircon.internal.grid.DefaultTileGrid
  * Creates a new [TileGrid] with the given [config]. A renderer module (for example
  * `zircon.compose`) takes the grid and draws it; core itself never renders.
  */
-fun createTileGrid(
+public fun createTileGrid(
     config: AppConfig = defaultAppConfig(),
     eventBus: EventBus = EventBus.create()
 ): TileGrid = DefaultTileGrid(config = config, eventBus = eventBus)

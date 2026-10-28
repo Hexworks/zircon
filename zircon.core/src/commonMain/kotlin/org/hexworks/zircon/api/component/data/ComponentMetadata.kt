@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 /**
  * Contains metadata that is common to **all** [Component]s.
  */
-data class ComponentMetadata(
+public data class ComponentMetadata(
     // TODO: next big thing is to make these observable too
     val position: Position,
     val size: Size,

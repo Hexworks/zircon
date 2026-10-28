@@ -1,5 +1,11 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.internal.extensions.asInternalComponent
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.databinding.api.collection.ObservableList
+import org.hexworks.zircon.api.component.AttachedComponent
+import org.hexworks.zircon.api.uievent.UIEventResponse
+import org.hexworks.zircon.api.component.ComponentStyleSet
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
@@ -12,13 +18,14 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.extensions.flattenedTree
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
-class DefaultRootContainer(
+public class DefaultRootContainer(
     metadata: ComponentMetadata,
     override val eventBus: EventBus,
     override val eventScope: ZirconScope,
@@ -28,7 +35,7 @@ class DefaultRootContainer(
     renderer = renderingStrategy
 ) {
 
-    override val componentTree = persistentListOf(this as InternalComponent).toProperty()
+    override val componentTree: ListProperty<InternalComponent> = persistentListOf(this as InternalComponent).toProperty()
 
     init {
         eventBus.simpleSubscribeTo(ComponentAdded, eventScope) { (parent, component) ->
@@ -57,7 +64,7 @@ class DefaultRootContainer(
      * We override [addComponent] in the root container as it performs some special
      * functions such as setting the [root] reference to `this`.
      */
-    override fun addComponent(component: Component) = component.asInternalComponent().let { ic ->
+    override fun addComponent(component: Component): InternalAttachedComponent = component.asInternalComponent().let { ic ->
         val componentToAdd = component.asInternalComponent()
         componentToAdd.flattenedTree.forEach {
             it.root = this
@@ -75,12 +82,12 @@ class DefaultRootContainer(
     }
 
     //! TODO: clarify why this accepts focus and returns Processed
-    override fun acceptsFocus() = true
-    override fun focusGiven() = Processed
-    override fun focusTaken() = Processed
+    override fun acceptsFocus(): Boolean = true
+    override fun focusGiven(): UIEventResponse = Processed
+    override fun focusTaken(): UIEventResponse = Processed
 
     //! TODO: clarify why we do this
-    override fun convertColorTheme(colorTheme: ColorTheme) = componentStyleSet {
+    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
             backgroundColor = colorTheme.secondaryBackgroundColor

@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultHeader
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
 
 @ZirconDsl
-class HeaderBuilder : ComponentWithTextBuilder<Header>(
+public class HeaderBuilder : ComponentWithTextBuilder<Header>(
     initialRenderer = DefaultHeaderRenderer(),
     initialText = ""
 ) {
@@ -27,13 +27,13 @@ class HeaderBuilder : ComponentWithTextBuilder<Header>(
 /**
  * Creates a new [Header] using the component builder DSL and returns it.
  */
-fun header(init: HeaderBuilder.() -> Unit): Header =
+public fun header(init: HeaderBuilder.() -> Unit): Header =
     HeaderBuilder().apply(init).build()
 
 /**
  * Creates a new [Header] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [Header].
  */
-fun <T : BaseContainerBuilder<*>> T.header(
+public fun <T : BaseContainerBuilder<*>> T.header(
     init: HeaderBuilder.() -> Unit
 ): Header = buildChildFor(this, HeaderBuilder(), init)

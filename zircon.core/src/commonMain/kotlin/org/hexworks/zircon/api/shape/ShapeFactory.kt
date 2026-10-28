@@ -5,11 +5,11 @@ package org.hexworks.zircon.api.shape
  * kind of shape (like a rectangle or a triangle) using
  * a specialized version of [ShapeParameters].
  */
-interface ShapeFactory<in T : ShapeParameters> {
+public interface ShapeFactory<in T : ShapeParameters> {
 
     /**
      * Creates the [Shape] this [ShapeFactory] is responsible for building.
      * Note that all [Shape]s are offset to the (0x0) position!
      */
-    fun createShape(shapeParameters: T): Shape
+    public fun createShape(shapeParameters: T): Shape
 }

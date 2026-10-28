@@ -11,9 +11,9 @@ import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.math.max
 
 @ZirconDsl
-class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
+public class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
 
-    var spacing: Int = 0
+    public var spacing: Int = 0
         set(value) {
             require(value >= 0) {
                 "Can't use a negative spacing"
@@ -57,13 +57,13 @@ class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
 /**
  * Creates a new [HBox] using the component builder DSL and returns it.
  */
-fun hBox(init: HBoxBuilder.() -> Unit): HBox =
+public fun hBox(init: HBoxBuilder.() -> Unit): HBox =
     HBoxBuilder().apply(init).build()
 
 /**
  * Creates a new [HBox] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [HBox].
  */
-fun <T : BaseContainerBuilder<*>> T.hBox(
+public fun <T : BaseContainerBuilder<*>> T.hBox(
     init: HBoxBuilder.() -> Unit
 ): HBox = buildChildFor(this, HBoxBuilder(), init)

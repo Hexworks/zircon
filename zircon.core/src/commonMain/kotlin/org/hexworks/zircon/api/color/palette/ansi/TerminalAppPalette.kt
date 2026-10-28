@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.color.ANSIColor.*
 import org.hexworks.zircon.api.color.palette.BasePalette
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 
-object TerminalAppPalette : BasePalette<ANSIColor>(
+public object TerminalAppPalette : BasePalette<ANSIColor>(
     BLACK to color(0, 0, 0),
     RED to color(153, 0, 0),
     GREEN to color(0, 166, 0),
