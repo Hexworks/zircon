@@ -1,0 +1,169 @@
+public final class org/hexworks/zircon/compose/ComposeRenderer : org/hexworks/zircon/internal/renderer/impl/BaseRenderer {
+	public static final field $stable I
+	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;Ljava/util/List;)V
+	public synthetic fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun create ()Ljava/lang/Object;
+	public fun create ()V
+	public final fun enqueue (Lorg/hexworks/zircon/api/uievent/UIEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)V
+	public static synthetic fun enqueue$default (Lorg/hexworks/zircon/compose/ComposeRenderer;Lorg/hexworks/zircon/api/uievent/UIEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;ILjava/lang/Object;)V
+	public final fun getRegistry ()Lorg/hexworks/zircon/compose/tileset/TilesetRegistry;
+	public synthetic fun prepareRender (Ljava/lang/Object;)V
+}
+
+public final class org/hexworks/zircon/compose/ComposeResourceLoader : org/hexworks/zircon/api/resource/ResourceLoader {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/ComposeResourceLoader;
+	public final fun addProjectResources (Lkotlin/jvm/functions/Function2;)V
+	public final fun install ()V
+	public fun loadBytes (Lorg/hexworks/zircon/api/resource/Resource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/hexworks/zircon/compose/FrameData {
+	public static final field $stable I
+	public static final field Companion Lorg/hexworks/zircon/compose/FrameData$Companion;
+	public static final field NO_ATLAS I
+	public fun <init> (II)V
+	public final fun clear ()V
+	public final fun getBackgrounds ()[B
+	public final fun getCells ()[B
+	public final fun getCols ()I
+	public final fun getForegrounds ()[B
+	public final fun getRows ()I
+	public final fun getUsedAtlases ()Ljava/util/Set;
+	public final fun writeBackground (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/color/Color;)V
+	public final fun writeGlyph (Lorg/hexworks/zircon/api/data/Position;IIILorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;)V
+	public final fun writeSprite (Lorg/hexworks/zircon/api/data/Position;IIILorg/hexworks/zircon/api/color/Color;)V
+	public static synthetic fun writeSprite$default (Lorg/hexworks/zircon/compose/FrameData;Lorg/hexworks/zircon/api/data/Position;IIILorg/hexworks/zircon/api/color/Color;ILjava/lang/Object;)V
+}
+
+public final class org/hexworks/zircon/compose/FrameData$Companion {
+}
+
+public final class org/hexworks/zircon/compose/RunDesktopKt {
+	public static final fun runDesktop (Lorg/hexworks/zircon/api/grid/TileGrid;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun runDesktop$default (Lorg/hexworks/zircon/api/grid/TileGrid;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+}
+
+public final class org/hexworks/zircon/compose/TileGridViewKt {
+	public static final fun TileGridView (Lorg/hexworks/zircon/api/grid/TileGrid;Landroidx/compose/ui/Modifier;Ljava/util/List;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class org/hexworks/zircon/compose/resources/ActualResourceCollectorsKt {
+	public static final fun getAllDrawableResources (Lorg/hexworks/zircon/compose/resources/Res;)Ljava/util/Map;
+	public static final fun getAllFontResources (Lorg/hexworks/zircon/compose/resources/Res;)Ljava/util/Map;
+	public static final fun getAllPluralStringResources (Lorg/hexworks/zircon/compose/resources/Res;)Ljava/util/Map;
+	public static final fun getAllStringArrayResources (Lorg/hexworks/zircon/compose/resources/Res;)Ljava/util/Map;
+	public static final fun getAllStringResources (Lorg/hexworks/zircon/compose/resources/Res;)Ljava/util/Map;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res;
+	public final fun getUri (Ljava/lang/String;)Ljava/lang/String;
+	public final fun readBytes (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res$array {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res$array;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res$drawable {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res$drawable;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res$font {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res$font;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res$plurals {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res$plurals;
+}
+
+public final class org/hexworks/zircon/compose/resources/Res$string {
+	public static final field $stable I
+	public static final field INSTANCE Lorg/hexworks/zircon/compose/resources/Res$string;
+}
+
+public final class org/hexworks/zircon/compose/shader/AtlasInfo {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/ui/graphics/ImageBitmap;III)V
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/ImageBitmap;IIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCellHeight ()I
+	public final fun getCellWidth ()I
+	public final fun getImage ()Landroidx/compose/ui/graphics/ImageBitmap;
+	public final fun getVersion ()I
+}
+
+public final class org/hexworks/zircon/compose/shader/TileShader : java/lang/AutoCloseable {
+	public static final field $stable I
+	public fun <init> (II)V
+	public fun close ()V
+	public final fun draw (Landroidx/compose/ui/graphics/Canvas;Lorg/hexworks/zircon/compose/FrameData;Ljava/util/Map;Z)V
+	public static synthetic fun draw$default (Lorg/hexworks/zircon/compose/shader/TileShader;Landroidx/compose/ui/graphics/Canvas;Lorg/hexworks/zircon/compose/FrameData;Ljava/util/Map;ZILjava/lang/Object;)V
+}
+
+public final class org/hexworks/zircon/compose/tileset/CP437Tileset : org/hexworks/zircon/compose/tileset/ComposeTileset {
+	public static final field $stable I
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/compose/FrameData;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class org/hexworks/zircon/compose/tileset/ComposeTileset : org/hexworks/zircon/api/tileset/Tileset {
+	public static final field $stable I
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public final fun getAtlases ()Ljava/util/Map;
+	public fun getHeight ()I
+	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
+	protected final fun getLoaded ()Z
+	public final fun getResource ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
+	public fun getTargetType ()Lkotlin/reflect/KClass;
+	public fun getWidth ()I
+	public final fun isLoaded ()Z
+	public abstract fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	protected final fun putAtlas (Lorg/hexworks/zircon/compose/shader/AtlasInfo;I)I
+	public static synthetic fun putAtlas$default (Lorg/hexworks/zircon/compose/tileset/ComposeTileset;Lorg/hexworks/zircon/compose/shader/AtlasInfo;IILjava/lang/Object;)I
+	protected final fun setLoaded (Z)V
+}
+
+public final class org/hexworks/zircon/compose/tileset/GraphicalTileset : org/hexworks/zircon/compose/tileset/ComposeTileset {
+	public static final field $stable I
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/compose/FrameData;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/hexworks/zircon/compose/tileset/TilesetRegistry : org/hexworks/zircon/api/tileset/TilesetLoader {
+	public static final field $stable I
+	public static final field Companion Lorg/hexworks/zircon/compose/tileset/TilesetRegistry$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun atlases ()Ljava/util/Map;
+	public fun canLoadTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
+	public final fun getTilesets ()Ljava/util/Collection;
+	public final fun loadPending (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun loadTilesetFrom (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/tileset/Tileset;
+}
+
+public final class org/hexworks/zircon/compose/tileset/TilesetRegistry$Companion {
+}
+
+public final class org/hexworks/zircon/compose/tileset/TrueTypeTileset : org/hexworks/zircon/compose/tileset/ComposeTileset {
+	public static final field $stable I
+	public static final field COLUMNS I
+	public static final field FONT_SIZE_RATIO F
+	public static final field ROWS I
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/compose/FrameData;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

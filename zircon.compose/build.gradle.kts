@@ -12,6 +12,7 @@ group = "org.hexworks.zircon"
 version = "2.0.0"
 
 kotlin {
+    explicitApi()
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_17
@@ -19,7 +20,12 @@ kotlin {
     }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        browser()
+        browser {
+            // No wasm tests in this module (the renderer is verified by the JVM golden
+            // tests and by running the web examples); without an executable, Compose's
+            // test configuration check fails (CMP-4906).
+            testTask { enabled = false }
+        }
     }
     // androidTarget() arrives with M5 (needs the Android SDK on the build machine).
 
@@ -57,6 +63,10 @@ compose.resources {
     publicResClass = true
     packageOfResClass = "org.hexworks.zircon.compose.resources"
 }
+
+// This module has no wasm tests and is a library (no executable), which the Compose
+// plugin's UI test configuration check (CMP-4906) cannot tell apart from a misconfiguration.
+tasks.matching { it.name == "checkComposeUiTestConfigurationForWasmJs" }.configureEach { enabled = false }
 
 tasks.withType<JavaCompile>().configureEach {
     sourceCompatibility = "17"

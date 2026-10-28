@@ -6,11 +6,12 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ## Status
 
-- Current milestone: **M4 zircon.compose** (M1–M3 done 2026-10-28)
+- Current milestone: **M6 docs, CI, release** (M1–M5 done 2026-10-28; Android moved to 2.1)
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: M5 Android (needs an Android SDK on the build machine), then M6 docs/CI/release.
+- Next step: README rewrite, CI workflow for all modules, publish workflow, delete `prototype/`
+  (kept in history at a8495266b), explicit API + BCV for `zircon.compose`, release 2.0.0.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -19,7 +20,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 | Area | Decision |
 |---|---|
 | Renderer | Compose Multiplatform only. `zircon.korge` and `zircon.examples.korge` are deleted. |
-| Targets | `zircon.core`: every KMP target. `zircon.compose`: jvm, android, wasmJs (no js, Compose web is wasm-only). |
+| Targets | `zircon.core`: every KMP target. `zircon.compose`: jvm, wasmJs (no js, Compose web is wasm-only). Android: 2.1. |
 | Entry point | Composable-first: a `@Composable` the user drops into their own tree. JVM-only `runDesktop {}` convenience. |
 | Core app model | `Application`, `VirtualApplication`, `start()` and the continuous loop go away. Core keeps `TileGrid`, `Screen`, `AppConfig` and a backend-neutral renderer/tick seam. |
 | Rendering | The critical path. Prototype both a common `DrawScope` path and a CPU pixel-buffer path; the benchmark picks. Bar: 1920x1080 at 8x8 tiles (32,400 tiles), full redraw every frame, 60 fps on desktop and wasm, 30 fps on a mid-range Android phone. |
@@ -87,11 +88,11 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ### M5: wasm, android, examples
 
-- [ ] android target (AGP 9 KMP library plugin, needs an SDK on the build machine)
+- [ ] android target: **skipped for 2.0 (decided 2026-10-28)**, planned for 2.1 (AGP 9 KMP library plugin, needs an SDK on the build machine)
 - [x] wasmJs target: `zircon.examples.web`, verified in headless Chrome (61 fps on the 120x60 benchmark)
 - [x] `zircon.examples` library: components, game area (nethack sprites), REXPaint logo, skull animation, benchmark; app modules register their Compose resources with `ComposeResourceLoader.addProjectResources`
 - [x] Desktop (`zircon.examples.desktop`) and web (`zircon.examples.web`) launchers
-- [ ] Android launcher
+- [ ] Android launcher: 2.1
 
 ### M6: docs, CI, release
 

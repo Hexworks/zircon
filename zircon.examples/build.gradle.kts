@@ -35,3 +35,6 @@ compose.resources {
     publicResClass = false
     packageOfResClass = "org.hexworks.zircon.examples.resources"
 }
+
+// Library module without wasm tests; see the same opt-out in zircon.compose (CMP-4906).
+tasks.matching { it.name == "checkComposeUiTestConfigurationForWasmJs" }.configureEach { enabled = false }

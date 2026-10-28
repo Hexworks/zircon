@@ -15,9 +15,17 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            tasks: jvmTest jsNodeTest wasmJsNodeTest linuxX64Test
+            # core on every host-runnable target, the Compose renderer's golden tests,
+            # the API contract, and the web examples build
+            tasks: >-
+              :zircon.core:check
+              :zircon.compose:jvmTest
+              :zircon.examples.desktop:compileKotlinJvm
+              :zircon.examples.web:wasmJsBrowserDistribution
           - os: macos-latest
-            tasks: macosArm64Test iosSimulatorArm64Test
+            tasks: :zircon.core:macosArm64Test :zircon.core:iosSimulatorArm64Test :zircon.compose:jvmTest
+          - os: windows-latest
+            tasks: :zircon.core:mingwX64Test :zircon.compose:jvmTest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -27,3 +35,10 @@ jobs:
           java-version: 25
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew ${{ matrix.tasks }}
+      - name: Upload rendered goldens on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-actuals-${{ matrix.os }}
+          path: zircon.compose/build/golden
+          if-no-files-found: ignore
