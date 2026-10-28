@@ -7,14 +7,28 @@ import org.hexworks.zircon.api.resource.Resources
 import org.hexworks.zircon.compose.resources.Res
 
 /**
- * Reads [ResourceType.PROJECT] resources from this module's Compose resources (the bundled
- * tilesets and fonts) and [ResourceType.FILESYSTEM] resources through the platform.
+ * Reads [ResourceType.PROJECT] resources from Compose resources and
+ * [ResourceType.FILESYSTEM] resources through the platform.
+ *
+ * Compose resources are per module: this loader knows Zircon's own bundled tilesets and
+ * fonts, and an application registers its module's resources with [addProjectResources],
+ * typically `ComposeResourceLoader.addProjectResources { Res.readBytes(it) }`.
  */
 public object ComposeResourceLoader : ResourceLoader {
 
+    private val projectReaders = mutableListOf<suspend (String) -> ByteArray?>()
+
     override suspend fun loadBytes(resource: Resource): ByteArray = when (resource.resourceType) {
-        ResourceType.PROJECT -> Res.readBytes("files/" + resource.path.trimStart('/'))
+        ResourceType.PROJECT -> readProjectResource(resource.path)
         ResourceType.FILESYSTEM -> readFileBytes(resource.path)
+    }
+
+    /**
+     * Registers an application's Compose resources. [reader] receives a resource path such
+     * as `files/rex_files/map.xp` and returns its bytes, or `null` if it has no such file.
+     */
+    public fun addProjectResources(reader: suspend (String) -> ByteArray?) {
+        projectReaders += reader
     }
 
     /**
@@ -23,6 +37,16 @@ public object ComposeResourceLoader : ResourceLoader {
      */
     public fun install() {
         Resources.loader = this
+    }
+
+    private suspend fun readProjectResource(path: String): ByteArray {
+        val resourcePath = "files/" + path.trimStart('/')
+        for (reader in projectReaders) {
+            runCatching { reader(resourcePath) }.getOrNull()?.let { return it }
+        }
+        return runCatching { Res.readBytes(resourcePath) }.getOrElse {
+            error("No Compose resource at '$resourcePath'. Register your module's resources with ComposeResourceLoader.addProjectResources.")
+        }
     }
 }
 

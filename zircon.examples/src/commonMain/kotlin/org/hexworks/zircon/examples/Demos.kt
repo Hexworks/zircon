@@ -10,22 +10,26 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.hexworks.zircon.api.grid.TileGrid
+import org.hexworks.zircon.compose.ComposeResourceLoader
 import org.hexworks.zircon.compose.TileGridView
+import org.hexworks.zircon.examples.resources.Res
 
 /**
- * One demo of the examples app: a name and a factory for the grid it shows.
+ * One demo of the examples app: a name and a factory for the grid it shows. Factories
+ * suspend because some demos load archives (REXPaint files, animations).
  */
-public class Demo(public val name: String, public val create: () -> TileGrid)
+public class Demo(public val name: String, public val create: suspend () -> TileGrid)
 
 /**
  * All demos, in menu order.
@@ -33,6 +37,8 @@ public class Demo(public val name: String, public val create: () -> TileGrid)
 public val demos: List<Demo> = listOf(
     Demo("Components") { componentsDemo() },
     Demo("Game area") { gameAreaDemo() },
+    Demo("REXPaint") { rexPaintDemo() },
+    Demo("Animation") { animationDemo() },
     Demo("Benchmark") { benchmarkDemo() },
 )
 
@@ -42,7 +48,13 @@ public val demos: List<Demo> = listOf(
 @Composable
 public fun ExamplesApp() {
     var selected by remember { mutableStateOf(demos.first()) }
-    val grid = remember(selected) { selected.create() }
+    val grid by produceState<TileGrid?>(null, selected) {
+        // The demos' own Compose resources (REXPaint files, animations) go through core's
+        // resource loader, so they have to be registered next to Zircon's bundled ones.
+        ComposeResourceLoader.install()
+        ComposeResourceLoader.addProjectResources { path -> Res.readBytes(path) }
+        value = selected.create()
+    }
     var fps by remember { mutableStateOf(0) }
     LaunchedEffect(Unit) {
         var frames = 0
@@ -70,7 +82,9 @@ public fun ExamplesApp() {
             Text("$fps fps", color = Color.White, modifier = Modifier.padding(start = 16.dp, top = 12.dp))
         }
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
-            TileGridView(grid, Modifier.padding(8.dp), beforeFrame = { BenchmarkTicker.tick(grid) })
+            grid?.let { current ->
+                TileGridView(current, Modifier.padding(8.dp), beforeFrame = { BenchmarkTicker.tick(current) })
+            }
         }
     }
 }

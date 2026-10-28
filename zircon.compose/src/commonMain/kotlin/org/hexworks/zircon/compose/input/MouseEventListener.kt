@@ -25,6 +25,7 @@ internal class MouseEventListener(
 
     private var lastMouseLocation = Position.UNKNOWN
     private var isDragging = false
+    private var pressPosition = Position.UNKNOWN
 
     /**
      * Drains all accumulated mouse events.
@@ -51,6 +52,7 @@ internal class MouseEventListener(
                 }
                 PointerEventType.Press -> {
                     isDragging = true
+                    pressPosition = position
                     MouseEventType.MOUSE_PRESSED
                 }
                 PointerEventType.Release -> {
@@ -85,6 +87,10 @@ internal class MouseEventListener(
                 lastMouseLocation = position
                 logger.debug { "Processing Mouse Event: $mouseEvent" }
                 events.add(mouseEvent to UIEventPhase.TARGET)
+            }
+            // A press and a release on the same cell is a click.
+            if (type == MouseEventType.MOUSE_RELEASED && position == pressPosition) {
+                events.add(mouseEvent.copy(type = MouseEventType.MOUSE_CLICKED) to UIEventPhase.TARGET)
             }
 
         } catch (e: Exception) {

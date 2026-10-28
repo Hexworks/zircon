@@ -99,6 +99,6 @@ public fun TileGridView(
             }
     ) {
         tick // read so every frame redraws
-        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases()) }
+        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases(), internalGrid.config.debugConfig.displayGrid) }
     }
 }

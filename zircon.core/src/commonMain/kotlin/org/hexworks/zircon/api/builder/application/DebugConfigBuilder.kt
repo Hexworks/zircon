@@ -16,8 +16,14 @@ public class DebugConfigBuilder : Builder<DebugConfig> {
      */
     public var relaxBoundsCheck: Boolean = false
 
+    /**
+     * Draws the cell grid over the tiles; handy when positioning components.
+     */
+    public var displayGrid: Boolean = false
+
     override fun build(): DebugConfig = DebugConfig(
-        relaxBoundsCheck = relaxBoundsCheck
+        relaxBoundsCheck = relaxBoundsCheck,
+        displayGrid = displayGrid,
     )
 
     public companion object {

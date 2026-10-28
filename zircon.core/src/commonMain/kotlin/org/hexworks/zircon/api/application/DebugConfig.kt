@@ -9,7 +9,11 @@ public class DebugConfig internal constructor(
     /**
      * if `true` no bounds check will be performed when adding/moving components
      */
-    public val relaxBoundsCheck: Boolean
+    public val relaxBoundsCheck: Boolean,
+    /**
+     * When `true` the renderer draws the cell grid over the tiles.
+     */
+    public val displayGrid: Boolean = false,
 ) {
 
     public companion object {

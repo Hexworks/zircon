@@ -33,7 +33,7 @@ public actual class TileShader actual constructor(
     /** Skia images for the atlases, rebuilt only when an atlas changes version. */
     private val atlasImages = mutableMapOf<Int, Pair<Int, Image>>()
 
-    public actual fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>) {
+    public actual fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>, gridLines: Boolean) {
         release()
         val info = ImageInfo(frame.cols, frame.rows, ColorType.RGBA_8888, ColorAlphaType.UNPREMUL)
         val rowBytes = frame.cols * 4
@@ -52,6 +52,7 @@ public actual class TileShader actual constructor(
             builder.uniform("tileSize", tileWidth.toFloat(), tileHeight.toFloat())
             builder.uniform("cellSize", cellWidth.toFloat(), cellHeight.toFloat())
             builder.uniform("pass", passId)
+            builder.uniform("grid", if (gridLines) 1f else 0f)
             val shader = builder.makeShader().also { perFrame += it }
             paint.shader = shader
             native.drawRect(bounds, paint)
@@ -100,11 +101,14 @@ public actual class TileShader actual constructor(
             uniform float2 tileSize;
             uniform float2 cellSize;
             uniform float pass;
+            uniform float grid;
 
             half4 main(float2 p) {
                 float2 cell = floor(p / tileSize);
                 float2 center = cell + float2(0.5, 0.5);
                 if (pass < 0.0) {
+                    float2 inCell = p - cell * tileSize;
+                    if (grid > 0.5 && (inCell.x < 1.0 || inCell.y < 1.0)) return half4(0.5, 0.5, 0.5, 1.0);
                     half4 bg = bgs.eval(center);
                     return bg.a > 0.5 ? half4(bg.rgb, 1.0) : half4(0.0);
                 }

@@ -10,8 +10,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: `MOUSE_CLICKED`, `runDesktop {}`, debug grid overlay, REXPaint + animation demos;
-  then M5 Android (install an SDK first) and M6 docs/CI/release.
+- Next step: M5 Android (needs an Android SDK on the build machine), then M6 docs/CI/release.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -80,16 +79,17 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - [x] Renderer on the M1 winner, all in `commonMain`: `FrameData` (3 data textures) ← `ComposeRenderer : BaseRenderer` ← `TileShader` (SkSL, expect/actual) ← `TileGridView` composable
 - [x] Compose resources for bundled assets (`publicResClass = true`), `ComposeResourceLoader` installs core's `Resources.loader`
 - [x] Tilesets: CP437, TrueType (on-demand glyph atlas), graphical (sprite sheets, raw colour mode)
-- [ ] Image dictionary tilesets (directory of PNGs; needs a listing format for the browser), debug grid overlay
-- [ ] Input: keyboard and pointer bridged (old listeners restored); `MOUSE_CLICKED` still missing
+- [x] Debug grid overlay (`debugConfig { displayGrid = true }`)
+- [ ] Image dictionary tilesets (directory of PNGs; needs a listing format for the browser) — deferred to 2.x
+- [x] Input: keyboard and pointer bridged, `MOUSE_CLICKED` on press+release in the same cell
 - [x] Golden-image tests: `renderToPng` renders through the real pipeline into a raster surface; goldens in `src/jvmTest/resources/golden`, actuals in `build/golden`, `UPDATE_GOLDENS=1` refreshes
-- [ ] `runDesktop {}` convenience
+- [x] `runDesktop(tileGrid)` convenience (jvm)
 
 ### M5: wasm, android, examples
 
 - [ ] android target (AGP 9 KMP library plugin, needs an SDK on the build machine)
 - [x] wasmJs target: `zircon.examples.web`, verified in headless Chrome (61 fps on the 120x60 benchmark)
-- [x] `zircon.examples` library: components, game area (nethack sprites), benchmark; REXPaint and animation demos still to add
+- [x] `zircon.examples` library: components, game area (nethack sprites), REXPaint logo, skull animation, benchmark; app modules register their Compose resources with `ComposeResourceLoader.addProjectResources`
 - [x] Desktop (`zircon.examples.desktop`) and web (`zircon.examples.web`) launchers
 - [ ] Android launcher
 

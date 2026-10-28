@@ -396,6 +396,7 @@ public final class org/hexworks/zircon/api/application/AppConfigKt {
 
 public final class org/hexworks/zircon/api/application/DebugConfig {
 	public static final field Companion Lorg/hexworks/zircon/api/application/DebugConfig$Companion;
+	public final fun getDisplayGrid ()Z
 	public final fun getRelaxBoundsCheck ()Z
 }
 
@@ -897,7 +898,9 @@ public final class org/hexworks/zircon/api/builder/application/DebugConfigBuilde
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
 	public fun build ()Lorg/hexworks/zircon/api/application/DebugConfig;
+	public final fun getDisplayGrid ()Z
 	public final fun getRelaxBoundsCheck ()Z
+	public final fun setDisplayGrid (Z)V
 	public final fun setRelaxBoundsCheck (Z)V
 }
 

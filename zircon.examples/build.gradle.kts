@@ -26,6 +26,12 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(compose.components.resources)
         }
     }
+}
+
+compose.resources {
+    publicResClass = false
+    packageOfResClass = "org.hexworks.zircon.examples.resources"
 }

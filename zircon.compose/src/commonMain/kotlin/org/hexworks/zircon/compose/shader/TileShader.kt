@@ -15,8 +15,9 @@ public expect class TileShader(tileWidth: Int, tileHeight: Int) : AutoCloseable 
      * Draws the whole frame at the canvas origin.
      *
      * @param atlases atlas id to the sprite sheet to sample for that id
+     * @param gridLines draw the cell grid on top (DebugConfig.displayGrid)
      */
-    public fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>)
+    public fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>, gridLines: Boolean = false)
 
     override fun close()
 }
