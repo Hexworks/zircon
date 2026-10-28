@@ -5,6 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CursorHandler
@@ -27,12 +28,12 @@ import org.hexworks.zircon.api.view.ViewContainer
 import org.hexworks.zircon.internal.animation.DefaultAnimationRunner
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationRunner
-import org.hexworks.zircon.internal.application.InternalApplication
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
@@ -43,7 +44,9 @@ class DefaultTileGrid(
     override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
         initialCursorSpace = config.size
     ),
-    private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
+    private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault(),
+    override val eventBus: EventBus = EventBus.create(),
+    override val eventScope: ZirconScope = ZirconScope(),
 ) : InternalTileGrid,
     CursorHandler by cursorHandler,
     UIEventProcessor by eventProcessor,
@@ -52,10 +55,6 @@ class DefaultTileGrid(
     init {
         initializeLayerable(config)
     }
-
-    // Note that this is passed in right after creation
-    // the lateinit is necessary because Application also has a reference to the grid
-    override lateinit var application: InternalApplication
 
     override var backend: Layer = layerable.getLayerAtOrNull(0)!!
 

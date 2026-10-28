@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
-import org.hexworks.zircon.api.application.Application
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.ColorTheme
@@ -15,11 +15,13 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.extensions.flattenedTree
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
 class DefaultRootContainer(
     metadata: ComponentMetadata,
-    override val application: Application,
+    override val eventBus: EventBus,
+    override val eventScope: ZirconScope,
     renderingStrategy: ComponentRenderingStrategy<RootContainer>,
 ) : RootContainer, DefaultContainer(
     metadata = metadata,

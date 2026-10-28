@@ -4,8 +4,8 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
-import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.application.withSize
 import org.hexworks.zircon.api.builder.component.buildHeader
@@ -23,6 +23,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 import org.hexworks.zircon.internal.grid.InternalTileGrid
@@ -69,7 +70,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
             }
         }.asInternal()
 
-        grid.application = ApplicationStub()
 
         val screen = grid.toScreen()
 
@@ -147,7 +147,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
             }
         }.asInternal()
 
-        grid.application = ApplicationStub()
 
         val screen = grid.toScreen()
 
@@ -267,13 +266,13 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     @Test
     fun shouldProperlyRemoveComponentFromSelf() {
-        val applicationStub = ApplicationStub()
         val root = DefaultRootContainer(
             metadata = ComponentMetadata(
                 position = Position.ZERO,
                 size = Size.create(50, 50),
             ),
-            application = applicationStub,
+            eventBus = EventBus.create(),
+            eventScope = ZirconScope(),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),
                 componentRenderer = RootContainerRenderer()

@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.behavior.impl
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.ApplicationStub
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.buildButton
 import org.hexworks.zircon.api.builder.component.buildVbox
@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.bottomLeftOf
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.internal.component.impl.ComponentRendererStub
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.component.impl.DefaultRootContainer
 import org.hexworks.zircon.internal.component.impl.RootContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
@@ -26,13 +27,11 @@ import kotlin.test.Test
 class DefaultComponentFocusOrderListTest {
 
     lateinit var rendererStub: ComponentRendererStub<RootContainer>
-    lateinit var applicationStub: ApplicationStub
     lateinit var root: RootContainer
     lateinit var target: DefaultComponentFocusOrderList
 
     @BeforeTest
     fun setUp() {
-        applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
         root = DefaultRootContainer(
             metadata = ComponentMetadata(
@@ -44,7 +43,8 @@ class DefaultComponentFocusOrderListTest {
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub
             ),
-            application = applicationStub
+            eventBus = EventBus.create(),
+            eventScope = ZirconScope(),
         )
         target = DefaultComponentFocusOrderList(root)
     }

@@ -4,7 +4,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
-import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.appConfig
 import org.hexworks.zircon.api.builder.component.buildButton
@@ -37,7 +36,6 @@ class TileGridScreenTest {
                 defaultTileset = tileset
                 size = SIZE
             })
-        grid.application = ApplicationStub()
         target = TileGridScreen(grid)
     }
 

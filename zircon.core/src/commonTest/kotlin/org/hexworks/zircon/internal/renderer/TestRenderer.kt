@@ -4,9 +4,9 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.ApplicationStub
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.NoOpApplication
+import org.hexworks.cobalt.core.api.behavior.DisposeState
+import org.hexworks.cobalt.core.api.behavior.DisposedManually
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.component.ComponentContainer
@@ -30,10 +30,8 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
 class TestRenderer(
     config: AppConfig,
     private val tileGraphics: TileGraphics,
-) : UIEventDispatcher, Renderer<Any, ApplicationStub, Any>, Clearable {
-    private val tileGrid: TileGrid = DefaultTileGrid(config).apply {
-        application = ApplicationStub()
-    }
+) : UIEventDispatcher, Renderer<Any, Any>, Clearable {
+    private val tileGrid: TileGrid = DefaultTileGrid(config)
     private val mainView = object : BaseView(tileGrid) {}
     private val closedPropertyBacking: Property<Boolean> = false.toProperty()
     override val closedProperty: ObservableValue<Boolean> get() = closedPropertyBacking
@@ -49,12 +47,13 @@ class TestRenderer(
     override fun create() {
     }
 
-    override fun beforeRender(listener: (RenderData) -> Unit): Subscription {
-        return NoOpApplication.NoOpSubscription
-    }
+    override fun beforeRender(listener: (RenderData) -> Unit): Subscription = NoOpSubscription
 
-    override fun afterRender(listener: (RenderData) -> Unit): Subscription {
-        return NoOpApplication.NoOpSubscription
+    override fun afterRender(listener: (RenderData) -> Unit): Subscription = NoOpSubscription
+
+    private object NoOpSubscription : Subscription {
+        override val disposeState: DisposeState = DisposedManually
+        override fun dispose(disposeState: DisposeState) {}
     }
 
     override fun clear() {

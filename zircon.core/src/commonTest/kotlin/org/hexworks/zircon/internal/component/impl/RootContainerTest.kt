@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.ApplicationStub
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.component.buildLabel
 import org.hexworks.zircon.api.builder.component.buildPanel
@@ -22,6 +22,7 @@ import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.api.graphics.impl.DrawWindow
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import kotlin.test.BeforeTest
@@ -33,7 +34,6 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     override lateinit var target: RootContainer
     override lateinit var drawWindow: DrawWindow
 
-    private lateinit var applicationStub: ApplicationStub
 
     override val expectedComponentStyles: ComponentStyleSet
         get() = componentStyleSet {
@@ -45,7 +45,6 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     @BeforeTest
     override fun setUp() {
-        applicationStub = ApplicationStub()
         rendererStub = ComponentRendererStub()
         drawWindow = tileGraphics {
             size = SIZE_3_4
@@ -61,7 +60,8 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
             renderingStrategy = DefaultComponentRenderingStrategy(
                 componentRenderer = rendererStub
             ),
-            application = applicationStub
+            eventBus = EventBus.create(),
+            eventScope = ZirconScope(),
         )
     }
 

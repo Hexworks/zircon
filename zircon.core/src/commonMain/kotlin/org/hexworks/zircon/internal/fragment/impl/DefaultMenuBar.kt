@@ -43,8 +43,8 @@ class DefaultMenuBar<T : Any> internal constructor(
         this.spacing = spacing
     }
 
-    private val eventBus = screen.asInternal().application.asInternal().eventBus
-    private val eventScope = screen.asInternal().application.asInternal().eventScope
+    private val eventBus = screen.asInternal().eventBus
+    private val eventScope = screen.asInternal().eventScope
 
     init {
         menuElements.forEach { dropdownMenu ->

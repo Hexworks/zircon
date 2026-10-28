@@ -4,7 +4,8 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.application.Application
+import org.hexworks.cobalt.events.api.EventBus
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
@@ -30,10 +31,12 @@ import org.hexworks.zircon.internal.graphics.Renderable
  */
 class ModalComponentContainer(
     private val metadata: ComponentMetadata,
-    private val application: Application,
+    private val eventBus: EventBus,
+    private val eventScope: ZirconScope,
     private val mainContainer: InternalComponentContainer = buildContainer(
         metadata = metadata,
-        application = application
+        eventBus = eventBus,
+        eventScope = eventScope,
     )
 ) : InternalComponentContainer {
 
@@ -107,7 +110,8 @@ class ModalComponentContainer(
         previousContainer.deactivate()
         val modalContainer = buildContainer(
             metadata = metadata,
-            application = application,
+            eventBus = eventBus,
+            eventScope = eventScope,
             rootRenderer = NoOpComponentRenderer()
         )
         containerStack.add(modalContainer)
@@ -140,7 +144,8 @@ class ModalComponentContainer(
 
         private fun buildContainer(
             metadata: ComponentMetadata,
-            application: Application,
+            eventBus: EventBus,
+            eventScope: ZirconScope,
             rootRenderer: ComponentRenderer<in RootContainer> = RootContainerRenderer(),
         ): InternalComponentContainer {
             val renderingStrategy = DefaultComponentRenderingStrategy(
@@ -150,7 +155,8 @@ class ModalComponentContainer(
             val container = DefaultComponentContainer(
                 root = DefaultRootContainer(
                     metadata = metadata,
-                    application = application,
+                    eventBus = eventBus,
+                    eventScope = eventScope,
                     renderingStrategy = renderingStrategy,
                 )
             )

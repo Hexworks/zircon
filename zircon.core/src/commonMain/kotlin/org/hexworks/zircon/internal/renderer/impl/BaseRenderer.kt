@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.renderer.impl
 import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
@@ -23,10 +22,10 @@ import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.Renderer
 
-abstract class BaseRenderer<C : Any, A : Application, V : Any>(
+abstract class BaseRenderer<C : Any, V : Any>(
     protected val tileGrid: InternalTileGrid,
     private val tilesetLoader: TilesetLoader<C>
-) : Renderer<C, A, V> {
+) : Renderer<C, V> {
 
     private val config = tileGrid.config
     private val gridPositions = tileGrid.size.fetchPositions().toList()

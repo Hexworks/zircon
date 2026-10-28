@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.application.Application
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
@@ -16,7 +16,7 @@ import org.hexworks.zircon.api.extensions.abbreviate
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
-import org.hexworks.zircon.internal.application.InternalApplication
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.behavior.impl.ComponentsLayerable
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
@@ -35,7 +35,8 @@ class TileGridScreen(
             initialSize = tileGrid.size,
             initialTileset = tileGrid.tileset,
             initialTheme = tileGrid.config.defaultColorTheme,
-            application = tileGrid.application
+            eventBus = tileGrid.eventBus,
+            eventScope = tileGrid.eventScope,
         ),
     /**
      * The [bufferGrid] is this Screen instance's private grid that is modified
@@ -51,7 +52,9 @@ class TileGridScreen(
             layerable = DefaultLayerable(
                 initialSize = tileGrid.size
             )
-        )
+        ),
+        eventBus = tileGrid.eventBus,
+        eventScope = tileGrid.eventScope,
     ),
     private val eventProcessor: UIEventProcessor = UIEventProcessor.createDefault()
 ) : InternalScreen,
@@ -67,14 +70,6 @@ class TileGridScreen(
     private var activeScreenId = UUID.randomUUID()
     override val id = UUID.randomUUID()
 
-    override var application: InternalApplication
-        get() = tileGrid.application.asInternal()
-        set(value) {
-            tileGrid.application = value
-        }
-
-    private val eventBus = application.eventBus
-    private val eventScope = application.eventScope
     private val notAlreadyDisplayed: Boolean
         get() = activeScreenId != id
 
@@ -184,7 +179,8 @@ class TileGridScreen(
             initialSize: Size,
             initialTileset: TilesetResource,
             initialTheme: ColorTheme,
-            application: Application
+            eventBus: EventBus,
+            eventScope: ZirconScope,
         ): ModalComponentContainer {
             val metadata = ComponentMetadata(
                 position = Position.ZERO,
@@ -195,7 +191,8 @@ class TileGridScreen(
             )
             return ModalComponentContainer(
                 metadata = metadata,
-                application = application
+                eventBus = eventBus,
+                eventScope = eventScope,
             )
         }
     }

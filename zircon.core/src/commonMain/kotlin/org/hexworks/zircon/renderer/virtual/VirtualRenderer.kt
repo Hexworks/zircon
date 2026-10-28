@@ -10,13 +10,12 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
 import org.hexworks.zircon.internal.tileset.DefaultTilesetLoader
 import org.hexworks.zircon.renderer.virtual.VirtualRenderer.VirtualView
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import org.hexworks.zircon.internal.util.nowMillis
 
 @Suppress("unused")
 class VirtualRenderer(
     tileGrid: InternalTileGrid
-) : BaseRenderer<Char, VirtualApplication, VirtualView>(
+) : BaseRenderer<Char, VirtualView>(
     tileGrid = tileGrid,
     tilesetLoader = DefaultTilesetLoader(
         listOf(
@@ -36,8 +35,7 @@ class VirtualRenderer(
     private val tileset = VirtualTileset()
     private val contents = "".toProperty()
 
-    @OptIn(ExperimentalTime::class)
-    private var lastRender: Long = Clock.System.now().toEpochMilliseconds()
+    private var lastRender: Long = nowMillis()
 
     override fun create(): VirtualView {
         return VirtualView(contents)

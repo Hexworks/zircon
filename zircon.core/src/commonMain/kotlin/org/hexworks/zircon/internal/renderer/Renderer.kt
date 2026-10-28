@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
@@ -16,17 +15,13 @@ import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
  * - [afterRender] is called after the rendering is done.
  * - [close] is called when the renderer should be destroyed.
  *
- * If you're using an [Application] you won't have to deal with the renderer
- * directly. If not you'll have to call these methods yourself.
- *
  * You can use [BaseRenderer] as a base class if you want to write your own
  * renderer implementation.
  *
  * @param C The type of the render context
- * @param A The type of the [Application]
  * @param V The type of the view object returned from [create]
  */
-interface Renderer<C : Any, A : Application, V> : Closeable {
+interface Renderer<C : Any, V> : Closeable {
 
     /**
      *  Called when the [Renderer] is first created. Returns

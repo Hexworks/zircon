@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.ApplicationStub
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.graphics.layer
@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.internal.application.InternalApplication
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.DefaultComponentContainer
@@ -30,11 +30,9 @@ class ComponentsLayerableTest {
     lateinit var layerable: InternalLayerable
     lateinit var rootContainer: RootContainer
     lateinit var target: ComponentsLayerable
-    lateinit var application: InternalApplication
 
     @BeforeTest
     fun setUp() {
-        application = ApplicationStub()
         rootContainer = DefaultRootContainer(
             metadata = ComponentMetadata(
                 position = Position.ZERO,
@@ -47,7 +45,8 @@ class ComponentsLayerableTest {
                 decorationRenderers = listOf(),
                 componentRenderer = RootContainerRenderer()
             ),
-            application = application
+            eventBus = EventBus.create(),
+            eventScope = ZirconScope(),
         )
         componentContainer = DefaultComponentContainer(rootContainer)
         layerable = DefaultLayerable(SIZE_4X2)

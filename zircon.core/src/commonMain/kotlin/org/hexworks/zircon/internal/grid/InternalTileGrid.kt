@@ -1,12 +1,12 @@
 package org.hexworks.zircon.internal.grid
 
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.application.AppConfig
-import org.hexworks.zircon.api.application.Application
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.animation.InternalAnimationRunner
-import org.hexworks.zircon.internal.application.InternalApplication
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.behavior.InternalCursorHandler
 import org.hexworks.zircon.internal.behavior.InternalLayerable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
@@ -34,13 +34,17 @@ interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalLayerabl
     var cursorHandler: InternalCursorHandler
 
     val config: AppConfig
+    /**
+     * The [EventBus] Zircon uses for its internal events (component tree changes,
+     * screen switches and so on). Shared by every [org.hexworks.zircon.api.screen.Screen]
+     * created from this grid.
+     */
+    val eventBus: EventBus
 
     /**
-     * Holds a reference to the [Application] that uses this [TileGrid].
-     * Note that you can write this variable, but it is something you should
-     * only do if you know what you're doing.
+     * The scope to publish internal events with on the [eventBus].
      */
-    var application: InternalApplication
+    val eventScope: ZirconScope
 
     /**
      * Starts delegating all actions to the given [tileGrid].

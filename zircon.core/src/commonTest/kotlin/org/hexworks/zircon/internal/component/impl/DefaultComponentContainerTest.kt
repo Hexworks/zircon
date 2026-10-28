@@ -5,7 +5,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.ApplicationStub
+import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.buildButton
 import org.hexworks.zircon.api.builder.component.buildPanel
@@ -23,6 +23,7 @@ import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.uievent.MouseEventType.*
 import org.hexworks.zircon.internal.component.InternalComponent
+import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import kotlin.contracts.ExperimentalContracts
@@ -36,11 +37,9 @@ class DefaultComponentContainerTest {
 
     lateinit var target: DefaultComponentContainer
 
-    private lateinit var applicationStub: ApplicationStub
 
     @BeforeTest
     fun setUp() {
-        applicationStub = ApplicationStub()
         target = DefaultComponentContainer(
             DefaultRootContainer(
                 metadata = ComponentMetadata(
@@ -53,7 +52,8 @@ class DefaultComponentContainerTest {
                     decorationRenderers = listOf(),
                     componentRenderer = RootContainerRenderer()
                 ),
-                application = applicationStub
+                eventBus = EventBus.create(),
+                eventScope = ZirconScope(),
             )
         )
     }
