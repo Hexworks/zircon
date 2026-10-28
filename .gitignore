@@ -12,3 +12,6 @@ node_modules/
 kotlin-js-store/
 secring.gpg
 .kotlin/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
