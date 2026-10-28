@@ -32,12 +32,15 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
  *
  * @param extraTilesetFactories factories for custom tileset types, in addition to the
  * built-in CP437, TrueType and graphical ones.
+ * @param beforeFrame called on every frame right before the grid is rendered, on the UI
+ * thread; a convenient place for game logic that must stay in step with rendering.
  */
 @Composable
 public fun TileGridView(
     tileGrid: TileGrid,
     modifier: Modifier = Modifier,
     extraTilesetFactories: List<TilesetFactory<FrameData>> = emptyList(),
+    beforeFrame: () -> Unit = {},
 ) {
     val internalGrid = remember(tileGrid) { tileGrid as InternalTileGrid }
     val renderer = remember(tileGrid) { ComposeRenderer(tileGrid, extraTilesetFactories) }
@@ -65,6 +68,7 @@ public fun TileGridView(
             withFrameNanos {
                 keyboard.drainEvents().forEach { (event, phase) -> renderer.enqueue(event, phase) }
                 mouse.drainEvents().forEach { (event, phase) -> renderer.enqueue(event, phase) }
+                beforeFrame()
                 renderer.render(frame)
                 tick++
             }
