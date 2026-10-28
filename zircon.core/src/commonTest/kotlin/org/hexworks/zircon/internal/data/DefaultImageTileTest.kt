@@ -6,7 +6,7 @@ import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.data.imageTile
 import org.hexworks.zircon.api.data.TileType
-import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.modifier.SimpleModifiers
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import kotlin.test.Test

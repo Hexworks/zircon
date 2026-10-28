@@ -1,11 +1,11 @@
 package org.hexworks.zircon.api.builder
 
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
 import io.kotest.matchers.shouldBe
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import kotlin.test.Test
 
 class TileBuilderTest {
@@ -31,6 +31,6 @@ class TileBuilderTest {
         val BG_COLOR = Color.fromString("#aabbcc")
         val FG_COLOR = Color.fromString("#ccbbaa")
         const val CHAR = 'a'
-        val MODIFIER = Modifiers.blink()
+        val MODIFIER = Blink
     }
 }

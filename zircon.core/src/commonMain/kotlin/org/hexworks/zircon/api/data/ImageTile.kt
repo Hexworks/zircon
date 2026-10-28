@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.data.tile
+package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Copiable
 import org.hexworks.zircon.api.behavior.TilesetHolder

@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import kotlin.test.BeforeTest

@@ -1,17 +1,21 @@
 package org.hexworks.zircon.api.graphics.nerd
 
 public enum class IndentGlyphs(
-    public val glyph: Char,
+    public val codePoint: Int,
 ) {
 
-    /**
-     *  (0xE621)
-     */
-    DOTTED_GUIDE(0xE621.toChar()),
 
     /**
      *  (0xE621)
      */
-    LINE(0xE621.toChar());
+    DOTTED_GUIDE(0xE621),
 
+    /**
+     *  (0xE621)
+     */
+    LINE(0xE621);
+
+
+    /** The glyph as a string (a surrogate pair above U+FFFF). */
+    public val glyph: String get() = codePointToString(codePoint)
 }

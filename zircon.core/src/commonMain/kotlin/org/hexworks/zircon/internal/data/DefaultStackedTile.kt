@@ -4,12 +4,20 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.modifier.Modifier
 
 public data class DefaultStackedTile(
     override val baseTile: Tile,
     override val rest: PersistentList<Tile> = persistentListOf()
-) : StackedTile, Tile by baseTile {
+) : StackedTile {
+
+    override val tileType: TileType
+        get() = baseTile.tileType
+
+    override val cacheKey: String
+        get() = tiles.joinToString("|") { it.cacheKey }
+
 
     override val tiles: List<Tile> = persistentListOf(baseTile) + rest
 

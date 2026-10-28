@@ -111,7 +111,7 @@ internal fun ByteReader.nextRexLayer(): REXLayer {
 internal fun ByteReader.nextRexCell(): REXCell {
     return REXCell(
         character = readIntLE().convertCp437toUnicode(),
-        foregroundColor = color(readUByte(), readUByte(), readUByte(), 255),
-        backgroundColor = color(readUByte(), readUByte(), readUByte(), 255)
+        foregroundColor = color(readUByte(), readUByte(), readUByte()),
+        backgroundColor = color(readUByte(), readUByte(), readUByte())
     )
 }

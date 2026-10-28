@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.Cacheable
 import org.hexworks.zircon.api.behavior.HasModifiers
-import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.graphics.DrawSurface
 import org.hexworks.zircon.api.graphics.StyleSet
 
@@ -11,7 +10,11 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * It is a rectangular graphic, or character that can also be drawn on
  * [DrawSurface]s using [DrawSurface.draw].
  */
-public interface Tile : Cacheable, HasModifiers<Tile> {
+/**
+ * A [Tile] is what a grid cell holds. The hierarchy is sealed so a renderer can
+ * exhaustively handle [CharacterTile], [GraphicalTile], [ImageTile] and [StackedTile].
+ */
+public sealed interface Tile : Cacheable, HasModifiers<Tile> {
 
     /**
      * The type of this [Tile]:

@@ -8,7 +8,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withX
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler

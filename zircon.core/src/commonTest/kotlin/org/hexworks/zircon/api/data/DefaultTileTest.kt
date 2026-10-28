@@ -5,14 +5,12 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.kotest.matchers.types.shouldNotBeSameInstanceAs
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
-import org.hexworks.zircon.api.data.tile.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
@@ -95,7 +93,7 @@ class DefaultTileTest {
             }
         }.cacheKey
 
-        result shouldBe "CharacterTile(c=x,s=StyleSet(fg=Color(r=170,g=187,b=204,a=255),bg=Color(r=0,g=196,b=0,a=255),m=[Modifier.Blink]))"
+        result shouldBe "CharacterTile(c=x,s=StyleSet(fg=Color(r=170,g=187,b=204),bg=Color(r=0,g=196,b=0),m=[Modifier.Blink]))"
     }
 
     @Test
@@ -146,7 +144,7 @@ class DefaultTileTest {
     fun blinkingModifierShouldBeBlinking() {
         characterTile {
             withStyleSet {
-                modifiers = setOf(Modifiers.blink())
+                modifiers = setOf(Blink)
             }
         }.isBlinking shouldBe true
     }

@@ -14,8 +14,7 @@ internal class DefaultColorInterpolator(
         val red = lowColor.red + ((highColor.red - lowColor.red) * ratio).toInt()
         val green = lowColor.green + ((highColor.green - lowColor.green) * ratio).toInt()
         val blue = lowColor.blue + ((highColor.blue - lowColor.blue) * ratio).toInt()
-        val alpha = lowColor.alpha + ((highColor.alpha - lowColor.alpha) * ratio).toInt()
 
-        return Color.create(red, green, blue, alpha)
+        return Color.create(red, green, blue)
     }
 }

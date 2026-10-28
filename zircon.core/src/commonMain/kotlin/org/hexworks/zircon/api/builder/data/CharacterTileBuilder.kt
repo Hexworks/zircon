@@ -2,7 +2,7 @@ package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.builder.graphics.StyleSetBuilder
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.StyleSet
 

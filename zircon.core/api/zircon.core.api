@@ -172,19 +172,6 @@ public final class org/hexworks/zircon/api/ImageDictionaryTilesetResources {
 	public static final field INSTANCE Lorg/hexworks/zircon/api/ImageDictionaryTilesetResources;
 }
 
-public final class org/hexworks/zircon/api/Modifiers {
-	public static final field INSTANCE Lorg/hexworks/zircon/api/Modifiers;
-	public final fun blink ()Lorg/hexworks/zircon/api/modifier/Modifier;
-	public final fun delay (J)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public final fun fadeIn (IJ)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public static synthetic fun fadeIn$default (Lorg/hexworks/zircon/api/Modifiers;IJILjava/lang/Object;)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public final fun fadeInOut (IJJIJ)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public static synthetic fun fadeInOut$default (Lorg/hexworks/zircon/api/Modifiers;IJJIJILjava/lang/Object;)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public final fun fadeOut (IJ)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public static synthetic fun fadeOut$default (Lorg/hexworks/zircon/api/Modifiers;IJILjava/lang/Object;)Lorg/hexworks/zircon/api/modifier/Modifier;
-	public final fun hidden ()Lorg/hexworks/zircon/api/modifier/Modifier;
-}
-
 public final class org/hexworks/zircon/api/REXPaintResourcesKt {
 	public static final fun loadREXFile (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun loadREXFile (Lorg/hexworks/zircon/api/resource/Resource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -1305,7 +1292,7 @@ public final class org/hexworks/zircon/api/builder/data/BlockBuilderKt {
 public final class org/hexworks/zircon/api/builder/data/CharacterTileBuilder : org/hexworks/zircon/api/builder/Builder {
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public fun build ()Lorg/hexworks/zircon/api/data/CharacterTile;
 	public final fun getCharacter ()C
 	public final fun getStyleSet ()Lorg/hexworks/zircon/api/graphics/StyleSet;
 	public final fun setCharacter (C)V
@@ -1314,14 +1301,14 @@ public final class org/hexworks/zircon/api/builder/data/CharacterTileBuilder : o
 }
 
 public final class org/hexworks/zircon/api/builder/data/CharacterTileBuilderKt {
-	public static final fun characterTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public static final fun characterTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public static final fun withStyleSet (Lorg/hexworks/zircon/api/builder/data/CharacterTileBuilder;Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class org/hexworks/zircon/api/builder/data/GraphicalTileBuilder : org/hexworks/zircon/api/builder/Builder {
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
+	public fun build ()Lorg/hexworks/zircon/api/data/GraphicalTile;
 	public final fun getModifiers ()Ljava/util/Set;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getTags ()Ljava/util/Set;
@@ -1333,13 +1320,13 @@ public final class org/hexworks/zircon/api/builder/data/GraphicalTileBuilder : o
 }
 
 public final class org/hexworks/zircon/api/builder/data/GraphicalTileBuilderKt {
-	public static final fun graphicalTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
+	public static final fun graphicalTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/GraphicalTile;
 }
 
 public final class org/hexworks/zircon/api/builder/data/ImageTileBuilder : org/hexworks/zircon/api/builder/Builder {
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/data/tile/ImageTile;
+	public fun build ()Lorg/hexworks/zircon/api/data/ImageTile;
 	public final fun getModifiers ()Ljava/util/Set;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -1349,7 +1336,7 @@ public final class org/hexworks/zircon/api/builder/data/ImageTileBuilder : org/h
 }
 
 public final class org/hexworks/zircon/api/builder/data/ImageTileBuilderKt {
-	public static final fun imageTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
+	public static final fun imageTile (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/ImageTile;
 }
 
 public final class org/hexworks/zircon/api/builder/fragment/DropdownMenuBuilder : org/hexworks/zircon/api/fragment/builder/FragmentBuilder {
@@ -1722,23 +1709,19 @@ public final class org/hexworks/zircon/api/color/ANSIColor$Companion {
 
 public abstract interface class org/hexworks/zircon/api/color/Color : org/hexworks/zircon/api/behavior/Cacheable {
 	public static final field Companion Lorg/hexworks/zircon/api/color/Color$Companion;
-	public static final field DEFAULT_ALPHA I
 	public static final field DEFAULT_FACTOR D
-	public abstract fun getAlpha ()I
 	public abstract fun getBlue ()I
 	public fun getComponent1 ()I
 	public fun getComponent2 ()I
 	public fun getComponent3 ()I
-	public fun getComponent4 ()I
 	public abstract fun getGreen ()I
 	public abstract fun getRed ()I
+	public abstract fun isTransparent ()Z
 }
 
 public final class org/hexworks/zircon/api/color/Color$Companion {
-	public static final field DEFAULT_ALPHA I
 	public static final field DEFAULT_FACTOR D
-	public final fun create (IIII)Lorg/hexworks/zircon/api/color/Color;
-	public static synthetic fun create$default (Lorg/hexworks/zircon/api/color/Color$Companion;IIIIILjava/lang/Object;)Lorg/hexworks/zircon/api/color/Color;
+	public final fun create (III)Lorg/hexworks/zircon/api/color/Color;
 	public final fun fromString (Ljava/lang/String;)Lorg/hexworks/zircon/api/color/Color;
 	public final fun getDEFAULT_BACKGROUND_COLOR ()Lorg/hexworks/zircon/api/color/Color;
 	public final fun getDEFAULT_FOREGROUND_COLOR ()Lorg/hexworks/zircon/api/color/Color;
@@ -1749,7 +1732,6 @@ public final class org/hexworks/zircon/api/color/Color$DefaultImpls {
 	public static fun getComponent1 (Lorg/hexworks/zircon/api/color/Color;)I
 	public static fun getComponent2 (Lorg/hexworks/zircon/api/color/Color;)I
 	public static fun getComponent3 (Lorg/hexworks/zircon/api/color/Color;)I
-	public static fun getComponent4 (Lorg/hexworks/zircon/api/color/Color;)I
 }
 
 public abstract interface class org/hexworks/zircon/api/color/ColorInterpolator {
@@ -1778,7 +1760,6 @@ public final class org/hexworks/zircon/api/color/extensions/ColorExtensionsKt {
 	public static final fun tint (Lorg/hexworks/zircon/api/color/Color;D)Lorg/hexworks/zircon/api/color/Color;
 	public static final fun tone (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/color/Color;
 	public static final fun tone (Lorg/hexworks/zircon/api/color/Color;D)Lorg/hexworks/zircon/api/color/Color;
-	public static final fun withAlpha (Lorg/hexworks/zircon/api/color/Color;I)Lorg/hexworks/zircon/api/color/Color;
 	public static final fun withBlue (Lorg/hexworks/zircon/api/color/Color;I)Lorg/hexworks/zircon/api/color/Color;
 	public static final fun withGreen (Lorg/hexworks/zircon/api/color/Color;I)Lorg/hexworks/zircon/api/color/Color;
 	public static final fun withRed (Lorg/hexworks/zircon/api/color/Color;I)Lorg/hexworks/zircon/api/color/Color;
@@ -2200,6 +2181,7 @@ public abstract interface class org/hexworks/zircon/api/component/Component : or
 	public static final field Companion Lorg/hexworks/zircon/api/component/Component$Companion;
 	public abstract fun clearCustomStyle ()V
 	public abstract fun getAbsolutePosition ()Lorg/hexworks/zircon/api/data/Position;
+	public abstract fun getActivationShortcut ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public abstract fun getBounds ()Lorg/hexworks/zircon/api/behavior/Boundable;
 	public abstract fun getBoundsProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
 	public abstract fun getComponentState ()Lorg/hexworks/zircon/api/component/data/ComponentState;
@@ -2687,6 +2669,7 @@ public abstract class org/hexworks/zircon/api/component/builder/base/BaseCompone
 	protected final fun createRenderingStrategy ()Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;
 	protected final fun fitsWithin (Lorg/hexworks/zircon/api/data/Size;Lorg/hexworks/zircon/api/data/Size;)Z
 	protected final fun fixContentSizeFor (I)V
+	public final fun getActivationShortcut ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public final fun getAlignment ()Lorg/hexworks/zircon/api/component/AlignmentStrategy;
 	public final fun getBindingAction ()Lorg/hexworks/cobalt/databinding/api/value/BindingAction;
 	public final fun getColorTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
@@ -2717,6 +2700,7 @@ public abstract class org/hexworks/zircon/api/component/builder/base/BaseCompone
 	public fun onFocusGiven (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public fun onFocusTaken (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public fun processComponentEvents (Lorg/hexworks/zircon/api/uievent/ComponentEventType;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
+	public final fun setActivationShortcut (Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)V
 	public final fun setAlignment (Lorg/hexworks/zircon/api/component/AlignmentStrategy;)V
 	public final fun setBindingAction (Lorg/hexworks/cobalt/databinding/api/value/BindingAction;)V
 	public final fun setColorTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
@@ -2773,9 +2757,10 @@ public final class org/hexworks/zircon/api/component/builder/base/DecorationsBui
 }
 
 public final class org/hexworks/zircon/api/component/data/ComponentMetadata {
-	public fun <init> (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;)V
-	public synthetic fun <init> (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)V
+	public synthetic fun <init> (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lorg/hexworks/zircon/api/data/Position;
+	public final fun component10 ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public final fun component2 ()Lorg/hexworks/zircon/api/data/Size;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Lorg/hexworks/cobalt/databinding/api/value/BindingAction;
@@ -2784,9 +2769,10 @@ public final class org/hexworks/zircon/api/component/data/ComponentMetadata {
 	public final fun component7 ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public final fun component8 ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public final fun component9 ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public final fun copy (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;)Lorg/hexworks/zircon/api/component/data/ComponentMetadata;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/component/data/ComponentMetadata;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/data/ComponentMetadata;
+	public final fun copy (Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)Lorg/hexworks/zircon/api/component/data/ComponentMetadata;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/component/data/ComponentMetadata;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;Ljava/lang/String;Lorg/hexworks/cobalt/databinding/api/value/BindingAction;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/cobalt/databinding/api/property/Property;Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/data/ComponentMetadata;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActivationShortcut ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public final fun getBindingAction ()Lorg/hexworks/cobalt/databinding/api/value/BindingAction;
 	public final fun getComponentStyleSet ()Lorg/hexworks/zircon/api/component/ComponentStyleSet;
 	public final fun getComponentStyleSetProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
@@ -2980,6 +2966,109 @@ public final class org/hexworks/zircon/api/data/BlockTileType : java/lang/Enum {
 	public static fun values ()[Lorg/hexworks/zircon/api/data/BlockTileType;
 }
 
+public final class org/hexworks/zircon/api/data/CharacterTile : org/hexworks/zircon/api/behavior/HasStyle, org/hexworks/zircon/api/data/Tile, org/hexworks/zircon/api/graphics/StyleSet {
+	public fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;)V
+	public synthetic fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()C
+	public final fun component2 ()Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public final fun copy (CLorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/CharacterTile;CLorg/hexworks/zircon/api/graphics/StyleSet;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun createCopy ()Ljava/lang/Object;
+	public fun createCopy ()Lorg/hexworks/zircon/api/data/CharacterTile;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBackgroundColor ()Lorg/hexworks/zircon/api/color/Color;
+	public fun getCacheKey ()Ljava/lang/String;
+	public final fun getCharacter ()C
+	public fun getForegroundColor ()Lorg/hexworks/zircon/api/color/Color;
+	public fun getModifiers ()Ljava/util/Set;
+	public fun getStyleSet ()Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public fun withAddedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withAddedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun withAddedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withAddedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun withBackgroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withBackgroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public final fun withCharacter (C)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public fun withForegroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withForegroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
+	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
+	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun withNoModifiers ()Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withNoModifiers ()Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun withRemovedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withRemovedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public fun withRemovedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withRemovedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
+	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
+}
+
+public final class org/hexworks/zircon/api/data/GraphicalTile : org/hexworks/zircon/api/behavior/Copiable, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile {
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;)V
+	public final fun component1 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Set;
+	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/GraphicalTile;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public synthetic fun createCopy ()Ljava/lang/Object;
+	public fun createCopy ()Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCacheKey ()Ljava/lang/String;
+	public fun getModifiers ()Ljava/util/Set;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTags ()Ljava/util/Set;
+	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
+	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
+	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
+	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public final fun withName (Ljava/lang/String;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
+	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
+	public final fun withTags (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+}
+
+public final class org/hexworks/zircon/api/data/ImageTile : org/hexworks/zircon/api/behavior/Copiable, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile {
+	public fun <init> (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/ImageTile;Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public synthetic fun createCopy ()Ljava/lang/Object;
+	public fun createCopy ()Lorg/hexworks/zircon/api/data/ImageTile;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCacheKey ()Ljava/lang/String;
+	public fun getModifiers ()Ljava/util/Set;
+	public final fun getName ()Ljava/lang/String;
+	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
+	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
+	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
+	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public final fun withName (Ljava/lang/String;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
+	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
+	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/ImageTile;
+}
+
 public final class org/hexworks/zircon/api/data/PixelPosition : org/hexworks/zircon/internal/data/base/BasePosition {
 	public static final field Companion Lorg/hexworks/zircon/api/data/PixelPosition$Companion;
 	public fun <init> (II)V
@@ -3125,8 +3214,8 @@ public abstract interface class org/hexworks/zircon/api/data/Tile : org/hexworks
 }
 
 public final class org/hexworks/zircon/api/data/Tile$Companion {
-	public final fun defaultTile ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public final fun empty ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public final fun defaultTile ()Lorg/hexworks/zircon/api/data/CharacterTile;
+	public final fun empty ()Lorg/hexworks/zircon/api/data/CharacterTile;
 }
 
 public final class org/hexworks/zircon/api/data/Tile$DefaultImpls {
@@ -3242,109 +3331,6 @@ public final class org/hexworks/zircon/api/data/extensions/StackedTileExtensions
 	public static final fun withRemovedTile (Lorg/hexworks/zircon/api/data/StackedTile;Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/StackedTile;
 }
 
-public final class org/hexworks/zircon/api/data/tile/CharacterTile : org/hexworks/zircon/api/behavior/HasStyle, org/hexworks/zircon/api/data/Tile, org/hexworks/zircon/api/graphics/StyleSet {
-	public fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;)V
-	public synthetic fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()C
-	public final fun component2 ()Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public final fun copy (CLorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/tile/CharacterTile;CLorg/hexworks/zircon/api/graphics/StyleSet;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun createCopy ()Ljava/lang/Object;
-	public fun createCopy ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getBackgroundColor ()Lorg/hexworks/zircon/api/color/Color;
-	public fun getCacheKey ()Ljava/lang/String;
-	public final fun getCharacter ()C
-	public fun getForegroundColor ()Lorg/hexworks/zircon/api/color/Color;
-	public fun getModifiers ()Ljava/util/Set;
-	public fun getStyleSet ()Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public fun withAddedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withAddedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun withAddedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withAddedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun withBackgroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withBackgroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public final fun withCharacter (C)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public fun withForegroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withForegroundColor (Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
-	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
-	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun withNoModifiers ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withNoModifiers ()Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun withRemovedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withRemovedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public fun withRemovedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public synthetic fun withRemovedModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
-	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-}
-
-public final class org/hexworks/zircon/api/data/tile/GraphicalTile : org/hexworks/zircon/api/behavior/Copiable, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile {
-	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;)V
-	public final fun component1 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun component2 ()Ljava/util/Set;
-	public final fun component3 ()Ljava/lang/String;
-	public final fun component4 ()Ljava/util/Set;
-	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/tile/GraphicalTile;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public synthetic fun createCopy ()Ljava/lang/Object;
-	public fun createCopy ()Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getCacheKey ()Ljava/lang/String;
-	public fun getModifiers ()Ljava/util/Set;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getTags ()Ljava/util/Set;
-	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
-	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
-	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
-	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public final fun withName (Ljava/lang/String;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
-	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
-	public final fun withTags (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-}
-
-public final class org/hexworks/zircon/api/data/tile/ImageTile : org/hexworks/zircon/api/behavior/Copiable, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile {
-	public fun <init> (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;)V
-	public synthetic fun <init> (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun component3 ()Ljava/util/Set;
-	public final fun copy (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/tile/ImageTile;Ljava/lang/String;Lorg/hexworks/zircon/api/resource/TilesetResource;Ljava/util/Set;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public synthetic fun createCopy ()Ljava/lang/Object;
-	public fun createCopy ()Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getCacheKey ()Ljava/lang/String;
-	public fun getModifiers ()Ljava/util/Set;
-	public final fun getName ()Ljava/lang/String;
-	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
-	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-	public synthetic fun withModifiers (Ljava/util/Set;)Ljava/lang/Object;
-	public fun withModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public synthetic fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Ljava/lang/Object;
-	public fun withModifiers ([Lorg/hexworks/zircon/api/modifier/Modifier;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public final fun withName (Ljava/lang/String;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
-	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
-	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-}
-
 public final class org/hexworks/zircon/api/dsl/DSLExtensionsKt {
 	public static final fun plus (Lorg/hexworks/zircon/api/component/Component;Lorg/hexworks/zircon/api/component/Component;)Ljava/util/List;
 	public static final fun plus (Lorg/hexworks/zircon/api/component/Container;Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
@@ -3391,25 +3377,25 @@ public final class org/hexworks/zircon/api/extensions/ScreenExtensionsKt {
 }
 
 public final class org/hexworks/zircon/api/extensions/StringExtensionsKt {
-	public static final fun toCharacterTile (CLorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public static synthetic fun toCharacterTile$default (CLorg/hexworks/zircon/api/graphics/StyleSet;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public static final fun toCharacterTile (CLorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public static synthetic fun toCharacterTile$default (CLorg/hexworks/zircon/api/graphics/StyleSet;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public static final fun toCharacterTileString (Ljava/lang/String;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/graphics/TextWrap;Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/graphics/CharacterTileString;
 	public static synthetic fun toCharacterTileString$default (Ljava/lang/String;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/graphics/TextWrap;Lorg/hexworks/zircon/api/data/Size;ILjava/lang/Object;)Lorg/hexworks/zircon/api/graphics/CharacterTileString;
 }
 
 public final class org/hexworks/zircon/api/extensions/TileExtensionsKt {
-	public static final fun asCharacterTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public static final fun asCharacterTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public static final fun asGraphicalTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public static final fun asGraphicalTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/tile/GraphicalTile;
-	public static final fun asImageTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
-	public static final fun asImageTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/tile/ImageTile;
+	public static final fun asCharacterTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public static final fun asCharacterTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public static final fun asGraphicalTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public static final fun asGraphicalTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/GraphicalTile;
+	public static final fun asImageTileOrElse (Lorg/hexworks/zircon/api/data/Tile;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public static final fun asImageTileOrNull (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/ImageTile;
+	public static final fun isBlinking (Lorg/hexworks/zircon/api/data/CharacterTile;)Z
 	public static final fun isBlinking (Lorg/hexworks/zircon/api/data/Tile;)Z
-	public static final fun isBlinking (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Z
 	public static final fun isEmpty (Lorg/hexworks/zircon/api/data/Tile;)Z
 	public static final fun isNotEmpty (Lorg/hexworks/zircon/api/data/Tile;)Z
+	public static final fun isOpaque (Lorg/hexworks/zircon/api/data/CharacterTile;)Z
 	public static final fun isOpaque (Lorg/hexworks/zircon/api/data/Tile;)Z
-	public static final fun isOpaque (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Z
 	public static final fun transform (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static final fun transformIndexed (Ljava/util/List;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
 }
@@ -4378,8 +4364,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs : java/l
 	public static final field WORKSPACE_UNTRUSTED Lorg/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs;
 	public static final field ZOOM_IN Lorg/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs;
 	public static final field ZOOM_OUT Lorg/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/CodiconsGlyphs;
 }
@@ -4427,8 +4414,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/CustomGlyphs : java/lan
 	public static final field VITRUVIAN Lorg/hexworks/zircon/api/graphics/nerd/CustomGlyphs;
 	public static final field V_LANG Lorg/hexworks/zircon/api/graphics/nerd/CustomGlyphs;
 	public static final field WINDOWS Lorg/hexworks/zircon/api/graphics/nerd/CustomGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/CustomGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/CustomGlyphs;
 }
@@ -4942,8 +4930,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs : java/l
 	public static final field YUNOHOST Lorg/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs;
 	public static final field ZEND Lorg/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs;
 	public static final field ZIG Lorg/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/DeviconsGlyphs;
 }
@@ -4961,8 +4950,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/ExtraGlyphs : java/lang
 	public static final field PROGRESS_SPINNER_4 Lorg/hexworks/zircon/api/graphics/nerd/ExtraGlyphs;
 	public static final field PROGRESS_SPINNER_5 Lorg/hexworks/zircon/api/graphics/nerd/ExtraGlyphs;
 	public static final field PROGRESS_SPINNER_6 Lorg/hexworks/zircon/api/graphics/nerd/ExtraGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/ExtraGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/ExtraGlyphs;
 }
@@ -5138,8 +5128,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGly
 	public static final field WALLET Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGlyphs;
 	public static final field WIND Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGlyphs;
 	public static final field XBOX Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeExtensionGlyphs;
 }
@@ -6962,10 +6953,15 @@ public final class org/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs : jav
 	public static final field Y_COMBINATOR Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs;
 	public static final field Y_COMBINATOR_SQUARE Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs;
 	public static final field ZHIHU Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/FontAwesomeGlyphs;
+}
+
+public final class org/hexworks/zircon/api/graphics/nerd/GlyphsKt {
+	public static final fun codePointToString (I)Ljava/lang/String;
 }
 
 public final class org/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs : java/lang/Enum {
@@ -6974,8 +6970,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs : java/l
 	public static final field POWER_ON Lorg/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs;
 	public static final field SLEEP_MODE Lorg/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs;
 	public static final field TOGGLE_POWER Lorg/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs;
 }
@@ -6983,16 +6980,18 @@ public final class org/hexworks/zircon/api/graphics/nerd/IecPowerGlyphs : java/l
 public final class org/hexworks/zircon/api/graphics/nerd/IndentGlyphs : java/lang/Enum {
 	public static final field DOTTED_GUIDE Lorg/hexworks/zircon/api/graphics/nerd/IndentGlyphs;
 	public static final field LINE Lorg/hexworks/zircon/api/graphics/nerd/IndentGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/IndentGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/IndentGlyphs;
 }
 
 public final class org/hexworks/zircon/api/graphics/nerd/IndentationGlyphs : java/lang/Enum {
 	public static final field LINE Lorg/hexworks/zircon/api/graphics/nerd/IndentationGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/IndentationGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/IndentationGlyphs;
 }
@@ -7128,15 +7127,17 @@ public final class org/hexworks/zircon/api/graphics/nerd/LinuxGlyphs : java/lang
 	public static final field XMONAD Lorg/hexworks/zircon/api/graphics/nerd/LinuxGlyphs;
 	public static final field XORG Lorg/hexworks/zircon/api/graphics/nerd/LinuxGlyphs;
 	public static final field ZORIN Lorg/hexworks/zircon/api/graphics/nerd/LinuxGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/LinuxGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/LinuxGlyphs;
 }
 
 public abstract class org/hexworks/zircon/api/graphics/nerd/MaterialDesignGlyphs {
-	public synthetic fun <init> (CLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getGlyph ()C
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCodePoint ()I
+	public final fun getGlyph ()Ljava/lang/String;
 }
 
 public final class org/hexworks/zircon/api/graphics/nerd/MaterialDesignGlyphs$ABACUS : org/hexworks/zircon/api/graphics/nerd/MaterialDesignGlyphs {
@@ -55610,8 +55611,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs : java/l
 	public static final field ZAP Lorg/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs;
 	public static final field ZOOM_IN Lorg/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs;
 	public static final field ZOOM_OUT Lorg/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/OcticonsGlyphs;
 }
@@ -55628,8 +55630,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs : java/l
 	public static final field POMODORO_SQUASHED Lorg/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs;
 	public static final field POMODORO_TICKING Lorg/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs;
 	public static final field SHORT_PAUSE Lorg/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/PomiconsGlyphs;
 }
@@ -55669,8 +55672,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs : 
 	public static final field TRAPEZOID_TOP_BOTTOM_MIRRORED Lorg/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs;
 	public static final field UPPER_LEFT_TRIANGLE Lorg/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs;
 	public static final field UPPER_RIGHT_TRIANGLE Lorg/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/PowerlineExtraGlyphs;
 }
@@ -55685,8 +55689,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs : java/
 	public static final field READONLY Lorg/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs;
 	public static final field RIGHT_HARD_DIVIDER Lorg/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs;
 	public static final field RIGHT_SOFT_DIVIDER Lorg/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/PowerlineGlyphs;
 }
@@ -55859,8 +55864,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs : java/lan
 	public static final field YML Lorg/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs;
 	public static final field ZIG Lorg/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs;
 	public static final field ZIP Lorg/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/SetiUiGlyphs;
 }
@@ -56094,8 +56100,9 @@ public final class org/hexworks/zircon/api/graphics/nerd/WeatherGlyphs : java/la
 	public static final field WIND_SOUTH_EAST Lorg/hexworks/zircon/api/graphics/nerd/WeatherGlyphs;
 	public static final field WIND_SOUTH_WEST Lorg/hexworks/zircon/api/graphics/nerd/WeatherGlyphs;
 	public static final field WIND_WEST Lorg/hexworks/zircon/api/graphics/nerd/WeatherGlyphs;
+	public final fun getCodePoint ()I
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public final fun getGlyph ()C
+	public final fun getGlyph ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/graphics/nerd/WeatherGlyphs;
 	public static fun values ()[Lorg/hexworks/zircon/api/graphics/nerd/WeatherGlyphs;
 }
@@ -56124,8 +56131,8 @@ public final class org/hexworks/zircon/api/modifier/Delay : org/hexworks/zircon/
 	public fun getCacheKey ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+	public fun transform (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun transform (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
 }
 
 public abstract interface class org/hexworks/zircon/api/modifier/Fade {
@@ -56144,8 +56151,8 @@ public final class org/hexworks/zircon/api/modifier/FadeIn : org/hexworks/zircon
 	public fun hashCode ()I
 	public fun isFadingFinished ()Z
 	public fun toString ()Ljava/lang/String;
+	public fun transform (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun transform (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
 }
 
 public final class org/hexworks/zircon/api/modifier/FadeInOut : org/hexworks/zircon/api/modifier/Fade, org/hexworks/zircon/api/modifier/TileModifier {
@@ -56160,8 +56167,8 @@ public final class org/hexworks/zircon/api/modifier/FadeInOut : org/hexworks/zir
 	public fun hashCode ()I
 	public fun isFadingFinished ()Z
 	public fun toString ()Ljava/lang/String;
+	public fun transform (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun transform (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
 }
 
 public final class org/hexworks/zircon/api/modifier/FadeOut : org/hexworks/zircon/api/modifier/Fade, org/hexworks/zircon/api/modifier/TileModifier {
@@ -56176,8 +56183,8 @@ public final class org/hexworks/zircon/api/modifier/FadeOut : org/hexworks/zirco
 	public fun hashCode ()I
 	public fun isFadingFinished ()Z
 	public fun toString ()Ljava/lang/String;
+	public fun transform (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun transform (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
 }
 
 public final class org/hexworks/zircon/api/modifier/Markov : org/hexworks/zircon/api/modifier/TileModifier {
@@ -56208,6 +56215,7 @@ public final class org/hexworks/zircon/api/modifier/SimpleModifiers$Blink : org/
 
 public final class org/hexworks/zircon/api/modifier/SimpleModifiers$Hidden : org/hexworks/zircon/api/modifier/SimpleModifiers {
 	public static final field INSTANCE Lorg/hexworks/zircon/api/modifier/SimpleModifiers$Hidden;
+	public fun canTransform (Lorg/hexworks/zircon/api/data/Tile;)Z
 	public fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
 }
 
@@ -57610,6 +57618,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/DefaultCompone
 	public fun focusGiven ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun focusTaken ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun getAbsolutePosition ()Lorg/hexworks/zircon/api/data/Position;
+	public fun getActivationShortcut ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public final fun getBindingAction ()Lorg/hexworks/cobalt/databinding/api/value/BindingAction;
 	public fun getBounds ()Lorg/hexworks/zircon/api/behavior/Boundable;
 	public fun getBoundsProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
@@ -57986,7 +57995,7 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultTextArea :
 	public final fun getEditorState ()Lorg/hexworks/zircon/internal/component/impl/texteditor/EditorState;
 	public fun getText ()Ljava/lang/String;
 	public fun getTextTiles ()Ljava/util/List;
-	public final fun getTileAtOrNull (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public final fun getTileAtOrNull (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public fun getVisibleOffset ()Lorg/hexworks/zircon/api/data/Position;
 	public fun getVisibleOffsetProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun getVisibleSize ()Lorg/hexworks/zircon/api/data/Size;
@@ -58057,6 +58066,7 @@ public final class org/hexworks/zircon/internal/component/impl/GroupAttachedComp
 	public fun containsPosition (Lorg/hexworks/zircon/api/data/Position;)Z
 	public fun detach ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getAbsolutePosition ()Lorg/hexworks/zircon/api/data/Position;
+	public fun getActivationShortcut ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
 	public fun getBounds ()Lorg/hexworks/zircon/api/behavior/Boundable;
 	public fun getBoundsProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
 	public fun getComponentState ()Lorg/hexworks/zircon/api/component/data/ComponentState;
@@ -58214,12 +58224,12 @@ public final class org/hexworks/zircon/internal/component/impl/texteditor/Line$C
 }
 
 public final class org/hexworks/zircon/internal/component/impl/texteditor/TextCell : org/hexworks/zircon/internal/component/impl/texteditor/Cell {
-	public fun <init> (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)V
-	public final fun component1 ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
-	public final fun copy (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;Lorg/hexworks/zircon/api/data/tile/CharacterTile;ILjava/lang/Object;)Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;
+	public fun <init> (Lorg/hexworks/zircon/api/data/CharacterTile;)V
+	public final fun component1 ()Lorg/hexworks/zircon/api/data/CharacterTile;
+	public final fun copy (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;Lorg/hexworks/zircon/api/data/CharacterTile;ILjava/lang/Object;)Lorg/hexworks/zircon/internal/component/impl/texteditor/TextCell;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getContent ()Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public final fun getContent ()Lorg/hexworks/zircon/api/data/CharacterTile;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -58232,7 +58242,7 @@ public final class org/hexworks/zircon/internal/component/impl/texteditor/TextEd
 	public final fun getSize ()Lorg/hexworks/zircon/api/data/Size;
 	public final fun getState ()Lorg/hexworks/zircon/internal/component/impl/texteditor/EditorState;
 	public final fun getText ()Ljava/lang/String;
-	public final fun getTileAtOrNull (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/tile/CharacterTile;
+	public final fun getTileAtOrNull (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public final fun getTiles ()Ljava/util/List;
 	public final fun redo ()Z
 	public final fun undo ()Z
@@ -58281,7 +58291,7 @@ public final class org/hexworks/zircon/internal/component/impl/texteditor/transf
 }
 
 public final class org/hexworks/zircon/internal/component/impl/texteditor/transformation/InsertCharacter : org/hexworks/zircon/internal/component/impl/texteditor/Transformation {
-	public fun <init> (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)V
+	public fun <init> (Lorg/hexworks/zircon/api/data/CharacterTile;)V
 	public fun apply (Lorg/hexworks/zircon/internal/component/impl/texteditor/EditorState;)Lorg/hexworks/zircon/internal/component/impl/texteditor/EditorState;
 }
 
@@ -58641,7 +58651,7 @@ public final class org/hexworks/zircon/internal/data/DefaultSize : org/hexworks/
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/hexworks/zircon/internal/data/DefaultStackedTile : org/hexworks/zircon/api/data/StackedTile, org/hexworks/zircon/api/data/Tile {
+public final class org/hexworks/zircon/internal/data/DefaultStackedTile : org/hexworks/zircon/api/data/StackedTile {
 	public fun <init> (Lorg/hexworks/zircon/api/data/Tile;Lkotlinx/collections/immutable/PersistentList;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/data/Tile;Lkotlinx/collections/immutable/PersistentList;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lorg/hexworks/zircon/api/data/Tile;
@@ -59750,8 +59760,8 @@ public final class org/hexworks/zircon/internal/tileset/CP437TextureMetadata : o
 public final class org/hexworks/zircon/internal/tileset/CP437TileMetadataLoader : org/hexworks/zircon/api/tileset/TileMetadataLoader {
 	public static final field Companion Lorg/hexworks/zircon/internal/tileset/CP437TileMetadataLoader$Companion;
 	public fun <init> (II)V
+	public fun fetchMetaForTile (Lorg/hexworks/zircon/api/data/CharacterTile;)Lorg/hexworks/zircon/internal/tileset/CP437TextureMetadata;
 	public synthetic fun fetchMetaForTile (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/tileset/TextureMetadata;
-	public fun fetchMetaForTile (Lorg/hexworks/zircon/api/data/tile/CharacterTile;)Lorg/hexworks/zircon/internal/tileset/CP437TextureMetadata;
 	public final fun getCp437Metadata ()Ljava/util/Map;
 	public fun supportsTile (Lorg/hexworks/zircon/api/data/Tile;)Z
 }

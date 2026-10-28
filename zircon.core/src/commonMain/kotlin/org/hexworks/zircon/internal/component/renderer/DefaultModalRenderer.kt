@@ -15,10 +15,9 @@ public class DefaultModalRenderer<T : ModalResult> : ComponentRenderer<DefaultMo
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultModal<T>>) {
         val filler = Tile.defaultTile().withStyle(
             styleSet {
-                backgroundColor = Color.create(
-                    0, 0, 0,
-                    alpha = 255.0.times(context.component.darkenPercent).toInt()
-                )
+                // No alpha blending in 2.0: the backdrop is either see-through or solid black.
+                // Dimming the layers below is a renderer concern (see TODO.md, M4).
+                backgroundColor = if (context.component.darkenPercent > 0.0) Color.create(0, 0, 0) else Color.TRANSPARENT
             }
         )
         if (filler.isNotEmpty) {

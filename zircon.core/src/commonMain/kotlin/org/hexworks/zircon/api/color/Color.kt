@@ -21,7 +21,12 @@ public interface Color : Cacheable {
     public val red: Int
     public val green: Int
     public val blue: Int
-    public val alpha: Int
+
+    /**
+     * A transparent color draws nothing, so whatever is below shows through. There is no
+     * partial transparency: a color is either fully opaque or [TRANSPARENT].
+     */
+    public val isTransparent: Boolean
 
     public val component1: Int
         get() = red
@@ -29,8 +34,6 @@ public interface Color : Cacheable {
         get() = green
     public val component3: Int
         get() = blue
-    public val component4: Int
-        get() = alpha
 
     public companion object {
 
@@ -47,8 +50,7 @@ public interface Color : Cacheable {
          */
         public val DEFAULT_BACKGROUND_COLOR: Color get() = DefaultAnsiPalette[BLACK]
 
-        public val TRANSPARENT: Color = create(0, 0, 0, 0)
-        public const val DEFAULT_ALPHA: Int = 255
+        public val TRANSPARENT: Color = DefaultColor(0, 0, 0, isTransparent = true)
         public const val DEFAULT_FACTOR: Double = 0.7
 
         /**
@@ -74,8 +76,8 @@ public interface Color : Cacheable {
         /**
          * Creates a new [Color].
          */
-        public fun create(red: Int, green: Int, blue: Int, alpha: Int = 255): Color {
-            return DefaultColor(red, green, blue, alpha)
+        public fun create(red: Int, green: Int, blue: Int): Color {
+            return DefaultColor(red, green, blue)
         }
 
     }

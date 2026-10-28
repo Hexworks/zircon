@@ -1,10 +1,11 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Hidden
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentAlignments.positionalAlignment
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.shadow
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.ANSIColor.GREEN
 import org.hexworks.zircon.api.color.ANSIColor.RED
@@ -113,13 +114,13 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T>> 
             defaultStyle = styleSet {
                 backgroundColor = DefaultAnsiPalette[GREEN]
                 foregroundColor = DefaultAnsiPalette[RED]
-                modifiers = setOf(Modifiers.blink())
+                modifiers = setOf(Blink)
             }
         }
         const val TITLE_FOO = "FOO"
         val TILESET_ROGUE_YUN = CP437TilesetResources.rogueYun16x16()
         val BOX_TYPE_DOUBLE = BoxType.DOUBLE
-        val DECORATION_RENDERERS = listOf(Modifiers.hidden()).toTypedArray()
+        val DECORATION_RENDERERS = listOf(Hidden).toTypedArray()
 
     }
 }

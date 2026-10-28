@@ -5,7 +5,7 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.zircon.api.builder.data.graphicalTile
 import org.hexworks.zircon.api.data.TileType
-import org.hexworks.zircon.api.data.tile.GraphicalTile
+import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
 import kotlin.test.Test
 

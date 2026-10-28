@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component
 
+import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.Boundable
@@ -127,6 +128,12 @@ public interface Component : ComponentEventSource, ComponentProperties, Focusabl
      * This is an alias for [position] which is always absolute.
      */
     public val absolutePosition: Position
+
+    /**
+     * A keyboard shortcut that activates this [Component] from anywhere on its screen,
+     * regardless of focus. `null` means the component has no shortcut.
+     */
+    public val activationShortcut: KeyboardEventMatcher?
 
     /**
      * The **total** size of this [Component], e.g.: the [Size] of the content area plus the

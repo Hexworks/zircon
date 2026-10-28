@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.builder.base
 
+import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.NotDisposed
@@ -276,6 +277,12 @@ public abstract class BaseComponentBuilder<T : Component>(
         componentPostProcessors = props.postProcessors
     )
 
+    /**
+     * A keyboard shortcut that activates the resulting component from anywhere on its
+     * screen, for example `KeyboardEventMatcher(type = KEY_PRESSED, code = KeyCode.F1)`.
+     */
+    public var activationShortcut: KeyboardEventMatcher? = null
+
     protected open fun createMetadata(): ComponentMetadata {
         if (bindingAction != UpdateOnBind) {
             require(tileset.isNotUnknown) {
@@ -293,6 +300,7 @@ public abstract class BaseComponentBuilder<T : Component>(
             themeProperty = colorThemeProperty,
             componentStyleSetProperty = componentStyleSetProperty,
             tilesetProperty = tilesetProperty,
+            activationShortcut = activationShortcut,
             hiddenProperty = hiddenProperty,
             disabledProperty = disabledProperty
         )

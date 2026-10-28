@@ -18,7 +18,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withX
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.graphics.StyleSet

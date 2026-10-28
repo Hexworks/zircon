@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.tileset
 
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.tileset.TileMetadataLoader
 
 /**

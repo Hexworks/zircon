@@ -23,7 +23,7 @@ class DefaultStyleSetTest {
             foregroundColor = Color.fromString("#aabbcc")
             modifiers = setOf(Blink)
         }.cacheKey
-        result shouldStartWith "StyleSet(fg=Color(r=170,g=187,b=204,a=255)"
+        result shouldStartWith "StyleSet(fg=Color(r=170,g=187,b=204)"
         result shouldContain "bg=Color("
         result shouldContain "m=[Modifier.Blink])"
     }

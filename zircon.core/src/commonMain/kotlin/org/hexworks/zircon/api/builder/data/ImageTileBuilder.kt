@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.data
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.data.tile.ImageTile
+import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource

@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.internal.util.BoundedFifoQueue
 
 public sealed class Cell

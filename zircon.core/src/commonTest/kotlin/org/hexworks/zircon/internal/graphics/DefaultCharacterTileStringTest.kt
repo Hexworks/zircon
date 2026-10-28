@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.zircon.api.modifier.SimpleModifiers.Blink
 import org.hexworks.zircon.api.data.Size
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import org.hexworks.zircon.api.Modifiers
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.characterTileString
@@ -328,7 +328,7 @@ class DefaultCharacterTileStringTest {
     companion object {
         val FOREGROUND = DefaultAnsiPalette[ANSIColor.RED]
         val BACKGROUND = DefaultAnsiPalette[ANSIColor.GREEN]
-        val MODIFIER = Modifiers.blink()
+        val MODIFIER = Blink
         const val TEXT = "TEXT"
     }
 }

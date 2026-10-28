@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.*
 import org.hexworks.zircon.api.data.extensions.fetchPositions
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.api.graphics.extensions.fill

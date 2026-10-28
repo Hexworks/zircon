@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.resource.TilesetType.GraphicalTileset
 import org.hexworks.zircon.internal.resource.base.BaseTilesetResource
 
 /**
- * Tileset resource class which can be used with [org.hexworks.zircon.api.data.tile.GraphicalTile]s.
+ * Tileset resource class which can be used with [org.hexworks.zircon.api.data.GraphicalTile]s.
  */
 internal class GraphicalTilesetResource(
     override val width: Int,

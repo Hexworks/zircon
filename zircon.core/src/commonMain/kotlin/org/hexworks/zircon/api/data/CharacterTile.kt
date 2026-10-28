@@ -1,4 +1,4 @@
-package org.hexworks.zircon.api.data.tile
+package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.HasStyle
 import org.hexworks.zircon.api.color.Color

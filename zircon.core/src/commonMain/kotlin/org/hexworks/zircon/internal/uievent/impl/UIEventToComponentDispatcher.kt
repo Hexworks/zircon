@@ -88,6 +88,13 @@ public class UIEventToComponentDispatcher(
             }
 
             is KeyboardEvent -> {
+                // A component's own shortcut wins over focus-based handling: activating and
+                // deactivating in one go is the keyboard equivalent of a click.
+                root.componentTree.firstOrNull { component ->
+                    component.activationShortcut?.matches(event) == true && !component.isDisabled && !component.isHidden
+                }?.let { shortcutTarget ->
+                    return activateComponent(shortcutTarget).pickByPrecedence(deactivateComponent(shortcutTarget))
+                }
                 when {
                     shortcutsConfig.activateFocused.matches(event) -> {
                         activateComponent(focusOrderList.focusedComponent)

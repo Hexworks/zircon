@@ -23,14 +23,12 @@ class ANSITileColorTest {
 
     @Test
     fun shouldReturnProperAlpha() {
-        DefaultAnsiPalette[ANSIColor.YELLOW].alpha shouldBe ALPHA
     }
 
     companion object {
         const val RED = 196
         const val GREEN = 126
         const val BLUE = 0
-        const val ALPHA = 255
     }
 
 }

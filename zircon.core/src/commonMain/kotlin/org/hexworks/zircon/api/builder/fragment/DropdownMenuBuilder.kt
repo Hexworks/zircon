@@ -12,9 +12,8 @@ public class DropdownMenuBuilder<T : Any> : FragmentBuilder<DropdownMenu<T>> {
 
     public var label: String = ""
     internal var children: List<DropdownMenuItem<T>> = listOf()
-    override var position: Position
-        get() = TODO("Not yet implemented")
-        set(_) {}
+    /** Dropdown menus are positioned by their menu bar; this value is only a default. */
+    override var position: Position = Position.ZERO
 
 
     override fun build(): DropdownMenu<T> {

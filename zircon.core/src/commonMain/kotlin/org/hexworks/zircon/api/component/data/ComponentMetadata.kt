@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.data
 
+import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.BindingAction
@@ -26,7 +27,12 @@ public data class ComponentMetadata(
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
-    val disabledProperty: Property<Boolean> = false.toProperty()
+    val disabledProperty: Property<Boolean> = false.toProperty(),
+    /**
+     * A keyboard shortcut that activates the component from anywhere on its screen,
+     * as if it was focused and the activation key was pressed. `null` means none.
+     */
+    val activationShortcut: KeyboardEventMatcher? = null
 ) {
 
     val tileset: TilesetResource

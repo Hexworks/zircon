@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.zircon.api.behavior.extensions.withPosition
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
@@ -38,6 +39,8 @@ class ComponentStub(
 
     override val position: Position
         get() = bounds.position
+    override val activationShortcut: KeyboardEventMatcher? = null
+
     override val absolutePosition: Position
         get() = position
     override val positionProperty: ObservableValue<Position> = boundsProperty.bindTransform { it.position }

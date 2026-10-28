@@ -6,11 +6,10 @@ internal data class DefaultColor(
     override val red: Int,
     override val green: Int,
     override val blue: Int,
-    override val alpha: Int = Color.DEFAULT_ALPHA
+    override val isTransparent: Boolean = false
 ) : Color {
 
-    override val cacheKey = "Color(r=$red,g=$green,b=$blue,a=$alpha)"
+    override val cacheKey: String = if (isTransparent) "Color(transparent)" else "Color(r=$red,g=$green,b=$blue)"
 
-    override fun toString() = "Color(r=$red, g:$green, b:$blue, a:$alpha)"
-
+    override fun toString(): String = cacheKey
 }

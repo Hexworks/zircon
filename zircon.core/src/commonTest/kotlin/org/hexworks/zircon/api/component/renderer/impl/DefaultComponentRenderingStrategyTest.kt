@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.fetchCharacters
 import org.hexworks.zircon.internal.component.impl.DefaultButton

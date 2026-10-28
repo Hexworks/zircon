@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.fetchPositions
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.extensions.isOpaque

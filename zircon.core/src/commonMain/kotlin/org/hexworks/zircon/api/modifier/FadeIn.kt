@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.modifier
 import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.color.extensions.darkenByPercent
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.tile.CharacterTile
+import org.hexworks.zircon.api.data.CharacterTile
 
 public data class FadeIn(
     private val steps: Int = 20,

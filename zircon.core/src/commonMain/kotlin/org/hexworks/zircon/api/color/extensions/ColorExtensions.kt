@@ -7,7 +7,7 @@ import org.hexworks.zircon.internal.color.DefaultColor
 import org.hexworks.zircon.internal.color.DefaultColorInterpolator
 
 public val Color.isOpaque: Boolean
-    get() = alpha == 255
+    get() = !isTransparent
 
 /**
  * Returns a new [Color] which is desaturated by the [DEFAULT_FACTOR] (.7).
@@ -22,7 +22,7 @@ public fun Color.desaturate(factor: Double): Color {
     val r = red + factor * (l - red)
     val g = green + factor * (l - green)
     val b = blue + factor * (l - blue)
-    return DefaultColor(r.toInt(), g.toInt(), b.toInt(), alpha)
+    return DefaultColor(r.toInt(), g.toInt(), b.toInt())
 }
 
 /**
@@ -72,7 +72,7 @@ public fun Color.tone(factor: Double): Color {
  * Returns a new [Color] which is the inversion of this one.
  */
 public fun Color.invert(): Color {
-    return DefaultColor(255 - red, 255 - green, 255 - blue, alpha)
+    return DefaultColor(255 - red, 255 - green, 255 - blue)
 }
 
 /**
@@ -84,8 +84,7 @@ public fun Color.darkenByPercent(percentage: Double): Color {
     return Color.create(
         red = (red * (1f - percentage)).toInt(),
         green = (green * (1f - percentage)).toInt(),
-        blue = (blue * (1f - percentage)).toInt(),
-        alpha = alpha
+        blue = (blue * (1f - percentage)).toInt()
     )
 }
 
@@ -98,30 +97,25 @@ public fun Color.lightenByPercent(percentage: Double): Color {
     return Color.create(
         red = (red * (1f + percentage)).toInt(),
         green = (green * (1f + percentage)).toInt(),
-        blue = (blue * (1f + percentage)).toInt(),
-        alpha = alpha
+        blue = (blue * (1f + percentage)).toInt()
     )
 }
 
-/**
- * Creates a copy of this [Color] with the given [alpha].
- */
-public fun Color.withAlpha(alpha: Int): Color = DefaultColor(red, green, blue, alpha)
 
 /**
  * Creates a copy of this [Color] with the given [red].
  */
-public fun Color.withRed(red: Int): Color = DefaultColor(red, green, blue, alpha)
+public fun Color.withRed(red: Int): Color = DefaultColor(red, green, blue)
 
 /**
  * Creates a copy of this [Color] with the given [green].
  */
-public fun Color.withGreen(green: Int): Color = DefaultColor(red, green, blue, alpha)
+public fun Color.withGreen(green: Int): Color = DefaultColor(red, green, blue)
 
 /**
  * Creates a copy of this [Color] with the given [blue].
  */
-public fun Color.withBlue(blue: Int): Color = DefaultColor(red, green, blue, alpha)
+public fun Color.withBlue(blue: Int): Color = DefaultColor(red, green, blue)
 
 /**
  * Creates a new [ColorInterpolator] with the receiver color as low color and the other color as high color.

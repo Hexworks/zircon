@@ -217,6 +217,30 @@ class DefaultComponentContainerTest {
     }
 
     @Test
+    fun shouldActivateComponentThroughItsShortcutWithoutFocus() {
+        target.activate()
+
+        val button = button {
+            +BUTTON_TEXT
+            position = BUTTON_POSITION
+            componentStyleSet = buildStyles()
+            activationShortcut = KeyboardEventMatcher(type = KeyboardEventType.KEY_PRESSED, code = KeyCode.F1)
+        }
+        target.addComponent(button)
+
+        var activated = false
+        button.handleComponentEvents(ComponentEventType.ACTIVATED) {
+            activated = true
+            Pass
+        }
+
+        // not focused on purpose: the shortcut must work regardless of focus
+        target.dispatch(KeyboardEvent(type = KeyboardEventType.KEY_PRESSED, code = KeyCode.F1, key = ""))
+
+        activated shouldBe true
+    }
+
+    @Test
     fun shouldProperlyHandleSpacePressedOnFocusedWhenActive() {
         target.activate()
 

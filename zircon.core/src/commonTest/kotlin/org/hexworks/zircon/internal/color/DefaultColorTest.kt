@@ -12,9 +12,9 @@ class DefaultColorTest {
 
     @Test
     fun shouldGenerateProperCacheKey() {
-        val result = DefaultColor(RED, GREEN, BLUE, 123).cacheKey
+        val result = DefaultColor(RED, GREEN, BLUE).cacheKey
 
-        result shouldBe "Color(r=5,g=10,b=15,a=123)"
+        result shouldBe "Color(r=5,g=10,b=15)"
     }
 
     @Test
@@ -24,7 +24,7 @@ class DefaultColorTest {
         result.red shouldBe RED
         result.green shouldBe GREEN
         result.blue shouldBe BLUE
-        result.alpha shouldBe Color.DEFAULT_ALPHA
+        result.isTransparent shouldBe false
     }
 
     @Test

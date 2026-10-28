@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.extensions.withPosition
@@ -131,6 +132,8 @@ public abstract class DefaultComponent(
     final override var isHidden: Boolean by hiddenProperty.asDelegate()
 
     final override val disabledProperty: Property<Boolean> = metadata.disabledProperty
+
+    override val activationShortcut: KeyboardEventMatcher? = metadata.activationShortcut
     final override var isDisabled: Boolean by disabledProperty.asDelegate()
     //#endregion
 
