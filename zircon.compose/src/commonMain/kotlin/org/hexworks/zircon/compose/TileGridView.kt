@@ -23,7 +23,6 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.compose.input.KeyboardEventListener
 import org.hexworks.zircon.compose.input.MouseEventListener
-import org.hexworks.zircon.compose.shader.AtlasInfo
 import org.hexworks.zircon.compose.shader.TileShader
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 
@@ -96,9 +95,6 @@ public fun TileGridView(
             }
     ) {
         tick // read so every frame redraws
-        val atlases = renderer.registry.tilesets
-            .filter { it.isLoaded }
-            .associate { it.atlasId to AtlasInfo(it.atlas!!, it.atlasCellWidth, it.atlasCellHeight) }
-        drawIntoCanvas { canvas -> shader.draw(canvas, frame, atlases) }
+        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases()) }
     }
 }

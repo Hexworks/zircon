@@ -8,10 +8,12 @@ import org.hexworks.zircon.api.data.Position
  * uploaded as data textures for the tile shader:
  *
  * - [cells]: `r` = atlas column, `g` = atlas row, `b` = atlas id, `a` = 255
- * - [foregrounds] and [backgrounds]: `rgb` = color, `a` = 255 when opaque, 0 when transparent
+ * - [foregrounds]: `rgb` = tint, `a` = 255 for a tinted mask (glyph), 128 for a coloured
+ *   sprite, 0 for nothing on top
+ * - [backgrounds]: `rgb` = color, `a` = 255 when opaque, 0 when transparent
  *
- * Tilesets write into it through [write]; the renderer clears it before every frame.
- * Per-frame cost scales with cells, never with pixels, which is what keeps wasm fast.
+ * Tilesets write into it through [writeGlyph] and [writeSprite]; the renderer clears it
+ * before every frame. Per-frame cost scales with cells, never with pixels.
  */
 public class FrameData(public val cols: Int, public val rows: Int) {
 
@@ -19,7 +21,7 @@ public class FrameData(public val cols: Int, public val rows: Int) {
     public val foregrounds: ByteArray = ByteArray(cols * rows * 4)
     public val backgrounds: ByteArray = ByteArray(cols * rows * 4)
 
-    /** Atlas ids that were written since the last [clear], so the renderer can skip idle atlases. */
+    /** Atlas ids written since the last [clear], so the renderer can skip idle atlases. */
     public val usedAtlases: MutableSet<Int> = mutableSetOf()
 
     public fun clear() {
@@ -30,52 +32,69 @@ public class FrameData(public val cols: Int, public val rows: Int) {
     }
 
     /**
-     * Writes the glyph at atlas cell ([slotX], [slotY]) of atlas [atlasId] with the given
-     * colors. Positions outside the grid are ignored.
+     * Writes a glyph: atlas cell ([slotX], [slotY]) of atlas [atlasId] used as a mask and
+     * tinted with [foreground], over [background]. Tiles arrive bottom to top, and a
+     * transparent colour keeps what is below, which is how layers show through.
      */
-    public fun write(position: Position, atlasId: Int, slotX: Int, slotY: Int, foreground: Color, background: Color) {
-        val x = position.x
-        val y = position.y
-        if (x < 0 || y < 0 || x >= cols || y >= rows) return
-        val i = (y * cols + x) * 4
-        // Tiles arrive bottom to top. A transparent background or foreground means "keep
-        // what is below", which is how layers and stacked tiles show through.
+    public fun writeGlyph(position: Position, atlasId: Int, slotX: Int, slotY: Int, foreground: Color, background: Color) {
+        val i = indexOf(position) ?: return
         if (!foreground.isTransparent) {
-            cells[i] = slotX.toByte()
-            cells[i + 1] = slotY.toByte()
-            cells[i + 2] = atlasId.toByte()
-            cells[i + 3] = -1
-            foreground.writeTo(foregrounds, i)
-            usedAtlases += atlasId
+            writeCell(i, atlasId, slotX, slotY)
+            foregrounds[i] = foreground.red.toByte()
+            foregrounds[i + 1] = foreground.green.toByte()
+            foregrounds[i + 2] = foreground.blue.toByte()
+            foregrounds[i + 3] = -1
         }
-        if (!background.isTransparent) {
-            background.writeTo(backgrounds, i)
-        }
+        writeBackground(i, background)
     }
 
     /**
-     * Writes only a background, for tiles that have nothing to draw on top (empty tiles).
+     * Writes a sprite: atlas cell ([slotX], [slotY]) of atlas [atlasId] drawn with its own
+     * colours, over [background].
+     */
+    public fun writeSprite(position: Position, atlasId: Int, slotX: Int, slotY: Int, background: Color = Color.TRANSPARENT) {
+        val i = indexOf(position) ?: return
+        writeCell(i, atlasId, slotX, slotY)
+        foregrounds[i] = -1
+        foregrounds[i + 1] = -1
+        foregrounds[i + 2] = -1
+        foregrounds[i + 3] = SPRITE_MODE
+        writeBackground(i, background)
+    }
+
+    /**
+     * Writes only a background, for tiles with nothing to draw on top.
      */
     public fun writeBackground(position: Position, background: Color) {
+        val i = indexOf(position) ?: return
+        writeBackground(i, background)
+    }
+
+    private fun indexOf(position: Position): Int? {
         val x = position.x
         val y = position.y
-        if (x < 0 || y < 0 || x >= cols || y >= rows) return
-        val i = (y * cols + x) * 4
-        if (!background.isTransparent) {
-            background.writeTo(backgrounds, i)
-        }
+        return if (x < 0 || y < 0 || x >= cols || y >= rows) null else (y * cols + x) * 4
     }
 
-    private fun Color.writeTo(target: ByteArray, offset: Int) {
-        if (isTransparent) {
-            target[offset] = 0; target[offset + 1] = 0; target[offset + 2] = 0; target[offset + 3] = 0
-        } else {
-            target[offset] = red.toByte(); target[offset + 1] = green.toByte(); target[offset + 2] = blue.toByte(); target[offset + 3] = -1
-        }
+    private fun writeCell(i: Int, atlasId: Int, slotX: Int, slotY: Int) {
+        cells[i] = slotX.toByte()
+        cells[i + 1] = slotY.toByte()
+        cells[i + 2] = atlasId.toByte()
+        cells[i + 3] = -1
+        usedAtlases += atlasId
     }
 
-    /** No atlas: nothing is drawn on top of the background. */
+    private fun writeBackground(i: Int, background: Color) {
+        if (background.isTransparent) return
+        backgrounds[i] = background.red.toByte()
+        backgrounds[i + 1] = background.green.toByte()
+        backgrounds[i + 2] = background.blue.toByte()
+        backgrounds[i + 3] = -1
+    }
+
     public companion object {
+        /** No atlas: nothing is drawn on top of the background. */
         public const val NO_ATLAS: Int = 0
+        private const val SPRITE_MODE: Byte = 128.toByte()
     }
 }

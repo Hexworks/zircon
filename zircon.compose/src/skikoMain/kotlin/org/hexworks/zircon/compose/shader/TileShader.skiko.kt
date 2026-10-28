@@ -30,6 +30,9 @@ public actual class TileShader actual constructor(
     private val paint = Paint()
     private val perFrame = ArrayList<Managed>(16)
 
+    /** Skia images for the atlases, rebuilt only when an atlas changes version. */
+    private val atlasImages = mutableMapOf<Int, Pair<Int, Image>>()
+
     public actual fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>) {
         release()
         val info = ImageInfo(frame.cols, frame.rows, ColorType.RGBA_8888, ColorAlphaType.UNPREMUL)
@@ -40,30 +43,36 @@ public actual class TileShader actual constructor(
         val bounds = Rect.makeWH((frame.cols * tileWidth).toFloat(), (frame.rows * tileHeight).toFloat())
         val native = canvas.nativeCanvas
 
-        fun pass(passId: Float, atlas: AtlasInfo?) {
+        fun pass(passId: Float, atlas: Shader, cellWidth: Int, cellHeight: Int) {
             val builder = RuntimeShaderBuilder(effect)
             builder.child("cells", cells)
             builder.child("fgs", fgs)
             builder.child("bgs", bgs)
-            val atlasShader = atlas?.image?.asSkiaBitmap()?.let { bitmap ->
-                Image.makeFromBitmap(bitmap).also { perFrame += it }
-                    .makeShader(FilterTileMode.CLAMP, FilterTileMode.CLAMP, SamplingMode.DEFAULT)
-                    .also { perFrame += it }
-            } ?: cells
-            builder.child("atlas", atlasShader)
+            builder.child("atlas", atlas)
             builder.uniform("tileSize", tileWidth.toFloat(), tileHeight.toFloat())
-            builder.uniform("cellSize", (atlas?.cellWidth ?: 1).toFloat(), (atlas?.cellHeight ?: 1).toFloat())
+            builder.uniform("cellSize", cellWidth.toFloat(), cellHeight.toFloat())
             builder.uniform("pass", passId)
             val shader = builder.makeShader().also { perFrame += it }
             paint.shader = shader
             native.drawRect(bounds, paint)
         }
 
-        pass(-1f, null)
+        pass(-1f, cells, 1, 1)
         for (atlasId in frame.usedAtlases.sorted()) {
             val atlas = atlases[atlasId] ?: continue
-            pass(atlasId.toFloat(), atlas)
+            val image = atlasImage(atlasId, atlas)
+            val shader = image.makeShader(FilterTileMode.CLAMP, FilterTileMode.CLAMP, SamplingMode.DEFAULT).also { perFrame += it }
+            pass(atlasId.toFloat(), shader, atlas.cellWidth, atlas.cellHeight)
         }
+    }
+
+    private fun atlasImage(atlasId: Int, atlas: AtlasInfo): Image {
+        val cached = atlasImages[atlasId]
+        if (cached != null && cached.first == atlas.version) return cached.second
+        cached?.second?.close()
+        val image = Image.makeFromBitmap(atlas.image.asSkiaBitmap())
+        atlasImages[atlasId] = atlas.version to image
+        return image
     }
 
     private fun Image.dataShader(): Shader =
@@ -76,6 +85,8 @@ public actual class TileShader actual constructor(
 
     actual override fun close() {
         release()
+        atlasImages.values.forEach { it.second.close() }
+        atlasImages.clear()
         paint.close()
         effect.close()
     }
@@ -101,12 +112,15 @@ public actual class TileShader actual constructor(
                 float atlasId = floor(info.b * 255.0 + 0.5);
                 if (abs(atlasId - pass) > 0.5) return half4(0.0);
                 half4 fg = fgs.eval(center);
-                if (fg.a < 0.5) return half4(0.0);
+                if (fg.a < 0.25) return half4(0.0);
                 float2 slot = floor(info.rg * 255.0 + float2(0.5, 0.5));
                 float2 inTile = (p - cell * tileSize) / tileSize;
                 float2 uv = (slot + inTile) * cellSize;
-                half4 glyph = atlas.eval(uv);
-                return half4(fg.rgb * glyph.a, glyph.a);
+                half4 texel = atlas.eval(uv);
+                // fg.a == 1: the atlas is a mask tinted with the foreground colour (glyphs)
+                // fg.a == 0.5: the atlas holds the colours (sprites)
+                if (fg.a > 0.75) return half4(fg.rgb * texel.a, texel.a);
+                return texel;
             }
         """.trimIndent()
     }

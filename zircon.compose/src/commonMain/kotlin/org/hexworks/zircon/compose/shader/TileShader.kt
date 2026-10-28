@@ -14,15 +14,20 @@ public expect class TileShader(tileWidth: Int, tileHeight: Int) : AutoCloseable 
     /**
      * Draws the whole frame at the canvas origin.
      *
-     * @param atlases atlas id to (image, atlas cell width, atlas cell height)
+     * @param atlases atlas id to the sprite sheet to sample for that id
      */
     public fun draw(canvas: Canvas, frame: FrameData, atlases: Map<Int, AtlasInfo>)
 
     override fun close()
 }
 
+/**
+ * A sprite sheet the shader samples. [version] changes whenever [image]'s pixels change
+ * (glyph caches grow), so platform wrappers of the image can be cached per version.
+ */
 public class AtlasInfo(
     public val image: ImageBitmap,
     public val cellWidth: Int,
     public val cellHeight: Int,
+    public val version: Int = 0,
 )

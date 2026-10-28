@@ -3,7 +3,6 @@ package org.hexworks.zircon.compose
 import androidx.compose.ui.graphics.asComposeCanvas
 import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.compose.shader.AtlasInfo
 import org.hexworks.zircon.compose.shader.TileShader
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Surface
@@ -28,10 +27,7 @@ internal fun renderToPng(tileGrid: TileGrid, ticks: Int = 1): ByteArray {
             }
         }
         val surface = Surface.makeRasterN32Premul(tileGrid.widthInPixels, tileGrid.heightInPixels)
-        val atlases = renderer.registry.tilesets
-            .filter { it.isLoaded }
-            .associate { it.atlasId to AtlasInfo(it.atlas!!, it.atlasCellWidth, it.atlasCellHeight) }
-        shader.draw(surface.canvas.asComposeCanvas(), frame, atlases)
+        shader.draw(surface.canvas.asComposeCanvas(), frame, renderer.registry.atlases())
         return checkNotNull(surface.makeImageSnapshot().encodeToData(EncodedImageFormat.PNG)).bytes
     } finally {
         shader.close()

@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.loadBytes
 import org.hexworks.zircon.compose.FrameData
+import org.hexworks.zircon.compose.shader.AtlasInfo
 import org.hexworks.zircon.internal.util.CP437Index
 import org.jetbrains.compose.resources.decodeToImageBitmap
 
@@ -15,19 +16,22 @@ import org.jetbrains.compose.resources.decodeToImageBitmap
  */
 public class CP437Tileset(resource: TilesetResource) : ComposeTileset(resource) {
 
+    private var atlasId: Int = FrameData.NO_ATLAS
+
     override suspend fun load() {
-        if (atlas != null) return
-        atlas = resource.loadBytes().decodeToImageBitmap()
+        if (loaded) return
+        atlasId = putAtlas(AtlasInfo(resource.loadBytes().decodeToImageBitmap(), width, height))
+        loaded = true
     }
 
     override fun drawTile(tile: Tile, context: FrameData, position: Position) {
         val characterTile = tile as? CharacterTile ?: return
-        if (atlas == null) {
+        if (!loaded) {
             context.writeBackground(position, characterTile.backgroundColor)
             return
         }
         val index = characterTile.character.CP437Index()
-        context.write(
+        context.writeGlyph(
             position = position,
             atlasId = atlasId,
             slotX = index % 16,

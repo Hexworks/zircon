@@ -20,6 +20,9 @@ import org.hexworks.zircon.internal.util.CP437_METADATA
 
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.builder.data.withStyleSet
+import org.hexworks.zircon.api.GraphicalTilesetResources
+import org.hexworks.zircon.api.TrueTypeFontResources
+import org.hexworks.zircon.api.builder.data.graphicalTile
 import kotlin.test.Test
 
 class GoldenRenderTest {
@@ -78,4 +81,47 @@ class GoldenRenderTest {
         assertMatchesGolden("cp437-rexpaint", renderToPng(grid))
     }
 
+
+    @Test
+    fun rendersTextWithATrueTypeFont() {
+        val grid = createTileGrid(
+            appConfig {
+                size = Size(34, 3)
+                defaultTileset = TrueTypeFontResources.ibmBios(16)
+            }
+        )
+        "TrueType: The quick brown fox 0123".forEachIndexed { index, char ->
+            grid.draw(
+                characterTile {
+                    character = char
+                    withStyleSet {
+                        foregroundColor = Color.create(255, 220, 120)
+                        backgroundColor = Color.create(20, 30, 50)
+                    }
+                },
+                Position(index, 1)
+            )
+        }
+
+        assertMatchesGolden("truetype-ibm-bios", renderToPng(grid))
+    }
+
+    @Test
+    fun rendersGraphicalTilesFromTheNethackTileset() {
+        val nethack = GraphicalTilesetResources.nethack16x16()
+        val grid = createTileGrid(
+            appConfig {
+                size = Size(6, 2)
+                defaultTileset = nethack
+            }
+        )
+        listOf("Giant ant", "Killer bee", "Soldier ant", "Fire ant", "Giant beetle", "Queen bee").forEachIndexed { index, name ->
+            grid.draw(graphicalTile { this.name = name; tileset = nethack }, Position(index, 0))
+        }
+        listOf("Acid blob", "Quivering blob", "Gelatinous cube", "Chickatrice", "Cockatrice", "Pyrolisk").forEachIndexed { index, name ->
+            grid.draw(graphicalTile { this.name = name; tileset = nethack }, Position(index, 1))
+        }
+
+        assertMatchesGolden("graphical-nethack", renderToPng(grid, ticks = 2))
+    }
 }

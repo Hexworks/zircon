@@ -1,16 +1,17 @@
 package org.hexworks.zircon.compose.tileset
 
-import androidx.compose.ui.graphics.ImageBitmap
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.compose.FrameData
+import org.hexworks.zircon.compose.shader.AtlasInfo
 import kotlin.reflect.KClass
 
 /**
  * A tileset for the Compose renderer. "Drawing" a tile means writing a cell record into the
- * [FrameData]; the pixels come from [atlas], a sprite sheet the shader samples. Atlases are
- * loaded asynchronously, and until [atlas] is set the tileset writes backgrounds only.
+ * [FrameData]; the pixels come from one or more [atlases], sprite sheets the shader
+ * samples. Atlases are loaded asynchronously by [load]; until then a tileset writes
+ * backgrounds only.
  */
 public abstract class ComposeTileset(
     public val resource: TilesetResource,
@@ -22,27 +23,31 @@ public abstract class ComposeTileset(
     override val height: Int = resource.height
 
     /**
-     * Assigned by the [TilesetRegistry]; `0` is reserved for "no atlas".
+     * Hands out atlas ids; set by the [TilesetRegistry] right after creation.
      */
-    public var atlasId: Int = FrameData.NO_ATLAS
-        internal set
+    internal var allocateAtlasId: () -> Int = { error("Tileset is not registered") }
+
+    private val mutableAtlases = mutableMapOf<Int, AtlasInfo>()
 
     /**
-     * The sprite sheet, once loaded.
+     * The sprite sheets this tileset samples, by atlas id.
      */
-    public var atlas: ImageBitmap? = null
-        protected set
+    public val atlases: Map<Int, AtlasInfo> get() = mutableAtlases
+
+    public val isLoaded: Boolean get() = loaded
+
+    protected var loaded: Boolean = false
 
     /**
-     * Size of one atlas cell in pixels. Defaults to the tile size; a glyph cache may differ.
+     * Registers (or replaces) a sprite sheet and returns its atlas id.
      */
-    public open val atlasCellWidth: Int get() = width
-    public open val atlasCellHeight: Int get() = height
-
-    public val isLoaded: Boolean get() = atlas != null
+    protected fun putAtlas(info: AtlasInfo, atlasId: Int = allocateAtlasId()): Int {
+        mutableAtlases[atlasId] = info
+        return atlasId
+    }
 
     /**
-     * Loads the atlas. Called once by the renderer; must be safe to call again.
+     * Loads the atlases. Called by the renderer; must be safe to call again.
      */
     public abstract suspend fun load()
 }
