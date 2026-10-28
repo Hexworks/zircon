@@ -10,8 +10,8 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: create the new `zircon.compose` module (jvm + android + wasmJs) and port the
-  prototype's path D (`DataTextureRenderer`) onto `BaseRenderer`/`Tileset` as a real renderer.
+- Next step: TrueType glyph atlas and graphical tilesets in `zircon.compose`, then the desktop
+  example app, then wasm in the browser. Android target waits for M5 (needs an SDK on this machine).
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -77,11 +77,11 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ### M4: zircon.compose on the chosen path (desktop)
 
-- [ ] Rewrite the renderer on the M1 winner, all in `commonMain`
-- [ ] Compose resources for bundled assets (`publicResClass = true`)
-- [ ] All four tileset types, modifiers, blink, debug grid
+- [x] Renderer on the M1 winner, all in `commonMain`: `FrameData` (3 data textures) ← `ComposeRenderer : BaseRenderer` ← `TileShader` (SkSL, expect/actual) ← `TileGridView` composable
+- [x] Compose resources for bundled assets (`publicResClass = true`), `ComposeResourceLoader` installs core's `Resources.loader`
+- [ ] Tilesets: CP437 done; TrueType (glyph atlas), graphical (sprite sheets, raw colour mode), image dictionary; modifiers, blink, debug grid
 - [ ] Input: keyboard, pointer, including `MOUSE_CLICKED`
-- [ ] Golden-image tests
+- [x] Golden-image tests: `renderToPng` renders through the real pipeline into a raster surface; goldens in `src/jvmTest/resources/golden`, actuals in `build/golden`, `UPDATE_GOLDENS=1` refreshes
 - [ ] `runDesktop {}` convenience
 
 ### M5: wasm, android, examples

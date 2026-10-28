@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.graphics
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.extensions.containsPosition
 
 public class ArrayBackedTileMap(
     private val dimensions: Size,
@@ -44,12 +43,9 @@ public class ArrayBackedTileMap(
     )
 
     private val Position.index: Int?
-        get() {
-            return if (dimensions.containsPosition(this)) {
-                val idx = dimensions.width * y + x
-                if (idx < arr.lastIndex || idx >= 0) idx else null
-            } else null
-        }
+        get() = if (x in 0 until dimensions.width && y in 0 until dimensions.height) {
+            dimensions.width * y + x
+        } else null
 
     public class Entry(
         override val key: Position,

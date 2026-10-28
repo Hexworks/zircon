@@ -117,4 +117,14 @@ class ArrayBackedTileMapTest {
         val OUT_OF_BOUNDS_POSITION_2_2 = Position(2, 2)
         val FILLER = Tile.defaultTile().withCharacter('x')
     }
+
+    @Test
+    fun shouldReturnNullForPositionsOutsideTheMap() {
+        val target = ArrayBackedTileMap(Size(4, 2), arrayOfNulls(8))
+
+        assertNull(target[Position(-1, 0)])
+        assertNull(target[Position(0, -1)])
+        assertNull(target[Position(4, 0)])
+        assertNull(target[Position(0, 2)])
+    }
 }

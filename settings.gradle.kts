@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "zircon"
 
 include(":zircon.core")
+include(":zircon.compose")
