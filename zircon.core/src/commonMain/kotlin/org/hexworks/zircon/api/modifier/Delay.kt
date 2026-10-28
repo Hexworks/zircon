@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.modifier
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 
@@ -17,9 +17,9 @@ data class Delay(private val timeMs: Long = 2000) : TileModifier<CharacterTile> 
     override fun transform(tile: CharacterTile): CharacterTile {
         // timer starts the first time we try to transform the tile
         if (showAt < 0) {
-            showAt = DateTime.nowUnixMillisLong() + timeMs
+            showAt = nowMillis() + timeMs
         }
-        val now = DateTime.nowUnixMillisLong()
+        val now = nowMillis()
         if (now > showAt) {
             shouldShow = true
         }

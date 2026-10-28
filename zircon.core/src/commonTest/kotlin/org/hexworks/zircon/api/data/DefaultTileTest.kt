@@ -95,7 +95,7 @@ class DefaultTileTest {
             }
         }.cacheKey
 
-        result shouldBe "CharacterTile(c=x,s=StyleSet(fg=TextColor(r=170,g=187,b=204,a=255),bg=TextColor(r=0,g=196,b=0,a=255),m=[Modifier.Blink]))"
+        result shouldBe "CharacterTile(c=x,s=StyleSet(fg=Color(r=170,g=187,b=204,a=255),bg=Color(r=0,g=196,b=0,a=255),m=[Modifier.Blink]))"
     }
 
     @Test

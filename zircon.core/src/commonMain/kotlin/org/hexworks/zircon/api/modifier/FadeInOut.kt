@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.modifier
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
 
@@ -37,7 +37,7 @@ data class FadeInOut(
             FadeInOutMode.FadeIn -> fadeIn.transform(tile)
             FadeInOutMode.NoFading -> {
                 if (startNoFadingRender == Long.MIN_VALUE)
-                    startNoFadingRender = DateTime.nowUnixMillisLong()
+                    startNoFadingRender = nowMillis()
                 tile
             }
 
@@ -49,7 +49,7 @@ data class FadeInOut(
     private fun getFadeMode(): FadeInOutMode {
         return when (currentFadeMode) {
             FadeInOutMode.FadeIn -> if (fadeIn.isFadingFinished()) FadeInOutMode.NoFading else FadeInOutMode.FadeIn
-            FadeInOutMode.NoFading -> if ((DateTime.nowUnixMillisLong() - startNoFadingRender) > timeMsBeforeFadingOut)
+            FadeInOutMode.NoFading -> if ((nowMillis() - startNoFadingRender) > timeMsBeforeFadingOut)
                 FadeInOutMode.FadeOut else FadeInOutMode.NoFading
 
             FadeInOutMode.FadeOut -> FadeInOutMode.FadeOut

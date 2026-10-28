@@ -14,7 +14,7 @@ class DefaultColorTest {
     fun shouldGenerateProperCacheKey() {
         val result = DefaultColor(RED, GREEN, BLUE, 123).cacheKey
 
-        result shouldBe "TextColor(r=5,g=10,b=15,a=123)"
+        result shouldBe "Color(r=5,g=10,b=15,a=123)"
     }
 
     @Test

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessorContext
@@ -19,9 +19,9 @@ data class TypingEffectPostProcessor<T : Component>(private val baseDelayInMs: L
 
     override fun render(drawWindow: DrawWindow, context: ComponentPostProcessorContext<T>) {
         if (startAt < 0) {
-            startAt = DateTime.nowUnixMillisLong() + baseDelayInMs
+            startAt = nowMillis() + baseDelayInMs
         }
-        val now = DateTime.nowUnixMillisLong()
+        val now = nowMillis()
         if (now > startAt) {
             shouldShow = true
         }

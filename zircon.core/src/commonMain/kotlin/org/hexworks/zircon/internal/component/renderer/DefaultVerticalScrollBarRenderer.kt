@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import korlibs.math.isOdd
-import korlibs.math.toIntCeil
-import korlibs.math.toIntFloor
+import org.hexworks.zircon.internal.util.isOdd
+import org.hexworks.zircon.internal.util.toIntCeil
+import org.hexworks.zircon.internal.util.toIntFloor
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.builder.data.size

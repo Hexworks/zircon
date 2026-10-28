@@ -34,15 +34,18 @@ interface Color : Cacheable {
 
     companion object {
 
+        // Getters, not stored values: DefaultAnsiPalette's initializer calls Color.create,
+        // so storing these here would create a class-initialization cycle.
+
         /**
          * The default foreground color is `WHITE`.
          */
-        val DEFAULT_FOREGROUND_COLOR = DefaultAnsiPalette[WHITE]
+        val DEFAULT_FOREGROUND_COLOR: Color get() = DefaultAnsiPalette[WHITE]
 
         /**
          * The default background color is `BLACK`.
          */
-        val DEFAULT_BACKGROUND_COLOR = DefaultAnsiPalette[BLACK]
+        val DEFAULT_BACKGROUND_COLOR: Color get() = DefaultAnsiPalette[BLACK]
 
         val TRANSPARENT = create(0, 0, 0, 0)
         const val DEFAULT_ALPHA = 255

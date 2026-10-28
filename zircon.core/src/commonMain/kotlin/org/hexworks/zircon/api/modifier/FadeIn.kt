@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.modifier
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.zircon.api.color.extensions.darkenByPercent
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.tile.CharacterTile
@@ -25,11 +25,11 @@ data class FadeIn(
 
     override fun transform(tile: CharacterTile): CharacterTile {
         if (isFirstRender()) {
-            lastRender = DateTime.nowUnixMillisLong()
+            lastRender = nowMillis()
             generateTile(tile)
         }
         return if (currentStep == steps) tile else {
-            val now = DateTime.nowUnixMillisLong()
+            val now = nowMillis()
             if (now - lastRender > delay) {
                 lastRender = now
                 currentStep++

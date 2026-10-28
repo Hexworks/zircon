@@ -1,14 +1,12 @@
 package org.hexworks.zircon.internal.animation.impl
 
 import org.hexworks.cobalt.core.api.UUID
-import org.hexworks.cobalt.databinding.api.extension.orElse
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.Animation.InfiniteLoop
 import org.hexworks.zircon.api.animation.Animation.LoopKind
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.InternalAnimation
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
-import kotlin.math.max
 import kotlin.time.Duration
 
 internal class DefaultAnimation(
@@ -25,7 +23,9 @@ internal class DefaultAnimation(
     private val framesInOrder = mutableListOf<InternalAnimationFrame>()
 
     private var currentFrame: InternalAnimationFrame? = null
-    private var loopState = loopKind
+
+    /** Loops left to play, `null` for an infinite animation. */
+    private var remainingLoops: Int? = (loopKind as? Animation.FiniteLoop)?.count
 
     private val flattenedFrames = frames.flatMap { frame ->
         (0 until frame.repeatCount).map { frame }
@@ -42,33 +42,25 @@ internal class DefaultAnimation(
 
     override fun displayNextFrame(layerable: Layerable): Boolean {
         removeCurrentFrame()
-        if (hasNextFrame()) {
-            currentFrame = framesInOrder.removeAt(0)
+        if (!hasNextFrame()) {
+            currentFrame = null
+            return false
         }
-        return currentFrame?.let { currentFrame ->
-            if (framesInOrder.isEmpty()) {
-                loopKind.decrementFrameCount()
+        val frame = framesInOrder.removeAt(0)
+        currentFrame = frame
+        if (framesInOrder.isEmpty()) {
+            remainingLoops = remainingLoops?.minus(1)
+            if (hasNextFrame()) {
                 framesInOrder.addAll(flattenedFrames)
             }
-            currentFrame.displayOn(layerable)
-            true
-        }.orElse(false)
+        }
+        frame.displayOn(layerable)
+        return true
     }
 
     override fun removeCurrentFrame() {
         currentFrame?.let(InternalAnimationFrame::remove)
     }
 
-    private fun hasNextFrame() = loopState.hasNextFrame
-
-    private fun LoopKind.decrementFrameCount() = when(this) {
-        is InfiniteLoop -> this
-        is Animation.FiniteLoop -> copy(count = max(0, count - 1))
-    }
-
-    private val LoopKind.hasNextFrame: Boolean
-        get() = when(this) {
-            is Animation.InfiniteLoop -> true
-            is Animation.FiniteLoop -> count > 0
-        }
+    private fun hasNextFrame() = framesInOrder.isNotEmpty() && (remainingLoops ?: 1) > 0
 }

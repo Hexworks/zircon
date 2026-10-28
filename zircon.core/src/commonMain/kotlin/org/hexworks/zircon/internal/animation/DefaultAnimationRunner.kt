@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.animation
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -36,7 +36,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
         )
         results[animation.id] = result
         animations[animation.id] = animation
-        nextUpdatesForAnimations[animation.id] = DateTime.nowUnixMillisLong()
+        nextUpdatesForAnimations[animation.id] = nowMillis()
         return result
     }
 

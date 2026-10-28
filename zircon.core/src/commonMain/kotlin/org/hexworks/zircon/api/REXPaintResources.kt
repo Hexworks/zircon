@@ -1,15 +1,13 @@
 package org.hexworks.zircon.api
 
-import korlibs.io.compression.deflate.GZIP
-import korlibs.io.compression.uncompress
-import korlibs.io.stream.FastByteArrayInputStream
-import korlibs.io.stream.openFastStream
 import org.hexworks.zircon.api.color.Color.Companion.create as color
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceType
-import org.hexworks.zircon.api.resource.load
+import org.hexworks.zircon.api.resource.loadBytes
 import org.hexworks.zircon.internal.resource.REXPaintResource
+import org.hexworks.zircon.internal.util.compression.Gzip
 import org.hexworks.zircon.internal.util.convertCp437toUnicode
+import org.hexworks.zircon.internal.util.io.ByteReader
 import org.hexworks.zircon.internal.util.rex.REXCell
 import org.hexworks.zircon.internal.util.rex.REXFile
 import org.hexworks.zircon.internal.util.rex.REXLayer
@@ -59,7 +57,7 @@ import org.hexworks.zircon.internal.util.rex.REXLayer
  * Loads a REXPaint file using the given [Resource].
  */
 suspend fun loadREXFile(resource: Resource): REXPaintResource {
-    return loadREXFile(resource.load().readBytes().uncompress(GZIP))
+    return loadREXFile(resource.loadBytes())
 }
 
 /**
@@ -70,10 +68,12 @@ suspend fun loadREXFile(path: String, resourceType: ResourceType = ResourceType.
 }
 
 /**
- * Loads a REXPaint file from the given [ByteArray].
+ * Loads a REXPaint file from the given [ByteArray]. The bytes may be the gzip stream
+ * exactly as REXPaint writes it, or an already decompressed `.xp` payload.
  */
-suspend fun loadREXFile(source: ByteArray): REXPaintResource {
-    return REXPaintResource(source.toREXFile())
+fun loadREXFile(source: ByteArray): REXPaintResource {
+    val raw = if (Gzip.isGzip(source)) Gzip.decompress(source) else source
+    return REXPaintResource(raw.toREXFile())
 }
 
 /**
@@ -82,10 +82,10 @@ suspend fun loadREXFile(source: ByteArray): REXPaintResource {
  * Paint manual</a>.
  */
 internal fun ByteArray.toREXFile(): REXFile {
-    val stream = this.openFastStream();
+    val stream = ByteReader(this)
 
-    val version = stream.readS32LE()
-    val numberOfLayers = stream.readS32LE()
+    val version = stream.readIntLE()
+    val numberOfLayers = stream.readIntLE()
 
     return REXFile(
         version = version,
@@ -96,9 +96,9 @@ internal fun ByteArray.toREXFile(): REXFile {
     )
 }
 
-internal fun FastByteArrayInputStream.nextRexLayer(): REXLayer {
-    val width = readS32LE()
-    val height = readS32LE()
+internal fun ByteReader.nextRexLayer(): REXLayer {
+    val width = readIntLE()
+    val height = readIntLE()
     return REXLayer(
         width = width,
         height = height,
@@ -108,20 +108,10 @@ internal fun FastByteArrayInputStream.nextRexLayer(): REXLayer {
     )
 }
 
-internal fun FastByteArrayInputStream.nextRexCell(): REXCell {
+internal fun ByteReader.nextRexCell(): REXCell {
     return REXCell(
-        character = readS32LE().convertCp437toUnicode(),
-        foregroundColor = color(
-            readS8() and 0xFF,
-            readS8() and 0xFF,
-            readS8() and 0xFF,
-            255
-        ),
-        backgroundColor = color(
-            readS8() and 0xFF,
-            readS8() and 0xFF,
-            readS8() and 0xFF,
-            255
-        )
+        character = readIntLE().convertCp437toUnicode(),
+        foregroundColor = color(readUByte(), readUByte(), readUByte(), 255),
+        backgroundColor = color(readUByte(), readUByte(), readUByte(), 255)
     )
 }

@@ -6,9 +6,12 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ## Status
 
-- Current milestone: **M2 cobalt 2.0** (M1 done 2026-10-28, renderer = data-texture shader, see Results log)
-- Next step: in `~/projects/cobalt`, add android/wasmJs/iOS/native targets, drop reflect + logging
-  libraries, Java 17 bytecode, publish to Maven Central.
+- Current milestone: **M3 core cleanup** (M1 and M2 done 2026-10-28)
+- M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
+  (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
+  `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
+- Next step: collapse `Application`/`VirtualApplication`/`ContinuousRenderingApplication` into
+  TileGrid + AppConfig + a renderer/tick seam (see M3 list). Core tests: 966 green on jvm, 956 on js/wasmJs/linuxX64.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -47,19 +50,19 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ### M2: cobalt 2.0
 
-- [ ] Add android, wasmJs, iOS and native targets
-- [ ] Remove kotlin-reflect, kotlin-logging, slf4j, logback; keep `Logger`/`LoggerFactory` with a pluggable sink
-- [ ] Java 17 bytecode, latest Kotlin and Gradle
-- [ ] Publish to Maven Central
+- [x] Add wasmJs, iOS, macOS, linuxArm64, mingwX64 targets (no androidTarget: Android consumers use the jvm variant)
+- [x] Remove kotlin-reflect, kotlin-logging, slf4j, logback; `Logger`/`LoggerFactory` kept, new `LogLevel` + pluggable `LogSink`
+- [x] Java 17 bytecode, Kotlin 2.4.21, Gradle 9.8.2, JDK 25; 111 tests green on jvm, js, wasmJs, linuxX64
+- [ ] Publish to Maven Central (push + GitHub release triggers `Publish`; manual step)
 
 ### M3: core cleanup
 
-- [ ] Upgrade Kotlin, Gradle, JDK toolchain, plugins; remove the local JDK path from `gradle.properties`
-- [ ] Delete `zircon.korge`, `zircon.examples.korge`, the stray `hs_err_pid*.log`
-- [ ] Drop korge-core: time via `kotlin.time`, math helpers via stdlib, `Resource.load()` becomes a `loadBytes` seam
-- [ ] In-house inflate, zip reader, gzip reader, with tests against the bundled files
+- [x] Upgrade Kotlin, Gradle, JDK toolchain, plugins; remove the local JDK path from `gradle.properties`
+- [x] Delete `zircon.korge`, `zircon.examples.korge`, the stray `hs_err_pid*.log` (and the old `zircon.compose` + example; M4 rewrites them, old input mapping is in git history at `9fd8c8dc0`)
+- [x] Drop korge-core: time via `kotlin.time`, math helpers via stdlib, `Resource.load()` becomes `Resources.loader` + `Resource.loadBytes()`
+- [x] In-house inflate, zip reader, gzip reader (`internal/util/compression`), unit tests + bundled `.xp` test
 - [ ] JSON metadata for graphical tilesets and animations; convert `tileinfo.yml` and `ANIMATIONS.md` sample
-- [ ] Drop kotlin-reflect, logging libraries, mockk; add kotlinx-serialization-json; bump kotlinx-collections-immutable
+- [x] Drop kotlin-reflect (jvmTest only), logging libraries, mockk; add kotlinx-serialization-json; bump kotlinx-collections-immutable
 - [ ] Remove `Application`, `VirtualApplication`, continuous loop; introduce the renderer/tick seam
 - [ ] DSL naming: bare nouns, delete `buildX`, fix `hBox`/`vBox`, remove `withX` leftovers
 - [ ] Deduplicate creation paths (Position, Size, Screen, tilesets)

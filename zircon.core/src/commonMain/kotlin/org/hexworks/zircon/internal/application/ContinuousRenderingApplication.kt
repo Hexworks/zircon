@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.application
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -60,7 +60,7 @@ abstract class ContinuousRenderingApplication<R : Any, A : Application, V>(
         renderLoop = executeCommand {
             while (!closed) {
                 try {
-                    val now = DateTime.nowUnixMillisLong()
+                    val now = nowMillis()
                     val elapsedTimeMs = now - lastRender
                     if (elapsedTimeMs > renderIntervalMs) {
                         logger.debug {

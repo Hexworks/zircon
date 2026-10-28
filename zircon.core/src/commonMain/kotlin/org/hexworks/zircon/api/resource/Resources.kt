@@ -1,30 +1,31 @@
 package org.hexworks.zircon.api.resource
 
-import korlibs.io.dynamic.dyn
-import korlibs.io.file.VfsFile
-import korlibs.io.file.std.localCurrentDirVfs
-import korlibs.io.file.std.resourcesVfs
-import korlibs.io.serialization.yaml.Yaml
-
-suspend fun Resource.load(): VfsFile {
-    val resource = this
-    val vfs = when (resource.resourceType) {
-        ResourceType.FILESYSTEM -> localCurrentDirVfs
-        ResourceType.PROJECT -> resourcesVfs
-    }
-    val vfsFile = vfs[resource.path]
-
-    if (!vfsFile.exists()) {
-        error("${resource.resourceType} resource '$vfsFile' doesn't exist!")
-    }
-    return vfsFile
+/**
+ * Reads the bytes behind a [Resource]. Core has no file system or classpath access of its
+ * own; a renderer module (or the application) installs one through [Resources.loader].
+ */
+fun interface ResourceLoader {
+    suspend fun loadBytes(resource: Resource): ByteArray
 }
 
-suspend fun Resource.loadResourceFile(): VfsFile = load().apply {
-    check(isFile()) { "Resource '${this.path}' is not a file!" }
+/**
+ * Global resource loading configuration.
+ */
+object Resources {
+
+    /**
+     * The loader used by [Resource.loadBytes]. Renderer modules install a platform
+     * implementation; until then every load fails with a clear message.
+     */
+    var loader: ResourceLoader = ResourceLoader { resource ->
+        error(
+            "No ResourceLoader installed, can't load ${resource.resourceType} resource '${resource.path}'. " +
+                "Set Resources.loader before loading tilesets, REXPaint files or animations."
+        )
+    }
 }
 
-
-fun VfsFile.loadFile(name: String): VfsFile = this[name]
-
-fun String.asYaml() = Yaml.decode(this).dyn
+/**
+ * Reads the bytes of this [Resource] through [Resources.loader].
+ */
+suspend fun Resource.loadBytes(): ByteArray = Resources.loader.loadBytes(this)

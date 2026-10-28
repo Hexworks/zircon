@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.renderer.impl
 
-import korlibs.time.DateTime
+import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.application.Application
@@ -32,11 +32,11 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
     private val gridPositions = tileGrid.size.fetchPositions().toList()
     private val isClosed = false.toProperty()
 
-    private val beforeRenderDataProp = RenderData(DateTime.nowUnixMillisLong()).toProperty()
-    private val afterRenderDataProp = RenderData(DateTime.nowUnixMillisLong()).toProperty()
+    private val beforeRenderDataProp = RenderData(nowMillis()).toProperty()
+    private val afterRenderDataProp = RenderData(nowMillis()).toProperty()
 
     private var blinkOn = true
-    private var lastBlink: Long = DateTime.nowUnixMillisLong()
+    private var lastBlink: Long = nowMillis()
     private var lastRender: Long = lastBlink
 
     protected var beforeRenderData: RenderData by beforeRenderDataProp.asDelegate()
@@ -77,7 +77,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
 
     final override fun render(context: C) {
         if (!closed) {
-            val now = DateTime.nowUnixMillisLong()
+            val now = nowMillis()
             beforeRenderDataProp.value = RenderData(now)
             processInputEvents()
             tileGrid.updateAnimations(now, tileGrid)
@@ -85,7 +85,7 @@ abstract class BaseRenderer<C : Any, A : Application, V : Any>(
             prepareRender(context)
             renderAllTiles(context)
             lastRender = now
-            afterRenderDataProp.value = RenderData(DateTime.nowUnixMillisLong())
+            afterRenderDataProp.value = RenderData(nowMillis())
         }
     }
 

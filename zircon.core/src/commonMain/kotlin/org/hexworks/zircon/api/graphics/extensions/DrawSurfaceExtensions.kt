@@ -86,7 +86,9 @@ fun DrawSurface.applyStyle(styleSet: StyleSet) {
 fun DrawSurface.fill(filler: Tile) {
     if (filler.isNotEmpty) {
         for (pos in size.fetchPositions()) {
-            draw(filler, pos)
+            if (getTileAtOrNull(pos)?.isNotEmpty != true) {
+                draw(filler, pos)
+            }
         }
     }
 }
