@@ -6,12 +6,12 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ## Status
 
-- Current milestone: **M6 docs, CI, release** (M1–M5 done 2026-10-28; Android moved to 2.1)
+- Current milestone: **release** (M1–M6 done 2026-10-28; Android moved to 2.1)
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: README rewrite, CI workflow for all modules, publish workflow, delete `prototype/`
-  (kept in history at a8495266b), explicit API + BCV for `zircon.compose`, release 2.0.0.
+- Next step: the manual release steps under M6, then 2.1 planning (Android, image dictionary tilesets,
+  theming, the RadioBox/CheckBox click bugs from the old TODO once reproduced in the desktop demos).
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -96,9 +96,10 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ### M6: docs, CI, release
 
-- [ ] README rewrite for the Kotlin DSL and Compose entry point
-- [ ] GitHub Actions: JDK 25, `check` on PR, publish on tag
-- [ ] Freeze the BCV dump, publish `2.0.0`
+- [x] README rewrite for the Kotlin DSL and Compose entry point; CONTRIBUTING updated
+- [x] GitHub Actions: `TEST.yml` (Linux/macOS/Windows, full `check`, web build) and `PUBLISH.yml` (Maven Central on a GitHub release)
+- [x] BCV dumps committed for `zircon.core` and `zircon.compose`; `./gradlew check` green on the whole build
+- [ ] **Manual release steps:** (1) push cobalt and create its `2.0.0` GitHub release so its Publish workflow uploads to Maven Central (zircon resolves cobalt from `~/.m2` until then); (2) add the Maven Central + signing secrets to both repos; (3) push zircon, wait for Central to serve cobalt, create the `2.0.0` release
 
 ## Results log
 
