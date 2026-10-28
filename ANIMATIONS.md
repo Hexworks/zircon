@@ -1,109 +1,32 @@
-# --------------------------------------
-# Animation metadata file created for
-#
-#             Z I R C O N
-#
-# More info at:
-#   https://github.com/Hexworks/zircon
-#
-# --------------------------------------
+# Animations (`.zap` files)
 
-# File type (Zircon Animation Metadata)
-type: ZAM
+A Zircon animation is a zip archive with the extension `.zap`. It holds one REXPaint `.xp`
+file per frame plus an `animation.json` document that describes how to play them:
 
-# Animation data parsed by Zircon
-animationData:
+```json
+{
+  "frameRate": 15,
+  "loopCount": 1,
+  "baseName": "skull-",
+  "extension": "xp",
+  "frames": [
+    { "frame": 0, "repeatCount": 9 },
+    { "frame": 1, "repeatCount": 4 },
+    { "frame": 0 },
+    { "frame": 2 }
+  ]
+}
+```
 
-# Frame rate (ticks per second)
-frameRate:   15
+- `frameRate`: ticks per second.
+- `loopCount`: `0` loops forever, a positive number plays the animation that many times.
+- `baseName` and `extension` name the frame files: `<baseName><index>.<extension>`, for
+  example `skull-0.xp`. `baseName` defaults to `""`, `extension` to `"xp"`.
+- `frames` is the sequence to play; `repeatCount` (default `1`) is how many ticks a frame
+  stays on screen. When `frames` is omitted every frame file plays once in numeric order.
 
-# Number of loops
-#  • 0: infinite
-#  • positive integer: number of times the animation should be repeated
-loopCount:   1
+Load one with `loadAnimation(bytes, tileset)` (or the `Resource` overload), set the position
+on the returned builder, then `build()` and start it on a `TileGrid`.
 
-# Base name of the animation files (optional)
-#  • If omitted, Zircon will look for files containing the numbers only (eg. 00.xp, 01.xp etc.)
-baseName:    skull-
-
-# Extension of the animation files
-extension:   xp
-
-# A list describing the frame sequence and timing (optional).
-# Format:
-#    frame: <frame_number>
-#    repeatCount: <delay> (if omitted, the frame is shown for a single tick)
-#
-#  • If omitted or empty, the frames are played in their alphabetical order.
-#  • The numbers have to match with the actual filenames since "baseName",
-#    frame number, and the "extension" together adds up to form the filenames.
-#    For example:
-#      • skull_00.xp ("skull_", 19, "xp")
-#      • img_000.xp ("img_", 120, "xp")
-#  • Filenames are starting with 0, 00, etc. Number of digits are depending on "frameCount" value.
-#  • Individual frames can be repeated
-frameMap:
-- frame: 0
-repeatCount: 9
-- frame: 1
-repeatCount: 4
-- frame: 0
-- frame: 1
-repeatCount: 3
-- frame: 0
-- frame: 1
-- frame: 0
-- frame: 1
-repeatCount: 3
-- frame: 0
-repeatCount: 9
-- frame: 1
-repeatCount: 10
-- frame: 2
-- frame: 3
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 4
-- frame: 5
-- frame: 6
-- frame: 6
-- frame: 8
-- frame: 9
-- frame: 10
-- frame: 11
-- frame: 12
-- frame: 13
-- frame: 14
-- frame: 15
-- frame: 16
-- frame: 17
-- frame: 18
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
-- frame: 20
-- frame: 19
+The same layout applies to graphical tilesets: a zip with `tileset.json` next to the sprite
+sheets, see `GraphicalTilesetMetadata`.

@@ -1,3 +1,10 @@
+public final class org/hexworks/zircon/api/AnimationResourcesKt {
+	public static final field ANIMATION_METADATA_FILE Ljava/lang/String;
+	public static final fun loadAnimation (Lorg/hexworks/zircon/api/resource/Resource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun loadAnimation ([BLorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/builder/animation/AnimationBuilder;
+	public static final fun parseAnimationMetadata (Ljava/lang/String;)Lorg/hexworks/zircon/api/animation/AnimationMetadata;
+}
+
 public final class org/hexworks/zircon/api/ApplicationsKt {
 	public static final fun createTileGrid (Lorg/hexworks/zircon/api/application/AppConfig;Lorg/hexworks/cobalt/events/api/EventBus;)Lorg/hexworks/zircon/api/grid/TileGrid;
 	public static synthetic fun createTileGrid$default (Lorg/hexworks/zircon/api/application/AppConfig;Lorg/hexworks/cobalt/events/api/EventBus;ILjava/lang/Object;)Lorg/hexworks/zircon/api/grid/TileGrid;
@@ -243,12 +250,78 @@ public abstract interface class org/hexworks/zircon/api/animation/AnimationFrame
 	public abstract fun getSize ()Lorg/hexworks/zircon/api/data/Size;
 }
 
+public final class org/hexworks/zircon/api/animation/AnimationFrameRef {
+	public static final field Companion Lorg/hexworks/zircon/api/animation/AnimationFrameRef$Companion;
+	public fun <init> (II)V
+	public synthetic fun <init> (IIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Lorg/hexworks/zircon/api/animation/AnimationFrameRef;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/animation/AnimationFrameRef;IIILjava/lang/Object;)Lorg/hexworks/zircon/api/animation/AnimationFrameRef;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFrame ()I
+	public final fun getRepeatCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/hexworks/zircon/api/animation/AnimationFrameRef$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/animation/AnimationFrameRef$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/hexworks/zircon/api/animation/AnimationFrameRef;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/hexworks/zircon/api/animation/AnimationFrameRef;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/animation/AnimationFrameRef$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public abstract interface class org/hexworks/zircon/api/animation/AnimationHandle : org/hexworks/zircon/api/animation/Animation {
 	public abstract fun isFinished ()Z
 	public abstract fun isInfinite ()Z
 	public abstract fun isRunning ()Z
 	public abstract fun onFinished (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun stop ()V
+}
+
+public final class org/hexworks/zircon/api/animation/AnimationMetadata {
+	public static final field Companion Lorg/hexworks/zircon/api/animation/AnimationMetadata$Companion;
+	public fun <init> (IILjava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (IILjava/lang/String;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun copy (IILjava/lang/String;Ljava/lang/String;Ljava/util/List;)Lorg/hexworks/zircon/api/animation/AnimationMetadata;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/animation/AnimationMetadata;IILjava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lorg/hexworks/zircon/api/animation/AnimationMetadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBaseName ()Ljava/lang/String;
+	public final fun getExtension ()Ljava/lang/String;
+	public final fun getFrameRate ()I
+	public final fun getFrames ()Ljava/util/List;
+	public final fun getLoopCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/hexworks/zircon/api/animation/AnimationMetadata$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/animation/AnimationMetadata$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/hexworks/zircon/api/animation/AnimationMetadata;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/hexworks/zircon/api/animation/AnimationMetadata;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/animation/AnimationMetadata$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public abstract interface class org/hexworks/zircon/api/animation/AnimationRunner {
@@ -56483,6 +56556,139 @@ public final class org/hexworks/zircon/api/shape/TriangleParameters : org/hexwor
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/hexworks/zircon/api/tileset/GraphicalTextureMetadata : org/hexworks/zircon/api/tileset/TextureMetadata {
+	public fun <init> (IIIILjava/lang/String;Ljava/util/Set;Ljava/lang/String;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (IIIILjava/lang/String;Ljava/util/Set;Ljava/lang/String;)Lorg/hexworks/zircon/api/tileset/GraphicalTextureMetadata;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/tileset/GraphicalTextureMetadata;IIIILjava/lang/String;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/tileset/GraphicalTextureMetadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFile ()Ljava/lang/String;
+	public fun getHeight ()I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTags ()Ljava/util/Set;
+	public fun getWidth ()I
+	public fun getX ()I
+	public fun getY ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTileInfo {
+	public static final field Companion Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;)Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo;Ljava/lang/String;Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChar ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTags ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/hexworks/zircon/api/tileset/GraphicalTileInfo$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/hexworks/zircon/api/tileset/GraphicalTileInfo;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTileInfo$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetData {
+	public final fun getMetadata ()Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;
+	public final fun getTileNames ()Ljava/util/Set;
+	public final fun imageBytes (Ljava/lang/String;)[B
+	public final fun textureFor (Ljava/lang/String;)Lorg/hexworks/zircon/api/tileset/GraphicalTextureMetadata;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetFile {
+	public static final field Companion Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile$Companion;
+	public fun <init> (Ljava/lang/String;ILjava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;ILjava/util/List;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile;Ljava/lang/String;ILjava/util/List;ILjava/lang/Object;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTiles ()Ljava/util/List;
+	public final fun getTilesPerRow ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/hexworks/zircon/api/tileset/GraphicalTilesetFile$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/hexworks/zircon/api/tileset/GraphicalTilesetFile;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetFile$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetMetadata {
+	public static final field Companion Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata$Companion;
+	public fun <init> (Ljava/lang/String;ILjava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;ILjava/util/List;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;Ljava/lang/String;ILjava/util/List;ILjava/lang/Object;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFiles ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTileSize ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/hexworks/zircon/api/tileset/GraphicalTilesetMetadata$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetMetadata$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/hexworks/zircon/api/tileset/GraphicalTilesetsKt {
+	public static final field GRAPHICAL_TILESET_METADATA_FILE Ljava/lang/String;
+	public static final fun loadGraphicalTileset (Lorg/hexworks/zircon/api/resource/Resource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun loadGraphicalTileset ([B)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetData;
+	public static final fun parseGraphicalTilesetMetadata (Ljava/lang/String;)Lorg/hexworks/zircon/api/tileset/GraphicalTilesetMetadata;
+}
+
 public abstract interface class org/hexworks/zircon/api/tileset/MetadataPickingStrategy {
 	public abstract fun pickMetadata (Ljava/util/List;)Lorg/hexworks/zircon/api/tileset/TextureMetadata;
 }
@@ -59788,27 +59994,6 @@ public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader : o
 
 public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader$Companion {
 	public final fun getLoaderKey (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lkotlin/Pair;
-}
-
-public final class org/hexworks/zircon/internal/tileset/GraphicalTextureMetadata : org/hexworks/zircon/api/tileset/TextureMetadata {
-	public fun <init> (IIIILjava/lang/String;Ljava/util/Set;)V
-	public final fun component1 ()I
-	public final fun component2 ()I
-	public final fun component3 ()I
-	public final fun component4 ()I
-	public final fun component5 ()Ljava/lang/String;
-	public final fun component6 ()Ljava/util/Set;
-	public final fun copy (IIIILjava/lang/String;Ljava/util/Set;)Lorg/hexworks/zircon/internal/tileset/GraphicalTextureMetadata;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/internal/tileset/GraphicalTextureMetadata;IIIILjava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lorg/hexworks/zircon/internal/tileset/GraphicalTextureMetadata;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getHeight ()I
-	public final fun getName ()Ljava/lang/String;
-	public final fun getTags ()Ljava/util/Set;
-	public fun getWidth ()I
-	public fun getX ()I
-	public fun getY ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class org/hexworks/zircon/internal/tileset/PickFirstMetaStrategy : org/hexworks/zircon/api/tileset/MetadataPickingStrategy {

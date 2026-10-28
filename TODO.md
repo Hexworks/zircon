@@ -6,12 +6,12 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ## Status
 
-- Current milestone: **M3 core cleanup** (M1 and M2 done 2026-10-28)
+- Current milestone: **M4 zircon.compose** (M1–M3 done 2026-10-28)
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: sealed `Tile`, transparency removal, Blink/Hidden, delete Border/Underline/CrossedOut,
-  shortcut activation, Nerd `Int` code points, known bugs.
+- Next step: create the new `zircon.compose` module (jvm + android + wasmJs) and port the
+  prototype's path D (`DataTextureRenderer`) onto `BaseRenderer`/`Tileset` as a real renderer.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -61,18 +61,19 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - [x] Delete `zircon.korge`, `zircon.examples.korge`, the stray `hs_err_pid*.log` (and the old `zircon.compose` + example; M4 rewrites them, old input mapping is in git history at `9fd8c8dc0`)
 - [x] Drop korge-core: time via `kotlin.time`, math helpers via stdlib, `Resource.load()` becomes `Resources.loader` + `Resource.loadBytes()`
 - [x] In-house inflate, zip reader, gzip reader (`internal/util/compression`), unit tests + bundled `.xp` test
-- [ ] JSON metadata for graphical tilesets and animations; convert `tileinfo.yml` and `ANIMATIONS.md` sample
+- [x] JSON metadata: `tileset.json` (`GraphicalTilesetMetadata`, `loadGraphicalTileset`) and `animation.json` (`AnimationMetadata`, `loadAnimation`); nethack zip repacked, skull.zap in jvmTest resources, ANIMATIONS.md documents the format
 - [x] Drop kotlin-reflect (jvmTest only), logging libraries, mockk; add kotlinx-serialization-json; bump kotlinx-collections-immutable
 - [x] Remove `Application`, `VirtualApplication`, continuous loop; `TileGrid` owns `eventBus`/`eventScope`, `Renderer.render()` is the tick
 - [x] DSL naming: bare nouns, delete `buildX`, `hBox`/`vBox`, `withX` leftovers gone, `Shapes`/`GameComponents` objects are top-level functions. Note: inside a container lambda `button {}` adds a child; build standalone components outside the lambda.
 - [x] Deduplicate creation paths: `Position(x, y)`, `Size(w, h)`, `Position3D`/`Size3D` likewise, `position {}`/`size {}`/`withSize {}`/`withPosition {}` builders deleted, `Screen` only via `tileGrid.toScreen()`, one `loadXTilesetResource` per type
 - [x] `explicitApi()` and binary-compatibility-validator (`zircon.core/api/zircon.core.api` is the contract, `./gradlew apiCheck`); `Base*` implementations moved to `internal`; `asInternal()` became `internal` extension functions; no `internal` type in any public `api` signature
-- [ ] `Tile` sealed class; remove transparency
-- [ ] Implement `Blink` and `Hidden`; delete Border, Underline, CrossedOut
-- [ ] Shortcut activation for interactive components
-- [ ] Nerd glyphs: `Int` code points
-- [ ] Known bugs: `ModalBuilder.close()` infinite recursion, `DropdownMenuBuilder.position` throws, RadioBox first click, fast CheckBox click
-- [ ] All tests green on jvm, js, wasmJs
+- [x] `Tile` is a sealed interface (subtypes in `api.data`); `Color` has no alpha, only `isTransparent`/`Color.TRANSPARENT`. Modal backdrop is solid black for now: dim lower layers in the M4 shader.
+- [x] `Blink` (renderer-timed marker) and `Hidden` implemented; Border/Underline/CrossedOut were already gone; `Modifiers` object deleted
+- [x] Shortcut activation: `activationShortcut: KeyboardEventMatcher?` on builders/components, handled in `UIEventToComponentDispatcher`
+- [x] Nerd glyphs: `Int` code points, `glyph: String` (surrogate pairs above U+FFFF)
+- [x] Known bugs: `ModalBuilder.close()` recursion and `DropdownMenuBuilder.position` fixed
+- [ ] RadioBox first click, fast CheckBox click: reproduce with the M4 examples (need a renderer)
+- [x] All tests green on jvm, js, wasmJs, linuxX64 (`./gradlew check` also runs `apiCheck` + `checkApiLeaks`)
 
 ### M4: zircon.compose on the chosen path (desktop)
 
