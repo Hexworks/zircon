@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "profile_id": "addamsson",
+  "project_id": "zircon",
+  "generator_version": "2.0.0",
+  "last_applied_at": "2026-10-28T18:12:50.067192853Z",
+  "managed_files": {
+    ".claude/skills/code-review/SKILL.md": {
+      "hash": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50",
+      "asset_id": "code-review",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/code-review/agents/openai.yaml": {
+      "hash": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352",
+      "asset_id": "code-review",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".claude/skills/codebase-design/DEEPENING.md": {
+      "hash": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1",
+      "asset_id": "codebase-design",
+      "source_rel": "DEEPENING.md"
+    },
+    ".claude/skills/codebase-design/DESIGN-IT-TWICE.md": {
+      "hash": "8e740bf98446dbd4dfdc132ac4346d9a7eedaf93de6a495889171cf7f99f16bd",
+      "asset_id": "codebase-design",
+      "source_rel": "DESIGN-IT-TWICE.md"
+    },
+    ".claude/skills/codebase-design/SKILL.md": {
+      "hash": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "asset_id": "codebase-design",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/codebase-design/agents/openai.yaml": {
+      "hash": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f",
+      "asset_id": "codebase-design",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".claude/skills/diagnosing-bugs/SKILL.md": {
+      "hash": "77f3cf31bc99b2f49af943222526531fcc9fc41d047626d3640e875e85af3e84",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/diagnosing-bugs/agents/openai.yaml": {
+      "hash": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".claude/skills/diagnosing-bugs/scripts/hitl-loop.template.sh": {
+      "hash": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "scripts/hitl-loop.template.sh"
+    },
+    ".claude/skills/domain-modeling/ADR-FORMAT.md": {
+      "hash": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0",
+      "asset_id": "domain-modeling",
+      "source_rel": "ADR-FORMAT.md"
+    },
+    ".claude/skills/domain-modeling/CONTEXT-FORMAT.md": {
+      "hash": "17ab16ce783e4d2801ee52fd9acdf550cbf44de65ae76797a93943bbedf22a13",
+      "asset_id": "domain-modeling",
+      "source_rel": "CONTEXT-FORMAT.md"
+    },
+    ".claude/skills/domain-modeling/SKILL.md": {
+      "hash": "327a2b50620e2fd70abc6893cd6965e76b20f8d0adb0dc2c8d5eb3845efb643e",
+      "asset_id": "domain-modeling",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/domain-modeling/agents/openai.yaml": {
+      "hash": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b",
+      "asset_id": "domain-modeling",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".claude/skills/grill-me/SKILL.md": {
+      "hash": "6189dfceb7304a6e5558f75d87e68fa3bc7fcf7ba120e44f21f8a61fe01eba54",
+      "asset_id": "grill-me",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/grill-with-docs/SKILL.md": {
+      "hash": "610d091047bcfb9db0f75c057d15538481a721111579fc5ec7f83ad9131a2165",
+      "asset_id": "grill-with-docs",
+      "source_rel": "SKILL.md"
+    },
+    ".claude/skills/grilling/SKILL.md": {
+      "hash": "fe00af3e1815f97c0a7644605479328a726b5cd95ba6ef56a4be2a92fae6c20f",
+      "asset_id": "grilling",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/code-review/SKILL.md": {
+      "hash": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50",
+      "asset_id": "code-review",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/code-review/agents/openai.yaml": {
+      "hash": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352",
+      "asset_id": "code-review",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".codex/skills/codebase-design/DEEPENING.md": {
+      "hash": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1",
+      "asset_id": "codebase-design",
+      "source_rel": "DEEPENING.md"
+    },
+    ".codex/skills/codebase-design/DESIGN-IT-TWICE.md": {
+      "hash": "8e740bf98446dbd4dfdc132ac4346d9a7eedaf93de6a495889171cf7f99f16bd",
+      "asset_id": "codebase-design",
+      "source_rel": "DESIGN-IT-TWICE.md"
+    },
+    ".codex/skills/codebase-design/SKILL.md": {
+      "hash": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "asset_id": "codebase-design",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/codebase-design/agents/openai.yaml": {
+      "hash": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f",
+      "asset_id": "codebase-design",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".codex/skills/diagnosing-bugs/SKILL.md": {
+      "hash": "77f3cf31bc99b2f49af943222526531fcc9fc41d047626d3640e875e85af3e84",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/diagnosing-bugs/agents/openai.yaml": {
+      "hash": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".codex/skills/diagnosing-bugs/scripts/hitl-loop.template.sh": {
+      "hash": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503",
+      "asset_id": "diagnosing-bugs",
+      "source_rel": "scripts/hitl-loop.template.sh"
+    },
+    ".codex/skills/domain-modeling/ADR-FORMAT.md": {
+      "hash": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0",
+      "asset_id": "domain-modeling",
+      "source_rel": "ADR-FORMAT.md"
+    },
+    ".codex/skills/domain-modeling/CONTEXT-FORMAT.md": {
+      "hash": "17ab16ce783e4d2801ee52fd9acdf550cbf44de65ae76797a93943bbedf22a13",
+      "asset_id": "domain-modeling",
+      "source_rel": "CONTEXT-FORMAT.md"
+    },
+    ".codex/skills/domain-modeling/SKILL.md": {
+      "hash": "327a2b50620e2fd70abc6893cd6965e76b20f8d0adb0dc2c8d5eb3845efb643e",
+      "asset_id": "domain-modeling",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/domain-modeling/agents/openai.yaml": {
+      "hash": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b",
+      "asset_id": "domain-modeling",
+      "source_rel": "agents/openai.yaml"
+    },
+    ".codex/skills/grill-me/SKILL.md": {
+      "hash": "6189dfceb7304a6e5558f75d87e68fa3bc7fcf7ba120e44f21f8a61fe01eba54",
+      "asset_id": "grill-me",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/grill-with-docs/SKILL.md": {
+      "hash": "610d091047bcfb9db0f75c057d15538481a721111579fc5ec7f83ad9131a2165",
+      "asset_id": "grill-with-docs",
+      "source_rel": "SKILL.md"
+    },
+    ".codex/skills/grilling/SKILL.md": {
+      "hash": "fe00af3e1815f97c0a7644605479328a726b5cd95ba6ef56a4be2a92fae6c20f",
+      "asset_id": "grilling",
+      "source_rel": "SKILL.md"
+    }
+  },
+  "ignored_paths": null
+}
