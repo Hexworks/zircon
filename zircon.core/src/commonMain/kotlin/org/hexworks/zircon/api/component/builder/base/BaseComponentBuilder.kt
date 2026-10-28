@@ -9,8 +9,6 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ComponentAlignments
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.PositionBuilder
-import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
@@ -219,28 +217,25 @@ abstract class BaseComponentBuilder<T : Component>(
 
     /**
      * Aligns the resulting [Component] within the [tileGrid] using the
-     * given [alignment].
-     * Same as calling `withAlignment(alignmentWithin(tileGrid, alignment))`
+     * given [alignment]. Shorthand for `alignment = alignmentWithin(tileGrid, alignment)`.
      */
-    fun withAlignmentWithin(tileGrid: TileGrid, alignment: ComponentAlignment) {
+    fun alignWithin(tileGrid: TileGrid, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentWithin(tileGrid, alignment)
     }
 
     /**
      * Aligns the resulting [Component] within the [container] using the
-     * given [alignment].
-     * Same as calling `withAlignment(alignmentWithin(container, alignment))`
+     * given [alignment]. Shorthand for `alignment = alignmentWithin(container, alignment)`.
      */
-    fun withAlignmentWithin(container: Container, alignment: ComponentAlignment) {
+    fun alignWithin(container: Container, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentWithin(container, alignment)
     }
 
     /**
      * Aligns the resulting [Component] around the [component] using the
-     * given [alignment].
-     * Same as calling `withAlignment(alignmentWithin(container, alignment))`
+     * given [alignment]. Shorthand for `alignment = alignmentAround(component, alignment)`.
      */
-    fun withAlignmentAround(component: Component, alignment: ComponentAlignment) {
+    fun alignAround(component: Component, alignment: ComponentAlignment) {
         this.alignment = ComponentAlignments.alignmentAround(component, alignment)
     }
 
@@ -304,7 +299,7 @@ abstract class BaseComponentBuilder<T : Component>(
 
     protected fun fixContentSizeFor(length: Int) {
         if (length doesntFitWithin contentSize) {
-            this.preferredContentSize = Size.create(length, 1)
+            this.preferredContentSize = Size(length, 1)
         }
     }
 
@@ -361,23 +356,8 @@ var BaseComponentBuilder<out Component>.decoration: ComponentDecorationRenderer?
         }
     }
 
-fun <T : Component> BaseComponentBuilder<T>.withPosition(init: PositionBuilder.() -> Unit) {
-    apply {
-        position = PositionBuilder().apply(init).build()
-    }
-}
 
-fun <T : Component> BaseComponentBuilder<T>.withPreferredSize(init: SizeBuilder.() -> Unit) {
-    apply {
-        preferredSize = SizeBuilder().apply(init).build()
-    }
-}
 
-fun <T : Component> BaseComponentBuilder<T>.withPreferredContentSize(init: SizeBuilder.() -> Unit) {
-    apply {
-        preferredContentSize = SizeBuilder().apply(init).build()
-    }
-}
 
 fun <T : Component> BaseComponentBuilder<T>.withComponentRenderer(init: ComponentRenderer<T>) {
     apply {

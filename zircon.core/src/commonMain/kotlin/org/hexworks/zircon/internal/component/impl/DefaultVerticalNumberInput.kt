@@ -24,7 +24,7 @@ class DefaultVerticalNumberInput internal constructor(
 //        var pos = textBuffer.cursor.position
 //        pos = pos.withX(min(pos.x, contentSize.height))
 //        pos = pos.withY(0)
-//        val invertedPosition = Position.create(pos.y, pos.x)
+//        val invertedPosition = Position(pos.y, pos.x)
 //        whenConnectedToRoot { root ->
 //            root.eventBus.publish(
 //                event = ZirconEvent.RequestCursorAt(

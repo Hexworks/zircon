@@ -13,17 +13,4 @@ object GraphicalTilesetResources {
 
     fun nethack16x16(): TilesetResource = BuiltInGraphicalTilesetResource.NETHACK_16X16
 
-    fun load(
-        width: Int,
-        height: Int,
-        path: String,
-        resourceType: ResourceType
-    ): TilesetResource {
-        return GraphicalTilesetResource(
-            width = width,
-            height = height,
-            path = path,
-            resourceType = resourceType
-        )
-    }
 }

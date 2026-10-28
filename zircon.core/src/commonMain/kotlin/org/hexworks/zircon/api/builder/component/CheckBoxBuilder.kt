@@ -32,7 +32,7 @@ class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox>(
 /**
  * Creates a new [CheckBox] using the component builder DSL and returns it.
  */
-fun buildCheckBox(init: CheckBoxBuilder.() -> Unit): CheckBox =
+fun checkBox(init: CheckBoxBuilder.() -> Unit): CheckBox =
     CheckBoxBuilder().apply(init).build()
 
 /**

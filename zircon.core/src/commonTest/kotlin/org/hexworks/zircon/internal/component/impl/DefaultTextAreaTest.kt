@@ -53,7 +53,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
     @BeforeTest
     override fun setUp() {
         rendererStub = ComponentRendererStub(DefaultTextAreaRenderer())
-        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
+        componentStub = ComponentStub(Position(1, 1), Size(2, 2))
         drawWindow = tileGraphics {
             size = COMMON_COMPONENT_METADATA.size
         }.toDrawWindow()
@@ -96,7 +96,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         )
 
         // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
+//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(1, 0))
     }
 
     @Test
@@ -129,7 +129,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         )
 
         // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(1, 0))
+//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(1, 0))
     }
 
     @Test
@@ -146,7 +146,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         )
 
         // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
+//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(0, 1))
     }
 
     @Test
@@ -158,7 +158,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(UP, TARGET)
 
         // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position.create(0, 1))
+//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(0, 1))
     }
 
     @Test

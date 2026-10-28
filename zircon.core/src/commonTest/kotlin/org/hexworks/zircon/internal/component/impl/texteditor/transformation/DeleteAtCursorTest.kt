@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.builder.data.position
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
 import kotlin.test.Test
 import kotlin.test.expect
@@ -16,10 +16,7 @@ class DeleteAtCursorTest {
             baxt
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 2
-                y = 1
-            }
+            cursor = Position(2, 1)
         )
 
         val result = DeleteAtCursor.apply(input)
@@ -29,10 +26,7 @@ class DeleteAtCursorTest {
             wom
             bat
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 2
-            y = 1
-        })
+        ).state.copy(cursor = Position(2, 1))
 
         expect(expected, "State is not what's expected") {
             result
@@ -47,10 +41,7 @@ class DeleteAtCursorTest {
             bat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         val result = DeleteAtCursor.apply(input)
@@ -59,10 +50,7 @@ class DeleteAtCursorTest {
             """
             wombat
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 3
-            y = 0
-        })
+        ).state.copy(cursor = Position(3, 0))
 
         expect(expected, "State is not what's expected") {
             result
@@ -77,10 +65,7 @@ class DeleteAtCursorTest {
             bat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 1
-            }
+            cursor = Position(3, 1)
         )
 
         val result = DeleteAtCursor.apply(input)

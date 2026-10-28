@@ -4,7 +4,7 @@ import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
-import org.hexworks.zircon.api.builder.component.buildHbox
+import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.Button
@@ -35,14 +35,14 @@ class DefaultSelector<T : Any> internal constructor(
     private lateinit var leftButton: Button
     private lateinit var rightButton: Button
 
-    private val labelSize: Size = Size.create(width - 2, 1)
+    private val labelSize: Size = Size(width - 2, 1)
 
     init {
         selectedProperty.updateFrom(indexProperty) { values[it] }
     }
 
-    override val root: HBox = buildHbox {
-        preferredSize = Size.create(width, 1)
+    override val root: HBox = hBox {
+        preferredSize = Size(width, 1)
         this.position = position
         leftButton = button {
             +Symbols.ARROW_LEFT.toString()

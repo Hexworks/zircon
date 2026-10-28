@@ -26,7 +26,7 @@ class LabelBuilder : ComponentWithTextBuilder<Label>(
 /**
  * Creates a new [Label] using the component builder DSL and returns it.
  */
-fun buildLabel(init: LabelBuilder.() -> Unit): Label =
+fun label(init: LabelBuilder.() -> Unit): Label =
     LabelBuilder().apply(init).build()
 
 /**

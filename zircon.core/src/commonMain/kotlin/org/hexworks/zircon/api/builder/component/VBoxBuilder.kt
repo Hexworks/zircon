@@ -50,20 +50,20 @@ class VBoxBuilder : BaseContainerBuilder<VBox>(
         if (spacing > 0) {
             height += childrenToAdd.size * spacing - 1
         }
-        return Size.create(maxWidth, max(1, height))
+        return Size(maxWidth, max(1, height))
     }
 }
 
 /**
  * Creates a new [VBox] using the component builder DSL and returns it.
  */
-fun buildVbox(init: VBoxBuilder.() -> Unit): VBox =
+fun vBox(init: VBoxBuilder.() -> Unit): VBox =
     VBoxBuilder().apply(init).build()
 
 /**
  * Creates a new [VBox] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [VBox].
  */
-fun <T : BaseContainerBuilder<*>> T.vbox(
+fun <T : BaseContainerBuilder<*>> T.vBox(
     init: VBoxBuilder.() -> Unit
 ): VBox = buildChildFor(this, VBoxBuilder(), init)

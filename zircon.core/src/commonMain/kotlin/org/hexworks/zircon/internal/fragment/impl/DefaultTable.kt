@@ -48,8 +48,8 @@ class DefaultTable<M : Any> internal constructor(
 
     private lateinit var dataPanel: VBox
 
-    override val root = buildVbox {
-        val size = Size.create(
+    override val root = vBox {
+        val size = Size(
             width = width,
             height = height
         )
@@ -59,8 +59,8 @@ class DefaultTable<M : Any> internal constructor(
         if (addHeader) {
             addHeaderRow(size.width)
         }
-        dataPanel = vbox {
-            preferredSize = Size.create(width, dataPanelHeight)
+        dataPanel = vBox {
+            preferredSize = Size(width, dataPanelHeight)
             spacing = rowSpacing
         }
     }
@@ -86,9 +86,9 @@ class DefaultTable<M : Any> internal constructor(
     private fun newRowFor(model: M): Component {
         val cells: List<Component> = columns.map { column -> column.renderCellFor(model) }
         val rowHeight = cells.maxOf { it.height }
-        val row = buildHbox {
+        val row = hBox {
             spacing = colSpacing
-            preferredSize = Size.create(width, rowHeight)
+            preferredSize = Size(width, rowHeight)
             val defaultRenderer: ComponentRenderer<HBox> = componentRenderer as ComponentRenderer<HBox>
             componentRenderer = ComponentRenderer { tileGraphics, context ->
                 if (selectedElements.contains(model)) {
@@ -111,8 +111,8 @@ class DefaultTable<M : Any> internal constructor(
         return row
     }
 
-    private fun VBoxBuilder.addHeaderRow(width: Int) = hbox {
-        preferredSize = Size.create(width, 1)
+    private fun VBoxBuilder.addHeaderRow(width: Int) = hBox {
+        preferredSize = Size(width, 1)
         spacing = colSpacing
         columns.forEach { column ->
             children {

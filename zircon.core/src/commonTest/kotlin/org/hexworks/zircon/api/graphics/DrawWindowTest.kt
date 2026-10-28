@@ -78,7 +78,7 @@ class DrawWindowTest {
         val subFiller = FILLER_UNDERSCORE.withCharacter('x')
 
         val result = target
-            .toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size.create(2, 1)))
+            .toDrawWindow(Boundable.create(Position.OFFSET_1X1, Size(2, 1)))
         result.fill(subFiller)
 
         val chars = backend.size.fetchPositions().map {
@@ -107,10 +107,10 @@ class DrawWindowTest {
             backgroundColor = DefaultAnsiPalette[ANSIColor.YELLOW]
             foregroundColor = DefaultAnsiPalette[ANSIColor.GREEN]
         }
-        private val BACKEND_SIZE_5X5 = Size.create(5, 5)
+        private val BACKEND_SIZE_5X5 = Size(5, 5)
         private val FILLER_UNDERSCORE = Tile.defaultTile().withCharacter('_')
 
-        val BOUNDS_1TO1_3X3 = Boundable.create(Position.OFFSET_1X1, Size.create(3, 3))
+        val BOUNDS_1TO1_3X3 = Boundable.create(Position.OFFSET_1X1, Size(3, 3))
     }
 
 }

@@ -5,14 +5,13 @@ import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.builder.component.buildLabel
-import org.hexworks.zircon.api.builder.component.buildPanel
-import org.hexworks.zircon.api.builder.component.buildVbox
+import org.hexworks.zircon.api.builder.component.label
+import org.hexworks.zircon.api.builder.component.panel
+import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.data.Position
@@ -49,7 +48,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
         drawWindow = tileGraphics {
             size = SIZE_3_4
         }.toDrawWindow(Boundable.create(size = SIZE_3_4))
-        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
+        componentStub = ComponentStub(Position(1, 1), Size(2, 2))
         target = DefaultRootContainer(
             metadata = ComponentMetadata(
                 position = POSITION_2_3,
@@ -73,7 +72,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun Given_a_root_container_When_adding_multiple_components_to_it_Then_the_layer_states_are_correct() {
 
-        val box = vbox(target.tileset)
+        val box = vBox(target.tileset)
         val foo = label(target.tileset, "foo")
         val bar = label(target.tileset, "bar")
         box.addComponents(foo, bar)
@@ -86,7 +85,7 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun Given_a_root_container_When_adding_components_to_its_child_Then_the_layer_states_are_correct() {
 
-        val box = vbox(target.tileset)
+        val box = vBox(target.tileset)
         target.addComponent(box)
 
         val foo = label(target.tileset, "foo")
@@ -100,9 +99,9 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun Given_a_root_component_When_trying_to_fetch_child_Then_it_is_present() {
 
-        val pos = Position.create(1, 2)
+        val pos = Position(1, 2)
 
-        val label = buildLabel {
+        val label = label {
             position = pos
             preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
@@ -115,32 +114,29 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     @Test
     fun Given_a_root_component_When_trying_to_fetch_out_of_bounds_component_Then_it_is_not_present() {
-        target.fetchComponentByPositionOrNull(Position.create(Int.MAX_VALUE, Int.MAX_VALUE)) shouldBe null
+        target.fetchComponentByPositionOrNull(Position(Int.MAX_VALUE, Int.MAX_VALUE)) shouldBe null
     }
 
     @Test
     fun Given_a_root_component_When_trying_to_fetch_child_of_child_Then_it_is_present() {
 
-        val label0Pos = Position.create(1, 1)
-        val label1Pos = Position.create(1, 2)
-        val panelPos = Position.create(1, 1)
+        val label0Pos = Position(1, 1)
+        val label1Pos = Position(1, 2)
+        val panelPos = Position(1, 1)
 
-        val panel = buildPanel {
-            withPreferredSize {
-                width = 2
-                height = 3
-            }
+        val panel = panel {
+            preferredSize = Size(2, 3)
             position = panelPos
             tileset = TILESET_REX_PAINT_20X20
         }
 
-        val label0 = buildLabel {
+        val label0 = label {
             position = label0Pos
             preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
         }
 
-        val label1 = buildLabel {
+        val label1 = label {
             position = label1Pos
             preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
@@ -162,16 +158,13 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     @Test
     fun shouldProperlyCalculatePathFromRoot() {
 
-        val panel = buildPanel {
-            withPreferredSize {
-                width = 2
-                height = 3
-            }
+        val panel = panel {
+            preferredSize = Size(2, 3)
             position = OFFSET_1X1
             tileset = TILESET_REX_PAINT_20X20
         }.asInternalComponent()
 
-        val label = buildLabel {
+        val label = label {
             position = OFFSET_1X1
             preferredSize = Size.ONE
             tileset = TILESET_REX_PAINT_20X20
@@ -185,17 +178,14 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
 
     companion object {
 
-        fun label(tileset: TilesetResource, text: String): InternalComponent = buildLabel {
+        fun label(tileset: TilesetResource, text: String): InternalComponent = label {
             +text
             this.tileset = tileset
         }.asInternalComponent()
 
-        fun vbox(tileset: TilesetResource): InternalContainer = buildVbox {
+        fun vBox(tileset: TilesetResource): InternalContainer = vBox {
             this.tileset = tileset
-            withPreferredSize {
-                width = 3
-                height = 4
-            }
+            preferredSize = Size(3, 4)
         }.asInternalComponent()
     }
 }

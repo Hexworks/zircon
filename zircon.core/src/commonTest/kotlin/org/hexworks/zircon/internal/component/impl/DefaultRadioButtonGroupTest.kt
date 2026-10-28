@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.component.impl
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.component.buildRadioButton
+import org.hexworks.zircon.api.builder.component.radioButton
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -24,7 +24,7 @@ class DefaultRadioButtonGroupTest {
     @Test
     fun shouldSelectButtonWhenClicked() {
 
-        val btn = buildRadioButton {
+        val btn = radioButton {
             key = "qux"
             text = "baz"
         } as (DefaultRadioButton)
@@ -39,11 +39,11 @@ class DefaultRadioButtonGroupTest {
 
     @Test
     fun shouldProperlyDeselectPreviouslySelectedButtonWhenNewOneIsSelected() {
-        val oldBtn = buildRadioButton {
+        val oldBtn = radioButton {
             key = "old"
             text = "old"
         } as (DefaultRadioButton)
-        val newBtn = buildRadioButton {
+        val newBtn = radioButton {
             key = "new"
             text = "new"
         } as (DefaultRadioButton)

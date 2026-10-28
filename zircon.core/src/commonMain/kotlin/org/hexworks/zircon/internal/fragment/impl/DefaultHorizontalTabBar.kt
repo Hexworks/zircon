@@ -1,8 +1,8 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.ComponentDecorations.margin
-import org.hexworks.zircon.api.builder.component.buildVbox
-import org.hexworks.zircon.api.builder.component.hbox
+import org.hexworks.zircon.api.builder.component.vBox
+import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButtonGroup
 import org.hexworks.zircon.api.component.AttachedComponent
@@ -32,12 +32,12 @@ class DefaultHorizontalTabBar internal constructor(
         tab.key to TabData(tab, content)
     }
 
-    override val root: Component = buildVbox {
+    override val root: Component = vBox {
         preferredSize = size
         componentRenderer = NoOpComponentRenderer()
 
-        tabBar = hbox {
-            preferredSize = Size.create(size.width, 3)
+        tabBar = hBox {
+            preferredSize = Size(size.width, 3)
             decorations {
                 +margin(0, 1)
             }

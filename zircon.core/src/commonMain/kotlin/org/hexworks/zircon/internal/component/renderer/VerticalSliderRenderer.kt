@@ -31,7 +31,7 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
                         character = DOUBLE_LINE_HORIZONTAL
                         styleSet = context.currentStyle
                     },
-                    drawPosition = Position.create(0, idx)
+                    drawPosition = Position(0, idx)
                 )
 
                 idx < cursorPosition -> drawWindow.draw(
@@ -39,7 +39,7 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
                         character = ' '
                         styleSet = invertedDefaultStyleSet
                     },
-                    drawPosition = Position.create(0, idx)
+                    drawPosition = Position(0, idx)
                 )
 
                 else -> drawWindow.draw(
@@ -47,7 +47,7 @@ class VerticalSliderRenderer : ComponentRenderer<Slider> {
                         character = ' '
                         styleSet = disabledStyleSet
                     },
-                    drawPosition = Position.create(0, idx)
+                    drawPosition = Position(0, idx)
                 )
             }
         }

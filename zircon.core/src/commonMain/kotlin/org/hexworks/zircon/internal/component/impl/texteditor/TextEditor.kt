@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.component.impl.texteditor
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.tile.CharacterTile
@@ -145,10 +144,7 @@ class TextEditor private constructor(
 val EditorState.size: Size
     get() {
         val lines = this.lines
-        return size {
-            width = lines.maxBy { it.cells.size }.cells.size
-            height = lines.size
-        }
+        return Size(lines.maxBy { it.cells.size }.cells.size, lines.size)
     }
 
 val EditorState.cellAtCursor: Cell

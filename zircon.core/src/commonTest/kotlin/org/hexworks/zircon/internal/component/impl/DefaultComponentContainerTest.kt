@@ -7,14 +7,12 @@ import io.kotest.matchers.shouldNotBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.component.buildButton
-import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.componentStyleSet
-import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -73,11 +71,8 @@ class DefaultComponentContainerTest {
     fun shouldNotLetToAddAComponentWhichIsBiggerThanTheContainer() {
         assertFailsWith<IllegalArgumentException> {
             target.addComponent(
-                buildPanel {
-                    withPreferredSize {
-                        width = 999
-                        height = 999
-                    }
+                panel {
+                    preferredSize = Size(999, 999)
                 }
             )
         }
@@ -205,12 +200,9 @@ class DefaultComponentContainerTest {
 
         val button = createButton()
         target.addComponent(button)
-        val other = buildButton {
+        val other = button {
             +BUTTON_TEXT
-            position = position {
-                x = 0
-                y = 1
-            }.relativeToBottomOf(button)
+            position = Position(0, 1).relativeToBottomOf(button)
         }
         target.addComponent(other)
 
@@ -257,7 +249,7 @@ class DefaultComponentContainerTest {
         target.focusedComponent shouldBe button
     }
 
-    private fun createButton() = buildButton {
+    private fun createButton() = button {
         +BUTTON_TEXT
         position = BUTTON_POSITION
         componentStyleSet = buildStyles()
@@ -266,8 +258,8 @@ class DefaultComponentContainerTest {
     companion object {
         const val BUTTON_TEXT = "TEXT"
         val TILESET = CP437TilesetResources.rexPaint16x16()
-        val SIZE = Size.create(30, 20)
-        val BUTTON_POSITION = Position.create(6, 7)
+        val SIZE = Size(30, 20)
+        val BUTTON_POSITION = Position(6, 7)
         val DEFAULT_STYLE = styleSet {
             backgroundColor = DefaultAnsiPalette[ANSIColor.BLUE]
             foregroundColor = DefaultAnsiPalette[ANSIColor.RED]

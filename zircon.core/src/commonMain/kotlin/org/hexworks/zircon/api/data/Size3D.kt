@@ -23,6 +23,12 @@ data class Size3D(
     val zLength: Int
 ) : Comparable<Size3D> {
 
+    init {
+        require(xLength >= 0 && yLength >= 0 && zLength >= 0) {
+            "Can't create a Size3D with a negative length."
+        }
+    }
+
 
     override fun compareTo(other: Size3D): Int {
         return when {
@@ -36,21 +42,7 @@ data class Size3D(
 
     companion object {
 
-        fun one() = create(1, 1, 1)
-
-        /**
-         * Factory method for [Size3D].
-         */
-        fun create(xLength: Int, yLength: Int, zLength: Int): Size3D {
-            require(listOf(xLength, yLength, zLength).all { it >= 0 }) {
-                "Can't create a Size3D with a negative length."
-            }
-            return Size3D(
-                xLength = xLength,
-                yLength = yLength,
-                zLength = zLength
-            )
-        }
+        fun one() = Size3D(1, 1, 1)
 
         /**
          * Creates a new [Size3D] from a [Size].

@@ -74,7 +74,7 @@ object ComponentAlignments {
      * using the given [x],[y] coordinates.
      */
     fun positionalAlignment(x: Int, y: Int): AlignmentStrategy {
-        return positionalAlignment(Position.create(x, y))
+        return positionalAlignment(Position(x, y))
     }
 
     /**

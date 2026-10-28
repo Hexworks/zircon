@@ -27,7 +27,7 @@ class ListItemBuilder : ComponentWithTextBuilder<ListItem>(
 /**
  * Creates a new [ListItem] using the component builder DSL and returns it.
  */
-fun buildListItem(init: ListItemBuilder.() -> Unit): ListItem =
+fun listItem(init: ListItemBuilder.() -> Unit): ListItem =
     ListItemBuilder().apply(init).build()
 
 /**

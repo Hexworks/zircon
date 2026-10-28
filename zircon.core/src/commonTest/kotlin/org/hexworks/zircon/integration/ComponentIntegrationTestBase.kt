@@ -46,6 +46,6 @@ abstract class ComponentIntegrationTestBase(
     companion object {
         val DEFAULT_TILESET_WANDERLUST = CP437TilesetResources.wanderlust16x16()
         val DEFAULT_THEME_CYBERPUNK = ColorThemeResource.CYBERPUNK.getTheme()
-        val DEFAULT_SIZE_60X30 = Size.create(60, 30)
+        val DEFAULT_SIZE_60X30 = Size(60, 30)
     }
 }

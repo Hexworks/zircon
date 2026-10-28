@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -17,7 +18,7 @@ class DefaultVerticalNumberInputRenderer : ComponentRenderer<DefaultVerticalNumb
         }
         // TODO:
 //        drawWindow.size.fetchPositions().forEach { pos ->
-//            val invertedPos = Position.create(pos.y, pos.x)
+//            val invertedPos = Position(pos.y, pos.x)
 //            component.fetchTextBuffer().getCharAtOrNull(invertedPos)?.let { char ->
 //                drawWindow.draw(tileTemplate.withCharacter(char), pos)
 //            }.orElseGet { drawWindow.draw(tileTemplate, pos) }

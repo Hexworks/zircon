@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer.decoration
 
+import org.hexworks.zircon.api.data.Size
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment.*
 import org.hexworks.zircon.convertCharacterTilesToString
@@ -112,7 +112,7 @@ class BoxDecorationRendererTest {
     }
 
     private fun runRenderTest(decorator: org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer, expected: String) {
-        val target = buildPanel {
+        val target = panel {
             tileset = CP437TilesetResources.rexPaint20x20()
             decorations {
                 +decorator
@@ -120,10 +120,7 @@ class BoxDecorationRendererTest {
         }
 
         val graphics = tileGraphics {
-            withSize {
-                width = 12
-                height = 4
-            }
+            size = Size(12, 4)
         }
         (target as Renderable).render(graphics)
         graphics.convertCharacterTilesToString() shouldBe expected.trimIndent()

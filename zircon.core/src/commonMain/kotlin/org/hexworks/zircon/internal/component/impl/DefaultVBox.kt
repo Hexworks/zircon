@@ -27,7 +27,7 @@ class DefaultVBox internal constructor(
 ),
     TitleOverride by TitleOverride.create(initialTitle) {
 
-    private var filledUntil = Position.create(0, 0)
+    private var filledUntil = Position(0, 0)
     private var availableSpace = contentSize.toBoundable()
 
     override val remainingSpace: Int

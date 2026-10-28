@@ -46,15 +46,15 @@ class Position3DTest {
         const val EQUAL = 0
         const val LESS = -1
 
-        val POS = Position3D.create(9, 9, 1)
+        val POS = Position3D(9, 9, 1)
 
-        val POS_WITH_LESSER_Z = Position3D.create(8, 8, 0)
-        val POS_WITH_GREATER_Z = Position3D.create(8, 8, 2)
+        val POS_WITH_LESSER_Z = Position3D(8, 8, 0)
+        val POS_WITH_GREATER_Z = Position3D(8, 8, 2)
 
-        val POS_WITH_EQUAL_Z_LESSER_Y = Position3D.create(8, 8, 1)
-        val POS_WITH_EQUAL_Z_GREATER_Y = Position3D.create(8, 10, 1)
+        val POS_WITH_EQUAL_Z_LESSER_Y = Position3D(8, 8, 1)
+        val POS_WITH_EQUAL_Z_GREATER_Y = Position3D(8, 10, 1)
 
-        val POS_WITH_EQUAL_Z_AND_Y_LESSER_X = Position3D.create(8, 9, 1)
-        val POS_WITH_EQUAL_Z_AND_Y_GREATER_X = Position3D.create(10, 9, 1)
+        val POS_WITH_EQUAL_Z_AND_Y_LESSER_X = Position3D(8, 9, 1)
+        val POS_WITH_EQUAL_Z_AND_Y_GREATER_X = Position3D(10, 9, 1)
     }
 }

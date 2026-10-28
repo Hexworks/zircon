@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.graphics
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.isSizeUnknown
@@ -28,7 +27,7 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
         set(value) {
             field = value
             if (size.isSizeUnknown) {
-                size = Size.create(text.length, 1)
+                size = Size(text.length, 1)
             }
         }
 
@@ -65,9 +64,6 @@ class CharacterTileStringBuilder : Builder<CharacterTileString> {
 fun characterTileString(init: CharacterTileStringBuilder.() -> Unit): CharacterTileString =
     CharacterTileStringBuilder().apply(init).build()
 
-fun CharacterTileStringBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
-    size = SizeBuilder().apply(init).build()
-}
 
 fun CharacterTileStringBuilder.withStyleSet(init: StyleSetBuilder.() -> Unit) = apply {
     styleSet = StyleSetBuilder().apply(init).build()

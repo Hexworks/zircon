@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.zircon.api.builder.component.*
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.ScrollBar
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.extensions.addComponents
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
@@ -53,23 +52,23 @@ class VerticalScrollableList<T>(
      */
     private var topItemIdx: Int = 0
 
-    override val root = buildHbox {
+    override val root = hBox {
         preferredSize = size
         this.position = position
     }
 
-    private val scrollPanel = buildVbox {
+    private val scrollPanel = vBox {
         preferredSize = size.withRelativeWidth(-1)
     }
 
-    private val scrollBarVbox = buildVbox {
+    private val scrollBarVbox = vBox {
         preferredSize = size.withWidth(1)
     }
 
-//    private val actualScrollbar: ScrollBar = buildVerticalScrollBar {
+//    private val actualScrollbar: ScrollBar = verticalScrollBar {
 //        withPreferredSize {
 //            width = 1
-//            height = this@buildVerticalScrollBar.size.height - 2
+//            height = this@verticalScrollBar.size.height - 2
 //        }
 //        itemsShownAtOnce = size.height
 //        numberOfScrollableItems = items.size
@@ -78,12 +77,12 @@ class VerticalScrollableList<T>(
 //        }
 //    }
 
-    private val decrementButton = buildButton {
+    private val decrementButton = button {
         text = TRIANGLE_UP_POINTING_BLACK.toString()
         preferredSize = Size.ONE
     }
 
-    private val incrementButton = buildButton {
+    private val incrementButton = button {
         text = TRIANGLE_DOWN_POINTING_BLACK.toString()
         preferredSize = Size.ONE
     }
@@ -122,7 +121,7 @@ class VerticalScrollableList<T>(
             // Generate and add labels until we have enough for the current entry
             while (labelIdx > labels.lastIndex) {
                 labels.add(
-                    buildLabel {
+                    label {
                         preferredSize = scrollPanel.contentSize.withHeight(1)
                     }.also { label ->
                         scrollPanel.addComponent(label)

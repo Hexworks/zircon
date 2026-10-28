@@ -10,8 +10,8 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: collapse `Application`/`VirtualApplication`/`ContinuousRenderingApplication` into
-  TileGrid + AppConfig + a renderer/tick seam (see M3 list). Core tests: 966 green on jvm, 956 on js/wasmJs/linuxX64.
+- Next step: `explicitApi()` + binary-compatibility-validator, move `Base*` implementations out of `api`,
+  purge `internal` types from public signatures. Then sealed `Tile`, transparency removal, Blink/Hidden.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 
@@ -63,9 +63,9 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - [x] In-house inflate, zip reader, gzip reader (`internal/util/compression`), unit tests + bundled `.xp` test
 - [ ] JSON metadata for graphical tilesets and animations; convert `tileinfo.yml` and `ANIMATIONS.md` sample
 - [x] Drop kotlin-reflect (jvmTest only), logging libraries, mockk; add kotlinx-serialization-json; bump kotlinx-collections-immutable
-- [ ] Remove `Application`, `VirtualApplication`, continuous loop; introduce the renderer/tick seam
-- [ ] DSL naming: bare nouns, delete `buildX`, fix `hBox`/`vBox`, remove `withX` leftovers
-- [ ] Deduplicate creation paths (Position, Size, Screen, tilesets)
+- [x] Remove `Application`, `VirtualApplication`, continuous loop; `TileGrid` owns `eventBus`/`eventScope`, `Renderer.render()` is the tick
+- [x] DSL naming: bare nouns, delete `buildX`, `hBox`/`vBox`, `withX` leftovers gone, `Shapes`/`GameComponents` objects are top-level functions. Note: inside a container lambda `button {}` adds a child; build standalone components outside the lambda.
+- [x] Deduplicate creation paths: `Position(x, y)`, `Size(w, h)`, `Position3D`/`Size3D` likewise, `position {}`/`size {}`/`withSize {}`/`withPosition {}` builders deleted, `Screen` only via `tileGrid.toScreen()`, one `loadXTilesetResource` per type
 - [ ] `explicitApi()` and binary-compatibility-validator; move `Base*` implementations out of `api`; no internal types in public signatures
 - [ ] `Tile` sealed class; remove transparency
 - [ ] Implement `Blink` and `Hidden`; delete Border, Underline, CrossedOut

@@ -20,7 +20,7 @@ class DefaultShape(override val positions: Set<Position> = setOf()) : Shape, Col
             maxRow = max(maxRow, row)
         }
         val result = tileGraphics {
-            size = Size.create(maxCol + 1, maxRow + 1)
+            size = Size(maxCol + 1, maxRow + 1)
             this.tileset = tileset
         }
         offsetPositions.forEach {
@@ -33,7 +33,7 @@ class DefaultShape(override val positions: Set<Position> = setOf()) : Shape, Col
         require(positions.isNotEmpty()) {
             "You can't transform a Shape with zero points!"
         }
-        val offset = Position.create(
+        val offset = Position(
             x = positions.minByOrNull { it.x }!!.x,
             y = positions.minByOrNull { it.y }!!.y
         )

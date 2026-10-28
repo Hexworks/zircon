@@ -34,7 +34,7 @@ class PanelBuilder : BaseContainerBuilder<Panel>(
 /**
  * Creates a new [Panel] using the component builder DSL and returns it.
  */
-fun buildPanel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
+fun panel(init: PanelBuilder.() -> Unit): Panel = PanelBuilder()
     .apply(init)
     .build()
 

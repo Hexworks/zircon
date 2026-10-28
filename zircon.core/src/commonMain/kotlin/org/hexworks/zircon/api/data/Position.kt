@@ -43,7 +43,7 @@ interface Position : Comparable<Position>, Additive<Position> {
         /**
          * Creates a new [Position] using the given `x` and `y` values.
          */
-        fun create(x: Int, y: Int): Position {
+        operator fun invoke(x: Int, y: Int): Position {
             return GridPosition(x, y)
         }
 
@@ -67,8 +67,8 @@ interface Position : Comparable<Position>, Additive<Position> {
          */
         fun bottomRightOf(component: Component) = component.position.withRelative(component.size.toPosition())
 
-        val ZERO = create(0, 0)
-        val OFFSET_1X1 = create(1, 1)
-        val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
+        val ZERO = invoke(0, 0)
+        val OFFSET_1X1 = invoke(1, 1)
+        val UNKNOWN = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

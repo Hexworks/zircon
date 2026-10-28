@@ -27,7 +27,7 @@ class TopDownGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
             for (y in 0 until visibleSize.yLength) {
                 val stack = FastStackedTile(initialCapacity = visibleSize.zLength * 3)
                 stacking@ for (z in (visibleSize.zLength - 1) downTo 0) {
-                    val pos = Position3D.create(
+                    val pos = Position3D(
                         x = x + visibleOffset.x,
                         y = y + visibleOffset.y,
                         z = z + visibleOffset.z // TODO: test all offsets!
@@ -53,7 +53,7 @@ class TopDownGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRenderer<T, B> {
                     }
                 }
                 stack.addFirst(fillerTile)
-                graphics.draw(stack, Position.create(x, y))
+                graphics.draw(stack, Position(x, y))
             }
         }
     }

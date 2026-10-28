@@ -10,14 +10,5 @@ import org.hexworks.zircon.api.resource.ResourceType
  */
 object ImageDictionaryTilesetResources {
 
-    fun load(
-        path: String,
-        resourceType: ResourceType
-    ): TilesetResource {
-        return ImageDictionaryTilesetResource(
-            path = path,
-            resourceType = resourceType
-        )
-    }
 
 }

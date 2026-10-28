@@ -97,17 +97,4 @@ object TrueTypeFontResources {
      */
     fun attWide(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT_NARROW.toTilesetResource(height)
 
-    fun load(
-        width: Int,
-        height: Int,
-        path: String,
-        resourceType: ResourceType
-    ): TilesetResource {
-        return TrueTypeTilesetResource(
-            width = width,
-            height = height,
-            path = path,
-            resourceType = resourceType
-        )
-    }
 }

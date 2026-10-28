@@ -4,8 +4,8 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.builder.component.buildButton
-import org.hexworks.zircon.api.builder.component.buildParagraph
+import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
@@ -50,7 +50,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     @BeforeTest
     override fun setUp() {
-        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 1))
+        componentStub = ComponentStub(Position(1, 1), Size(2, 1))
         rendererStub = ComponentRendererStub(DefaultLogAreaRenderer())
         drawWindow = tileGraphics {
             size = SIZE_40x10
@@ -77,7 +77,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     @Test
     fun shouldProperlyAddNewText() {
-        target.addRow(buildParagraph { +TEXT })
+        target.addRow(paragraph { +TEXT })
 
         val paragraph = target.children.first()
 
@@ -104,7 +104,7 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
         target.addNewRows(ROW_HISTORY_SIZE_10)
 
-        target.addRow(buildParagraph { +TEXT })
+        target.addRow(paragraph { +TEXT })
 
         (target.children as Iterable<InternalComponent>) shouldNotContain testComponent
     }
@@ -112,11 +112,11 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
 
     @Test
     fun logElementShouldProperlyScrollDownIfNecessary() {
-        target.addRow(buildParagraph { +TEXT })
+        target.addRow(paragraph { +TEXT })
 
         target.addNewRows(10)
 
-        target.addRow(buildParagraph { +ALTERNATE_TEXT })
+        target.addRow(paragraph { +ALTERNATE_TEXT })
 
         val child = (target.children.first())
 
@@ -131,13 +131,13 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     }
 
     companion object {
-        val POSITION_4_5 = Position.create(4, 5)
-        val SIZE_40x10 = Size.create(40, 10)
+        val POSITION_4_5 = Position(4, 5)
+        val SIZE_40x10 = Size(40, 10)
         const val ROW_HISTORY_SIZE_10 = 10
         const val TEXT = "This is my log row"
         const val ALTERNATE_TEXT = "This is my other log row"
 
-        fun testComponent() = buildButton {
+        fun testComponent() = button {
             +"Button"
             decorations { }
             tileset = BuiltInCP437TilesetResource.TAFFER_20X20

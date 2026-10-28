@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.graphics.TextWrap
 fun String.toCharacterTileString(
     styleSet: StyleSet = StyleSet.defaultStyle(),
     textWrap: TextWrap = TextWrap.WRAP,
-    size: Size = Size.create(length, 1)
+    size: Size = Size(length, 1)
 ) = characterTileString {
     text = this@toCharacterTileString
     this.styleSet = styleSet

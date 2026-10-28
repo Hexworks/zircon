@@ -27,7 +27,7 @@ class HeaderBuilder : ComponentWithTextBuilder<Header>(
 /**
  * Creates a new [Header] using the component builder DSL and returns it.
  */
-fun buildHeader(init: HeaderBuilder.() -> Unit): Header =
+fun header(init: HeaderBuilder.() -> Unit): Header =
     HeaderBuilder().apply(init).build()
 
 /**

@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.application.*
 import org.hexworks.zircon.api.application.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
 import org.hexworks.zircon.api.application.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.TileType
@@ -31,7 +30,7 @@ val DEFAULT_TILESET = CP437TilesetResources.rogueYun16x16()
 val DEFAULT_GRAPHICAL_TILESET = GraphicalTilesetResources.nethack16x16()
 val DEFAULT_COLOR_THEME = ColorThemes.gamebookers()
 const val DEFAULT_DEBUG_MODE = false
-val DEFAULT_SIZE = Size.create(80, 40)
+val DEFAULT_SIZE = Size(80, 40)
 const val DEFAULT_FULL_SCREEN = false
 const val DEFAULT_TITLE = "Zircon Application"
 
@@ -216,6 +215,3 @@ fun <T : Any, C : Any> AppConfigBuilder.textureModifier(init: TextureModifierBui
     textureModifierSupports[result.modifierType] = result
 }
 
-fun AppConfigBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
-    size = SizeBuilder().apply(init).build()
-}

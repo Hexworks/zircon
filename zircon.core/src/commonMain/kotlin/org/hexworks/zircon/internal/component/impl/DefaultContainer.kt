@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component

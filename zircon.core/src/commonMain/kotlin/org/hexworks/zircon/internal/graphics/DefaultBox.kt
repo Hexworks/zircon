@@ -32,26 +32,26 @@ class DefaultBox internal constructor(
             .withCharacter(boxType.horizontal)
 
         val horizontalLine = LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(size.width - 3, 0)
+            fromPoint = Position(0, 0),
+            toPoint = Position(size.width - 3, 0)
         )
             .toTileGraphics(
                 tile = horizontalChar,
                 tileset = backend.tileset
             )
         val verticalLine = LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(0, size.height - 3)
+            fromPoint = Position(0, 0),
+            toPoint = Position(0, size.height - 3)
         )
             .toTileGraphics(verticalChar, tileset)
-        draw(horizontalLine, Position.create(1, 0))
-        draw(horizontalLine, Position.create(1, size.height - 1))
-        draw(verticalLine, Position.create(0, 1))
-        draw(verticalLine, Position.create(size.width - 1, 1))
-        draw(verticalChar.withCharacter(boxType.topLeft), Position.create(0, 0))
-        draw(verticalChar.withCharacter(boxType.topRight), Position.create(size.width - 1, 0))
-        draw(verticalChar.withCharacter(boxType.bottomLeft), Position.create(0, size.height - 1))
-        draw(verticalChar.withCharacter(boxType.bottomRight), Position.create(size.width - 1, size.height - 1))
+        draw(horizontalLine, Position(1, 0))
+        draw(horizontalLine, Position(1, size.height - 1))
+        draw(verticalLine, Position(0, 1))
+        draw(verticalLine, Position(size.width - 1, 1))
+        draw(verticalChar.withCharacter(boxType.topLeft), Position(0, 0))
+        draw(verticalChar.withCharacter(boxType.topRight), Position(size.width - 1, 0))
+        draw(verticalChar.withCharacter(boxType.bottomLeft), Position(0, size.height - 1))
+        draw(verticalChar.withCharacter(boxType.bottomRight), Position(size.width - 1, size.height - 1))
     }
 
     override fun toString() = backend.toString()

@@ -8,7 +8,6 @@ import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
-import org.hexworks.zircon.internal.screen.TileGridScreen
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -47,8 +46,4 @@ interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
     fun <T : ModalResult> openModal(modalFragment: ModalFragment<T>) =
         openModal(modalFragment.root)
 
-    companion object {
-
-        fun create(tileGrid: TileGrid): Screen = TileGridScreen(tileGrid.asInternal())
-    }
 }

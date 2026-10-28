@@ -34,7 +34,7 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
 
     @BeforeTest
     override fun setUp() {
-        componentStub = ComponentStub(Position.create(1, 1), Size.create(2, 2))
+        componentStub = ComponentStub(Position(1, 1), Size(2, 2))
         rendererStub = ComponentRendererStub(DefaultPanelRenderer())
         drawWindow = tileGraphics {
             size = SIZE
@@ -61,7 +61,7 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
 
     companion object {
         const val TITLE = "TITLE"
-        val SIZE = Size.create(5, 6)
-        val POSITION = Position.create(2, 3)
+        val SIZE = Size(5, 6)
+        val POSITION = Position(2, 3)
     }
 }

@@ -3,13 +3,12 @@ package org.hexworks.zircon.api.data.extensions
 import org.hexworks.zircon.api.data.Position3D
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Size3D
-import org.hexworks.zircon.api.data.Size3D.Companion.create
 
 operator fun Size3D.plus(other: Size3D) =
-    create(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
+    Size3D(xLength + other.xLength, yLength + other.yLength, zLength + other.zLength)
 
 operator fun Size3D.minus(other: Size3D) =
-    create(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
+    Size3D(xLength - other.xLength, yLength - other.yLength, zLength - other.zLength)
 
 
 /**
@@ -24,7 +23,7 @@ fun Size3D.fetchPositions(): Sequence<Position3D> {
         (0 until zLength).flatMap { z ->
             (0 until yLength).flatMap { y ->
                 (0 until xLength).map { x ->
-                    yield(Position3D.create(x, y, z))
+                    yield(Position3D(x, y, z))
                 }
             }
         }
@@ -43,6 +42,6 @@ fun Size3D.containsPosition(position: Position3D): Boolean {
  * Transforms this [Size3D] to a [Size]. Note that
  * the `zLength` component is lost during the conversion!
  */
-fun Size3D.to2DSize() = Size.create(xLength, yLength)
+fun Size3D.to2DSize() = Size(xLength, yLength)
 
 

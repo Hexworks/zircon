@@ -20,7 +20,7 @@ interface TilesetResource : Identifiable, Resource {
     val height: Int
 
     val size: Size
-        get() = Size.create(width, height)
+        get() = Size(width, height)
 
     /**
      * A [TilesetResource] is compatible with another if they have

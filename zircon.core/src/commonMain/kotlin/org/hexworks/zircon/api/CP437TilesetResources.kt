@@ -382,18 +382,5 @@ object CP437TilesetResources {
      */
     fun rexPaint20x20(): TilesetResource = REX_PAINT_20X20
 
-    fun load(
-        width: Int,
-        height: Int,
-        path: String,
-        resourceType: ResourceType
-    ): TilesetResource {
-        return CP437TilesetResource(
-            width = width,
-            height = height,
-            path = path,
-            resourceType = resourceType
-        )
-    }
 
 }

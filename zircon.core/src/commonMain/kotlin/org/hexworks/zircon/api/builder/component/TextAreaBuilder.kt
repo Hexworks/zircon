@@ -27,7 +27,7 @@ class TextAreaBuilder : BaseComponentBuilder<TextArea>(
 /**
  * Creates a new [TextArea] using the component builder DSL and returns it.
  */
-fun buildTextArea(init: TextAreaBuilder.() -> Unit): TextArea =
+fun textArea(init: TextAreaBuilder.() -> Unit): TextArea =
     TextAreaBuilder().apply(init).build()
 
 /**

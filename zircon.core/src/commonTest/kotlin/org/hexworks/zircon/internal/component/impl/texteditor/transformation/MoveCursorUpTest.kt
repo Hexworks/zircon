@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
 import kotlin.test.Test
@@ -34,10 +33,7 @@ class MoveCursorUpTest {
             wombat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 4
-                y = 1
-            }
+            cursor = Position(4, 1)
         )
 
         val result = MoveCursorUp.apply(input)
@@ -48,10 +44,7 @@ class MoveCursorUpTest {
             wombat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         expect(expected, "State is not what's expected") {
@@ -67,10 +60,7 @@ class MoveCursorUpTest {
             wombat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 1
-            }
+            cursor = Position(3, 1)
         )
 
         val result = MoveCursorUp.apply(input)
@@ -81,10 +71,7 @@ class MoveCursorUpTest {
             wombat
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         expect(expected, "State is not what's expected") {
@@ -100,10 +87,7 @@ class MoveCursorUpTest {
             wom
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 1
-            }
+            cursor = Position(3, 1)
         )
 
         val result = MoveCursorUp.apply(input)
@@ -114,10 +98,7 @@ class MoveCursorUpTest {
             wom
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         expect(expected, "State is not what's expected") {

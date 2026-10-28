@@ -30,5 +30,5 @@ class GroupBuilder<T : Component> : Builder<Group<T>> {
 /**
  * Creates a new [Group] using the component builder DSL and returns it.
  */
-fun <T : Component> buildGroup(init: GroupBuilder<T>.() -> Unit): Group<T> =
+fun <T : Component> group(init: GroupBuilder<T>.() -> Unit): Group<T> =
     GroupBuilder<T>().apply(init).build()

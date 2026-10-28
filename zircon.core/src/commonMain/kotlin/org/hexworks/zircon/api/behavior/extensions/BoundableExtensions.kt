@@ -53,14 +53,14 @@ val Boundable.center: Position
 
 
 fun Boundable.splitHorizontal(splitAtX: Int): Pair<Boundable, Boundable> {
-    val left = Boundable.create(Position.create(x, y), Size.create(splitAtX, height))
-    val right = Boundable.create(Position.create(x + splitAtX, y), Size.create(width - splitAtX, height))
+    val left = Boundable.create(Position(x, y), Size(splitAtX, height))
+    val right = Boundable.create(Position(x + splitAtX, y), Size(width - splitAtX, height))
     return left to right
 }
 
 fun Boundable.splitVertical(splitAtY: Int): Pair<Boundable, Boundable> {
-    val left = Boundable.create(Position.create(x, y), Size.create(width, splitAtY))
-    val right = Boundable.create(Position.create(x, y + splitAtY), Size.create(width, height - splitAtY))
+    val left = Boundable.create(Position(x, y), Size(width, splitAtY))
+    val right = Boundable.create(Position(x, y + splitAtY), Size(width, height - splitAtY))
     return left to right
 }
 

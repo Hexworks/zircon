@@ -85,7 +85,7 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.render(surface)
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            surface.getTileAtOrNull(Position.create(i + offset, 0)) shouldBe
+            surface.getTileAtOrNull(Position(i + offset, 0)) shouldBe
                 characterTile {
                     character = char
                     styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
@@ -186,10 +186,10 @@ class DefaultRadioButtonTest : FocusableComponentImplementationTest<DefaultRadio
         target.componentState shouldBe HIGHLIGHTED
     }
 
-    private fun getButtonChar() = drawWindow.getTileAtOrNull(Position.create(1, 0))?.asCharacterTileOrNull()?.character
+    private fun getButtonChar() = drawWindow.getTileAtOrNull(Position(1, 0))?.asCharacterTileOrNull()?.character
 
     companion object {
-        val SIZE_20X1 = Size.create(20, 1)
+        val SIZE_20X1 = Size(20, 1)
         const val TEXT = "Button text"
     }
 }

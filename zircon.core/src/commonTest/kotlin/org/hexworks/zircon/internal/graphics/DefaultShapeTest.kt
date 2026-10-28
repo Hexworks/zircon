@@ -34,22 +34,22 @@ class DefaultShapeTest {
     fun shouldProperlyCreateTileGraphic() {
         val result = LINE_SHAPE.toTileGraphics(CHAR, TILESET)
 
-        result.getTileAtOrNull(Position.create(0, 0)) shouldBe CHAR
-        result.getTileAtOrNull(Position.create(1, 0)) shouldBe null
-        result.getTileAtOrNull(Position.create(0, 1)) shouldBe null
-        result.getTileAtOrNull(Position.create(1, 1)) shouldBe CHAR
+        result.getTileAtOrNull(Position(0, 0)) shouldBe CHAR
+        result.getTileAtOrNull(Position(1, 0)) shouldBe null
+        result.getTileAtOrNull(Position(0, 1)) shouldBe null
+        result.getTileAtOrNull(Position(1, 1)) shouldBe CHAR
 
     }
 
     companion object {
         val TILESET = CP437TilesetResources.aduDhabi16x16()
 
-        val POS_0 = Position.create(2, 3)
-        val POS_1 = Position.create(3, 4)
-        val POS_2 = Position.create(1, 2)
+        val POS_0 = Position(2, 3)
+        val POS_1 = Position(3, 4)
+        val POS_2 = Position(1, 2)
 
-        val TRANSFORMED_POS_0 = Position.create(0, 0)
-        val TRANSFORMED_POS_1 = Position.create(1, 1)
+        val TRANSFORMED_POS_0 = Position(0, 0)
+        val TRANSFORMED_POS_1 = Position(1, 1)
 
         val CHAR = Tile.defaultTile().withCharacter('x')
 

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.graphics
 
+import org.hexworks.zircon.api.data.Size
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.Modifiers
@@ -7,7 +8,6 @@ import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.characterTileString
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.builder.graphics.withStyleSet
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
@@ -74,16 +74,13 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldTruncateWhenThereIsNoWrapAndDoesntFit() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
         surface.draw(
             characterTileString {
                 +TEXT
                 textWrap = NO_WRAPPING
-            }, Position.create(1, 1)
+            }, Position(1, 1)
         )
 
         surface.fetchCharacters() shouldContainExactly listOf(
@@ -95,10 +92,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteNoWrapOverlappingStringToTileGraphic() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
@@ -108,16 +102,16 @@ class DefaultCharacterTileStringTest {
             }
         )
 
-        surface.getTileAtOrNull(Position.create(0, 0))
+        surface.getTileAtOrNull(Position(0, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 'T'
-        surface.getTileAtOrNull(Position.create(1, 0))
+        surface.getTileAtOrNull(Position(1, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 'E'
-        surface.getTileAtOrNull(Position.create(0, 1))
+        surface.getTileAtOrNull(Position(0, 1))
             ?.asCharacterTileOrNull()
             ?.character shouldBe null
-        surface.getTileAtOrNull(Position.create(1, 1))
+        surface.getTileAtOrNull(Position(1, 1))
             ?.asCharacterTileOrNull()
             ?.character shouldBe null
     }
@@ -125,10 +119,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun when_word_wrap_is_used_then_it_should_work() {
         val surface = tileGraphics {
-            withSize {
-                width = 5
-                height = 1
-            }
+            size = Size(5, 1)
         }
 
         val textCharacterString = characterTileString {
@@ -138,19 +129,19 @@ class DefaultCharacterTileStringTest {
         surface.draw(textCharacterString)
 
         // a and space should fit on the first line
-        surface.getTileAtOrNull(Position.create(0, 0))
+        surface.getTileAtOrNull(Position(0, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 'a'
-        surface.getTileAtOrNull(Position.create(1, 0))
+        surface.getTileAtOrNull(Position(1, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 't'
-        surface.getTileAtOrNull(Position.create(2, 0))
+        surface.getTileAtOrNull(Position(2, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 'e'
-        surface.getTileAtOrNull(Position.create(3, 0))
+        surface.getTileAtOrNull(Position(3, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 's'
-        surface.getTileAtOrNull(Position.create(4, 0))
+        surface.getTileAtOrNull(Position(4, 0))
             ?.asCharacterTileOrNull()
             ?.character shouldBe 't'
     }
@@ -158,10 +149,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldWorkWhenWordWrappingWithMultipleWords() {
         val surface = tileGraphics {
-            withSize {
-                width = 4
-                height = 2
-            }
+            size = Size(4, 2)
         }
 
         val textCharacterString = characterTileString {
@@ -180,10 +168,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun wordWrapShouldWrapAsWordTooBigForSingleRow() {
         val surface = tileGraphics {
-            withSize {
-                width = 4
-                height = 2
-            }
+            size = Size(4, 2)
         }
 
         val textCharacterString = characterTileString {
@@ -203,10 +188,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun wordWrapShouldWorkCorrectly() {
         val surface = tileGraphics {
-            withSize {
-                width = 5
-                height = 4
-            }
+            size = Size(5, 4)
         }
 
         val textCharacterString = characterTileString {
@@ -227,10 +209,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteNoWrapStringToTileGraphicWithOffset() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
@@ -252,10 +231,7 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithoutOffset() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
@@ -274,17 +250,14 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteWrapStringToTileGraphicWithOffset() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
             characterTileString {
                 +TEXT
                 size = surface.size
-            }, Position.create(1, 0)
+            }, Position(1, 0)
         )
 
         surface.fetchCharacters() shouldContainExactly listOf(
@@ -296,17 +269,14 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyWriteStringToTileGraphicWhenLengthIs1() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
             characterTileString {
                 +"T"
                 size = surface.size
-            }, Position.create(0, 0)
+            }, Position(0, 0)
         )
 
         surface.fetchCharacters() shouldContainExactly listOf(
@@ -318,17 +288,14 @@ class DefaultCharacterTileStringTest {
     @Test
     fun shouldProperlyTruncateStringWhenDoesNotFitOnTileGraphic() {
         val surface = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
         }
 
         surface.draw(
             characterTileString {
                 +"TEXTTEXT"
                 size = surface.size
-            }, Position.create(0, 0)
+            }, Position(0, 0)
         )
 
         surface.fetchCharacters() shouldContainExactly listOf(

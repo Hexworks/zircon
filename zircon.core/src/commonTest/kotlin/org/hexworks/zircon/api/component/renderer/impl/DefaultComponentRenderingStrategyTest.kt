@@ -46,7 +46,7 @@ class DefaultComponentRenderingStrategyTest {
 
     @Test
     fun shouldRenderButtonWithDecorations() {
-        val size = Size.create(8, 4)
+        val size = Size(8, 4)
         val graphics = tileGraphics {
             this.size = size
         }.apply {
@@ -77,7 +77,7 @@ class DefaultComponentRenderingStrategyTest {
 
     @Test
     fun shouldNotRenderButtonWhenItIsInvisible() {
-        val size = Size.create(8, 4)
+        val size = Size(8, 4)
         val graphics = tileGraphics {
             this.size = size
         }
@@ -102,7 +102,7 @@ class DefaultComponentRenderingStrategyTest {
 
     @Test
     fun shouldProperlyRenderComponentWithoutDecorations() {
-        val size = Size.create(5, 5)
+        val size = Size(5, 5)
         val graphics = tileGraphics {
             this.size = size
         }.apply {
@@ -129,7 +129,7 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun `Should properly render decorations and the component on a filled TileGraphics`() {
 
-        val size = Size.create(5, 5)
+        val size = Size(5, 5)
         val graphics = tileGraphics {
             this.size = size
         }.apply {
@@ -156,7 +156,7 @@ class DefaultComponentRenderingStrategyTest {
     @Test
     fun `Should properly render decorations and the component on a blank TileGraphics`() {
 
-        val size = Size.create(4, 4)
+        val size = Size(4, 4)
         val graphics = tileGraphics {
             this.size = size
         }

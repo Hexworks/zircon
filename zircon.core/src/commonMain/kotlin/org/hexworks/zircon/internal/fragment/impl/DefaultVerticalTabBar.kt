@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.ComponentDecorations.margin
-import org.hexworks.zircon.api.builder.component.buildHbox
+import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButtonGroup
-import org.hexworks.zircon.api.builder.component.vbox
+import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Panel
@@ -33,12 +33,12 @@ class DefaultVerticalTabBar internal constructor(
         tab.key to TabData(tab, content)
     }
 
-    override val root: Component = buildHbox {
+    override val root: Component = hBox {
         preferredSize = size
         componentRenderer = NoOpComponentRenderer()
 
-        tabBar = vbox {
-            preferredSize = Size.create(tabWidth, size.height)
+        tabBar = vBox {
+            preferredSize = Size(tabWidth, size.height)
             decorations {
                 +margin(1, 0)
             }

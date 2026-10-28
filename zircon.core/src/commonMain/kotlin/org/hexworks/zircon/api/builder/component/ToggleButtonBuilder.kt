@@ -31,7 +31,7 @@ class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
 /**
  * Creates a new [ToggleButton] using the component builder DSL and returns it.
  */
-fun buildToggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
+fun toggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
     ToggleButtonBuilder().apply(init).build()
 
 /**

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.builder.data.position
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
 import kotlin.test.Test
 import kotlin.test.expect
@@ -16,10 +16,7 @@ class MoveCursorToLineEndTest {
             bar
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 1
-            }
+            cursor = Position(3, 1)
         )
 
         val result = MoveCursorToLineEnd.apply(input)
@@ -37,10 +34,7 @@ class MoveCursorToLineEndTest {
             bar
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 2
-                y = 0
-            }
+            cursor = Position(2, 0)
         )
 
         val result = MoveCursorToLineEnd.apply(input)
@@ -51,10 +45,7 @@ class MoveCursorToLineEndTest {
             bar
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         expect(expected, "State is not what's expected") {

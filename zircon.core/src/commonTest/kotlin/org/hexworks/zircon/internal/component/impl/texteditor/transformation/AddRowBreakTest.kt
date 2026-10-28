@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.builder.data.position
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
 import kotlin.test.Test
 import kotlin.test.expect
@@ -16,10 +16,7 @@ class AddRowBreakTest {
             barbaz
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 6
-                y = 0
-            }
+            cursor = Position(6, 0)
         )
 
         val result = AddRowBreak.apply(input)
@@ -30,10 +27,7 @@ class AddRowBreakTest {
             
             barbaz
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 0
-            y = 1
-        })
+        ).state.copy(cursor = Position(0, 1))
 
         expect(expected, "State is not what's expected") {
             result
@@ -48,10 +42,7 @@ class AddRowBreakTest {
             barbaz
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 3
-                y = 0
-            }
+            cursor = Position(3, 0)
         )
 
         val result = AddRowBreak.apply(input)
@@ -62,10 +53,7 @@ class AddRowBreakTest {
             bar
             barbaz
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 0
-            y = 1
-        })
+        ).state.copy(cursor = Position(0, 1))
 
         expect(expected, "State is not what's expected") {
             result

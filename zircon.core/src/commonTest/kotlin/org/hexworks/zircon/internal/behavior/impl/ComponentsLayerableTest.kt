@@ -68,7 +68,7 @@ class ComponentsLayerableTest {
     }
 
     companion object {
-        val SIZE_4X2 = Size.create(4, 3)
+        val SIZE_4X2 = Size(4, 3)
     }
 
 }

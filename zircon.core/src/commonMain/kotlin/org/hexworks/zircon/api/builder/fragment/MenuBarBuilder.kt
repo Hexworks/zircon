@@ -57,7 +57,7 @@ class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
         }
     }
 
-    private fun <T : Any> List<DropdownMenu<T>>.minSize(spacing: Int) = Size.create(
+    private fun <T : Any> List<DropdownMenu<T>>.minSize(spacing: Int) = Size(
         width = map { it.width }.fold(0, Int::plus) + (size - 1) * spacing,
         height = 1
     )
@@ -66,7 +66,7 @@ class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 /**
  * Creates a new [MenuBar] using the fragment builder DSL and returns it.
  */
-fun <T : Any> buildMenuBar(
+fun <T : Any> menuBar(
     init: MenuBarBuilder<T>.() -> Unit
 ): MenuBar<T> = MenuBarBuilder<T>().apply(init).build()
 

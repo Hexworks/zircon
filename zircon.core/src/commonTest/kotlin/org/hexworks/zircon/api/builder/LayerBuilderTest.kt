@@ -35,8 +35,8 @@ class LayerBuilderTest {
     }
 
     companion object {
-        val SIZE = Size.create(4, 5)
+        val SIZE = Size(4, 5)
         val FILLER = Tile.defaultTile().withCharacter('x')
-        val OFFSET = Position.create(3, 4)
+        val OFFSET = Position(3, 4)
     }
 }

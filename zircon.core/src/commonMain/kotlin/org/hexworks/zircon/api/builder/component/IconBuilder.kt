@@ -35,7 +35,7 @@ class IconBuilder : BaseComponentBuilder<Icon>(
 /**
  * Creates a new [Icon] using the component builder DSL and returns it.
  */
-fun buildIcon(init: IconBuilder.() -> Unit): Icon =
+fun icon(init: IconBuilder.() -> Unit): Icon =
     IconBuilder().apply(init).build()
 
 /**

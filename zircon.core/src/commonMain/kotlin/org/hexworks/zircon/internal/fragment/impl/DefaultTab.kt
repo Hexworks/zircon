@@ -1,9 +1,9 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.component.buildLabel
-import org.hexworks.zircon.api.builder.component.buildPanel
-import org.hexworks.zircon.api.builder.component.buildRadioButton
+import org.hexworks.zircon.api.builder.component.label
+import org.hexworks.zircon.api.builder.component.panel
+import org.hexworks.zircon.api.builder.component.radioButton
 import org.hexworks.zircon.api.builder.graphics.characterTileString
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.AttachedComponent
@@ -25,10 +25,10 @@ class DefaultTab internal constructor(
     width: Int,
 ) : Tab {
 
-    override val tabButton = buildRadioButton {
+    override val tabButton = radioButton {
         text = initialText
         this.key = key
-        preferredSize = Size.create(width, 3)
+        preferredSize = Size(width, 3)
         componentStyleSet = ComponentStyleSet.DEFAULT_STYLE
         componentRenderer = ComponentRenderer { graphics, ctx ->
             graphics.drawText(ctx.component.text, ctx.currentStyle)
@@ -38,9 +38,9 @@ class DefaultTab internal constructor(
         }
     }
 
-    private val label = buildLabel {
+    private val label = label {
         text = initialText
-        preferredSize = Size.create(width, 3)
+        preferredSize = Size(width, 3)
         componentRenderer = ComponentRenderer { graphics, ctx ->
             val theme = ctx.theme
             val style = styleSet {
@@ -53,7 +53,7 @@ class DefaultTab internal constructor(
         }
     }
 
-    override val root = buildPanel {
+    override val root = panel {
         preferredSize = tabButton.size
         componentRenderer = NoOpComponentRenderer()
     }

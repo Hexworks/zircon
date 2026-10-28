@@ -16,9 +16,9 @@ data class MarginDecorationRenderer(
     private val renderingMode: RenderingMode = NON_INTERACTIVE
 ) : ComponentDecorationRenderer {
 
-    override val offset = Position.create(left, top)
+    override val offset = Position(left, top)
 
-    override val occupiedSize = Size.create(left + right, top + bottom)
+    override val occupiedSize = Size(left + right, top + bottom)
 
     override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
     }

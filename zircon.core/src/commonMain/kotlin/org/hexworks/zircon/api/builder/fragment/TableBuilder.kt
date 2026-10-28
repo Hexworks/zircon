@@ -3,8 +3,8 @@ package org.hexworks.zircon.api.builder.fragment
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.builder.component.buildIcon
-import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.icon
+import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Icon
@@ -57,9 +57,9 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = {
-                    buildLabel {
+                    label {
                         +it
-                        preferredSize = Size.create(builder.width, 1)
+                        preferredSize = Size(builder.width, 1)
                     }
                 }
             }
@@ -78,9 +78,9 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = { number ->
-                    buildLabel {
+                    label {
                         +number.toString()
-                        preferredSize = Size.create(builder.width, 1)
+                        preferredSize = Size(builder.width, 1)
                     }
                 }
             }
@@ -98,9 +98,9 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
             .apply(init)
             .also { builder ->
                 builder.cellRenderer = { value ->
-                    buildLabel {
+                    label {
                         textProperty.updateFrom(value)
-                        preferredSize = Size.create(builder.width, 1)
+                        preferredSize = Size(builder.width, 1)
                     }
                 }
             }
@@ -119,7 +119,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
                     .apply(init).also { builder ->
                         builder.width = 1
                         builder.cellRenderer = { tile ->
-                            buildIcon {
+                            icon {
                                 iconTile = tile
                             }
                         }
@@ -158,7 +158,7 @@ class TableBuilder<T : Any> : FragmentBuilder<Table<T>> {
  * Creates a new [Table] using the fragment builder DSL and returns it.
  */
 
-fun <T : Any> buildTable(
+fun <T : Any> table(
     init: TableBuilder<T>.() -> Unit
 ): Table<T> = TableBuilder<T>().apply(init).build()
 

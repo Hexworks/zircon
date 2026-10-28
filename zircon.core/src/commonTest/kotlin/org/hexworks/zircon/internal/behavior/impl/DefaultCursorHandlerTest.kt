@@ -64,56 +64,56 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldReportEndOfLineWhenAtEndOfLine() {
-        target.cursorPosition = Position.create(SIZE.width, 0)
+        target.cursorPosition = Position(SIZE.width, 0)
 
         target.isCursorAtTheEndOfTheLine shouldBe true
     }
 
     @Test
     fun shouldNotReportEndOfLineWhenNotAtEndOfLine() {
-        target.cursorPosition = Position.create(SIZE.width - 2, 0)
+        target.cursorPosition = Position(SIZE.width - 2, 0)
 
         target.isCursorAtTheEndOfTheLine shouldBe false
     }
 
     @Test
     fun shouldReportStartOfLineWhenAtStartOfLine() {
-        target.cursorPosition = Position.create(0, 0)
+        target.cursorPosition = Position(0, 0)
 
         target.isCursorAtTheStartOfTheLine shouldBe true
     }
 
     @Test
     fun shouldNotReportStartOfLineWhenNotAtStartOfLine() {
-        target.cursorPosition = Position.create(1, 0)
+        target.cursorPosition = Position(1, 0)
 
         target.isCursorAtTheStartOfTheLine shouldBe false
     }
 
     @Test
     fun shouldReportAtFirstRowWhenAtFirstRow() {
-        target.cursorPosition = Position.create(0, 0)
+        target.cursorPosition = Position(0, 0)
 
         target.isCursorAtTheFirstRow shouldBe true
     }
 
     @Test
     fun shouldNotReportAtFirstRowWhenNotAtFirstRow() {
-        target.cursorPosition = Position.create(0, 1)
+        target.cursorPosition = Position(0, 1)
 
         target.isCursorAtTheFirstRow shouldBe false
     }
 
     @Test
     fun shouldReportAtLastRowWhenAtLastRow() {
-        target.cursorPosition = Position.create(0, SIZE.height)
+        target.cursorPosition = Position(0, SIZE.height)
 
         target.isCursorAtTheLastRow shouldBe true
     }
 
     @Test
     fun shouldNotReportAtLastRowWhenNotAtLastRow() {
-        target.cursorPosition = Position.create(0, 0)
+        target.cursorPosition = Position(0, 0)
 
         target.isCursorAtTheLastRow shouldBe false
     }
@@ -125,7 +125,7 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenNotAtTheStartOfTheLine() {
-        val pos = Position.create(2, 2)
+        val pos = Position(2, 2)
         target.cursorPosition = pos
         target.moveCursorBackward()
 
@@ -134,16 +134,16 @@ class DefaultCursorHandlerTest {
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenAtTheStartOfTheLineAndNotAtFirstRow() {
-        val pos = Position.create(0, 1)
+        val pos = Position(0, 1)
         target.cursorPosition = pos
         target.moveCursorBackward()
 
-        target.cursorPosition shouldBe Position.create(SIZE.width - 1, 0)
+        target.cursorPosition shouldBe Position(SIZE.width - 1, 0)
     }
 
     @Test
     fun shouldMoveCursorBackwardProperlyWhenAtTheStartOfTheLineAndAtFirstRow() {
-        val pos = Position.create(0, 0)
+        val pos = Position(0, 0)
         target.cursorPosition = pos
         target.moveCursorBackward()
 
@@ -153,11 +153,11 @@ class DefaultCursorHandlerTest {
     @Test
     fun shouldNotBeAbleToResizeCursorSpaceToNegativeSize() {
         shouldThrow<IllegalArgumentException> {
-            target.cursorSpaceSize = Size.create(-1, 1)
+            target.cursorSpaceSize = Size(-1, 1)
         }
     }
 
     companion object {
-        val SIZE = Size.create(5, 5)
+        val SIZE = Size(5, 5)
     }
 }

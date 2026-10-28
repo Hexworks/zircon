@@ -68,8 +68,8 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
     companion object {
 
         const val TEXT = "TEXT"
-        val SIZE = Size.create(5, 6)
-        val POSITION = Position.create(2, 3)
+        val SIZE = Size(5, 6)
+        val POSITION = Position(2, 3)
     }
 
 }

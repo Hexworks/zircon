@@ -110,11 +110,11 @@ class ArrayBackedTileMapTest {
 
     companion object {
 
-        val SIZE_2X3 = Size.create(2, 3)
-        val FILLED_POSITION_1_1 = Position.create(1, 1)
-        val FILLED_POSITION_1_2 = Position.create(1, 2)
-        val EMPTY_POSITION_0_1 = Position.create(0, 1)
-        val OUT_OF_BOUNDS_POSITION_2_2 = Position.create(2, 2)
+        val SIZE_2X3 = Size(2, 3)
+        val FILLED_POSITION_1_1 = Position(1, 1)
+        val FILLED_POSITION_1_2 = Position(1, 2)
+        val EMPTY_POSITION_0_1 = Position(0, 1)
+        val OUT_OF_BOUNDS_POSITION_2_2 = Position(2, 2)
         val FILLER = Tile.defaultTile().withCharacter('x')
     }
 }

@@ -8,9 +8,9 @@ import kotlin.math.max
  */
 abstract class BaseSize : Size {
 
-    override operator fun plus(other: Size) = Size.create(width + other.width, height + other.height)
+    override operator fun plus(other: Size) = Size(width + other.width, height + other.height)
 
-    override operator fun minus(other: Size) = Size.create(
+    override operator fun minus(other: Size) = Size(
         width = max(0, width - other.width),
         height = max(0, height - other.height)
     )

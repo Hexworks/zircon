@@ -1,10 +1,10 @@
 package org.hexworks.zircon.internal.behavior.impl
 
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
-import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 

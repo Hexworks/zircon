@@ -31,7 +31,7 @@ class ButtonBuilder : ComponentWithTextBuilder<Button>(
 /**
  * Creates a new [Button] using the component builder DSL and returns it.
  */
-fun buildButton(init: ButtonBuilder.() -> Unit): Button =
+fun button(init: ButtonBuilder.() -> Unit): Button =
     ButtonBuilder().apply(init).build()
 
 /**

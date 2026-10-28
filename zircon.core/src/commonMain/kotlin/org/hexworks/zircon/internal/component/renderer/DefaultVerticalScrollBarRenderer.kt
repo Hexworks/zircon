@@ -1,11 +1,11 @@
 package org.hexworks.zircon.internal.component.renderer
 
+import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.util.isOdd
 import org.hexworks.zircon.internal.util.toIntCeil
 import org.hexworks.zircon.internal.util.toIntFloor
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.data.position
-import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.tileImage
 import org.hexworks.zircon.api.builder.graphics.withFiller
@@ -55,28 +55,19 @@ class DefaultVerticalScrollBarRenderer internal constructor() : ComponentRendere
 
         if (needsScrollButton) {
             val button = tileImage {
-                size = size {
-                    width = 1
-                    height = buttonHeight
-                }
+                size = Size(1, buttonHeight)
                 withFiller {
                     +' '
                     styleSet = style
                 }
 
-                tiles = mapOf(position {
-                    x = 0
-                    y = buttonHeight / 2
-                } to characterTile {
+                tiles = mapOf(Position(0, buttonHeight / 2) to characterTile {
                     +Symbols.TRIPLE_BAR
                     styleSet = style
                 })
             }
 
-            drawWindow.draw(button, position {
-                x = 0
-                y = scrollPos
-            })
+            drawWindow.draw(button, Position(0, scrollPos))
         }
     }
 }

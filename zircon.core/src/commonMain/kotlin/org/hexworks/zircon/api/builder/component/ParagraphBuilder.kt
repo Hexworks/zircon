@@ -41,7 +41,7 @@ class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
 /**
  * Creates a new [Paragraph] using the component builder DSL and returns it.
  */
-fun buildParagraph(init: ParagraphBuilder.() -> Unit): Paragraph =
+fun paragraph(init: ParagraphBuilder.() -> Unit): Paragraph =
     ParagraphBuilder().apply(init).build()
 
 /**

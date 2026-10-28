@@ -52,7 +52,7 @@ class ModalBuilder<T : ModalResult> :
         }
         if (centeredDialog) {
             component.moveTo(
-                Position.create(
+                Position(
                     x = (size.width - component.size.width) / 2,
                     y = (size.height - component.size.height) / 2
                 )
@@ -80,14 +80,14 @@ class ModalBuilder<T : ModalResult> :
 /**
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
-fun <T : ModalResult> buildModal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
+fun <T : ModalResult> modal(init: ModalBuilder<T>.() -> Unit): Modal<T> =
     ModalBuilder<T>().apply(init).build()
 
 /**
  * Creates a new [Modal] using the component builder DSL and returns it.
  */
 @JvmName("buildModalWithNoResult")
-fun buildModal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModalResult> =
+fun modal(init: ModalBuilder<EmptyModalResult>.() -> Unit): Modal<EmptyModalResult> =
     ModalBuilder<EmptyModalResult>().apply(init).build()
 
 /**

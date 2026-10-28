@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
+import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.internal.component.impl.texteditor.TextEditor
 import kotlin.test.Test
 import kotlin.test.expect
@@ -17,10 +17,7 @@ class InsertCharacterTest {
             bt
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 1
-                y = 1
-            }
+            cursor = Position(1, 1)
         )
 
         val result = InsertCharacter(characterTile { +'a' }).apply(input)
@@ -30,10 +27,7 @@ class InsertCharacterTest {
             wom
             bat
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 2
-            y = 1
-        })
+        ).state.copy(cursor = Position(2, 1))
 
         expect(expected, "State is not what's expected") {
             result
@@ -48,10 +42,7 @@ class InsertCharacterTest {
             ba
         """.trimIndent()
         ).state.copy(
-            cursor = position {
-                x = 2
-                y = 1
-            }
+            cursor = Position(2, 1)
         )
 
         val result = InsertCharacter(characterTile { +'t' }).apply(input)
@@ -61,10 +52,7 @@ class InsertCharacterTest {
             wom
             bat
         """.trimIndent()
-        ).state.copy(cursor = position {
-            x = 3
-            y = 1
-        })
+        ).state.copy(cursor = Position(3, 1))
 
         println(expected)
 

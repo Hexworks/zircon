@@ -240,7 +240,7 @@ class DefaultLayerableTest {
 
         val handle = target.addLayer(layer0)
 
-        val pos = Position.create(3, 4)
+        val pos = Position(3, 4)
 
         handle.moveBy(pos)
 
@@ -266,6 +266,6 @@ class DefaultLayerableTest {
 
     companion object {
         val TILESET = CP437TilesetResources.wanderlust16x16()
-        val SIZE = Size.create(80, 24)
+        val SIZE = Size(80, 24)
     }
 }

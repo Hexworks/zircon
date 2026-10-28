@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
-import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.*
@@ -96,10 +95,7 @@ abstract class TileGraphicsTest {
     @Test
     fun When_drawing_other_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
             filler = FILLER
         }
         target.draw(other, pos(1, 1))
@@ -114,10 +110,7 @@ abstract class TileGraphicsTest {
     @Test
     fun When_drawing_onto_other_tile_graphics_Then_it_should_properly_be_drawn() {
         val other = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
             filler = FILLER
         }
         target.draw(other, pos(2, 2))
@@ -128,10 +121,7 @@ abstract class TileGraphicsTest {
     @Test
     fun When_drawing_overflowing_tile_graphics_Then_it_should_be_properly_drawn() {
         val other = tileGraphics {
-            withSize {
-                width = 2
-                height = 2
-            }
+            size = Size(2, 2)
             filler = FILLER
         }
         target.draw(other, pos(2, 2))
@@ -153,7 +143,7 @@ abstract class TileGraphicsTest {
     fun When_resizing_with_filler_Then_it_should_be_properly_filled() {
         val defaultTile = FILLER.withCharacter('x')
         target.fill(defaultTile)
-        val result = target.toResized(Size.create(4, 4), FILLER)
+        val result = target.toResized(Size(4, 4), FILLER)
 
         result.fetchCharacters() shouldBe listOf(
             'x', 'x', 'x', 'a',
@@ -167,7 +157,7 @@ abstract class TileGraphicsTest {
     fun When_resizing_without_filler_Then_it_should_be_properly_resized() {
         val defaultTile = FILLER.withCharacter('x')
         target.fill(defaultTile)
-        val result = target.toResized(Size.create(4, 4))
+        val result = target.toResized(Size(4, 4))
 
         result.fetchCharacters() shouldBe listOf(
             'x', 'x', 'x', ' ',
@@ -181,7 +171,7 @@ abstract class TileGraphicsTest {
     fun When_shrinking_Then_it_should_be_properly_shrunk() {
         val tile = FILLER.withCharacter('x')
         target.fill(tile)
-        val result = target.toResized(Size.create(2, 2))
+        val result = target.toResized(Size(2, 2))
 
         result.tiles.values shouldBe listOf(tile, tile, tile, tile)
     }
@@ -210,25 +200,25 @@ abstract class TileGraphicsTest {
     private fun fetchTargetChars(): List<Tile> {
         return (0..2).flatMap { col ->
             (0..2).map { row ->
-                target.getTileAtOrNull(Position.create(col, row))
+                target.getTileAtOrNull(Position(col, row))
             }
         }.filterNotNull()
     }
 
     private fun fetchOutOfBoundsPositions(): List<Position> {
         return listOf(
-            Position.create(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
-            Position.create(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
-            Position.create(Int.MAX_VALUE, Int.MAX_VALUE)
+            Position(SIZE_OF_3X3.width - 1, Int.MAX_VALUE),
+            Position(Int.MAX_VALUE, SIZE_OF_3X3.width - 1),
+            Position(Int.MAX_VALUE, Int.MAX_VALUE)
         )
     }
 
-    private fun pos(x: Int, y: Int) = Position.create(x, y)
+    private fun pos(x: Int, y: Int) = Position(x, y)
 
     companion object {
         val TILESET = CP437TilesetResources.jolly12x12()
-        val FILLED_POS = Position.create(1, 2)
-        val SIZE_OF_3X3 = Size.create(3, 3)
+        val FILLED_POS = Position(1, 2)
+        val SIZE_OF_3X3 = Size(3, 3)
         val FILLER: CharacterTile = characterTile {
             +'a'
         }

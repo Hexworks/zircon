@@ -39,8 +39,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         if (dx1 > dx2) {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                    fromPoint = Position(startX.toInt(), startY.toInt()),
+                    toPoint = Position(endX.toInt(), startY.toInt())
                 )
                 startY++
                 startX += dx2
@@ -49,8 +49,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             endX = points[1].x.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                    fromPoint = Position(startX.toInt(), startY.toInt()),
+                    toPoint = Position(endX.toInt(), startY.toInt())
                 )
                 startY++
                 startX += dx2
@@ -59,8 +59,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
         } else {
             while (startY <= points[1].y) {
                 result += LineFactory.buildLine(
-                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                    fromPoint = Position(startX.toInt(), startY.toInt()),
+                    toPoint = Position(endX.toInt(), startY.toInt())
                 )
                 startY++
                 startX += dx1
@@ -70,8 +70,8 @@ object FilledTriangleFactory : ShapeFactory<TriangleParameters> {
             startY = points[1].y.toFloat()
             while (startY <= points[2].y) {
                 result += LineFactory.buildLine(
-                    fromPoint = Position.create(startX.toInt(), startY.toInt()),
-                    toPoint = Position.create(endX.toInt(), startY.toInt())
+                    fromPoint = Position(startX.toInt(), startY.toInt()),
+                    toPoint = Position(endX.toInt(), startY.toInt())
                 )
                 startY++
                 startX += dx3

@@ -17,7 +17,7 @@ class HorizontalNumberInputBuilder :
     override fun calculateContentSize(): Size {
         val length = this.maxValue.toString().length + 1
         return if (contentWidth < length) {
-            Size.create(length, 1)
+            Size(length, 1)
         } else preferredContentSize
     }
 
@@ -34,7 +34,7 @@ class HorizontalNumberInputBuilder :
 /**
  * Creates a new [NumberInput] using the component builder DSL and returns it.
  */
-fun buildHorizontalNumberInput(
+fun horizontalNumberInput(
     init: HorizontalNumberInputBuilder.() -> Unit
 ): NumberInput =
     HorizontalNumberInputBuilder().apply(init).build()

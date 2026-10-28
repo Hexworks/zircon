@@ -52,7 +52,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
                     }
                 }
                 stack.addFirst(fillerTile)
-                graphics.draw(stack, Position.create(x, y))
+                graphics.draw(stack, Position(x, y))
                 y++
             }
         }
@@ -67,7 +67,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
     ): Sequence<Sequence<Pair<Position3D, BlockTileType>>> = sequence {
         val maxY = visibleOffset.y + visibleSize.yLength - 1
         val minZ = visibleOffset.z
-        var currPos = Position3D.create(
+        var currPos = Position3D(
             x = x, // TODO: test regression:  `+ visibleOffset.x`
             y = 0 + visibleOffset.y,
             z = visibleSize.zLength - 1 + visibleOffset.z
@@ -97,7 +97,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
         // TODO: test these bounds
         while (y >= minY && z >= minZ) {
             for (value in FrontTraversal.values()) {
-                val pos = Position3D.create(
+                val pos = Position3D(
                     x = startPos.x,
                     y = value.yTransformer(y),
                     z = value.zTransformer(z)
@@ -122,7 +122,7 @@ class TopDownObliqueFrontGameAreaRenderer<T : Tile, B : Block<T>> : GameAreaRend
         // TODO: test these bounds
         while (y >= minY && z >= minZ) {
             for (value in TopTraversal.values()) {
-                val pos = Position3D.create(
+                val pos = Position3D(
                     x = startPos.x,
                     y = value.yTransformer(y),
                     z = value.zTransformer(z)

@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.builder.graphics.tileImage
-import org.hexworks.zircon.api.builder.graphics.withSize
 import org.hexworks.zircon.api.color.ANSIColor
 import org.hexworks.zircon.api.color.palette.ansi.DefaultAnsiPalette
 import org.hexworks.zircon.api.data.Position
@@ -31,23 +30,17 @@ class DefaultTileImageTest {
     fun shouldProperlyGetExistingTile() {
 
         val other = tileImage {
-            withSize {
-                width = 3
-                height = 3
-            }
+            size = Size(3, 3)
             filler = defaultTile()
         }
 
         // TODO: WTF is happening here?
         tileImage {
             filler = defaultTile()
-            withSize {
-                width = 5
-                height = 5
-            }
+            size = Size(5, 5)
             tileset = CP437TilesetResources.aduDhabi16x16()
         }
-            .withTileAt(Position.create(1, 1), defaultTile().withCharacter('x'))
+            .withTileAt(Position(1, 1), defaultTile().withCharacter('x'))
             .combineWith(other, Position.OFFSET_1X1)
             .toTileGraphics()
 
@@ -68,40 +61,40 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyCreateSubImage() {
-        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size(2, 1))
 
         result.tiles.toMap() shouldBe mapOf(
-            Position.create(0, 0) to FILLER_TILE_A
+            Position(0, 0) to FILLER_TILE_A
         )
     }
 
     @Test
     fun shouldProperlyResizeToSmaller() {
-        val result = IMAGE_3X3.withNewSize(Size.create(1, 1))
+        val result = IMAGE_3X3.withNewSize(Size(1, 1))
 
-        result.tiles.toMap() shouldBe mapOf(Position.create(0, 0) to FILLER_TILE_A)
+        result.tiles.toMap() shouldBe mapOf(Position(0, 0) to FILLER_TILE_A)
     }
 
     @Test
     fun shouldProperlyResizeToLarger() {
-        val result = IMAGE_3X3.withNewSize(Size.create(4, 1))
+        val result = IMAGE_3X3.withNewSize(Size(4, 1))
 
         result.tiles.toMap() shouldBe mapOf(
-            Position.create(0, 0) to FILLER_TILE_A,
-            Position.create(1, 0) to FILLER_TILE_A,
-            Position.create(2, 0) to FILLER_TILE_A
+            Position(0, 0) to FILLER_TILE_A,
+            Position(1, 0) to FILLER_TILE_A,
+            Position(2, 0) to FILLER_TILE_A
         )
     }
 
     @Test
     fun shouldProperlyResizeToLargerWithFiller() {
-        val result = IMAGE_3X3.withNewSize(Size.create(4, 1), NEW_TILE_B)
+        val result = IMAGE_3X3.withNewSize(Size(4, 1), NEW_TILE_B)
 
         result.tiles.toMap() shouldBe mapOf(
-            Position.create(0, 0) to FILLER_TILE_A,
-            Position.create(1, 0) to FILLER_TILE_A,
-            Position.create(2, 0) to FILLER_TILE_A,
-            Position.create(3, 0) to NEW_TILE_B
+            Position(0, 0) to FILLER_TILE_A,
+            Position(1, 0) to FILLER_TILE_A,
+            Position(2, 0) to FILLER_TILE_A,
+            Position(3, 0) to NEW_TILE_B
         )
     }
 
@@ -119,16 +112,16 @@ class DefaultTileImageTest {
 
     @Test
     fun shouldProperlyFetchCellsBy() {
-        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size.create(2, 1))
+        val result = IMAGE_3X3.toSubImage(Position.OFFSET_1X1, Size(2, 1))
 
         result.tiles.toMap() shouldBe mapOf(
-            Position.create(0, 0) to FILLER_TILE_A
+            Position(0, 0) to FILLER_TILE_A
         )
     }
 
     @Test
     fun shouldProperlyCombineWith() {
-        val result = IMAGE_3X3.combineWith(OTHER_IMAGE_2X2, Position.create(2, 2))
+        val result = IMAGE_3X3.combineWith(OTHER_IMAGE_2X2, Position(2, 2))
 
         result.fetchCharacters() shouldContainExactly listOf(
             'a', 'a', 'a', ' ',
@@ -175,39 +168,39 @@ class DefaultTileImageTest {
 
     companion object {
 
-        val FILLED_POS = Position.create(1, 0)
-        val EMPTY_POS = Position.create(2, 1)
+        val FILLED_POS = Position(1, 0)
+        val EMPTY_POS = Position(2, 1)
         val FILLER_TILE_A = defaultTile().withCharacter('a')
         val NEW_TILE_B = defaultTile().withCharacter('b')
 
         val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
-        val SIZE_3X3 = Size.create(3, 3)
+        val SIZE_3X3 = Size(3, 3)
         val IMAGE_3X3 = DefaultTileImage(
             size = SIZE_3X3,
             tileset = TILESET_CHEEPICUS,
             initialTiles = mapOf(
-                Position.create(0, 0) to FILLER_TILE_A,
-                Position.create(1, 0) to FILLER_TILE_A,
-                Position.create(2, 0) to FILLER_TILE_A,
+                Position(0, 0) to FILLER_TILE_A,
+                Position(1, 0) to FILLER_TILE_A,
+                Position(2, 0) to FILLER_TILE_A,
 
-                Position.create(0, 1) to FILLER_TILE_A,
-                Position.create(1, 1) to FILLER_TILE_A,
+                Position(0, 1) to FILLER_TILE_A,
+                Position(1, 1) to FILLER_TILE_A,
                 // 2, 1 empty
 
-                Position.create(0, 2) to FILLER_TILE_A,
-                Position.create(1, 2) to FILLER_TILE_A,
-                Position.create(2, 2) to FILLER_TILE_A
+                Position(0, 2) to FILLER_TILE_A,
+                Position(1, 2) to FILLER_TILE_A,
+                Position(2, 2) to FILLER_TILE_A
             )
         )
 
         val OTHER_IMAGE_2X2 = DefaultTileImage(
-            size = Size.create(2, 2),
+            size = Size(2, 2),
             tileset = CP437TilesetResources.acorn8X16(),
             initialTiles = mapOf(
-                Position.create(0, 0) to NEW_TILE_B,
-                Position.create(1, 0) to NEW_TILE_B,
-                Position.create(0, 1) to NEW_TILE_B,
-                Position.create(1, 1) to NEW_TILE_B
+                Position(0, 0) to NEW_TILE_B,
+                Position(1, 0) to NEW_TILE_B,
+                Position(0, 1) to NEW_TILE_B,
+                Position(1, 1) to NEW_TILE_B
             )
         )
     }

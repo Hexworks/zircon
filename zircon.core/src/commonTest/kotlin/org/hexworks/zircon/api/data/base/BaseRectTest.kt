@@ -14,8 +14,8 @@ class BaseRectTest {
 
     @Test
     fun shouldSplitRect() {
-        val size = Size.create(100, 100)
-        val rect = Boundable.create(Position.create(0, 0), size)
+        val size = Size(100, 100)
+        val rect = Boundable.create(Position(0, 0), size)
 
         val splitedRectsHorizontal = rect.splitHorizontal(50)
         val splitedRectsVertical = rect.splitVertical(80)

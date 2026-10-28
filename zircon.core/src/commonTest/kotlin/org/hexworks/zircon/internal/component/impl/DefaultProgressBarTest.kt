@@ -73,7 +73,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
         rendererStub.render(drawWindow, ComponentRenderContext(target))
 
         (0 until PROGRESS_BAR_SIZE_5).forEachIndexed { i, _ ->
-            drawWindow.getTileAtOrNull(Position.create(i + offset, 0)) shouldBe
+            drawWindow.getTileAtOrNull(Position(i + offset, 0)) shouldBe
                 characterTile {
                     character = ' '
                     styleSet = invertedStyleSet
@@ -90,7 +90,7 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
     }
 
     companion object {
-        val SIZE_10X1 = Size.create(10, 1)
+        val SIZE_10X1 = Size(10, 1)
         const val RANGE = 100
         const val STEPS = 10
         const val PROGRESS_50_PERCENT = 50.0

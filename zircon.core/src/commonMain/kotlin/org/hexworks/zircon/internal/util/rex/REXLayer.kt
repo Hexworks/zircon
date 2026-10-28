@@ -25,7 +25,7 @@ data class REXLayer(
     fun toLayer(tileset: TilesetResource): Layer {
         val layer = layer {
             this.tileset = tileset
-            size = Size.create(width, height)
+            size = Size(width, height)
         }
 
         for (y in 0 until height) {
@@ -44,7 +44,7 @@ data class REXLayer(
                             foregroundColor = cell.foregroundColor
                         }
                     },
-                    drawPosition = Position.create(x, y)
+                    drawPosition = Position(x, y)
                 )
             }
         }

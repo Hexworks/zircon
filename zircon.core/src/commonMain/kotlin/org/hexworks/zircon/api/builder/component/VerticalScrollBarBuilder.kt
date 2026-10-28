@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
@@ -21,10 +21,7 @@ class VerticalScrollBarBuilder(
 
     override fun build(): ScrollBar {
         val visibleSize = scrollable.visibleSize
-        preferredSize = size {
-            width = 1
-            height = visibleSize.height
-        }
+        preferredSize = Size(1, visibleSize.height)
         return DefaultVerticalScrollBar(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),
@@ -36,7 +33,7 @@ class VerticalScrollBarBuilder(
 /**
  * Creates a new vertical [ScrollBar] using the component builder DSL and returns it.
  */
-fun buildVerticalScrollBar(scrollable: Scrollable, init: VerticalScrollBarBuilder.() -> Unit): ScrollBar =
+fun verticalScrollBar(scrollable: Scrollable, init: VerticalScrollBarBuilder.() -> Unit): ScrollBar =
     VerticalScrollBarBuilder(scrollable).apply(init).build()
 
 /**

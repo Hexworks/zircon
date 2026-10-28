@@ -35,7 +35,7 @@ interface Tileset<S : Any> : Identifiable {
      * width * height
      */
     val size: Size
-        get() = Size.create(width, height)
+        get() = Size(width, height)
 
     /**
      * Draws the given `tile` using the given [context] at the

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.fragment.TabBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -17,7 +16,7 @@ abstract class TabBarBuilder(
         require(size.isSizeNotUnknown) {
             "A tab bar must has a size"
         }
-        require(size > Size.create(3, 3)) {
+        require(size > Size(3, 3)) {
             "Can't create a tab bar that's smaller than 3x3"
         }
         require(tabs.isNotEmpty()) {
@@ -35,6 +34,3 @@ abstract class TabBarBuilder(
     }
 }
 
-fun TabBarBuilder.withSize(init: SizeBuilder.() -> Unit) = apply {
-    size = SizeBuilder().apply(init).build()
-}

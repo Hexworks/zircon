@@ -41,7 +41,7 @@ fun Size.fetchPositions(): Iterable<Position> = Iterable {
         override fun hasNext() = currY < endY && currX < endX
 
         override fun next(): Position {
-            return Position.create(currX, currY).also {
+            return Position(currX, currY).also {
                 currX++
                 if (currX == endX) {
                     currY++
@@ -68,11 +68,11 @@ fun Size.fetchBoundingBoxPositions(): Set<Position> {
 
 fun Size.fetchTopLeftPosition(): Position = Position.ZERO
 
-fun Size.fetchTopRightPosition(): Position = Position.create(width - 1, 0)
+fun Size.fetchTopRightPosition(): Position = Position(width - 1, 0)
 
-fun Size.fetchBottomLeftPosition(): Position = Position.create(0, height - 1)
+fun Size.fetchBottomLeftPosition(): Position = Position(0, height - 1)
 
-fun Size.fetchBottomRightPosition(): Position = Position.create(width - 1, height - 1)
+fun Size.fetchBottomRightPosition(): Position = Position(width - 1, height - 1)
 
 /**
  * Creates a new size based on this size, but with a different width.
@@ -81,7 +81,7 @@ fun Size.withWidth(width: Int): Size {
     if (this.width == width) {
         return this
     }
-    return Size.create(width, this.height)
+    return Size(width, this.height)
 }
 
 /**
@@ -91,7 +91,7 @@ fun Size.withHeight(height: Int): Size {
     if (this.height == height) {
         return this
     }
-    return Size.create(this.width, height)
+    return Size(this.width, height)
 }
 
 /**
@@ -169,7 +169,7 @@ fun Size.containsPosition(position: Position): Boolean = position.x < width && p
  * Converts this [Size] to a [Position]:
  * [Size.width] to [Position.x] and [Size.height] to [Position.y]
  */
-fun Size.toPosition(): Position = Position.create(width, height)
+fun Size.toPosition(): Position = Position(width, height)
 
 /**
  * Converts this [Size] to a [Rect] with the given [Position].

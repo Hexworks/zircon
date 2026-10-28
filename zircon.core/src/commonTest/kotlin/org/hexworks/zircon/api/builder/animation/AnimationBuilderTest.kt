@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.animation
 
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.Animation.FiniteLoop
@@ -15,10 +16,7 @@ class AnimationBuilderTest {
             position = Position.OFFSET_1X1
             loopKind = FiniteLoop(1)
             frame {
-                withSize {
-                    width = 20
-                    height = 20
-                }
+                size = Size(20, 20)
                 repeatCount = 1
                 layer {
                     tileset = CP437TilesetResources.bisasam20x20()

@@ -25,7 +25,7 @@ interface Size : Comparable<Size>, Additive<Size> {
         /**
          * Creates a new [Size] using the given `width` (width) and `height` (height).
          */
-        fun create(width: Int, height: Int): Size = DefaultSize(width, height)
+        operator fun invoke(width: Int, height: Int): Size = DefaultSize(width, height)
 
         //? This can also be called "IDENTITY". In abstract algebra an Additive type
         //? with a zero element is a Monoid (under addition), but we want to keep the
@@ -33,9 +33,9 @@ interface Size : Comparable<Size>, Additive<Size> {
         //? in Kotlin that says "if a class implements Additive, its `companion object`
         //? also must implement `Identity<T>` since Kotlin doesn't support typeclasses
         //? so it would be pointless anyway.
-        val ZERO = create(0, 0)
-        val ONE = create(1, 1)
-        val DEFAULT_GRID_SIZE = create(60, 30)
-        val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE)
+        val ZERO = invoke(0, 0)
+        val ONE = invoke(1, 1)
+        val DEFAULT_GRID_SIZE = invoke(60, 30)
+        val UNKNOWN = invoke(Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

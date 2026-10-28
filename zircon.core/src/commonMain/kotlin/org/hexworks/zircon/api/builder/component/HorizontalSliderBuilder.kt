@@ -22,7 +22,7 @@ class HorizontalSliderBuilder : SliderBuilder<Slider>(
     override var numberOfSteps: Int = 10
         set(value) {
             require(value in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
-            preferredContentSize = Size.create(
+            preferredContentSize = Size(
                 width = value + 1,
                 height = 1
             )
@@ -41,7 +41,7 @@ class HorizontalSliderBuilder : SliderBuilder<Slider>(
 /**
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
-fun buildHorizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
+fun horizontalSlider(init: HorizontalSliderBuilder.() -> Unit): Slider =
     HorizontalSliderBuilder().apply(init).build()
 
 /**

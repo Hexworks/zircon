@@ -83,7 +83,7 @@ fun Position.withRelative(translate: Position): Position = withRelativeY(transla
  * The y coordinate is used to shift up
  */
 fun Position.relativeToTopOf(component: Component): Position = component.position.let { (compX, compY) ->
-    Position.create(compX + x, maxOf(compY - y, 0))
+    Position(compX + x, maxOf(compY - y, 0))
 }
 
 /**
@@ -92,7 +92,7 @@ fun Position.relativeToTopOf(component: Component): Position = component.positio
  * The y coordinate is used to shift down
  */
 fun Position.relativeToRightOf(component: Component): Position = component.position.let { (compX, compY) ->
-    Position.create(compX + component.width + x, compY + y)
+    Position(compX + component.width + x, compY + y)
 }
 
 /**
@@ -101,7 +101,7 @@ fun Position.relativeToRightOf(component: Component): Position = component.posit
  * The y coordinate is used to shift down
  */
 fun Position.relativeToBottomOf(component: Component) = component.position.let { (compX, compY) ->
-    Position.create(compX + x, compY + component.size.height + y)
+    Position(compX + x, compY + component.size.height + y)
 }
 
 /**
@@ -110,7 +110,7 @@ fun Position.relativeToBottomOf(component: Component) = component.position.let {
  * The y coordinate is used to shift down
  */
 fun Position.relativeToLeftOf(component: Component) = component.position.let { (compX, compY) ->
-    Position.create(maxOf(compX - x, 0), compY + y)
+    Position(maxOf(compX - x, 0), compY + y)
 }
 
 /**
@@ -118,7 +118,7 @@ fun Position.relativeToLeftOf(component: Component) = component.position.let { (
  * this position is Position(x=2, y=3) it will become
  * Size(x=2, y=3).
  */
-fun Position.toSize(): Size = Size.create(x, y)
+fun Position.toSize(): Size = Size(x, y)
 
 /**
  * Creates a new [Position3D] from the [x] and [y] components of this [Position]

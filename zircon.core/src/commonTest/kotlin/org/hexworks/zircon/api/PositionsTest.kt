@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api
 
-import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position3D
@@ -19,7 +19,7 @@ class PositionsTest {
 
     @BeforeTest
     fun setUp() {
-        componentStub = buildLabel {
+        componentStub = label {
             position = POSITION_2X3
             preferredSize = SIZE_3X4
         }
@@ -27,29 +27,29 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyReturnTopLeftCorner() {
-        assertEquals(Position.ZERO, Position.create(0, 0))
+        assertEquals(Position.ZERO, Position(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnOffset1x1() {
-        assertEquals(Position.OFFSET_1X1, Position.create(1, 1))
+        assertEquals(Position.OFFSET_1X1, Position(1, 1))
     }
 
     @Test
     fun shouldProperlyReturnZero() {
-        assertEquals(Position.ZERO, Position.create(0, 0))
+        assertEquals(Position.ZERO, Position(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnDefaultPosition() {
-        assertEquals(Position.ZERO, Position.create(0, 0))
+        assertEquals(Position.ZERO, Position(0, 0))
     }
 
     @Test
     fun shouldProperlyReturnUnknown() {
         assertEquals(
             Position.UNKNOWN,
-            Position.create(
+            Position(
                 Int.MAX_VALUE, Int.MAX_VALUE
             )
         )
@@ -92,7 +92,7 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyCrate() {
-        assertEquals(Position.create(2, 3), POSITION_2X3)
+        assertEquals(Position(2, 3), POSITION_2X3)
     }
 
     @Test
@@ -102,17 +102,17 @@ class PositionsTest {
 
     @Test
     fun shouldProperlyCreate3DPosition() {
-        assertEquals(Position3D.create(4, 3, 2), POSITION3D_4X3X2)
+        assertEquals(Position3D(4, 3, 2), POSITION3D_4X3X2)
     }
 
     @Test
     fun shouldProperlyConvert2DTo3DPosition() {
-        assertEquals(POSITION_2X3.toPosition3D(4), Position3D.create(2, 3, 4))
+        assertEquals(POSITION_2X3.toPosition3D(4), Position3D(2, 3, 4))
     }
 
     companion object {
-        private val POSITION_2X3 = Position.create(2, 3)
-        private val POSITION3D_4X3X2 = Position3D.create(4, 3, 2)
-        private val SIZE_3X4 = Size.create(3, 4)
+        private val POSITION_2X3 = Position(2, 3)
+        private val POSITION3D_4X3X2 = Position3D(4, 3, 2)
+        private val SIZE_3X4 = Size(3, 4)
     }
 }

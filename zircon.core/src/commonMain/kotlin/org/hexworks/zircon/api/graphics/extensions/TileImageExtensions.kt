@@ -124,7 +124,7 @@ fun TileImage.withTileset(tileset: TilesetResource): TileImage {
 fun TileImage.combineWith(tileImage: TileImage, offset: Position): TileImage {
     val columns = max(width, offset.x + tileImage.width)
     val rows = max(height, offset.y + tileImage.height)
-    val newSize = Size.create(columns, rows)
+    val newSize = Size(columns, rows)
 
     var newTiles = tiles
     newTiles = newTiles.putAll(tileImage.tiles.mapKeys { it.key + offset })

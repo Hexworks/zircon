@@ -33,7 +33,7 @@ class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
 /**
  * Creates a new [RadioButton] using the component builder DSL and returns it.
  */
-fun buildRadioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
+fun radioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
     RadioButtonBuilder().apply(init).build()
 
 /**

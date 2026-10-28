@@ -32,7 +32,7 @@ data class BoxDecorationRenderer(
 
     override val offset = OFFSET_1X1
 
-    override val occupiedSize = Size.create(2, 2)
+    override val occupiedSize = Size(2, 2)
 
     override val title: String by titleProperty.asDelegate()
 
@@ -73,9 +73,9 @@ data class BoxDecorationRenderer(
                     characterTile {
                         styleSet = style
                         character = boxType.connectorLeft
-                    }, Position.create(1 + titleOffsetX, titleOffsetY)
+                    }, Position(1 + titleOffsetX, titleOffsetY)
                 )
-                val pos = Position.create(2 + titleOffsetX, titleOffsetY)
+                val pos = Position(2 + titleOffsetX, titleOffsetY)
                 (cleanText.indices).forEach { idx ->
                     drawWindow.draw(
                         tile = characterTile {
@@ -90,7 +90,7 @@ data class BoxDecorationRenderer(
                         styleSet = style
                         character = boxType.connectorRight
                     },
-                    drawPosition = Position.create(2 + titleOffsetX + cleanText.length, titleOffsetY)
+                    drawPosition = Position(2 + titleOffsetX + cleanText.length, titleOffsetY)
                 )
             }
         }

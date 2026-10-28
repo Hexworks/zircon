@@ -8,10 +8,10 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.noDecoration
-import org.hexworks.zircon.api.builder.component.buildButton
-import org.hexworks.zircon.api.builder.component.buildHbox
-import org.hexworks.zircon.api.builder.component.buildModal
-import org.hexworks.zircon.api.builder.component.buildVbox
+import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.hBox
+import org.hexworks.zircon.api.builder.component.modal
+import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
@@ -35,9 +35,9 @@ class DefaultMenuBar<T : Any> internal constructor(
     menuElements: List<DropdownMenu<T>>,
 ) : MenuBar<T> {
 
-    override val root = buildHbox {
+    override val root = hBox {
         this.position = position
-        this.preferredContentSize = Size.create(width, 1)
+        this.preferredContentSize = Size(width, 1)
         this.colorTheme = theme
         this.tileset = tileset
         this.spacing = spacing
@@ -50,7 +50,7 @@ class DefaultMenuBar<T : Any> internal constructor(
         menuElements.forEach { dropdownMenu ->
             val children = dropdownMenu.children
 
-            val menuButton = buildButton {
+            val menuButton = button {
                 +dropdownMenu.label
                 decorations {
                     +noDecoration()
@@ -58,8 +58,8 @@ class DefaultMenuBar<T : Any> internal constructor(
             }
             menuButton.onActivated {
 
-                val menuItems = buildVbox {
-                    preferredContentSize = Size.create(
+                val menuItems = vBox {
+                    preferredContentSize = Size(
                         width = children.minMenuWidth,
                         height = children.size
                     )
@@ -69,7 +69,7 @@ class DefaultMenuBar<T : Any> internal constructor(
                     }
                 }
 
-                val modal = buildModal<MenuSelection<T>> {
+                val modal = modal<MenuSelection<T>> {
                     centeredDialog = false
                     contentComponent = menuItems
                     preferredSize = screen.size
@@ -100,7 +100,7 @@ class DefaultMenuBar<T : Any> internal constructor(
                 }
 
                 children.forEach { menuItem ->
-                    menuItems.addComponent(buildButton {
+                    menuItems.addComponent(button {
                         +menuItem.label
                         colorTheme = theme
                         decorations {

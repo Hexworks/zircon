@@ -21,7 +21,7 @@ class VerticalSliderBuilder :
     override var numberOfSteps: Int = 10
         set(value) {
             require(value in 1..maxValue) { "Number of steps must be greater than 0 and smaller than the maxValue" }
-            preferredContentSize = Size.create(
+            preferredContentSize = Size(
                 width = 1,
                 height = value + 1
             )
@@ -40,7 +40,7 @@ class VerticalSliderBuilder :
 /**
  * Creates a new [Slider] using the component builder DSL and returns it.
  */
-fun buildVerticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
+fun verticalSlider(init: VerticalSliderBuilder.() -> Unit): Slider =
     VerticalSliderBuilder().apply(init).build()
 
 /**

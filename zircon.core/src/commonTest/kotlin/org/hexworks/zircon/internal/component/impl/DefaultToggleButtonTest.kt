@@ -89,7 +89,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     fun shouldProperlyAddButtonText() {
         val offset = target.contentOffset.x + DefaultToggleButtonRenderer.DECORATION_WIDTH
         TEXT.forEachIndexed { i, char ->
-            drawWindow.getTileAtOrNull(Position.create(i + offset, 0)) shouldBe
+            drawWindow.getTileAtOrNull(Position(i + offset, 0)) shouldBe
                 characterTile {
                     character = char
                     styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
@@ -158,7 +158,7 @@ class DefaultToggleButtonTest : FocusableComponentImplementationTest<DefaultTogg
     }
 
     companion object {
-        val SIZE_15X1 = Size.create(15, 1)
+        val SIZE_15X1 = Size(15, 1)
         const val TEXT = "Button text"
         private val SELECTED_ACTION = HIGHLIGHTED
         private val UNSELECTED_ACTION = DEFAULT

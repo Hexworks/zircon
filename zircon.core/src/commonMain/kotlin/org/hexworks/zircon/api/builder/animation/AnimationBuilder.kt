@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.animation.Animation.FiniteLoop
 import org.hexworks.zircon.api.animation.Animation.LoopKind
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.PositionBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.internal.animation.InternalAnimationFrame
@@ -114,6 +113,3 @@ class AnimationBuilder(
 fun animation(init: AnimationBuilder.() -> Unit): Animation =
     AnimationBuilder.create().apply(init).build()
 
-fun AnimationBuilder.withPosition(init: PositionBuilder.() -> Unit) = apply {
-    position = PositionBuilder().apply(init).build()
-}

@@ -107,8 +107,8 @@ abstract class ComponentBuilderTest<T : Component, U : BaseComponentBuilder<T>> 
 
 
     companion object {
-        val POSITION_4X5 = Position.create(4, 5)
-        val SIZE_5X6 = Size.create(5, 6)
+        val POSITION_4X5 = Position(4, 5)
+        val SIZE_5X6 = Size(5, 6)
         val COMPONENT_STYLE_SET = componentStyleSet {
             defaultStyle = styleSet {
                 backgroundColor = DefaultAnsiPalette[GREEN]

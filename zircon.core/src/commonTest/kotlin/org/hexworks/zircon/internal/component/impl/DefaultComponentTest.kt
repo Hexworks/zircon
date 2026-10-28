@@ -8,11 +8,10 @@ import org.hexworks.zircon.api.behavior.extensions.moveDownBy
 import org.hexworks.zircon.api.behavior.extensions.moveLeftBy
 import org.hexworks.zircon.api.behavior.extensions.moveRightBy
 import org.hexworks.zircon.api.behavior.extensions.moveUpBy
-import org.hexworks.zircon.api.builder.component.buildLabel
-import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.label
+import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -44,7 +43,7 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     @BeforeTest
     override fun setUp() {
-        componentStub = ComponentStub(DefaultContainerTest.COMPONENT_STUB_POSITION_1x1, Size.create(2, 2))
+        componentStub = ComponentStub(DefaultContainerTest.COMPONENT_STUB_POSITION_1x1, Size(2, 2))
         rendererStub = ComponentRendererStub()
         target = object : DefaultComponent(
             metadata = ComponentMetadata(
@@ -196,29 +195,23 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     @Test
     fun shouldProperlyCalculateAbsolutePositionWithDeeplyNestedComponents() {
 
-        val rootPos = Position.create(1, 1)
-        val parentPos = Position.create(2, 1)
-        val leafPos = Position.create(1, 2)
+        val rootPos = Position(1, 1)
+        val parentPos = Position(2, 1)
+        val leafPos = Position(1, 2)
 
-        val root = buildPanel {
-            withPreferredSize {
-                width = 10
-                height = 10
-            }
+        val root = panel {
+            preferredSize = Size(10, 10)
             position = rootPos
         }
 
-        val parent = buildPanel {
-            withPreferredSize {
-                width = 7
-                height = 7
-            }
+        val parent = panel {
+            preferredSize = Size(7, 7)
             position = parentPos
         }
 
         root.addComponent(parent)
 
-        val leaf = buildLabel {
+        val leaf = label {
             +"foo"
             position = leafPos
         }
@@ -249,8 +242,8 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     }
 
     companion object {
-        val POSITION_2_3 = Position.create(2, 3)
-        val NEW_POSITION_6x7 = Position.create(6, 7)
-        val SIZE_4x4 = Size.create(4, 4)
+        val POSITION_2_3 = Position(2, 3)
+        val NEW_POSITION_6x7 = Position(6, 7)
+        val SIZE_4x4 = Size(4, 4)
     }
 }

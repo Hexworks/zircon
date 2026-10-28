@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.builder.component.buildHeader
+import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.TableColumn
@@ -25,9 +25,9 @@ class TableColumn<T : Any, V : Any, C : Component> internal constructor(
     /**
      * The [Component] that can be used as the column's header.
      */
-    override val header = buildHeader {
+    override val header = header {
         +this@TableColumn.name
-        preferredSize = Size.create(width, 1)
+        preferredSize = Size(width, 1)
     }
 
     override fun renderCellFor(model: T) = cellRenderer(valueProvider(model))

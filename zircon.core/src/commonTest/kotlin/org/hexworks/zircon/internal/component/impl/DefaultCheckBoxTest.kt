@@ -82,7 +82,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     fun shouldProperlyAddCheckBoxText() {
         val offset = 4
         TEXT.forEachIndexed { i, char ->
-            drawWindow.getTileAtOrNull(Position.create(i + offset, 0)) shouldBe
+            drawWindow.getTileAtOrNull(Position(i + offset, 0)) shouldBe
                 characterTile {
                     character = char
                     styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
@@ -148,7 +148,7 @@ class DefaultCheckBoxTest : FocusableComponentImplementationTest<DefaultCheckBox
     }
 
     companion object {
-        val SIZE_20X1 = Size.create(20, 1)
+        val SIZE_20X1 = Size(20, 1)
         const val TEXT = "Button text"
     }
 }

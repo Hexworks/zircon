@@ -1,20 +1,10 @@
 package org.hexworks.zircon.api.builder
 
 /**
- * Simple builder pattern interface for [build]ing instances of type [T].
- * All builders have sensible defaults. If there are no sensible defaults a [Builder]
- * should provide a factory method that ensures that mandatory parameters are passed
- * to the [Builder] when it is created. This ensures that exceptions are not thrown from
- * [build] if its state is inconsistent.
- *
- * All configuration properties in a [Builder] should have a fluent setter
- * that allows for method chaining like this:
- *
- * ```kotlin
- * fun withFocusNext(focusNext: KeyboardEventMatcher) = also {
- *     this.focusNext = focusNext
- * }
- * ```
+ * A [Builder] collects configuration as plain `var` properties and creates a [T] from
+ * them in [build]. Builders are used through the DSL functions next to them, for example
+ * `button { text = "OK" }`, and every property has a sensible default so [build] never
+ * throws for an untouched builder.
  */
 interface Builder<out T> {
 

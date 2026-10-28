@@ -65,7 +65,7 @@ class VerticalTabBarBuilder(
 /**
  * Creates a new [TabBar] using the fragment builder DSL and returns it.
  */
-fun buildVerticalTabBar(
+fun verticalTabBar(
     init: VerticalTabBarBuilder.() -> Unit
 ): TabBar = VerticalTabBarBuilder().apply(init).build()
 

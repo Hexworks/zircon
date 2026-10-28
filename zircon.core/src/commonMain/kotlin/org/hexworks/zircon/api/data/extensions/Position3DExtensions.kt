@@ -70,11 +70,11 @@ fun Position3D.withRelative(translate: Position3D) = withRelativeY(translate.y)
  * this position is Position(x=2, y=3, z=1) it will become
  * Size3D(x=2, y=3, z=1).
  */
-fun Position3D.toSize(): Size3D = Size3D.create(x, y, z)
+fun Position3D.toSize(): Size3D = Size3D(x, y, z)
 
 /**
  * Transforms this [Position3D] to a [Position]. Note that
  * the `y` component is lost during the conversion!
  */
-fun Position3D.to2DPosition() = Position.create(x, y)
+fun Position3D.to2DPosition() = Position(x, y)
 

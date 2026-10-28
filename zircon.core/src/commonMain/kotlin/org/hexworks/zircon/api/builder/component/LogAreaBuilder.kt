@@ -15,9 +15,6 @@ class LogAreaBuilder : BaseComponentBuilder<LogArea>(
 
     var logRowHistorySize: Int = 100
 
-    fun withLogRowHistorySize(numberOfRows: Int) = also {
-        logRowHistorySize = numberOfRows
-    }
 
     override fun build(): LogArea {
         return DefaultLogArea(
@@ -30,7 +27,7 @@ class LogAreaBuilder : BaseComponentBuilder<LogArea>(
 /**
  * Creates a new [LogArea] using the component builder DSL and returns it.
  */
-fun buildLogArea(init: LogAreaBuilder.() -> Unit): LogArea =
+fun logArea(init: LogAreaBuilder.() -> Unit): LogArea =
     LogAreaBuilder().apply(init).build()
 
 /**

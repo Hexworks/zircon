@@ -6,11 +6,9 @@ import io.kotest.matchers.shouldNotBe
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.application.appConfig
-import org.hexworks.zircon.api.builder.component.buildButton
+import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.layer
-import org.hexworks.zircon.api.builder.graphics.withSize
-import org.hexworks.zircon.api.component.builder.base.withPosition
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.extensions.draw
@@ -80,29 +78,20 @@ class TileGridScreenTest {
     @Test
     fun When_a_layer_and_a_component_is_added_Then_renderables_should_be_returned_in_proper_order() {
         val layer = layer {
-            withSize {
-                width = 3
-                height = 4
-            }
+            size = Size(3, 4)
         }.apply {
             draw(characterTile { character = 'x' }, Position.OFFSET_1X1)
         }.asInternal()
 
-        val button = buildButton {
+        val button = button {
             +"y"
-            withPosition {
-                x = 2
-                y = 3
-            }
+            position = Position(2, 3)
         }
 
         val surfaceLayer = layer {
-            withSize {
-                width = 5
-                height = 6
-            }
+            size = Size(5, 6)
         }.apply {
-            draw(characterTile { character = 'z' }, Position.create(2, 3))
+            draw(characterTile { character = 'z' }, Position(2, 3))
         }.asInternal()
 
         target.draw(surfaceLayer)
@@ -117,7 +106,7 @@ class TileGridScreenTest {
     }
 
     companion object {
-        val SIZE = Size.create(10, 10)
+        val SIZE = Size(10, 10)
         val FONT = CP437TilesetResources.rogueYun16x16()
         val CHAR = characterTile { character = 'x' }
     }

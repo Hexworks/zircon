@@ -83,7 +83,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     fun shouldProperlyAddButtonText() {
         TEXT.forEachIndexed { i, char ->
             println("idx: $i")
-            drawWindow.getTileAtOrNull(Position.create(i, 0)) shouldBe
+            drawWindow.getTileAtOrNull(Position(i, 0)) shouldBe
                 characterTile {
                     character = char
                     styleSet = target.componentStyleSet.fetchStyleFor(DEFAULT)
@@ -140,7 +140,7 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     }
 
     companion object {
-        val SIZE_15X1 = Size.create(15, 1)
+        val SIZE_15X1 = Size(15, 1)
         const val TEXT = "Button text"
     }
 }

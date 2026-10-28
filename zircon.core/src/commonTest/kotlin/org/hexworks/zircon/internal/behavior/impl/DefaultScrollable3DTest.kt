@@ -44,7 +44,7 @@ class DefaultScrollable3DTest {
     fun shouldProperlyScrollOneRightWhenCanScroll() {
         target.scrollOneRight()
 
-        target.visibleOffset shouldBe Position3D.create(1, 0, 0)
+        target.visibleOffset shouldBe Position3D(1, 0, 0)
     }
 
     @Test
@@ -53,14 +53,14 @@ class DefaultScrollable3DTest {
         target.scrollOneRight()
         target.scrollOneLeft()
 
-        target.visibleOffset shouldBe Position3D.create(1, 0, 0)
+        target.visibleOffset shouldBe Position3D(1, 0, 0)
     }
 
     @Test
     fun shouldProperlyScrollOneForwardWhenCanScroll() {
         target.scrollOneForward()
 
-        target.visibleOffset shouldBe Position3D.create(0, 1, 0)
+        target.visibleOffset shouldBe Position3D(0, 1, 0)
     }
 
     @Test
@@ -69,14 +69,14 @@ class DefaultScrollable3DTest {
         target.scrollOneForward()
         target.scrollOneBackward()
 
-        target.visibleOffset shouldBe Position3D.create(0, 1, 0)
+        target.visibleOffset shouldBe Position3D(0, 1, 0)
     }
 
     @Test
     fun shouldProperlyScrollOneUpWhenCanScroll() {
         target.scrollOneUp()
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 1)
+        target.visibleOffset shouldBe Position3D(0, 0, 1)
     }
 
     @Test
@@ -85,14 +85,14 @@ class DefaultScrollable3DTest {
         target.scrollOneUp()
         target.scrollOneDown()
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 1)
+        target.visibleOffset shouldBe Position3D(0, 0, 1)
     }
 
     @Test
     fun shouldProperlyScrollRightWhenCanScroll() {
         target.scrollRightBy(5)
 
-        target.visibleOffset shouldBe Position3D.create(5, 0, 0)
+        target.visibleOffset shouldBe Position3D(5, 0, 0)
     }
 
     @Test
@@ -100,14 +100,14 @@ class DefaultScrollable3DTest {
         target.scrollRightBy(5)
         target.scrollLeftBy(3)
 
-        target.visibleOffset shouldBe Position3D.create(2, 0, 0)
+        target.visibleOffset shouldBe Position3D(2, 0, 0)
     }
 
     @Test
     fun shouldProperlyScrollForwardWhenCanScroll() {
         target.scrollForwardBy(5)
 
-        target.visibleOffset shouldBe Position3D.create(0, 5, 0)
+        target.visibleOffset shouldBe Position3D(0, 5, 0)
     }
 
     @Test
@@ -115,14 +115,14 @@ class DefaultScrollable3DTest {
         target.scrollForwardBy(5)
         target.scrollBackwardBy(3)
 
-        target.visibleOffset shouldBe Position3D.create(0, 2, 0)
+        target.visibleOffset shouldBe Position3D(0, 2, 0)
     }
 
     @Test
     fun shouldProperlyScrollUpWhenCanScroll() {
         target.scrollUpBy(5)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 5)
+        target.visibleOffset shouldBe Position3D(0, 0, 5)
     }
 
     @Test
@@ -130,14 +130,14 @@ class DefaultScrollable3DTest {
         target.scrollUpBy(5)
         target.scrollDownBy(3)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 2)
+        target.visibleOffset shouldBe Position3D(0, 0, 2)
     }
 
     @Test
     fun shouldProperlyScrollRightToMaxWhenScrollingTooMuch() {
         target.scrollRightBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(5, 0, 0)
+        target.visibleOffset shouldBe Position3D(5, 0, 0)
     }
 
     @Test
@@ -145,14 +145,14 @@ class DefaultScrollable3DTest {
         target.scrollRightBy(5)
         target.scrollLeftBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 0)
+        target.visibleOffset shouldBe Position3D(0, 0, 0)
     }
 
     @Test
     fun shouldProperlyScrollForwardToMaxWhenScrollingTooMuch() {
         target.scrollForwardBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(0, 5, 0)
+        target.visibleOffset shouldBe Position3D(0, 5, 0)
     }
 
     @Test
@@ -160,7 +160,7 @@ class DefaultScrollable3DTest {
         target.scrollForwardBy(5)
         target.scrollBackwardBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 0)
+        target.visibleOffset shouldBe Position3D(0, 0, 0)
     }
 
     @Test
@@ -168,19 +168,19 @@ class DefaultScrollable3DTest {
         target.scrollUpBy(5)
         target.scrollDownBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 0)
+        target.visibleOffset shouldBe Position3D(0, 0, 0)
     }
 
     @Test
     fun shouldProperlyScrollUpToMaxWhenScrollingTooMuch() {
         target.scrollUpBy(Int.MAX_VALUE)
 
-        target.visibleOffset shouldBe Position3D.create(0, 0, 5)
+        target.visibleOffset shouldBe Position3D(0, 0, 5)
     }
 
     @Test
     fun shouldProperlyScrollToProvided3dPosition() {
-        val newPosition = Position3D.create(5, 5, 0)
+        val newPosition = Position3D(5, 5, 0)
         target.scrollTo(newPosition)
 
         target.visibleOffset shouldBe newPosition
@@ -217,17 +217,17 @@ class DefaultScrollable3DTest {
     @Test
     fun shouldThrowExceptionWhenTryingToScrollOutsideOfTheActualSize() {
         shouldThrow<IllegalArgumentException> {
-            target.scrollTo(Position3D.create(15, 0, 0))
+            target.scrollTo(Position3D(15, 0, 0))
         }
     }
 
     companion object {
-        val VIRTUAL_SPACE_SIZE = Size3D.create(
+        val VIRTUAL_SPACE_SIZE = Size3D(
             xLength = 10,
             yLength = 10,
             zLength = 10
         )
-        val VISIBLE_SPACE_SIZE = Size3D.create(
+        val VISIBLE_SPACE_SIZE = Size3D(
             xLength = 5,
             yLength = 5,
             zLength = 5

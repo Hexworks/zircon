@@ -46,7 +46,7 @@ class ProgressBarBuilder :
 /**
  * Creates a new [ProgressBar] using the component builder DSL and returns it.
  */
-fun buildProgressBar(init: ProgressBarBuilder.() -> Unit): ProgressBar =
+fun progressBar(init: ProgressBarBuilder.() -> Unit): ProgressBar =
     ProgressBarBuilder().apply(init).build()
 
 /**

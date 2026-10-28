@@ -19,7 +19,7 @@ class SelectorBuilderTest {
     fun sizeAndMinWidth() {
         for (w in 0..2) {
             val exception = shouldThrow<IllegalArgumentException> {
-                buildSelector<String> {
+                selector<String> {
                     width = w
                     valuesProperty = listOf("a", "b").toProperty()
                 }
@@ -27,19 +27,19 @@ class SelectorBuilderTest {
             exception.message?.contains("minimum width") shouldBe true
         }
 
-        val minimalMultiSelect = buildSelector<String> {
+        val minimalMultiSelect = selector<String> {
             width = 3
             valuesProperty = listOf("a", "b").toProperty()
         }
         minimalMultiSelect.shouldBeInstanceOf<Selector<*>>()
 
-        minimalMultiSelect.root.size shouldBe Size.create(3, 1)
+        minimalMultiSelect.root.size shouldBe Size(3, 1)
     }
 
     @Test
     fun noEmptyList() {
         val exception = shouldThrow<IllegalArgumentException> {
-            buildSelector<String> {
+            selector<String> {
                 width = 10
                 valuesProperty = listOf<String>().toProperty()
             }
@@ -49,7 +49,7 @@ class SelectorBuilderTest {
 
     @Test
     fun textTooLong() {
-        val multiSelect = buildSelector<String> {
+        val multiSelect = selector<String> {
             width = 7
             valueList = listOf("veryLongWord", "b")
         } as DefaultSelector
@@ -59,7 +59,7 @@ class SelectorBuilderTest {
 
     @Test
     fun centeredText() {
-        val multiSelect = buildSelector<String> {
+        val multiSelect = selector<String> {
             width = 7
             valueList = listOf("6")
         } as DefaultSelector
@@ -69,7 +69,7 @@ class SelectorBuilderTest {
 
     @Test
     fun uncenteredText() {
-        val multiSelect = buildSelector<String> {
+        val multiSelect = selector<String> {
             width = 7
             valueList = listOf("9")
             centeredText = false
@@ -80,7 +80,7 @@ class SelectorBuilderTest {
 
     @Test
     fun toStringMethod() {
-        val multiSelect = buildSelector<TestClass> {
+        val multiSelect = selector<TestClass> {
             width = 10
             valueList = listOf(TestClass(5))
             toStringMethod = TestClass::bigger
@@ -101,7 +101,7 @@ class SelectorBuilderTest {
     }
 
     private fun checkComponentClasses(clickable: Boolean, expectedNumberOfButtons: Int, expectedNumberOfLabels: Int) {
-        val multiSelect = buildSelector<String> {
+        val multiSelect = selector<String> {
             width = 10
             valueList = listOf("one", "two", "three")
             clickableLabel = clickable

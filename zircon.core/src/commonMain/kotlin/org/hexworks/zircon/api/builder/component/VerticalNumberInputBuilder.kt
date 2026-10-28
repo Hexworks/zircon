@@ -16,7 +16,7 @@ class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>(
     override fun calculateContentSize(): Size {
         val length = this.maxValue.toString().length + 1
         return if (contentWidth < length) {
-            Size.create(1, length)
+            Size(1, length)
         } else preferredContentSize
     }
 
@@ -32,7 +32,7 @@ class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>(
 /**
  * Creates a new [NumberInput] using the component builder DSL and returns it.
  */
-fun buildVerticalNumberInput(
+fun verticalNumberInput(
     init: VerticalNumberInputBuilder.() -> Unit
 ): NumberInput = VerticalNumberInputBuilder().apply(init).build()
 

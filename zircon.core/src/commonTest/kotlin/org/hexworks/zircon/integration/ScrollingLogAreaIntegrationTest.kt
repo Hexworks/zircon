@@ -1,17 +1,16 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.component.buildLogArea
-import org.hexworks.zircon.api.builder.component.buildPanel
+import org.hexworks.zircon.api.builder.component.logArea
+import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.component.extensions.addParagraph
 import org.hexworks.zircon.api.component.builder.base.decorations
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.screen.Screen
 import kotlin.random.Random
 
 @Suppress("unused")
-class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size.create(70, 30)) {
+class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size(70, 30)) {
 
     var delayMs: Int = 1
 
@@ -45,21 +44,15 @@ class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size
         screen.display()
         screen.theme = theme
 
-        val logArea = buildLogArea {
-            withPreferredSize {
-                width = 58
-                height = 23
-            }
+        val logArea = logArea {
+            preferredSize = Size(58, 23)
         }
 
-        screen.addComponent(buildPanel {
+        screen.addComponent(panel {
             decorations {
                 +box(title = "Log")
             }
-            withPreferredSize {
-                width = 60
-                height = 25
-            }
+            preferredSize = Size(60, 25)
 
             children {
                 +logArea

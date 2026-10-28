@@ -5,7 +5,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.application.appConfig
 import org.hexworks.zircon.api.builder.animation.animation
-import org.hexworks.zircon.api.builder.application.withSize
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -52,10 +51,7 @@ class DefaultAnimationRunnerTest {
     fun shouldReturnFinishedWhenAllFramesWereDisplayed() {
         val grid = tileGrid {
             config = appConfig {
-                withSize {
-                    width = 50
-                    height = 50
-                }
+                size = Size(50, 50)
                 defaultTileset = CP437TilesetResources.aduDhabi16x16()
             }
         }

@@ -1,15 +1,15 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.behavior.extensions.moveUpBy
-import org.hexworks.zircon.api.builder.component.buildHbox
-import org.hexworks.zircon.api.builder.component.buildLabel
+import org.hexworks.zircon.api.builder.component.hBox
+import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.LogArea
-import org.hexworks.zircon.api.component.builder.base.withPreferredSize
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -28,26 +28,20 @@ class DefaultLogArea internal constructor(
     override fun addNewRows(numberOfRows: Int) {
         LOGGER.debug { "Adding new rows ($numberOfRows) to LogArea (id=${id.abbreviate()})." }
         addLogElement(
-            buildLabel {
-                withPreferredSize {
-                    width = 1
-                    height = numberOfRows
-                }
+            label {
+                preferredSize = Size(1, numberOfRows)
             }
         )
     }
 
     override fun addEmptyLine() {
-        addLogElement(buildLabel { })
+        addLogElement(label { })
     }
 
     override fun addInlineRow(row: List<Component>, applyTheme: Boolean) {
         val width = size.width
-        addLogElement(buildHbox {
-            withPreferredSize {
-                this.width = width
-                height = 1
-            }
+        addLogElement(hBox {
+            preferredSize = Size(width, 1)
             children {
                 row.forEach {
                     +it
@@ -88,7 +82,7 @@ class DefaultLogArea internal constructor(
             }
             currentHeight -= currentFreedSpace
         }
-        element.moveTo(Position.create(0, currentHeight))
+        element.moveTo(Position(0, currentHeight))
         logElements.add(addComponent(element))
         if (applyTheme) {
             element.theme = theme

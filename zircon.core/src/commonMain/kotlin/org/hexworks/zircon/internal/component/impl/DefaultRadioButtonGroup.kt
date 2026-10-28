@@ -5,7 +5,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.builder.component.buildGroup
+import org.hexworks.zircon.api.builder.component.group
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
@@ -19,7 +19,7 @@ class DefaultRadioButtonGroup internal constructor(
     initialIsHidden: Boolean,
     initialTheme: ColorTheme,
     initialTileset: TilesetResource,
-    private val groupDelegate: InternalGroup<RadioButton> = buildGroup<RadioButton> {
+    private val groupDelegate: InternalGroup<RadioButton> = group<RadioButton> {
         isDisabled = initialIsDisabled
         isHidden = initialIsHidden
         theme = initialTheme

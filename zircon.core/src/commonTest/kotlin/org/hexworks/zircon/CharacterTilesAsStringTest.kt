@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class CharacterTilesAsStringTest {
-    private fun pos(x: Int, y: Int) = Position.create(x, y)
+    private fun pos(x: Int, y: Int) = Position(x, y)
     private fun charTile(char: Char) = characterTile { +char }
 
     private fun tileComposite(tiles: Map<Position, Tile>, size: Size = Size.ZERO) = DefaultTileComposite(tiles, size)
@@ -74,7 +74,7 @@ class CharacterTilesAsStringTest {
                 mapOf(
                     pos(2, 0) to charTile('.')
                 )
-            ).convertCharacterTilesToString(padToSize = Size.create(5, 0))
+            ).convertCharacterTilesToString(padToSize = Size(5, 0))
         )
     }
 
@@ -86,7 +86,7 @@ class CharacterTilesAsStringTest {
                 mapOf(
                     pos(0, 0) to charTile('.')
                 )
-            ).convertCharacterTilesToString(padToSize = Size.create(0, 2))
+            ).convertCharacterTilesToString(padToSize = Size(0, 2))
         )
     }
 
@@ -98,7 +98,7 @@ class CharacterTilesAsStringTest {
                 mapOf(
                     pos(1, 1) to charTile('.')
                 )
-            ).convertCharacterTilesToString(padToSize = Size.create(3, 3))
+            ).convertCharacterTilesToString(padToSize = Size(3, 3))
         )
     }
 

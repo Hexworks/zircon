@@ -24,7 +24,7 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
             drawWindow.draw(characterTile {
                 character = ' '
                 styleSet = invertedStyleSet
-            }, Position.create(idx, 0))
+            }, Position(idx, 0))
         }
 
         if (context.component.displayPercentValueOfProgress) {
@@ -33,7 +33,7 @@ class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
             val text = "$percentValue%"
             val start = drawWindow.width / 2 - 2
             repeat(text.length) { idx ->
-                val pos = Position.create(start + idx, 0)
+                val pos = Position(start + idx, 0)
                 val char = text[idx]
                 val tile = characterTile {
                     character = char

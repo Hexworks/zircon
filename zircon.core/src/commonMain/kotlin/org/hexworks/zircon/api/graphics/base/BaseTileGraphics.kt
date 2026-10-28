@@ -46,7 +46,7 @@ abstract class BaseTileGraphics(
         val currTiles = tiles
         return (0 until height).joinToString("") { y ->
             (0 until width).joinToString("") { x ->
-                (currTiles[Position.create(x, y)] ?: Tile.defaultTile())
+                (currTiles[Position(x, y)] ?: Tile.defaultTile())
                     .asCharacterTileOrNull()
                     .orElseGet { Tile.defaultTile() }
                     .character.toString()

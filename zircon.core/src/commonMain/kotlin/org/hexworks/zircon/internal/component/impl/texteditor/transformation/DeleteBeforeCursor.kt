@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl.texteditor.transformation
 
-import org.hexworks.zircon.api.builder.data.position
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.internal.component.impl.texteditor.*
@@ -22,10 +21,7 @@ object DeleteBeforeCursor : Transformation {
                     lines = lines.toMutableList().apply {
                         removeAt(y)
                     }.toList(),
-                    cursor = position {
-                        this.x = editorState.lineAt(newY).lastIndex
-                        this.y = newY
-                    }
+                    cursor = Position(editorState.lineAt(newY).lastIndex, newY)
                 )
             }
             // we know we're not at the start of any row, so we can just delete the previous char

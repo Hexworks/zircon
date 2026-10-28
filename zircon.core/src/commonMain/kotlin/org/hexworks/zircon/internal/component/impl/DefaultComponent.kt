@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.behavior.extensions.withPosition
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.binding.bindTransform
@@ -12,7 +13,6 @@ import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
 import org.hexworks.zircon.api.behavior.TextOverride
-import org.hexworks.zircon.api.behavior.extensions.withPosition
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet

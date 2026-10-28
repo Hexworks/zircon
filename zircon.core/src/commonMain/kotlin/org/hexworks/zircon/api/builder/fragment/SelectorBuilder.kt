@@ -81,7 +81,7 @@ class SelectorBuilder<T : Any> : FragmentBuilder<Selector<T>> {
 /**
  * Creates a new [Selector] using the fragment builder DSL and returns it.
  */
-fun <T : Any> buildSelector(
+fun <T : Any> selector(
     init: SelectorBuilder<T>.() -> Unit
 ): Selector<T> = SelectorBuilder<T>().apply(init).build()
 

@@ -88,14 +88,14 @@ class DefaultLayerTest {
     companion object {
         private val TILESET = CP437TilesetResources.cla18x18()
         val CHAR = characterTile { +'x' }
-        val SIZE = Size.create(10, 10)
+        val SIZE = Size(10, 10)
         val EMPTY_TILE_IMAGE = tileGraphics {
             size = SIZE
             tileset = TILESET
         }
-        val OFFSET = Position.create(5, 5)
-        val INTERSECTING_BOUNDABLE =  Movable.fromSize(Size.create(6, 6))
-        val NON_INTERSECTING_BOUNDABLE = Movable.fromSize(Size.create(5, 5))
+        val OFFSET = Position(5, 5)
+        val INTERSECTING_BOUNDABLE =  Movable.fromSize(Size(6, 6))
+        val NON_INTERSECTING_BOUNDABLE = Movable.fromSize(Size(5, 5))
         val NON_CONTAINED_BOUNDABLE = Movable.fromSize(SIZE.withRelative(Size.ONE))
         val CONTAINED_POSITION = OFFSET
         val NON_CONTAINED_POSITION = CONTAINED_POSITION

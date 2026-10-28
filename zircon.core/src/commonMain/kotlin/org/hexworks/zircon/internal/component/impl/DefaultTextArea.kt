@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
 import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
@@ -8,7 +9,6 @@ import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
 import org.hexworks.zircon.api.behavior.extensions.scrollRightBy
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.data.size
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
@@ -188,10 +188,7 @@ class DefaultTextArea internal constructor(
     private fun resizeIfNecessary() {
         val (visibleWidth, visibleHeight) = visibleSize
         val (editorWidth, editorHeight) = textEditor.size
-        actualSize = size {
-            width = max(visibleWidth, editorWidth)
-            height = max(visibleHeight, editorHeight)
-        }
+        actualSize = Size(max(visibleWidth, editorWidth), max(visibleHeight, editorHeight))
     }
 
     /**

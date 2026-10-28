@@ -16,9 +16,9 @@ data class ShadowDecorationRenderer(
     private val shadowChar: Char = DEFAULT_SHADOW_CHAR
 ) : ComponentDecorationRenderer {
 
-    override val offset = Position.create(0, 0)
+    override val offset = Position(0, 0)
 
-    override val occupiedSize = Size.create(1, 1)
+    override val occupiedSize = Size(1, 1)
 
     private val shadowTile = characterTile {
         character = shadowChar
@@ -32,17 +32,17 @@ data class ShadowDecorationRenderer(
         val graphicsSize = drawWindow.size
         drawWindow.draw(
             tileMap = LineFactory.buildLine(
-                fromPoint = Position.create(0, 0),
-                toPoint = Position.create(graphicsSize.width - 1, 0)
+                fromPoint = Position(0, 0),
+                toPoint = Position(graphicsSize.width - 1, 0)
             ).associateWith { shadowTile },
-            drawPosition = Position.create(1, graphicsSize.height - 1)
+            drawPosition = Position(1, graphicsSize.height - 1)
         )
         drawWindow.draw(
             tileMap = LineFactory.buildLine(
-                fromPoint = Position.create(0, 0),
-                toPoint = Position.create(0, graphicsSize.height - 1)
+                fromPoint = Position(0, 0),
+                toPoint = Position(0, graphicsSize.height - 1)
             ).associateWith { shadowTile },
-            drawPosition = Position.create(graphicsSize.width - 1, 1)
+            drawPosition = Position(graphicsSize.width - 1, 1)
         )
     }
 

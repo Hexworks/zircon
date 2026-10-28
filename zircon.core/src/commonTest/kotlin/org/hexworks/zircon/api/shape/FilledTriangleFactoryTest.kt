@@ -13,22 +13,22 @@ class FilledTriangleFactoryTest {
         // TODO: fix algo!
         FilledTriangleFactory.buildFilledTriangle(
             p1 = Position.OFFSET_1X1,
-            p2 = Position.create(5, 1),
-            p3 = Position.create(5, 5)
+            p2 = Position(5, 1),
+            p3 = Position(5, 5)
         ) shouldContainExactly listOf(
-            Position.create(x = 0, y = 0),
-            Position.create(x = 4, y = 0),
-            Position.create(x = 3, y = 0),
-            Position.create(x = 2, y = 0),
-            Position.create(x = 1, y = 0),
-            Position.create(x = 4, y = 1),
-            Position.create(x = 3, y = 1),
-            Position.create(x = 2, y = 1),
-            Position.create(x = 4, y = 2),
-            Position.create(x = 3, y = 2),
-            Position.create(x = 4, y = 3),
-            Position.create(x = 4, y = 4),
-            Position.create(x = 5, y = 4)
+            Position(x = 0, y = 0),
+            Position(x = 4, y = 0),
+            Position(x = 3, y = 0),
+            Position(x = 2, y = 0),
+            Position(x = 1, y = 0),
+            Position(x = 4, y = 1),
+            Position(x = 3, y = 1),
+            Position(x = 2, y = 1),
+            Position(x = 4, y = 2),
+            Position(x = 3, y = 2),
+            Position(x = 4, y = 3),
+            Position(x = 4, y = 4),
+            Position(x = 5, y = 4)
         )
     }
 
@@ -38,23 +38,23 @@ class FilledTriangleFactoryTest {
         // TODO: fix triangle fill algo
         FilledTriangleFactory.buildFilledTriangle(
             p1 = Position.OFFSET_1X1,
-            p2 = Position.create(4, 2),
-            p3 = Position.create(3, 6)
+            p2 = Position(4, 2),
+            p3 = Position(3, 6)
         ) shouldContainExactly listOf(
-            Position.create(x = 1, y = 1),
-            Position.create(x = 1, y = 2),
-            Position.create(x = 2, y = 2),
-            Position.create(x = 3, y = 2),
-            Position.create(x = 4, y = 2),
-            Position.create(x = 1, y = 3),
-            Position.create(x = 2, y = 3),
-            Position.create(x = 3, y = 3),
-            Position.create(x = 4, y = 3),
-            Position.create(x = 2, y = 4),
-            Position.create(x = 3, y = 4),
-            Position.create(x = 2, y = 5),
-            Position.create(x = 3, y = 5),
-            Position.create(x = 3, y = 6)
+            Position(x = 1, y = 1),
+            Position(x = 1, y = 2),
+            Position(x = 2, y = 2),
+            Position(x = 3, y = 2),
+            Position(x = 4, y = 2),
+            Position(x = 1, y = 3),
+            Position(x = 2, y = 3),
+            Position(x = 3, y = 3),
+            Position(x = 4, y = 3),
+            Position(x = 2, y = 4),
+            Position(x = 3, y = 4),
+            Position(x = 2, y = 5),
+            Position(x = 3, y = 5),
+            Position(x = 3, y = 6)
         )
     }
 }

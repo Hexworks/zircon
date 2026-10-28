@@ -72,10 +72,6 @@ data class Position3D(
 
     companion object {
 
-        /**
-         * Factory method for [Position3D].
-         */
-        fun create(x: Int, y: Int, z: Int) = Position3D(x = x, y = y, z = z)
 
         /**
          * Creates a new [Position3D] from a [Position].
@@ -87,7 +83,7 @@ data class Position3D(
             z = z
         )
 
-        val ZERO = create(0, 0, 0)
-        val UNKNOWN = create(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+        val ZERO = Position3D(0, 0, 0)
+        val UNKNOWN = Position3D(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
     }
 }

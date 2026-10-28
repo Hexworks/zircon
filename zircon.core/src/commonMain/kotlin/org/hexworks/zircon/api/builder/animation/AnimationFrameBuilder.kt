@@ -2,7 +2,6 @@ package org.hexworks.zircon.api.builder.animation
 
 import org.hexworks.zircon.api.animation.AnimationFrame
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.builder.data.SizeBuilder
 import org.hexworks.zircon.api.builder.graphics.LayerBuilder
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.isSizeNotUnknown
@@ -56,8 +55,3 @@ class AnimationFrameBuilder : Builder<AnimationFrame> {
 fun animationFrame(init: AnimationFrameBuilder.() -> Unit) =
     AnimationFrameBuilder().apply(init).build()
 
-fun AnimationFrameBuilder.withSize(init: SizeBuilder.() -> Unit) = run {
-    apply {
-        size = SizeBuilder().apply(init).build()
-    }
-}

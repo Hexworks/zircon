@@ -42,7 +42,7 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
             }
         }
         if (isToggled) {
-            drawWindow.draw(bar, Position.create(0, 0))
+            drawWindow.draw(bar, Position(0, 0))
             drawWindow.draw(
                 tile = characterTile {
                     character = TRIPLE_BAR
@@ -51,7 +51,7 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
                         backgroundColor = toggledBackground
                     }
                 },
-                drawPosition = Position.create(1, 0)
+                drawPosition = Position(1, 0)
             )
         } else {
             drawWindow.draw(
@@ -62,13 +62,13 @@ class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
                         backgroundColor = untoggledBackground
                     }
                 },
-                drawPosition = Position.create(0, 0)
+                drawPosition = Position(0, 0)
             )
-            drawWindow.draw(bar, Position.create(1, 0))
+            drawWindow.draw(bar, Position(1, 0))
         }
         drawWindow.draw(
             tile = Tile.empty(),
-            drawPosition = Position.create(2, 0)
+            drawPosition = Position(2, 0)
         )
     }
 

@@ -52,7 +52,7 @@ class HorizontalTabBarBuilder(
  * Creates a new [TabBar] using the fragment builder DSL and returns it.
  */
 
-fun buildHorizontalTabBar(
+fun horizontalTabBar(
     init: HorizontalTabBarBuilder.() -> Unit
 ): TabBar = HorizontalTabBarBuilder().apply(init).build()
 

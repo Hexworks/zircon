@@ -50,20 +50,20 @@ class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
         if (spacing > 0) {
             width += childrenToAdd.size * spacing - 1
         }
-        return Size.create(max(1, width), maxHeight)
+        return Size(max(1, width), maxHeight)
     }
 }
 
 /**
  * Creates a new [HBox] using the component builder DSL and returns it.
  */
-fun buildHbox(init: HBoxBuilder.() -> Unit): HBox =
+fun hBox(init: HBoxBuilder.() -> Unit): HBox =
     HBoxBuilder().apply(init).build()
 
 /**
  * Creates a new [HBox] using the component builder DSL, adds it to the
  * receiver [BaseContainerBuilder] it and returns the [HBox].
  */
-fun <T : BaseContainerBuilder<*>> T.hbox(
+fun <T : BaseContainerBuilder<*>> T.hBox(
     init: HBoxBuilder.() -> Unit
 ): HBox = buildChildFor(this, HBoxBuilder(), init)

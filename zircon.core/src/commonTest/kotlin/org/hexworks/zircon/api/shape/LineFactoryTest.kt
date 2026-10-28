@@ -11,8 +11,8 @@ class LineFactoryTest {
     @Test
     fun shouldProperlyDrawStraightHorizontalLine() {
         LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(2, 0)
+            fromPoint = Position(0, 0),
+            toPoint = Position(2, 0)
         ) shouldContainExactly listOf(
             Position.ZERO,
             Position.ZERO.withRelativeX(1),
@@ -23,8 +23,8 @@ class LineFactoryTest {
     @Test
     fun shouldProperlyDrawStraightHorizontalLineBackwards() {
         LineFactory.buildLine(
-            fromPoint = Position.create(2, 0),
-            toPoint = Position.create(0, 0)
+            fromPoint = Position(2, 0),
+            toPoint = Position(0, 0)
         ) shouldContainExactly listOf(
             Position.ZERO.withRelativeX(2),
             Position.ZERO.withRelativeX(1),
@@ -35,8 +35,8 @@ class LineFactoryTest {
     @Test
     fun shouldProperlyDrawStraightVerticalLine() {
         LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(0, 2)
+            fromPoint = Position(0, 0),
+            toPoint = Position(0, 2)
         ) shouldContainExactly listOf(
             Position.ZERO,
             Position.ZERO.withRelativeY(1),
@@ -47,8 +47,8 @@ class LineFactoryTest {
     @Test
     fun shouldProperlyDrawStraightVerticalLineBackwards() {
         LineFactory.buildLine(
-            fromPoint = Position.create(0, 2),
-            toPoint = Position.create(0, 0)
+            fromPoint = Position(0, 2),
+            toPoint = Position(0, 0)
         ) shouldContainExactly listOf(
             Position.ZERO.withRelativeY(2),
             Position.ZERO.withRelativeY(1),
@@ -59,60 +59,60 @@ class LineFactoryTest {
     @Test
     fun shouldProperlyDrawIrregularLineDeviatingToX() {
         LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(5, 4)
+            fromPoint = Position(0, 0),
+            toPoint = Position(5, 4)
         ) shouldContainExactly listOf(
-            Position.create(x = 0, y = 0),
-            Position.create(x = 1, y = 1),
-            Position.create(x = 2, y = 2),
-            Position.create(x = 3, y = 2),
-            Position.create(x = 4, y = 3),
-            Position.create(x = 5, y = 4)
+            Position(x = 0, y = 0),
+            Position(x = 1, y = 1),
+            Position(x = 2, y = 2),
+            Position(x = 3, y = 2),
+            Position(x = 4, y = 3),
+            Position(x = 5, y = 4)
         )
     }
 
     @Test
     fun shouldProperlyDrawIrregularLineDeviatingToXBackwards() {
         LineFactory.buildLine(
-            fromPoint = Position.create(5, 4),
-            toPoint = Position.create(0, 0)
+            fromPoint = Position(5, 4),
+            toPoint = Position(0, 0)
         ) shouldContainExactly listOf(
-            Position.create(x = 5, y = 4),
-            Position.create(x = 4, y = 3),
-            Position.create(x = 3, y = 2),
-            Position.create(x = 2, y = 2),
-            Position.create(x = 1, y = 1),
-            Position.create(x = 0, y = 0)
+            Position(x = 5, y = 4),
+            Position(x = 4, y = 3),
+            Position(x = 3, y = 2),
+            Position(x = 2, y = 2),
+            Position(x = 1, y = 1),
+            Position(x = 0, y = 0)
         )
     }
 
     @Test
     fun shouldProperlyDrawIrregularLineDeviatingToY() {
         LineFactory.buildLine(
-            fromPoint = Position.create(0, 0),
-            toPoint = Position.create(4, 5)
+            fromPoint = Position(0, 0),
+            toPoint = Position(4, 5)
         ) shouldContainExactly listOf(
-            Position.create(x = 0, y = 0),
-            Position.create(x = 1, y = 1),
-            Position.create(x = 2, y = 2),
-            Position.create(x = 2, y = 3),
-            Position.create(x = 3, y = 4),
-            Position.create(x = 4, y = 5)
+            Position(x = 0, y = 0),
+            Position(x = 1, y = 1),
+            Position(x = 2, y = 2),
+            Position(x = 2, y = 3),
+            Position(x = 3, y = 4),
+            Position(x = 4, y = 5)
         )
     }
 
     @Test
     fun shouldProperlyDrawIrregularLineDeviatingToYBackwards() {
         LineFactory.buildLine(
-            fromPoint = Position.create(4, 5),
-            toPoint = Position.create(0, 0)
+            fromPoint = Position(4, 5),
+            toPoint = Position(0, 0)
         ) shouldContainExactly listOf(
-            Position.create(x = 4, y = 5),
-            Position.create(x = 3, y = 4),
-            Position.create(x = 2, y = 3),
-            Position.create(x = 2, y = 2),
-            Position.create(x = 1, y = 1),
-            Position.create(x = 0, y = 0)
+            Position(x = 4, y = 5),
+            Position(x = 3, y = 4),
+            Position(x = 2, y = 3),
+            Position(x = 2, y = 2),
+            Position(x = 1, y = 1),
+            Position(x = 0, y = 0)
         )
     }
 

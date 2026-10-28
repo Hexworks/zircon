@@ -20,13 +20,13 @@ class TileGraphicsBuilderTest {
 
         result.size shouldBe SIZE
 
-        result.getTileAtOrNull(Position.create(SIZE.width - 1, SIZE.height - 1)) shouldBe FILLER
+        result.getTileAtOrNull(Position(SIZE.width - 1, SIZE.height - 1)) shouldBe FILLER
     }
 
     companion object {
         val FILLER = characterTile {
             character = 'a'
         }
-        val SIZE = Size.create(5, 5)
+        val SIZE = Size(5, 5)
     }
 }

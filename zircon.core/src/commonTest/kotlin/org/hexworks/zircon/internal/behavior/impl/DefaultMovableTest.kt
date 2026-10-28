@@ -30,7 +30,7 @@ class DefaultMovableTest {
     fun shouldNotContainPositionWhenPositionIsOutOfBounds() {
         target.containsPosition(
             target.position
-                .withRelative(Position.create(TARGET_SIZE_10x10.height, TARGET_SIZE_10x10.width))
+                .withRelative(Position(TARGET_SIZE_10x10.height, TARGET_SIZE_10x10.width))
         ) shouldBe false
     }
 
@@ -71,14 +71,14 @@ class DefaultMovableTest {
 
     @Test
     fun shouldNotContainBoundableWhenCalledWithNonContainedBoundable() {
-        target.containsBoundable(DefaultMovable(Boundable.create(size = Size.create(100, 100)).toProperty())) shouldBe false
+        target.containsBoundable(DefaultMovable(Boundable.create(size = Size(100, 100)).toProperty())) shouldBe false
     }
 
     companion object {
         const val DEFAULT_COLS_10 = 10
         const val DEFAULT_ROWS_10 = 10
-        val TARGET_SIZE_10x10 = Size.create(DEFAULT_COLS_10, DEFAULT_ROWS_10)
+        val TARGET_SIZE_10x10 = Size(DEFAULT_COLS_10, DEFAULT_ROWS_10)
         val INTERSECTION_OFFSET_1x1 = Position.OFFSET_1X1
-        val NON_INTERSECTING_OFFSET_20x20 = Position.create(20, 20)
+        val NON_INTERSECTING_OFFSET_20x20 = Position(20, 20)
     }
 }
