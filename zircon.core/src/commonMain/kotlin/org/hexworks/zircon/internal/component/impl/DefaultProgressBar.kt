@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.builder.component.componentStyleSet
@@ -26,6 +27,8 @@ public class DefaultProgressBar internal constructor(
 
     override val progressProperty: Property<Double> = 0.0.toProperty()
     override var progress: Double by progressProperty.asDelegate()
+
+    override val renderInputs: List<ObservableValue<*>> get() = listOf(progressProperty)
 
     override fun acceptsFocus(): Boolean = false
 

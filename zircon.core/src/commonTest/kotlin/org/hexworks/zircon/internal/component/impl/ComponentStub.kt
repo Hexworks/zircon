@@ -180,6 +180,8 @@ class ComponentStub(
     override val closedProperty: ObservableValue<Boolean>
         get() = TODO("Not yet implemented")
 
+    override fun invalidateRender() {}
+
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
         this.theme = colorTheme
         return componentStyleSet

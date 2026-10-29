@@ -25,6 +25,13 @@ public class TilesetRegistry(
     private val byResource = mutableMapOf<String, ComposeTileset>()
     private var nextAtlasId = 1
 
+    // The renderer asks for the tileset of every tile on every frame, and a frame uses a
+    // handful of distinct resources, so a few identity-checked slots answer almost all
+    // calls without building the string key.
+    private val recentResources = arrayOfNulls<TilesetResource>(RECENT_SLOTS)
+    private val recentTilesets = arrayOfNulls<ComposeTileset>(RECENT_SLOTS)
+    private var nextRecentSlot = 0
+
     /** Tilesets created so far. */
     public val tilesets: Collection<ComposeTileset> get() = byResource.values
 
@@ -36,15 +43,23 @@ public class TilesetRegistry(
     override fun canLoadTileset(resource: TilesetResource): Boolean =
         keyOf(resource) in byResource || (resource.tileType to resource.tilesetType) in factories
 
-    override fun loadTilesetFrom(resource: TilesetResource): Tileset<FrameData> =
-        byResource.getOrPut(keyOf(resource)) {
+    override fun loadTilesetFrom(resource: TilesetResource): Tileset<FrameData> {
+        for (slot in 0 until RECENT_SLOTS) {
+            if (recentResources[slot] === resource) return recentTilesets[slot]!!
+        }
+        val tileset = byResource.getOrPut(keyOf(resource)) {
             val factory = factories[resource.tileType to resource.tilesetType]
                 ?: error("No Compose tileset for ${resource.tileType}/${resource.tilesetType} ($resource)")
-            val tileset = factory.create(resource) as? ComposeTileset
+            val created = factory.create(resource) as? ComposeTileset
                 ?: error("Tileset factories for the Compose renderer must create ComposeTilesets")
-            tileset.allocateAtlasId = { nextAtlasId++ }
-            tileset
+            created.allocateAtlasId = { nextAtlasId++ }
+            created
         }
+        recentResources[nextRecentSlot] = resource
+        recentTilesets[nextRecentSlot] = tileset
+        nextRecentSlot = (nextRecentSlot + 1) % RECENT_SLOTS
+        return tileset
+    }
 
     /**
      * Loads every tileset that is not loaded yet. Returns `true` if anything was loaded.
@@ -63,6 +78,7 @@ public class TilesetRegistry(
     private fun keyOf(resource: TilesetResource) = "${resource.path}@${resource.width}x${resource.height}"
 
     public companion object {
+        private const val RECENT_SLOTS = 4
         private val defaultFactories: List<TilesetFactory<FrameData>> = listOf(
             factory(TileType.CHARACTER_TILE, TilesetType.CP437Tileset) { CP437Tileset(it) },
             factory(TileType.CHARACTER_TILE, TilesetType.TrueTypeFont) { TrueTypeTileset(it) },

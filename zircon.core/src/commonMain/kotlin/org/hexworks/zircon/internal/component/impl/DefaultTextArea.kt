@@ -70,12 +70,14 @@ public class DefaultTextArea internal constructor(
         get() = textEditor.text
         set(value) {
             textEditor = TextEditor.fromText(value)
+            invalidateRender()
         }
 
     override var textTiles: List<List<CharacterTile>>
         get() = textEditor.tiles
         set(value) {
             textEditor = TextEditor.fromTiles(value)
+            invalidateRender()
         }
 
     init {

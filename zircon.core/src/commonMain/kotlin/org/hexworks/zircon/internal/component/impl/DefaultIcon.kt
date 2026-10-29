@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Icon
@@ -18,6 +19,8 @@ public class DefaultIcon internal constructor(
 ) {
 
     override var icon: Tile by iconProperty.asDelegate()
+
+    override val renderInputs: List<ObservableValue<*>> get() = listOf(iconProperty)
 
     override fun acceptsFocus(): Boolean = false
 

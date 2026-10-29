@@ -73,4 +73,12 @@ public interface InternalComponent :
      */
     public fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
+    /**
+     * Marks the rendered state of this component stale: the next [render] redraws it
+     * instead of returning the cached result. Called for every observable the renderer
+     * reads and whenever the component handles a UI event; call it from a custom
+     * component when it changes something else its renderer depends on.
+     */
+    public fun invalidateRender()
+
 }

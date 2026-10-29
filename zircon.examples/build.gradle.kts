@@ -15,7 +15,10 @@ kotlin {
     }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        browser()
+        browser {
+            // No wasm tests here either; see the same opt-out in zircon.compose (CMP-4906).
+            testTask { enabled = false }
+        }
     }
 
     sourceSets {
@@ -24,9 +27,16 @@ kotlin {
             api(project(":zircon.compose"))
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotest.assertions.core)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
         }
     }
 }

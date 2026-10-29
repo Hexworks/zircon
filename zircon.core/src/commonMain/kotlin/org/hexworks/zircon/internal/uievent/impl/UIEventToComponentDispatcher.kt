@@ -207,6 +207,11 @@ public class UIEventToComponentDispatcher(
 //            logger.debug{"Trying defaults for component $component, with event $event and phase $phase")
             result = result.pickByPrecedence(tryDefaultsFor(component, event, phase))
         }
+        if (result != Pass) {
+            // The component reacted to the event (typed a character, dragged a scroll bar...)
+            // so whatever it draws from may have changed.
+            component.invalidateRender()
+        }
         return result
     }
 

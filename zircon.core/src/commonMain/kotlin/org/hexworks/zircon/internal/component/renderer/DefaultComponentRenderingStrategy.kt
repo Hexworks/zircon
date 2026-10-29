@@ -38,6 +38,10 @@ public class DefaultComponentRenderingStrategy<T : Component>(
 
     override val contentPosition: Position = decorationRenderers.foldPositionBy(ComponentDecorationRenderer::offset)
 
+    // Post processors are generated on the fly (typing effects and the like), so their
+    // output can't be cached.
+    override val rendersOnEveryFrame: Boolean = componentPostProcessors.isNotEmpty()
+
     override fun render(component: T, graphics: TileGraphics) {
         if (component.isHidden.not()) {
             var currentOffset = ZERO

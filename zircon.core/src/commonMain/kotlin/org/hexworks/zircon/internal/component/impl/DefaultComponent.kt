@@ -15,7 +15,10 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.Movable
+import org.hexworks.zircon.api.behavior.Scrollable
+import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
+import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -196,15 +199,61 @@ public abstract class DefaultComponent(
     }
     //#endregion
 
-    override fun render(): TileGraphics = FastTileGraphics(
-        initialSize = size,
-        initialTileset = tileset
-    ).also { tg ->
-        renderer.asInvariant().render(this@DefaultComponent, tg)
+    //#region Rendering
+    private var renderedGraphics: FastTileGraphics? = null
+    private var renderIsStale = true
+    private var renderHooksInstalled = false
+
+    /**
+     * Observables beyond the common ones (state, style, theme, tileset, text, selection,
+     * scrolling, focus) whose change means this component has to be redrawn.
+     */
+    protected open val renderInputs: List<ObservableValue<*>>
+        get() = emptyList()
+
+    final override fun invalidateRender() {
+        renderIsStale = true
     }
 
-    // TODO: 💡 optimize this by doing a render whenever the component changes
+    /**
+     * Renders this component once and keeps the result until [invalidateRender] is called,
+     * which happens from the hooks installed by [installRenderHooks] and from the UI event
+     * dispatcher. The renderer reads this every frame, so the cache is what keeps a static
+     * screen cheap.
+     */
+    override fun render(): TileGraphics {
+        if (!renderHooksInstalled) {
+            installRenderHooks()
+            renderHooksInstalled = true
+        }
+        val cached = renderedGraphics?.takeIf { it.size == size && it.tileset == tileset }
+        if (cached != null && !renderIsStale && !renderer.rendersOnEveryFrame) {
+            return cached
+        }
+        val target = cached?.apply { clear() } ?: FastTileGraphics(initialSize = size, initialTileset = tileset)
+        renderer.asInvariant().render(this, target)
+        renderedGraphics = target
+        renderIsStale = false
+        return target
+    }
+
     override fun render(graphics: TileGraphics): Unit = renderer.asInvariant().render(this, graphics)
+
+    // Runs on the first render, when subclasses are fully constructed, so their
+    // delegated properties (text, selection, scrolling) are safe to touch.
+    private fun installRenderHooks() {
+        val inputs = mutableListOf<ObservableValue<*>>(
+            componentStateProperty, themeProperty, componentStyleSetProperty, tilesetProperty,
+            hiddenProperty, disabledProperty, hasFocusProperty, boundsProperty,
+        )
+        if (this is TextOverride) inputs += textProperty
+        if (this is TitleOverride) inputs += titleProperty
+        if (this is Selectable) inputs += selectedProperty
+        if (this is Scrollable) inputs += listOf(visibleOffsetProperty, actualSizeProperty)
+        inputs += renderInputs
+        inputs.forEach { input -> input.onChange { invalidateRender() } }
+    }
+    //#endregion
 
     /**
      * Moves this component to the given **absolute** position

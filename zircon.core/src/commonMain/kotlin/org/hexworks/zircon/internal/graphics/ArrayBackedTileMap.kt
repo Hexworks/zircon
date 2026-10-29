@@ -25,7 +25,13 @@ public class ArrayBackedTileMap(
 
     override fun containsValue(value: Tile): Boolean = arr.any { it?.value == value }
 
-    override fun get(key: Position): Tile? = key.index?.let { arr[it]?.value }
+    private val width = dimensions.width
+    private val height = dimensions.height
+
+    override fun get(key: Position): Tile? {
+        val index = indexOf(key)
+        return if (index < 0) null else arr[index]?.value
+    }
 
     override fun isEmpty(): Boolean = arr.isEmpty()
 
@@ -42,10 +48,13 @@ public class ArrayBackedTileMap(
         arr = arr.copyOf()
     )
 
-    private val Position.index: Int?
-        get() = if (x in 0 until dimensions.width && y in 0 until dimensions.height) {
-            dimensions.width * y + x
-        } else null
+    // Returns -1 when out of bounds. An `Int?` here would box on every lookup, and the
+    // renderer does one lookup per cell per layer per frame.
+    private fun indexOf(position: Position): Int {
+        val x = position.x
+        val y = position.y
+        return if (x < 0 || y < 0 || x >= width || y >= height) -1 else width * y + x
+    }
 
     public class Entry(
         override val key: Position,

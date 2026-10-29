@@ -261,6 +261,11 @@ private val UNICODE_TO_CP437_LOOKUP = mapOf(
 )
 private val CP437_TO_UNICODE_LOOKUP = UNICODE_TO_CP437_LOOKUP.map { Pair(it.value, it.key) }.toMap()
 
+// Flat table for the per-tile lookup in the renderer; the map above boxes every key.
+private val UNICODE_TO_CP437_TABLE: IntArray = IntArray(UNICODE_TO_CP437_LOOKUP.keys.max() + 1) { -1 }.also { table ->
+    for ((char, index) in UNICODE_TO_CP437_LOOKUP) table[char] = index
+}
+
 public val CP437_METADATA: Map<Char, List<CP437TextureMetadata>> = UNICODE_TO_CP437_LOOKUP.map { (char, index) ->
     val x = index.rem(16)
     val y = index.div(16)
@@ -286,9 +291,12 @@ public fun Int.convertCp437toUnicode(): Char = CP437_TO_UNICODE_LOOKUP[this]?.to
  * Fetches the cp437 index of a [Char].
  */
 public fun Char.CP437Index(): Int {
-    return UNICODE_TO_CP437_LOOKUP[code]
-        ?: throw IllegalArgumentException(
+    val index = if (code < UNICODE_TO_CP437_TABLE.size) UNICODE_TO_CP437_TABLE[code] else -1
+    if (index < 0) {
+        throw IllegalArgumentException(
             "No CP437 character found for char: '$this'. " +
                     "Did you try to use a character which has no Code Page 437 representation?"
         )
+    }
+    return index
 }

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ScrollDirection
 import org.hexworks.zircon.api.uievent.UIEventResponse
@@ -25,6 +26,10 @@ public class DefaultVerticalScrollBar internal constructor(
     metadata = componentMetadata,
     renderer = renderingStrategy
 ) {
+
+    // The bar draws another component's scroll state, so it has to follow that.
+    override val renderInputs: List<ObservableValue<*>>
+        get() = listOf(scrollable.visibleOffsetProperty, scrollable.actualSizeProperty)
 
     public val actualHeight: Int
         get() = scrollable.actualSize.height

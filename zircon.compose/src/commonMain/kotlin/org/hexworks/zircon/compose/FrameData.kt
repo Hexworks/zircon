@@ -23,12 +23,14 @@ public class FrameData(public val cols: Int, public val rows: Int) {
 
     /** Atlas ids written since the last [clear], so the renderer can skip idle atlases. */
     public val usedAtlases: MutableSet<Int> = mutableSetOf()
+    private val atlasSeen = BooleanArray(256) // atlas ids fit a byte, see [writeCell]
 
     public fun clear() {
         cells.fill(0)
         foregrounds.fill(0)
         backgrounds.fill(0)
         usedAtlases.clear()
+        atlasSeen.fill(false)
     }
 
     /**
@@ -81,7 +83,10 @@ public class FrameData(public val cols: Int, public val rows: Int) {
         cells[i + 1] = slotY.toByte()
         cells[i + 2] = atlasId.toByte()
         cells[i + 3] = -1
-        usedAtlases += atlasId
+        if (!atlasSeen[atlasId]) {
+            atlasSeen[atlasId] = true
+            usedAtlases += atlasId
+        }
     }
 
     private fun writeBackground(i: Int, background: Color) {

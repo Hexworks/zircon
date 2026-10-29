@@ -94,43 +94,50 @@ public abstract class BaseRenderer<C : Any, V : Any>(
     }
 
     // TODO: use a drawing strategy here
+    // Scratch space for one cell's visible tiles, top first; reused across cells and frames.
+    private val cellTiles = ArrayList<Tile>(8)
+    private val cellTilesets = ArrayList<TilesetResource>(8)
+
     private fun renderAllTiles(context: C) {
         val layers = fetchLayers()
-        val tiles = mutableListOf<Pair<Tile, TilesetResource>>()
-        gridPositions.forEach { pos ->
-            tiles@ for (i in layers.size - 1 downTo 0) {
-                val (layerPos, layer) = layers[i]
-                val toRender = layer.getTileAtOrNull(pos - layerPos)?.tiles() ?: listOf()
-                for (j in toRender.size - 1 downTo 0) {
-                    val tile = toRender[j]
-                    val tileset = tile.finalTileset(layer)
-                    tiles.add(0, tile to tileset)
-                    if (tile.isOpaque) {
-                        break@tiles
+        for (pos in gridPositions) {
+            // Walk the layers from the top down and stop at the first opaque tile: nothing
+            // below it can show. Tiles are collected top first and drawn bottom first.
+            collect@ for (i in layers.size - 1 downTo 0) {
+                val layer = layers[i]
+                val x = pos.x - layer.x
+                val y = pos.y - layer.y
+                if (x < 0 || y < 0 || x >= layer.width || y >= layer.height) continue
+                val tile = layer.graphics.getTileAtOrNull(if (layer.x == 0 && layer.y == 0) pos else Position(x, y))
+                    ?: continue
+                if (tile is StackedTile) {
+                    val flattened = tile.tiles()
+                    for (j in flattened.size - 1 downTo 0) {
+                        if (push(flattened[j], layer.tileset)) break@collect
                     }
+                } else if (push(tile, layer.tileset)) {
+                    break@collect
                 }
             }
-
-            var idx = 1
-            for ((tile, tileset) in tiles) {
-                var finalTile = tile
-                // 📘 we only draw the cursor on top, that's why we have the last check
-                //! TODO: FIX CURSOR HANDLING
-//                if (shouldDrawCursor() && tileGrid.cursorPosition == pos && idx == tiles.size) {
-//                    finalTile = finalTile.withBackgroundColor(finalTile.foregroundColor)
-//                        .withForegroundColor(finalTile.backgroundColor)
-//                }
-                val finalTileset = tilesetLoader.loadTilesetFrom(tileset)
+            //! TODO: FIX CURSOR HANDLING (the cursor used to be drawn on the topmost tile here)
+            for (j in cellTiles.size - 1 downTo 0) {
                 renderTile(
                     context = context,
                     position = pos,
-                    tile = finalTile,
-                    tileset = finalTileset
+                    tile = cellTiles[j],
+                    tileset = tilesetLoader.loadTilesetFrom(cellTilesets[j])
                 )
-                idx++
             }
-            tiles.clear()
+            cellTiles.clear()
+            cellTilesets.clear()
         }
+    }
+
+    /** Adds [tile] to the current cell; `true` when it is opaque, so collection can stop. */
+    private fun push(tile: Tile, layerTileset: TilesetResource): Boolean {
+        cellTiles.add(tile)
+        cellTilesets.add(if (tile is TilesetHolder) tile.tileset else layerTileset)
+        return tile.isOpaque
     }
 
     private fun shouldDrawCursor(): Boolean {
@@ -144,27 +151,29 @@ public abstract class BaseRenderer<C : Any, V : Any>(
         tile: Tile,
         tileset: Tileset<C>
     ) {
-        if (tile.isBlinking && blinkOn) {
-            return
-        }
         if (tile.isNotEmpty) {
             var tempTile = tile
-            if(tempTile is CharacterTile) {
+            // Modifiers are rare; the checks below cost a set lookup and a list per tile,
+            // so they only run for tiles that have any.
+            if (tempTile is CharacterTile && tempTile.modifiers.isNotEmpty()) {
+                if (tempTile.isBlinking && blinkOn) {
+                    return
+                }
                 //! TODO: add `List<Modifier>`s to all `Tile`s
-                tempTile.modifiers.filterIsInstance<TileModifier<Tile>>().forEach { modifier ->
-                    if (modifier.canTransform(tempTile)) {
-                        tempTile = modifier.transform(tempTile)
+                for (modifier in tempTile.modifiers) {
+                    if (modifier is TileModifier<*>) {
+                        @Suppress("UNCHECKED_CAST")
+                        val tileModifier = modifier as TileModifier<Tile>
+                        if (tileModifier.canTransform(tempTile)) {
+                            tempTile = tileModifier.transform(tempTile)
+                        }
                     }
                 }
-                tempTile = if (tile.isBlinking && blinkOn) {
-                    tile.withBackgroundColor(tile.foregroundColor)
-                        .withForegroundColor(tile.backgroundColor)
-                } else tile
             }
-            val finalTileset = when (val finalTile = tempTile) {
-                is TilesetHolder -> tilesetLoader.loadTilesetFrom(finalTile.tileset)
-                else -> tileset
-            }
+            // The tileset was resolved from the original tile; a modifier may have swapped it.
+            val finalTileset = if (tempTile !== tile && tempTile is TilesetHolder) {
+                tilesetLoader.loadTilesetFrom(tempTile.tileset)
+            } else tileset
             finalTileset.drawTile(
                 tile = tempTile,
                 context = context,
@@ -181,21 +190,30 @@ public abstract class BaseRenderer<C : Any, V : Any>(
     }
 
     /**
-     * Returns all the layers that should be rendered.
+     * One renderable's graphics for this frame, with its bounds and tileset read once
+     * instead of once per cell.
      */
-    private fun fetchLayers(): List<Pair<Position, TileGraphics>> {
+    private class RenderLayer(
+        val x: Int,
+        val y: Int,
+        val width: Int,
+        val height: Int,
+        val graphics: TileGraphics,
+        val tileset: TilesetResource,
+    )
+
+    /**
+     * Returns all the layers that should be rendered, bottom first.
+     */
+    private fun fetchLayers(): List<RenderLayer> {
         return tileGrid.renderables.map { renderable ->
             val tg = if (renderable.isHidden) FastTileGraphics(
                 initialSize = renderable.size,
                 initialTileset = renderable.tileset
             ) else renderable.render()
-            renderable.position to tg
+            val position = renderable.position
+            RenderLayer(position.x, position.y, tg.size.width, tg.size.height, tg, tg.tileset)
         }
-    }
-
-    private fun Tile.finalTileset(graphics: TileGraphics): TilesetResource = when (this) {
-        is TilesetHolder -> tileset
-        else -> graphics.tileset
     }
 
     private fun Tile.tiles(): List<Tile> = when (this) {

@@ -1,26 +1,24 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.builder.application.appConfig
-import org.hexworks.zircon.api.createTileGrid
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.loadREXFile
+import org.hexworks.zircon.api.builder.graphics.layer
+import org.hexworks.zircon.api.graphics.extensions.draw
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceType
 
 /**
- * A REXPaint drawing loaded from this module's resources: each `.xp` layer becomes a grid layer.
+ * The Zircon logo from a REXPaint file, its layers drawn over the content area.
  */
-public suspend fun rexPaintDemo(): TileGrid {
-    val tileset = CP437TilesetResources.rexPaint16x16()
-    val grid = createTileGrid(
-        appConfig {
-            size = Size(60, 30)
-            defaultTileset = tileset
-        }
-    )
+public val rexPaintDemo: Demo = Demo("REXPaint", CP437TilesetResources.rexPaint16x16()) { context ->
+    val tileset = context.screen.tileset
     val logo = loadREXFile(Resource.create("/rex_files/zircon_logo.xp", ResourceType.PROJECT))
-    logo.toLayerList(tileset).forEach { grid.addLayer(it) }
-    return grid
+    val canvas = layer {
+        size = context.contentSize
+        offset = context.contentPosition
+        this.tileset = tileset
+    }
+    logo.toLayerList(tileset).forEach { canvas.draw(it) }
+    context.screen.addLayer(canvas)
+    DemoView(context.emptyContent())
 }

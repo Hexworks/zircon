@@ -42,4 +42,12 @@ public interface ComponentRenderingStrategy<T : Component> {
      * the component minus the size of the decorations.
      */
     public fun calculateContentSize(componentSize: Size): Size
+
+    /**
+     * `true` when the output of [render] can change without the component itself
+     * changing (a time-based [ComponentPostProcessor], for example). Such components
+     * are rendered on every frame instead of being cached until they change.
+     */
+    public val rendersOnEveryFrame: Boolean
+        get() = false
 }

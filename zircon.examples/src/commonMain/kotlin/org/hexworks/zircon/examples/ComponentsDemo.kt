@@ -1,9 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.checkBox
 import org.hexworks.zircon.api.builder.component.hBox
@@ -16,33 +14,21 @@ import org.hexworks.zircon.api.builder.component.textArea
 import org.hexworks.zircon.api.builder.component.toggleButton
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.builder.base.decorations
-import org.hexworks.zircon.api.createTileGrid
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.ComponentEventType
+import org.hexworks.zircon.api.uievent.Processed
 
 /**
- * The usual suspects: every interactive component in one screen.
+ * A tour of the built-in components: buttons, toggles, progress and text.
  */
-public fun componentsDemo(): TileGrid {
-    val grid = createTileGrid(
-        appConfig {
-            size = Size(60, 30)
-            defaultTileset = CP437TilesetResources.wanderlust16x16()
-        }
-    )
-    val screen = grid.toScreen()
-    screen.theme = ColorThemes.arc()
-
+public val componentsDemo: Demo = Demo("Components", CP437TilesetResources.wanderlust16x16()) { context ->
     val root = hBox {
-        preferredSize = Size(60, 30)
+        preferredSize = context.contentSize
         decorations { +box(title = "Zircon 2.0 components") }
     }
-    screen.addComponent(root)
-
-    val left = vBox { preferredSize = Size(28, 28) }
-    val right = vBox { preferredSize = Size(28, 28) }
+    val columnSize = Size((context.contentSize.width - 2) / 2, context.contentSize.height - 2)
+    val left = vBox { preferredSize = columnSize }
+    val right = vBox { preferredSize = columnSize }
     root.addComponent(left)
     root.addComponent(right)
 
@@ -53,7 +39,7 @@ public fun componentsDemo(): TileGrid {
         handleComponentEvents(ComponentEventType.ACTIVATED) {
             count++
             clicks.text = "Clicked $count times"
-            org.hexworks.zircon.api.uievent.Processed
+            Processed
         }
     })
     left.addComponent(clicks)
@@ -74,6 +60,5 @@ public fun componentsDemo(): TileGrid {
         decorations { +box() }
     })
 
-    screen.display()
-    return grid
+    DemoView(root)
 }

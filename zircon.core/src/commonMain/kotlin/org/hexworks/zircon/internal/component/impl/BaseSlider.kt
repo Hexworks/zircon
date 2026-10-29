@@ -4,6 +4,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.Logger
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
@@ -45,6 +46,8 @@ public abstract class BaseSlider(
 
     final override val currentStepProperty: Property<Int> = 0.toProperty()
     override var currentStep: Int by currentStepProperty.asDelegate()
+
+    override val renderInputs: List<ObservableValue<*>> get() = listOf(currentValueProperty, currentStepProperty)
 
     init {
         currentValueProperty.onChange {

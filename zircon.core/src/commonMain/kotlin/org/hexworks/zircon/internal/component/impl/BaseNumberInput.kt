@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.component.componentStyleSet
@@ -52,6 +53,8 @@ public abstract class BaseNumberInput(
 
     final override val currentValueProperty: Property<Int> = initialValue.toProperty()
     final override var currentValue: Int by currentValueProperty.asDelegate()
+
+    override val renderInputs: List<ObservableValue<*>> get() = listOf(currentValueProperty)
 
     init {
         currentValueProperty.onChange {

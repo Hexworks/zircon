@@ -3006,7 +3006,12 @@ public abstract interface class org/hexworks/zircon/api/component/renderer/Compo
 public abstract interface class org/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy {
 	public abstract fun calculateContentSize (Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/data/Size;
 	public abstract fun getContentPosition ()Lorg/hexworks/zircon/api/data/Position;
+	public fun getRendersOnEveryFrame ()Z
 	public abstract fun render (Lorg/hexworks/zircon/api/component/Component;Lorg/hexworks/zircon/api/graphics/TileGraphics;)V
+}
+
+public final class org/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy$DefaultImpls {
+	public static fun getRendersOnEveryFrame (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;)Z
 }
 
 public abstract interface class org/hexworks/zircon/api/component/renderer/DecorationRenderer {
@@ -3510,6 +3515,14 @@ public final class org/hexworks/zircon/api/fragment/Tab$DefaultImpls {
 }
 
 public abstract interface class org/hexworks/zircon/api/fragment/TabBar : org/hexworks/zircon/api/component/Fragment {
+	public fun getSelectedKey ()Ljava/lang/String;
+	public abstract fun getSelectedKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun setSelectedKey (Ljava/lang/String;)V
+}
+
+public final class org/hexworks/zircon/api/fragment/TabBar$DefaultImpls {
+	public static fun getSelectedKey (Lorg/hexworks/zircon/api/fragment/TabBar;)Ljava/lang/String;
+	public static fun setSelectedKey (Lorg/hexworks/zircon/api/fragment/TabBar;Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/api/fragment/TabData {
@@ -57524,6 +57537,7 @@ public abstract interface class org/hexworks/zircon/internal/component/InternalC
 	public abstract fun getParentProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public abstract fun getRoot ()Lorg/hexworks/zircon/internal/component/impl/RootContainer;
 	public abstract fun getRootProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
+	public abstract fun invalidateRender ()V
 	public fun isAttached ()Z
 	public abstract fun setComponentState (Lorg/hexworks/zircon/api/component/data/ComponentState;)V
 	public abstract fun setParent (Lorg/hexworks/zircon/internal/component/InternalContainer;)V
@@ -57712,6 +57726,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/BaseNumberInpu
 	public final fun getCurrentValue ()I
 	public final fun getCurrentValueProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public abstract fun getMaxNumberLength ()I
+	protected fun getRenderInputs ()Ljava/util/List;
 	protected final fun getRenderingStrategy ()Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;
 	public final fun getText ()Ljava/lang/String;
 	public fun incrementCurrentValue ()V
@@ -57744,6 +57759,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/BaseSlider : o
 	public final fun getMinValue ()I
 	public abstract fun getMousePosition (Lorg/hexworks/zircon/api/uievent/MouseEvent;)I
 	public final fun getNumberOfSteps ()I
+	protected fun getRenderInputs ()Ljava/util/List;
 	protected final fun getValuePerStep ()D
 	public fun incrementCurrentStep ()V
 	public fun incrementCurrentValue ()V
@@ -57859,6 +57875,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/DefaultCompone
 	public fun getPosition ()Lorg/hexworks/zircon/api/data/Position;
 	public fun getPositionProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
 	public final fun getRelativePosition ()Lorg/hexworks/zircon/api/data/Position;
+	protected fun getRenderInputs ()Ljava/util/List;
 	public final fun getRoot ()Lorg/hexworks/zircon/internal/component/impl/RootContainer;
 	public final fun getRootProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public synthetic fun getRootProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
@@ -57873,6 +57890,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/DefaultCompone
 	public fun handleMouseEvents (Lorg/hexworks/zircon/api/uievent/MouseEventType;Lkotlin/jvm/functions/Function2;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public final fun hashCode ()I
 	public fun intersects (Lorg/hexworks/zircon/api/behavior/Boundable;)Z
+	public final fun invalidateRender ()V
 	public fun isAttached ()Z
 	public final fun isDisabled ()Z
 	public final fun isHidden ()Z
@@ -58589,6 +58607,7 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultCompon
 	public final fun getComponentRenderer ()Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;
 	public fun getContentPosition ()Lorg/hexworks/zircon/api/data/Position;
 	public final fun getDecorationRenderers ()Ljava/util/List;
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/component/Component;Lorg/hexworks/zircon/api/graphics/TileGraphics;)V
 }
 
@@ -59124,6 +59143,9 @@ public final class org/hexworks/zircon/internal/extensions/PersistentListExtensi
 
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultHorizontalTabBar : org/hexworks/zircon/api/fragment/TabBar {
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
+	public fun getSelectedKey ()Ljava/lang/String;
+	public fun getSelectedKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun setSelectedKey (Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultMenuBar : org/hexworks/zircon/api/fragment/MenuBar {
@@ -59169,6 +59191,9 @@ public final class org/hexworks/zircon/internal/fragment/impl/DefaultTableColumn
 
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultVerticalTabBar : org/hexworks/zircon/api/fragment/TabBar {
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
+	public fun getSelectedKey ()Ljava/lang/String;
+	public fun getSelectedKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun setSelectedKey (Ljava/lang/String;)V
 }
 
 public abstract class org/hexworks/zircon/internal/fragment/impl/TabBarBuilder {

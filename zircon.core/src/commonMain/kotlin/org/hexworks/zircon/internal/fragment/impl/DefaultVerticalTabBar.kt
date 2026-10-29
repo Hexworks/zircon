@@ -1,5 +1,7 @@
 package org.hexworks.zircon.internal.fragment.impl
 
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.builder.component.hBox
@@ -29,10 +31,13 @@ public class DefaultVerticalTabBar internal constructor(
 
     private var currentContent: AttachedComponent? = null
     private val group = radioButtonGroup { }
+
     private val lookup = tabs.associate { (tab, content) ->
         group.addComponent(tab.tabButton)
         tab.key to TabData(tab, content)
     }
+
+    override val selectedKeyProperty: Property<String> = defaultSelected.toProperty()
 
     override val root: Component = hBox {
         preferredSize = size
@@ -55,7 +60,11 @@ public class DefaultVerticalTabBar internal constructor(
             newValue?.let { button ->
                 currentContent?.detach()?.moveTo(Position.ZERO)
                 currentContent = content.addComponent(lookup.getValue(button.key).content)
+                selectedKeyProperty.value = button.key
             }
+        }
+        selectedKeyProperty.onChange { (_, key) ->
+            lookup.getValue(key).tab.isSelected = true
         }
         lookup.getValue(defaultSelected).tab.isSelected = true
     }

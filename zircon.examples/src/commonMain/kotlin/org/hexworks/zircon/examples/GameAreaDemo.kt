@@ -1,35 +1,33 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.GraphicalTilesetResources
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.data.graphicalTile
-import org.hexworks.zircon.api.createTileGrid
+import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.grid.TileGrid
 import kotlin.random.Random
 
 /**
- * A field of nethack sprites: graphical tiles drawn straight onto the grid.
+ * A field of nethack sprites: graphical tiles drawn onto a layer over the content area.
  */
-public fun gameAreaDemo(): TileGrid {
+public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlust16x16()) { context ->
     val nethack = GraphicalTilesetResources.nethack16x16()
-    val grid = createTileGrid(
-        appConfig {
-            size = Size(40, 20)
-            defaultTileset = nethack
-        }
-    )
     val names = listOf(
         "Giant ant", "Killer bee", "Soldier ant", "Fire ant", "Giant beetle", "Queen bee",
         "Acid blob", "Quivering blob", "Gelatinous cube", "Chickatrice", "Cockatrice", "Pyrolisk",
         "Jackal", "Fox", "Coyote", "Werejackal", "Little dog", "Dingo", "Dog", "Large dog", "Wolf",
     )
+    val field = layer {
+        size = context.contentSize
+        offset = context.contentPosition
+        tileset = nethack
+    }
     val random = Random(7)
-    for (y in 0 until 20) for (x in 0 until 40) {
+    for (y in 0 until field.size.height) for (x in 0 until field.size.width) {
         if (random.nextInt(4) == 0) {
-            grid.draw(graphicalTile { name = names[random.nextInt(names.size)]; tileset = nethack }, Position(x, y))
+            field.draw(graphicalTile { name = names[random.nextInt(names.size)]; tileset = nethack }, Position(x, y))
         }
     }
-    return grid
+    context.screen.addLayer(field)
+    DemoView(context.emptyContent())
 }
