@@ -11,14 +11,14 @@ import org.hexworks.zircon.api.animation.AnimationState.*
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
     override val closedProperty: Property<Boolean> = false.toProperty()
 
     private val id = UUID.randomUUID()
-    private val debug = RuntimeConfig.config.debugMode
+    private val debug = ZirconDefaults.current.debugMode
     private val logger = LoggerFactory.getLogger(this::class)
 
     private val results = mutableMapOf<UUID, DefaultAnimationHandle>()

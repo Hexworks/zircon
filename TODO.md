@@ -22,7 +22,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 | Renderer | Compose Multiplatform only. `zircon.korge` and `zircon.examples.korge` are deleted. |
 | Targets | `zircon.core`: every KMP target. `zircon.compose`: jvm, wasmJs (no js, Compose web is wasm-only). Android: 2.1. |
 | Entry point | Composable-first: a `@Composable` the user drops into their own tree. JVM-only `runDesktop {}` convenience. |
-| Core app model | `Application`, `VirtualApplication`, `start()` and the continuous loop go away. Core keeps `TileGrid`, `Screen`, `AppConfig` and a backend-neutral renderer/tick seam. |
+| Core app model | `Application`, `VirtualApplication`, `start()` and the continuous loop go away. Core keeps `TileGrid`, `Screen`, `TileGridConfig`, process-wide `ZirconDefaults` and a backend-neutral renderer/tick seam. |
 | Rendering | The critical path. Prototype both a common `DrawScope` path and a CPU pixel-buffer path; the benchmark picks. Bar: 1920x1080 at 8x8 tiles (32,400 tiles), full redraw every frame, 60 fps on desktop and wasm, 30 fps on a mid-range Android phone. |
 | Assets | All formats stay: CP437 PNG, TrueType, graphical zip tilesets, REXPaint `.xp`, `.zap` animations. Metadata moves from YAML to JSON (kotlinx-serialization). Inflate/zip/gzip implemented in-house (port of puff/tinf). Bundled files ship in `zircon.compose` as Compose resources; core exposes a `loadBytes` seam and `ByteArray` APIs. |
 | Cobalt | Cobalt 2.0 is released first (`~/projects/cobalt`): all targets, drop reflect and logging libraries, Java 17 bytecode, Maven Central. |
@@ -64,6 +64,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - [x] JSON metadata: `tileset.json` (`GraphicalTilesetMetadata`, `loadGraphicalTileset`) and `animation.json` (`AnimationMetadata`, `loadAnimation`); nethack zip repacked, skull.zap in jvmTest resources, ANIMATIONS.md documents the format
 - [x] Drop kotlin-reflect (jvmTest only), logging libraries, mockk; add kotlinx-serialization-json; bump kotlinx-collections-immutable
 - [x] Remove `Application`, `VirtualApplication`, continuous loop; `TileGrid` owns `eventBus`/`eventScope`, `Renderer.render()` is the tick
+- [x] `AppConfig` split: per-grid `TileGridConfig` built by `tileGrid {}`, process-wide `ZirconDefaults` (tileset, theme, debug, shortcuts) installed by `zirconDefaults {}`; window settings (`title`, `fullScreen`) are `runDesktop` params; dead `iconPath`, `isClipboardAvailable`, `tilesetFactories`, `defaultGraphicalTileset`, custom properties removed
 - [x] DSL naming: bare nouns, delete `buildX`, `hBox`/`vBox`, `withX` leftovers gone, `Shapes`/`GameComponents` objects are top-level functions. Note: inside a container lambda `button {}` adds a child; build standalone components outside the lambda.
 - [x] Deduplicate creation paths: `Position(x, y)`, `Size(w, h)`, `Position3D`/`Size3D` likewise, `position {}`/`size {}`/`withSize {}`/`withPosition {}` builders deleted, `Screen` only via `tileGrid.toScreen()`, one `loadXTilesetResource` per type
 - [x] `explicitApi()` and binary-compatibility-validator (`zircon.core/api/zircon.core.api` is the contract, `./gradlew apiCheck`); `Base*` implementations moved to `internal`; `asInternal()` became `internal` extension functions; no `internal` type in any public `api` signature

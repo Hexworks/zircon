@@ -1,6 +1,6 @@
-package org.hexworks.zircon.api.builder.application
+package org.hexworks.zircon.api.builder.config
 
-import org.hexworks.zircon.api.application.DebugConfig
+import org.hexworks.zircon.api.config.DebugConfig
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 

@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.renderer
 import org.hexworks.zircon.api.data.Size
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.builder.grid.tileGridConfig
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
@@ -19,7 +19,7 @@ class TestRendererTest {
         val graphics = tileGraphics {
             size = Size(3, 1)
         }
-        val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
+        val testRenderer = TestRenderer(tileGridConfig(), graphics).apply {
             withComponentContainer {
                 addComponent(vBox {
                     preferredSize = Size(3, 1)
@@ -40,7 +40,7 @@ class TestRendererTest {
         val graphics = tileGraphics {
             this.size = size;
         }
-        val testRenderer = TestRenderer(AppConfig.defaultAppConfig(), graphics).apply {
+        val testRenderer = TestRenderer(tileGridConfig(), graphics).apply {
             withComponentContainer {
                 addComponent(
                     vBox {

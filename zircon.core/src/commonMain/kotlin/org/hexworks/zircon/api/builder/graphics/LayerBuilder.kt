@@ -11,7 +11,7 @@ import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.graphics.DefaultLayer
 
 /**
@@ -24,7 +24,7 @@ import org.hexworks.zircon.internal.graphics.DefaultLayer
 @ZirconDsl
 public class LayerBuilder : Builder<Layer> {
 
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var size: Size = Size.UNKNOWN
     public var offset: Position = Position.ZERO
     public var tileGraphics: TileGraphics? = null

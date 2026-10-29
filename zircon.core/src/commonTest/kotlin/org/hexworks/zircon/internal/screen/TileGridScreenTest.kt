@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.hexworks.cobalt.databinding.api.value.ValueValidationFailedException
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.application.appConfig
+import org.hexworks.zircon.api.builder.grid.tileGridConfig
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.graphics.layer
@@ -31,8 +31,8 @@ class TileGridScreenTest {
     fun setUp() {
         tileset = FONT
         grid = DefaultTileGrid(
-            appConfig {
-                defaultTileset = tileset
+            tileGridConfig {
+                this.tileset = tileset
                 size = SIZE
             })
         target = TileGridScreen(grid)

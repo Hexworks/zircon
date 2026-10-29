@@ -4,10 +4,9 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.grid.TileGridConfig
 import org.hexworks.cobalt.core.api.behavior.DisposeState
 import org.hexworks.cobalt.core.api.behavior.DisposedManually
-import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Clearable
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -28,7 +27,7 @@ import org.hexworks.zircon.internal.uievent.UIEventDispatcher
  * @sample org.hexworks.zircon.internal.renderer.TestRendererTest.tinyExample
  */
 class TestRenderer(
-    config: AppConfig,
+    config: TileGridConfig,
     private val tileGraphics: TileGraphics,
 ) : UIEventDispatcher, Renderer<Any, Any>, Clearable {
     private val tileGrid: TileGrid = DefaultTileGrid(config)

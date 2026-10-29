@@ -1,6 +1,6 @@
-package org.hexworks.zircon.api.application
+package org.hexworks.zircon.api.config
 
-import org.hexworks.zircon.api.builder.application.ShortcutsConfigBuilder
+import org.hexworks.zircon.api.builder.config.ShortcutsConfigBuilder
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
 
 /**

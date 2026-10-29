@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.TileImage
 import org.hexworks.zircon.api.graphics.extensions.withFiller
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.graphics.DefaultTileImage
 
 /**
@@ -22,7 +22,7 @@ import org.hexworks.zircon.internal.graphics.DefaultTileImage
 @ZirconDsl
 public class TileImageBuilder : Builder<TileImage> {
 
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var filler: Tile = Tile.empty()
 
     public var size: Size = Size.ONE

@@ -13,7 +13,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase.*
 import org.hexworks.zircon.internal.behavior.ComponentFocusOrderList
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.impl.RootContainer
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.event.ZirconEvent.ClearFocus
 import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.uievent.UIEventDispatcher
@@ -32,7 +32,7 @@ public class UIEventToComponentDispatcher(
     private var lastMousePosition = Position.UNKNOWN
     private var lastHoveredComponent: InternalComponent = root
 
-    private val shortcutsConfig = RuntimeConfig.config.shortcutsConfig
+    private val shortcutsConfig = ZirconDefaults.current.shortcutsConfig
 
     init {
         root.eventBus.simpleSubscribeTo(RequestFocusFor, root.eventScope) { (component) ->

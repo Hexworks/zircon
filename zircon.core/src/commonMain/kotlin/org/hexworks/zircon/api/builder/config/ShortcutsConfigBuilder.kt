@@ -1,6 +1,6 @@
-package org.hexworks.zircon.api.builder.application
+package org.hexworks.zircon.api.builder.config
 
-import org.hexworks.zircon.api.application.ShortcutsConfig
+import org.hexworks.zircon.api.config.ShortcutsConfig
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.uievent.KeyCode

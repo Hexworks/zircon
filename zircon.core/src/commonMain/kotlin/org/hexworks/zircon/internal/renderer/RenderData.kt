@@ -1,7 +1,7 @@
-package org.hexworks.zircon.api.application
+package org.hexworks.zircon.internal.renderer
 
 /**
- * Contains metadata for a render step in a Zircon application.
+ * Contains metadata for a render step.
  */
 public data class RenderData(
     /**

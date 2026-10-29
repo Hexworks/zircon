@@ -40,6 +40,13 @@ be assembled without packing a sprite sheet by hand.
 Let themes control more than the current fixed set of colour slots, so custom components and
 custom looks do not need to subclass renderers.
 
+## Clipboard
+
+Copy and paste for text components. 1.x had an `isClipboardAvailable` switch that nothing
+read; it was dropped in 2.0 rather than shipped as a no-op. The real feature needs a
+platform clipboard behind a small core interface (Compose has one on every target), paste
+into `TextArea` and `TextBox`, and copy of the current selection once selections exist.
+
 ## More components
 
 - [Floating components](https://github.com/Hexworks/zircon/issues/23)

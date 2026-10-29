@@ -1,8 +1,7 @@
 package org.hexworks.zircon.integration
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.createTileGrid
-import org.hexworks.zircon.api.builder.application.appConfig
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
@@ -18,12 +17,10 @@ abstract class ComponentIntegrationTestBase(
     val theme: ColorTheme = DEFAULT_THEME_CYBERPUNK,
     val size: Size = DEFAULT_SIZE_60X30,
     val tileset: TilesetResource = DEFAULT_TILESET_WANDERLUST,
-    val tileGrid: TileGrid = createTileGrid(
-        config = appConfig {
-            defaultTileset = tileset
-            this.size = size
-        }
-    ),
+    val tileGrid: TileGrid = tileGrid {
+        this.tileset = tileset
+        this.size = size
+    },
     val screen: Screen = tileGrid.toScreen()
 ) {
 

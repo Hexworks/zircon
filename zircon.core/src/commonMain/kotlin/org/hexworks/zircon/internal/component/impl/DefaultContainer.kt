@@ -17,7 +17,7 @@ import org.hexworks.zircon.internal.component.InternalAttachedComponent
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
 import org.hexworks.zircon.internal.component.extensions.flattenedTree
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
 
@@ -90,7 +90,7 @@ public open class DefaultContainer(
         val newPosition = component.position + contentBounds.position
         val newBounds = component.bounds.withPosition(newPosition)
 
-        if (RuntimeConfig.config.shouldCheckBounds()) {
+        if (ZirconDefaults.current.shouldCheckBounds()) {
             require(contentBounds.containsBoundable(newBounds)) {
                 """Adding out of bounds component $component  with content bounds $newBounds
                         |to the container $this with content bounds $contentBounds

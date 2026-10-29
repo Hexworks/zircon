@@ -5,21 +5,21 @@ import org.hexworks.zircon.api.data.GraphicalTile
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 /**
  * Builds [GraphicalTile]s.
  * Defaults:
  * - Default name is a space
  * - Default tags is an empty set
- * - Default tileset comes from the [RuntimeConfig]
+ * - Default tileset comes from the [ZirconDefaults]
  */
 @ZirconDsl
 public class GraphicalTileBuilder : Builder<GraphicalTile> {
 
     public var name: String = " "
     public var tags: Set<String> = setOf()
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var modifiers: Set<Modifier> = setOf()
 
     override fun build(): GraphicalTile {

@@ -5,11 +5,10 @@ import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.use
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.vBox
-import org.hexworks.zircon.api.createTileGrid
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
 import org.jetbrains.skia.EncodedImageFormat
@@ -23,12 +22,10 @@ class TileGridViewTest {
 
     @Test
     fun composableRendersTheGridAfterAFewFrames() {
-        val grid = createTileGrid(
-            appConfig {
-                size = Size(24, 6)
-                defaultTileset = CP437TilesetResources.wanderlust16x16()
-            }
-        )
+        val grid = tileGrid {
+            size = Size(24, 6)
+            tileset = CP437TilesetResources.wanderlust16x16()
+        }
         val screen = grid.toScreen()
         screen.theme = ColorThemes.arc()
         val box = vBox { preferredSize = Size(24, 6) }

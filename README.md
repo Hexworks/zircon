@@ -43,7 +43,7 @@ Need info? Check the [Docs][zircon-docs]
   composable (`TileGridView`) you drop into any Compose tree, or `runDesktop(grid)` for a
   single window. It draws the whole grid with one shader pass per tileset, so even a
   1080p screen of 8x8 tiles redraws at display rate on desktop and in the browser.
-- **Kotlin DSL everywhere.** `button { +"OK" }`, `vBox { ... }`, `appConfig { ... }`,
+- **Kotlin DSL everywhere.** `button { +"OK" }`, `vBox { ... }`, `tileGrid { ... }`,
   `Position(x, y)`, `Size(w, h)`. The Java-style builders, `newBuilder()`, `withX()`
   setters and `Shapes`/`Modifiers` factory objects are gone, and so is Java support.
 - **Explicit, checked API.** `zircon.core` compiles in Kotlin explicit API mode, its binary
@@ -82,11 +82,10 @@ Compose Multiplatform Gradle plugin in your project, exactly like any other Comp
 ```kotlin
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.vBox
-import org.hexworks.zircon.api.createTileGrid
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.uievent.ComponentEventType
@@ -94,13 +93,10 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.compose.runDesktop
 
 fun main() {
-    val grid = createTileGrid(
-        appConfig {
-            size = Size(60, 30)
-            defaultTileset = CP437TilesetResources.wanderlust16x16()
-            title = "Hello, Zircon"
-        }
-    )
+    val grid = tileGrid {
+        size = Size(60, 30)
+        tileset = CP437TilesetResources.wanderlust16x16()
+    }
     val screen = grid.toScreen()
     screen.theme = ColorThemes.arc()
 
@@ -115,7 +111,7 @@ fun main() {
     })
     screen.display()
 
-    runDesktop(grid)
+    runDesktop(grid, title = "Hello, Zircon")
 }
 ```
 

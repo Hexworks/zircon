@@ -7,15 +7,15 @@ import org.hexworks.zircon.api.component.Group
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.impl.DefaultGroup
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 @ZirconDsl
 public class GroupBuilder<T : Component> : Builder<Group<T>> {
 
     public var isDisabled: Boolean = false
     public var isHidden: Boolean = false
-    public var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var theme: ColorTheme = ZirconDefaults.current.theme
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var name: String = ""
 
     override fun build(): Group<T> = DefaultGroup(

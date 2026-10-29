@@ -13,31 +13,32 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import org.hexworks.zircon.api.grid.TileGrid
-import org.hexworks.zircon.internal.grid.InternalTileGrid
 
 /**
- * The shortest way to a window on the desktop: opens a window sized to [tileGrid]
- * (title and full-screen flag come from the grid's AppConfig) and renders the grid in it.
+ * The shortest way to a window on the desktop: opens a window sized to [tileGrid] with the
+ * given [title], full screen when [fullScreen] is set, and renders the grid in it.
  * Blocks until the window is closed.
  *
  * ```kotlin
- * val grid = createTileGrid(appConfig { size = Size(80, 40) })
- * runDesktop(grid) // use the screen/components API on `grid` from here on
+ * val grid = tileGrid { size = Size(80, 40) }
+ * runDesktop(grid, title = "My game") // use the screen/components API on `grid` from here on
  * ```
  *
- * For anything beyond a single grid, compose [TileGridView] into your own window instead.
+ * For anything beyond a single grid (icons, menus, several grids), compose [TileGridView]
+ * into your own window instead.
  */
 public fun runDesktop(
     tileGrid: TileGrid,
+    title: String = "Zircon",
+    fullScreen: Boolean = false,
     content: @Composable () -> Unit = { TileGridView(tileGrid) },
 ) {
-    val config = (tileGrid as InternalTileGrid).config
     application {
         val state = rememberWindowState(
-            placement = if (config.fullScreen) WindowPlacement.Fullscreen else WindowPlacement.Floating,
+            placement = if (fullScreen) WindowPlacement.Fullscreen else WindowPlacement.Floating,
             size = DpSize(tileGrid.widthInPixels.dp, (tileGrid.heightInPixels + WINDOW_CHROME_DP).dp),
         )
-        Window(onCloseRequest = ::exitApplication, title = config.title, state = state) {
+        Window(onCloseRequest = ::exitApplication, title = title, state = state) {
             Box(Modifier.fillMaxSize().background(Color.Black)) {
                 content()
             }

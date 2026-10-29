@@ -9,7 +9,7 @@ import org.hexworks.zircon.internal.component.impl.RootContainer
 public class RootContainerRenderer : ComponentRenderer<RootContainer> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<RootContainer>) {
-        // TODO: make this tile configurable in AppConfig
+        // TODO: make this tile configurable in ZirconDefaults
         drawWindow.fill(Tile.defaultTile())
         drawWindow.applyStyle(context.currentStyle)
     }

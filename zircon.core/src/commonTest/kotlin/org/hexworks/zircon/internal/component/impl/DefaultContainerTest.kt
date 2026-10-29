@@ -13,7 +13,6 @@ import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.grid.tileGrid
-import org.hexworks.zircon.api.builder.grid.withAppConfig
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -61,10 +60,8 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenNestedComponentsAreAdded() {
         val grid = tileGrid {
-            withAppConfig {
-                size = Size(40, 25)
-                defaultTileset = TILESET_REX_PAINT_20X20
-            }
+            size = Size(40, 25)
+            tileset = TILESET_REX_PAINT_20X20
         }.asInternal()
 
 
@@ -129,10 +126,8 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
     @Test
     fun shouldProperlySetUpComponentsWhenAContainerIsAddedThenComponentsAreAddedToIt() {
         val grid: InternalTileGrid = tileGrid {
-            withAppConfig {
-                size = Size(40, 25)
-                defaultTileset = TILESET_REX_PAINT_20X20
-            }
+            size = Size(40, 25)
+            tileset = TILESET_REX_PAINT_20X20
         }.asInternal()
 
 

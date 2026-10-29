@@ -3,7 +3,6 @@ package org.hexworks.zircon.internal.animation
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.animation.Animation
-import org.hexworks.zircon.api.application.appConfig
 import org.hexworks.zircon.api.builder.animation.animation
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Position
@@ -50,10 +49,8 @@ class DefaultAnimationRunnerTest {
     @Test
     fun shouldReturnFinishedWhenAllFramesWereDisplayed() {
         val grid = tileGrid {
-            config = appConfig {
-                size = Size(50, 50)
-                defaultTileset = CP437TilesetResources.aduDhabi16x16()
-            }
+            size = Size(50, 50)
+            tileset = CP437TilesetResources.aduDhabi16x16()
         }
         val result = target.start(finiteAnimation())
 

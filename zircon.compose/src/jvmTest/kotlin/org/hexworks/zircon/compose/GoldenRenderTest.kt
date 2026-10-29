@@ -3,13 +3,12 @@ package org.hexworks.zircon.compose
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.vBox
-import org.hexworks.zircon.api.createTileGrid
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
@@ -29,12 +28,10 @@ class GoldenRenderTest {
 
     @Test
     fun rendersComponentsWithTheDefaultTileset() {
-        val grid = createTileGrid(
-            appConfig {
-                size = Size(40, 12)
-                defaultTileset = CP437TilesetResources.wanderlust16x16()
-            }
-        )
+        val grid = tileGrid {
+            size = Size(40, 12)
+            tileset = CP437TilesetResources.wanderlust16x16()
+        }
         val screen = grid.toScreen()
         screen.theme = ColorThemes.arc()
         val content = vBox {
@@ -58,12 +55,10 @@ class GoldenRenderTest {
 
     @Test
     fun rendersEveryCp437Glyph() {
-        val grid = createTileGrid(
-            appConfig {
-                size = Size(16, 16)
-                defaultTileset = CP437TilesetResources.rexPaint16x16()
-            }
-        )
+        val grid = tileGrid {
+            size = Size(16, 16)
+            tileset = CP437TilesetResources.rexPaint16x16()
+        }
         val chars = CP437_METADATA.keys.sortedBy { it.CP437Index() }
         chars.forEachIndexed { index, char ->
             grid.draw(
@@ -84,12 +79,10 @@ class GoldenRenderTest {
 
     @Test
     fun rendersTextWithATrueTypeFont() {
-        val grid = createTileGrid(
-            appConfig {
-                size = Size(34, 3)
-                defaultTileset = TrueTypeFontResources.ibmBios(16)
-            }
-        )
+        val grid = tileGrid {
+            size = Size(34, 3)
+            tileset = TrueTypeFontResources.ibmBios(16)
+        }
         "TrueType: The quick brown fox 0123".forEachIndexed { index, char ->
             grid.draw(
                 characterTile {
@@ -109,12 +102,10 @@ class GoldenRenderTest {
     @Test
     fun rendersGraphicalTilesFromTheNethackTileset() {
         val nethack = GraphicalTilesetResources.nethack16x16()
-        val grid = createTileGrid(
-            appConfig {
-                size = Size(6, 2)
-                defaultTileset = nethack
-            }
-        )
+        val grid = tileGrid {
+            size = Size(6, 2)
+            tileset = nethack
+        }
         listOf("Giant ant", "Killer bee", "Soldier ant", "Fire ant", "Giant beetle", "Queen bee").forEachIndexed { index, name ->
             grid.draw(graphicalTile { this.name = name; tileset = nethack }, Position(index, 0))
         }

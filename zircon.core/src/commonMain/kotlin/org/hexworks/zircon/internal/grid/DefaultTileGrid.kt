@@ -6,7 +6,7 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.animation.Animation
 import org.hexworks.zircon.api.animation.AnimationHandle
 import org.hexworks.cobalt.events.api.EventBus
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.grid.TileGridConfig
 import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.behavior.CursorHandler
 import org.hexworks.zircon.api.behavior.Layerable
@@ -38,7 +38,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 public class DefaultTileGrid(
-    override val config: AppConfig,
+    override val config: TileGridConfig,
     override var layerable: InternalLayerable = buildLayerable(config.size),
     override var animationHandler: InternalAnimationRunner = DefaultAnimationRunner(),
     override var cursorHandler: InternalCursorHandler = DefaultCursorHandler(
@@ -186,11 +186,11 @@ public class DefaultTileGrid(
         cursorPosition = cursorPosition.withRelativeY(1).withX(0)
     }
 
-    private fun initializeLayerable(config: AppConfig) {
+    private fun initializeLayerable(config: TileGridConfig) {
         layerable.addLayer(
             layer {
                 size = config.size
-                tileset = config.defaultTileset
+                tileset = config.tileset
             }
         )
     }

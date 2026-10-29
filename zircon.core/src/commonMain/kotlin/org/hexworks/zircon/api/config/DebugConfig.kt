@@ -1,6 +1,6 @@
-package org.hexworks.zircon.api.application
+package org.hexworks.zircon.api.config
 
-import org.hexworks.zircon.api.builder.application.DebugConfigBuilder
+import org.hexworks.zircon.api.builder.config.DebugConfigBuilder
 
 /**
  * Contains the configuration to be used when debug mode is enabled.

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color as ComposeColor
 import kotlinx.coroutines.delay
 import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.application.appConfig
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
@@ -21,7 +20,7 @@ import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.builder.fragment.horizontalTabBar
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.createTileGrid
+import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.withRelativeHeight
@@ -110,12 +109,10 @@ public suspend fun examplesScreen(demo: Demo, widthPx: Int, heightPx: Int, onSel
         maxOf(widthPx / tileset.width, MIN_SIZE.width),
         maxOf(heightPx / tileset.height, MIN_SIZE.height),
     )
-    val grid = createTileGrid(
-        appConfig {
-            this.size = size
-            defaultTileset = tileset
-        }
-    )
+    val grid = tileGrid {
+        this.size = size
+        this.tileset = tileset
+    }
     val screen = grid.toScreen()
     screen.theme = ColorThemes.arc()
 

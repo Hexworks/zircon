@@ -6,7 +6,6 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.internal.util.nowMillis
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
@@ -23,6 +22,7 @@ import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.internal.renderer.RenderData
 import org.hexworks.zircon.internal.renderer.Renderer
 
 public abstract class BaseRenderer<C : Any, V : Any>(

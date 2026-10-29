@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.renderer
 
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.application.RenderData
 import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
 

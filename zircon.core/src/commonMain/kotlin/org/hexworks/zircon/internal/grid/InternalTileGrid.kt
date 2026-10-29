@@ -1,7 +1,7 @@
 package org.hexworks.zircon.internal.grid
 
 import org.hexworks.cobalt.events.api.EventBus
-import org.hexworks.zircon.api.application.AppConfig
+import org.hexworks.zircon.api.grid.TileGridConfig
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.api.graphics.Layer
 import org.hexworks.zircon.api.grid.TileGrid
@@ -33,7 +33,7 @@ public interface InternalTileGrid : TileGrid, InternalAnimationRunner, InternalL
      */
     public var cursorHandler: InternalCursorHandler
 
-    public val config: AppConfig
+    public val config: TileGridConfig
     /**
      * The [EventBus] Zircon uses for its internal events (component tree changes,
      * screen switches and so on). Shared by every [org.hexworks.zircon.api.screen.Screen]

@@ -19,6 +19,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.compose.input.KeyboardEventListener
@@ -99,6 +100,6 @@ public fun TileGridView(
             }
     ) {
         tick // read so every frame redraws
-        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases(), internalGrid.config.debugConfig.displayGrid) }
+        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases(), ZirconDefaults.current.debugConfig.displayGrid) }
     }
 }

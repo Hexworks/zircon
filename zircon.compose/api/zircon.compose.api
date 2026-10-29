@@ -40,8 +40,8 @@ public final class org/hexworks/zircon/compose/FrameData$Companion {
 }
 
 public final class org/hexworks/zircon/compose/RunDesktopKt {
-	public static final fun runDesktop (Lorg/hexworks/zircon/api/grid/TileGrid;Lkotlin/jvm/functions/Function2;)V
-	public static synthetic fun runDesktop$default (Lorg/hexworks/zircon/api/grid/TileGrid;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
+	public static final fun runDesktop (Lorg/hexworks/zircon/api/grid/TileGrid;Ljava/lang/String;ZLkotlin/jvm/functions/Function2;)V
+	public static synthetic fun runDesktop$default (Lorg/hexworks/zircon/api/grid/TileGrid;Ljava/lang/String;ZLkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 }
 
 public final class org/hexworks/zircon/compose/TileGridViewKt {

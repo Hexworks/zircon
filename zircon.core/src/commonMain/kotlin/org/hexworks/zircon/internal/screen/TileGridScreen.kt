@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.screen
 
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -35,7 +36,7 @@ public class TileGridScreen(
         buildComponentContainer(
             initialSize = tileGrid.size,
             initialTileset = tileGrid.tileset,
-            initialTheme = tileGrid.config.defaultColorTheme,
+            initialTheme = ZirconDefaults.current.theme,
             eventBus = tileGrid.eventBus,
             eventScope = tileGrid.eventScope,
         ),

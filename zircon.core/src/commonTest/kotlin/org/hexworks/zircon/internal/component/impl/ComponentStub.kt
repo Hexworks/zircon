@@ -24,7 +24,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalContainer
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 
 class ComponentStub(
@@ -60,7 +60,7 @@ class ComponentStub(
     override val disabledProperty: Property<Boolean> = false.toProperty()
     override var isDisabled: Boolean by disabledProperty.asDelegate()
 
-    override val themeProperty: Property<ColorTheme> = RuntimeConfig.config.defaultColorTheme.toProperty()
+    override val themeProperty: Property<ColorTheme> = ZirconDefaults.current.theme.toProperty()
     override var theme: ColorTheme by themeProperty.asDelegate()
 
 
@@ -70,7 +70,7 @@ class ComponentStub(
     override val rootProperty: ObservableValue<RootContainer?>
         get() = error("not implemented")
 
-    override val tilesetProperty = RuntimeConfig.config.defaultTileset.toProperty()
+    override val tilesetProperty = ZirconDefaults.current.tileset.toProperty()
     override val hasFocus: Boolean
         get() = false
     override val hasFocusProperty: ObservableValue<Boolean>

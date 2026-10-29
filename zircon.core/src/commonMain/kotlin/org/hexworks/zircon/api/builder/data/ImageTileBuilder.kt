@@ -5,19 +5,19 @@ import org.hexworks.zircon.api.data.ImageTile
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.modifier.Modifier
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 /**
  * Builds [ImageTile]s.
  * Defaults:
  * - Default name is a space
- * - Default tileset comes from [RuntimeConfig]
+ * - Default tileset comes from [ZirconDefaults]
  */
 @ZirconDsl
 public class ImageTileBuilder : Builder<ImageTile> {
 
     public var name: String = " "
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var modifiers: Set<Modifier> = setOf()
 
     override fun build(): ImageTile {

@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.fragment.menu.DropdownMenu
 import org.hexworks.zircon.api.fragment.menu.MenuSelection
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.fragment.impl.DefaultMenuBar
 
 
@@ -25,8 +25,8 @@ public class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 
     public var screen: Screen? = null
     public var menuElements: List<DropdownMenu<T>> = listOf()
-    public var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var theme: ColorTheme = ZirconDefaults.current.theme
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var width: Int = -1
     public var spacing: Int = 1
     public var onMenuItemSelected: ((menuSelection: MenuSelection<T>) -> CallbackResult)? = null

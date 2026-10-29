@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.graphics.extensions.fill
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 
 /**
@@ -22,7 +22,7 @@ import org.hexworks.zircon.internal.graphics.FastTileGraphics
 @ZirconDsl
 public class TileGraphicsBuilder : Builder<TileGraphics> {
 
-    public var tileset: TilesetResource = RuntimeConfig.config.defaultTileset
+    public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var size: Size = Size.ONE
     public var tiles: Map<Position, Tile> = mapOf()
         set(value) {

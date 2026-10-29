@@ -6,11 +6,11 @@ import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.view.View
-import org.hexworks.zircon.internal.config.RuntimeConfig
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 public abstract class BaseView(
     private val tileGrid: TileGrid,
-    final override var theme: ColorTheme = RuntimeConfig.config.defaultColorTheme
+    final override var theme: ColorTheme = ZirconDefaults.current.theme
 ) : View, ColorThemeOverride by ColorThemeOverride.create(theme) {
 
     final override val screen: Screen = tileGrid.toScreen()
