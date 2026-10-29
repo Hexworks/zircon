@@ -6,12 +6,12 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 ## Status
 
-- Current milestone: **M7 terminal renderer** (M1–M6 done 2026-10-28; Android moved to 2.1;
-  M7 added 2026-10-29 and folded into 2.0.0, so the release waits for it)
+- Current milestone: **release** (M1–M7 done; Android moved to 2.1). M7 (terminal renderer)
+  was added and built 2026-10-29; only its by-hand smoke test on real terminals is open.
 - M2 state: cobalt 2.0.0 is committed locally in `~/projects/cobalt` and published to `~/.m2`
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
-- Next step: M7 (see below), then the manual release steps under M6, then 2.1 planning (Android, image dictionary tilesets,
+- Next step: the M7 smoke checklist (`zircon.terminal/README.md`), then the manual release steps under M6, then 2.1 planning (Android, image dictionary tilesets,
   theming, the RadioBox/CheckBox click bugs from the old TODO once reproduced in the desktop demos).
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
@@ -116,20 +116,42 @@ Order matters: the codec and diff are pure and get goldens first; the tty layer 
 platform code; the loop ties them together; the examples split comes last so the launcher can
 run every demo.
 
-- [ ] Module skeleton `zircon.terminal`: jvm, linuxX64, linuxArm64, macosX64, macosArm64; `explicitApi()`, BCV dump, vanniktech publishing, `TEST.yml`/`PUBLISH.yml` entries (macos runner already exists)
-- [ ] `CellBuffer` (`IntArray` code points + packed RGB fg/bg + flag byte, no per-cell objects) and `TextTileset : Tileset<CellBuffer>` writing one cell per tile; wide/zero-width table (`EastAsianWidth`) in `commonMain`; graphical tiles throw
-- [ ] `TerminalRenderer : BaseRenderer<CellBuffer, Unit>` with `enqueue(event, phase)` like `ComposeRenderer`; blink via the base class, `Hidden` via the modifier
-- [ ] `AnsiEncoder`: diff previous vs current buffer → bytes (SGR coalescing, adjacent-cell cursor elision, `?2026` wrap, centring offset, too-small banner, cursor placement + DECSCUSR); goldens in `commonTest/resources/golden/*.ansi`, `UPDATE_GOLDENS=1` refreshes like zircon.compose
-- [ ] `InputParser`: kitty keyboard (`CSI … u`, press/release/repeat, modifiers, alternate keys) and SGR mouse (`CSI < … M/m`, motion, wheel) → `KeyboardEvent`/`MouseEvent` + phase; `MOUSE_CLICKED` on press+release in the same cell as in zircon.compose; table tests
-- [ ] `Tty` interface + `FakeTty` in `commonMain`/`commonTest`; `PosixTty` in `nativeMain` (termios, `ioctl(TIOCGWINSZ)`, `poll`, SIGWINCH/SIGTERM/SIGHUP via `signal`), `SttyTty` in `jvmMain` (`stty` subprocess, `sun.misc.Signal`)
-- [ ] `runTerminal(tileGrid, targetFps, quitKeys, beforeFrame)`: capability handshake (`CSI ?u` query with timeout → fail fast when unanswered), alt screen + modes, loop, restore in `finally` and signal handlers, rethrow after restore
-- [ ] Examples split: `Demos.kt` Compose glue → `zircon.examples.desktop`/`.web`; `zircon.examples` becomes core-only with the terminal targets; new `zircon.examples.terminal` (jvm run task + native binaries) selecting a demo by CLI arg, fps to stderr on exit for `BenchmarkDemo`; graphical-tileset demos listed as unsupported
-- [ ] Manual smoke on foot, ghostty, alacritty, kitty, wezterm (checklist in `zircon.terminal/README.md`); bar met (≥ 30 fps on the benchmark, idle 0 bytes, tick < 4 ms)
-- [ ] README: terminal entry point section next to `runDesktop`; `tmux` note (`-T RGB`, kitty protocol passthrough needs tmux ≥ 3.4)
+- [x] Module skeleton `zircon.terminal`: jvm, linuxX64, linuxArm64, macosX64, macosArm64; `explicitApi()`, BCV dump, vanniktech publishing, `TEST.yml`/`PUBLISH.yml` entries (macos runner already exists)
+- [x] `CellBuffer` (`IntArray` code points + packed RGB fg/bg + flag byte, no per-cell objects) and `TextTileset : Tileset<CellBuffer>` writing one cell per tile; wide/zero-width table (`EastAsianWidth`) in `commonMain`; graphical tiles throw
+- [x] `TerminalRenderer : BaseRenderer<CellBuffer, Unit>` with `enqueue(event, phase)` like `ComposeRenderer`; blink via the base class, `Hidden` via the modifier
+- [x] `AnsiEncoder`: diff previous vs current buffer → bytes (SGR coalescing, adjacent-cell cursor elision, `?2026` wrap, centring offset, too-small banner, cursor placement + DECSCUSR); goldens in `commonTest/resources/golden/*.ansi`, `UPDATE_GOLDENS=1` refreshes like zircon.compose
+- [x] `InputParser`: kitty keyboard (`CSI … u`, press/release/repeat, modifiers, alternate keys) and SGR mouse (`CSI < … M/m`, motion, wheel) → `KeyboardEvent`/`MouseEvent` + phase; `MOUSE_CLICKED` on press+release in the same cell as in zircon.compose; table tests
+- [x] `Tty` interface + `FakeTty` in `commonMain`/`commonTest`; `PosixTty` in `nativeMain` (termios, `ioctl(TIOCGWINSZ)`, `poll`, SIGWINCH/SIGTERM/SIGHUP via `signal`), `SttyTty` in `jvmMain` (`stty` subprocess, `sun.misc.Signal`)
+- [x] `runTerminal(tileGrid, targetFps, quitKeys, beforeFrame)`: capability handshake (`CSI ?u` query with timeout → fail fast when unanswered), alt screen + modes, loop, restore in `finally` and signal handlers, rethrow after restore
+- [x] Examples split: `Demos.kt` Compose glue → `zircon.examples.desktop`/`.web`; `zircon.examples` becomes core-only with the terminal targets; new `zircon.examples.terminal` (jvm run task + native binaries) selecting a demo by CLI arg, fps to stderr on exit for `BenchmarkDemo`; graphical-tileset demos listed as unsupported
+- [ ] Manual smoke on foot, ghostty, alacritty, kitty, wezterm (checklist in `zircon.terminal/README.md`). Bar checked against a pty harness so far (see the results log): idle 0 bytes, JVM tick 3 ms; the real-terminal fps is the open item.
+- [x] README: terminal entry point section next to `runDesktop`; `tmux` note (`-T RGB`, kitty protocol passthrough needs tmux ≥ 3.4)
 
 ## Results log
 
 Append benchmark numbers and notable findings here, newest first.
+
+### 2026-10-29 M7 terminal renderer, pty harness
+
+Same machine. `zircon.examples.terminal` Benchmark demo in a 240x135 pty (32,400 cells, every
+cell rewritten every frame, random colours so nearly every cell changes colour) driven by a
+Python harness that answers the kitty query and reads the output at memory speed. `render`
+is core's tick plus the demo's 32k `draw` calls, `encode` the diff + escape encoding, `write`
+the blocking write to the pty.
+
+| Launcher | fps (target 60) | render | encode | write | output |
+|---|---|---|---|---|---|
+| JVM (HotSpot) | 59 | 1.8 ms | 1.2 ms | 4.1 ms | 996 KB/frame |
+| linuxX64 release | 58 | 5.5 ms | 3.1 ms | 4.1 ms | 996 KB/frame |
+
+Findings:
+- A static screen (Components demo) writes 3 frames in total: the clear, the first frame
+  and the cursor; after that every frame is 0 bytes at 60 fps and 0.7 ms per tick.
+- The worst case is output-bound: ~30 bytes per changed cell when every cell changes colour,
+  so 1 MB per frame; a real terminal emulator's parser, not this code, decides the fps there.
+  The gradle run tasks cannot test it (no tty); `make demo-terminal` runs the binary directly.
+- Kotlin/Native is about 3x slower than HotSpot on the same per-cell code; the table-driven
+  decimal output cut encode from 4.6 to 3.1 ms on native.
 
 ### 2026-10-28 M1 renderer benchmark
 

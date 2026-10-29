@@ -22,6 +22,7 @@ Need info? Check the [Docs][zircon-docs]
     - [Adding Zircon as a dependency](#adding-zircon-as-a-dependency)
     - [A first window](#a-first-window)
     - [Embedding the grid in your own Compose UI](#embedding-the-grid-in-your-own-compose-ui)
+    - [In the terminal](#in-the-terminal)
 - [Features at a Glance](#features-at-a-glance)
     - [Drawing](#drawing)
     - [Components](#components)
@@ -39,10 +40,12 @@ Need info? Check the [Docs][zircon-docs]
 
 2.0 is a clean break from the 2021 line:
 
-- **One renderer, Compose Multiplatform.** Swing, LibGDX and KorGE are gone. The grid is a
-  composable (`TileGridView`) you drop into any Compose tree, or `runDesktop(grid)` for a
-  single window. It draws the whole grid with one shader pass per tileset, so even a
-  1080p screen of 8x8 tiles redraws at display rate on desktop and in the browser.
+- **Two renderers: Compose Multiplatform and the terminal.** Swing, LibGDX and KorGE are
+  gone. The grid is a composable (`TileGridView`) you drop into any Compose tree, or
+  `runDesktop(grid)` for a single window. It draws the whole grid with one shader pass per
+  tileset, so even a 1080p screen of 8x8 tiles redraws at display rate on desktop and in
+  the browser. `zircon.terminal` renders the same grid as text in a terminal
+  (`runTerminal(grid)`), on the JVM or as a native Linux/macOS binary.
 - **Kotlin DSL everywhere.** `button { +"OK" }`, `vBox { ... }`, `tileGrid { ... }`,
   `Position(x, y)`, `Size(w, h)`. The Java-style builders, `newBuilder()`, `withX()`
   setters and `Shapes`/`Modifiers` factory objects are gone, and so is Java support.
@@ -76,6 +79,8 @@ kotlin {
 `zircon.core` publishes for the JVM, JS, Wasm, iOS, macOS, Linux and Windows.
 `zircon.compose` publishes for the JVM (desktop) and `wasmJs` (browser); it needs the
 Compose Multiplatform Gradle plugin in your project, exactly like any other Compose library.
+`zircon.terminal` publishes for the JVM, Linux (x64, arm64) and macOS (x64, arm64) and
+needs no plugin.
 
 ### A first window
 
@@ -143,6 +148,39 @@ fun GameScreen(grid: TileGrid) {
 
 In the browser, put it inside `ComposeViewport`; on the desktop, inside a `Window`. The
 examples do both.
+
+### In the terminal
+
+`zircon.terminal` draws the grid as text: every tile is one terminal cell with the tile's
+character and truecolor foreground and background, in whatever font the terminal uses.
+Replace `runDesktop` in the example above with
+
+```kotlin
+import org.hexworks.zircon.terminal.runTerminal
+
+runTerminal(grid) // blocks until Ctrl+C, the grid is closed, or the terminal goes away
+```
+
+and run it in the terminal. The same `main` compiles to a native binary on Linux and
+macOS (`linuxX64`, `linuxArm64`, `macosX64`, `macosArm64`) with no JVM.
+
+What to expect:
+
+- **Terminals.** It needs truecolor and the
+  [kitty keyboard protocol](https://sw.kovidgoyal.net/kitty/keyboard-protocol/): foot,
+  ghostty, kitty, WezTerm and Alacritty 0.13+ all qualify; the shell does not matter.
+  A terminal that does not answer the protocol query fails fast with a message. In tmux
+  use 3.4+ with `set -g extended-keys on` and a truecolor `terminal-overrides`.
+- **Size.** The grid keeps the size you built it with; it is centred in the terminal and
+  a "terminal too small" banner replaces it while the window is smaller than the grid.
+- **Text only.** CP437 and TrueType tilesets render as glyphs, the tileset's pixel size is
+  ignored, and graphical tilesets fail on first render. Characters a terminal would draw
+  two cells wide become `�`.
+- **Input.** Key presses and releases with modifiers, mouse moves, clicks, drags and the
+  wheel all arrive as the usual Zircon events. Ctrl+C quits by default; pass
+  `quitKeys = emptySet()` to handle it yourself.
+- **Output.** Only changed cells are written, every frame is one synchronized update, and
+  an unchanged frame writes nothing.
 
 ## Features at a Glance
 
@@ -229,8 +267,10 @@ application's own with `ComposeResourceLoader.addProjectResources { Res.readByte
 |---|---|---|
 | `zircon.core` | jvm, js, wasmJs, iOS, macOS, linuxX64/Arm64, mingwX64 | Grid, layers, components, animations, resources. No rendering. |
 | `zircon.compose` | jvm, wasmJs | The Compose Multiplatform renderer: `TileGridView`, `runDesktop`, tilesets, bundled assets. |
-| `zircon.examples` | jvm, wasmJs | The demos as common code (`ExamplesApp`). |
-| `zircon.examples.desktop`, `zircon.examples.web` | jvm / wasmJs | Launchers for the demos. |
+| `zircon.terminal` | jvm, linuxX64/Arm64, macosX64/Arm64 | The terminal renderer: `runTerminal`, ANSI output, kitty keyboard and SGR mouse input. |
+| `zircon.examples` | jvm, wasmJs, linux, macOS | The demos as plain Zircon code, plus their data files in `resources/`. |
+| `zircon.examples.compose` | jvm, wasmJs | The demos as a composable (`ExamplesApp`) with the data files as Compose resources. |
+| `zircon.examples.desktop`, `zircon.examples.web`, `zircon.examples.terminal` | jvm / wasmJs / jvm + native | Launchers for the demos. |
 
 Android is planned for 2.1.
 
@@ -242,9 +282,24 @@ Android is planned for 2.1.
 ./gradlew check                                           # tests on every host target, API checks
 ```
 
+The terminal demos need a real terminal, which Gradle does not pass on to the process it
+starts, so build them and run the result yourself (`make demo-terminal` does both):
+
+```sh
+./gradlew :zircon.examples.terminal:linkReleaseExecutableLinuxX64   # or ...MacosArm64
+ZIRCON_EXAMPLES_FILES=zircon.examples/resources/files \
+  zircon.examples.terminal/build/bin/linuxX64/releaseExecutable/zircon.examples.terminal.kexe [Benchmark]
+```
+
+The tab bar switches between the demos a terminal can show; on exit the frame rate and
+the time per frame of the last demo are printed.
+
 The Compose renderer is verified by golden-image tests
-(`zircon.compose/src/jvmTest/resources/golden`); run with `UPDATE_GOLDENS=1` after an
-intentional rendering change.
+(`zircon.compose/src/jvmTest/resources/golden`), the terminal renderer by golden
+escape-sequence files (`zircon.terminal/src/jvmTest/resources/golden`); run with
+`UPDATE_GOLDENS=1` after an intentional rendering change. The terminal renderer is also
+checked by hand on foot, ghostty, Alacritty, kitty and WezTerm before a release; the
+checklist is in [zircon.terminal/README.md](zircon.terminal/README.md).
 
 ## Road Map
 

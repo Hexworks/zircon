@@ -18,7 +18,7 @@ kotlin {
     }
     sourceSets {
         wasmJsMain.dependencies {
-            implementation(project(":zircon.examples"))
+            implementation(project(":zircon.examples.compose"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)

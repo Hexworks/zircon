@@ -18,7 +18,7 @@ kotlin {
     }
     sourceSets {
         jvmMain.dependencies {
-            implementation(project(":zircon.examples"))
+            implementation(project(":zircon.examples.compose"))
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }

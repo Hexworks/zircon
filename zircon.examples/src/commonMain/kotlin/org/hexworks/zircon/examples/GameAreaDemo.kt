@@ -10,7 +10,7 @@ import kotlin.random.Random
 /**
  * A field of nethack sprites: graphical tiles drawn onto a layer over the content area.
  */
-public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlust16x16()) { context ->
+public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlust16x16(), textOnly = false) { context ->
     val nethack = GraphicalTilesetResources.nethack16x16()
     val names = listOf(
         "Giant ant", "Killer bee", "Soldier ant", "Fire ant", "Giant beetle", "Queen bee",

@@ -17,7 +17,7 @@ jobs:
           java-version: 25
       - uses: gradle/actions/setup-gradle@v4
       - name: Publish to Maven Central
-        run: ./gradlew :zircon.core:publishToMavenCentral :zircon.compose:publishToMavenCentral --no-configuration-cache
+        run: ./gradlew :zircon.core:publishToMavenCentral :zircon.compose:publishToMavenCentral :zircon.terminal:publishToMavenCentral --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}

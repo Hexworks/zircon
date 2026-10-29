@@ -1,7 +1,7 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import kotlinx.browser.document
-import org.hexworks.zircon.examples.ExamplesApp
+import org.hexworks.zircon.examples.compose.ExamplesApp
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

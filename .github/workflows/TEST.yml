@@ -20,10 +20,12 @@ jobs:
             tasks: >-
               :zircon.core:check
               :zircon.compose:jvmTest
+              :zircon.terminal:check
               :zircon.examples.desktop:compileKotlinJvm
               :zircon.examples.web:wasmJsBrowserDistribution
+              :zircon.examples.terminal:linkDebugExecutableLinuxX64
           - os: macos-latest
-            tasks: :zircon.core:macosArm64Test :zircon.core:iosSimulatorArm64Test :zircon.compose:jvmTest
+            tasks: :zircon.core:macosArm64Test :zircon.core:iosSimulatorArm64Test :zircon.compose:jvmTest :zircon.terminal:macosArm64Test :zircon.examples.terminal:linkDebugExecutableMacosArm64
           - os: windows-latest
             tasks: :zircon.core:mingwX64Test :zircon.compose:jvmTest
     runs-on: ${{ matrix.os }}
@@ -40,5 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: golden-actuals-${{ matrix.os }}
-          path: zircon.compose/build/golden
+          path: |
+            zircon.compose/build/golden
+            zircon.terminal/build/golden
           if-no-files-found: ignore

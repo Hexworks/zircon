@@ -6,5 +6,7 @@ plugins {
 }
 
 apiValidation {
-    ignoredProjects += listOf("zircon.examples", "zircon.examples.desktop", "zircon.examples.web")
+    ignoredProjects += listOf(
+        "zircon.examples", "zircon.examples.compose", "zircon.examples.desktop", "zircon.examples.web", "zircon.examples.terminal",
+    )
 }

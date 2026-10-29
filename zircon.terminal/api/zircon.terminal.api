@@ -1,0 +1,153 @@
+public final class org/hexworks/zircon/terminal/AnsiEncoder {
+	public static final field CSI Ljava/lang/String;
+	public static final field Companion Lorg/hexworks/zircon/terminal/AnsiEncoder$Companion;
+	public static final field ESC Ljava/lang/String;
+	public static final field SYNC_END Ljava/lang/String;
+	public static final field SYNC_START Ljava/lang/String;
+	public fun <init> (II)V
+	public final fun encode (Lorg/hexworks/zircon/terminal/CellBuffer;Lorg/hexworks/zircon/api/data/Position;ZLorg/hexworks/zircon/terminal/ByteSink;)V
+	public final fun getTooSmall ()Z
+	public final fun invalidate ()V
+	public final fun resize (II)V
+	public final fun toGridPosition (II)Lorg/hexworks/zircon/api/data/Position;
+}
+
+public final class org/hexworks/zircon/terminal/AnsiEncoder$Companion {
+}
+
+public final class org/hexworks/zircon/terminal/ByteSink {
+	public static final field SEMICOLON B
+	public static final field TWO B
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun array ()[B
+	public final fun ascii (Ljava/lang/String;)V
+	public final fun byte (I)V
+	public final fun codePoint (I)V
+	public final fun getSize ()I
+	public final fun int (I)V
+	public final fun reset ()V
+	public final fun rgb (II)V
+	public final fun small (I)V
+	public final fun toByteArray ()[B
+}
+
+public final class org/hexworks/zircon/terminal/CellBuffer {
+	public static final field Companion Lorg/hexworks/zircon/terminal/CellBuffer$Companion;
+	public static final field DEFAULT_BACKGROUND I
+	public static final field DEFAULT_FOREGROUND I
+	public static final field SPACE I
+	public fun <init> (II)V
+	public final fun clear ()V
+	public final fun copyFrom (Lorg/hexworks/zircon/terminal/CellBuffer;)V
+	public final fun getBackgrounds ()[I
+	public final fun getCodes ()[I
+	public final fun getForegrounds ()[I
+	public final fun getHeight ()I
+	public final fun getWidth ()I
+	public final fun index (II)I
+}
+
+public final class org/hexworks/zircon/terminal/CellBuffer$Companion {
+	public final fun pack (Lorg/hexworks/zircon/api/color/Color;)I
+}
+
+public final class org/hexworks/zircon/terminal/RunTerminalKt {
+	public static final fun getCTRL_C ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
+	public static final fun runTerminal (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;)Lorg/hexworks/zircon/terminal/TerminalSession;
+	public static synthetic fun runTerminal$default (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalSession;
+}
+
+public final class org/hexworks/zircon/terminal/SttyTtyKt {
+	public static final fun systemTty ()Lorg/hexworks/zircon/terminal/Tty;
+}
+
+public final class org/hexworks/zircon/terminal/TerminalCharacters {
+	public static final field INSTANCE Lorg/hexworks/zircon/terminal/TerminalCharacters;
+	public static final field REPLACEMENT I
+	public final fun isSingleWidth (I)Z
+	public final fun isWide (I)Z
+	public final fun isZeroWidth (I)Z
+}
+
+public final class org/hexworks/zircon/terminal/TerminalRenderer : org/hexworks/zircon/internal/renderer/impl/BaseRenderer {
+	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;)V
+	public synthetic fun create ()Ljava/lang/Object;
+	public fun create ()V
+	public final fun enqueue (Lorg/hexworks/zircon/api/uievent/UIEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)V
+	public static synthetic fun enqueue$default (Lorg/hexworks/zircon/terminal/TerminalRenderer;Lorg/hexworks/zircon/api/uievent/UIEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;ILjava/lang/Object;)V
+	public synthetic fun prepareRender (Ljava/lang/Object;)V
+}
+
+public final class org/hexworks/zircon/terminal/TerminalSession {
+	public static final field HANDSHAKE_TIMEOUT_MS I
+	public static final field KITTY_FLAGS I
+	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;)V
+	public final fun getBytesWritten ()J
+	public final fun getEncodeMillis ()D
+	public final fun getFramesRendered ()J
+	public final fun getRenderMillis ()D
+	public final fun getWriteMillis ()D
+	public final fun run ()V
+}
+
+public final class org/hexworks/zircon/terminal/TextTileset : org/hexworks/zircon/api/tileset/Tileset {
+	public static final field Companion Lorg/hexworks/zircon/terminal/TextTileset$Companion;
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/terminal/CellBuffer;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun getHeight ()I
+	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
+	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
+	public fun getTargetType ()Lkotlin/reflect/KClass;
+	public fun getWidth ()I
+}
+
+public final class org/hexworks/zircon/terminal/TextTileset$Companion {
+	public final fun cellCodeOf (C)I
+}
+
+public final class org/hexworks/zircon/terminal/TextTilesetLoader : org/hexworks/zircon/api/tileset/TilesetLoader {
+	public fun <init> ()V
+	public fun canLoadTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
+	public fun loadTilesetFrom (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/tileset/Tileset;
+}
+
+public abstract interface class org/hexworks/zircon/terminal/Tty {
+	public abstract fun close ()V
+	public abstract fun getTerminateRequested ()Z
+	public abstract fun open ()V
+	public abstract fun read ([BI)I
+	public abstract fun size ()Lorg/hexworks/zircon/api/data/Size;
+	public abstract fun takeResize ()Z
+	public abstract fun write ([BI)V
+}
+
+public final class org/hexworks/zircon/terminal/input/InputParser {
+	public static final field Companion Lorg/hexworks/zircon/terminal/input/InputParser$Companion;
+	public static final field MOD_ALT I
+	public static final field MOD_CTRL I
+	public static final field MOD_META I
+	public static final field MOD_SHIFT I
+	public static final field MOD_SUPER I
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
+	public final fun feed ([BI)Ljava/util/List;
+	public static synthetic fun feed$default (Lorg/hexworks/zircon/terminal/input/InputParser;[BIILjava/lang/Object;)Ljava/util/List;
+	public final fun getReplyListener ()Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;
+	public final fun setReplyListener (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;)V
+}
+
+public final class org/hexworks/zircon/terminal/input/InputParser$Companion {
+}
+
+public abstract interface class org/hexworks/zircon/terminal/input/InputParser$ReplyListener {
+	public fun onDeviceAttributes ()V
+	public fun onKittyKeyboardFlags (I)V
+}
+
+public final class org/hexworks/zircon/terminal/input/InputParser$ReplyListener$DefaultImpls {
+	public static fun onDeviceAttributes (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;)V
+	public static fun onKittyKeyboardFlags (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;I)V
+}
+

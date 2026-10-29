@@ -39,7 +39,7 @@ PLATFORM  ?=
 # These targets are commands, not files — always run them regardless of
 # whether a file with that name exists.
 
-.PHONY: build test demo demo-desktop demo-browser clean
+.PHONY: build test demo demo-desktop demo-browser demo-terminal clean
 
 
 # ─── Targets ─────────────────────────────────────────────────────────────────
@@ -79,18 +79,20 @@ test:
 demo:
 	@platform="$(PLATFORM)"; \
 	if [ -z "$$platform" ]; then \
-		printf 'Run the demos on (d)esktop or in the (b)rowser? [d/b] '; \
+		printf 'Run the demos on (d)esktop, in the (b)rowser or in the (t)erminal? [d/b/t] '; \
 		read -r answer; \
 		case "$$answer" in \
 			d|D|desktop) platform=desktop ;; \
 			b|B|browser) platform=browser ;; \
+			t|T|terminal) platform=terminal ;; \
 			*) echo "Unknown choice: $$answer"; exit 1 ;; \
 		esac; \
 	fi; \
 	case "$$platform" in \
 		desktop) $(MAKE) --no-print-directory demo-desktop ;; \
 		browser) $(MAKE) --no-print-directory demo-browser ;; \
-		*) echo "PLATFORM must be desktop or browser"; exit 1 ;; \
+		terminal) $(MAKE) --no-print-directory demo-terminal ;; \
+		*) echo "PLATFORM must be desktop, browser or terminal"; exit 1 ;; \
 	esac
 
 # demo-desktop: Launch the demos in a desktop window (Compose for Desktop).
@@ -103,6 +105,22 @@ demo-desktop:
 #   itself; stop it with Ctrl+C.
 demo-browser:
 	$(GRADLE) $(GRADLE_FLAGS) :zircon.examples.web:wasmJsBrowserDevelopmentRun
+
+# demo-terminal: Build the native terminal launcher for this machine and run it in
+# this terminal (Gradle does not pass its terminal on, so the binary runs directly).
+#
+#   DEMO picks the demo to start on, e.g. `make demo-terminal DEMO=Benchmark`.
+demo-terminal:
+	@case "$$(uname -s)-$$(uname -m)" in \
+		Linux-x86_64) target=LinuxX64; dir=linuxX64 ;; \
+		Linux-aarch64) target=LinuxArm64; dir=linuxArm64 ;; \
+		Darwin-arm64) target=MacosArm64; dir=macosArm64 ;; \
+		Darwin-x86_64) target=MacosX64; dir=macosX64 ;; \
+		*) echo "No native terminal launcher for $$(uname -s)-$$(uname -m)"; exit 1 ;; \
+	esac; \
+	$(GRADLE) $(GRADLE_FLAGS) :zircon.examples.terminal:linkReleaseExecutable$$target && \
+	ZIRCON_EXAMPLES_FILES=zircon.examples/resources/files \
+		zircon.examples.terminal/build/bin/$$dir/releaseExecutable/zircon.examples.terminal.kexe $(DEMO)
 
 # clean: Remove all build outputs.
 clean:

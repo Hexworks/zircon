@@ -1,17 +1,5 @@
 package org.hexworks.zircon.examples
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color as ComposeColor
-import kotlinx.coroutines.delay
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.data.characterTile
@@ -29,9 +17,6 @@ import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
-import org.hexworks.zircon.compose.ComposeResourceLoader
-import org.hexworks.zircon.compose.TileGridView
-import org.hexworks.zircon.examples.resources.Res
 import kotlin.time.TimeSource
 
 /**
@@ -42,6 +27,8 @@ import kotlin.time.TimeSource
 public class Demo(
     public val name: String,
     public val tileset: TilesetResource,
+    /** `false` when the demo draws graphical tiles, which a terminal cannot show. */
+    public val textOnly: Boolean = true,
     public val show: suspend (DemoContext) -> DemoView,
 )
 
@@ -70,45 +57,32 @@ public class DemoView(public val content: Component, public val onFrame: () -> U
 public val demos: List<Demo> = listOf(componentsDemo, gameAreaDemo, rexPaintDemo, animationDemo, benchmarkDemo)
 
 /**
- * The examples app, built entirely from Zircon components: a horizontal tab bar on top,
- * the selected demo below, in a grid that fills the available space. Switching tabs or
- * resizing the window rebuilds the grid, since each demo has its own tileset.
- */
-@Composable
-public fun ExamplesApp() {
-    var selected by remember { mutableStateOf(demos.first()) }
-    BoxWithConstraints(Modifier.fillMaxSize().background(ComposeColor.Black)) {
-        val widthPx = constraints.maxWidth
-        val heightPx = constraints.maxHeight
-        val shown by produceState<ExamplesScreen?>(null, selected, widthPx, heightPx) {
-            delay(RESIZE_DEBOUNCE_MS) // a window drag reports many sizes; build the last one
-            // The demos' own Compose resources (REXPaint files, animations) go through core's
-            // resource loader, so they have to be registered next to Zircon's bundled ones.
-            ComposeResourceLoader.install()
-            ComposeResourceLoader.addProjectResources { path -> Res.readBytes(path) }
-            value = examplesScreen(selected, widthPx, heightPx) { selected = it }
-        }
-        shown?.let { TileGridView(it.grid, beforeFrame = it.onFrame) }
-    }
-}
-
-/**
  * A built examples screen: the [grid] to render, its [tabBar] and the callback to run
  * before each frame.
  */
 public class ExamplesScreen(public val grid: TileGrid, public val tabBar: TabBar, public val onFrame: () -> Unit)
 
 /**
- * Builds the grid for [demo] with as many tiles of its tileset as fit into
- * [widthPx] x [heightPx]: a tab bar for every demo on top, the demo's content below and
- * an fps counter in the top right corner. Clicking another tab calls [onSelect].
+ * The grid size that fills [widthPx] x [heightPx] with tiles of [tileset], at least
+ * [MIN_SIZE].
  */
-public suspend fun examplesScreen(demo: Demo, widthPx: Int, heightPx: Int, onSelect: (Demo) -> Unit): ExamplesScreen {
+public fun gridSizeFor(tileset: TilesetResource, widthPx: Int, heightPx: Int): Size = Size(
+    maxOf(widthPx / tileset.width, MIN_SIZE.width),
+    maxOf(heightPx / tileset.height, MIN_SIZE.height),
+)
+
+/**
+ * Builds the grid of [size] for [demo]: a tab bar for every demo in [available] on top,
+ * the demo's content below and an fps counter in the top right corner. Clicking another
+ * tab calls [onSelect].
+ */
+public suspend fun examplesScreen(
+    demo: Demo,
+    size: Size,
+    available: List<Demo> = demos,
+    onSelect: (Demo) -> Unit,
+): ExamplesScreen {
     val tileset = demo.tileset
-    val size = Size(
-        maxOf(widthPx / tileset.width, MIN_SIZE.width),
-        maxOf(heightPx / tileset.height, MIN_SIZE.height),
-    )
     val grid = tileGrid {
         this.size = size
         this.tileset = tileset
@@ -122,7 +96,7 @@ public suspend fun examplesScreen(demo: Demo, widthPx: Int, heightPx: Int, onSel
     val tabBar = horizontalTabBar {
         this.size = size
         defaultSelected = demo.name
-        demos.forEach { other ->
+        available.forEach { other ->
             tab {
                 key = other.name
                 label = other.name
@@ -132,7 +106,7 @@ public suspend fun examplesScreen(demo: Demo, widthPx: Int, heightPx: Int, onSel
     }
     screen.addComponent(tabBar.root)
     tabBar.selectedKeyProperty.onChange { (_, key) ->
-        demos.firstOrNull { it.name == key && it !== demo }?.let(onSelect)
+        available.firstOrNull { it.name == key && it !== demo }?.let(onSelect)
     }
 
     // A layer, not a label: components can't overlap, and the tab bar spans the screen.
@@ -183,5 +157,4 @@ private class FpsCounter {
 
 private const val TAB_BAR_HEIGHT = 3
 private const val FPS_WIDTH = 8
-private const val RESIZE_DEBOUNCE_MS = 150L
 private val MIN_SIZE = Size(60, 20)
