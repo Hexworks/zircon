@@ -18,7 +18,7 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
     override val closedProperty: Property<Boolean> = false.toProperty()
 
     private val id = UUID.randomUUID()
-    private val debug = ZirconDefaults.current.debugMode
+    private val debug get() = ZirconDefaults.current.debugMode
     private val logger = LoggerFactory.getLogger(this::class)
 
     private val results = mutableMapOf<UUID, DefaultAnimationHandle>()

@@ -32,7 +32,7 @@ public class UIEventToComponentDispatcher(
     private var lastMousePosition = Position.UNKNOWN
     private var lastHoveredComponent: InternalComponent = root
 
-    private val shortcutsConfig = ZirconDefaults.current.shortcutsConfig
+    private val shortcutsConfig get() = ZirconDefaults.current.shortcutsConfig
 
     init {
         root.eventBus.simpleSubscribeTo(RequestFocusFor, root.eventScope) { (component) ->
