@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.resource.base
+package org.hexworks.zircon.api.resource.base
 
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.zircon.api.resource.TilesetResource

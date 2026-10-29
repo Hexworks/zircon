@@ -3125,7 +3125,7 @@ public final class org/hexworks/zircon/api/data/ImageTile : org/hexworks/zircon/
 	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/ImageTile;
 }
 
-public final class org/hexworks/zircon/api/data/PixelPosition : org/hexworks/zircon/internal/data/base/BasePosition {
+public final class org/hexworks/zircon/api/data/PixelPosition : org/hexworks/zircon/api/data/base/BasePosition {
 	public static final field Companion Lorg/hexworks/zircon/api/data/PixelPosition$Companion;
 	public fun <init> (II)V
 	public final fun component1 ()I
@@ -3290,6 +3290,31 @@ public final class org/hexworks/zircon/api/data/TileType : java/lang/Enum {
 }
 
 public final class org/hexworks/zircon/api/data/TileType$Companion {
+}
+
+public abstract class org/hexworks/zircon/api/data/base/BasePosition : org/hexworks/zircon/api/data/Position {
+	public fun <init> ()V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/hexworks/zircon/api/data/Position;)I
+	public fun component1 ()I
+	public fun component2 ()I
+	protected abstract fun create (II)Lorg/hexworks/zircon/api/data/Position;
+	public synthetic fun minus (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun minus (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Position;
+	public synthetic fun plus (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun plus (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Position;
+}
+
+public abstract class org/hexworks/zircon/api/data/base/BaseSize : org/hexworks/zircon/api/data/Size {
+	public fun <init> ()V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lorg/hexworks/zircon/api/data/Size;)I
+	public fun component1 ()I
+	public fun component2 ()I
+	public synthetic fun minus (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun minus (Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/data/Size;
+	public synthetic fun plus (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun plus (Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/data/Size;
 }
 
 public final class org/hexworks/zircon/api/data/extensions/BlockExtensionsKt {
@@ -56401,6 +56426,17 @@ public final class org/hexworks/zircon/api/resource/TilesetType$TrueTypeFont : o
 	public static final field INSTANCE Lorg/hexworks/zircon/api/resource/TilesetType$TrueTypeFont;
 }
 
+public abstract class org/hexworks/zircon/api/resource/base/BaseTilesetResource : org/hexworks/zircon/api/resource/TilesetResource {
+	public fun <init> ()V
+	public fun checkCompatibilityWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
+	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
+	public fun isCompatibleWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
+	public fun isNotUnknown ()Z
+	public fun isUnknown ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
 public abstract interface class org/hexworks/zircon/api/screen/Screen : org/hexworks/zircon/api/behavior/ColorThemeOverride, org/hexworks/zircon/api/component/ComponentContainer, org/hexworks/zircon/api/grid/TileGrid {
 	public abstract fun display ()V
 	public abstract fun openModal (Lorg/hexworks/zircon/api/component/modal/Modal;)V
@@ -58814,7 +58850,7 @@ public final class org/hexworks/zircon/internal/data/DefaultBoundable : org/hexw
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/hexworks/zircon/internal/data/DefaultSize : org/hexworks/zircon/internal/data/base/BaseSize {
+public final class org/hexworks/zircon/internal/data/DefaultSize : org/hexworks/zircon/api/data/base/BaseSize {
 	public fun <init> (II)V
 	public final fun component1 ()I
 	public final fun component2 ()I
@@ -58875,7 +58911,7 @@ public final class org/hexworks/zircon/internal/data/FastStackedTile : org/hexwo
 	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
 }
 
-public final class org/hexworks/zircon/internal/data/GridPosition : org/hexworks/zircon/internal/data/base/BasePosition {
+public final class org/hexworks/zircon/internal/data/GridPosition : org/hexworks/zircon/api/data/base/BasePosition {
 	public static final field Companion Lorg/hexworks/zircon/internal/data/GridPosition$Companion;
 	public fun <init> (II)V
 	public final fun component1 ()I
@@ -58891,30 +58927,6 @@ public final class org/hexworks/zircon/internal/data/GridPosition : org/hexworks
 
 public final class org/hexworks/zircon/internal/data/GridPosition$Companion {
 	public final fun create (II)Lorg/hexworks/zircon/api/data/Position;
-}
-
-public abstract class org/hexworks/zircon/internal/data/base/BasePosition : org/hexworks/zircon/api/data/Position {
-	public fun <init> ()V
-	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lorg/hexworks/zircon/api/data/Position;)I
-	public fun component1 ()I
-	public fun component2 ()I
-	public synthetic fun minus (Ljava/lang/Object;)Ljava/lang/Object;
-	public fun minus (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Position;
-	public synthetic fun plus (Ljava/lang/Object;)Ljava/lang/Object;
-	public fun plus (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Position;
-}
-
-public abstract class org/hexworks/zircon/internal/data/base/BaseSize : org/hexworks/zircon/api/data/Size {
-	public fun <init> ()V
-	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lorg/hexworks/zircon/api/data/Size;)I
-	public fun component1 ()I
-	public fun component2 ()I
-	public synthetic fun minus (Ljava/lang/Object;)Ljava/lang/Object;
-	public fun minus (Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/data/Size;
-	public synthetic fun plus (Ljava/lang/Object;)Ljava/lang/Object;
-	public fun plus (Lorg/hexworks/zircon/api/data/Size;)Lorg/hexworks/zircon/api/data/Size;
 }
 
 public abstract class org/hexworks/zircon/internal/event/ZirconEvent : org/hexworks/cobalt/events/api/Event {
@@ -59792,17 +59804,6 @@ public final class org/hexworks/zircon/internal/resource/ColorThemeResource$Sola
 	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/internal/resource/ColorThemeResource$SolarizedBase;
 	public static fun values ()[Lorg/hexworks/zircon/internal/resource/ColorThemeResource$SolarizedBase;
-}
-
-public abstract class org/hexworks/zircon/internal/resource/base/BaseTilesetResource : org/hexworks/zircon/api/resource/TilesetResource {
-	public fun <init> ()V
-	public fun checkCompatibilityWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
-	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
-	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public fun isCompatibleWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
-	public fun isNotUnknown ()Z
-	public fun isUnknown ()Z
-	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class org/hexworks/zircon/internal/screen/InternalScreen : org/hexworks/zircon/api/screen/Screen, org/hexworks/zircon/internal/component/InternalComponentContainer, org/hexworks/zircon/internal/grid/InternalTileGrid, org/hexworks/zircon/internal/uievent/UIEventProcessor {

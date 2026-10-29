@@ -1,6 +1,6 @@
 package org.hexworks.zircon.internal.data
 
-import org.hexworks.zircon.internal.data.base.BaseSize
+import org.hexworks.zircon.api.data.base.BaseSize
 
 public data class DefaultSize(
     override val width: Int,

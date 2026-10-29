@@ -1,13 +1,18 @@
-package org.hexworks.zircon.internal.data.base
+package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.data.GridPosition
-import org.hexworks.zircon.api.data.PixelPosition
 
 /**
- * Base class for [Position] implementations.
+ * Base class for [Position] implementations. Subclasses only need to supply
+ * [create], which builds a new position of the same kind; arithmetic and
+ * ordering come from here.
  */
 public abstract class BasePosition : Position {
+
+    /**
+     * Creates a new [Position] of the same kind as this one with the given coordinates.
+     */
+    protected abstract fun create(x: Int, y: Int): Position
 
     /**
      * Returns a new [Position] which is the sum of `x` and `y` in both [Position]s.
@@ -19,19 +24,7 @@ public abstract class BasePosition : Position {
         if (other == Position.ZERO) {
             return this
         }
-        return when (this) {
-            is PixelPosition -> PixelPosition(
-                x = x + other.x,
-                y = y + other.y
-            )
-
-            is GridPosition -> GridPosition(
-                x = x + other.x,
-                y = y + other.y
-            )
-
-            else -> throw UnsupportedOperationException("Can't add unknown Position type")
-        }
+        return create(x + other.x, y + other.y)
     }
 
     /**
@@ -44,19 +37,7 @@ public abstract class BasePosition : Position {
         if (other == Position.ZERO) {
             return this
         }
-        return when (this) {
-            is PixelPosition -> PixelPosition(
-                x = x - other.x,
-                y = y - other.y
-            )
-
-            is GridPosition -> GridPosition(
-                x = x - other.x,
-                y = y - other.y
-            )
-
-            else -> throw UnsupportedOperationException("Can't subtract unknown Position type")
-        }
+        return create(x - other.x, y - other.y)
     }
 
     override fun compareTo(other: Position): Int {
@@ -68,7 +49,6 @@ public abstract class BasePosition : Position {
             else -> -1
         }
     }
-
 
     private fun checkType(pos0: Position, pos1: Position) {
         require(pos0::class == pos1::class)

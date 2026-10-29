@@ -1,4 +1,4 @@
-package org.hexworks.zircon.internal.data.base
+package org.hexworks.zircon.api.data.base
 
 import org.hexworks.zircon.api.data.Size
 import kotlin.math.max
