@@ -12,16 +12,12 @@ import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.dsl.ZirconDsl
-import org.hexworks.zircon.api.modifier.TextureModifier
-import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.resource.TilesetType
-import org.hexworks.zircon.api.tileset.TextureTransformer
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.config.RuntimeConfig
 import org.hexworks.zircon.internal.renderer.Renderer
-import kotlin.reflect.KClass
 
 
 public const val DEFAULT_BLINK_LENGTH: Long = 500L
@@ -131,12 +127,6 @@ public class AppConfigBuilder : Builder<AppConfig> {
         mutableMapOf()
 
     /**
-     * If set [textureModifierSupports] will contain the list of [TextureTransformer]s to try to use
-     * before using the default [TextureTransformer] of the [Renderer].
-     */
-    public var textureModifierSupports: MutableMap<KClass<out TextureModifier>, TextureModifierStrategy<*, *>> = mutableMapOf()
-
-    /**
      * If set, contains custom properties that plugin authors can set and access.
      */
     internal val customProperties = mutableMapOf<AppConfigKey<*>, Any>()
@@ -157,7 +147,6 @@ public class AppConfigBuilder : Builder<AppConfig> {
         iconPath = iconPath,
         customProperties = customProperties,
         tilesetFactories = tilesetFactories.values.toList(),
-        textureModifierStrategies = textureModifierSupports
     ).also {
         RuntimeConfig.config = it
     }
@@ -205,14 +194,5 @@ public fun AppConfigBuilder.debugConfig(init: DebugConfigBuilder.() -> Unit) {
 public fun <S : Any> AppConfigBuilder.tilesetFactory(init: TilesetFactoryBuilder<S>.() -> Unit) {
     val result = TilesetFactoryBuilder<S>().apply(init).build()
     tilesetFactories[result.supportedTileType to result.supportedTilesetType] = result
-}
-
-/**
- * Adds support for the given texture modifier.
- * 📘 *Note that* you don't need to add support for [TileModifier]s as they are self-contained.
- */
-public fun <T : Any, C : Any> AppConfigBuilder.textureModifier(init: TextureModifierBuilder<T, C>.() -> Unit) {
-    val result = TextureModifierBuilder<T, C>().apply(init).build()
-    textureModifierSupports[result.modifierType] = result
 }
 

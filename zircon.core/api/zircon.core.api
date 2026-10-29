@@ -339,14 +339,13 @@ public final class org/hexworks/zircon/api/animation/AnimationState : java/lang/
 
 public final class org/hexworks/zircon/api/application/AppConfig {
 	public static final field Companion Lorg/hexworks/zircon/api/application/AppConfig$Companion;
-	public fun <init> (JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;)V
+	public fun <init> (JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;)V
 	public final fun component1 ()J
 	public final fun component10 ()Ljava/lang/String;
 	public final fun component11 ()Ljava/lang/String;
 	public final fun component12 ()Lorg/hexworks/zircon/api/application/DebugConfig;
 	public final fun component13 ()Lorg/hexworks/zircon/api/application/ShortcutsConfig;
 	public final fun component14 ()Ljava/util/List;
-	public final fun component15 ()Ljava/util/Map;
 	public final fun component2 ()Z
 	public final fun component3 ()Z
 	public final fun component4 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -355,8 +354,8 @@ public final class org/hexworks/zircon/api/application/AppConfig {
 	public final fun component7 ()Z
 	public final fun component8 ()Lorg/hexworks/zircon/api/data/Size;
 	public final fun component9 ()Z
-	public final fun copy (JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;)Lorg/hexworks/zircon/api/application/AppConfig;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/application/AppConfig;JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lorg/hexworks/zircon/api/application/AppConfig;
+	public final fun copy (JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;)Lorg/hexworks/zircon/api/application/AppConfig;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/application/AppConfig;JZZLorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/data/Size;ZLjava/lang/String;Ljava/lang/String;Lorg/hexworks/zircon/api/application/DebugConfig;Lorg/hexworks/zircon/api/application/ShortcutsConfig;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lorg/hexworks/zircon/api/application/AppConfig;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBlinkLengthInMilliSeconds ()J
 	public final fun getDebugConfig ()Lorg/hexworks/zircon/api/application/DebugConfig;
@@ -370,7 +369,6 @@ public final class org/hexworks/zircon/api/application/AppConfig {
 	public final fun getOrNull (Lorg/hexworks/zircon/api/application/AppConfigKey;)Ljava/lang/Object;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/application/ShortcutsConfig;
 	public final fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public final fun getTextureModifierStrategies ()Ljava/util/Map;
 	public final fun getTilesetFactories ()Ljava/util/List;
 	public final fun getTitle ()Ljava/lang/String;
 	public fun hashCode ()I
@@ -390,7 +388,6 @@ public abstract interface class org/hexworks/zircon/api/application/AppConfigKey
 public final class org/hexworks/zircon/api/application/AppConfigKt {
 	public static final fun appConfig (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/application/AppConfig;
 	public static synthetic fun appConfig$default (Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/hexworks/zircon/api/application/AppConfig;
-	public static final fun filterModifiersByType (Ljava/util/Map;Lkotlin/reflect/KClass;)Ljava/util/Map;
 	public static final fun filterTilesetsByType (Ljava/util/Map;Lkotlin/reflect/KClass;)Ljava/util/Map;
 }
 
@@ -425,12 +422,6 @@ public final class org/hexworks/zircon/api/application/ShortcutsConfig {
 
 public final class org/hexworks/zircon/api/application/ShortcutsConfig$Companion {
 	public final fun getDEFAULT_SHORTCUTS_CONFIG ()Lorg/hexworks/zircon/api/application/ShortcutsConfig;
-}
-
-public final class org/hexworks/zircon/api/application/TextureModifierStrategy {
-	public final fun getModifierType ()Lkotlin/reflect/KClass;
-	public final fun getTargetType ()Lkotlin/reflect/KClass;
-	public final fun getTransformer ()Lorg/hexworks/zircon/api/tileset/TextureTransformer;
 }
 
 public abstract interface class org/hexworks/zircon/api/behavior/Additive {
@@ -842,7 +833,6 @@ public final class org/hexworks/zircon/api/builder/application/AppConfigBuilder 
 	public final fun getIconPath ()Ljava/lang/String;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/application/ShortcutsConfig;
 	public final fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public final fun getTextureModifierSupports ()Ljava/util/Map;
 	public final fun getTilesetFactories ()Ljava/util/Map;
 	public final fun getTitle ()Ljava/lang/String;
 	public final fun isClipboardAvailable ()Z
@@ -859,7 +849,6 @@ public final class org/hexworks/zircon/api/builder/application/AppConfigBuilder 
 	public final fun setIconPath (Ljava/lang/String;)V
 	public final fun setShortcutsConfig (Lorg/hexworks/zircon/api/application/ShortcutsConfig;)V
 	public final fun setSize (Lorg/hexworks/zircon/api/data/Size;)V
-	public final fun setTextureModifierSupports (Ljava/util/Map;)V
 	public final fun setTilesetFactories (Ljava/util/Map;)V
 	public final fun setTitle (Ljava/lang/String;)V
 }
@@ -879,7 +868,6 @@ public final class org/hexworks/zircon/api/builder/application/AppConfigBuilderK
 	public static final fun getDEFAULT_SIZE ()Lorg/hexworks/zircon/api/data/Size;
 	public static final fun getDEFAULT_TILESET ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public static final fun shortcutsConfig (Lorg/hexworks/zircon/api/builder/application/AppConfigBuilder;Lkotlin/jvm/functions/Function1;)V
-	public static final fun textureModifier (Lorg/hexworks/zircon/api/builder/application/AppConfigBuilder;Lkotlin/jvm/functions/Function1;)V
 	public static final fun tilesetFactory (Lorg/hexworks/zircon/api/builder/application/AppConfigBuilder;Lkotlin/jvm/functions/Function1;)V
 }
 
@@ -920,19 +908,6 @@ public final class org/hexworks/zircon/api/builder/application/ShortcutsConfigBu
 	public final fun setDeactivateActivated (Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)V
 	public final fun setFocusNext (Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)V
 	public final fun setFocusPrevious (Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;)V
-}
-
-public final class org/hexworks/zircon/api/builder/application/TextureModifierBuilder : org/hexworks/zircon/api/builder/Builder {
-	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/application/TextureModifierStrategy;
-	public final fun getModifierType ()Lkotlin/reflect/KClass;
-	public final fun getTargetType ()Lkotlin/reflect/KClass;
-	public final fun getTransformer ()Lorg/hexworks/zircon/api/tileset/TextureTransformer;
-	public final fun setModifierType (Lkotlin/reflect/KClass;)V
-	public final fun setTargetType (Lkotlin/reflect/KClass;)V
-	public final fun setTransformer (Lorg/hexworks/zircon/api/tileset/TextureTransformer;)V
-	public final fun transformer (Lkotlin/jvm/functions/Function2;)V
 }
 
 public final class org/hexworks/zircon/api/builder/application/TilesetFactoryBuilder : org/hexworks/zircon/api/builder/Builder {
@@ -56308,9 +56283,6 @@ public final class org/hexworks/zircon/api/modifier/SimpleModifiers$Hidden : org
 	public fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
 }
 
-public abstract interface class org/hexworks/zircon/api/modifier/TextureModifier : org/hexworks/zircon/api/modifier/Modifier {
-}
-
 public abstract interface class org/hexworks/zircon/api/modifier/TileModifier : org/hexworks/zircon/api/modifier/Modifier {
 	public fun canTransform (Lorg/hexworks/zircon/api/data/Tile;)Z
 	public abstract fun transform (Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/data/Tile;
@@ -56709,35 +56681,11 @@ public abstract interface class org/hexworks/zircon/api/tileset/MetadataPickingS
 	public abstract fun pickMetadata (Ljava/util/List;)Lorg/hexworks/zircon/api/tileset/TextureMetadata;
 }
 
-public final class org/hexworks/zircon/api/tileset/TextureContext : org/hexworks/zircon/api/behavior/Cacheable {
-	public fun <init> (Ljava/lang/String;IILjava/lang/Object;Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()I
-	public final fun component3 ()I
-	public final fun component4 ()Ljava/lang/Object;
-	public final fun component5 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/String;IILjava/lang/Object;Ljava/lang/Object;)Lorg/hexworks/zircon/api/tileset/TextureContext;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/tileset/TextureContext;Ljava/lang/String;IILjava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lorg/hexworks/zircon/api/tileset/TextureContext;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getCacheKey ()Ljava/lang/String;
-	public final fun getContext ()Ljava/lang/Object;
-	public final fun getHeight ()I
-	public final fun getTexture ()Ljava/lang/Object;
-	public final fun getWidth ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public abstract interface class org/hexworks/zircon/api/tileset/TextureMetadata {
 	public abstract fun getHeight ()I
 	public abstract fun getWidth ()I
 	public abstract fun getX ()I
 	public abstract fun getY ()I
-}
-
-public abstract interface class org/hexworks/zircon/api/tileset/TextureTransformer {
-	public abstract fun apply (Lorg/hexworks/zircon/api/tileset/TextureContext;Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/tileset/TextureContext;
-	public abstract fun getTargetType ()Lkotlin/reflect/KClass;
 }
 
 public abstract interface class org/hexworks/zircon/api/tileset/TileMetadataLoader {
@@ -60003,12 +59951,6 @@ public final class org/hexworks/zircon/internal/tileset/CP437TileMetadataLoader 
 public final class org/hexworks/zircon/internal/tileset/CP437TileMetadataLoader$Companion {
 }
 
-public final class org/hexworks/zircon/internal/tileset/DefaultTextureTransformer : org/hexworks/zircon/api/tileset/TextureTransformer {
-	public fun <init> (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
-	public fun apply (Lorg/hexworks/zircon/api/tileset/TextureContext;Lorg/hexworks/zircon/api/data/Tile;)Lorg/hexworks/zircon/api/tileset/TextureContext;
-	public fun getTargetType ()Lkotlin/reflect/KClass;
-}
-
 public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader : org/hexworks/zircon/api/behavior/Closeable, org/hexworks/zircon/api/tileset/TilesetLoader {
 	public static final field Companion Lorg/hexworks/zircon/internal/tileset/DefaultTilesetLoader$Companion;
 	public fun <init> (Ljava/util/List;)V
@@ -60243,29 +60185,5 @@ public final class org/hexworks/zircon/internal/util/rex/REXLayer {
 public final class org/hexworks/zircon/internal/view/DefaultViewContainer : org/hexworks/zircon/api/view/ViewContainer {
 	public fun <init> ()V
 	public fun dock (Lorg/hexworks/zircon/api/view/View;)V
-}
-
-public final class org/hexworks/zircon/renderer/virtual/VirtualRenderer : org/hexworks/zircon/internal/renderer/impl/BaseRenderer {
-	public fun <init> (Lorg/hexworks/zircon/internal/grid/InternalTileGrid;)V
-	public synthetic fun create ()Ljava/lang/Object;
-	public fun create ()Lorg/hexworks/zircon/renderer/virtual/VirtualRenderer$VirtualView;
-	public final fun getConfig ()Lorg/hexworks/zircon/api/application/AppConfig;
-	public synthetic fun prepareRender (Ljava/lang/Object;)V
-}
-
-public final class org/hexworks/zircon/renderer/virtual/VirtualRenderer$VirtualView {
-	public fun <init> (Lorg/hexworks/cobalt/databinding/api/property/Property;)V
-	public final fun getContents ()Ljava/lang/String;
-}
-
-public final class org/hexworks/zircon/renderer/virtual/VirtualTileset : org/hexworks/zircon/api/tileset/Tileset {
-	public fun <init> ()V
-	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;CLorg/hexworks/zircon/api/data/Position;)V
-	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
-	public fun getHeight ()I
-	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
-	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public fun getTargetType ()Lkotlin/reflect/KClass;
-	public fun getWidth ()I
 }
 

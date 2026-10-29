@@ -3,17 +3,11 @@ package org.hexworks.zircon.api.application
 import org.hexworks.zircon.api.application.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
 import org.hexworks.zircon.api.application.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
 import org.hexworks.zircon.api.builder.application.*
-import org.hexworks.zircon.api.modifier.TextureModifier
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 private object TestAppConfigKey : AppConfigKey<String>
 private object TestAppConfigKey2 : AppConfigKey<String>
-
-object Unknown : TextureModifier {
-    override val cacheKey: String
-        get() = "?"
-}
 
 object UserNameKey : AppConfigKey<String>
 
@@ -39,7 +33,6 @@ class AppConfigTest {
                 debugConfig = DEFAULT_DEBUG_CONFIG,
                 shortcutsConfig = DEFAULT_SHORTCUTS_CONFIG,
                 tilesetFactories = listOf(),
-                textureModifierStrategies = mapOf(),
                 customProperties = mapOf(),
             ), actual
         )

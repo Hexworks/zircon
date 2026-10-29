@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.tileset
 import org.hexworks.zircon.api.data.Tile
 
 /**
- * Holds the details of a [TextureContext] (position, dimensions).
+ * Where a tile's texture sits in its tileset sprite sheet (position, dimensions).
  */
 public interface TextureMetadata<T : Tile> {
     public val x: Int

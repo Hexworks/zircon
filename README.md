@@ -252,19 +252,7 @@ intentional rendering change.
 
 ## Road Map
 
-Planned after 2.0:
-
-- Android target for `zircon.compose` (2.1)
-- Image dictionary tilesets (a folder of PNGs as tiles)
-- A more flexible component theming model
-- [Floating components](https://github.com/Hexworks/zircon/issues/23),
-  [drag'n drop](https://github.com/Hexworks/zircon/issues/22),
-  [custom layouts](https://github.com/Hexworks/zircon/issues/28),
-  [tree](https://github.com/Hexworks/zircon/issues/184),
-  [accordion](https://github.com/Hexworks/zircon/issues/27) and
-  [combo box](https://github.com/Hexworks/zircon/issues/262) components
-
-If you'd like to give any of these a shot feel free to *contribute*.
+Planned features live in [ROADMAP.md](ROADMAP.md).
 
 ## License
 
