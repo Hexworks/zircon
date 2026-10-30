@@ -43,6 +43,7 @@ public val benchmarkExample: Example = Example("Benchmark") { context ->
 }
 
 public val otherExamples: List<Example> = listOf(
+    benchmarkExample,
     bspExample,
     tileStringsExample,
     colorInterpolationExample,
@@ -56,7 +57,6 @@ public val otherExamples: List<Example> = listOf(
     tilesetExample,
     trueTypeFontExample,
     typingExample,
-    benchmarkExample,
 )
 
 private const val PALETTE_SIZE = 1024

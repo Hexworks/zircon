@@ -288,6 +288,14 @@ public val CP437_METADATA: Map<Char, List<CP437TextureMetadata>> = UNICODE_TO_CP
 public fun Int.convertCp437toUnicode(): Char = CP437_TO_UNICODE_LOOKUP[this]?.toChar() ?: ' '
 
 /**
+ * Fetches the cp437 index of a [Char], or `null` if the character is not in Code Page 437.
+ */
+public fun Char.CP437IndexOrNull(): Int? {
+    val index = if (code < UNICODE_TO_CP437_TABLE.size) UNICODE_TO_CP437_TABLE[code] else -1
+    return if (index < 0) null else index
+}
+
+/**
  * Fetches the cp437 index of a [Char].
  */
 public fun Char.CP437Index(): Int {

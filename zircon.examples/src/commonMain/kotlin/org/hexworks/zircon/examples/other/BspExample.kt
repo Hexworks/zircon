@@ -44,10 +44,10 @@ private fun createMap(area: GameArea<Tile, Block<Tile>>, width: Int, height: Int
     root.split(Random(42))
     val rooms = mutableListOf<BspNode>()
     root.collectRooms(rooms)
-    var char = 48
-    for (node in rooms) {
+    // Labels cycle through the digits and letters: a big screen has more rooms than either.
+    for ((index, node) in rooms.withIndex()) {
         val tile = characterTile {
-            character = char.toChar()
+            character = ROOM_LABELS[index % ROOM_LABELS.length]
             withStyleSet { foregroundColor = Color.fromString("#999999") }
         }
         val room = node.room ?: continue
@@ -59,7 +59,6 @@ private fun createMap(area: GameArea<Tile, Block<Tile>>, width: Int, height: Int
                 })
             }
         }
-        char++
     }
 }
 
@@ -110,3 +109,5 @@ private class BspNode(val position: Position, val size: Size) {
         const val MIN_LEAF = 8
     }
 }
+
+private const val ROOM_LABELS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"

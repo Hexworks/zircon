@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.resource.loadBytes
 import org.hexworks.zircon.compose.FrameData
 import org.hexworks.zircon.compose.shader.AtlasInfo
 import org.hexworks.zircon.internal.util.CP437Index
+import org.hexworks.zircon.internal.util.CP437IndexOrNull
 import org.jetbrains.compose.resources.decodeToImageBitmap
 
 /**
@@ -30,7 +31,8 @@ public class CP437Tileset(resource: TilesetResource) : ComposeTileset(resource) 
             context.writeBackground(position, characterTile.backgroundColor)
             return
         }
-        val index = characterTile.character.CP437Index()
+        // A character outside Code Page 437 shows as '?' rather than taking the frame down.
+        val index = characterTile.character.CP437IndexOrNull() ?: REPLACEMENT_INDEX
         context.writeGlyph(
             position = position,
             atlasId = atlasId,
@@ -41,3 +43,5 @@ public class CP437Tileset(resource: TilesetResource) : ComposeTileset(resource) 
         )
     }
 }
+
+private val REPLACEMENT_INDEX = '?'.CP437Index()

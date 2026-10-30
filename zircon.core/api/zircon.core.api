@@ -60063,6 +60063,7 @@ public final class org/hexworks/zircon/internal/util/BoundedFifoQueue$Companion 
 
 public final class org/hexworks/zircon/internal/util/CP437Kt {
 	public static final fun CP437Index (C)I
+	public static final fun CP437IndexOrNull (C)Ljava/lang/Integer;
 	public static final fun convertCp437toUnicode (I)C
 	public static final fun getCP437_METADATA ()Ljava/util/Map;
 }
