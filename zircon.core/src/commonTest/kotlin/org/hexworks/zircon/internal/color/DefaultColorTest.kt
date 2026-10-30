@@ -2,6 +2,9 @@ package org.hexworks.zircon.internal.color
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.color.extensions.darkenByPercent
+import org.hexworks.zircon.api.color.extensions.desaturate
+import org.hexworks.zircon.api.color.extensions.invert
 import org.hexworks.zircon.api.color.extensions.lightenByPercent
 import org.hexworks.zircon.api.color.extensions.shade
 import org.hexworks.zircon.api.color.extensions.tint
@@ -36,6 +39,17 @@ class DefaultColorTest {
         result.green shouldBe 0
         result.blue shouldBe 255
         result shouldBe DefaultColor(255, 0, 255)
+    }
+
+    @Test
+    fun colourMathKeepsATransparentColourTransparent() {
+        Color.TRANSPARENT.darkenByPercent(1.0).isTransparent shouldBe true
+        Color.TRANSPARENT.lightenByPercent(0.5).isTransparent shouldBe true
+        Color.TRANSPARENT.desaturate().isTransparent shouldBe true
+        Color.TRANSPARENT.invert().isTransparent shouldBe true
+        Color.TRANSPARENT.tint().isTransparent shouldBe true
+        Color.TRANSPARENT.shade().isTransparent shouldBe true
+        Color.TRANSPARENT.tone().isTransparent shouldBe true
     }
 
     @Test

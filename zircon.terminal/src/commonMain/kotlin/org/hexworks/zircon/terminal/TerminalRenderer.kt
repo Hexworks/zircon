@@ -12,6 +12,9 @@ import org.hexworks.zircon.internal.renderer.impl.BaseRenderer
  */
 public class TerminalRenderer(tileGrid: TileGrid) : BaseRenderer<CellBuffer, Unit>(tileGrid, TextTilesetLoader()) {
 
+    // The terminal's own cursor is positioned by the encoder instead.
+    override val drawsCursor: Boolean = false
+
     private val pendingInput = ArrayDeque<Pair<UIEvent, UIEventPhase>>()
 
     /**

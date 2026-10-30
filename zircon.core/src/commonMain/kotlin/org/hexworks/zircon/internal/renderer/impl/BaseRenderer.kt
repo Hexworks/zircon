@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.fetchPositions
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
@@ -44,6 +45,12 @@ public abstract class BaseRenderer<C : Any, V : Any>(
     private var blinkOn = true
     private var lastBlink: Long = nowMillis()
     private var lastRender: Long = lastBlink
+
+    /**
+     * Whether the grid's cursor is drawn into the tiles (the topmost tile of its cell with
+     * the colours swapped). A renderer with a cursor of its own, like a terminal, turns it off.
+     */
+    protected open val drawsCursor: Boolean = true
 
     protected var beforeRenderData: RenderData by beforeRenderDataProp.asDelegate()
     protected var afterRenderData: RenderData by afterRenderDataProp.asDelegate()
@@ -102,6 +109,7 @@ public abstract class BaseRenderer<C : Any, V : Any>(
 
     private fun renderAllTiles(context: C) {
         val layers = fetchLayers()
+        val cursorAt = if (shouldDrawCursor()) tileGrid.cursorPosition else null
         for (pos in gridPositions) {
             // Walk the layers from the top down and stop at the first opaque tile: nothing
             // below it can show. Tiles are collected top first and drawn bottom first.
@@ -121,7 +129,7 @@ public abstract class BaseRenderer<C : Any, V : Any>(
                     break@collect
                 }
             }
-            //! TODO: FIX CURSOR HANDLING (the cursor used to be drawn on the topmost tile here)
+            if (pos == cursorAt) drawCursorOnCell()
             for (j in cellTiles.size - 1 downTo 0) {
                 // A tile (or tileset) that fails to draw leaves its cell; the frame goes on.
                 try {
@@ -147,8 +155,24 @@ public abstract class BaseRenderer<C : Any, V : Any>(
         return tile.isOpaque
     }
 
+    /**
+     * The cursor is the topmost tile of its cell with the colours swapped; an empty cell
+     * gets a block in the default foreground colour, drawn with the grid's tileset.
+     */
+    private fun drawCursorOnCell() {
+        val top = cellTiles.firstOrNull()
+        if (top is CharacterTile) {
+            val foreground = top.foregroundColor.takeUnless { it.isTransparent } ?: Color.DEFAULT_FOREGROUND_COLOR
+            val background = top.backgroundColor.takeUnless { it.isTransparent } ?: Color.DEFAULT_BACKGROUND_COLOR
+            cellTiles[0] = top.withBackgroundColor(foreground).withForegroundColor(background)
+        } else {
+            cellTiles.add(0, CURSOR_TILE)
+            cellTilesets.add(0, tileGrid.tileset)
+        }
+    }
+
     private fun shouldDrawCursor(): Boolean {
-        return tileGrid.isCursorVisible &&
+        return drawsCursor && tileGrid.isCursorVisible &&
                 (config.isCursorBlinking.not() || config.isCursorBlinking && blinkOn)
     }
 
@@ -230,6 +254,10 @@ public abstract class BaseRenderer<C : Any, V : Any>(
         initialSize = renderable.size,
         initialTileset = renderable.tileset
     )
+
+    private companion object {
+        val CURSOR_TILE: Tile = Tile.empty().withBackgroundColor(Color.DEFAULT_FOREGROUND_COLOR)
+    }
 
     private fun Tile.tiles(): List<Tile> = when (this) {
         is StackedTile -> tiles.flatMap { it.tiles() }

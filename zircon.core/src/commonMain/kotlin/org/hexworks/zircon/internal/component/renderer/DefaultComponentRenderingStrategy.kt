@@ -40,7 +40,7 @@ public class DefaultComponentRenderingStrategy<T : Component>(
 
     // Post processors are generated on the fly (typing effects and the like), so their
     // output can't be cached.
-    override val rendersOnEveryFrame: Boolean = componentPostProcessors.isNotEmpty()
+    override val rendersOnEveryFrame: Boolean = componentPostProcessors.isNotEmpty() || componentRenderer.rendersOnEveryFrame
 
     override fun render(component: T, graphics: TileGraphics) {
         if (component.isHidden.not()) {

@@ -8,6 +8,8 @@ import org.hexworks.zircon.ErrorRecorder
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.data.characterTile
+import org.hexworks.zircon.api.builder.data.withStyleSet
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -67,15 +69,61 @@ class BaseRendererTest {
         errors.sources.single() shouldStartWith "Renderer of "
     }
 
+    @Test
+    fun the_cursor_swaps_the_colours_of_the_tile_under_it() {
+        grid.draw(characterTile {
+            character = 'a'
+            withStyleSet {
+                foregroundColor = Color.create(1, 2, 3)
+                backgroundColor = Color.create(4, 5, 6)
+            }
+        }, Position(0, 0))
+        grid.cursorPosition = Position(0, 0)
+        grid.isCursorVisible = true
+        val target = TextRenderer(grid, failOn = null)
+
+        target.render(StringBuilder())
+
+        val drawn = target.drawn.single() as CharacterTile
+        drawn.foregroundColor shouldBe Color.create(4, 5, 6)
+        drawn.backgroundColor shouldBe Color.create(1, 2, 3)
+    }
+
+    @Test
+    fun the_cursor_on_an_empty_cell_is_a_block_in_the_default_foreground_colour() {
+        grid.cursorPosition = Position(2, 0)
+        grid.isCursorVisible = true
+        val target = TextRenderer(grid, failOn = null)
+
+        target.render(StringBuilder())
+
+        val drawn = target.drawn.single() as CharacterTile
+        drawn.character shouldBe ' '
+        drawn.backgroundColor shouldBe Color.DEFAULT_FOREGROUND_COLOR
+    }
+
+    @Test
+    fun a_hidden_cursor_is_not_drawn() {
+        grid.cursorPosition = Position(2, 0)
+        grid.isCursorVisible = false
+        val target = TextRenderer(grid, failOn = null)
+
+        target.render(StringBuilder())
+
+        target.drawn shouldBe emptyList()
+    }
+
     /** Appends the character of every tile it draws to the context; throws for [failOn]. */
-    private class TextRenderer(grid: TileGrid, failOn: Char?) :
-        BaseRenderer<StringBuilder, Unit>(grid, TextLoader(failOn)) {
+    private class TextRenderer(grid: TileGrid, failOn: Char?, private val loader: TextLoader = TextLoader(failOn)) :
+        BaseRenderer<StringBuilder, Unit>(grid, loader) {
+        /** Every tile drawn so far, in drawing order. */
+        val drawn: List<Tile> get() = loader.tileset.drawn
         override fun create() {}
         override fun processInputEvents() {}
     }
 
     private class TextLoader(failOn: Char?) : TilesetLoader<StringBuilder> {
-        private val tileset = TextTileset(failOn)
+        val tileset = TextTileset(failOn)
         override fun loadTilesetFrom(resource: TilesetResource): Tileset<StringBuilder> = tileset
         override fun canLoadTileset(resource: TilesetResource): Boolean = true
     }
@@ -86,10 +134,12 @@ class BaseRendererTest {
         override val width: Int = 1
         override val height: Int = 1
         override val size: Size = Size.ONE
+        val drawn = mutableListOf<Tile>()
 
         override fun drawTile(tile: Tile, context: StringBuilder, position: Position) {
             val char = (tile as CharacterTile).character
             if (char == failOn) throw IllegalStateException("can't draw $char")
+            drawn += tile
             context.append(char)
         }
     }

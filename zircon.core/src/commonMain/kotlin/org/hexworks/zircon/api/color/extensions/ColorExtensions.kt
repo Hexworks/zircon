@@ -9,6 +9,9 @@ import org.hexworks.zircon.internal.color.DefaultColorInterpolator
 public val Color.isOpaque: Boolean
     get() = !isTransparent
 
+// Every colour operation below keeps a transparent colour transparent: a transparent
+// background that is darkened must not turn into opaque black.
+
 /**
  * Returns a new [Color] which is desaturated by the [DEFAULT_FACTOR] (.7).
  */
@@ -18,6 +21,7 @@ public fun Color.desaturate(): Color = desaturate(DEFAULT_FACTOR)
  * Returns a new [Color] which is desaturated by [factor].
  */
 public fun Color.desaturate(factor: Double): Color {
+    if (isTransparent) return this
     val l = 0.3 * red + 0.6 * green + 0.1 * blue
     val r = red + factor * (l - red)
     val g = green + factor * (l - green)
@@ -34,6 +38,7 @@ public fun Color.tint(): Color = tint(Color.DEFAULT_FACTOR)
  * Returns a new [Color] which is tinted by [factor].
  */
 public fun Color.tint(factor: Double): Color {
+    if (isTransparent) return this
     requireRange(factor)
     val white = Color.create(255, 255, 255)
     return interpolateTo(white).getColorAtRatio(factor)
@@ -48,6 +53,7 @@ public fun Color.shade(): Color = shade(Color.DEFAULT_FACTOR)
  * Returns a new [Color] which is shaded by [factor].
  */
 public fun Color.shade(factor: Double): Color {
+    if (isTransparent) return this
     requireRange(factor)
     val black = Color.create(0, 0, 0)
     return interpolateTo(black).getColorAtRatio(factor)
@@ -62,6 +68,7 @@ public fun Color.tone(): Color = tone(Color.DEFAULT_FACTOR)
  * Returns a new [Color] which is toned by [factor].
  */
 public fun Color.tone(factor: Double): Color {
+    if (isTransparent) return this
     requireRange(factor)
     val value = ((red + green + blue) / 3)
     val gray = Color.create(value, value, value)
@@ -72,6 +79,7 @@ public fun Color.tone(factor: Double): Color {
  * Returns a new [Color] which is the inversion of this one.
  */
 public fun Color.invert(): Color {
+    if (isTransparent) return this
     return DefaultColor(255 - red, 255 - green, 255 - blue)
 }
 
@@ -80,6 +88,7 @@ public fun Color.invert(): Color {
  * The number must be between `0` and `1`.
  */
 public fun Color.darkenByPercent(percentage: Double): Color {
+    if (isTransparent) return this
     requireRange(percentage)
     return Color.create(
         red = (red * (1f - percentage)).toInt(),
@@ -93,6 +102,7 @@ public fun Color.darkenByPercent(percentage: Double): Color {
  * The number must be between `0` and `1`.
  */
 public fun Color.lightenByPercent(percentage: Double): Color {
+    if (isTransparent) return this
     requireRange(percentage)
     return Color.create(
         red = (red * (1f + percentage)).toInt(),

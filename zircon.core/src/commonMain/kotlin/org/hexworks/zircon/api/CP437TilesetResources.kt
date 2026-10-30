@@ -303,7 +303,7 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun yayo12x12(): TilesetResource = YAYO_12X12
+    public fun yayo13x13(): TilesetResource = YAYO_13X13
 
     /**
      * This tileset is from the Dwarf Fortress Tileset Repository:

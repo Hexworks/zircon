@@ -55,7 +55,7 @@ public final class org/hexworks/zircon/api/CP437TilesetResources {
 	public final fun vga8X16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun vidumec12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun wanderlust16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun yayo12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public final fun yayo13x13 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun yayo16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun yobbo20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun zaratustra16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -1144,11 +1144,13 @@ public final class org/hexworks/zircon/api/builder/config/ZirconDefaultsBuilder 
 	public final fun debug (Lkotlin/jvm/functions/Function1;)V
 	public final fun getDebugConfig ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun getDebugMode ()Z
+	public final fun getOnError ()Lorg/hexworks/zircon/api/config/ErrorHandler;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
 	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
 	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun setDebugConfig (Lorg/hexworks/zircon/api/config/DebugConfig;)V
 	public final fun setDebugMode (Z)V
+	public final fun setOnError (Lorg/hexworks/zircon/api/config/ErrorHandler;)V
 	public final fun setShortcutsConfig (Lorg/hexworks/zircon/api/config/ShortcutsConfig;)V
 	public final fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
 	public final fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
@@ -2858,6 +2860,11 @@ public final class org/hexworks/zircon/api/component/renderer/ComponentRenderCon
 }
 
 public abstract interface class org/hexworks/zircon/api/component/renderer/ComponentRenderer : org/hexworks/zircon/api/component/renderer/DecorationRenderer {
+	public fun getRendersOnEveryFrame ()Z
+}
+
+public final class org/hexworks/zircon/api/component/renderer/ComponentRenderer$DefaultImpls {
+	public static fun getRendersOnEveryFrame (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;)Z
 }
 
 public abstract interface class org/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy {
@@ -2896,6 +2903,15 @@ public final class org/hexworks/zircon/api/config/DebugConfig$Companion {
 	public final fun getDEFAULT_DEBUG_CONFIG ()Lorg/hexworks/zircon/api/config/DebugConfig;
 }
 
+public abstract interface class org/hexworks/zircon/api/config/ErrorHandler {
+	public static final field Companion Lorg/hexworks/zircon/api/config/ErrorHandler$Companion;
+	public abstract fun onError (Ljava/lang/String;Ljava/lang/Throwable;)V
+}
+
+public final class org/hexworks/zircon/api/config/ErrorHandler$Companion {
+	public final fun getNONE ()Lorg/hexworks/zircon/api/config/ErrorHandler;
+}
+
 public final class org/hexworks/zircon/api/config/ShortcutsConfig {
 	public static final field Companion Lorg/hexworks/zircon/api/config/ShortcutsConfig$Companion;
 	public final fun getActivateFocused ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
@@ -2910,17 +2926,19 @@ public final class org/hexworks/zircon/api/config/ShortcutsConfig$Companion {
 
 public final class org/hexworks/zircon/api/config/ZirconDefaults {
 	public static final field Companion Lorg/hexworks/zircon/api/config/ZirconDefaults$Companion;
-	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;)V
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;)V
 	public final fun component1 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun component2 ()Lorg/hexworks/zircon/api/component/ColorTheme;
 	public final fun component3 ()Z
 	public final fun component4 ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun component5 ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
-	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/config/ZirconDefaults;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;ILjava/lang/Object;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
+	public final fun component6 ()Lorg/hexworks/zircon/api/config/ErrorHandler;
+	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/config/ZirconDefaults;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/ColorTheme;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;ILjava/lang/Object;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDebugConfig ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun getDebugMode ()Z
+	public final fun getOnError ()Lorg/hexworks/zircon/api/config/ErrorHandler;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
 	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
 	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -58514,6 +58532,7 @@ public final class org/hexworks/zircon/internal/component/modal/EmptyModalResult
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultButtonRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58523,6 +58542,7 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultCheckB
 	public static final field Companion Lorg/hexworks/zircon/internal/component/renderer/DefaultCheckBoxRenderer$Companion;
 	public static final field DECORATION_WIDTH I
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58544,24 +58564,28 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultCompon
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultHBoxRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultHeaderRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultIconRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultLabelRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58570,30 +58594,35 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultListIt
 	public fun <init> ()V
 	public fun <init> (C)V
 	public synthetic fun <init> (CILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultLogAreaRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultModalRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultNumberInputRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultPanelRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58602,12 +58631,14 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultParagr
 	public fun <init> ()V
 	public fun <init> (Lorg/hexworks/zircon/api/graphics/TextWrap;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/graphics/TextWrap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultProgressBarRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58616,6 +58647,7 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultRadioB
 	public static final field Companion Lorg/hexworks/zircon/internal/component/renderer/DefaultRadioButtonRenderer$Companion;
 	public static final field DECORATION_WIDTH I
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58625,6 +58657,7 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultRadioB
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultTextAreaRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58633,6 +58666,7 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultToggle
 	public static final field Companion Lorg/hexworks/zircon/internal/component/renderer/DefaultToggleButtonRenderer$Companion;
 	public static final field DECORATION_WIDTH I
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58642,35 +58676,41 @@ public final class org/hexworks/zircon/internal/component/renderer/DefaultToggle
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultVBoxRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultVerticalNumberInputRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/DefaultVerticalScrollBarRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/HorizontalSliderRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/NoOpComponentRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
 
 public final class org/hexworks/zircon/internal/component/renderer/RootContainerRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -58688,6 +58728,7 @@ public final class org/hexworks/zircon/internal/component/renderer/TypingEffectP
 
 public final class org/hexworks/zircon/internal/component/renderer/VerticalSliderRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> ()V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -59182,6 +59223,7 @@ public final class org/hexworks/zircon/internal/game/impl/DefaultGameArea : org/
 
 public final class org/hexworks/zircon/internal/game/impl/GameAreaComponentRenderer : org/hexworks/zircon/api/component/renderer/ComponentRenderer {
 	public fun <init> (Lorg/hexworks/zircon/api/game/GameArea;Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;Lorg/hexworks/zircon/api/data/Tile;)V
+	public fun getRendersOnEveryFrame ()Z
 	public fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderContext;)V
 	public synthetic fun render (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/component/renderer/RenderContext;)V
 }
@@ -59559,6 +59601,7 @@ public abstract class org/hexworks/zircon/internal/renderer/impl/BaseRenderer : 
 	protected final fun getBeforeRenderData ()Lorg/hexworks/zircon/internal/renderer/RenderData;
 	public fun getClosed ()Z
 	public fun getClosedProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
+	protected fun getDrawsCursor ()Z
 	protected final fun getTileGrid ()Lorg/hexworks/zircon/internal/grid/InternalTileGrid;
 	protected fun prepareRender (Ljava/lang/Object;)V
 	protected abstract fun processInputEvents ()V
@@ -59616,7 +59659,7 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 	public static final field VGA_8X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field VIDUMEC_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field WANDERLUST_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field YAYO_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
+	public static final field YAYO_13X13 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field YAYO_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field YOBBO_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field ZARATUSTRA_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
@@ -59909,7 +59952,7 @@ public final class org/hexworks/zircon/internal/tileset/CP437TileMetadataLoader$
 
 public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader : org/hexworks/zircon/api/behavior/Closeable, org/hexworks/zircon/api/tileset/TilesetLoader {
 	public static final field Companion Lorg/hexworks/zircon/internal/tileset/DefaultTilesetLoader$Companion;
-	public fun <init> (Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Lkotlin/reflect/KClass;)V
 	public fun canLoadTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
 	public fun close ()V
 	public fun getClosed ()Z
@@ -59920,6 +59963,16 @@ public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader : o
 
 public final class org/hexworks/zircon/internal/tileset/DefaultTilesetLoader$Companion {
 	public final fun getLoaderKey (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lkotlin/Pair;
+}
+
+public final class org/hexworks/zircon/internal/tileset/NoOpTileset : org/hexworks/zircon/api/tileset/Tileset {
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lkotlin/reflect/KClass;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun getHeight ()I
+	public fun getId ()Lorg/hexworks/cobalt/core/api/UUID;
+	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
+	public fun getTargetType ()Lkotlin/reflect/KClass;
+	public fun getWidth ()I
 }
 
 public final class org/hexworks/zircon/internal/tileset/PickFirstMetaStrategy : org/hexworks/zircon/api/tileset/MetadataPickingStrategy {
@@ -60062,10 +60115,14 @@ public final class org/hexworks/zircon/internal/util/BoundedFifoQueue$Companion 
 }
 
 public final class org/hexworks/zircon/internal/util/CP437Kt {
-	public static final fun CP437Index (C)I
 	public static final fun CP437IndexOrNull (C)Ljava/lang/Integer;
 	public static final fun convertCp437toUnicode (I)C
 	public static final fun getCP437_METADATA ()Ljava/util/Map;
+}
+
+public final class org/hexworks/zircon/internal/util/ErrorsKt {
+	public static final fun reportError (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public static final fun reportErrorOnce (Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Throwable;)V
 }
 
 public final class org/hexworks/zircon/internal/util/ExtensionsKt {

@@ -8,4 +8,13 @@ import org.hexworks.zircon.api.graphics.TileGraphics
  * It is a specialization of the [DecorationRenderer] as the mechanism is the same, but the
  * [ComponentRenderer] will draw the innermost part of the component (its content).
  */
-public fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>>
+public fun interface ComponentRenderer<T : Component> : DecorationRenderer<ComponentRenderContext<T>> {
+
+    /**
+     * `true` when what this renderer draws can change without the component changing (a
+     * game area that scrolls, for example). The component is then rendered on every frame
+     * instead of being cached until it changes.
+     */
+    public val rendersOnEveryFrame: Boolean
+        get() = false
+}

@@ -17,6 +17,9 @@ public class GameAreaComponentRenderer<C : Component, T : Tile, B : Block<T>>(
     private val fillerTile: T
 ) : ComponentRenderer<C> {
 
+    // The game area scrolls and its blocks change without the component knowing.
+    override val rendersOnEveryFrame: Boolean = true
+
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<C>) {
         projectionMode.value.createRenderer<T, B>().render(
             gameArea = gameArea.asInternal(),

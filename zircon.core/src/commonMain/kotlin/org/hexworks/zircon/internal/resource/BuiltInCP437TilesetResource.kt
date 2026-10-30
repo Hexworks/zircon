@@ -64,7 +64,7 @@ public enum class BuiltInCP437TilesetResource(
     VGA_8X16("vga", 8, 16),
     VIDUMEC_12X12("vidumec", 12, 12),
     WANDERLUST_16X16("wanderlust", 16, 16),
-    YAYO_12X12("yayo", 12, 12),
+    YAYO_13X13("yayo", 13, 13),
     YAYO_16X16("yayo", 16, 16),
     YOBBO_20X20("yobbo", 20, 20),
     ZARATUSTRA_16X16("zaratustra", 16, 16),
