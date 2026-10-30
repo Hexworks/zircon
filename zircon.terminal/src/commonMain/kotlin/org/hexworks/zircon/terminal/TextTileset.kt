@@ -1,12 +1,14 @@
 package org.hexworks.zircon.terminal
 
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.util.reportErrorOnce
 import kotlin.reflect.KClass
 
 /**
@@ -26,9 +28,19 @@ public class TextTileset(private val resource: TilesetResource) : Tileset<CellBu
     override val height: Int get() = resource.height
 
     override fun drawTile(tile: Tile, context: CellBuffer, position: Position) {
-        val characterTile = tile as? CharacterTile
-            ?: error("The terminal renderer draws text only; ${tile.tileType} tiles are not supported (${tile.cacheKey})")
         val index = context.index(position.x, position.y)
+        val characterTile = tile as? CharacterTile
+        if (characterTile == null) {
+            // A graphical tile has no text form: show the replacement character, report once per type.
+            reportErrorOnce(
+                key = "TextTileset:${tile.tileType}",
+                source = "Tile at $position",
+                error = IllegalArgumentException("The terminal renderer draws text only; ${tile.tileType} tiles show as U+FFFD"),
+            )
+            context.codes[index] = TerminalCharacters.REPLACEMENT
+            context.foregrounds[index] = CellBuffer.pack(Color.DEFAULT_FOREGROUND_COLOR)
+            return
+        }
         val background = characterTile.backgroundColor
         val foreground = characterTile.foregroundColor
         if (!background.isTransparent) {
@@ -61,7 +73,8 @@ public class TextTileset(private val resource: TilesetResource) : Tileset<CellBu
 
 /**
  * Hands out [TextTileset]s. Any tileset of character tiles (CP437, TrueType, custom) renders
- * as text; a graphical tileset cannot be drawn in a terminal and fails here.
+ * as text; a graphical tileset cannot be drawn in a terminal, so it is reported once and its
+ * tiles show as the replacement character.
  */
 public class TextTilesetLoader : TilesetLoader<CellBuffer> {
 
@@ -74,8 +87,12 @@ public class TextTilesetLoader : TilesetLoader<CellBuffer> {
 
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<CellBuffer> {
         if (resource === lastResource) return lastTileset!!
-        require(canLoadTileset(resource)) {
-            "The terminal renderer draws text only; the ${resource.tileType} tileset '${resource.path}' cannot be used"
+        if (!canLoadTileset(resource)) {
+            reportErrorOnce(
+                key = resource.id,
+                source = "Tileset '${resource.path}'",
+                error = IllegalArgumentException("The terminal renderer draws text only; the ${resource.tileType} tiles of '${resource.path}' show as U+FFFD"),
+            )
         }
         val tileset = byId.getOrPut(resource.id) { TextTileset(resource) }
         lastResource = resource

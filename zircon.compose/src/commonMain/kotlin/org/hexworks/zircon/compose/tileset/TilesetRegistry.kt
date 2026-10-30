@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.compose.FrameData
 import org.hexworks.zircon.compose.shader.AtlasInfo
+import org.hexworks.zircon.internal.util.reportErrorOnce
 import kotlin.reflect.KClass
 
 /**
@@ -48,10 +49,7 @@ public class TilesetRegistry(
             if (recentResources[slot] === resource) return recentTilesets[slot]!!
         }
         val tileset = byResource.getOrPut(keyOf(resource)) {
-            val factory = factories[resource.tileType to resource.tilesetType]
-                ?: error("No Compose tileset for ${resource.tileType}/${resource.tilesetType} ($resource)")
-            val created = factory.create(resource) as? ComposeTileset
-                ?: error("Tileset factories for the Compose renderer must create ComposeTilesets")
+            val created = createOrPlaceholder(resource)
             created.allocateAtlasId = { nextAtlasId++ }
             created
         }
@@ -73,6 +71,23 @@ public class TilesetRegistry(
             }
         }
         return loaded
+    }
+
+    /**
+     * A resource with no factory, or whose factory does not make a [ComposeTileset], gets a
+     * [PlaceholderTileset] and one report, so its tiles show as marked cells instead of
+     * failing on every frame.
+     */
+    private fun createOrPlaceholder(resource: TilesetResource): ComposeTileset {
+        val factory = factories[resource.tileType to resource.tilesetType]
+            ?: return placeholder(resource, "No Compose tileset for ${resource.tileType}/${resource.tilesetType} ($resource)")
+        return factory.create(resource) as? ComposeTileset
+            ?: placeholder(resource, "The tileset factory for ${resource.tileType}/${resource.tilesetType} must create ComposeTilesets")
+    }
+
+    private fun placeholder(resource: TilesetResource, message: String): PlaceholderTileset {
+        reportErrorOnce(key = resource.id, source = "Tileset '${resource.path}'", error = IllegalArgumentException(message))
+        return PlaceholderTileset(resource)
     }
 
     private fun keyOf(resource: TilesetResource) = "${resource.path}@${resource.width}x${resource.height}"

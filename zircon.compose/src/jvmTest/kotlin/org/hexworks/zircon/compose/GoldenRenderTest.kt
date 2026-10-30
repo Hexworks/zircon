@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.internal.util.CP437Index
+import org.hexworks.zircon.internal.util.CP437IndexOrNull
 import org.hexworks.zircon.internal.util.CP437_METADATA
 
 import org.hexworks.zircon.api.component.builder.base.decorations
@@ -59,7 +59,7 @@ class GoldenRenderTest {
             size = Size(16, 16)
             tileset = CP437TilesetResources.rexPaint16x16()
         }
-        val chars = CP437_METADATA.keys.sortedBy { it.CP437Index() }
+        val chars = CP437_METADATA.keys.sortedBy { it.CP437IndexOrNull() }
         chars.forEachIndexed { index, char ->
             grid.draw(
                 characterTile {

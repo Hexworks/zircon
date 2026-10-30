@@ -296,9 +296,10 @@ public fun Char.CP437IndexOrNull(): Int? {
 }
 
 /**
- * Fetches the cp437 index of a [Char].
+ * Fetches the cp437 index of a [Char]; throws for a character outside Code Page 437.
+ * Renderers substitute a placeholder instead, so this is internal: use [CP437IndexOrNull].
  */
-public fun Char.CP437Index(): Int {
+internal fun Char.CP437Index(): Int {
     val index = if (code < UNICODE_TO_CP437_TABLE.size) UNICODE_TO_CP437_TABLE[code] else -1
     if (index < 0) {
         throw IllegalArgumentException(

@@ -10,9 +10,12 @@ import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetFactory
 import org.hexworks.zircon.api.tileset.TilesetLoader
+import org.hexworks.zircon.internal.util.reportErrorOnce
+import kotlin.reflect.KClass
 
 public class DefaultTilesetLoader<T : Any>(
     factories: List<TilesetFactory<T>>,
+    private val targetType: KClass<T>,
 ) : TilesetLoader<T>, Closeable {
 
     override val closedProperty: Property<Boolean> = false.toProperty()
@@ -26,11 +29,16 @@ public class DefaultTilesetLoader<T : Any>(
 
     override fun loadTilesetFrom(resource: TilesetResource): Tileset<T> {
         return tilesetCache.getOrPut(resource.id) {
-            val key = resource.loaderKey
-            require(factoryLookup.containsKey(key)) {
-                "No tileset factory found for key $key"
-            }
-            factoryLookup.getValue(key).create(resource)
+            val factory = factoryLookup[resource.loaderKey]
+            if (factory == null) {
+                // Reported once; the tiles of this resource stay blank instead of failing every frame.
+                reportErrorOnce(
+                    key = resource.id,
+                    source = "Tileset '${resource.path}'",
+                    error = IllegalArgumentException("No tileset factory found for key ${resource.loaderKey}")
+                )
+                NoOpTileset(resource, targetType)
+            } else factory.create(resource)
         }
     }
 
