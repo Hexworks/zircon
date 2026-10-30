@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -39,8 +40,13 @@ public class TrueTypeTileset(resource: TilesetResource) : ComposeTileset(resourc
     override suspend fun load() {
         if (loaded) return
         val family = fontFamilyFromBytes(resource.path.substringAfterLast('/'), resource.loadBytes())
-        style = TextStyle(fontFamily = family, fontSize = (height * FONT_SIZE_RATIO).sp, color = Color.White)
         measurer = createTextMeasurer()
+        // Size by the cell height, then shrink until a wide glyph and its line height fit the
+        // slot: a glyph that spills over would land in the neighbouring slots of the atlas.
+        val nominal = TextStyle(fontFamily = family, fontSize = (height * FONT_SIZE_RATIO).sp, color = Color.White)
+        val probe = measurer.measure(PROBE_TEXT, nominal, density = density).size
+        val fit = minOf(1f, width.toFloat() / probe.width, height.toFloat() / probe.height)
+        style = nominal.copy(fontSize = (height * FONT_SIZE_RATIO * fit).sp)
         atlas = ImageBitmap(COLUMNS * width, ROWS * height)
         atlasId = putAtlas(AtlasInfo(atlas!!, width, height, version))
         loaded = true
@@ -71,10 +77,15 @@ public class TrueTypeTileset(resource: TilesetResource) : ComposeTileset(resourc
         if (char == ' ') return slot
         val image = atlas ?: return slot
         val layout = measurer.measure(char.toString(), style, density = density)
-        val x = slot % COLUMNS * width + (width - layout.size.width) / 2f
-        val y = slot / COLUMNS * height + (height - layout.size.height) / 2f
+        val slotLeft = (slot % COLUMNS * width).toFloat()
+        val slotTop = (slot / COLUMNS * height).toFloat()
+        val x = slotLeft + (width - layout.size.width) / 2f
+        val y = slotTop + (height - layout.size.height) / 2f
         CanvasDrawScope().draw(density, LayoutDirection.Ltr, Canvas(image), Size(image.width.toFloat(), image.height.toFloat())) {
-            drawText(layout, topLeft = Offset(x, y))
+            // Clipped to the slot: whatever still overhangs must not bleed into other glyphs.
+            clipRect(slotLeft, slotTop, slotLeft + width, slotTop + height) {
+                drawText(layout, topLeft = Offset(x, y))
+            }
         }
         version++
         putAtlas(AtlasInfo(image, width, height, version), atlasId)
@@ -85,6 +96,7 @@ public class TrueTypeTileset(resource: TilesetResource) : ComposeTileset(resourc
         const val COLUMNS = 32
         const val ROWS = 32
         const val FONT_SIZE_RATIO = 1.0f
+        const val PROBE_TEXT = "W"
     }
 }
 
