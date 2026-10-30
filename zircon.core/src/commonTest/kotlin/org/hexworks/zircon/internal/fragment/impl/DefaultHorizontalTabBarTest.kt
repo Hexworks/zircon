@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.fragment.impl
 
 import io.kotest.matchers.shouldBe
+import org.hexworks.zircon.ErrorRecorder
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.fragment.horizontalTabBar
 import org.hexworks.zircon.api.data.Size
@@ -25,6 +26,20 @@ class DefaultHorizontalTabBarTest {
         target.selectedKey = "b"
         target.tab("b").isSelected shouldBe true
         target.tab("a").isSelected shouldBe false
+    }
+
+    @Test
+    fun anUnknownSelectedKeyIsReportedAndThePreviousSelectionKept() {
+        val errors = ErrorRecorder()
+        try {
+            val target = tabBar() as DefaultHorizontalTabBar
+            target.selectedKey = "nope"
+            target.selectedKey shouldBe "a"
+            target.tab("a").isSelected shouldBe true
+            errors.sources shouldBe listOf("Tab bar")
+        } finally {
+            errors.uninstall()
+        }
     }
 
     @Test

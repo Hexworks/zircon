@@ -25,25 +25,25 @@ public class TileGraphicsBuilder : Builder<TileGraphics> {
     public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var size: Size = Size.ONE
     public var tiles: Map<Position, Tile> = mapOf()
-        set(value) {
-            tiles.forEach { (pos, _) ->
-                require(size.containsPosition(pos)) {
-                    "Position ($pos) is outside of the bounds of this tile graphics ($size)"
-                }
-            }
-            field = value
-        }
     public var filler: Tile = Tile.empty()
 
     /**
      * Builds a [FastTileGraphics] implementation.
      */
-    override fun build(): TileGraphics = FastTileGraphics(
-        initialSize = size,
-        initialTileset = tileset,
-        initialTiles = tiles
-    ).apply {
-        if (hasToFill()) fill(filler)
+    override fun build(): TileGraphics {
+        // Checked here, against the final size, whatever order size and tiles were set in.
+        tiles.keys.forEach { pos ->
+            require(size.containsPosition(pos)) {
+                "Position ($pos) is outside of the bounds of this tile graphics ($size)"
+            }
+        }
+        return FastTileGraphics(
+            initialSize = size,
+            initialTileset = tileset,
+            initialTiles = tiles
+        ).apply {
+            if (hasToFill()) fill(filler)
+        }
     }
 
     private fun hasToFill() = filler != Tile.empty()

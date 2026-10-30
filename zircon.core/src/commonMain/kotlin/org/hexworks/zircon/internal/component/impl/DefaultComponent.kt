@@ -256,14 +256,15 @@ public abstract class DefaultComponent(
     //#endregion
 
     /**
-     * Moves this component to the given **absolute** position
+     * Moves this component to the given **absolute** position.
+     * @return `false`, and stays put, if the new bounds would leave the parent
      */
-    //! TODO: Refactor to return result class instead of Boolean
     override fun moveTo(position: Position): Boolean {
         parent?.let { parent ->
             val newBounds = movable.withPosition(position)
-            require(parent.containsBoundable(newBounds)) {
-                "Can't move Component $this with new bounds ($newBounds) out of its parent's bounds: $parent."
+            if (!parent.containsBoundable(newBounds)) {
+                logger.debug { "Not moving $this to $position: bounds $newBounds leave the parent $parent." }
+                return false
             }
         }
         movable.moveTo(position)

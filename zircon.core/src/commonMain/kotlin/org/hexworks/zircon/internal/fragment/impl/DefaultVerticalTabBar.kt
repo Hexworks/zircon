@@ -20,6 +20,7 @@ import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.internal.util.reportError
 
 public class DefaultVerticalTabBar internal constructor(
     size: Size,
@@ -73,14 +74,22 @@ public class DefaultVerticalTabBar internal constructor(
 
         group.selectedButtonProperty.onChange { (_, newValue) ->
             newValue?.let { button ->
+                val data = lookup[button.key] ?: return@let
                 currentContent?.detach()?.moveTo(Position.ZERO)
-                currentContent = content.addComponent(lookup.getValue(button.key).content)
+                currentContent = content.addComponent(data.content)
                 selectedKeyProperty.value = button.key
             }
         }
-        selectedKeyProperty.onChange { (_, key) ->
-            strip.ensureVisible(order.indexOf(lookup.getValue(key).tab))
-            lookup.getValue(key).tab.isSelected = true
+        selectedKeyProperty.onChange { (oldKey, key) ->
+            val data = lookup[key]
+            if (data == null) {
+                // An unknown key is reported and the previous selection restored.
+                reportError("Tab bar", IllegalArgumentException("No tab with key '$key'; keeping '$oldKey' selected"))
+                selectedKeyProperty.value = oldKey
+            } else {
+                strip.ensureVisible(order.indexOf(data.tab))
+                data.tab.isSelected = true
+            }
         }
         strip.ensureVisible(order.indexOf(lookup.getValue(defaultSelected).tab))
         lookup.getValue(defaultSelected).tab.isSelected = true

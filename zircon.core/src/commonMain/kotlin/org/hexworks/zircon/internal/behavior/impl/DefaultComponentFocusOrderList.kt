@@ -18,9 +18,10 @@ public class DefaultComponentFocusOrderList(
     private val nextsLookup: MutableMap<UUID, InternalComponent> = mutableMapOf(root.id to root)
     private val prevsLookup: MutableMap<UUID, InternalComponent> = nextsLookup.toMutableMap()
 
-    override fun findNext(): InternalComponent = nextsLookup.getValue(focusedComponent.id)
+    // The focused component may have left the tree since the last refresh; then focus goes to the root.
+    override fun findNext(): InternalComponent = nextsLookup[focusedComponent.id] ?: root
 
-    override fun findPrevious(): InternalComponent = prevsLookup.getValue(focusedComponent.id)
+    override fun findPrevious(): InternalComponent = prevsLookup[focusedComponent.id] ?: root
 
     override fun focus(component: InternalComponent) {
         logger.debug { "Trying to focus component: $component." }

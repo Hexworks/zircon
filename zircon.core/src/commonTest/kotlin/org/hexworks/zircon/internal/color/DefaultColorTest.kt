@@ -2,6 +2,7 @@ package org.hexworks.zircon.internal.color
 
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.color.extensions.lightenByPercent
 import org.hexworks.zircon.api.color.extensions.shade
 import org.hexworks.zircon.api.color.extensions.tint
 import org.hexworks.zircon.api.color.extensions.tone
@@ -25,6 +26,25 @@ class DefaultColorTest {
         result.green shouldBe GREEN
         result.blue shouldBe BLUE
         result.isTransparent shouldBe false
+    }
+
+    @Test
+    fun channelsAreClampedToTheByteRange() {
+        val result = DefaultColor(300, -20, 255)
+
+        result.red shouldBe 255
+        result.green shouldBe 0
+        result.blue shouldBe 255
+        result shouldBe DefaultColor(255, 0, 255)
+    }
+
+    @Test
+    fun lighteningStaysInRange() {
+        val result = Color.create(250, 250, 250).lightenByPercent(0.5)
+
+        result.red shouldBe 255
+        result.green shouldBe 255
+        result.blue shouldBe 255
     }
 
     @Test

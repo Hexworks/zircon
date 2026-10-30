@@ -85,6 +85,23 @@ class DefaultComponentFocusOrderListTest {
     }
 
     @Test
+    fun When_a_component_added_since_the_last_refresh_is_focused_Then_next_and_previous_are_the_root() {
+
+        val button0 = button { }.asInternalComponent()
+        val button1 = button {
+            position = bottomLeftOf(button0)
+        }.asInternalComponent()
+
+        root.addComponent(button0)
+        target.refreshFocusables()
+        root.addComponent(button1)
+        target.focus(button1)
+
+        target.findNext() shouldBe root
+        target.findPrevious() shouldBe root
+    }
+
+    @Test
     fun When_the_last_component_is_focused_Then_the_next_focus_is_the_root() {
 
         val button0 = button { }.asInternalComponent()
