@@ -12,6 +12,7 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.internal.util.reportError
 
 public class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, ComponentEventSource {
 
@@ -33,7 +34,14 @@ public class DefaultUIEventProcessor : UIEventProcessor, UIEventSource, Componen
         return listeners[event.type]?.let { list ->
             var finalResult: UIEventResponse = Pass
             list.forEach {
-                when (val result = it.listener.invoke(event, phase)) {
+                // A listener that throws must not take the frame (or the other listeners) down.
+                val result = try {
+                    it.listener.invoke(event, phase)
+                } catch (e: Exception) {
+                    reportError("UI event listener for ${event.type}", e)
+                    Pass
+                }
+                when (result) {
                     Processed,
                     PreventDefault -> if (result.hasPrecedenceOver(finalResult)) {
                         finalResult = result

@@ -39,6 +39,13 @@ public data class ZirconDefaults(
      * @see ShortcutsConfig for defaults
      */
     val shortcutsConfig: ShortcutsConfig,
+    /**
+     * Receives the exceptions Zircon contains during a frame (a UI event listener, an
+     * animation frame, a component renderer or a tile draw that threw) after they are logged.
+     * Default is [ErrorHandler.NONE].
+     * @see ErrorHandler
+     */
+    val onError: ErrorHandler,
 ) {
 
     /**

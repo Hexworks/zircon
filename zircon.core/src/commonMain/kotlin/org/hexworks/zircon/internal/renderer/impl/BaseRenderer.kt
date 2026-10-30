@@ -21,6 +21,8 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
+import org.hexworks.zircon.internal.graphics.Renderable
+import org.hexworks.zircon.internal.util.reportError
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.RenderData
 import org.hexworks.zircon.internal.renderer.Renderer
@@ -121,12 +123,17 @@ public abstract class BaseRenderer<C : Any, V : Any>(
             }
             //! TODO: FIX CURSOR HANDLING (the cursor used to be drawn on the topmost tile here)
             for (j in cellTiles.size - 1 downTo 0) {
-                renderTile(
-                    context = context,
-                    position = pos,
-                    tile = cellTiles[j],
-                    tileset = tilesetLoader.loadTilesetFrom(cellTilesets[j])
-                )
+                // A tile (or tileset) that fails to draw leaves its cell; the frame goes on.
+                try {
+                    renderTile(
+                        context = context,
+                        position = pos,
+                        tile = cellTiles[j],
+                        tileset = tilesetLoader.loadTilesetFrom(cellTilesets[j])
+                    )
+                } catch (e: Exception) {
+                    reportError("Tile at $pos", e)
+                }
             }
             cellTiles.clear()
             cellTilesets.clear()
@@ -207,14 +214,22 @@ public abstract class BaseRenderer<C : Any, V : Any>(
      */
     private fun fetchLayers(): List<RenderLayer> {
         return tileGrid.renderables.map { renderable ->
-            val tg = if (renderable.isHidden) FastTileGraphics(
-                initialSize = renderable.size,
-                initialTileset = renderable.tileset
-            ) else renderable.render()
+            // A renderer that throws leaves its layer blank for this frame; the others still draw.
+            val tg = if (renderable.isHidden) blank(renderable) else try {
+                renderable.render()
+            } catch (e: Exception) {
+                reportError("Renderer of $renderable", e)
+                blank(renderable)
+            }
             val position = renderable.position
             RenderLayer(position.x, position.y, tg.size.width, tg.size.height, tg, tg.tileset)
         }
     }
+
+    private fun blank(renderable: Renderable): TileGraphics = FastTileGraphics(
+        initialSize = renderable.size,
+        initialTileset = renderable.tileset
+    )
 
     private fun Tile.tiles(): List<Tile> = when (this) {
         is StackedTile -> tiles.flatMap { it.tiles() }

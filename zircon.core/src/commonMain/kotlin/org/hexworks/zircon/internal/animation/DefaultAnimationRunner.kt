@@ -12,6 +12,8 @@ import org.hexworks.zircon.api.behavior.Closeable
 import org.hexworks.zircon.api.behavior.Layerable
 import org.hexworks.zircon.internal.animation.impl.DefaultAnimationHandle
 import org.hexworks.zircon.api.config.ZirconDefaults
+import org.hexworks.zircon.api.extensions.abbreviate
+import org.hexworks.zircon.internal.util.reportError
 
 internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
@@ -50,10 +52,18 @@ internal class DefaultAnimationRunner : InternalAnimationRunner, Closeable {
 
     override fun updateAnimations(currentTimeMs: Long, layerable: Layerable) {
         if (closed.not()) {
-            animations.forEach { (key, animation) ->
-                val updateTime = nextUpdatesForAnimations.getValue(key)
+            // Over a snapshot: stopping a finished animation removes it from the map.
+            for ((key, animation) in animations.entries.toList()) {
+                val updateTime = nextUpdatesForAnimations[key] ?: continue
                 if (updateTime <= currentTimeMs) {
-                    if (animation.displayNextFrame(layerable)) {
+                    // A frame that throws stops its animation; the others go on.
+                    val hasMoreFrames = try {
+                        animation.displayNextFrame(layerable)
+                    } catch (e: Exception) {
+                        reportError("Animation ${key.abbreviate()}", e)
+                        false
+                    }
+                    if (hasMoreFrames) {
                         nextUpdatesForAnimations[key] = currentTimeMs + animation.tick.inWholeMilliseconds
                     } else {
                         stop(animation)

@@ -34,6 +34,7 @@ class ZirconDefaultsTest {
                 debugMode = DEFAULT_DEBUG_MODE,
                 debugConfig = DEFAULT_DEBUG_CONFIG,
                 shortcutsConfig = DEFAULT_SHORTCUTS_CONFIG,
+                onError = ErrorHandler.NONE,
             ),
             ZirconDefaultsBuilder().build()
         )
@@ -51,6 +52,15 @@ class ZirconDefaultsTest {
         assertEquals(installed, ZirconDefaults.current)
         assertEquals(ColorThemes.arc(), ZirconDefaults.current.theme)
         assertEquals(CP437TilesetResources.aduDhabi16x16(), tileGraphics { }.tileset)
+    }
+
+    @Test
+    fun an_installed_error_handler_is_the_one_in_the_current_defaults() {
+        val handler = ErrorHandler { _, _ -> }
+
+        zirconDefaults { onError = handler }
+
+        assertEquals(handler, ZirconDefaults.current.onError)
     }
 
     @Test

@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.config.DebugConfig
+import org.hexworks.zircon.api.config.ErrorHandler
 import org.hexworks.zircon.api.config.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
 import org.hexworks.zircon.api.config.ShortcutsConfig
 import org.hexworks.zircon.api.config.ShortcutsConfig.Companion.DEFAULT_SHORTCUTS_CONFIG
@@ -55,6 +56,13 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
     public var shortcutsConfig: ShortcutsConfig = DEFAULT_SHORTCUTS_CONFIG
 
     /**
+     * Receives the exceptions Zircon contains during a frame, after they are logged.
+     * Default is [ErrorHandler.NONE].
+     * @see ErrorHandler
+     */
+    public var onError: ErrorHandler = ErrorHandler.NONE
+
+    /**
      * Configures [debugConfig] with the builder DSL.
      */
     public fun debug(init: DebugConfigBuilder.() -> Unit) {
@@ -74,6 +82,7 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
         debugMode = debugMode,
         debugConfig = debugConfig,
         shortcutsConfig = shortcutsConfig,
+        onError = onError,
     )
 }
 
