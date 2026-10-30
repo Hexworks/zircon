@@ -1,0 +1,36 @@
+package org.hexworks.zircon.examples.components
+
+import org.hexworks.zircon.examples.Example
+
+public val componentExamples: List<Example> = listOf(
+    allExample,
+    buttonsExample,
+    checkBoxesExample,
+    alignmentExample,
+    decorationsExample,
+    moveExample,
+    styleSetsExample,
+    customRenderExample,
+    dataBindingExample,
+    focusExample,
+    groupsExample,
+    hBoxVBoxExample,
+    hBoxesExample,
+    headersExample,
+    labelsExample,
+    logAreaExample,
+    marginExample,
+    oldDataBindingExample,
+    panelsExample,
+    progressBarExample,
+    radioButtonGroupsExample,
+    scrollBarExample,
+    scrollingLogAreaExample,
+    selectionHandlingExample,
+    sliderExample,
+    textAreaDisableExample,
+    textAreasExample,
+    textBoxesExample,
+    toggleButtonsExample,
+    vBoxesExample,
+)

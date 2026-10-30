@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -15,26 +16,39 @@ import kotlinx.coroutines.delay
 import org.hexworks.zircon.compose.ComposeResourceLoader
 import org.hexworks.zircon.compose.TileGridView
 import org.hexworks.zircon.examples.ExamplesScreen
-import org.hexworks.zircon.examples.demos
+import org.hexworks.zircon.examples.ExamplesSelection
 import org.hexworks.zircon.examples.examplesScreen
 import org.hexworks.zircon.examples.gridSizeFor
 import org.hexworks.zircon.examples.resources.Res
 
 /**
- * The examples app, built entirely from Zircon components: a horizontal tab bar on top,
- * the selected demo below, in a grid that fills the available space. Switching tabs or
- * resizing the window rebuilds the grid, since each demo has its own tileset.
+ * The examples app, built entirely from Zircon components, in a grid that fills the
+ * available space. Resizing the window or picking another tileset rebuilds the grid (the
+ * cell size changes); the selected package, example and theme carry over.
  */
 @Composable
 public fun ExamplesApp() {
-    var selected by remember { mutableStateOf(demos.first()) }
+    // The selection the next build starts from: updated from inside the screen, so a
+    // rebuild after a resize keeps what the user picked.
+    val latest = remember { mutableStateOf(ExamplesSelection.DEFAULT) }
+    var generation by remember { mutableIntStateOf(0) }
     BoxWithConstraints(Modifier.fillMaxSize().background(Color.Black)) {
         val widthPx = constraints.maxWidth
         val heightPx = constraints.maxHeight
-        val shown by produceState<ExamplesScreen?>(null, selected, widthPx, heightPx) {
+        val shown by produceState<ExamplesScreen?>(null, generation, widthPx, heightPx) {
             delay(RESIZE_DEBOUNCE_MS) // a window drag reports many sizes; build the last one
             installResources()
-            value = examplesScreen(selected, gridSizeFor(selected.tileset, widthPx, heightPx)) { selected = it }
+            val selection = latest.value
+            val screen = examplesScreen(
+                selection = selection,
+                size = gridSizeFor(selection.tileset.resource, widthPx, heightPx),
+                onTilesetChange = { changed ->
+                    latest.value = changed
+                    generation++
+                },
+            )
+            screen.selectionProperty.onChange { (_, changed) -> latest.value = changed }
+            value = screen
         }
         shown?.let { TileGridView(it.grid, beforeFrame = it.onFrame) }
     }

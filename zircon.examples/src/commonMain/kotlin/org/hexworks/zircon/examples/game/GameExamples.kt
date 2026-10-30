@@ -1,16 +1,17 @@
-package org.hexworks.zircon.examples
+package org.hexworks.zircon.examples.game
 
-import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.GraphicalTilesetResources
 import org.hexworks.zircon.api.builder.data.graphicalTile
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.examples.EXAMPLE_TAB_WIDTH
+import org.hexworks.zircon.examples.EXAMPLE_TOP
+import org.hexworks.zircon.examples.Example
+import org.hexworks.zircon.examples.ExampleView
 import kotlin.random.Random
 
-/**
- * A field of nethack sprites: graphical tiles drawn onto a layer over the content area.
- */
-public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlust16x16(), textOnly = false) { context ->
+/** A field of nethack sprites: graphical tiles drawn onto a layer over the content area. */
+public val spritesExample: Example = Example("Sprites", textOnly = false) { context ->
     val nethack = GraphicalTilesetResources.nethack16x16()
     val names = listOf(
         "Giant ant", "Killer bee", "Soldier ant", "Fire ant", "Giant beetle", "Queen bee",
@@ -19,7 +20,7 @@ public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlu
     )
     val field = layer {
         size = context.contentSize
-        offset = context.contentPosition
+        offset = Position(EXAMPLE_TAB_WIDTH, EXAMPLE_TOP)
         tileset = nethack
     }
     val random = Random(7)
@@ -28,6 +29,7 @@ public val gameAreaDemo: Demo = Demo("Game area", CP437TilesetResources.wanderlu
             field.draw(graphicalTile { name = names[random.nextInt(names.size)]; tileset = nethack }, Position(x, y))
         }
     }
-    context.screen.addLayer(field)
-    DemoView(context.emptyContent())
+    ExampleView(context.emptyContent(), layers = listOf(field))
 }
+
+public val gameExamples: List<Example> = listOf(spritesExample, cavesExample, scrollingExample, playerMoveExample, obliqueWorldExample)

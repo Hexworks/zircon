@@ -83,12 +83,6 @@ public class DefaultSelector<T : Any> internal constructor(
                 showNextValue()
             }
         }
-    }.apply {
-        println("=== wtf ===")
-        println("=== children ===")
-        children.forEach {
-            println(it)
-        }
     }
 
     private fun setValue(to: Int) {

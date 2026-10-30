@@ -30,6 +30,10 @@ kotlin {
             implementation(project(":zircon.terminal"))
             implementation(libs.kotlinx.coroutines.core)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotest.assertions.core)
+        }
     }
 }
 

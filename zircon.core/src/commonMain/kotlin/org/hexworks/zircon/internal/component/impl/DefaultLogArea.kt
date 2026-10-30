@@ -41,7 +41,8 @@ public class DefaultLogArea internal constructor(
     }
 
     override fun addInlineRow(row: List<Component>, applyTheme: Boolean) {
-        val width = size.width
+        // The row lives inside the decorations, so it is as wide as the content, not the component.
+        val width = contentSize.width
         addLogElement(hBox {
             preferredSize = Size(width, 1)
             children {

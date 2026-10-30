@@ -59043,9 +59043,11 @@ public final class org/hexworks/zircon/internal/extensions/PersistentListExtensi
 }
 
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultHorizontalTabBar : org/hexworks/zircon/api/fragment/TabBar {
+	public static final field SCROLL_TAB_WIDTH I
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getSelectedKey ()Ljava/lang/String;
 	public fun getSelectedKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public final fun getVisibleTabs ()Ljava/util/List;
 	public fun setSelectedKey (Ljava/lang/String;)V
 }
 
@@ -59094,6 +59096,7 @@ public final class org/hexworks/zircon/internal/fragment/impl/DefaultVerticalTab
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getSelectedKey ()Ljava/lang/String;
 	public fun getSelectedKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public final fun getVisibleTabs ()Ljava/util/List;
 	public fun setSelectedKey (Ljava/lang/String;)V
 }
 

@@ -50,15 +50,13 @@ public class VerticalTabBarBuilder(
     override fun build(): TabBar {
         checkCommonProperties()
         val finalTabs = tabs.map { it.build() }
-        require(finalTabs.fold(0) { acc, next -> acc + next.tab.tabButton.height } <= size.height) {
-            "There is not enough space to display all the tabs"
-        }
+        // Tabs that do not fit are scrolled, so any number of tabs is fine.
         return DefaultVerticalTabBar(
             size = size,
             defaultSelected = defaultSelected ?: finalTabs.first().tab.key,
             tabs = finalTabs,
             tabWidth = tabWidth
-        )
+        ).also { it.root.moveTo(position) }
     }
 }
 

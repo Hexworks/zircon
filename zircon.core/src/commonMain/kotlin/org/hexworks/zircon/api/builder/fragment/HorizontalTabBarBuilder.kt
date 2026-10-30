@@ -37,14 +37,12 @@ public class HorizontalTabBarBuilder(
     override fun build(): TabBar {
         checkCommonProperties()
         val finalTabs = tabs.map { it.build() }
-        require(finalTabs.fold(0) { acc, next -> acc + next.tab.tabButton.width } <= size.width) {
-            "There is not enough space to display all the tabs"
-        }
+        // Tabs that do not fit are scrolled, so any number of tabs is fine.
         return DefaultHorizontalTabBar(
             size = size,
             defaultSelected = defaultSelected ?: finalTabs.first().tab.key,
             tabs = finalTabs
-        )
+        ).also { it.root.moveTo(position) }
     }
 }
 

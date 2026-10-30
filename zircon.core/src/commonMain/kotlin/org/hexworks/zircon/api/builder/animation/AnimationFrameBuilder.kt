@@ -34,6 +34,7 @@ public class AnimationFrameBuilder : Builder<AnimationFrame> {
             if (size.isSizeUnknown) {
                 size = layer.size
             }
+            layers.add(layer)
         }
 
     public fun addLayers(layers: List<Layer>) {

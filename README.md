@@ -209,7 +209,9 @@ Buttons, toggle buttons, check boxes, radio buttons, labels, headers, paragraphs
 areas, number inputs, sliders, scroll bars, progress bars, panels, `hBox`/`vBox` layouts,
 log areas, modals, plus fragments such as tab bars, menu bars, tables and selectors. All
 components are themeable (`ColorThemes` ships dozens) and decorated with boxes, shadows
-and borders.
+and borders. Tab bars scroll when their tabs do not fit: a `…` button at either end
+appears while there are tabs beyond it, the mouse wheel scrolls too, and selecting a tab
+scrolls it into view.
 
 ```kotlin
 val form = vBox {
@@ -291,8 +293,13 @@ ZIRCON_EXAMPLES_FILES=zircon.examples/resources/files \
   zircon.examples.terminal/build/bin/linuxX64/releaseExecutable/zircon.examples.terminal.kexe [Benchmark]
 ```
 
-The tab bar switches between the demos a terminal can show; on exit the frame rate and
-the time per frame of the last demo are printed.
+The examples app is itself built from Zircon components: the packages of the 1.x example
+suite (animations, components, dialogs, fragments, game, modifiers, other, input+layers)
+are horizontal tabs, the examples of each package are vertical tabs, and selectors on top
+switch the colour theme (and, outside the terminal, the tileset: the grid is rebuilt at the
+new cell size). It needs at least 100x40 cells. Examples that draw graphical tiles are left
+out in the terminal; on exit the frame rate and the time per frame are printed. Pass an
+example name to start on it (`... Benchmark`).
 
 The Compose renderer is verified by golden-image tests
 (`zircon.compose/src/jvmTest/resources/golden`), the terminal renderer by golden

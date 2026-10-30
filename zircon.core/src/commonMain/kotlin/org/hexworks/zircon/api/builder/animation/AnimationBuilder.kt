@@ -41,7 +41,7 @@ public class AnimationBuilder(
             require(value > 0) {
                 "Fps must be greater than 0!"
             }
-            tick = (1000L / fps).toDuration(MILLISECONDS)
+            tick = (1000L / value).toDuration(MILLISECONDS)
         }
 
     public var position: Position = Position.ZERO

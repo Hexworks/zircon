@@ -2,9 +2,11 @@ package org.hexworks.zircon.examples.compose
 
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.use
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.compose.TileGridView
-import org.hexworks.zircon.examples.demos
+import org.hexworks.zircon.examples.ExamplesSelection
+import org.hexworks.zircon.examples.examplePackages
 import org.hexworks.zircon.examples.examplesScreen
 import org.hexworks.zircon.examples.gridSizeFor
 import org.jetbrains.skia.EncodedImageFormat
@@ -13,12 +15,20 @@ import kotlin.test.Test
 
 class ExamplesAppTest {
 
+    /** Builds every example once and renders each package's first one, so a broken example fails here. */
     @Test
-    fun everyDemoRendersInAFullHdWindow() {
+    fun everyExampleBuildsAndEveryPackageRendersInAFullHdWindow() {
         installResources()
         val out = File("build/demo-renders").apply { mkdirs() }
-        demos.forEach { demo ->
-            val shown = runBlocking { examplesScreen(demo, gridSizeFor(demo.tileset, FULL_HD_WIDTH, FULL_HD_HEIGHT)) {} }
+        examplePackages.forEach { pkg ->
+            val selection = ExamplesSelection.DEFAULT.copy(packageName = pkg.name, exampleName = pkg.examples.first().name)
+            val shown = runBlocking {
+                examplesScreen(selection, gridSizeFor(selection.tileset.resource, FULL_HD_WIDTH, FULL_HD_HEIGHT))
+            }
+            val bar = shown.exampleBars.getValue(pkg.name)
+            pkg.examples.forEach { bar.selectedKey = it.name }
+            bar.selectedKey = pkg.examples.first().name
+            shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
             ImageComposeScene(width = FULL_HD_WIDTH, height = FULL_HD_HEIGHT) {
                 TileGridView(shown.grid, beforeFrame = shown.onFrame)
             }.use { scene ->
@@ -27,7 +37,7 @@ class ExamplesAppTest {
                     val image = scene.render(nanoTime = frame * 16_000_000L)
                     if (frame == 9) png = image.encodeToData(EncodedImageFormat.PNG)?.bytes
                 }
-                File(out, "${demo.name.lowercase().replace(' ', '-')}.png").writeBytes(checkNotNull(png))
+                File(out, "${pkg.name.replace('+', '-')}.png").writeBytes(checkNotNull(png))
             }
         }
     }

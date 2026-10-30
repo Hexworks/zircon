@@ -54,16 +54,17 @@ public class VerticalScrollableList<T>(
     private var topItemIdx: Int = 0
 
     override val root: HBox = hBox {
-        preferredSize = size
+        // The builder has a `size` of its own; the list's is meant.
+        preferredSize = this@VerticalScrollableList.size
         this.position = position
     }
 
     private val scrollPanel = vBox {
-        preferredSize = size.withRelativeWidth(-1)
+        preferredSize = this@VerticalScrollableList.size.withRelativeWidth(-1)
     }
 
     private val scrollBarVbox = vBox {
-        preferredSize = size.withWidth(1)
+        preferredSize = this@VerticalScrollableList.size.withWidth(1)
     }
 
 //    private val actualScrollbar: ScrollBar = verticalScrollBar {

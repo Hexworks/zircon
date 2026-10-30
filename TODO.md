@@ -39,6 +39,8 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 | Terminal: loop | Blocking `runTerminal(tileGrid, targetFps = 60, beforeFrame = {})` on the calling thread: `poll(stdin, until next frame)` → parse → enqueue → `BaseRenderer.render` → diff → write. Alt screen, raw mode, kitty + mouse modes are entered on start and reversed in `finally` and on SIGTERM/SIGHUP; an uncaught exception restores the tty first, then rethrows. |
 | Terminal: tty | `expect`/`actual` `Tty` (raw mode, size, read/write, resize signal). Native: `platform.posix` termios/ioctl/poll. JVM: `sh -c 'stty raw -echo < /dev/tty'` + `stty size` + `sun.misc.Signal` WINCH, Java 17, no deps (no JLine, no FFM). |
 | Terminal: tests | `Tty` is an interface; `FakeTty` scripts input bytes and captures output. Golden `.ansi` byte snapshots in `commonTest` (first frame, diff frame, blink, cursor, clipped grid), table tests for kitty/SGR sequences → `KeyboardEvent`/`MouseEvent`. Runs on jvm and linuxX64 in CI; manual smoke on foot, ghostty, alacritty, kitty, wezterm with a checklist in the module README. |
+| Tab bars | Horizontal and vertical tab bars scroll when their tabs do not fit (decided 2026-10-30): `◄..`/`..►` and `▲...`/`▼...` scroll buttons appear only while tabs lie beyond that end, the wheel over the strip scrolls one tab, `selectedKey` scrolls into view. Own index state in `TabStrip`, not `Scrollable` (tabs are 3 cells, snapping an offset buys nothing). |
+| Examples app | Packages horizontal, examples vertical, theme + tileset selectors on top (tileset hidden in the terminal; a tileset change rebuilds the grid in Compose). Min grid 100x40; examples lay out to `contentSize`. `Example.textOnly = false` hides an example in the terminal. |
 | Terminal: bar | `BenchmarkDemo` 240x135, every cell changes every frame: ≥ 30 fps on foot/ghostty/alacritty, idle frame 0 bytes, render tick (diff + encode, excluding the write) < 4 ms. Launcher prints fps to stderr on exit. |
 | Tests | Golden-image tests on desktop JVM. Android and wasm are checked by running the examples before release. |
 | Release | Single `2.0.0` at the end. CI on JDK 25. |
@@ -99,7 +101,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 
 - [ ] android target: **skipped for 2.0 (decided 2026-10-28)**, planned for 2.1 (AGP 9 KMP library plugin, needs an SDK on the build machine)
 - [x] wasmJs target: `zircon.examples.web`, verified in headless Chrome (61 fps on the 120x60 benchmark)
-- [x] `zircon.examples` library: components, game area (nethack sprites), REXPaint logo, skull animation, benchmark; app modules register their Compose resources with `ComposeResourceLoader.addProjectResources`
+- [x] `zircon.examples` library: the 1.x example suite ported (2026-10-30: 8 packages as horizontal tabs, examples as vertical tabs, theme + tileset selectors, examples built lazily on first show with `onShown`/`onHidden`; skipped the ones 2.0 cannot do: Border modifier, custom `Tile`, image tiles, `updateOnAttach`, Swing screenshots, window title); `zircon.examples.compose` registers the data files with `ComposeResourceLoader.addProjectResources`
 - [x] Desktop (`zircon.examples.desktop`) and web (`zircon.examples.web`) launchers
 - [ ] Android launcher: 2.1
 
