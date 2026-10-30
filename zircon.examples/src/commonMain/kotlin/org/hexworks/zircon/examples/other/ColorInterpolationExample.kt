@@ -46,7 +46,7 @@ public val colorInterpolationExample: Example = Example("Color interp") { contex
 
     val lowColorProperty = Color.create(255, 0, 0).toProperty()
     val highColorProperty = Color.create(0, 255, 0).toProperty()
-    var interpolator = lowColorProperty.value.interpolateTo(highColorProperty.value)
+    val interpolatorProperty = lowColorProperty.value.interpolateTo(highColorProperty.value).toProperty()
 
     panel.addComponent(label { +"Red"; position = Position(6, 2) })
     panel.addComponent(label { +"Green"; position = Position(11, 2) })
@@ -81,8 +81,8 @@ public val colorInterpolationExample: Example = Example("Color interp") { contex
         position = Position(7, 9)
     }.apply {
         onActivated {
-            // The interpolator is created here
-            interpolator = lowColorProperty.value.interpolateTo(highColorProperty.value)
+            // A new interpolator between the colours picked above; the cells below follow it.
+            interpolatorProperty.value = lowColorProperty.value.interpolateTo(highColorProperty.value)
         }
     }
     val slider = horizontalSlider {
@@ -98,17 +98,19 @@ public val colorInterpolationExample: Example = Example("Color interp") { contex
         decorations { +box() }
         componentRenderer = NoOpComponentRenderer()
     }
-    (0 until 25).forEach { i ->
-        resultPanel.addComponent(icon {
+    val cells = (0 until 25).map { i ->
+        icon {
             position = Position(i % 5, i / 5)
             iconTile = Tile.defaultTile()
-        }.also { cell ->
-            cell.iconProperty.updateFrom(slider.currentValueProperty) { sliderValue ->
-                // Interpolated value is used here
-                (cell.icon as CharacterTile).withBackgroundColor(interpolator.getColorAtRatio(sliderValue / 1000.0))
-            }
-        })
+        }.also { resultPanel.addComponent(it) }
     }
+    fun recolor() {
+        val color = interpolatorProperty.value.getColorAtRatio(slider.currentValue / 1000.0)
+        cells.forEach { cell -> cell.icon = (cell.icon as CharacterTile).withBackgroundColor(color) }
+    }
+    slider.currentValueProperty.onChange { recolor() }
+    interpolatorProperty.onChange { recolor() }
+    recolor()
 
     lowColorProperty.updateFrom(redOne.currentValueProperty) { lowColorProperty.value.withRed(it) }
     lowColorProperty.updateFrom(greenOne.currentValueProperty) { lowColorProperty.value.withGreen(it) }

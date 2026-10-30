@@ -11,8 +11,11 @@ public class NamedTileset(public val name: String, public val resource: TilesetR
     override fun toString(): String = name
 }
 
-/** Every bundled tileset: the CP437 sheets and the TrueType fonts at 16 px. Generated from core; keep in sync. */
-public val TILESETS: List<NamedTileset> = listOf(
+/**
+ * Every bundled tileset up to 24x24: the CP437 sheets and the TrueType fonts at 16 px.
+ * Generated from core; keep in sync. Bigger cells leave too few of them for the app's layout.
+ */
+private val ALL_TILESETS: List<NamedTileset> = listOf(
     NamedTileset("acorn 8 x 16", CP437TilesetResources.acorn8X16()),
     NamedTileset("adu dhabi 16x16", CP437TilesetResources.aduDhabi16x16()),
     NamedTileset("anikki 16x16", CP437TilesetResources.anikki16x16()),
@@ -54,7 +57,7 @@ public val TILESETS: List<NamedTileset> = listOf(
     NamedTileset("vga 8 x 16", CP437TilesetResources.vga8X16()),
     NamedTileset("vidumec 12x12", CP437TilesetResources.vidumec12x12()),
     NamedTileset("wanderlust 16x16", CP437TilesetResources.wanderlust16x16()),
-    NamedTileset("yayo 12x12", CP437TilesetResources.yayo12x12()),
+    NamedTileset("yayo 13x13", CP437TilesetResources.yayo13x13()),
     NamedTileset("yayo 16x16", CP437TilesetResources.yayo16x16()),
     NamedTileset("yobbo 20x20", CP437TilesetResources.yobbo20x20()),
     NamedTileset("zaratustra 16x16", CP437TilesetResources.zaratustra16x16()),
@@ -162,3 +165,7 @@ public val THEMES: List<ColorTheme> = listOf(
     ColorThemes.discord(),
     ColorThemes.afterDark(),
 )
+
+public val TILESETS: List<NamedTileset> = ALL_TILESETS.filter { it.resource.width <= MAX_CELL && it.resource.height <= MAX_CELL }
+
+private const val MAX_CELL = 24

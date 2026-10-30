@@ -12,7 +12,11 @@ import org.hexworks.zircon.examples.EXAMPLE_TOP
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleView
 
-/** Text drawn with the bundled TrueType fonts, one layer per font. */
+/**
+ * Text drawn with the bundled TrueType fonts, one layer per font. All six are the square
+ * variants, so each glyph fits the grid's cell; the fonts still differ in how much of the
+ * cell their glyphs fill, which is what the font pack's originals look like.
+ */
 public val trueTypeFontExample: Example = Example("TrueType") { context ->
     val theme = context.screen.theme
     val fonts = listOf(

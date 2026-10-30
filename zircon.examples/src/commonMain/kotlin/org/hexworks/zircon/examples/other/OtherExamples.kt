@@ -52,7 +52,6 @@ public val otherExamples: List<Example> = listOf(
     graphicalExample,
     multiTileExample,
     rexLoaderExample,
-    stackedTileExample,
     statsPanelExample,
     tilesetExample,
     trueTypeFontExample,

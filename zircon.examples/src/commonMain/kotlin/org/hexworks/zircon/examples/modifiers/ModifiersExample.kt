@@ -28,11 +28,15 @@ public val modifiersExample: Example = Example("Modifiers") { context ->
     fun redraw() {
         layer.clear()
         val random = Random(687483)
+        // Bright colours only, and never the same twice: "hidden" keeps just the background.
+        val colors = ANSIColor.entries.filter { it.name.startsWith("BRIGHT") }
         fun randomTile(): CharacterTile = characterTile {
             character = 'x'
             withStyleSet {
-                foregroundColor = DefaultAnsiPalette[ANSIColor.entries[random.nextInt(ANSIColor.entries.size)]]
-                backgroundColor = DefaultAnsiPalette[ANSIColor.entries[random.nextInt(ANSIColor.entries.size)]]
+                val fg = colors[random.nextInt(colors.size)]
+                val bg = (colors - fg)[random.nextInt(colors.size - 1)]
+                foregroundColor = DefaultAnsiPalette[fg]
+                backgroundColor = DefaultAnsiPalette[bg]
             }
         }
         val modifiers: List<Pair<String, () -> Modifier>> = listOf(

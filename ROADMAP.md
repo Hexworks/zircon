@@ -55,3 +55,19 @@ into `TextArea` and `TextBox`, and copy of the current selection once selections
 - [Tree](https://github.com/Hexworks/zircon/issues/184)
 - [Accordion](https://github.com/Hexworks/zircon/issues/27)
 - [Combo box](https://github.com/Hexworks/zircon/issues/262)
+
+## Pre-rendered stacked tiles
+
+`StackedTile` composites several tiles into one cell. The 1.x renderers drew the stack back
+to front with alpha, so a sprite over a glyph over a background showed all three. The 2.0
+renderer draws one glyph or sprite per cell and has no per-tile alpha, so only the opaque
+top of a stack shows and the "Stacked tiles" example was removed.
+
+Planned shape:
+
+- Pre-render a stack the first time it is drawn: composite its tiles into a dedicated atlas
+  slot (CPU side, once per distinct stack), keyed by the stack's cache key.
+- Draw the slot like any other sprite afterwards, so stacks cost nothing per frame.
+- Evict slots of stacks that have not been drawn for a while, so animated stacks do not
+  fill the atlas.
+
