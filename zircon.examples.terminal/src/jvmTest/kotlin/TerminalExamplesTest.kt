@@ -70,6 +70,7 @@ class TerminalExamplesTest {
         }
         renderer.close()
         shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+        shown.runtimeErrors.map { (source, error) -> "$source: $error" } shouldBe emptyList()
         empty shouldBe emptyList()
     }
 }

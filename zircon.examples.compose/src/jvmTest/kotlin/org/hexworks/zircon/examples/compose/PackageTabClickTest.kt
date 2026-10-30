@@ -45,6 +45,7 @@ class PackageTabClickTest {
                 x += pkg.name.length + 2
             }
             shown.buildFailures.map { (name, e) -> "$name: ${e.message}" } shouldBe emptyList()
+            shown.runtimeErrors.map { (source, e) -> "$source: $e" } shouldBe emptyList()
         }
     }
 }

@@ -31,6 +31,8 @@ fun main(args: Array<String>) {
     val shown = runBlocking { examplesScreen(selection, size, textOnly = true) }
     val started = TimeSource.Monotonic.markNow()
     val session = runTerminal(shown.grid, beforeFrame = shown.onFrame)
+    // Printed only now: while the terminal is in raw mode a message would scramble the screen.
+    shown.runtimeErrors.forEach { (source, error) -> printError("$source failed: $error") }
     val seconds = started.elapsedNow().inWholeMilliseconds / 1000.0
     val frames = session.framesRendered
     if (seconds > 0 && frames > 0) {

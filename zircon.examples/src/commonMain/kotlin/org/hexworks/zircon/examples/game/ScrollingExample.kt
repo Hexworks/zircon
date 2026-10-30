@@ -72,7 +72,7 @@ public val scrollingExample: Example = Example("Scrolling") { context ->
     projections.addComponent(topDown)
     projections.addComponent(topDownOblique)
     val projectionProperty = projectionsGroup.selectedButtonProperty.bindTransform { button ->
-        button?.let { ProjectionMode.valueOf(it.key) } ?: ProjectionMode.TOP_DOWN
+        ProjectionMode.entries.firstOrNull { it.name == button?.key } ?: ProjectionMode.TOP_DOWN
     }
 
     val contentSize = context.contentSize

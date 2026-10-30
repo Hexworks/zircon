@@ -29,6 +29,7 @@ class ExamplesAppTest {
             pkg.examples.forEach { bar.selectedKey = it.name }
             bar.selectedKey = pkg.examples.first().name
             shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+            shown.runtimeErrors.map { (source, error) -> "$source: $error" } shouldBe emptyList()
             ImageComposeScene(width = FULL_HD_WIDTH, height = FULL_HD_HEIGHT) {
                 TileGridView(shown.grid, beforeFrame = shown.onFrame)
             }.use { scene ->

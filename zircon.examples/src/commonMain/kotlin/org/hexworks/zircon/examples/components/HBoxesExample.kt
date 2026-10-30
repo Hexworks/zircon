@@ -19,9 +19,11 @@ public val hBoxesExample: Example = Example("HBoxes") { context ->
     var count = 0
     val random = Random(1)
     fun addButton(box: HBox) {
+        // A full box would refuse the button; skip it instead.
+        if (box.children.sumOf { it.width } + BUTTON_WIDTH > box.contentSize.width) return
         val attachment = box.addComponent(button {
             +"Remove: $count"
-            preferredSize = Size(12, 1)
+            preferredSize = Size(BUTTON_WIDTH, 1)
         })
         attachment.onActivated { attachment.detach() }
         count++
@@ -49,3 +51,5 @@ public val hBoxesExample: Example = Example("HBoxes") { context ->
     }
     ExampleView(root)
 }
+
+private const val BUTTON_WIDTH = 12

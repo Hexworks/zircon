@@ -18,6 +18,8 @@ import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.config.ErrorHandler
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
@@ -64,6 +66,8 @@ public class ExamplesScreen(
     public val exampleBars: Map<String, TabBar>,
     /** Examples whose build threw, as "package / example" to the error; the app shows the message instead. */
     public val buildFailures: List<Pair<String, Throwable>>,
+    /** Errors Zircon contained while running, as source to the error; the latest shows in the footer. */
+    public val runtimeErrors: List<Pair<String, Throwable>>,
     public val onFrame: () -> Unit,
 ) {
     public val selection: ExamplesSelection get() = selectionProperty.value
@@ -242,9 +246,40 @@ public suspend fun examplesScreen(
         }
     }
 
+    // Footer: the latest error Zircon contained (a handler, animation or renderer that threw),
+    // in the bottom row, so a broken example is visible without a log. Also a layer, see above.
+    val errorLine = layer {
+        this.size = Size(size.width, 1)
+        offset = Position(0, size.height - 1)
+    }
+    screen.addLayer(errorLine)
+    val runtimeErrors = ArrayList<Pair<String, Throwable>>()
+    fun showError(source: String, error: Throwable) {
+        val text = "$source: ${error::class.simpleName}: ${error.message ?: ""}"
+        text.take(size.width).padEnd(size.width).forEachIndexed { x, char ->
+            errorLine.draw(
+                characterTile {
+                    character = char
+                    withStyleSet {
+                        foregroundColor = screen.theme.accentColor
+                        backgroundColor = screen.theme.primaryBackgroundColor
+                    }
+                },
+                Position(x, 0)
+            )
+        }
+    }
+    // Process-wide, like a logger: chained so a handler the launcher installed still runs.
+    val previousHandler = ZirconDefaults.current.onError
+    ZirconDefaults.current = ZirconDefaults.current.copy(onError = ErrorHandler { source, error ->
+        runtimeErrors += source to error
+        showError(source, error)
+        previousHandler.onError(source, error)
+    })
+
     screen.display()
     show(packageBar.selectedKey to exampleBars.getValue(packageBar.selectedKey).selectedKey)
-    return ExamplesScreen(grid, screen, selectionProperty, packageBar, exampleBars, buildFailures) {
+    return ExamplesScreen(grid, screen, selectionProperty, packageBar, exampleBars, buildFailures, runtimeErrors) {
         counter.frame()?.let(::showFps)
         shownKey?.let { views[it]?.onFrame?.invoke() }
     }

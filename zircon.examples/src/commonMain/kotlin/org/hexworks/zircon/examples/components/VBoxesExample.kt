@@ -5,6 +5,7 @@ import org.hexworks.zircon.api.ComponentDecorations.shadow
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.vBox
+import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.extensions.addComponents
@@ -37,6 +38,8 @@ public val vBoxesExample: Example = Example("VBoxes") { context ->
     root.addComponent(container)
 
     fun addButton(box: VBox) {
+        // A full box would refuse the button; skip it instead.
+        if (box.children.sumOf { it.height } + 1 > box.contentSize.height) return
         val attachment = box.addComponent(button { +"Remove: $count"; preferredSize = Size(12, 1) })
         attachment.onActivated { attachment.detach() }
         count++
