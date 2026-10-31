@@ -125,11 +125,21 @@ public abstract class BaseSlider(
         currentValue = calculatedValue.roundToInt()
     }
 
+    /**
+     * The step the cursor at [event] points at, measured from the slider's content origin
+     * along its axis. May be negative or past the last step: the dispatcher keeps
+     * delivering drags to this slider after the cursor left it, and [setValueToClosestOfStep]
+     * clamps the result to the ends.
+     */
     public abstract fun getMousePosition(event: MouseEvent): Int
+
+    /** `true` between a press on this slider and the matching release. */
+    private var isDragging = false
 
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
+            LOGGER.debug { "Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
+            isDragging = true
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
@@ -138,12 +148,25 @@ public abstract class BaseSlider(
 
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
-            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
+            LOGGER.debug { "Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse dragged." }
             componentState = ComponentState.ACTIVE
             setValueToClosestOfStep(getMousePosition(event))
             Processed
         } else Pass
     }
+
+    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (phase == UIEventPhase.TARGET) isDragging = false
+        return super.mouseReleased(event, phase)
+    }
+
+    // A slider keeps tracking (and stays ACTIVE) while the button is held, even when the
+    // cursor leaves its bounds; hover changes only matter again after the release.
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse =
+        if (isDragging) Pass else super.mouseExited(event, phase)
+
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse =
+        if (isDragging) Pass else super.mouseEntered(event, phase)
 
     abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 

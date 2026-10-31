@@ -32,6 +32,17 @@ public class UIEventToComponentDispatcher(
     private var lastMousePosition = Position.UNKNOWN
     private var lastHoveredComponent: InternalComponent = root
 
+    /**
+     * The component that received the last [MOUSE_PRESSED] and has not seen its
+     * [MOUSE_RELEASED] yet. While set, every [MOUSE_DRAGGED] and the [MOUSE_RELEASED]
+     * go to it regardless of where the cursor is (the same implicit capture Compose,
+     * JavaFX and Qt do), and no other component gets hover events.
+     */
+    private var capturedComponent: InternalComponent? = null
+
+    /** Whether the cursor was inside [capturedComponent]'s bounds at the last captured event. */
+    private var cursorInCaptured = false
+
     private val shortcutsConfig get() = ZirconDefaults.current.shortcutsConfig
 
     init {
@@ -50,6 +61,15 @@ public class UIEventToComponentDispatcher(
 
     @OptIn(ExperimentalContracts::class)
     override fun dispatch(event: UIEvent): UIEventResponse {
+        capturedComponent?.let { captured ->
+            if (!captured.isAttached) {
+                // The pressed component left the tree mid-drag, nothing to deliver to.
+                capturedComponent = null
+            } else if (event is MouseEvent && event.type in setOf(MOUSE_DRAGGED, MOUSE_RELEASED)) {
+                return dispatchCaptured(captured, event)
+            }
+        }
+
         // we need to transform the mouse moved event in the case when the mouse
         // is exited a component and entered another
         if (mouseExitedComponent(event, lastMousePosition, lastHoveredComponent, root)) {
@@ -61,15 +81,71 @@ public class UIEventToComponentDispatcher(
         // otherwise business as usual
 
         return findTargetOrNull(event)?.let { target ->
-            // we perform regular event propagation, then try to transform the event
-            // to component events and we pick the result which has highest precedence
-            // note that the result of the regular propagation can't influence the
-            // component event propagation and vice-versa
-            val result = performEventPropagation(target, event)
-            if (result.shouldStopPropagation()) {
-                result
-            } else result.pickByPrecedence(performComponentEvents(target, event))
+            if (event is MouseEvent && event.type == MOUSE_PRESSED) {
+                capturedComponent = target
+                cursorInCaptured = true
+            }
+            dispatchTo(target, event)
         } ?: Pass
+    }
+
+    /**
+     * Performs regular event propagation for [event] with [target], then tries to
+     * transform it to component events and picks the result with the highest precedence.
+     * Note that the result of the regular propagation can't influence the component
+     * event propagation and vice-versa.
+     */
+    @ExperimentalContracts
+    private fun dispatchTo(target: InternalComponent, event: UIEvent): UIEventResponse {
+        val result = performEventPropagation(target, event)
+        return if (result.shouldStopPropagation()) {
+            result
+        } else result.pickByPrecedence(performComponentEvents(target, event))
+    }
+
+    /**
+     * Delivers a [MOUSE_DRAGGED] or [MOUSE_RELEASED] to the [captured] component.
+     * The captured component still gets [MOUSE_EXITED] / [MOUSE_ENTERED] when the cursor
+     * crosses its own bounds (a button un-highlights when dragged off it), but nothing
+     * else does. On release the capture ends and hover is re-synced to whatever is
+     * under the cursor.
+     */
+    @ExperimentalContracts
+    private fun dispatchCaptured(captured: InternalComponent, event: MouseEvent): UIEventResponse {
+        var result = syncCapturedBounds(captured, event)
+        lastMousePosition = event.position
+        result = result.pickByPrecedence(dispatchTo(captured, event))
+        if (event.type == MOUSE_RELEASED) {
+            capturedComponent = null
+            result = result.pickByPrecedence(resyncHoverAfterRelease(captured, event))
+        }
+        return result
+    }
+
+    @ExperimentalContracts
+    private fun syncCapturedBounds(captured: InternalComponent, event: MouseEvent): UIEventResponse {
+        val nowIn = captured.containsPosition(event.position)
+        if (nowIn == cursorInCaptured) return Pass
+        cursorInCaptured = nowIn
+        val type = if (nowIn) MOUSE_ENTERED else MOUSE_EXITED
+        return dispatchTo(captured, event.copy(type = type))
+    }
+
+    @ExperimentalContracts
+    private fun resyncHoverAfterRelease(captured: InternalComponent, event: MouseEvent): UIEventResponse {
+        val underCursor = root.fetchComponentByPositionOrNull(event.position) ?: root
+        if (underCursor.id == captured.id) {
+            lastHoveredComponent = captured
+            return Pass
+        }
+        var result: UIEventResponse = Pass
+        if (cursorInCaptured) {
+            // Released over a child or an overlapping component: the captured one is still
+            // geometrically under the cursor but no longer the hovered one.
+            result = dispatchTo(captured, event.copy(type = MOUSE_EXITED))
+        }
+        lastHoveredComponent = underCursor
+        return result.pickByPrecedence(dispatchTo(underCursor, event.copy(type = MOUSE_ENTERED)))
     }
 
     /**

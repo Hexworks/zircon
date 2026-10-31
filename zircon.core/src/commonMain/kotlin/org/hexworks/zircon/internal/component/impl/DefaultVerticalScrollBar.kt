@@ -87,14 +87,31 @@ public class DefaultVerticalScrollBar internal constructor(
         } else Pass
     }
 
+    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        return if (phase == UIEventPhase.TARGET) {
+            scrollToMouse(event)
+            Processed
+        } else Pass
+    }
+
     override fun mouseDragged(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         return if (phase == UIEventPhase.TARGET) {
-            val percent = event.position.y.toDouble() / contentSize.height
-            val offset = scrollable.visibleOffset
-            val height = scrollable.actualSize.height
-            scrollable.scrollTo(offset.withY(height.times(percent).toInt()))
-            return Processed
+            scrollToMouse(event)
+            Processed
         } else Pass
+    }
+
+    /**
+     * Scrolls so that the position under the cursor matches the cursor's place along the bar.
+     * The cursor may be outside the bar: the dispatcher keeps delivering drags here after
+     * it left, so the ratio is clamped to the bar's ends.
+     */
+    private fun scrollToMouse(event: MouseEvent) {
+        val y = event.position.minus(position + contentOffset).y
+        val percent = (y.toDouble() / contentSize.height).coerceIn(0.0, 1.0)
+        val offset = scrollable.visibleOffset
+        val height = scrollable.actualSize.height
+        scrollable.scrollTo(offset.withY(height.times(percent).toInt()))
     }
 
 }
