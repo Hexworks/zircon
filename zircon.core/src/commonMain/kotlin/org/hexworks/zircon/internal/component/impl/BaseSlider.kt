@@ -136,6 +136,9 @@ public abstract class BaseSlider(
     /** `true` between a press on this slider and the matching release. */
     private var isDragging = false
 
+    /** `true` when the cursor left the slider's bounds during the current drag. */
+    private var exitedWhileDragging = false
+
     override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {
             LOGGER.debug { "Slider (id=${id.abbreviate()}, disabled=$isDisabled) was mouse pressed." }
@@ -156,17 +159,31 @@ public abstract class BaseSlider(
     }
 
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
-        if (phase == UIEventPhase.TARGET) isDragging = false
-        return super.mouseReleased(event, phase)
+        if (phase != UIEventPhase.TARGET) return super.mouseReleased(event, phase)
+        isDragging = false
+        var result = super.mouseReleased(event, phase)
+        if (exitedWhileDragging) {
+            // The exit was deferred while dragging; apply it now so the slider is not
+            // left highlighted under a cursor that is somewhere else.
+            exitedWhileDragging = false
+            result = result.pickByPrecedence(super.mouseExited(event, phase))
+        }
+        return result
     }
 
     // A slider keeps tracking (and stays ACTIVE) while the button is held, even when the
     // cursor leaves its bounds; hover changes only matter again after the release.
-    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse =
-        if (isDragging) Pass else super.mouseExited(event, phase)
+    override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (!isDragging) return super.mouseExited(event, phase)
+        if (phase == UIEventPhase.TARGET) exitedWhileDragging = true
+        return Pass
+    }
 
-    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse =
-        if (isDragging) Pass else super.mouseEntered(event, phase)
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
+        if (!isDragging) return super.mouseEntered(event, phase)
+        if (phase == UIEventPhase.TARGET) exitedWhileDragging = false
+        return Pass
+    }
 
     abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 

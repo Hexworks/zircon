@@ -156,8 +156,20 @@ class UIEventToComponentDispatcherTest {
 
         release(BUTTON_POSITION)
 
-        slider.state shouldNotBe ComponentState.ACTIVE
+        // Still focused (the press focused it), but no longer hovered.
+        slider.state shouldBe ComponentState.FOCUSED
         button.state shouldBe ComponentState.HIGHLIGHTED
+    }
+
+    @Test
+    fun releasingOverTheSliderAfterLeavingAndComingBackLeavesItHovered() {
+        press(SLIDER_POSITION.withRelativeX(5))
+        drag(BUTTON_POSITION)
+        drag(SLIDER_POSITION.withRelativeX(7))
+
+        release(SLIDER_POSITION.withRelativeX(7))
+
+        slider.state shouldBe ComponentState.HIGHLIGHTED
     }
 
     @Test
