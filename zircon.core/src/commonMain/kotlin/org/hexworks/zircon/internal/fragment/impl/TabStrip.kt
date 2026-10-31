@@ -26,7 +26,7 @@ import org.hexworks.zircon.api.uievent.UIEventPhase
  */
 internal class TabStrip(
     private val strip: Container,
-    private val tabs: List<Tab>,
+    tabs: List<Tab>,
     private val horizontal: Boolean,
     private val capacity: Int,
     scrollTabSize: Int,
@@ -34,6 +34,10 @@ internal class TabStrip(
 ) {
 
     private val scrollTabLength = scrollTabSize
+
+    /** The tabs of the strip, in order; see [replaceTabs]. */
+    var tabs: List<Tab> = tabs
+        private set
     private val attachments = ArrayList<AttachedComponent>()
     private var firstVisible = 0
 
@@ -57,6 +61,14 @@ internal class TabStrip(
     /** The tabs shown right now, in order. */
     val visibleTabs: List<Tab>
         get() = window(firstVisible).let { tabs.subList(it.first, it.lastExclusive) }
+
+    /** Shows [newTabs] instead of the current ones, scrolled back to the start. */
+    fun replaceTabs(newTabs: List<Tab>) {
+        require(newTabs.isNotEmpty()) { "A tab strip needs at least one tab" }
+        tabs = newTabs
+        firstVisible = 0
+        layout()
+    }
 
     fun scrollBy(delta: Int) {
         val target = (firstVisible + delta).coerceIn(0, maxFirst())
