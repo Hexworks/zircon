@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.internal.behavior.Observable
 import org.hexworks.zircon.internal.behavior.impl.DefaultObservable
 import org.hexworks.zircon.internal.component.impl.DefaultContainer
@@ -24,6 +25,13 @@ public open class DefaultModal<T : ModalResult> internal constructor(
 
     final override var closed: Boolean = false
         private set
+
+    /**
+     * What the screen showed when this modal was opened, cropped to the modal's bounds and
+     * darkened by [darkenPercent]; drawn behind the modal's content. Set by the screen that
+     * opens the modal, `null` until then.
+     */
+    internal var backdrop: TileGraphics? = null
 
     override fun close(result: T) {
         if (closed.not()) {

@@ -1,20 +1,36 @@
 package org.hexworks.zircon.api.data
 
 import org.hexworks.zircon.api.behavior.HasStyle
+import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.modifier.Modifier
+import org.hexworks.zircon.api.resource.TilesetResource
 
+/**
+ * A [Tile] that draws a single [character] with a [styleSet].
+ *
+ * A [CharacterTile] normally draws with the tileset of the layer it sits on, so its
+ * [tileset] is [TilesetResource.Companion.UNKNOWN]. A tile that carries its own [tileset] (see
+ * [withTileset]) draws with that one instead, wherever it is placed. A frame captured
+ * with `TileGrid.captureFrame()` uses this to keep the look of layers that use another
+ * tileset than the grid.
+ */
 public data class CharacterTile(
     val character: Char,
     override val styleSet: StyleSet = StyleSet.defaultStyle(),
-) : Tile, StyleSet, HasStyle<CharacterTile> {
+    override val tileset: TilesetResource = TilesetResource.Companion.UNKNOWN,
+) : Tile, StyleSet, HasStyle<CharacterTile>, TilesetHolder {
     override val tileType: TileType = TileType.CHARACTER_TILE
 
     override val cacheKey: String
-        get() = "CharacterTile(c=$character,s=${styleSet.cacheKey})"
+        get() = if (tileset.isUnknown) {
+            "CharacterTile(c=$character,s=${styleSet.cacheKey})"
+        } else {
+            "CharacterTile(c=$character,s=${styleSet.cacheKey},t=${tileset.id})"
+        }
 
     override val foregroundColor: Color
         get() = styleSet.foregroundColor
@@ -26,6 +42,18 @@ public data class CharacterTile(
         get() = styleSet.modifiers
 
     override fun createCopy(): CharacterTile = copy()
+
+    /**
+     * Returns a copy of this tile that draws with [tileset] instead of the tileset of
+     * the layer it sits on. Pass [TilesetResource.Companion.UNKNOWN] to draw with the layer's again.
+     */
+    public fun withTileset(tileset: TilesetResource): CharacterTile {
+        return if (this.tileset === tileset) {
+            this
+        } else {
+            copy(tileset = tileset)
+        }
+    }
 
     override fun withForegroundColor(foregroundColor: Color): CharacterTile {
         return if (this.foregroundColor == foregroundColor) {

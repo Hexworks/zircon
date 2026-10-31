@@ -8,7 +8,6 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.behavior.TilesetHolder
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.color.Color
@@ -16,13 +15,13 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.extensions.isBlinking
 import org.hexworks.zircon.api.extensions.isNotEmpty
 import org.hexworks.zircon.api.extensions.isOpaque
-import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.modifier.TileModifier
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.tileset.Tileset
 import org.hexworks.zircon.api.tileset.TilesetLoader
-import org.hexworks.zircon.internal.graphics.FastTileGraphics
-import org.hexworks.zircon.internal.graphics.Renderable
+import org.hexworks.zircon.internal.graphics.forEachVisibleTile
+import org.hexworks.zircon.internal.graphics.tilesetOrElse
+import org.hexworks.zircon.internal.graphics.toRenderLayers
 import org.hexworks.zircon.internal.util.reportError
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.renderer.RenderData
@@ -108,27 +107,11 @@ public abstract class BaseRenderer<C : Any, V : Any>(
     private val cellTilesets = ArrayList<TilesetResource>(8)
 
     private fun renderAllTiles(context: C) {
-        val layers = fetchLayers()
+        val layers = tileGrid.renderables.toRenderLayers()
         val cursorAt = if (shouldDrawCursor()) tileGrid.cursorPosition else null
         for (pos in gridPositions) {
-            // Walk the layers from the top down and stop at the first opaque tile: nothing
-            // below it can show. Tiles are collected top first and drawn bottom first.
-            collect@ for (i in layers.size - 1 downTo 0) {
-                val layer = layers[i]
-                val x = pos.x - layer.x
-                val y = pos.y - layer.y
-                if (x < 0 || y < 0 || x >= layer.width || y >= layer.height) continue
-                val tile = layer.graphics.getTileAtOrNull(if (layer.x == 0 && layer.y == 0) pos else Position(x, y))
-                    ?: continue
-                if (tile is StackedTile) {
-                    val flattened = tile.tiles()
-                    for (j in flattened.size - 1 downTo 0) {
-                        if (push(flattened[j], layer.tileset)) break@collect
-                    }
-                } else if (push(tile, layer.tileset)) {
-                    break@collect
-                }
-            }
+            // Tiles are collected top first (stopping at the first opaque one) and drawn bottom first.
+            layers.forEachVisibleTile(pos) { tile, layerTileset -> push(tile, layerTileset) }
             if (pos == cursorAt) drawCursorOnCell()
             for (j in cellTiles.size - 1 downTo 0) {
                 // A tile (or tileset) that fails to draw leaves its cell; the frame goes on.
@@ -151,7 +134,7 @@ public abstract class BaseRenderer<C : Any, V : Any>(
     /** Adds [tile] to the current cell; `true` when it is opaque, so collection can stop. */
     private fun push(tile: Tile, layerTileset: TilesetResource): Boolean {
         cellTiles.add(tile)
-        cellTilesets.add(if (tile is TilesetHolder) tile.tileset else layerTileset)
+        cellTilesets.add(tile.tilesetOrElse(layerTileset))
         return tile.isOpaque
     }
 
@@ -202,7 +185,7 @@ public abstract class BaseRenderer<C : Any, V : Any>(
                 }
             }
             // The tileset was resolved from the original tile; a modifier may have swapped it.
-            val finalTileset = if (tempTile !== tile && tempTile is TilesetHolder) {
+            val finalTileset = if (tempTile !== tile && tempTile is TilesetHolder && tempTile.tileset.isNotUnknown) {
                 tilesetLoader.loadTilesetFrom(tempTile.tileset)
             } else tileset
             finalTileset.drawTile(
@@ -220,47 +203,8 @@ public abstract class BaseRenderer<C : Any, V : Any>(
         }
     }
 
-    /**
-     * One renderable's graphics for this frame, with its bounds and tileset read once
-     * instead of once per cell.
-     */
-    private class RenderLayer(
-        val x: Int,
-        val y: Int,
-        val width: Int,
-        val height: Int,
-        val graphics: TileGraphics,
-        val tileset: TilesetResource,
-    )
-
-    /**
-     * Returns all the layers that should be rendered, bottom first.
-     */
-    private fun fetchLayers(): List<RenderLayer> {
-        return tileGrid.renderables.map { renderable ->
-            // A renderer that throws leaves its layer blank for this frame; the others still draw.
-            val tg = if (renderable.isHidden) blank(renderable) else try {
-                renderable.render()
-            } catch (e: Exception) {
-                reportError("Renderer of $renderable", e)
-                blank(renderable)
-            }
-            val position = renderable.position
-            RenderLayer(position.x, position.y, tg.size.width, tg.size.height, tg, tg.tileset)
-        }
-    }
-
-    private fun blank(renderable: Renderable): TileGraphics = FastTileGraphics(
-        initialSize = renderable.size,
-        initialTileset = renderable.tileset
-    )
-
     private companion object {
         val CURSOR_TILE: Tile = Tile.empty().withBackgroundColor(Color.DEFAULT_FOREGROUND_COLOR)
     }
 
-    private fun Tile.tiles(): List<Tile> = when (this) {
-        is StackedTile -> tiles.flatMap { it.tiles() }
-        else -> listOf(this)
-    }
 }

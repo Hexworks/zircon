@@ -14,7 +14,12 @@ import org.hexworks.zircon.api.behavior.extensions.moveCursorForward
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.StackedTile
 import org.hexworks.zircon.api.data.Tile
+import org.hexworks.zircon.api.data.extensions.fetchPositions
+import org.hexworks.zircon.api.extensions.isNotEmpty
+import org.hexworks.zircon.api.extensions.isOpaque
+import org.hexworks.zircon.api.graphics.TileGraphics
 import org.hexworks.zircon.api.data.extensions.toBoundable
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.data.extensions.withX
@@ -34,7 +39,11 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultCursorHandler
 import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.graphics.InternalLayer
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.graphics.Renderable
+import org.hexworks.zircon.internal.graphics.forEachVisibleTile
+import org.hexworks.zircon.internal.graphics.toRenderLayers
+import org.hexworks.zircon.internal.graphics.withTilesetUnless
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 
 public class DefaultTileGrid(
@@ -80,6 +89,31 @@ public class DefaultTileGrid(
 
     override val renderables: List<Renderable>
         get() = layerable.renderables
+
+    override fun captureFrame(): TileGraphics {
+        val layers = renderables.toRenderLayers()
+        val frameTileset = tileset
+        val frame = FastTileGraphics(initialSize = size, initialTileset = frameTileset)
+        val cell = ArrayList<Tile>(4) // the visible tiles of one cell, top first
+        for (pos in size.fetchPositions()) {
+            layers.forEachVisibleTile(pos) { tile, layerTileset ->
+                if (tile.isNotEmpty) cell.add(tile.withTilesetUnless(layerTileset, frameTileset))
+                tile.isOpaque
+            }
+            when (cell.size) {
+                0 -> Unit
+                1 -> frame.draw(cell[0], pos)
+                else -> frame.draw(
+                    StackedTile.create(
+                        baseTile = cell[cell.size - 1],
+                        rest = cell.subList(0, cell.size - 1).asReversed().toTypedArray()
+                    ), pos
+                )
+            }
+            cell.clear()
+        }
+        return frame
+    }
 
     private var originalCursorHandler = cursorHandler
     private var originalBackend = backend

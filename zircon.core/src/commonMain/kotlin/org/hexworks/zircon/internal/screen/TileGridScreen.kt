@@ -24,6 +24,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultLayerable
 import org.hexworks.zircon.internal.component.InternalComponentContainer
 import org.hexworks.zircon.internal.component.impl.ModalComponentContainer
 import org.hexworks.zircon.internal.component.modal.DefaultModal
+import org.hexworks.zircon.internal.component.modal.buildModalBackdrop
 import org.hexworks.zircon.internal.event.ZirconEvent.*
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
@@ -161,6 +162,10 @@ public class TileGridScreen(
         require(modal is DefaultModal) {
             "This Screen does not accept custom Modals yet."
         }
+        // The modal shows what the screen looked like when it opened (dimmed by its
+        // darkenPercent) behind its content. Opening a modal over a modal captures the
+        // dimmed backdrop too, so each level darkens further and closing one restores the last.
+        modal.backdrop = buildModalBackdrop(frame = captureFrame(), modal = modal)
         componentContainer.addModal(modal)
     }
 

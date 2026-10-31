@@ -78,7 +78,7 @@ session (or person) can continue without re-deriving decisions. Decisions were m
 - [x] DSL naming: bare nouns, delete `buildX`, `hBox`/`vBox`, `withX` leftovers gone, `Shapes`/`GameComponents` objects are top-level functions. Note: inside a container lambda `button {}` adds a child; build standalone components outside the lambda.
 - [x] Deduplicate creation paths: `Position(x, y)`, `Size(w, h)`, `Position3D`/`Size3D` likewise, `position {}`/`size {}`/`withSize {}`/`withPosition {}` builders deleted, `Screen` only via `tileGrid.toScreen()`, one `loadXTilesetResource` per type
 - [x] `explicitApi()` and binary-compatibility-validator (`zircon.core/api/zircon.core.api` is the contract, `./gradlew apiCheck`); `Base*` implementations moved to `internal`; `asInternal()` became `internal` extension functions; no `internal` type in any public `api` signature
-- [x] `Tile` is a sealed interface (subtypes in `api.data`); `Color` has no alpha, only `isTransparent`/`Color.TRANSPARENT`. Modal backdrop is solid black for now: dim lower layers in the M4 shader.
+- [x] `Tile` is a sealed interface (subtypes in `api.data`); `Color` has no alpha, only `isTransparent`/`Color.TRANSPARENT`. Modal backdrop is a capture of the screen at open time (`TileGrid.captureFrame()`), darkened by `darkenPercent` in core; no renderer alpha needed.
 - [x] `Blink` (renderer-timed marker) and `Hidden` implemented; Border/Underline/CrossedOut were already gone; `Modifiers` object deleted
 - [x] Shortcut activation: `activationShortcut: KeyboardEventMatcher?` on builders/components, handled in `UIEventToComponentDispatcher`
 - [x] Nerd glyphs: `Int` code points, `glyph: String` (surrogate pairs above U+FFFF)

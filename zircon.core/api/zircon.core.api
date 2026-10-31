@@ -1198,8 +1198,10 @@ public final class org/hexworks/zircon/api/builder/data/CharacterTileBuilder : o
 	public fun build ()Lorg/hexworks/zircon/api/data/CharacterTile;
 	public final fun getCharacter ()C
 	public final fun getStyleSet ()Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun setCharacter (C)V
 	public final fun setStyleSet (Lorg/hexworks/zircon/api/graphics/StyleSet;)V
+	public final fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
 	public final fun unaryPlus (C)V
 }
 
@@ -2970,13 +2972,14 @@ public final class org/hexworks/zircon/api/data/BlockTileType : java/lang/Enum {
 	public static fun values ()[Lorg/hexworks/zircon/api/data/BlockTileType;
 }
 
-public final class org/hexworks/zircon/api/data/CharacterTile : org/hexworks/zircon/api/behavior/HasStyle, org/hexworks/zircon/api/data/Tile, org/hexworks/zircon/api/graphics/StyleSet {
-	public fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;)V
-	public synthetic fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class org/hexworks/zircon/api/data/CharacterTile : org/hexworks/zircon/api/behavior/HasStyle, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile, org/hexworks/zircon/api/graphics/StyleSet {
+	public fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun <init> (CLorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/resource/TilesetResource;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()C
 	public final fun component2 ()Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public final fun copy (CLorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/CharacterTile;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/CharacterTile;CLorg/hexworks/zircon/api/graphics/StyleSet;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public final fun component3 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public final fun copy (CLorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/CharacterTile;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/data/CharacterTile;CLorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/resource/TilesetResource;ILjava/lang/Object;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun createCopy ()Ljava/lang/Object;
 	public fun createCopy ()Lorg/hexworks/zircon/api/data/CharacterTile;
 	public fun equals (Ljava/lang/Object;)Z
@@ -2987,6 +2990,7 @@ public final class org/hexworks/zircon/api/data/CharacterTile : org/hexworks/zir
 	public fun getModifiers ()Ljava/util/Set;
 	public fun getStyleSet ()Lorg/hexworks/zircon/api/graphics/StyleSet;
 	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
+	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun withAddedModifiers (Ljava/util/Set;)Lorg/hexworks/zircon/api/data/CharacterTile;
@@ -3013,6 +3017,7 @@ public final class org/hexworks/zircon/api/data/CharacterTile : org/hexworks/zir
 	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Ljava/lang/Object;
 	public fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/CharacterTile;
 	public synthetic fun withStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)Lorg/hexworks/zircon/api/data/Tile;
+	public final fun withTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)Lorg/hexworks/zircon/api/data/CharacterTile;
 }
 
 public final class org/hexworks/zircon/api/data/GraphicalTile : org/hexworks/zircon/api/behavior/Copiable, org/hexworks/zircon/api/behavior/TilesetHolder, org/hexworks/zircon/api/data/Tile {
@@ -56145,6 +56150,7 @@ public final class org/hexworks/zircon/api/graphics/nerd/WeatherGlyphs : java/la
 }
 
 public abstract interface class org/hexworks/zircon/api/grid/TileGrid : org/hexworks/zircon/api/animation/AnimationRunner, org/hexworks/zircon/api/behavior/Clearable, org/hexworks/zircon/api/behavior/Closeable, org/hexworks/zircon/api/behavior/Layerable, org/hexworks/zircon/api/behavior/TypingSupport, org/hexworks/zircon/api/graphics/DrawSurface, org/hexworks/zircon/api/uievent/UIEventSource, org/hexworks/zircon/api/view/ViewContainer {
+	public abstract fun captureFrame ()Lorg/hexworks/zircon/api/graphics/TileGraphics;
 	public fun getHeightInPixels ()I
 	public fun getWidthInPixels ()I
 }
@@ -59497,6 +59503,7 @@ public final class org/hexworks/zircon/internal/grid/DefaultTileGrid : org/hexwo
 	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGridConfig;Lorg/hexworks/zircon/internal/behavior/InternalLayerable;Lorg/hexworks/zircon/internal/animation/InternalAnimationRunner;Lorg/hexworks/zircon/internal/behavior/InternalCursorHandler;Lorg/hexworks/zircon/internal/uievent/UIEventProcessor;Lorg/hexworks/cobalt/events/api/EventBus;Lorg/hexworks/zircon/internal/event/ZirconScope;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/grid/TileGridConfig;Lorg/hexworks/zircon/internal/behavior/InternalLayerable;Lorg/hexworks/zircon/internal/animation/InternalAnimationRunner;Lorg/hexworks/zircon/internal/behavior/InternalCursorHandler;Lorg/hexworks/zircon/internal/uievent/UIEventProcessor;Lorg/hexworks/cobalt/events/api/EventBus;Lorg/hexworks/zircon/internal/event/ZirconScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun addLayer (Lorg/hexworks/zircon/api/graphics/Layer;)Lorg/hexworks/zircon/api/graphics/LayerHandle;
+	public fun captureFrame ()Lorg/hexworks/zircon/api/graphics/TileGraphics;
 	public fun clear ()V
 	public fun close ()V
 	public fun delegateTo (Lorg/hexworks/zircon/internal/grid/InternalTileGrid;)V
@@ -59831,6 +59838,7 @@ public final class org/hexworks/zircon/internal/screen/TileGridScreen : org/hexw
 	public fun activate ()V
 	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
 	public fun addLayer (Lorg/hexworks/zircon/api/graphics/Layer;)Lorg/hexworks/zircon/api/graphics/LayerHandle;
+	public fun captureFrame ()Lorg/hexworks/zircon/api/graphics/TileGraphics;
 	public fun clear ()V
 	public fun close ()V
 	public fun deactivate ()V

@@ -15,8 +15,11 @@ import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 public interface Modal<T : ModalResult> : Component {
 
     /**
-     * A value between `0` and `1` that will be used to darken the area
-     * outside the [Modal] when it is opened.
+     * A value between `0` and `1` that darkens what is behind the [Modal]. When the modal
+     * is opened the [Screen] captures what it shows at that moment; the modal draws that
+     * capture, darkened by this percent, behind its content. `0` shows it as it was. A
+     * modal opened over another one captures the already darkened view, so every level
+     * darkens further, and closing a modal brings the previous view back.
      */
     public val darkenPercent: Double
 
