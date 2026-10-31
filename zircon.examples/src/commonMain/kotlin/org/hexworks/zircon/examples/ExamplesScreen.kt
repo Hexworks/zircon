@@ -49,7 +49,7 @@ public data class ExamplesSelection(
             packageName = examplePackages.first().name,
             exampleName = examplePackages.first().examples.first().name,
             tileset = TILESETS.first { it.name == "rogue yun 16x16" },
-            theme = THEMES.first { it.name == "Gamebookers" },
+            theme = THEMES.first { it.name == "Nord" },
         )
     }
 }

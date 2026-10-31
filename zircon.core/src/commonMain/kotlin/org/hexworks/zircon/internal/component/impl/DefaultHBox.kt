@@ -47,6 +47,17 @@ public open class DefaultHBox(
         return HBoxAttachmentDecorator(super<DefaultContainer>.addComponent(component))
     }
 
+    /**
+     * [DefaultContainer.detachAllComponents] detaches the undecorated attachments, so the
+     * layout bookkeeping has to be reset here or nothing fits after a detach all.
+     */
+    override fun detachAllComponents(): List<Component> {
+        val detached = super.detachAllComponents()
+        filledUntil = Position(0, 0)
+        availableSpace = contentSize.toBoundable()
+        return detached
+    }
+
     private inner class HBoxAttachmentDecorator(
         val attachedComponent: InternalAttachedComponent
     ) : InternalAttachedComponent by attachedComponent {

@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 
 /**
@@ -71,6 +72,8 @@ public class DefaultTable<M : Any> internal constructor(
     init {
         reloadData()
         data.onChange { reloadData() }
+        // Rows read the selection while rendering, so every row has to be redrawn when it changes.
+        selectedElements.onChange { dataPanel.children.forEach { (it as InternalComponent).invalidateRender() } }
     }
 
     private fun reloadData() {
