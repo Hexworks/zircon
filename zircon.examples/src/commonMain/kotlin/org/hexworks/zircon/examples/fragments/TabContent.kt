@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Size
 
-/** The tabs of the tab bar examples: twelve, so the bars have to scroll. */
+/** The tabs of the matrix tab bar example: twelve, so the strip has to scroll. */
 internal val TAB_NAMES: List<String> = listOf(
     "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Ceres", "Eris", "Haumea",
 )
