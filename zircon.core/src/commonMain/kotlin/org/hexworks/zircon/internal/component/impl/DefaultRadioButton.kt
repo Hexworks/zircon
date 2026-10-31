@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.NOT_SELECTED
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.PRESSED
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.SELECTED
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -29,6 +30,12 @@ public class DefaultRadioButton internal constructor(
     ) {
     override var state: RadioButtonState = NOT_SELECTED
 
+    /** `true` between the activation (press) and the deactivation (release). */
+    private var pressing = false
+
+    /** `true` while [pressing] and the cursor is outside the button: a release there cancels. */
+    private var cursorOutside = false
+
     init {
         selectedProperty.onChange { (_, newValue) ->
             state = if (newValue) {
@@ -39,31 +46,39 @@ public class DefaultRadioButton internal constructor(
         }
     }
 
+    // <o> stays for the whole press, even when the cursor leaves the button (the dispatcher
+    // keeps delivering the press to it); only the colours follow the hover.
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            state = if (isSelected) SELECTED else NOT_SELECTED
-        }
+        if (phase == UIEventPhase.TARGET && pressing) cursorOutside = true
         super.mouseExited(event, phase)
     }
 
-    override fun mousePressed(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            state = RadioButton.RadioButtonState.PRESSED
-        }
-        super.mousePressed(event, phase)
-    }
-
-    override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            state = SELECTED
-            isSelected = true
-        }
-        super.mouseReleased(event, phase)
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET && pressing) cursorOutside = false
+        super.mouseEntered(event, phase)
     }
 
     override fun activated(): UIEventResponse = whenEnabledRespondWith {
-        isSelected = true
+        pressing = true
+        cursorOutside = false
+        state = PRESSED
         super.activated()
+    }
+
+    override fun deactivated(): UIEventResponse = whenEnabledRespondWith {
+        // Released outside the button: the press is cancelled, like a button in a browser.
+        if (pressing && !cursorOutside) {
+            isSelected = true
+        }
+        pressing = false
+        state = if (isSelected) SELECTED else NOT_SELECTED
+        super.deactivated()
+    }
+
+    override fun focusTaken(): UIEventResponse = whenEnabledRespondWith {
+        pressing = false
+        state = if (isSelected) SELECTED else NOT_SELECTED
+        super.focusTaken()
     }
 
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()

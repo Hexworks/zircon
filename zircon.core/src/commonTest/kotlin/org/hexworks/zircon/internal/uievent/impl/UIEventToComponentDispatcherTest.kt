@@ -6,6 +6,10 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.checkBox
+import org.hexworks.zircon.api.builder.component.radioButton
+import org.hexworks.zircon.api.component.CheckBox.CheckBoxState
+import org.hexworks.zircon.api.component.RadioButton.RadioButtonState
 import org.hexworks.zircon.api.builder.component.horizontalSlider
 import org.hexworks.zircon.api.builder.component.verticalSlider
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -61,6 +65,15 @@ class UIEventToComponentDispatcherTest {
         +"Button"
         position = BUTTON_POSITION
     }
+    private val checkBox = checkBox {
+        +"Check"
+        position = CHECK_BOX_POSITION
+    }
+    private val radio = radioButton {
+        +"Radio"
+        key = "radio"
+        position = RADIO_POSITION
+    }
 
     @BeforeTest
     fun setUp() {
@@ -83,6 +96,8 @@ class UIEventToComponentDispatcherTest {
         sliderHandle = target.addComponent(slider)
         target.addComponent(vertical)
         target.addComponent(button)
+        target.addComponent(checkBox)
+        target.addComponent(radio)
         target.activate()
     }
 
@@ -303,10 +318,108 @@ class UIEventToComponentDispatcherTest {
         styles.fetchStyleFor(ComponentState.FOCUSED) shouldNotBe styles.fetchStyleFor(ComponentState.HIGHLIGHTED)
     }
 
+    // Check box and radio button: the pending glyph survives leaving the bounds, a release
+    // inside commits, a release outside cancels.
+
+    @Test
+    fun aPressedCheckBoxKeepsShowingThePendingStateWhileTheCursorIsOutside() {
+        press(CHECK_BOX_POSITION)
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+
+        drag(CHECK_BOX_POSITION.withRelativeY(3))
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+
+        drag(CHECK_BOX_POSITION.withRelativeX(1))
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+    }
+
+    @Test
+    fun releasingOnTheCheckBoxTogglesIt() {
+        press(CHECK_BOX_POSITION)
+        release(CHECK_BOX_POSITION)
+
+        checkBox.isSelected shouldBe true
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKED
+    }
+
+    @Test
+    fun releasingOutsideTheCheckBoxCancelsThePress() {
+        press(CHECK_BOX_POSITION)
+        drag(CHECK_BOX_POSITION.withRelativeY(3))
+
+        release(CHECK_BOX_POSITION.withRelativeY(3))
+
+        checkBox.isSelected shouldBe false
+        checkBox.checkBoxState shouldBe CheckBoxState.UNCHECKED
+    }
+
+    @Test
+    fun leavingAndComingBackBeforeReleasingStillTogglesTheCheckBox() {
+        press(CHECK_BOX_POSITION)
+        drag(CHECK_BOX_POSITION.withRelativeY(3))
+        drag(CHECK_BOX_POSITION.withRelativeX(2))
+
+        release(CHECK_BOX_POSITION.withRelativeX(2))
+
+        checkBox.isSelected shouldBe true
+    }
+
+    @Test
+    fun aCheckedBoxShowsUncheckingForTheWholePressToo() {
+        checkBox.isSelected = true
+
+        press(CHECK_BOX_POSITION)
+        drag(CHECK_BOX_POSITION.withRelativeY(3))
+
+        checkBox.checkBoxState shouldBe CheckBoxState.UNCHECKING
+        release(CHECK_BOX_POSITION.withRelativeY(3))
+        checkBox.isSelected shouldBe true
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKED
+    }
+
+    @Test
+    fun theActivationKeyTogglesAFocusedCheckBoxOnRelease() {
+        repeat(4) { key(KeyCode.TAB) }
+        checkBox.state shouldBe ComponentState.FOCUSED
+
+        key(KeyCode.SPACE)
+        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+
+        keyUp(KeyCode.SPACE)
+        checkBox.isSelected shouldBe true
+    }
+
+    @Test
+    fun aPressedRadioButtonShowsPressedUntilTheRelease() {
+        press(RADIO_POSITION)
+        radio.state shouldBe RadioButtonState.PRESSED
+        radio.isSelected shouldBe false
+
+        drag(RADIO_POSITION.withRelativeY(3))
+        radio.state shouldBe RadioButtonState.PRESSED
+
+        drag(RADIO_POSITION.withRelativeX(1))
+        release(RADIO_POSITION.withRelativeX(1))
+        radio.state shouldBe RadioButtonState.SELECTED
+        radio.isSelected shouldBe true
+    }
+
+    @Test
+    fun releasingOutsideTheRadioButtonCancelsThePress() {
+        press(RADIO_POSITION)
+        drag(RADIO_POSITION.withRelativeY(3))
+
+        release(RADIO_POSITION.withRelativeY(3))
+
+        radio.isSelected shouldBe false
+        radio.state shouldBe RadioButtonState.NOT_SELECTED
+    }
+
     private val InternalComponent.state get() = componentState
     private val org.hexworks.zircon.api.component.Component.state get() = (this as InternalComponent).componentState
 
     private fun key(code: KeyCode) = target.dispatch(KeyboardEvent(KeyboardEventType.KEY_PRESSED, code, ""))
+    private fun keyUp(code: KeyCode) = target.dispatch(KeyboardEvent(KeyboardEventType.KEY_RELEASED, code, ""))
     private fun press(position: Position) = target.dispatch(MouseEvent(MOUSE_PRESSED, 1, position))
     private fun drag(position: Position) = target.dispatch(MouseEvent(MOUSE_DRAGGED, 1, position))
     private fun release(position: Position) = target.dispatch(MouseEvent(MOUSE_RELEASED, 1, position))
@@ -315,5 +428,7 @@ class UIEventToComponentDispatcherTest {
         val SLIDER_POSITION = Position(5, 5)
         val VERTICAL_POSITION = Position(30, 2)
         val BUTTON_POSITION = Position(5, 10)
+        val CHECK_BOX_POSITION = Position(5, 14)
+        val RADIO_POSITION = Position(20, 14)
     }
 }

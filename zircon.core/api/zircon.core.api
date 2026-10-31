@@ -57749,6 +57749,7 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultCheckBox :
 	public fun getText ()Ljava/lang/String;
 	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun isSelected ()Z
+	public fun mouseEntered (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun mouseExited (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun setSelected (Z)V
 	public fun setText (Ljava/lang/String;)V
@@ -58108,15 +58109,16 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultProgressBa
 public final class org/hexworks/zircon/internal/component/impl/DefaultRadioButton : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/RadioButton {
 	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun convertColorTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
+	public fun deactivated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
+	public fun focusTaken ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun getKey ()Ljava/lang/String;
 	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun getState ()Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
 	public fun getText ()Ljava/lang/String;
 	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun isSelected ()Z
+	public fun mouseEntered (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun mouseExited (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun mousePressed (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun mouseReleased (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun setSelected (Z)V
 	public fun setState (Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;)V
 	public fun setText (Ljava/lang/String;)V

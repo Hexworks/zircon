@@ -30,7 +30,9 @@ class DefaultRadioButtonGroupTest {
         } as (DefaultRadioButton)
         target.addComponent(btn)
 
+        // A click is a press (activation) followed by a release (deactivation) on the button.
         btn.activated()
+        btn.deactivated()
 
         btn.isSelected shouldBe true
         target.selectedButton shouldBe btn

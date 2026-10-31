@@ -38,7 +38,11 @@ public class DefaultCheckBox internal constructor(
     override var checkBoxState: CheckBoxState = UNCHECKED
         private set
 
+    /** `true` between the activation (press) and the deactivation (release). */
     private var pressing = false
+
+    /** `true` while [pressing] and the cursor is outside the box: a release there cancels. */
+    private var cursorOutside = false
 
     init {
         selectedProperty.onChange {
@@ -46,29 +50,39 @@ public class DefaultCheckBox internal constructor(
         }
     }
 
+    // The box keeps showing the pending state ([+] / [-]) for the whole press, even when the
+    // cursor leaves it (the dispatcher keeps delivering the press to it); only the colours
+    // follow the hover.
     override fun mouseExited(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
-        if (phase == UIEventPhase.TARGET) {
-            pressing = false
-            this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
-        }
+        if (phase == UIEventPhase.TARGET && pressing) cursorOutside = true
         super.mouseExited(event, phase)
+    }
+
+    override fun mouseEntered(event: MouseEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
+        if (phase == UIEventPhase.TARGET && pressing) cursorOutside = false
+        super.mouseEntered(event, phase)
     }
 
     override fun activated(): UIEventResponse = whenEnabled {
         pressing = true
+        cursorOutside = false
         this.checkBoxState = if (isSelected) UNCHECKING else CHECKING
         super.activated()
     }
 
     override fun deactivated(): UIEventResponse = whenEnabled {
+        // Released outside the box: the press is cancelled, like a button in a browser.
+        if (pressing && !cursorOutside) {
+            isSelected = isSelected.not()
+        }
         pressing = false
-        isSelected = isSelected.not()
         this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
         super.deactivated()
     }
 
     override fun focusTaken(): UIEventResponse = whenEnabled {
         pressing = false
+        this.checkBoxState = if (isSelected) CHECKED else UNCHECKED
         super.focusTaken()
     }
 
