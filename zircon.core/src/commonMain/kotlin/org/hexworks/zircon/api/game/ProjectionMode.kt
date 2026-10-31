@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.game
 import org.hexworks.zircon.api.data.Block
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.internal.game.impl.TopDownGameAreaRenderer
+import org.hexworks.zircon.internal.game.impl.TopDownObliqueFrontGameAreaRenderer
 
 /**
  * Represents modes for projecting the Blocks in a [GameArea].
@@ -23,7 +24,7 @@ public enum class ProjectionMode : RendererFactory {
      * Top-down oblique rendering mode with a viewpoint from the front.
      */
     TOP_DOWN_OBLIQUE_FRONT {
-        override fun <T : Tile, B : Block<T>> createRenderer() = TopDownGameAreaRenderer<T, B>()
+        override fun <T : Tile, B : Block<T>> createRenderer() = TopDownObliqueFrontGameAreaRenderer<T, B>()
     };
 }
 
