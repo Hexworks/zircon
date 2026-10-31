@@ -25,8 +25,8 @@ class PackageTabClickTest {
         for (size in listOf(Size(100, 40), Size(120, 67))) {
             val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, size) }
             val grid = shown.grid as InternalTileGrid
-            // package tabs: x = 1 + sum(previous label lengths + 2), y = 4
-            var x = 1
+            // package tabs: x = EXAMPLE_TAB_WIDTH + 1 + sum(previous label lengths + 2), y = 4
+            var x = EXAMPLE_TAB_WIDTH + 1
             examplePackages.forEach { pkg ->
                 val pos = Position(x + 1, 4)
                 try {
@@ -34,11 +34,11 @@ class PackageTabClickTest {
                         grid.process(MouseEvent(type, 1, pos), UIEventPhase.TARGET)
                     }
                     shown.onFrame()
-                    println("click $size ${pkg.name} at $pos -> selected=${shown.packageBar.selectedKey} example=${shown.selection.exampleName}")
+                    println("click $size ${pkg.name} at $pos -> selected=${shown.tabBar.selectedHorizontalKey} example=${shown.selection.exampleName}")
                 } catch (e: Throwable) {
                     fail("clicking ${pkg.name} at $pos in a $size grid threw $e")
                 }
-                shown.packageBar.selectedKey shouldBe pkg.name
+                shown.tabBar.selectedHorizontalKey shouldBe pkg.name
                 x += pkg.name.length + 2
             }
             shown.buildFailures.map { (name, e) -> "$name: ${e.message}" } shouldBe emptyList()

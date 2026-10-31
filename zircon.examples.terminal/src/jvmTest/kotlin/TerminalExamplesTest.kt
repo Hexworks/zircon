@@ -51,9 +51,9 @@ class TerminalExamplesTest {
         examplePackages.forEach { pkg ->
             val examples = pkg.examples.filter { it.textOnly }
             if (examples.isEmpty()) return@forEach
-            shown.packageBar.selectedKey = pkg.name
+            shown.tabBar.selectedHorizontalKey = pkg.name
             examples.forEach { example ->
-                shown.exampleBars.getValue(pkg.name).selectedKey = example.name
+                shown.tabBar.selectedVerticalKey = example.name
                 var drawn = 0
                 var slowest = 0.0
                 repeat(6) {

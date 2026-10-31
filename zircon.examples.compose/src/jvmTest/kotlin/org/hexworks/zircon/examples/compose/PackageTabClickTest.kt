@@ -7,6 +7,7 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.use
 import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.compose.TileGridView
+import org.hexworks.zircon.examples.EXAMPLE_TAB_WIDTH
 import org.hexworks.zircon.examples.ExamplesSelection
 import org.hexworks.zircon.examples.examplePackages
 import org.hexworks.zircon.examples.examplesScreen
@@ -30,18 +31,18 @@ class PackageTabClickTest {
             var t = 0L
             fun frames(n: Int) = repeat(n) { scene.render(nanoTime = t); t += 16_000_000L }
             frames(5)
-            var x = 1
+            var x = EXAMPLE_TAB_WIDTH + 1
             examplePackages.forEach { pkg ->
                 val pos = Offset((x + 1.5f) * cell, 4.5f * cell)
                 try {
                     scene.sendPointerEvent(PointerEventType.Move, pos); frames(1)
                     scene.sendPointerEvent(PointerEventType.Press, pos); frames(1)
                     scene.sendPointerEvent(PointerEventType.Release, pos); frames(10)
-                    println("click ${pkg.name} -> selected=${shown.packageBar.selectedKey} example=${shown.selection.exampleName}")
+                    println("click ${pkg.name} -> selected=${shown.tabBar.selectedHorizontalKey} example=${shown.selection.exampleName}")
                 } catch (e: Throwable) {
                     fail("clicking ${pkg.name} threw $e")
                 }
-                shown.packageBar.selectedKey shouldBe pkg.name
+                shown.tabBar.selectedHorizontalKey shouldBe pkg.name
                 x += pkg.name.length + 2
             }
             shown.buildFailures.map { (name, e) -> "$name: ${e.message}" } shouldBe emptyList()

@@ -25,9 +25,8 @@ class ExamplesAppTest {
             val shown = runBlocking {
                 examplesScreen(selection, gridSizeFor(selection.tileset.resource, FULL_HD_WIDTH, FULL_HD_HEIGHT))
             }
-            val bar = shown.exampleBars.getValue(pkg.name)
-            pkg.examples.forEach { bar.selectedKey = it.name }
-            bar.selectedKey = pkg.examples.first().name
+            pkg.examples.forEach { shown.tabBar.selectedVerticalKey = it.name }
+            shown.tabBar.selectedVerticalKey = pkg.examples.first().name
             shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
             shown.runtimeErrors.map { (source, error) -> "$source: $error" } shouldBe emptyList()
             ImageComposeScene(width = FULL_HD_WIDTH, height = FULL_HD_HEIGHT) {

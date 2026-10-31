@@ -31,27 +31,27 @@ class ExamplesScreenTest {
         val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, MIN_SIZE) }
         shown.selection.packageName shouldBe "animations"
         shown.selection.exampleName shouldBe "Skull"
-        shown.packageBar.selectedKey = "dialogs"
+        shown.tabBar.selectedHorizontalKey = "dialogs"
         shown.selection.packageName shouldBe "dialogs"
         shown.selection.exampleName shouldBe "Dialog"
-        shown.exampleBars.getValue("dialogs").selectedKey = "Nested modals"
+        shown.tabBar.selectedVerticalKey = "Nested modals"
         shown.selection.exampleName shouldBe "Nested modals"
     }
 
     @Test
     fun textOnlyLeavesOutGraphicalExamples() {
         val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, MIN_SIZE, textOnly = true) }
-        shown.exampleBars.keys shouldContain "animations"
-        (shown.exampleBars.containsKey("game") && examplePackages.first { it.name == "game" }.examples.all { !it.textOnly }) shouldBe false
+        shown.packages.map { it.name } shouldContain "animations"
+        (shown.packages.any { it.name == "game" } && examplePackages.first { it.name == "game" }.examples.all { !it.textOnly }) shouldBe false
     }
 
     @Test
     fun everyExampleBuildsInTheSmallestGrid() {
         val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, MIN_SIZE) }
         examplePackages.forEach { pkg ->
-            shown.packageBar.selectedKey = pkg.name
+            shown.tabBar.selectedHorizontalKey = pkg.name
             pkg.examples.forEach { example ->
-                shown.exampleBars.getValue(pkg.name).selectedKey = example.name
+                shown.tabBar.selectedVerticalKey = example.name
                 shown.onFrame()
             }
         }

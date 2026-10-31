@@ -11,9 +11,8 @@ import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
-import org.hexworks.zircon.api.builder.fragment.horizontalTabBar
+import org.hexworks.zircon.api.builder.fragment.matrixTabBar
 import org.hexworks.zircon.api.builder.fragment.selector
-import org.hexworks.zircon.api.builder.fragment.verticalTabBar
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.color.Color
@@ -25,7 +24,7 @@ import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
-import org.hexworks.zircon.api.fragment.TabBar
+import org.hexworks.zircon.api.fragment.MatrixTabBar
 import org.hexworks.zircon.api.graphics.LayerHandle
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.loadAnimation
@@ -62,8 +61,10 @@ public class ExamplesScreen(
     public val grid: TileGrid,
     public val screen: Screen,
     public val selectionProperty: Property<ExamplesSelection>,
-    public val packageBar: TabBar,
-    public val exampleBars: Map<String, TabBar>,
+    /** The packages the app shows (with [examplesScreen]'s `textOnly`, only those with a text-only example). */
+    public val packages: List<ExamplePackage>,
+    /** Packages across the top, the selected package's examples down the left. */
+    public val tabBar: MatrixTabBar,
     /** Examples whose build threw, as "package / example" to the error; the app shows the message instead. */
     public val buildFailures: List<Pair<String, Throwable>>,
     /** Errors Zircon contained while running, as source to the error; the latest shows in the footer. */
@@ -84,8 +85,9 @@ public fun gridSizeFor(tileset: TilesetResource, widthPx: Int, heightPx: Int): S
 
 /**
  * Builds the examples app into a grid of [size]: theme (and, when [onTilesetChange] is
- * given, tileset) selectors on top, the packages as horizontal tabs below, each package's
- * examples as vertical tabs, and an fps counter in the corner. Examples are built the
+ * given, tileset) selectors on top, then a matrix tab bar: the packages as horizontal tabs,
+ * the selected package's examples as vertical tabs down the left, and an fps counter in
+ * the corner. Examples are built the
  * first time they are shown. Changing the theme applies at once; changing the tileset
  * calls [onTilesetChange] with the new selection and the launcher rebuilds the grid.
  * With [textOnly] the examples that need graphical tiles are left out.
@@ -183,46 +185,43 @@ public suspend fun examplesScreen(
         update { copy(packageName = pkg, exampleName = name) }
     }
 
-    val exampleBars = LinkedHashMap<String, TabBar>()
-    val packageBar = horizontalTabBar {
+    val initialPackage = packages.firstOrNull { it.name == selection.packageName } ?: packages.first()
+    val tabBar = matrixTabBar {
         this.size = bodySize
         position = Position(0, HEADER_HEIGHT)
-        defaultSelected = packages.firstOrNull { it.name == selection.packageName }?.name ?: packages.first().name
+        tabWidth = EXAMPLE_TAB_WIDTH
+        defaultHorizontal = initialPackage.name
+        defaultVertical = initialPackage.examples.firstOrNull { it.name == selection.exampleName }?.name
+            ?: initialPackage.examples.first().name
         packages.forEach { pkg ->
-            val initial = pkg.examples.firstOrNull { it.name == selection.exampleName }?.name
-                ?: pkg.examples.first().name
-            val bar = verticalTabBar {
-                this.size = Size(bodySize.width, bodySize.height - 3)
-                tabWidth = EXAMPLE_TAB_WIDTH
-                defaultSelected = initial
-                pkg.examples.forEach { example ->
-                    val placeholder = panel { preferredSize = exampleContentSize }
-                    placeholders[pkg.name to example.name] = placeholder
-                    tab {
-                        key = example.name
-                        label = example.name
-                        content = placeholder
-                    }
+            horizontalTab { key = pkg.name; label = pkg.name }
+        }
+        // Example names are unique across packages; the vertical strip shows only the selected package's.
+        packages.flatMap { pkg -> pkg.examples.map { it.name } }.distinct().forEach { name ->
+            verticalTab { key = name; label = name }
+        }
+        packages.forEach { pkg ->
+            pkg.examples.forEach { example ->
+                val placeholder = panel { preferredSize = exampleContentSize }
+                placeholders[pkg.name to example.name] = placeholder
+                view {
+                    horizontal = pkg.name
+                    vertical = example.name
+                    content = placeholder
                 }
             }
-            exampleBars[pkg.name] = bar
-            tab {
-                key = pkg.name
-                label = pkg.name
-                content = bar.root
-            }
         }
     }
-    screen.addComponent(packageBar.root)
+    screen.addComponent(tabBar.root)
 
-    exampleBars.forEach { (pkg, bar) ->
-        bar.selectedKeyProperty.onChange { (_, name) ->
-            if (packageBar.selectedKey == pkg) show(pkg to name)
-        }
+    // Both keys change when a package without the current example is selected; the pair is
+    // read when either changes and shown once it names an example.
+    fun showSelected() {
+        val key = tabBar.selectedHorizontalKey to tabBar.selectedVerticalKey
+        if (placeholders.containsKey(key)) show(key)
     }
-    packageBar.selectedKeyProperty.onChange { (_, pkg) ->
-        show(pkg to exampleBars.getValue(pkg).selectedKey)
-    }
+    tabBar.selectedHorizontalKeyProperty.onChange { showSelected() }
+    tabBar.selectedVerticalKeyProperty.onChange { showSelected() }
 
     // A layer, not a label: components can't overlap, and the tab bar spans the screen.
     val fps = layer {
@@ -278,8 +277,8 @@ public suspend fun examplesScreen(
     })
 
     screen.display()
-    show(packageBar.selectedKey to exampleBars.getValue(packageBar.selectedKey).selectedKey)
-    return ExamplesScreen(grid, screen, selectionProperty, packageBar, exampleBars, buildFailures, runtimeErrors) {
+    showSelected()
+    return ExamplesScreen(grid, screen, selectionProperty, packages, tabBar, buildFailures, runtimeErrors) {
         counter.frame()?.let(::showFps)
         shownKey?.let { views[it]?.onFrame?.invoke() }
     }
