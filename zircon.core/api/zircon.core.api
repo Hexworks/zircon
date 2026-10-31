@@ -57698,6 +57698,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/BaseSlider : o
 	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	protected final fun addToCurrentValue (I)V
 	public fun convertColorTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
+	public fun deactivated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun decrementCurrentStep ()V
 	public fun decrementCurrentValue ()V
 	public fun getCurrentStep ()I
@@ -57718,6 +57719,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/BaseSlider : o
 	public fun mouseExited (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun mousePressed (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun mouseReleased (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
+	protected final fun navigatedByKey ()V
 	public fun onStepChange (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public fun onValueChange (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public fun setCurrentStep (I)V

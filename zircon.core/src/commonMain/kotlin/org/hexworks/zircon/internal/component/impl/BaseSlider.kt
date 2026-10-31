@@ -187,33 +187,41 @@ public abstract class BaseSlider(
 
     abstract override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse
 
-    override fun activated(): UIEventResponse = whenEnabledRespondWith {
-        if (isDisabled) {
-            LOGGER.warn { "Trying to activate disabled Gutter (id=${id.abbreviate()}. Request dropped." }
-            Pass
-        } else {
-            LOGGER.debug { "Gutter (id=${id.abbreviate()}, disabled=$isDisabled) was activated." }
-            componentState = ComponentState.HIGHLIGHTED
-            Processed
-        }
+    /**
+     * Called by the subclasses when a navigation key moved the value: a slider that is
+     * being driven from the keyboard is [ComponentState.ACTIVE], like one being dragged.
+     */
+    protected fun navigatedByKey() {
+        componentState = ComponentState.ACTIVE
     }
 
+    // The activation shortcut (space by default) means nothing to a slider: it is driven
+    // by the arrow keys and the mouse, and it manages its own ACTIVE state for both.
+    override fun activated(): UIEventResponse = Pass
+
+    override fun deactivated(): UIEventResponse = Pass
+
+    // Focused and active mean the same thing for a slider (it is the one the keys move),
+    // so they share a style. Hover differs from them only in the handle's colour, as it
+    // does for buttons.
     override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {
             foregroundColor = colorTheme.primaryForegroundColor
             backgroundColor = Color.TRANSPARENT
         }
         highlightedStyle = styleSet {
+            foregroundColor = colorTheme.secondaryForegroundColor
+            backgroundColor = colorTheme.accentColor
+        }
+        val focusedAndActive = styleSet {
             foregroundColor = colorTheme.primaryBackgroundColor
             backgroundColor = colorTheme.accentColor
         }
+        focusedStyle = focusedAndActive
+        activeStyle = focusedAndActive
         disabledStyle = styleSet {
             foregroundColor = colorTheme.secondaryForegroundColor
             backgroundColor = colorTheme.secondaryBackgroundColor
-        }
-        focusedStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
         }
     }
 

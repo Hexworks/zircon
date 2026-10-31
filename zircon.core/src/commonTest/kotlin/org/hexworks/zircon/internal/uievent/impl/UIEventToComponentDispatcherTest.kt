@@ -17,6 +17,9 @@ import org.hexworks.zircon.api.data.extensions.withRelative
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.data.extensions.withRelativeY
 import org.hexworks.zircon.api.component.AttachedComponent
+import org.hexworks.zircon.api.uievent.KeyCode
+import org.hexworks.zircon.api.uievent.KeyboardEvent
+import org.hexworks.zircon.api.uievent.KeyboardEventType
 import org.hexworks.zircon.api.uievent.MouseEvent
 import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.MouseEventType.*
@@ -27,6 +30,7 @@ import org.hexworks.zircon.internal.component.impl.DefaultRootContainer
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.event.ZirconScope
+import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -230,9 +234,79 @@ class UIEventToComponentDispatcherTest {
         slider.currentValue shouldBe value
     }
 
+    // Slider state machine: focus and keys. Sliders are the first two focusables, so one
+    // tab lands on the horizontal one.
+
+    @Test
+    fun tabbingOntoTheSliderFocusesIt() {
+        key(KeyCode.TAB)
+
+        slider.state shouldBe ComponentState.FOCUSED
+    }
+
+    @Test
+    fun theActivationKeyDoesNothingToAFocusedSlider() {
+        key(KeyCode.TAB)
+        val value = slider.currentValue
+
+        key(KeyCode.SPACE)
+
+        slider.state shouldBe ComponentState.FOCUSED
+        slider.currentValue shouldBe value
+    }
+
+    @Test
+    fun anArrowKeyOnAFocusedSliderMovesItAndMakesItActive() {
+        key(KeyCode.TAB)
+
+        key(KeyCode.RIGHT)
+
+        slider.currentValue shouldBe 1
+        slider.state shouldBe ComponentState.ACTIVE
+    }
+
+    @Test
+    fun tabbingAwayFromAnActiveSliderResetsItToDefault() {
+        key(KeyCode.TAB)
+        key(KeyCode.RIGHT)
+
+        key(KeyCode.TAB)
+
+        slider.state shouldBe ComponentState.DEFAULT
+        vertical.state shouldBe ComponentState.FOCUSED
+    }
+
+    @Test
+    fun pressingTheSliderMakesItActiveNotHighlighted() {
+        press(SLIDER_POSITION.withRelativeX(5))
+
+        slider.state shouldBe ComponentState.ACTIVE
+    }
+
+    @Test
+    fun clickingSomethingElseTakesTheFocusAndResetsTheSlider() {
+        press(SLIDER_POSITION.withRelativeX(5))
+        release(SLIDER_POSITION.withRelativeX(5))
+
+        press(BUTTON_POSITION)
+        release(BUTTON_POSITION)
+
+        slider.state shouldBe ComponentState.DEFAULT
+    }
+
+    @Test
+    fun aSliderUsesTheSameStyleForFocusedAndActive() {
+        val styles = (slider as InternalComponent).convertColorTheme(ColorThemeResource.CYBERPUNK.getTheme())
+
+        styles.fetchStyleFor(ComponentState.FOCUSED) shouldBe styles.fetchStyleFor(ComponentState.ACTIVE)
+        styles.fetchStyleFor(ComponentState.FOCUSED) shouldNotBe styles.fetchStyleFor(ComponentState.DEFAULT)
+        styles.fetchStyleFor(ComponentState.FOCUSED) shouldNotBe styles.fetchStyleFor(ComponentState.HIGHLIGHTED)
+    }
+
     private val InternalComponent.state get() = componentState
     private val org.hexworks.zircon.api.component.Component.state get() = (this as InternalComponent).componentState
 
+    private fun key(code: KeyCode) = target.dispatch(KeyboardEvent(KeyboardEventType.KEY_PRESSED, code, ""))
     private fun press(position: Position) = target.dispatch(MouseEvent(MOUSE_PRESSED, 1, position))
     private fun drag(position: Position) = target.dispatch(MouseEvent(MOUSE_DRAGGED, 1, position))
     private fun release(position: Position) = target.dispatch(MouseEvent(MOUSE_RELEASED, 1, position))

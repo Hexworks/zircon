@@ -31,18 +31,22 @@ public class DefaultVerticalSlider internal constructor(
             when (event.code) {
                 KeyCode.UP -> {
                     incrementCurrentValue()
+                    navigatedByKey()
                     Processed
                 }
                 KeyCode.DOWN -> {
                     decrementCurrentValue()
+                    navigatedByKey()
                     Processed
                 }
                 KeyCode.RIGHT -> {
                     addToCurrentValue(valuePerStep.roundToInt())
+                    navigatedByKey()
                     Processed
                 }
                 KeyCode.LEFT -> {
                     subtractToCurrentValue(valuePerStep.roundToInt())
+                    navigatedByKey()
                     Processed
                 }
                 else -> Pass

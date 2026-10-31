@@ -36,21 +36,25 @@ public class DefaultHorizontalSlider internal constructor(
             when (event.code) {
                 KeyCode.RIGHT -> {
                     incrementCurrentValue()
+                    navigatedByKey()
                     Processed
                 }
 
                 KeyCode.LEFT -> {
                     decrementCurrentValue()
+                    navigatedByKey()
                     Processed
                 }
 
                 KeyCode.UP -> {
                     addToCurrentValue(valuePerStep.roundToInt())
+                    navigatedByKey()
                     Processed
                 }
 
                 KeyCode.DOWN -> {
                     subtractToCurrentValue(valuePerStep.roundToInt())
+                    navigatedByKey()
                     Processed
                 }
 
