@@ -68,20 +68,15 @@ public class ModalComponentContainer(
     public fun isMainContainerActive(): Boolean = mainContainer.isActive.value
 
     override fun dispatch(event: UIEvent): UIEventResponse {
-        var lastIdx = containerStack.lastIndex
+        // Only the top of the stack is active, so only it can take the event. Walking down the
+        // stack on Pass would hand the same event to the container that a modal's close handler
+        // just re-activated (a mouse press returns Pass to the dispatcher even when it activated a
+        // button), closing a whole stack of modals with one click on their "Close" buttons.
+        val top = containerStack.fetchLast()
         logger.debug {
-            "Dispatching event $event. Last index in container stack: $lastIdx. Stack size is: ${containerStack.size}."
+            "Dispatching event $event to the top of the container stack. Stack size is: ${containerStack.size}."
         }
-        var result: UIEventResponse = Pass
-        while (lastIdx >= 0 && result == Pass) {
-            val last = containerStack[lastIdx]
-            result = last.dispatch(event)
-            logger.debug {
-                "Result of last dispatch: $result. Stack size is: ${containerStack.size}."
-            }
-            lastIdx--
-        }
-        return result
+        return top.dispatch(event)
     }
 
     override fun activate() {
