@@ -11,7 +11,7 @@ public abstract class BaseTilesetResource : TilesetResource {
     override val id: UUID = UUID.randomUUID()
 
     override fun toString(): String {
-        return "TilesetResource(id=$id, size=$size, tileType=$tileType, tilesetType=$tilesetType, resourceType=$resourceType, path=$path)"
+        return "TilesetResource(id=$id, title=$title, size=$size, tileType=$tileType, tilesetType=$tilesetType, resourceType=$resourceType, path=$path)"
     }
 
 }

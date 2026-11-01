@@ -12,7 +12,8 @@ internal class ImageDictionaryTilesetResource(
     override val width: Int = 1,
     override val height: Int = 1,
     override val path: String,
-    override val resourceType: ResourceType
+    override val resourceType: ResourceType,
+    override val title: String
 ) : BaseTilesetResource() {
 
     override val tileType = IMAGE_TILE

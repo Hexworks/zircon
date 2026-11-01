@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.behavior.HasTitle
 import org.hexworks.zircon.api.data.TileType
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetType
@@ -12,7 +13,8 @@ internal class CP437TilesetResource(
     override val width: Int,
     override val height: Int,
     override val path: String,
-    override val resourceType: ResourceType
+    override val resourceType: ResourceType,
+    override val title: String
 ) : BaseTilesetResource() {
 
     override val tileType = TileType.CHARACTER_TILE

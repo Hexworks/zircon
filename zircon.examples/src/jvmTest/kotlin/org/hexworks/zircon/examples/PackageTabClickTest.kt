@@ -16,6 +16,7 @@ import kotlin.test.Test
 import kotlin.test.fail
 
 /** Clicks every package tab with synthetic mouse events, at two grid sizes. */
+@OptIn(ExamplesTestApi::class)
 class PackageTabClickTest {
     @Test
     fun clickingEveryPackageTabSelectsItWithoutErrors() {
@@ -23,18 +24,18 @@ class PackageTabClickTest {
             File("resources/files/" + resource.path.trimStart('/')).readBytes()
         }
         for (size in listOf(Size(100, 40), Size(120, 67))) {
-            val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, size) }
+            val shown = runBlocking { examplesScreen(size) }
             val grid = shown.grid as InternalTileGrid
             // package tabs: x = EXAMPLE_TAB_WIDTH + 1 + sum(previous label lengths + 2), y = 4
             var x = EXAMPLE_TAB_WIDTH + 1
-            examplePackages.forEach { pkg ->
+            EXAMPLE_GROUPS.forEach { pkg ->
                 val pos = Position(x + 1, 4)
                 try {
                     listOf(MouseEventType.MOUSE_MOVED, MouseEventType.MOUSE_PRESSED, MouseEventType.MOUSE_RELEASED, MouseEventType.MOUSE_CLICKED).forEach { type ->
                         grid.process(MouseEvent(type, 1, pos), UIEventPhase.TARGET)
                     }
                     shown.onFrame()
-                    println("click $size ${pkg.name} at $pos -> selected=${shown.tabBar.selectedHorizontalKey} example=${shown.selection.exampleName}")
+                    println("click $size ${pkg.name} at $pos -> selected=${shown.tabBar.selectedHorizontalKey} example=${shown.tabBar.selectedVerticalKey}")
                 } catch (e: Throwable) {
                     fail("clicking ${pkg.name} at $pos in a $size grid threw $e")
                 }

@@ -1,12 +1,12 @@
 import io.kotest.matchers.shouldBe
-import org.hexworks.zircon.examples.examplePackages
+import org.hexworks.zircon.examples.EXAMPLE_GROUPS
 import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceLoader
 import org.hexworks.zircon.api.resource.Resources
 import org.hexworks.zircon.examples.EXAMPLE_TAB_WIDTH
 import org.hexworks.zircon.examples.EXAMPLE_TOP
-import org.hexworks.zircon.examples.ExamplesSelection
+import org.hexworks.zircon.examples.ExamplesTestApi
 import org.hexworks.zircon.examples.MIN_SIZE
 import org.hexworks.zircon.examples.examplesScreen
 import org.hexworks.zircon.terminal.CellBuffer
@@ -19,6 +19,7 @@ import kotlin.time.TimeSource
  * Renders the examples through the terminal renderer (no tty) so a broken example or an
  * example that draws nothing shows up in CI.
  */
+@OptIn(ExamplesTestApi::class)
 class TerminalExamplesTest {
 
     init {
@@ -44,11 +45,11 @@ class TerminalExamplesTest {
     /** Every text-only example, rendered for a few ticks, must put something into its content area. */
     @Test
     fun everyExampleDrawsIntoTheContentArea() {
-        val shown = runBlocking { examplesScreen(ExamplesSelection.DEFAULT, MIN_SIZE, textOnly = true) }
+        val shown = runBlocking { examplesScreen(MIN_SIZE, isTerminal = true) }
         val renderer = TerminalRenderer(shown.grid)
         val frame = CellBuffer(MIN_SIZE.width, MIN_SIZE.height)
         val empty = mutableListOf<String>()
-        examplePackages.forEach { pkg ->
+        EXAMPLE_GROUPS.forEach { pkg ->
             val examples = pkg.examples.filter { it.textOnly }
             if (examples.isEmpty()) return@forEach
             shown.tabBar.selectedHorizontalKey = pkg.name

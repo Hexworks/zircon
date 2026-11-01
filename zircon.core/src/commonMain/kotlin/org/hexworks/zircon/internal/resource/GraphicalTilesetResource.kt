@@ -12,7 +12,8 @@ internal class GraphicalTilesetResource(
     override val width: Int,
     override val height: Int,
     override val path: String,
-    override val resourceType: ResourceType
+    override val resourceType: ResourceType,
+    override val title: String
 ) : BaseTilesetResource() {
 
     override val tileType = GRAPHICAL_TILE

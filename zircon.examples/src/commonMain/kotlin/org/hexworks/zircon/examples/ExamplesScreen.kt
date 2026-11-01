@@ -2,25 +2,27 @@ package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
+import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.label
-import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.component.panel
+import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.fragment.matrixTabBar
 import org.hexworks.zircon.api.builder.fragment.selector
 import org.hexworks.zircon.api.builder.graphics.layer
+import org.hexworks.zircon.api.builder.grid.DEFAULT_TILESET
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.config.ErrorHandler
-import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.config.ErrorHandler
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.toScreen
@@ -34,119 +36,148 @@ import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
+import org.hexworks.zircon.internal.screen.TileGridScreen
 import kotlin.time.TimeSource
 
-/** What the app shows: the selected package and example, and the tileset and theme. */
-public data class ExamplesSelection(
-    val packageName: String,
-    val exampleName: String,
-    val tileset: NamedTileset,
-    val theme: ColorTheme,
-) {
-    public companion object {
-        public val DEFAULT: ExamplesSelection = ExamplesSelection(
-            packageName = examplePackages.first().name,
-            exampleName = examplePackages.first().examples.first().name,
-            tileset = TILESETS.first { it.name == "rogue yun 16x16" },
-            theme = THEMES.first { it.name == "Nord" },
-        )
-    }
-}
 
 /**
- * A built examples screen: the [grid] to render, the live [selection], and [onFrame] to
- * call before each frame.
+ * A built examples screen. A launcher needs three things: the [grid] to render, [onFrame]
+ * to call before every frame, and [tileSizeProperty] to know when the grid has to be
+ * rebuilt. Everything else is a test hook, see [ExamplesTestApi].
  */
-public class ExamplesScreen(
-    public val grid: TileGrid,
-    public val screen: Screen,
-    public val selectionProperty: Property<ExamplesSelection>,
-    /** The packages the app shows (with [examplesScreen]'s `textOnly`, only those with a text-only example). */
-    public val packages: List<ExamplePackage>,
-    /** Packages across the top, the selected package's examples down the left. */
-    public val tabBar: MatrixTabBar,
-    /** Examples whose build threw, as "package / example" to the error; the app shows the message instead. */
-    public val buildFailures: List<Pair<String, Throwable>>,
+class ExamplesScreen(
+    val grid: TileGrid,
+    /**
+     * The cell size the user picked. Changing it is the one selection that cannot be
+     * applied to a running grid: the number of cells that fit the window changes with it, so
+     * the launcher builds a new screen (passing this one as `previous` to keep the rest of
+     * the selection). Tileset and theme changes within the same cell size are applied in
+     * place.
+     */
+    val tileSizeProperty: ObservableValue<Size>,
+    /**
+     * Called by the renderer right before every frame, on the thread that renders. Zircon
+     * has no loop of its own: the host (Compose's frame clock, the terminal's tick) drives
+     * the frames and this is the app's hook into that loop. Here it counts the frame for
+     * the fps display and forwards to the shown example's [ExampleView.onFrame], where
+     * per-frame logic (game ticks, benchmarks) lives.
+     */
+    val onFrame: () -> Unit,
+    /** The tileset the grid and its components draw with; carried over to a rebuilt screen. */
+    internal val tilesetProperty: Property<TilesetResource>,
+    /** The colour theme; carried over to a rebuilt screen. */
+    internal val themeProperty: Property<ColorTheme>,
+    /** The groups the app shows (with `isTerminal`, only those with a text-only example). */
+    @ExamplesTestApi val packages: List<ExampleGroup>,
+    /** Groups across the top, the selected group's examples down the left. */
+    @ExamplesTestApi val tabBar: MatrixTabBar,
+    /** Examples whose build threw, as "group / example" to the error; the app shows the message instead. */
+    @ExamplesTestApi val buildFailures: List<Pair<String, Throwable>>,
     /** Errors Zircon contained while running, as source to the error; the latest shows in the footer. */
-    public val runtimeErrors: List<Pair<String, Throwable>>,
-    public val onFrame: () -> Unit,
-) {
-    public val selection: ExamplesSelection get() = selectionProperty.value
-}
-
-/**
- * The grid size that fills [widthPx] x [heightPx] with tiles of [tileset], at least
- * [MIN_SIZE].
- */
-public fun gridSizeFor(tileset: TilesetResource, widthPx: Int, heightPx: Int): Size = Size(
-    maxOf(widthPx / tileset.width, MIN_SIZE.width),
-    maxOf(heightPx / tileset.height, MIN_SIZE.height),
+    @ExamplesTestApi val runtimeErrors: List<Pair<String, Throwable>>,
 )
 
 /**
- * Builds the examples app into a grid of [size]: theme (and, when [onTilesetChange] is
- * given, tileset) selectors on top, then a matrix tab bar: the packages as horizontal tabs,
- * the selected package's examples as vertical tabs down the left, and an fps counter in
- * the corner. Examples are built the
- * first time they are shown. Changing the theme applies at once; changing the tileset
- * calls [onTilesetChange] with the new selection and the launcher rebuilds the grid.
- * With [textOnly] the examples that need graphical tiles are left out.
+ * The grid size that fills [widthPx] x [heightPx] with cells of [tileSize], at least
+ * [MIN_SIZE].
  */
-public suspend fun examplesScreen(
-    selection: ExamplesSelection,
+fun gridSizeFor(tileSize: Size, widthPx: Int, heightPx: Int): Size = Size(
+    maxOf(widthPx / tileSize.width, MIN_SIZE.width),
+    maxOf(heightPx / tileSize.height, MIN_SIZE.height),
+)
+
+/**
+ * Builds the examples app into a grid of [size]: tile size, tileset and theme selectors on
+ * top (only the theme in a terminal), then a matrix tab bar with the groups as horizontal
+ * tabs and the selected group's examples as vertical tabs, an fps counter in the corner
+ * and the latest contained error in the bottom row. Examples are built the first time
+ * they are shown.
+ *
+ * Picking a theme or a tileset of the same cell size applies at once. Picking another
+ * cell size only updates [ExamplesScreen.tileSizeProperty]; the launcher then builds a
+ * new screen with the previous one as [previous], which starts from the previous one's
+ * tile size, tileset, theme and selected example. With [isTerminal] the examples that
+ * need graphical tiles and the tileset selectors are left out. [startAt] names the
+ * example to show first; it wins over [previous].
+ */
+@OptIn(ExamplesTestApi::class)
+suspend fun examplesScreen(
     size: Size,
-    textOnly: Boolean = false,
-    onTilesetChange: ((ExamplesSelection) -> Unit)? = null,
+    isTerminal: Boolean = false,
+    previous: ExamplesScreen? = null,
+    startAt: String? = null,
 ): ExamplesScreen {
     require(size.width >= MIN_SIZE.width && size.height >= MIN_SIZE.height) {
         "The examples need at least ${MIN_SIZE.width}x${MIN_SIZE.height} cells, got ${size.width}x${size.height}"
     }
-    val packages = examplePackages
-        .map { pkg -> ExamplePackage(pkg.name, pkg.examples.filter { !textOnly || it.textOnly }) }
-        .filter { it.examples.isNotEmpty() }
+
+    val packages = EXAMPLE_GROUPS
+        .map { pkg ->
+            ExampleGroup(
+                name = pkg.name,
+                examples = pkg.examples.filter { !isTerminal || it.textOnly }
+            )
+        }.filter { it.examples.isNotEmpty() }
+
+    // The previous screen's tileset is kept when its size is the chosen one; after a size
+    // change the first tileset of the new size is used.
+    val tileSize = previous?.tileSizeProperty?.value ?: DEFAULT_TILESET.size
+    val initialTileset = previous?.tilesetProperty?.value?.takeIf { it.size == tileSize } ?: tilesetsFor(tileSize).first()
+    val initialTheme = previous?.themeProperty?.value ?: DEFAULT_THEME
+
     val grid = tileGrid {
         this.size = size
-        this.tileset = selection.tileset.resource
+        tileset = initialTileset
     }
     val screen = grid.toScreen()
-    screen.theme = selection.theme
+    screen.theme = initialTheme
     val assets = loadAssets(grid.tileset)
 
-    val selectionProperty = selection.toProperty()
-    fun update(fn: ExamplesSelection.() -> ExamplesSelection) {
-        selectionProperty.value = selectionProperty.value.fn()
+    val tileSizeProperty = tileSize.toProperty()
+    val tilesetProperty = initialTileset.toProperty()
+    val themeProperty = initialTheme.toProperty()
+
+    themeProperty.onChange { (_, changed) -> screen.theme = changed }
+    // A screen's tileset and its component tree's are separate: `Screen.tileset` is the
+    // grid's (the base layer and the cursor), the components follow their root container.
+    // The root is only reachable through the screen implementation, so this reaches in.
+    val root = (screen as TileGridScreen).root
+    tilesetProperty.onChange { (_, changed) ->
+        screen.tileset = changed
+        root.tileset = changed
     }
 
-    // Header: selectors.
+    // Header: selectors. The selectors share the properties above, so a pick lands there.
     val header = hBox {
         preferredSize = Size(size.width, HEADER_HEIGHT)
         componentRenderer = NoOpComponentRenderer()
         decorations { +margin(1, 1) }
-        if (onTilesetChange != null) {
-            label { +"Tileset" }
-            selector<NamedTileset> {
-                width = SELECTOR_WIDTH
-                valueList = TILESETS
-                defaultSelected = selection.tileset
-            }.selectedProperty.onChange { (_, tileset) ->
-                if (tileset != null && tileset != selectionProperty.value.tileset) {
-                    update { copy(tileset = tileset) }
-                    onTilesetChange(selectionProperty.value)
-                }
+        if (isTerminal.not()) {
+            label { +"Tile size" }
+            selector {
+                width = TILE_SIZE_SELECTOR_WIDTH
+                valueList = TILE_SIZES
+                selectedProperty = tileSizeProperty
+                toStringMethod = { "${it.width}×${it.height}" }
             }
-            label { +"  " }
+            label { +" " }
+
+            label { +"Tileset" }
+            selector {
+                width = SELECTOR_WIDTH
+                valueList = tilesetsFor(tileSize)
+                selectedProperty = tilesetProperty
+                toStringMethod = { it.title }
+            }
+            label { +" " }
         }
+
         label { +"Theme" }
-        selector<ColorTheme> {
+        selector {
             width = SELECTOR_WIDTH
             valueList = THEMES
-            defaultSelected = selection.theme
+            selectedProperty = themeProperty
             toStringMethod = { it.name }
-        }.selectedProperty.onChange { (_, theme) ->
-            if (theme != null) {
-                screen.theme = theme
-                update { copy(theme = theme) }
-            }
         }
     }
     screen.addComponent(header)
@@ -182,17 +213,22 @@ public suspend fun examplesScreen(
         shownLayers = view.layers.map { screen.addLayer(it) }
         view.onShown()
         shownKey = key
-        update { copy(packageName = pkg, exampleName = name) }
     }
 
-    val initialPackage = packages.firstOrNull { it.name == selection.packageName } ?: packages.first()
+    // Start where asked, else where the previous screen was, else at the first example.
+    val initialExample = startAt?.let { name -> packages.flatMap { it.examples }.firstOrNull { it.name == name } }
+    val initialPackage = packages.firstOrNull { pkg -> initialExample != null && initialExample in pkg.examples }
+        ?: packages.firstOrNull { it.name == previous?.tabBar?.selectedHorizontalKey }
+        ?: packages.first()
+    val initialVertical = initialExample?.name
+        ?: initialPackage.examples.firstOrNull { it.name == previous?.tabBar?.selectedVerticalKey }?.name
+        ?: initialPackage.examples.first().name
     val tabBar = matrixTabBar {
         this.size = bodySize
         position = Position(0, HEADER_HEIGHT)
         tabWidth = EXAMPLE_TAB_WIDTH
         defaultHorizontal = initialPackage.name
-        defaultVertical = initialPackage.examples.firstOrNull { it.name == selection.exampleName }?.name
-            ?: initialPackage.examples.first().name
+        defaultVertical = initialVertical
         packages.forEach { pkg ->
             horizontalTab { key = pkg.name; label = pkg.name }
         }
@@ -226,10 +262,13 @@ public suspend fun examplesScreen(
     // A layer, not a label: components can't overlap, and the tab bar spans the screen.
     val fps = layer {
         this.size = Size(FPS_WIDTH, 1)
+        tileset = initialTileset
         offset = Position(size.width - FPS_WIDTH - 1, HEADER_HEIGHT + 1)
     }
     screen.addLayer(fps)
     val counter = FpsCounter()
+    tilesetProperty.onChange { (_, changed) -> fps.tileset = changed }
+
     fun showFps(value: Int) {
         "$value fps".padStart(FPS_WIDTH).forEachIndexed { x, char ->
             fps.draw(
@@ -249,9 +288,11 @@ public suspend fun examplesScreen(
     // in the bottom row, so a broken example is visible without a log. Also a layer, see above.
     val errorLine = layer {
         this.size = Size(size.width, 1)
+        tileset = initialTileset
         offset = Position(0, size.height - 1)
     }
     screen.addLayer(errorLine)
+    tilesetProperty.onChange { (_, changed) -> errorLine.tileset = changed }
     val runtimeErrors = ArrayList<Pair<String, Throwable>>()
     fun showError(source: String, error: Throwable) {
         val text = "$source: ${error::class.simpleName}: ${error.message ?: ""}"
@@ -278,10 +319,20 @@ public suspend fun examplesScreen(
 
     screen.display()
     showSelected()
-    return ExamplesScreen(grid, screen, selectionProperty, packages, tabBar, buildFailures, runtimeErrors) {
-        counter.frame()?.let(::showFps)
-        shownKey?.let { views[it]?.onFrame?.invoke() }
-    }
+    return ExamplesScreen(
+        grid = grid,
+        tileSizeProperty = tileSizeProperty,
+        onFrame = {
+            counter.frame()?.let(::showFps)
+            shownKey?.let { views[it]?.onFrame?.invoke() }
+        },
+        tilesetProperty = tilesetProperty,
+        themeProperty = themeProperty,
+        packages = packages,
+        tabBar = tabBar,
+        buildFailures = buildFailures,
+        runtimeErrors = runtimeErrors,
+    )
 }
 
 private fun failurePanel(size: Size, error: Throwable) = vBox {
@@ -320,8 +371,9 @@ private class FpsCounter {
 }
 
 /** The smallest grid the app lays out in. */
-public val MIN_SIZE: Size = Size(100, 40)
+val MIN_SIZE: Size = Size(100, 40)
 
 private const val HEADER_HEIGHT = 3
 private const val SELECTOR_WIDTH = 26
+private const val TILE_SIZE_SELECTOR_WIDTH = 9
 private const val FPS_WIDTH = 8

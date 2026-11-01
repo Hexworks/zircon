@@ -1,5 +1,6 @@
 package org.hexworks.zircon.internal.resource
 
+import org.hexworks.zircon.api.behavior.HasTitle
 import org.hexworks.zircon.api.resource.ResourceType
 import org.hexworks.zircon.api.resource.TilesetResource
 
@@ -9,35 +10,36 @@ import org.hexworks.zircon.api.resource.TilesetResource
 @Suppress("SpellCheckingInspection")
 public enum class BuiltInTrueTypeFontResource(
     private val fileName: String,
+    override val title: String,
     private val ratioFn: (Int) -> Int
-) {
+): HasTitle {
 
     /**
      * These fonts are part of the Ultimate Oldschool PC Font Pack and licensed under
      * Creative Commons Attribution-ShareAlike 4.0 International License.
      * See: https://int10h.org/oldschool-pc-fonts/readme/
      */
-    AMSTRAD("amstrad", { it }),
-    AMSTRAD_NARROW("amstrad_2y", { it.div(2) }),
-    ATT("att", { it }),
-    ATT_NARROW("att_2y", { it.div(2) }),
-    IBM_BIOS("ibm_bios", { it }),
-    IBM_BIOS_NARROW("ibm_bios_2y", { it.div(2) }),
-    IBM_BIOS_WIDE("ibm_bios_2x", { it.times(2) }),
-    IBM_PS2_NARROW("ibm_ps2_thin", { it.div(2) }),
-    KAYPRO("kaypro", { it }),
-    KAYPRO_NARROW("kaypro_2y", { it.div(2) }),
-    TANDY("tandy", { it }),
-    TANDY_NARROW("tandy_2y", { it.div(2) }),
-    VTECH("vtech", { it }),
-    VTECH_NARROW("vtech", { it.div(2) });
+    AMSTRAD("amstrad", "Amstrad", { it }),
+    AMSTRAD_NARROW("amstrad_2y", "Amstrad Narrow", { it.div(2) }),
+    ATT("att", "ATT", { it }),
+    ATT_NARROW("att_2y", "ATT Narrow", { it.div(2) }),
+    IBM_BIOS("ibm_bios", "IBM Bios", { it }),
+    IBM_BIOS_NARROW("ibm_bios_2y", "IBM Bios Narrow", { it.div(2) }),
+    IBM_BIOS_WIDE("ibm_bios_2x", "IBM Bios Wide", { it.times(2) }),
+    IBM_PS2_NARROW("ibm_ps2_thin", "IBM PS2 Narrow", { it.div(2) }),
+    KAYPRO("kaypro", "Kaypro", { it }),
+    KAYPRO_NARROW("kaypro_2y", "Kaypro Narrow", { it.div(2) }),
+    TANDY("tandy", "Tandy", { it }),
+    TANDY_NARROW("tandy_2y", "Tandy Narrow", { it.div(2) }),
+    VTECH("vtech", "VTech", { it }),
+    VTECH_NARROW("vtech", "VTech Narrow", { it.div(2) });
 
     public fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
         path = "$FONTS_DIR/$fileName.$FONTS_EXT",
         width = ratioFn(height),
         height = height,
         resourceType = ResourceType.PROJECT,
-        name = name
+        title = title
     )
 
     public companion object {

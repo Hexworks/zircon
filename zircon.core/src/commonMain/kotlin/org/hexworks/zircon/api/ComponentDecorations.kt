@@ -57,6 +57,11 @@ public object ComponentDecorations {
      * @param value the margin to add to all sides (top, right, bottom and left)
      */
 
+    public fun marginRight(value: Int): ComponentDecorationRenderer = margin(0, value, 0, 0)
+    public fun marginLeft(value: Int): ComponentDecorationRenderer = margin(0, 0, 0, value)
+    public fun marginTop(value: Int): ComponentDecorationRenderer = margin(value, 0, 0, 0)
+    public fun marginBottom(value: Int): ComponentDecorationRenderer = margin(0, 0, value, 0)
+
     public fun margin(
         value: Int
     ): ComponentDecorationRenderer = MarginDecorationRenderer(

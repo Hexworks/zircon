@@ -11,13 +11,15 @@ public fun loadCP437TilesetResource(
     width: Int,
     height: Int,
     path: String,
-    resourceType: ResourceType
+    resourceType: ResourceType,
+    title: String
 ): TilesetResource {
     return CP437TilesetResource(
         width = width,
         height = height,
         path = path,
-        resourceType = resourceType
+        resourceType = resourceType,
+        title = title
     )
 }
 
@@ -25,23 +27,29 @@ public fun loadFontTilesetResource(
     width: Int,
     height: Int,
     path: String,
-    resourceType: ResourceType
+    resourceType: ResourceType,
+    title: String
 ): TilesetResource {
     return TrueTypeTilesetResource(
         width = width,
         height = height,
         path = path,
-        resourceType = resourceType
+        resourceType = resourceType,
+        title = title
+
     )
 }
 
 public fun loadImageDictionaryTilesetResource(
     path: String,
-    resourceType: ResourceType
+    resourceType: ResourceType,
+    title: String
 ): TilesetResource {
     return ImageDictionaryTilesetResource(
         path = path,
-        resourceType = resourceType
+        resourceType = resourceType,
+        title = title
+
     )
 }
 
@@ -49,12 +57,15 @@ public fun loadGraphicalTilesetResource(
     width: Int,
     height: Int,
     path: String,
-    resourceType: ResourceType
+    resourceType: ResourceType,
+    title: String
 ): TilesetResource {
     return GraphicalTilesetResource(
         width = width,
         height = height,
         path = path,
-        resourceType = resourceType
+        resourceType = resourceType,
+        title = title
+
     )
 }

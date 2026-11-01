@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.resource.TilesetType
 
 internal enum class BuiltInGraphicalTilesetResource(
     private val tilesetName: String,
+    override val title: String,
     override val width: Int,
     override val height: Int,
     private val fileName: String = "${tilesetName}_${width}x$height.zip",
@@ -18,6 +19,6 @@ internal enum class BuiltInGraphicalTilesetResource(
     override val resourceType: ResourceType = ResourceType.PROJECT
 ) : TilesetResource {
 
-    NETHACK_16X16("nethack", 16, 16)
+    NETHACK_16X16("nethack", "Nethack", 16, 16)
 
 }

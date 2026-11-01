@@ -100,6 +100,13 @@ public fun TileGridView(
             }
     ) {
         tick // read so every frame redraws
-        drawIntoCanvas { canvas -> shader.draw(canvas, frame, renderer.registry.atlases(), ZirconDefaults.current.debugConfig.displayGrid) }
+        drawIntoCanvas { canvas ->
+            shader.draw(
+                canvas = canvas,
+                frame = frame,
+                atlases = renderer.registry.atlases(),
+                gridLines = ZirconDefaults.current.debugConfig.displayGrid
+            )
+        }
     }
 }

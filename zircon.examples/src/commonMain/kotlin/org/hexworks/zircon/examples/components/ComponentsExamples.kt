@@ -2,7 +2,7 @@ package org.hexworks.zircon.examples.components
 
 import org.hexworks.zircon.examples.Example
 
-public val componentExamples: List<Example> = listOf(
+val componentExamples: List<Example> = listOf(
     allExample,
     buttonsExample,
     checkBoxesExample,

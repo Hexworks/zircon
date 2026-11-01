@@ -10,13 +10,13 @@ import org.hexworks.zircon.examples.modifiers.modifierExamples
 import org.hexworks.zircon.examples.other.otherExamples
 
 /** Every package in tab order. */
-public val examplePackages: List<ExamplePackage> = listOf(
-    ExamplePackage("animations", animationExamples),
-    ExamplePackage("components", componentExamples),
-    ExamplePackage("dialogs", dialogExamples),
-    ExamplePackage("fragments", fragmentExamples),
-    ExamplePackage("game", gameExamples),
-    ExamplePackage("modifiers", modifierExamples),
-    ExamplePackage("other", otherExamples),
-    ExamplePackage("input+layers", inputLayerExamples),
+val EXAMPLE_GROUPS: List<ExampleGroup> = listOf(
+    ExampleGroup("animations", animationExamples),
+    ExampleGroup("components", componentExamples),
+    ExampleGroup("dialogs", dialogExamples),
+    ExampleGroup("fragments", fragmentExamples),
+    ExampleGroup("game", gameExamples),
+    ExampleGroup("modifiers", modifierExamples),
+    ExampleGroup("other", otherExamples),
+    ExampleGroup("input+layers", inputLayerExamples),
 )

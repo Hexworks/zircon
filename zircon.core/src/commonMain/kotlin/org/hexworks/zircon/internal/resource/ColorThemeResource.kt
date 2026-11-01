@@ -1027,4 +1027,8 @@ public enum class ColorThemeResource(private val colorTheme: ColorTheme) {
             }
         )
     }
+
+    public companion object {
+        public val ALL_THEMES: List<ColorTheme> = entries.map { it.colorTheme }
+    }
 }

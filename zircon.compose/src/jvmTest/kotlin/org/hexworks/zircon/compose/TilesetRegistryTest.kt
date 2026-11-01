@@ -56,6 +56,7 @@ class TilesetRegistryTest {
     }
 
     private object UnsupportedResource : BaseTilesetResource() {
+        override val title: String = "unsupported"
         override val width: Int = 8
         override val height: Int = 8
         override val path: String = "unsupported"

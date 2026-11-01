@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api.resource
 
-import org.hexworks.zircon.api.resource.TilesetResource.Companion.UNKNOWN
 import org.hexworks.cobalt.core.api.UUID
+import org.hexworks.zircon.api.behavior.HasTitle
 import org.hexworks.zircon.api.behavior.Identifiable
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
@@ -12,7 +12,7 @@ import org.hexworks.zircon.api.data.TileType
  * It is used by Zircon internally to be able to tell whether the currently chosen tileset
  * is compatible with another and to determine the dimensions of the tileset.
  */
-public interface TilesetResource : Identifiable, Resource {
+public interface TilesetResource : Identifiable, Resource, HasTitle {
 
     public val tileType: TileType
     public val tilesetType: TilesetType
@@ -57,6 +57,8 @@ public interface TilesetResource : Identifiable, Resource {
          * [Null Object Pattern](https://en.wikipedia.org/wiki/Null_object_pattern).
          */
         public object UNKNOWN : TilesetResource {
+            override val title: String
+                get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val tileType: TileType
                 get() = error("This is the UNKNOWN TilesetResource, implementing the null object pattern. Don't use it as a tileset")
             override val tilesetType: TilesetType

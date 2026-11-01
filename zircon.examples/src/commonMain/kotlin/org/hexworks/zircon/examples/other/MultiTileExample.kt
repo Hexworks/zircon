@@ -10,7 +10,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetType
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleView
-import org.hexworks.zircon.examples.TILESETS
+import org.hexworks.zircon.examples.tilesetsFor
 
 /**
  * Components with their own tilesets: every component (and container) can override the
@@ -30,31 +30,31 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
         preferredSize = context.contentSize
         tileset = screenTileset
     }
-    val fonts = TILESETS
-        .filter { it.resource.tilesetType == TilesetType.CP437Tileset && it.resource.size == screenTileset.size }
+    val fonts = tilesetsFor(screenTileset.size)
+        .filter { it.tilesetType == TilesetType.CP437Tileset }
         .let { matching -> List(5) { matching[it % matching.size] } }
 
     root.addComponent(label {
-        +fonts[0].name
+        +fonts[0].title
         position = Position(1, 1)
-        tileset = fonts[0].resource
+        tileset = fonts[0]
         colorTheme = theme
         bindingAction = NoActionOnBind
     })
 
     root.addComponent(label {
-        +fonts[1].name
+        +fonts[1].title
         position = Position(1, 3)
-        tileset = fonts[1].resource
+        tileset = fonts[1]
         colorTheme = theme
         bindingAction = NoActionOnBind
     })
 
     root.addComponent(panel {
-        decorations { +box(title = fonts[2].name) }
+        decorations { +box(title = fonts[2].title) }
         position = Position(1, 5)
         preferredSize = Size(22, 2)
-        tileset = fonts[2].resource
+        tileset = fonts[2]
         colorTheme = theme
         bindingAction = NoActionOnBind
     })
@@ -62,14 +62,14 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
     val container = panel {
         position = Position(1, 8)
         preferredSize = Size(22, 3)
-        decorations { +box(title = fonts[3].name) }
-        tileset = fonts[3].resource
+        decorations { +box(title = fonts[3].title) }
+        tileset = fonts[3]
         colorTheme = theme
         bindingAction = NoActionOnBind
     }
     container.addComponent(label {
-        +fonts[4].name
-        tileset = fonts[4].resource
+        +fonts[4].title
+        tileset = fonts[4]
         colorTheme = theme
         bindingAction = NoActionOnBind
     })

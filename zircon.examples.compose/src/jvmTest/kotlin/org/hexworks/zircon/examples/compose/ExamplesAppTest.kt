@@ -5,14 +5,16 @@ import androidx.compose.ui.use
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import org.hexworks.zircon.compose.TileGridView
-import org.hexworks.zircon.examples.ExamplesSelection
-import org.hexworks.zircon.examples.examplePackages
+import org.hexworks.zircon.api.builder.grid.DEFAULT_TILESET
+import org.hexworks.zircon.examples.EXAMPLE_GROUPS
+import org.hexworks.zircon.examples.ExamplesTestApi
 import org.hexworks.zircon.examples.examplesScreen
 import org.hexworks.zircon.examples.gridSizeFor
 import org.jetbrains.skia.EncodedImageFormat
 import java.io.File
 import kotlin.test.Test
 
+@OptIn(ExamplesTestApi::class)
 class ExamplesAppTest {
 
     /** Builds every example once and renders each package's first one, so a broken example fails here. */
@@ -20,10 +22,9 @@ class ExamplesAppTest {
     fun everyExampleBuildsAndEveryPackageRendersInAFullHdWindow() {
         installResources()
         val out = File("build/demo-renders").apply { mkdirs() }
-        examplePackages.forEach { pkg ->
-            val selection = ExamplesSelection.DEFAULT.copy(packageName = pkg.name, exampleName = pkg.examples.first().name)
+        EXAMPLE_GROUPS.forEach { pkg ->
             val shown = runBlocking {
-                examplesScreen(selection, gridSizeFor(selection.tileset.resource, FULL_HD_WIDTH, FULL_HD_HEIGHT))
+                examplesScreen(gridSizeFor(DEFAULT_TILESET.size, FULL_HD_WIDTH, FULL_HD_HEIGHT), startAt = pkg.examples.first().name)
             }
             pkg.examples.forEach { shown.tabBar.selectedVerticalKey = it.name }
             shown.tabBar.selectedVerticalKey = pkg.examples.first().name

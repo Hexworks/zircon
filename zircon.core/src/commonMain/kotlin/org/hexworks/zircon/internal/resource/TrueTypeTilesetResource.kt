@@ -14,11 +14,11 @@ internal class TrueTypeTilesetResource(
     override val height: Int,
     override val path: String,
     override val resourceType: ResourceType,
-    val name: String = ""
+    override val title: String
 ) : BaseTilesetResource() {
 
     override val tileType: TileType = TileType.CHARACTER_TILE
     override val tilesetType: TilesetType = TilesetType.TrueTypeFont
 
-    override fun toString() = name.ifBlank { super.toString() }
+    override fun toString() = title.ifBlank { super.toString() }
 }

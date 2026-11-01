@@ -13,34 +13,42 @@ import org.hexworks.zircon.api.screen.Screen
  * returns what to display; it is given the [ExampleContext] of the area below the tabs.
  * [name] is what the tab shows, so keep it short (13 characters fit).
  */
-public class Example(
-    public val name: String,
+class Example(
+    val name: String,
     /** `false` when the example draws graphical tiles, which a terminal cannot show. */
-    public val textOnly: Boolean = true,
-    public val build: (ExampleContext) -> ExampleView,
+    val textOnly: Boolean = true,
+    val build: (ExampleContext) -> ExampleView,
 )
 
 /** A group of examples: one horizontal tab, its examples in the vertical bar. */
-public class ExamplePackage(public val name: String, public val examples: List<Example>)
+class ExampleGroup(
+    val name: String,
+    val examples: List<Example>
+)
 
 /**
  * Where an example draws: the [screen] it lives on and the [contentSize] of its area.
  * [assets] holds the data files every launcher preloads.
  */
-public class ExampleContext(
-    public val screen: Screen,
-    public val contentSize: Size,
-    public val assets: Assets,
+class ExampleContext(
+    val screen: Screen,
+    val contentSize: Size,
+    val assets: Assets,
 ) {
     /** An empty panel of the content size, for examples that draw with layers instead. */
-    public fun emptyContent(): Component = panel { preferredSize = this@ExampleContext.contentSize }
+    fun emptyContent(): Component = panel { preferredSize = this@ExampleContext.contentSize }
 }
 
 /**
  * What an example shows: its [content] component; [layers] the app adds to the screen while
- * the example is visible and removes when it is not; [onFrame], called before every frame
- * while visible; [onShown] and [onHidden] for anything else that must start and stop with
- * visibility (animations, timers).
+ * the example is visible and removes when it is not; [onShown] and [onHidden] for anything
+ * else that must start and stop with visibility (animations, timers).
+ *
+ * [onFrame] is called before every frame while the example is visible, on the thread that
+ * renders. It is the place for logic that has to keep step with rendering (a game tick,
+ * a benchmark that redraws every frame) without a thread or timer of its own: Zircon does
+ * not run a loop, the renderer host does, and [ExamplesScreen.onFrame] forwards its tick
+ * to the shown example. Keep it cheap, it runs on every frame.
  */
 public class ExampleView(
     public val content: Component,

@@ -81,7 +81,7 @@ public val logoExample: Example = Example("Logo") { context ->
     )
 }
 
-public val animationExamples: List<Example> = listOf(skullExample, logoExample)
+val animationExamples: List<Example> = listOf(skullExample, logoExample)
 
 private val SKULL_SIZE = Size(13, 24)
 private val LOGO_SIZE = Size(59, 27)

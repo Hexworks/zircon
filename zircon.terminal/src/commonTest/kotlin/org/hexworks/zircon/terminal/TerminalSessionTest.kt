@@ -18,7 +18,7 @@ class TerminalSessionTest {
 
     private fun grid() = tileGrid {
         size = Size(4, 2)
-        tileset = loadCP437TilesetResource(8, 8, "x.png", ResourceType.PROJECT)
+        tileset = loadCP437TilesetResource(8, 8, "x.png", ResourceType.PROJECT, title = "x")
     }
 
     private fun session(tty: FakeTty, grid: org.hexworks.zircon.api.grid.TileGrid = grid()) =
