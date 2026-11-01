@@ -26,6 +26,12 @@ public interface Tty {
     /** Writes the first [length] bytes of [bytes] and flushes. */
     public fun write(bytes: ByteArray, length: Int)
 
+    /**
+     * Writes [text] to the error stream. Only safe once the alternate screen was left:
+     * on a terminal the error stream is the same screen as the output.
+     */
+    public fun writeError(text: String)
+
     /** `true` once since the last call when the terminal was resized. */
     public fun takeResize(): Boolean
 

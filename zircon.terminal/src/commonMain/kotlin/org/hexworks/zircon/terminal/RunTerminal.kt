@@ -1,5 +1,6 @@
 package org.hexworks.zircon.terminal
 
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -29,6 +30,11 @@ public val CTRL_C: KeyboardEventMatcher =
  * so pass an empty [quitKeys] to handle it yourself. [beforeFrame] runs before every
  * render, on the loop's thread. Returns the finished [TerminalSession] with its frame
  * statistics.
+ *
+ * Log statements written while the grid is on screen would scribble over it, so when the
+ * application installed no [LoggerFactory.sink] of its own they are held back and printed
+ * to the error stream once the terminal is restored. An application that did install one
+ * keeps it, and must route the statements away from the terminal itself.
  */
 public fun runTerminal(
     tileGrid: TileGrid,
@@ -83,6 +89,7 @@ public class TerminalSession(
 
     public fun run() {
         tty.open()
+        val heldLogs = holdLogs()
         var failure: Throwable? = null
         try {
             handshake()
@@ -97,9 +104,23 @@ public class TerminalSession(
             } finally {
                 tty.close()
                 renderer.close()
+                releaseLogs(heldLogs)
             }
         }
         failure?.let { throw it }
+    }
+
+    /** Diverts the default log sink into a buffer; returns `null` when the application has its own sink. */
+    private fun holdLogs(): BufferedLogSink? {
+        if (LoggerFactory.sink !== LoggerFactory.defaultSink) return null
+        return BufferedLogSink().also { LoggerFactory.sink = it }
+    }
+
+    /** Puts the default sink back and prints what was held, now that the screen is sane. */
+    private fun releaseLogs(held: BufferedLogSink?) {
+        if (held == null) return
+        if (LoggerFactory.sink === held) LoggerFactory.sink = LoggerFactory.defaultSink
+        held.drain()?.let { tty.writeError(it) }
     }
 
     private fun handshake() {

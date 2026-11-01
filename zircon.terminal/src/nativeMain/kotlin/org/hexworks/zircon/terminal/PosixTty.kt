@@ -19,6 +19,7 @@ import platform.posix.SIGTERM
 import platform.posix.SIGWINCH
 import platform.posix.SIG_DFL
 import platform.posix.STDIN_FILENO
+import platform.posix.STDERR_FILENO
 import platform.posix.STDOUT_FILENO
 import platform.posix.TCSAFLUSH
 import platform.posix.TIOCGWINSZ
@@ -95,11 +96,18 @@ internal class PosixTty : Tty {
         if (n <= 0) -1 else n.toInt()
     }
 
-    override fun write(bytes: ByteArray, length: Int) {
+    override fun write(bytes: ByteArray, length: Int) = writeAll(STDOUT_FILENO, bytes, length)
+
+    override fun writeError(text: String) {
+        val bytes = text.encodeToByteArray()
+        writeAll(STDERR_FILENO, bytes, bytes.size)
+    }
+
+    private fun writeAll(fd: Int, bytes: ByteArray, length: Int) {
         var offset = 0
         bytes.usePinned { pinned ->
             while (offset < length) {
-                val n = write(STDOUT_FILENO, pinned.addressOf(offset), (length - offset).convert())
+                val n = write(fd, pinned.addressOf(offset), (length - offset).convert())
                 if (n < 0) {
                     if (errno == EINTR) continue
                     error("write to the terminal failed (errno $errno)")

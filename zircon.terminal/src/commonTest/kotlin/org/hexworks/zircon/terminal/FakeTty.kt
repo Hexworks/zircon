@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.data.Size
 /**
  * A scripted terminal: each [read] hands out the next chunk of [reads]; once they run out
  * the next [idleReads] calls time out and the one after reports end of input. Everything
- * written is kept in [output].
+ * written is kept in [output], everything written to the error stream in [errorText].
  */
 internal class FakeTty(
     private var size: Size = Size(80, 24),
@@ -21,8 +21,11 @@ internal class FakeTty(
     var resize = false
     override var terminateRequested: Boolean = false
 
+    private val errors = StringBuilder()
+
     val output: ByteArray get() = written.toByteArray()
     val outputText: String get() = output.decodeToString().readable()
+    val errorText: String get() = errors.toString()
 
     override fun open() {
         opened = true
@@ -50,6 +53,10 @@ internal class FakeTty(
 
     override fun write(bytes: ByteArray, length: Int) {
         for (i in 0 until length) written.byte(bytes[i].toInt())
+    }
+
+    override fun writeError(text: String) {
+        errors.append(text)
     }
 
     override fun takeResize(): Boolean = resize.also { resize = false }

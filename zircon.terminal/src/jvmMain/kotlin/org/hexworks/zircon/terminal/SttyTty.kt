@@ -62,6 +62,11 @@ internal class SttyTty : Tty {
         output.flush()
     }
 
+    override fun writeError(text: String) {
+        System.err.print(text)
+        System.err.flush()
+    }
+
     override fun takeResize(): Boolean {
         val pending = resizePending
         resizePending = false

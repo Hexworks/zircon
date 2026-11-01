@@ -104,7 +104,6 @@ public class TextEditor private constructor(
     public fun undo(): Boolean = if (historyIdx >= 0) {
         // in case historyIdx is 0 this will return an empty list
         // TODO: need to test this though!
-        println("history size: ${history.size}, idx: $historyIdx")
         state = history.subList(0, historyIdx)
             .fold(oldState) { state, tx -> tx.apply(state) }
         historyIdx--

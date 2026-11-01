@@ -4,7 +4,10 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldEndWith
+import io.kotest.matchers.string.shouldNotContain
 import io.kotest.matchers.string.shouldStartWith
+import org.hexworks.cobalt.logging.api.LogSink
+import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.loadCP437TilesetResource
@@ -42,6 +45,35 @@ class TerminalSessionTest {
         text shouldContain "␛[?1049h␛[?25l␛[>31u␛[?1003h␛[?1006h"
         text shouldContain "␛[2J"
         text shouldEndWith "␛[?1003l␛[?1006l␛[<u␛[0m␛[?25h␛[?1049l"
+    }
+
+    @Test
+    fun holdsLogsBackUntilTheTerminalIsRestored() {
+        val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c")), idleReads = 100)
+        val grid = grid()
+        val session = TerminalSession(grid, 1000, emptySet(), beforeFrame = {
+            LoggerFactory.getLogger("test").error { "boom" }
+            tty.errorText shouldBe ""
+            grid.close()
+        }, tty = tty)
+        session.run()
+        tty.outputText shouldNotContain "boom"
+        tty.errorText shouldBe "[ERROR] test: boom\n"
+        LoggerFactory.sink shouldBe LoggerFactory.defaultSink
+    }
+
+    @Test
+    fun leavesAnInstalledLogSinkAlone() {
+        val own = LogSink { _, _, _, _ -> }
+        LoggerFactory.sink = own
+        try {
+            val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c")), idleReads = 2)
+            session(tty).run()
+            LoggerFactory.sink shouldBe own
+            tty.errorText shouldBe ""
+        } finally {
+            LoggerFactory.sink = LoggerFactory.defaultSink
+        }
     }
 
     @Test

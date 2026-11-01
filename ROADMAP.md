@@ -25,6 +25,15 @@ Planned shape:
 - Effects that are too expensive per pixel get pre-baked **atlas variants** (a second sprite
   sheet with the effect applied once at load time) and are selected by atlas id instead.
 
+## Live logging from the terminal renderer
+
+`runTerminal` holds log statements back while the alternate screen is active and prints them
+to the error stream on exit, since any output during the run would scribble over the frame.
+Watching a long session live is not possible that way. Planned shape: a `runTerminal` parameter
+(or a `LogSink` the app installs) that writes to the error stream when it is redirected to a
+file, and falls back to holding the lines back when it is the terminal itself. Needs an
+`isatty` check on both the native and the JVM side.
+
 ## Android target for `zircon.compose` (2.1)
 
 `zircon.compose` ships for JVM and wasmJs in 2.0. Android needs `RuntimeShader`, which is API
