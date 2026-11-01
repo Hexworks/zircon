@@ -6,6 +6,11 @@ pluginManagement {
     }
 }
 
+plugins {
+    // Lets Compose Hot Reload fetch the JetBrains Runtime it runs the app on.
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 dependencyResolutionManagement {
     repositories {
         google()
