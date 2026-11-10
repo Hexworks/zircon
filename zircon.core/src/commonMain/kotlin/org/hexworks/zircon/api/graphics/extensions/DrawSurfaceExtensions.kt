@@ -1,12 +1,15 @@
 package org.hexworks.zircon.api.graphics.extensions
 
+import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Position.Companion.ZERO
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.data.extensions.fetchPositions
 import org.hexworks.zircon.api.extensions.isNotEmpty
+import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawSurface
+import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.TileComposite
 import org.hexworks.zircon.api.graphics.TileGraphics
@@ -93,3 +96,58 @@ public fun DrawSurface.fill(filler: Tile) {
     }
 }
 
+
+/**
+ * Draws the outline of a box onto this [DrawSurface] using the glyphs of the given [boxType]
+ * and the given [style]. The box occupies the area starting at [position] with the given [size],
+ * which is the whole surface by default. Only the border is drawn, the interior is left untouched.
+ */
+public fun DrawSurface.drawBox(
+    boxType: BoxType,
+    style: StyleSet = StyleSet.defaultStyle(),
+    position: Position = ZERO,
+    size: Size = this.size
+): Unit = draw(boxTiles(boxType, style, size), position, size)
+
+/**
+ * Same as [DrawSurface.drawBox], for a [DrawWindow].
+ */
+public fun DrawWindow.drawBox(
+    boxType: BoxType,
+    style: StyleSet = StyleSet.defaultStyle(),
+    position: Position = ZERO,
+    size: Size = this.size
+): Unit = draw(boxTiles(boxType, style, size), position, size)
+
+/**
+ * Creates the [Tile]s of the outline of a box of the given [size] using the glyphs of
+ * [boxType] and the given [style], keyed by their position relative to the top left corner.
+ */
+public fun boxTiles(
+    boxType: BoxType,
+    style: StyleSet = StyleSet.defaultStyle(),
+    size: Size
+): Map<Position, Tile> {
+    if (size.width < 1 || size.height < 1) return emptyMap()
+    val vertical = characterTile {
+        styleSet = style
+        character = boxType.vertical
+    }
+    val horizontal = vertical.withCharacter(boxType.horizontal)
+    val right = size.width - 1
+    val bottom = size.height - 1
+    val tiles = mutableMapOf<Position, Tile>()
+    for (x in 1 until right) {
+        tiles[Position(x, 0)] = horizontal
+        tiles[Position(x, bottom)] = horizontal
+    }
+    for (y in 1 until bottom) {
+        tiles[Position(0, y)] = vertical
+        tiles[Position(right, y)] = vertical
+    }
+    tiles[Position(0, 0)] = vertical.withCharacter(boxType.topLeft)
+    tiles[Position(right, 0)] = vertical.withCharacter(boxType.topRight)
+    tiles[Position(0, bottom)] = vertical.withCharacter(boxType.bottomLeft)
+    tiles[Position(right, bottom)] = vertical.withCharacter(boxType.bottomRight)
+    return tiles
+}

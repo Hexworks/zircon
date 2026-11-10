@@ -5,7 +5,6 @@ import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.HasTitle
 import org.hexworks.zircon.api.behavior.TitleOverride
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.graphics.box
 import org.hexworks.zircon.api.component.renderer.*
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Alignment
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode
@@ -22,6 +21,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.withRelativeX
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawWindow
+import org.hexworks.zircon.api.graphics.extensions.drawBox
 
 public data class BoxDecorationRenderer(
     val boxType: BoxType = BoxType.SINGLE,
@@ -42,15 +42,7 @@ public data class BoxDecorationRenderer(
         } else titleProperty.value
         val size = drawWindow.size
         val style = context.fetchStyleFor(renderingMode)
-        val boxType = this.boxType
-        drawWindow.draw(
-            box {
-                this.boxType = boxType
-                this.size = size
-                this.style = style
-                tileset = context.component.tileset
-            }
-        )
+        drawWindow.drawBox(boxType = boxType, style = style)
         if (size.width > 4) {
             if (finalTitle.isNotBlank()) {
                 val cleanText = if (finalTitle.length > size.width - 4) {
