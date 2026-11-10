@@ -152,32 +152,39 @@ suspend fun examplesScreen(
         preferredSize = Size(size.width, HEADER_HEIGHT)
         componentRenderer = NoOpComponentRenderer()
         decorations { +margin(1, 1) }
+        spacing = 2
         if (isTerminal.not()) {
-            label { +"Tile size" }
-            selector {
-                width = TILE_SIZE_SELECTOR_WIDTH
-                valueList = TILE_SIZES
-                selectedProperty = tileSizeProperty
-                toStringMethod = { "${it.width}×${it.height}" }
+            hBox {
+                spacing = 1
+                label { +"Tile size" }
+                selector {
+                    width = TILE_SIZE_SELECTOR_WIDTH
+                    valueList = TILE_SIZES
+                    selectedProperty = tileSizeProperty
+                    toStringMethod = { "${it.width}x${it.height}" }
+                }
             }
-            label { +" " }
 
-            label { +"Tileset" }
+            hBox {
+                spacing = 1
+                label { +"Tileset" }
+                selector {
+                    width = SELECTOR_WIDTH
+                    valueList = tilesetsFor(tileSize)
+                    selectedProperty = tilesetProperty
+                    toStringMethod = { it.title }
+                }
+            }
+        }
+        hBox {
+            spacing = 1
+            label { +"Theme" }
             selector {
                 width = SELECTOR_WIDTH
-                valueList = tilesetsFor(tileSize)
-                selectedProperty = tilesetProperty
-                toStringMethod = { it.title }
+                valueList = THEMES
+                selectedProperty = themeProperty
+                toStringMethod = { it.name }
             }
-            label { +" " }
-        }
-
-        label { +"Theme" }
-        selector {
-            width = SELECTOR_WIDTH
-            valueList = THEMES
-            selectedProperty = themeProperty
-            toStringMethod = { it.name }
         }
     }
     screen.addComponent(header)

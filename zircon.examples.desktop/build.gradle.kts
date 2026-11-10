@@ -22,6 +22,7 @@ kotlin {
             implementation(project(":zircon.examples.compose"))
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.compose.hot.reload.runtime.api)
         }
     }
 }

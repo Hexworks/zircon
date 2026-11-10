@@ -57,9 +57,14 @@ import org.hexworks.zircon.examples.resources.Res
  * on every frame of Compose's frame clock and feeds pointer and key events to the grid.
  * Its `beforeFrame` runs right before each render; the screen's `onFrame` goes there so
  * the fps counter and the shown example's per-frame logic run in step with drawing.
+ *
+ * [rebuildKey] is a third trigger for the launcher to pull: a change rebuilds the screen
+ * like a resize does. The desktop launcher bumps it after every Compose Hot Reload, since
+ * the Zircon components were built by the old code and a reload alone does not rerun
+ * [examplesScreen].
  */
 @Composable
-fun ExamplesApp() {
+fun ExamplesApp(rebuildKey: Any? = null) {
     // Bumped when the tile size changes; a produceState key, so bumping it rebuilds the screen.
     var generation by remember { mutableIntStateOf(0) }
 
@@ -68,7 +73,7 @@ fun ExamplesApp() {
         val heightPx = constraints.maxHeight
 
         // null until the first build; the keys restart the producer, the state survives.
-        val shown by produceState<ExamplesScreen?>(null, generation, widthPx, heightPx) {
+        val shown by produceState<ExamplesScreen?>(null, generation, rebuildKey, widthPx, heightPx) {
             delay(RESIZE_DEBOUNCE_MS) // a window drag reports many sizes; build the last one
             installResources()
             val previous = value

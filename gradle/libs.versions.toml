@@ -20,6 +20,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 cobalt-core = { module = "org.hexworks.cobalt:cobalt.core", version.ref = "cobalt" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+compose-hot-reload-runtime-api = { module = "org.jetbrains.compose.hot-reload:hot-reload-runtime-api", version.ref = "composeHotReload" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
