@@ -159,6 +159,10 @@ public final class org/hexworks/zircon/api/ComponentDecorations {
 	public final fun margin (I)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
 	public final fun margin (II)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
 	public final fun margin (IIII)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
+	public final fun marginBottom (I)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
+	public final fun marginLeft (I)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
+	public final fun marginRight (I)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
+	public final fun marginTop (I)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
 	public final fun noDecoration ()Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
 	public final fun shadow ()Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
 	public final fun side (CCLorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer$RenderingMode;)Lorg/hexworks/zircon/api/component/renderer/ComponentDecorationRenderer;
@@ -182,10 +186,10 @@ public final class org/hexworks/zircon/api/REXPaintResourcesKt {
 }
 
 public final class org/hexworks/zircon/api/TilesetsKt {
-	public static final fun loadCP437TilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;)Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public static final fun loadFontTilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;)Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public static final fun loadGraphicalTilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;)Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public static final fun loadImageDictionaryTilesetResource (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;)Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public static final fun loadCP437TilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;Ljava/lang/String;)Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public static final fun loadFontTilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;Ljava/lang/String;)Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public static final fun loadGraphicalTilesetResource (IILjava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;Ljava/lang/String;)Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public static final fun loadImageDictionaryTilesetResource (Ljava/lang/String;Lorg/hexworks/zircon/api/resource/ResourceType;Ljava/lang/String;)Lorg/hexworks/zircon/api/resource/TilesetResource;
 }
 
 public final class org/hexworks/zircon/api/TrueTypeFontResources {
@@ -1279,6 +1283,51 @@ public final class org/hexworks/zircon/api/builder/fragment/HorizontalTabBarBuil
 	public static final fun horizontalTabBar (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/TabBar;
 }
 
+public final class org/hexworks/zircon/api/builder/fragment/MatrixTabBarBuilder : org/hexworks/zircon/api/fragment/builder/FragmentBuilder {
+	public fun <init> ()V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lorg/hexworks/zircon/api/fragment/MatrixTabBar;
+	public final fun getContentSize ()Lorg/hexworks/zircon/api/data/Size;
+	public final fun getDefaultHorizontal ()Ljava/lang/String;
+	public final fun getDefaultVertical ()Ljava/lang/String;
+	public fun getPosition ()Lorg/hexworks/zircon/api/data/Position;
+	public final fun getPrimary ()Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;
+	public final fun getSize ()Lorg/hexworks/zircon/api/data/Size;
+	public final fun getTabWidth ()I
+	public final fun horizontalTab (Lkotlin/jvm/functions/Function1;)V
+	public final fun setDefaultHorizontal (Ljava/lang/String;)V
+	public final fun setDefaultVertical (Ljava/lang/String;)V
+	public fun setPosition (Lorg/hexworks/zircon/api/data/Position;)V
+	public final fun setPrimary (Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;)V
+	public final fun setSize (Lorg/hexworks/zircon/api/data/Size;)V
+	public final fun setTabWidth (I)V
+	public final fun verticalTab (Lkotlin/jvm/functions/Function1;)V
+	public final fun view (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class org/hexworks/zircon/api/builder/fragment/MatrixTabBarBuilderKt {
+	public static final fun matrixTabBar (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/MatrixTabBar;
+	public static final fun matrixTabBar (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/MatrixTabBar;
+}
+
+public final class org/hexworks/zircon/api/builder/fragment/MatrixTabBuilder {
+	public fun <init> ()V
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun setKey (Ljava/lang/String;)V
+	public final fun setLabel (Ljava/lang/String;)V
+}
+
+public final class org/hexworks/zircon/api/builder/fragment/MatrixViewBuilder {
+	public fun <init> ()V
+	public final fun getContent ()Lorg/hexworks/zircon/api/component/Component;
+	public final fun getHorizontal ()Ljava/lang/String;
+	public final fun getVertical ()Ljava/lang/String;
+	public final fun setContent (Lorg/hexworks/zircon/api/component/Component;)V
+	public final fun setHorizontal (Ljava/lang/String;)V
+	public final fun setVertical (Ljava/lang/String;)V
+}
+
 public final class org/hexworks/zircon/api/builder/fragment/MenuBarBuilder : org/hexworks/zircon/api/fragment/builder/FragmentBuilder {
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
@@ -1309,6 +1358,7 @@ public final class org/hexworks/zircon/api/builder/fragment/MenuBarBuilderKt {
 }
 
 public final class org/hexworks/zircon/api/builder/fragment/SelectorBuilder : org/hexworks/zircon/api/fragment/builder/FragmentBuilder {
+	public field selectedProperty Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
 	public fun build ()Lorg/hexworks/zircon/api/fragment/Selector;
@@ -1325,6 +1375,7 @@ public final class org/hexworks/zircon/api/builder/fragment/SelectorBuilder : or
 	public final fun setClickableLabel (Z)V
 	public final fun setDefaultSelected (Ljava/lang/Object;)V
 	public fun setPosition (Lorg/hexworks/zircon/api/data/Position;)V
+	public final fun setSelectedProperty (Lorg/hexworks/cobalt/databinding/api/property/Property;)V
 	public final fun setToStringMethod (Lkotlin/jvm/functions/Function1;)V
 	public final fun setValueList (Ljava/util/List;)V
 	public final fun setValuesProperty (Lorg/hexworks/cobalt/databinding/api/collection/ListProperty;)V
@@ -1438,25 +1489,6 @@ public final class org/hexworks/zircon/api/builder/game/GameAreaBuilder : org/he
 
 public final class org/hexworks/zircon/api/builder/game/GameAreaBuilderKt {
 	public static final fun gameArea (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/game/GameArea;
-}
-
-public final class org/hexworks/zircon/api/builder/graphics/BoxBuilder : org/hexworks/zircon/api/builder/Builder {
-	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/graphics/Box;
-	public final fun getBoxType ()Lorg/hexworks/zircon/api/graphics/BoxType;
-	public final fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public final fun getStyle ()Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun setBoxType (Lorg/hexworks/zircon/api/graphics/BoxType;)V
-	public final fun setSize (Lorg/hexworks/zircon/api/data/Size;)V
-	public final fun setStyle (Lorg/hexworks/zircon/api/graphics/StyleSet;)V
-	public final fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
-}
-
-public final class org/hexworks/zircon/api/builder/graphics/BoxBuilderKt {
-	public static final fun box (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/graphics/Box;
-	public static final fun withStyleSet (Lorg/hexworks/zircon/api/builder/graphics/BoxBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/builder/graphics/BoxBuilder;
 }
 
 public final class org/hexworks/zircon/api/builder/graphics/CharacterTileStringBuilder : org/hexworks/zircon/api/builder/Builder {
@@ -3438,6 +3470,30 @@ public final class org/hexworks/zircon/api/extensions/TileGridExtensionsKt {
 	public static final fun toScreen (Lorg/hexworks/zircon/api/grid/TileGrid;)Lorg/hexworks/zircon/api/screen/Screen;
 }
 
+public abstract interface class org/hexworks/zircon/api/fragment/MatrixTabBar : org/hexworks/zircon/api/component/Fragment {
+	public fun getSelectedHorizontalKey ()Ljava/lang/String;
+	public abstract fun getSelectedHorizontalKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getSelectedVerticalKey ()Ljava/lang/String;
+	public abstract fun getSelectedVerticalKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun setSelectedHorizontalKey (Ljava/lang/String;)V
+	public fun setSelectedVerticalKey (Ljava/lang/String;)V
+}
+
+public final class org/hexworks/zircon/api/fragment/MatrixTabBar$DefaultImpls {
+	public static fun getSelectedHorizontalKey (Lorg/hexworks/zircon/api/fragment/MatrixTabBar;)Ljava/lang/String;
+	public static fun getSelectedVerticalKey (Lorg/hexworks/zircon/api/fragment/MatrixTabBar;)Ljava/lang/String;
+	public static fun setSelectedHorizontalKey (Lorg/hexworks/zircon/api/fragment/MatrixTabBar;Ljava/lang/String;)V
+	public static fun setSelectedVerticalKey (Lorg/hexworks/zircon/api/fragment/MatrixTabBar;Ljava/lang/String;)V
+}
+
+public final class org/hexworks/zircon/api/fragment/MatrixTabBar$Orientation : java/lang/Enum {
+	public static final field HORIZONTAL Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;
+	public static final field VERTICAL Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;
+	public static fun values ()[Lorg/hexworks/zircon/api/fragment/MatrixTabBar$Orientation;
+}
+
 public abstract interface class org/hexworks/zircon/api/fragment/MenuBar : org/hexworks/zircon/api/component/Fragment {
 	public abstract fun onMenuItemSelected (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 }
@@ -3618,19 +3674,16 @@ public abstract interface class org/hexworks/zircon/api/game/RendererFactory {
 	public abstract fun createRenderer ()Lorg/hexworks/zircon/api/game/GameAreaRenderer;
 }
 
-public abstract interface class org/hexworks/zircon/api/graphics/Box : org/hexworks/zircon/api/graphics/TileGraphics {
-	public abstract fun getBoxType ()Lorg/hexworks/zircon/api/graphics/BoxType;
-}
-
-public final class org/hexworks/zircon/api/graphics/Box$DefaultImpls {
-	public static fun getTileAtOrElse (Lorg/hexworks/zircon/api/graphics/Box;Lorg/hexworks/zircon/api/data/Position;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/Tile;
-	public static fun getTileAtOrNull (Lorg/hexworks/zircon/api/graphics/Box;Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Tile;
-}
-
 public final class org/hexworks/zircon/api/graphics/BoxType : java/lang/Enum {
 	public static final field BASIC Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field DASHED Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field DOTTED Lorg/hexworks/zircon/api/graphics/BoxType;
 	public static final field DOUBLE Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field HEAVY Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field HEAVY_DASHED Lorg/hexworks/zircon/api/graphics/BoxType;
 	public static final field LEFT_RIGHT_DOUBLE Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field ROUNDED Lorg/hexworks/zircon/api/graphics/BoxType;
+	public static final field ROUNDED_DASHED Lorg/hexworks/zircon/api/graphics/BoxType;
 	public static final field SINGLE Lorg/hexworks/zircon/api/graphics/BoxType;
 	public static final field TOP_BOTTOM_DOUBLE Lorg/hexworks/zircon/api/graphics/BoxType;
 	public final fun getBottomLeft ()C
@@ -3931,11 +3984,17 @@ public final class org/hexworks/zircon/api/graphics/TileImage$DefaultImpls {
 
 public final class org/hexworks/zircon/api/graphics/extensions/DrawSurfaceExtensionsKt {
 	public static final fun applyStyle (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/StyleSet;)V
+	public static final fun boxTiles (Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Size;)Ljava/util/Map;
+	public static synthetic fun boxTiles$default (Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Size;ILjava/lang/Object;)Ljava/util/Map;
 	public static final fun draw (Lorg/hexworks/zircon/api/graphics/DrawSurface;Ljava/util/Map;)V
 	public static final fun draw (Lorg/hexworks/zircon/api/graphics/DrawSurface;Ljava/util/Map;Lorg/hexworks/zircon/api/data/Position;)V
 	public static final fun draw (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/TileComposite;)V
 	public static final fun draw (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/TileComposite;Lorg/hexworks/zircon/api/data/Position;)V
 	public static final fun draw (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/TileComposite;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;)V
+	public static final fun drawBox (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;)V
+	public static final fun drawBox (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;)V
+	public static synthetic fun drawBox$default (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;ILjava/lang/Object;)V
+	public static synthetic fun drawBox$default (Lorg/hexworks/zircon/api/graphics/DrawWindow;Lorg/hexworks/zircon/api/graphics/BoxType;Lorg/hexworks/zircon/api/graphics/StyleSet;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;ILjava/lang/Object;)V
 	public static final fun fill (Lorg/hexworks/zircon/api/graphics/DrawSurface;Lorg/hexworks/zircon/api/data/Tile;)V
 }
 
@@ -56325,7 +56384,7 @@ public final class org/hexworks/zircon/api/resource/ResourcesKt {
 	public static final fun loadBytes (Lorg/hexworks/zircon/api/resource/Resource;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public abstract interface class org/hexworks/zircon/api/resource/TilesetResource : org/hexworks/zircon/api/behavior/Identifiable, org/hexworks/zircon/api/resource/Resource {
+public abstract interface class org/hexworks/zircon/api/resource/TilesetResource : org/hexworks/zircon/api/behavior/HasTitle, org/hexworks/zircon/api/behavior/Identifiable, org/hexworks/zircon/api/resource/Resource {
 	public static final field Companion Lorg/hexworks/zircon/api/resource/TilesetResource$Companion;
 	public fun checkCompatibilityWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
 	public abstract fun getHeight ()I
@@ -56352,6 +56411,7 @@ public final class org/hexworks/zircon/api/resource/TilesetResource$Companion$UN
 	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
 	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
 	public fun getTilesetType ()Lorg/hexworks/zircon/api/resource/TilesetType;
+	public fun getTitle ()Ljava/lang/String;
 	public fun getWidth ()I
 	public fun isCompatibleWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
 	public fun isNotUnknown ()Z
@@ -57998,6 +58058,7 @@ public class org/hexworks/zircon/internal/component/impl/DefaultHBox : org/hexwo
 	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
 	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/internal/component/InternalAttachedComponent;
 	public fun convertColorTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
+	public fun detachAllComponents ()Ljava/util/List;
 	public fun getRemainingSpace ()I
 	public fun getTitle ()Ljava/lang/String;
 	public fun getTitleProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
@@ -58213,6 +58274,7 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultVBox : org
 	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
 	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/internal/component/InternalAttachedComponent;
 	public fun convertColorTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
+	public fun detachAllComponents ()Ljava/util/List;
 	public fun getRemainingSpace ()I
 	public fun getTitle ()Ljava/lang/String;
 	public fun getTitleProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
@@ -59106,6 +59168,21 @@ public final class org/hexworks/zircon/internal/fragment/impl/DefaultHorizontalT
 	public fun setSelectedKey (Ljava/lang/String;)V
 }
 
+public final class org/hexworks/zircon/internal/fragment/impl/DefaultMatrixTabBar : org/hexworks/zircon/api/fragment/MatrixTabBar {
+	public static final field SCROLL_TAB_WIDTH I
+	public static final field STRIP_HEIGHT I
+	public fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
+	public fun getSelectedHorizontalKey ()Ljava/lang/String;
+	public fun getSelectedHorizontalKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getSelectedVerticalKey ()Ljava/lang/String;
+	public fun getSelectedVerticalKeyProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public final fun getShownContent ()Lorg/hexworks/zircon/api/component/Component;
+	public final fun getVisibleHorizontalTabs ()Ljava/util/List;
+	public final fun getVisibleVerticalTabs ()Ljava/util/List;
+	public fun setSelectedHorizontalKey (Ljava/lang/String;)V
+	public fun setSelectedVerticalKey (Ljava/lang/String;)V
+}
+
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultMenuBar : org/hexworks/zircon/api/fragment/MenuBar {
 	public synthetic fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/HBox;
@@ -59296,24 +59373,6 @@ public final class org/hexworks/zircon/internal/graphics/CharacterTileIterator :
 }
 
 public final class org/hexworks/zircon/internal/graphics/CharacterTileIterator$Companion {
-}
-
-public final class org/hexworks/zircon/internal/graphics/DefaultBox : org/hexworks/zircon/api/graphics/Box, org/hexworks/zircon/api/graphics/TileGraphics {
-	public fun clear ()V
-	public synthetic fun createCopy ()Ljava/lang/Object;
-	public fun createCopy ()Lorg/hexworks/zircon/api/graphics/TileGraphics;
-	public fun draw (Ljava/util/Map;Lorg/hexworks/zircon/api/data/Position;Lorg/hexworks/zircon/api/data/Size;)V
-	public fun draw (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/api/data/Position;)V
-	public fun getBoxType ()Lorg/hexworks/zircon/api/graphics/BoxType;
-	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
-	public fun getTileAtOrElse (Lorg/hexworks/zircon/api/data/Position;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun getTileAtOrNull (Lorg/hexworks/zircon/api/data/Position;)Lorg/hexworks/zircon/api/data/Tile;
-	public fun getTiles ()Ljava/util/Map;
-	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public fun getTilesetProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
-	public fun toString ()Ljava/lang/String;
-	public fun transform (Lkotlin/jvm/functions/Function2;)V
 }
 
 public final class org/hexworks/zircon/internal/graphics/DefaultCharacterTileString : java/lang/Iterable, kotlin/jvm/internal/markers/KMappedMarker, org/hexworks/zircon/api/graphics/CharacterTileString {
@@ -59625,7 +59684,7 @@ public abstract class org/hexworks/zircon/internal/renderer/impl/BaseRenderer : 
 	protected final fun setBeforeRenderData (Lorg/hexworks/zircon/internal/renderer/RenderData;)V
 }
 
-public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource : java/lang/Enum, org/hexworks/zircon/api/resource/TilesetResource {
+public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource : java/lang/Enum, org/hexworks/zircon/api/behavior/HasTitle, org/hexworks/zircon/api/resource/TilesetResource {
 	public static final field ACORN_8X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field ADU_DHABI_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field ANIKKI_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
@@ -59688,6 +59747,7 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 	public fun getSize ()Lorg/hexworks/zircon/api/data/Size;
 	public fun getTileType ()Lorg/hexworks/zircon/api/data/TileType;
 	public fun getTilesetType ()Lorg/hexworks/zircon/api/resource/TilesetType;
+	public fun getTitle ()Ljava/lang/String;
 	public fun getWidth ()I
 	public fun isCompatibleWith (Lorg/hexworks/zircon/api/resource/TilesetResource;)Z
 	public fun isNotUnknown ()Z
@@ -59696,7 +59756,7 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 	public static fun values ()[Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 }
 
-public final class org/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource : java/lang/Enum {
+public final class org/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource : java/lang/Enum, org/hexworks/zircon/api/behavior/HasTitle {
 	public static final field AMSTRAD Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field AMSTRAD_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field ATT Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
@@ -59715,6 +59775,7 @@ public final class org/hexworks/zircon/internal/resource/BuiltInTrueTypeFontReso
 	public static final field VTECH Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field VTECH_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun getTitle ()Ljava/lang/String;
 	public final fun toTilesetResource (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static fun values ()[Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
@@ -59741,6 +59802,7 @@ public final class org/hexworks/zircon/internal/resource/ColorThemeResource : ja
 	public static final field CHERRY_BEAR Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
 	public static final field CURSED_TURKEY Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
 	public static final field CYBERPUNK Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
+	public static final field Companion Lorg/hexworks/zircon/internal/resource/ColorThemeResource$Companion;
 	public static final field DEFAULT Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
 	public static final field DISCORD Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
 	public static final field ENTRAPPED_IN_A_PALETTE Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
@@ -59808,6 +59870,10 @@ public final class org/hexworks/zircon/internal/resource/ColorThemeResource : ja
 	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
 	public static fun values ()[Lorg/hexworks/zircon/internal/resource/ColorThemeResource;
+}
+
+public final class org/hexworks/zircon/internal/resource/ColorThemeResource$Companion {
+	public final fun getALL_THEMES ()Ljava/util/List;
 }
 
 public final class org/hexworks/zircon/internal/resource/ColorThemeResource$SolarizedBase : java/lang/Enum {

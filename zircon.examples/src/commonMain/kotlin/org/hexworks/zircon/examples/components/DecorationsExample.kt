@@ -51,21 +51,21 @@ private fun addDecorated(box: VBox, renderingMode: RenderingMode) {
     })
     box.addComponent(checkBox {
         +"Check Me!"
-        decorations { +box(BoxType.SINGLE, "", renderingMode) }
+        decorations { +box(BoxType.ROUNDED, "", renderingMode) }
     })
     box.addComponent(toggleButton {
         +"Toggle Me!"
-        decorations { +box(BoxType.BASIC, "", renderingMode) }
+        decorations { +box(BoxType.HEAVY, "", renderingMode) }
     })
     val a = radioButton {
         +"Press A!"
-        decorations { +box(BoxType.DOUBLE, "", renderingMode) }
+        decorations { +box(BoxType.DASHED, "", renderingMode) }
         key = "a"
     }
     box.addComponent(a)
     val b = radioButton {
         +"Press B!"
-        decorations { +box(BoxType.DOUBLE, "", renderingMode) }
+        decorations { +box(BoxType.DOTTED, "", renderingMode) }
         key = "b"
     }
     box.addComponent(b)
@@ -74,13 +74,13 @@ private fun addDecorated(box: VBox, renderingMode: RenderingMode) {
         minValue = 1
         maxValue = 100
         numberOfSteps = box.contentSize.width - 5
-        decorations { +box(BoxType.TOP_BOTTOM_DOUBLE, "Slide Me", renderingMode) }
+        decorations { +box(BoxType.ROUNDED_DASHED, "Slide Me", renderingMode) }
     })
     val bar = progressBar {
         displayPercentValueOfProgress = true
         numberOfSteps = box.contentSize.width - 4
         range = 100
-        decorations { +box(BoxType.TOP_BOTTOM_DOUBLE, "I'm progressing", renderingMode) }
+        decorations { +box(BoxType.HEAVY_DASHED, "I'm progressing", renderingMode) }
     }
     bar.progress = 42.0
     box.addComponent(bar)
