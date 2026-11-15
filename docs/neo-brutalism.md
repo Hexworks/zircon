@@ -19,7 +19,8 @@ move from the 100 shade on 900 text to the 800 shade on 50 text.
 ## Translation table
 
 Every device HyperUI uses has a cell-level equivalent. Shadows need a tileset with the Unicode Block Elements
-(U+2580 to U+259F). Every Nerd Font and CP437 tileset has them.
+(U+2580 to U+259F) and the borders need the heavy box-drawing glyphs (U+250F and friends). A CP437 sheet has only
+`▌ ▀ █` of these, so the theme needs a TrueType or Nerd Font tileset.
 
 | HyperUI                                                              | Tile grid                                                                                           | Fidelity                                                                                                   |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |

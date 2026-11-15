@@ -44,10 +44,11 @@ file, and falls back to holding the lines back when it is the terminal itself. N
 A folder of PNGs as a tileset: one image per tile, addressed by name, so graphical tilesets can
 be assembled without packing a sprite sheet by hand.
 
-## A more flexible component theming model
+## More component themes
 
-Let themes control more than the current fixed set of colour slots, so custom components and
-custom looks do not need to subclass renderers.
+Component themes landed with Neobrutalism (`docs/component-themes.md`). Next: a Solarized component
+theme with the accent variants the colour themes already have, and a Nerd Font tileset bundled with
+the examples so the heavy box drawing and block glyphs the themes use render out of the box.
 
 ## Clipboard
 

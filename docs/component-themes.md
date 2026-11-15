@@ -1,125 +1,127 @@
 # Component Themes
 
-Currently we have `ColorTheme`s in Zircon which is a very limited theming feature: it has fixed 5 colors, and nothing else. What we'd like to achieve is to be able to
+Currently we have `ColorTheme`s in Zircon which is a very limited theming feature: it has fixed 5 colors, and nothing else.
+Component themes let a theme set, for every `Component`:
 
-- set both the `ComponentRenderingStrategy` and the `ComponentStyleSet`s for each `Component` when a theme is switched. This allows for customizing the look and feel of the components, not just the colors
-- allow the theme to set colors on its own for each `Component` based on its `ComponentState` using a `Palette`.
+- the `ComponentRenderingStrategy` (content renderer, decorations, post processors), so the look and feel changes, not
+  just the colors
+- the `ComponentStyleSet` (colors per `ComponentState`), derived from the theme's own palette
 
-## How it works
+The decisions below come from the grill on 2026-11-14. The first theme is Neobrutalism, see
+[neo-brutalism.md](neo-brutalism.md).
 
-Component themes should build on top of the existing functionality. This means that `ColorTheme` and component themes will co-exist until we sunset `ColorTheme`.
+## Model
 
-Component Theme support should be implemented using a creational pattern (abstract factory?). We'll have a pre-selected set of `Component`s and `Fragment`s that we group into an interface, and each concrete component theme will have one of those builder objects, so the user should be able to do something like:
+```
+ComponentTheme  (name, mode, entryFor(role): ThemeEntry?, componentFactory)
+   └── ThemeEntry  (componentRenderer, decorationRenderers, postProcessors, componentStyleSet)
+ComponentRole   enum: BUTTON, BUTTON_PRIMARY, ..., ALERT_PANEL, ALERT_TEXT, ...
+ThemeMode       enum: LIGHT, DARK, SYSTEM
+```
+
+- **Themes are data.** A theme is a map from `ComponentRole` to a `ThemeEntry` plus a palette. There is no per-theme
+  builder factory implementation; one generic `ComponentFactory` serves every theme.
+- **Roles, not types.** Every component carries a `ComponentRole`. Builders default it to the component kind (`BUTTON`,
+  `LABEL`, `PANEL`...). Composite fragments set finer roles on their parts (`ALERT_TEXT`, `BADGE_DISMISS`...), so the
+  theme can style the label inside an alert differently from a plain label. Roles are **semantic** so they port between
+  themes: `BUTTON`, `BUTTON_PRIMARY`, `BUTTON_SECONDARY`, `BUTTON_LINK` rather than "underlined" or "double border".
+  The enum is closed; a custom component falls back to the role its builder gives it.
+- **Theme lives on the `Screen`**, as `componentTheme` (a `Property<ComponentTheme?>`), and propagates to every attached
+  component the same way `ColorTheme` does: `DefaultContainer` binds the child's `componentThemeProperty` to the
+  parent's on attach, honoring `bindingAction`. `ZirconDefaults.componentTheme` is the process-wide default (`null`
+  means the legacy, un-themed path). `TileGrid` is untouched.
+- **ComponentTheme wins over ColorTheme.** When a component has a component theme (own or propagated) its style set
+  comes from the theme and `ColorTheme` changes are ignored. Without a component theme nothing changes, so the two
+  co-exist until `ColorTheme` is sunset.
+- **Switching keeps layout.** A component's outer size is fixed when it is built. On a theme switch the rendering
+  strategy is replaced and `contentOffset` / `contentSize` are recomputed from the new decorations (clamped at zero);
+  a container moves its children along with its content offset. Nothing else moves. Decorations that would leave no
+  content cell at all (a 3-row frame on a 1-row button) are skipped for that component; its renderer and colors still
+  apply. Size components for the heaviest theme you plan to use, or build them through the factory.
+- **No entry, no change.** A role the theme has no entry for keeps the look it was built with and follows the
+  `ColorTheme` as before, so layout-only containers (`ComponentRole.NONE`) and custom components stay as they are.
+- **Explicit beats theme.** Setting `componentRenderer`, `decorationRenderers` or `componentStyleSet` on a builder pins
+  that aspect: the theme fills in the aspects you did not touch and leaves pinned ones alone on every switch.
+- **Variants are theme-specific.** Core knows `name` and `mode` only. Each theme's DSL adds its own knobs
+  (`neobrutalism { mode = DARK }`, later `solarized { mode = DARK; accent = CYAN }`). A generic `Variant` abstraction
+  waits until a second theme needs one.
+- **`ThemeMode.SYSTEM`** is resolved by `SystemThemeDetector`, an `expect`/`actual` utility in core: JVM asks the OS
+  (macOS `defaults read -g AppleInterfaceStyle`, Linux `gsettings`/portal, Windows registry), wasmJs asks
+  `prefers-color-scheme`, native targets do the same per OS. Unknown resolves to `DARK`.
+
+## Usage
 
 ```kt
-val grid = tileGrid {
-    componentTheme = ComponentThemes.tinyBrutalism {
-        theme = ThemeSettings.SYSTEM // LIGHT or DARK too
-    }
-    // ...
-}
+val screen = tileGrid.toScreen()
+screen.componentTheme = ComponentThemes.neobrutalism { mode = ThemeMode.SYSTEM }
 
-val components = tileGrid.componentBuilderFactory
+val components = screen.componentFactory
 
 val button = components.button {
-  // configure the button as before
+    text = "Save"
+    role = ComponentRole.BUTTON_PRIMARY
 }
+val alert = components.alert {
+    kind = AlertKind.SUCCESS
+    text = "Changes saved"
+}
+
+// later
+screen.componentTheme = ComponentThemes.neobrutalism { mode = ThemeMode.LIGHT }
 ```
 
-> [!IMPORTANT]
-> I'm not sure about the naming, we should figure this out when implementing
+`componentFactory` reads the screen's current theme, runs your block, then applies the theme's entry for the builder's
+final role (so `role = BUTTON_PRIMARY` inside the block counts and anything you set explicitly is pinned), and only then
+computes the size, so it includes the theme's decorations. Children built inside a themed builder's block (`button { }`
+inside `components.vBox { }`) inherit the theme the same way, and so do nested fragments. Components built with the plain
+DSL outside any themed builder get themed when they are attached to a themed container, but their size was computed
+for the default decorations, so prefer the factory when sizes matter.
 
-The _builder_ object created this way is an implementation of a `ComponentBuilderFactory` (we should figure out a good name for this) interface that contains a builder function for each supported component:
+Neobrutalism needs a tileset with the heavy box-drawing glyphs and the Unicode block elements (`┏ ━ ▌ ▀ ▘ ▎ ▔ ▂`).
+CP437 sheets have only `▌ ▀ █`, so use a TrueType or Nerd Font tileset.
 
-```kt
-interface ComponentBuilderFactory {
+## Internals
 
-    fun accordion(): AccordionBuilder
-
-    fun alert(): AlertBuilder
-
-    fun badge(): BadgeBuilder
-
-    fun button(): ButtonBuilder
-
-    fun card(): CardBuilder
-
-    fun checkbox(): CheckboxBuilder
-
-    fun input(): InputBuilder
-
-    fun progressBar(): ProgressBarBuilder
-
-    fun select(): SelectBuilder
-
-    // ... etc
-}
-```
-
-When a specific factory function is called (eg: `builder.alert()`) then the way the theme works is that it pre-configures the corresponding component `Builder` with theme specific renderers and decorations. We already have this functionality so we'll just wrap it with the new setup. This is some pseudo-code that shows how it could work internally:
-
-```kt
-button {
-    this.componentRenderer = MyCustomRenderer()
-    this.componentStyleSet = ThisThemesComponmentStyleSet()
-    this.decorationRenderers = listOf(thisRenderer(), thatRenderer())
-}
-```
-
-> [!IMPORTANT]
-> Currently when a component is created its `ComponentStyleSet` and `ComponentRenderingStrategy` is set. The style set can be changed, but the rendering strategy is not. We need to fix this.
-
-### Theme Change
-
-The `ComponentBuilderFactory` should retain a reference to all `Component`s that was built by it. This is necessary because the user can change a component theme by doing:
-
-```kt
-grid.componentTheme = ComponentThemes.solarized {
-    theme = ThemeSettings.SYSTEM // LIGHT or DARK too
-    variant = Solarized.CYAN
-}
-```
-
-When a theme changes for a `grid` its `componentTheme` property is overwritten, and all the `ComponentStyleSet`s and `ComponentRenderingStrategy` objects are replaced for each component by the ones that come from the new theme. This shouldn't be part of the public api (eg: users shouldn't be able to set the style sets and renderers manually), it should be only known for the system components that take part in this abstraction.
-
-## Components vs Fragments
-
-`ComponentBuilderFactory` is not limited to producing `Component`s only. For example `VerticalTabBarBuilder` produces `TabBar`s which are `Fragment`s.
-
-## Variants
-
-We should add the option to choose from `LIGHT` and `DARK` variants (see above in `ThemeSettings`). `SYSTEM` should take a look at the environment and try to figure out what the system theme is.
-
-Some theme can also have `Variant`s. A good example is _Solarized_. We already have `ColorTheme`s that have many Solarized variants that only differ int he accent color.
-
-> [!NOTE]
-> This is something we have to research a bit as I'm not sure how we should implement it.
+- `DefaultComponent.renderer` becomes mutable; `contentOffset`, `contentSize` and `contentBoundsProperty` are derived
+  from the current strategy. Removing the theme (or switching to one without an entry) restores the strategy the
+  component was built with.
+- Propagation is not a plain binding: a parent passes its theme to a child on attach and on change, but a parent
+  *without* a theme does not clear a child's theme that was set explicitly (`componentTheme = x` on the builder or
+  the component). That is how a themed subtree lives inside an unthemed screen (see the examples app).
+- `CommonComponentProperties` tracks which of renderer / decorations / style set the user set explicitly (the pins).
+- On `componentThemeProperty` change the component looks up `theme.entryFor(role)`; a missing entry leaves the component
+  as it is.
+- `ComponentFactory` is one class in core. Composite fragments (`Alert`, `Badge`, `Card`, `Window`, `InputField`,
+  `LabeledProgressBar`, `TextAreaField`) are generic `Fragment`s in core built from roles; themes only supply looks.
+- Neobrutalism lives in core: `org.hexworks.zircon.api.component.theme` (interfaces, `ComponentThemes`) and
+  `org.hexworks.zircon.internal.component.theme.neobrutalism` (renderers).
 
 ## Component Refactoring
 
-Some of the already-existing `Component`s are very similar to each other and they might need some rafactoring to reduce duplication (of code and logic). We need to figure out if it is worth the effort.
+Role based dispatch needs none of the refactors below, so they ship separately. This session adds the single-line
+`Input` component (needed by the Input fragment); the rest are tracked in
+[component-refactoring-handover.md](component-refactoring-handover.md):
 
-- `HBox` and `VBox` are the same interafce and the implementations are mostly duplicated code, the only difference is the implementation of `addComponent` and `reorganizeComponents`
-- `CheckBox`, `RadioButton` and `ToggleButton` are almost the same. The only difference (apart from the visual appearance) between them is the states (`CHECKING`, `CHECKED`, `UNCHECKING`, `UNCHECKED` vs `PRESSED`, `SELECTED`, `NOT_SELECTED` vs plain `Selectable`). In the case of `CheckBox` and `RadioButton` the states are redundant as they are only used for rendering, and they can be calculated from the `isSelected` property and the `ComponentState`. I think these 3 can be collapsed to a single `BinarySelector` component by introducing an `allowUnselect` property (`false` for `RadioButton`). The difference then will be just between the renderers. We can still keep the `checkBox()`/`radioButton()`/`toggleButton()` functions, but they should be parameterizing the same component differently. As for the `RadioButtonGroup`, it should be generalized to an `ExclusiveSelectionGroup`. `Selectable` components can be accepted by the group and it ensures that only `1` component is in the `isSelected` state from the group. We also need to refactor `Selectable` to also include a `key` which has to be unique between elements in a group. To make this backward compatible the `key` should be calculated by default based on the normalized text and disallow creation of the component if no `key` is set or can be derived.
-- `Header`, `Label`, `ListItem` and `Paragraph` are a similar story, but they are only semantically different, and can be implemented from the same component with tifferent renderers. Not sure on the name for the final component though.
-- We have `NumberInput`, but no simple `Input`. I think we should have a simple 1 line input component, and specialized `Fragment`s that add the extra features.
-- `TextArea` is broken currently, the cursor is displayed 1 row above if there are decorations around the `TextArea` and there are other issues with scrolling and typing, we need to fix and test the component
-- `ScrollBar` suffers from similar problems as the `TextArea`
+1. `CheckBox`, `RadioButton`, `ToggleButton` → one `BinarySelector`; `RadioButtonGroup` → `ExclusiveSelectionGroup`;
+   `Selectable` gets a `key`
+2. `HBox` / `VBox` dedupe
+3. `TextArea` and `ScrollBar` fixes
 
 ## Test Implementation
 
-For the first implementation I'd like to try and implement [Neobrutalism](https://hyperui.dev/components/neobrutalism/) as our first component theme. Mockups and the glyph mapping are in [neo-brutalism.md](neo-brutalism.md).
-
-More info on the components:
+The first component theme is [Neobrutalism](https://hyperui.dev/components/neobrutalism/). Mockups and the glyph mapping
+are in [neo-brutalism.md](neo-brutalism.md).
 
 - Accordion: out of scope
 - Select: out of scope
-- Alert: Probably a `Fragment` that has a `Panel`, an `Icon` and a `Label`
-- Badge: `HBox` with a `Label` and optional `Icon` (left) and `Button` (right). When pressing the `Button` the Badge is `detach`ed.
-- Button: `Button`
-- Card: `VBox` with a `HBox` that has an `Icon` + `Label` plus a `Header` and a `Paragraph`. We should skip the dashed variant. Retro window should be split into its own `Window` that is a `VBox` with a `HBox` a `Header` and a `Paragraph`
-- Checkbox: `VBox` with a `CheckBox` in it with an optional `Paragraph` below it. The Grouped variant is out of scope
-- Input: `VBox` with a `Label` and a `HBox`. The `HBox` has an `Input` (see info about implementation above) by default, and it can have an optional `Icon` or a `Button`
-- Progressbar: `VBox` that has a `ProgressBar` in it with an optional `HBox` above it with 2 `Label`s.
-- Tabs: `HorizontalTabBar` / `VerticalTabBar` with custom renderers
-- Textarea: `Textarea` (by default) or `VBox` with a `Label` (optional), a `Textarea` and a `HBox` (optional) with the `Button`s
+- Alert: `Fragment` with a `Panel`, an `Icon` and a `Label`
+- Badge: `HBox` with a `Label` and optional `Icon` (left) and `Button` (right). Pressing the `Button` detaches the Badge.
+- Button: `Button` with roles `BUTTON` (pressed), `BUTTON_PRIMARY` (double border), `BUTTON_SECONDARY` (base),
+  `BUTTON_LINK` (underlined). Pressed-with-inset is dropped.
+- Card: `VBox` with a `HBox` (`Icon` + `Label`), a `Header` and a `Paragraph`. Dashed variant skipped. Retro window is
+  its own `Window` fragment.
+- Checkbox: `VBox` with a `CheckBox` and an optional `Paragraph` below. Grouped variant out of scope.
+- Input: `VBox` with a `Label` and a `HBox` holding an `Input` plus optional `Icon` or `Button`
+- Progressbar: `VBox` with a `ProgressBar` and an optional `HBox` of two `Label`s above
+- Tabs: `HorizontalTabBar` / `VerticalTabBar` with theme renderers
+- Textarea: `TextArea` or `VBox` with optional `Label`, the `TextArea` and an optional `HBox` of `Button`s
