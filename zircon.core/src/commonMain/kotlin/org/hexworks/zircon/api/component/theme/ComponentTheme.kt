@@ -1,8 +1,14 @@
 package org.hexworks.zircon.api.component.theme
 
+import org.hexworks.zircon.api.ComponentThemes
+
 /**
  * A look for every component kind: a [ThemeEntry] (renderer, decorations, style set) per
  * [ThemeKey]. Themes are data; one generic [ComponentFactory] builds components for any theme.
+ *
+ * A theme is always in effect: [ComponentThemes.default()][org.hexworks.zircon.api.ComponentThemes.default]
+ * holds the stock look, and every other theme falls back to it, key by key and aspect by
+ * aspect, so a theme only has to say what it changes.
  */
 public interface ComponentTheme {
 
@@ -23,16 +29,24 @@ public interface ComponentTheme {
     public fun entryFor(key: ThemeKey): ThemeEntry?
 
     /**
-     * The look for a component: the first of [ThemeKey.fallbacks] this theme has an entry
-     * for, or `null`, in which case the component keeps what it has. [kind] is what the
-     * builder made (`LABEL` for a card's title), the last resort.
+     * The look for a component: the entries this theme has for [ThemeKey.fallbacks], the
+     * most specific first, each filling in what the one before left `null`, and then the
+     * default theme's entries the same way. `null` only for [ComponentRole.NONE], which is
+     * never themed, or a [kind] no theme knows; the component then keeps what it has.
+     * [kind] is what the builder made (`LABEL` for a card's title), the last resort.
      */
     public fun resolveEntry(
         role: ComponentRole,
         variant: Variant = Variant.DEFAULT,
         part: Part = Part.NONE,
         kind: ComponentRole = role,
-    ): ThemeEntry? = ThemeKey(role, variant, part).fallbacks(kind).firstNotNullOfOrNull { entryFor(it) }
+    ): ThemeEntry? {
+        val keys = ThemeKey(role, variant, part).fallbacks(kind)
+        val default = ComponentThemes.default()
+        val chain = keys.mapNotNull { entryFor(it) } +
+                if (this === default) emptyList() else keys.mapNotNull { default.entryFor(it) }
+        return chain.reduceOrNull { entry, base -> entry over base }
+    }
 
     /**
      * A [ComponentFactory] that pre-configures every builder with this theme.

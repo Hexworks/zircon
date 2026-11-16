@@ -7,14 +7,13 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.api.graphics.TextWrap
 import org.hexworks.zircon.internal.component.impl.DefaultParagraph
-import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 import org.hexworks.zircon.internal.component.renderer.TypingEffectPostProcessor
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.internal.component.renderer.DefaultParagraphRenderer
 
 @ZirconDsl
 public class ParagraphBuilder : ComponentWithTextBuilder<Paragraph>(
     initialRole = ComponentRole.PARAGRAPH,
-    initialRenderer = DefaultParagraphRenderer(),
     initialText = ""
 ) {
 

@@ -1,12 +1,10 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Button
 import org.hexworks.zircon.api.component.Container
-import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.api.graphics.Symbols
@@ -18,6 +16,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.config.ZirconDefaults
 
 /**
  * The row or column of tabs of a tab bar. Tabs that do not fit are scrolled: a `▲…` /
@@ -35,10 +34,9 @@ internal class TabStrip(
     private val capacity: Int,
     scrollTabSize: Int,
     private val sizeOf: (Tab) -> Int,
-    theme: ComponentTheme? = null,
+    theme: ComponentTheme = ZirconDefaults.current.componentTheme,
 ) {
     private val components = ComponentFactory { theme }
-    private val themedScroll = !theme.lacks(ComponentRole.TAB_BAR, part = Part.SCROLL, kind = ComponentRole.BUTTON)
 
     private val scrollTabLength = scrollTabSize
 
@@ -147,7 +145,6 @@ internal class TabStrip(
         part = Part.SCROLL
         +text
         preferredSize = size
-        if (!themedScroll) defaultDecorationRenderers(listOf(box()))
         onActivated { onClick() }
     }
 }

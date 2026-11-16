@@ -32,7 +32,7 @@ public interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
     /**
      * Builds components pre-configured for this screen's current [componentTheme]: the
      * theme's renderer, decorations and colors are set on each builder before your block
-     * runs, so the size is computed for them. Without a theme the builders are the plain ones.
+     * runs, so the size is computed for them.
      */
     public val componentFactory: ComponentFactory
         get() = ComponentFactory { componentTheme }

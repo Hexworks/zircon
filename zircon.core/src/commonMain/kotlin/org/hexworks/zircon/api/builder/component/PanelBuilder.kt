@@ -7,13 +7,11 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultPanel
-import org.hexworks.zircon.internal.component.renderer.DefaultPanelRenderer
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class PanelBuilder : BaseContainerBuilder<Panel>(
     initialRole = ComponentRole.PANEL,
-    initialRenderer = DefaultPanelRenderer()
 ) {
 
     override fun build(): Panel {

@@ -72,9 +72,9 @@ class ComponentStub(
     override val variant: Variant = Variant.DEFAULT
     override val part: Part = Part.NONE
     override val orientation: Orientation = Orientation.HORIZONTAL
-    override val componentThemeProperty: Property<ComponentTheme?> = null.toProperty()
-    override var componentTheme: ComponentTheme? by componentThemeProperty.asDelegate()
-    override fun inheritComponentTheme(theme: ComponentTheme?) {
+    override val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty()
+    override var componentTheme: ComponentTheme by componentThemeProperty.asDelegate()
+    override fun inheritComponentTheme(theme: ComponentTheme) {
         componentTheme = theme
     }
 

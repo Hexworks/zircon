@@ -6,13 +6,12 @@ import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
-import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 
 @ZirconDsl
 public class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
     initialRole = ComponentRole.RADIO_BUTTON,
-    initialRenderer = DefaultRadioButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
 ) {

@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.config
 
 import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.theme.ComponentTheme
@@ -18,6 +19,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 
 public val DEFAULT_DEFAULT_TILESET: TilesetResource = CP437TilesetResources.rogueYun16x16()
 public val DEFAULT_COLOR_THEME: ColorTheme = ColorThemes.gamebookers()
+public val DEFAULT_COMPONENT_THEME: ComponentTheme = ComponentThemes.default()
 public const val DEFAULT_DEBUG_MODE: Boolean = false
 
 /**
@@ -41,9 +43,10 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
     public var theme: ColorTheme = DEFAULT_COLOR_THEME
 
     /**
-     * The [ComponentTheme] a screen starts with. Default is `null`: none.
+     * The [ComponentTheme] a screen and every builder start with. Default is
+     * [ComponentThemes.default], the stock look.
      */
-    public var componentTheme: ComponentTheme? = null
+    public var componentTheme: ComponentTheme = DEFAULT_COMPONENT_THEME
 
     /**
      * Tells [ThemeMode.SYSTEM][org.hexworks.zircon.api.component.theme.ThemeMode.SYSTEM] whether

@@ -10,6 +10,7 @@ import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.ComponentAlignments
+import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -30,6 +31,7 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.internal.component.data.CommonComponentProperties
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 import kotlin.require
 import org.hexworks.zircon.api.component.theme.ThemeEntry
@@ -43,10 +45,16 @@ import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 /**
  * This class can be used as a base class for creating builders for [Component]s.
  * If your component has text use [ComponentWithTextBuilder] instead.
+ *
+ * A builder starts from the stock look of [initialRole], the default theme's renderer and
+ * decorations for it, and applies the [ComponentTheme] in effect when it builds
+ * ([ZirconDefaults.componentTheme][org.hexworks.zircon.api.config.ZirconDefaults.componentTheme],
+ * or the theme of the factory or parent builder it is built through). [initialRenderer] is for
+ * a kind no theme knows ([ComponentRole.NONE], a custom component).
  */
 @Suppress("UNCHECKED_CAST")
 public abstract class BaseComponentBuilder<T : Component>(
-    initialRenderer: ComponentRenderer<out T>,
+    initialRenderer: ComponentRenderer<out T> = NoOpComponentRenderer(),
     initialRole: ComponentRole = ComponentRole.NONE,
 ) : Builder<T>, ComponentEventSource {
 
@@ -56,6 +64,14 @@ public abstract class BaseComponentBuilder<T : Component>(
         role = initialRole,
     )
         private set
+
+    init {
+        // The stock look is the builder's default: one source for what a kind looks like.
+        ComponentThemes.default().resolveEntry(initialRole)?.let { entry ->
+            entry.componentRenderer?.let { props.componentRenderer = it as ComponentRenderer<out T> }
+            entry.decorationRenderers?.let { props.decorationRenderers = it }
+        }
+    }
 
     /**
      * The component kind this builder makes (`LABEL`), the last fallback of a theme lookup.
@@ -102,28 +118,27 @@ public abstract class BaseComponentBuilder<T : Component>(
         }
 
     /**
-     * The [ComponentTheme] of the resulting component. Setting it here pins it: a parent
-     * without a theme does not clear it on attach (a parent *with* one still wins).
-     * Prefer building through a [ComponentFactory][org.hexworks.zircon.api.component.theme.ComponentFactory],
-     * which also sizes the component for the theme's decorations.
+     * The [ComponentTheme] of the resulting component. Setting it here pins it: the parent's
+     * theme does not replace it on attach or when it changes, so a themed subtree can live in
+     * a screen with another theme. Not setting it leaves the component following its parent.
      */
-    public var componentTheme: ComponentTheme?
+    public var componentTheme: ComponentTheme
         get() = props.componentTheme
         set(value) {
             props.componentThemeExplicit = true
             props.componentTheme = value
-            value?.let { applyThemeEntry(it) }
+            applyThemeEntry(value)
         }
 
     /**
-     * Gives the builder [theme] without applying its entry yet (that happens in
-     * [createMetadata], once the user's block has run), so children built inside the block
-     * can pick the theme up from this builder.
+     * Gives the builder [theme] without pinning it or applying its entry yet (that happens in
+     * [createMetadata], once the block has settled the role): a factory or a parent builder
+     * passes its theme on this way, so children built inside the block pick it up too.
      */
-    internal fun presetTheme(theme: ComponentTheme?) {
+    internal fun presetTheme(theme: ComponentTheme) {
         props.componentTheme = theme
     }
-    public val componentThemeProperty: Property<ComponentTheme?>
+    public val componentThemeProperty: Property<ComponentTheme>
         get() = props.componentThemeProperty
 
     /**
@@ -294,8 +309,8 @@ public abstract class BaseComponentBuilder<T : Component>(
         }
 
     /**
-     * The defaults a builder ships with, as opposed to what the user sets: these do not pin
-     * the aspect, so a theme may replace them.
+     * A default set by a fragment (not the user) over what the theme gave the builder: it
+     * does not pin the aspect, so a theme that says otherwise still wins.
      */
     internal fun defaultDecorationRenderers(value: List<ComponentDecorationRenderer>) {
         props.decorationRenderers = value.reversed()
@@ -398,7 +413,7 @@ public abstract class BaseComponentBuilder<T : Component>(
 
     protected open fun createMetadata(): ComponentMetadata {
         // The block has run: the role is final and the user's choices are pinned.
-        props.componentTheme?.let { applyThemeEntry(it) }
+        applyThemeEntry(props.componentTheme)
         if (bindingAction != UpdateOnBind) {
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."

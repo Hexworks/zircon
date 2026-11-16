@@ -6,11 +6,12 @@ import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public abstract class ComponentWithTextBuilder<T : Component>(
-    initialRenderer: ComponentRenderer<out T>,
+    initialRenderer: ComponentRenderer<out T> = NoOpComponentRenderer(),
     initialText: String = "",
     /**
      * The space that should be reserved for additional mandatory decorations (like a list item prefix: `- `)

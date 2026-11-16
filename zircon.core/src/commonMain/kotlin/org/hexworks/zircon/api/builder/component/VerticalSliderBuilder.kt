@@ -7,7 +7,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalSlider
-import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
 
 /**
  * Builder for a vertical [Slider]. By default, it creates a slider with
@@ -16,8 +15,7 @@ import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-public class VerticalSliderBuilder :
-    SliderBuilder<Slider>(VerticalSliderRenderer()) {
+public class VerticalSliderBuilder : SliderBuilder<Slider>() {
 
     init {
         orientation = Orientation.VERTICAL

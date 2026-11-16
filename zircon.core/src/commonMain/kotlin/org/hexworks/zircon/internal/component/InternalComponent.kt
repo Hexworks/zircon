@@ -75,10 +75,9 @@ public interface InternalComponent :
     public fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
 
     /**
-     * Takes [theme] over from the parent. A `null` parent theme does not clear a theme that
-     * was set explicitly on this component.
+     * Takes [theme] over from the parent, unless this component's theme was set explicitly.
      */
-    public fun inheritComponentTheme(theme: ComponentTheme?)
+    public fun inheritComponentTheme(theme: ComponentTheme)
 
     /**
      * Marks the rendered state of this component stale: the next [render] redraws it

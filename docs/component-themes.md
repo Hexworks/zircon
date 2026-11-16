@@ -38,7 +38,8 @@ and `Part`, and `ThemeMode` is resolved when picking a palette.
 - **Theme lives on the `Screen`**, as `componentTheme` (a `Property<ComponentTheme?>`), and propagates to every attached
   component the same way `ColorTheme` does: `DefaultContainer` binds the child's `componentThemeProperty` to the
   parent's on attach, honoring `bindingAction`. `ZirconDefaults.componentTheme` is the process-wide default (`null`
-  means the legacy, un-themed path). `TileGrid` is untouched.
+  means the legacy, un-themed path). `TileGrid` is untouched. *(changes: non-null everywhere; the default is
+  `ComponentThemes.default()`, the stock look.)*
 - **ComponentTheme wins over ColorTheme.** When a component has a component theme (own or propagated) its style set
   comes from the theme and `ColorTheme` changes are ignored. Without a component theme nothing changes, so the two
   co-exist until `ColorTheme` is sunset. *(changes: colors come from `screen.componentPalette`; `ColorTheme` is
@@ -50,7 +51,8 @@ and `Part`, and `ThemeMode` is resolved when picking a palette.
   apply. Size components for the heaviest theme you plan to use, or build them through the factory.
 - **No entry, no change.** A role the theme has no entry for keeps the look it was built with and follows the
   `ColorTheme` as before, so layout-only containers (`ComponentRole.NONE`) and custom components stay as they are.
-  *(changes: a missing entry falls back to `ComponentThemes.default()`, which holds the stock look.)*
+  *(changes: a missing entry, or a `null` aspect of one, falls back to `ComponentThemes.default()`, which holds the
+  stock look; only `ComponentRole.NONE` stays untouched.)*
 - **Explicit beats theme.** Setting `componentRenderer`, `decorationRenderers` or `componentStyleSet` on a builder pins
   that aspect: the theme fills in the aspects you did not touch and leaves pinned ones alone on every switch.
 - **Variants are theme-specific.** Core knows `name` and `mode` only. Each theme's DSL adds its own knobs
@@ -96,14 +98,15 @@ CP437 sheets have only `▌ ▀ █`, so use a TrueType or Nerd Font tileset.
 ## Internals
 
 - `DefaultComponent.renderer` becomes mutable; `contentOffset`, `contentSize` and `contentBoundsProperty` are derived
-  from the current strategy. Removing the theme (or switching to one without an entry) restores the strategy the
-  component was built with.
-- Propagation is not a plain binding: a parent passes its theme to a child on attach and on change, but a parent
-  *without* a theme does not clear a child's theme that was set explicitly (`componentTheme = x` on the builder or
-  the component). That is how a themed subtree lives inside an unthemed screen (see the examples app).
+  from the current strategy. *(changes: switching to `ComponentThemes.default()` is what restores the stock look; the
+  builder-time strategy is no longer kept.)*
+- Propagation is not a plain binding: a parent passes its theme to a child on attach and on change, but a child whose
+  theme was set explicitly (`componentTheme = x` on the builder or the component) keeps it. That is how a themed
+  subtree lives inside a screen with another theme (see the examples app). *(changes: was "a parent without a theme
+  does not clear it, a parent with one wins"; with a theme always present the explicit one is simply pinned.)*
 - `CommonComponentProperties` tracks which of renderer / decorations / style set the user set explicitly (the pins).
-- On `componentThemeProperty` change the component looks up `theme.entryFor(role)`; a missing entry leaves the component
-  as it is.
+- On `componentThemeProperty` change the component looks up `theme.resolveEntry(role, variant, part, kind)`, which
+  merges the theme's entries with the default theme's; only `ComponentRole.NONE` resolves to nothing.
 - `ComponentFactory` is one class in core. Composite fragments (`Alert`, `Badge`, `Card`, `Window`, `InputField`,
   `LabeledProgressBar`, `TextAreaField`) are generic `Fragment`s in core built from roles; themes only supply looks.
 - Neobrutalism lives in core: `org.hexworks.zircon.api.component.theme` (interfaces, `ComponentThemes`) and

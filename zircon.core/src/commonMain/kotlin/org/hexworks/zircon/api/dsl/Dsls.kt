@@ -14,8 +14,8 @@ internal fun <T : Component, B : BaseComponentBuilder<T>> buildChildFor(
     builder: B,
     init: B.() -> Unit
 ): T {
-    // A themed parent themes the children built in its block.
-    parent.componentTheme?.let { builder.presetTheme(it) }
+    // The parent themes the children built in its block.
+    builder.presetTheme(parent.componentTheme)
     val result = builder.apply(init).build()
     parent.childrenToAdd = parent.childrenToAdd.plus(result)
     return result
@@ -26,7 +26,7 @@ internal fun <F : Fragment, B : FragmentBuilder<F>> buildFragmentFor(
     builder: B,
     init: B.() -> Unit
 ): F {
-    if (builder is ThemedFragmentBuilder<*> && builder.theme == null) {
+    if (builder is ThemedFragmentBuilder<*>) {
         builder.theme = parent.componentTheme
     }
     val result = builder.apply(init).build()

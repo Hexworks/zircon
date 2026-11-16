@@ -7,12 +7,11 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHBox
-import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.math.max
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
-public class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer(), ComponentRole.HBOX) {
+public class HBoxBuilder : BaseContainerBuilder<HBox>(initialRole = ComponentRole.HBOX) {
 
     public var spacing: Int = 0
         set(value) {

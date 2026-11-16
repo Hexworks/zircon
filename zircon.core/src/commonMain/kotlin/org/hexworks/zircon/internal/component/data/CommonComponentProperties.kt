@@ -17,6 +17,7 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.api.component.theme.PinnedAspects
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
@@ -41,7 +42,7 @@ public data class CommonComponentProperties<T : Component>(
     var orientation: Orientation = Orientation.HORIZONTAL,
     var pinnedAspects: PinnedAspects = PinnedAspects.NONE,
     var componentThemeExplicit: Boolean = false,
-    val componentThemeProperty: Property<ComponentTheme?> = null.toProperty(),
+    val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty(),
     // can be changed runtime
     val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
@@ -50,7 +51,7 @@ public data class CommonComponentProperties<T : Component>(
     val disabledProperty: Property<Boolean> = false.toProperty()
 ) {
     var theme: ColorTheme by themeProperty.asDelegate()
-    var componentTheme: ComponentTheme? by componentThemeProperty.asDelegate()
+    var componentTheme: ComponentTheme by componentThemeProperty.asDelegate()
     var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
     var tileset: TilesetResource by tilesetProperty.asDelegate()
     var isHidden: Boolean by hiddenProperty.asDelegate()

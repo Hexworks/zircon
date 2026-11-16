@@ -11,14 +11,12 @@ import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultInput
-import org.hexworks.zircon.internal.component.renderer.DefaultInputRenderer
 
 /**
  * Builds a single-line [Input]. Without a size the field is [DEFAULT_WIDTH] columns wide.
  */
 @ZirconDsl
 public class InputBuilder : BaseComponentBuilder<Input>(
-    initialRenderer = DefaultInputRenderer(),
     initialRole = ComponentRole.INPUT,
 ) {
 

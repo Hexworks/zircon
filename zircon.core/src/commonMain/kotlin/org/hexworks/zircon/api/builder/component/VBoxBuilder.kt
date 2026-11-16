@@ -7,14 +7,12 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVBox
-import org.hexworks.zircon.internal.component.renderer.DefaultVBoxRenderer
 import kotlin.math.max
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class VBoxBuilder : BaseContainerBuilder<VBox>(
     initialRole = ComponentRole.VBOX,
-    initialRenderer = DefaultVBoxRenderer()
 ) {
 
     public var spacing: Int = 0

@@ -2,14 +2,12 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.builder.component.radioButtonGroup
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.VBox
-import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.withRelativeWidth
@@ -29,7 +27,7 @@ public class DefaultVerticalTabBar internal constructor(
     tabWidth: Int,
     defaultSelected: String,
     tabs: List<TabData>,
-    theme: ComponentTheme? = null,
+    theme: ComponentTheme,
 ) : TabBar {
     private val components = ComponentFactory { theme }
 
@@ -60,10 +58,6 @@ public class DefaultVerticalTabBar internal constructor(
             role = ComponentRole.TAB_BAR
             orientation = Orientation.VERTICAL
             preferredSize = Size(tabWidth, size.height)
-            if (theme.lacks(ComponentRole.TAB_BAR, kind = ComponentRole.VBOX)) {
-                defaultDecorationRenderers(listOf(margin(1, 0)))
-                defaultComponentRenderer(NoOpComponentRenderer())
-            }
         }
 
         content = components.panel {

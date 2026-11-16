@@ -71,6 +71,16 @@ Part             enum: NONE, TEXT, ICON, TITLE, BODY, DISMISS, DOT, LABEL, ROW, 
   the derivation even when the entry is a fallback, so a `BUTTON PRIMARY` without its own entry gets the default
   button shape in primary colors. (The grill said "part, then variant, never role"; session C found the part -> NONE
   step hands children their container's decorations and replaced it with the kind step.)
+- **Entries cascade aspect by aspect.** The entries found along the chain are merged (`ThemeEntry.over`): a `null`
+  aspect in a more specific entry is taken from the next one, down to the default theme. So a theme writes only what
+  it changes (Neobrutalism's `BUTTON PRIMARY` gives decorations and colors, the renderer comes from the default
+  theme), and switching themes never leaks a renderer from the previous theme (session A; `null` used to mean "keep
+  what the component has"). Consequence: an entry cannot say "keep the component's own decorations" any more; a
+  fragment default that a theme should be able to drop is not expressible, which is why the stock tab strip lost its
+  one-cell indent (below).
+- **An explicit theme is pinned.** `componentTheme = x` on a builder or a component keeps `x` whatever the parent's
+  theme is or becomes; everything else follows the parent. With a theme always present there is no "parent without
+  a theme" to tell apart, so this replaced the old rule (a themed parent wins, a null parent does not clear).
 - **`primary` is the palette author's default, user-overridable.** `palette.withPrimary(color)` /
   `withPrimary(color, onColor)` returns a copy; the Catppuccin DSL adds `accent = MAUVE` over its named accents.
 - **Keys are an enum.** `PaletteKey` + `palette[key]`; builders expose named properties (`background = ...`) and the
@@ -124,7 +134,10 @@ it by hand (tables in the research doc, section 10).
 | `TAB_SELECTED`, `TAB_VERTICAL`, `TAB_VERTICAL_SELECTED`, `TAB_BAR_VERTICAL` | gone: `TAB` / `TAB_BAR`; renderer reads `isSelected` and orientation |
 
 Watch out: a theme that wants *different decorations* per tab-bar orientation cannot express it through entries any
-more; the decoration reads `component.orientation`. Accepted; revisit if a theme needs it.
+more; the decoration reads `component.orientation`. Accepted; revisit if a theme needs it. First casualty: the stock
+tab strip was indented by one cell along its axis (`margin(0, 1)` horizontal, `margin(1, 0)` vertical); the default
+theme cannot say that, so the strip is now flush with the bar's edge in every theme (the strip gains the two cells).
+`SLIDER` and `NUMBER_INPUT` have one default entry each with a renderer that dispatches on `orientation`.
 
 ## Sessions
 
@@ -181,3 +194,10 @@ TextArea/ScrollBar) come after D.
   `ComponentTheme.entryFor(key)` is exact and `resolveEntry(role, variant, part, kind)` walks the fallbacks, fragments
   and tab bars set variant / part / orientation, Neobrutalism keyed by `ThemeKey` with one `NeoTabRenderer`.
   `InputFieldBuilder.buttonRole` -> `buttonVariant`, `TextAreaFieldBuilder.action(text, variant)`. Next: A.
+- 2026-11-16: **A done.** `ComponentThemes.default()` holds the stock renderers and decorations (one entry per kind
+  plus `TAB`, `TAB_BAR`, `TAB_BAR#SCROLL`); builders start from it (`initialRenderer` is only for `NONE` kinds).
+  `ComponentTheme.resolveEntry` walks the fallbacks in the theme, then in the default theme, merging entries with
+  `ThemeEntry.over`. `componentTheme` is non-null on `ZirconDefaults`, `Screen`, `ComponentThemeOverride`, builders,
+  `ComponentFactory`, `ThemedFragmentBuilder`; `DefaultComponent` lost `hasThemeEntry` / `originalRenderingStrategy`;
+  the fragments' `lacks(...)` branches are gone (the tab look is `DefaultTabRenderer`). An explicit theme is pinned
+  against the parent. Colors still come from `ColorTheme` when the resolved entry has no style set. Next: B.

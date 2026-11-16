@@ -27,7 +27,7 @@ public class DefaultInputField internal constructor(
     buttonText: String?,
     buttonVariant: Variant,
     onButtonActivated: () -> Unit,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : InputField {
 
     private val components = ComponentFactory { theme }

@@ -23,7 +23,7 @@ public class DefaultTextAreaField internal constructor(
     label: String,
     initialText: String,
     actions: List<TextAreaFieldBuilder.Action>,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : TextAreaField {
 
     private val components = ComponentFactory { theme }

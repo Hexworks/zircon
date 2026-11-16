@@ -6,13 +6,9 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalNumberInput
-import org.hexworks.zircon.internal.component.renderer.DefaultNumberInputRenderer
 
 @ZirconDsl
-public class HorizontalNumberInputBuilder :
-    NumberInputBuilder<NumberInput>(
-        initialRenderer = DefaultNumberInputRenderer()
-    ) {
+public class HorizontalNumberInputBuilder : NumberInputBuilder<NumberInput>() {
 
     override fun calculateContentSize(): Size {
         val length = this.maxValue.toString().length + 1

@@ -7,12 +7,9 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalNumberInput
-import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInputRenderer
 
 @ZirconDsl
-public class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>(
-    initialRenderer = DefaultVerticalNumberInputRenderer()
-) {
+public class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>() {
 
     init {
         orientation = Orientation.VERTICAL

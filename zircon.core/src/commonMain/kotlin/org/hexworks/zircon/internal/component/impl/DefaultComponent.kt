@@ -104,12 +104,8 @@ public abstract class DefaultComponent(
 
     //#region Rendering strategy
     /**
-     * The strategy the component was built with; restored when its component theme is removed.
-     */
-    private val originalRenderingStrategy: ComponentRenderingStrategy<out Component> = renderer
-
-    /**
-     * The strategy in effect. A [ComponentTheme] replaces it; the content area follows it.
+     * The strategy in effect: what the builder made for its [ComponentTheme]; a theme switch
+     * replaces it and the content area follows it.
      */
     private var renderingStrategy: ComponentRenderingStrategy<out Component> = renderer
 
@@ -161,8 +157,8 @@ public abstract class DefaultComponent(
     final override val themeProperty: Property<ColorTheme> = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
-    final override val componentThemeProperty: Property<ComponentTheme?> = metadata.componentThemeProperty
-    final override var componentTheme: ComponentTheme?
+    final override val componentThemeProperty: Property<ComponentTheme> = metadata.componentThemeProperty
+    final override var componentTheme: ComponentTheme
         get() = componentThemeProperty.value
         set(value) {
             componentThemeExplicit = true
@@ -204,10 +200,10 @@ public abstract class DefaultComponent(
             }
         }
 
-        // A component theme owns the colors while it has an entry for this role; otherwise the
-        // color theme applies as before.
+        // A component theme owns the colors while its entry for this component has a style
+        // set (the default theme has none); otherwise the color theme applies as before.
         val updateTheme: (ObservableValueChanged<ColorTheme>) -> Unit = { (_, newTheme) ->
-            if (!hasThemeEntry && newTheme.isColorNotUnknown) {
+            if (!themeOwnsColors && newTheme.isColorNotUnknown) {
                 componentStyleSet = convertColorTheme(newTheme)
             }
         }
@@ -225,61 +221,54 @@ public abstract class DefaultComponent(
         componentThemeProperty.onChange { (_, newTheme) -> applyComponentTheme(newTheme, initial = false) }
         componentState = if (isDisabled) DISABLED else DEFAULT
 
-        if (!hasThemeEntry && componentStyleSet.isStyleNotUnknown and theme.isColorNotUnknown) {
-            componentStyleSet = convertColorTheme(theme)
-        }
-        componentTheme?.let { applyComponentTheme(it, initial = true) }
+        applyComponentTheme(componentTheme, initial = true)
     }
 
     //#region Component theme
     /**
-     * `true` while the component theme has a look for this component's role.
+     * `true` while the component theme colors this component (its entry has a style set).
      */
-    private val hasThemeEntry: Boolean
-        get() = componentTheme?.resolveEntry(role, variant, part, kind) != null
+    private val themeOwnsColors: Boolean
+        get() = componentTheme.resolveEntry(role, variant, part, kind)?.componentStyleSet != null
 
-    final override fun inheritComponentTheme(theme: ComponentTheme?) {
-        if (theme == null && componentThemeExplicit) return
+    final override fun inheritComponentTheme(theme: ComponentTheme) {
+        if (componentThemeExplicit) return
         componentThemeProperty.value = theme
     }
 
     /**
-     * Replaces the rendering strategy and the style set with what [theme] has for [role],
-     * keeping the pinned aspects. `null` restores the strategy the component was built with
-     * and the colors of its [ColorTheme]. Decorations that do not fit into the component
-     * (no content cell would be left) are skipped; the renderer and the colors still apply.
-     * [initial] is `true` from the constructor, when there are no children to move yet.
+     * Replaces the rendering strategy and the style set with what [theme] resolves for this
+     * component (its own entries, then the default theme's), keeping the pinned aspects. An
+     * entry without colors leaves them to the [ColorTheme]. Decorations that do not fit into
+     * the component (no content cell would be left) are skipped; the renderer and the colors
+     * still apply. [initial] is `true` from the constructor, when there are no children to
+     * move yet.
      */
-    private fun applyComponentTheme(theme: ComponentTheme?, initial: Boolean) {
+    private fun applyComponentTheme(theme: ComponentTheme, initial: Boolean) {
         val oldOffset = contentOffset
-        val entry = theme?.resolveEntry(role, variant, part, kind)
-        if (entry == null) {
-            // No theme, or none for this role: the look the component was built with, and
-            // the color theme's colors.
-            renderingStrategy = originalRenderingStrategy
-            if (!pinnedAspects.componentStyleSet && this.theme.isColorNotUnknown) {
-                componentStyleSet = convertColorTheme(this.theme)
+        val entry = theme.resolveEntry(role, variant, part, kind)
+        if (entry != null) {
+            val current = renderingStrategy as? DefaultComponentRenderingStrategy<Component>
+            val renderer = if (pinnedAspects.componentRenderer) null else entry.componentRenderer
+            val decorations = if (pinnedAspects.decorationRenderers) null else entry.decorationRenderers?.takeIf { it.fits() }
+            val postProcessors = entry.componentPostProcessors
+            if (renderer != null || decorations != null || postProcessors != null) {
+                val contentRenderer = (renderer ?: current?.componentRenderer) as? ComponentRenderer<Component>
+                if (contentRenderer != null) {
+                    renderingStrategy = DefaultComponentRenderingStrategy(
+                        componentRenderer = contentRenderer,
+                        decorationRenderers = decorations ?: current?.decorationRenderers ?: emptyList(),
+                        componentPostProcessors = (postProcessors ?: current?.componentPostProcessors ?: emptyList())
+                                as List<ComponentPostProcessor<Component>>,
+                    )
+                }
             }
-        } else {
-            run {
-                val current = renderingStrategy as? DefaultComponentRenderingStrategy<Component>
-                val renderer = if (pinnedAspects.componentRenderer) null else entry.componentRenderer
-                val decorations = if (pinnedAspects.decorationRenderers) null else entry.decorationRenderers?.takeIf { it.fits() }
-                val postProcessors = entry.componentPostProcessors
-                if (renderer != null || decorations != null || postProcessors != null) {
-                    val contentRenderer = (renderer ?: current?.componentRenderer) as? ComponentRenderer<Component>
-                    if (contentRenderer != null) {
-                        renderingStrategy = DefaultComponentRenderingStrategy(
-                            componentRenderer = contentRenderer,
-                            decorationRenderers = decorations ?: current?.decorationRenderers ?: emptyList(),
-                            componentPostProcessors = (postProcessors ?: current?.componentPostProcessors ?: emptyList())
-                                    as List<ComponentPostProcessor<Component>>,
-                        )
-                    }
-                }
-                if (!pinnedAspects.componentStyleSet) {
-                    entry.componentStyleSet?.let { componentStyleSet = it }
-                }
+        }
+        if (!pinnedAspects.componentStyleSet) {
+            val styles = entry?.componentStyleSet
+            when {
+                styles != null -> componentStyleSet = styles
+                this.theme.isColorNotUnknown -> componentStyleSet = convertColorTheme(this.theme)
             }
         }
         refreshContentBounds()

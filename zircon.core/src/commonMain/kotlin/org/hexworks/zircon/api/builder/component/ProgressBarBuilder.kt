@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
-import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 /**
@@ -16,7 +15,6 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 public class ProgressBarBuilder :
     BaseComponentBuilder<ProgressBar>(
     initialRole = ComponentRole.PROGRESS_BAR,
-        initialRenderer = DefaultProgressBarRenderer()
     ) {
 
     public var range: Int = 100

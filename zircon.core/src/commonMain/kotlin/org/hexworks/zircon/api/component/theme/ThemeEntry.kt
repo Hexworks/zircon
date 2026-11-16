@@ -12,17 +12,28 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 /**
  * What a [ComponentTheme] gives a [ComponentRole]: the renderer of the content, the
  * decorations around it, post processors over it, and the colors per state. A `null`
- * aspect means "leave what the component has".
+ * aspect means "whatever the next key of the lookup says", down to the default theme
+ * (see [ComponentTheme.resolveEntry]).
  *
  * The renderer is typed loosely because an entry is selected by role, not type. A theme is
  * responsible for handing a `BUTTON` a renderer that can draw a button.
  */
-public class  ThemeEntry(
+public class ThemeEntry(
     public val componentRenderer: ComponentRenderer<out Component>? = null,
     public val decorationRenderers: List<ComponentDecorationRenderer>? = null,
     public val componentPostProcessors: List<ComponentPostProcessor<out Component>>? = null,
     public val componentStyleSet: ComponentStyleSet? = null,
 ) {
+    /**
+     * This entry with its `null` aspects taken from [base].
+     */
+    public infix fun over(base: ThemeEntry): ThemeEntry = ThemeEntry(
+        componentRenderer = componentRenderer ?: base.componentRenderer,
+        decorationRenderers = decorationRenderers ?: base.decorationRenderers,
+        componentPostProcessors = componentPostProcessors ?: base.componentPostProcessors,
+        componentStyleSet = componentStyleSet ?: base.componentStyleSet,
+    )
+
     override fun toString(): String =
         "ThemeEntry(renderer=$componentRenderer, decorations=$decorationRenderers, styleSet=$componentStyleSet)"
 }

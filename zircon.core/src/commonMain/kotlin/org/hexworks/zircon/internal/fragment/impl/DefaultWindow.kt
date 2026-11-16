@@ -18,7 +18,7 @@ public class DefaultWindow internal constructor(
     initialHeader: String,
     initialBody: String,
     controls: String,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : Window {
 
     private val components = ComponentFactory { theme }

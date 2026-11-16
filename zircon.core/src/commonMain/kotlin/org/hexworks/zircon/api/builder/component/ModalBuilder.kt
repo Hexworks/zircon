@@ -16,7 +16,6 @@ import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.modal.DefaultModal
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
-import org.hexworks.zircon.internal.component.renderer.DefaultModalRenderer
 import kotlin.jvm.JvmName
 import kotlin.require
 import org.hexworks.zircon.api.component.theme.ComponentRole
@@ -24,7 +23,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 @Suppress("UNCHECKED_CAST")
 @ZirconDsl
 public class ModalBuilder<T : ModalResult> :
-    BaseComponentBuilder<Modal<T>>(DefaultModalRenderer(), ComponentRole.MODAL) {
+    BaseComponentBuilder<Modal<T>>(initialRole = ComponentRole.MODAL) {
 
     public var darkenPercent: Double = 0.0
     public var centeredDialog: Boolean = false

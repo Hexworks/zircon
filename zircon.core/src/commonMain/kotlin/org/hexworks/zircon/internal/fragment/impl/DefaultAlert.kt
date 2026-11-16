@@ -21,7 +21,7 @@ public class DefaultAlert internal constructor(
     initialText: String,
     width: Int,
     icon: Char,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : Alert {
 
     private val components = ComponentFactory { theme }

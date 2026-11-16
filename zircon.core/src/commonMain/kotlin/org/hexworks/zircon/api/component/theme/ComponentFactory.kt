@@ -67,17 +67,16 @@ import org.hexworks.zircon.api.fragment.builder.ThemedFragmentBuilder
  * size is computed for the theme's decorations and anything you set in the block wins.
  *
  * Get one from [org.hexworks.zircon.api.screen.Screen.componentFactory] (it follows the
- * screen's current theme) or from [ComponentTheme.componentFactory]. Without a theme the
- * builders are the plain ones, so code written against the factory works either way.
+ * screen's current theme) or from [ComponentTheme.componentFactory].
  */
 public class ComponentFactory(
-    private val themeProvider: () -> ComponentTheme?,
+    private val themeProvider: () -> ComponentTheme,
 ) {
 
     /**
      * The theme in effect for the next builder.
      */
-    public val theme: ComponentTheme?
+    public val theme: ComponentTheme
         get() = themeProvider()
 
     /**
@@ -94,7 +93,7 @@ public class ComponentFactory(
         builder.role = role
         builder.variant = variant
         builder.part = part
-        theme?.let { builder.applyThemeEntry(it) }
+        builder.applyThemeEntry(theme)
         return builder
     }
 

@@ -61,12 +61,12 @@ public class ModalComponentContainer(
 
     override val themeProperty: Property<ColorTheme>
         get() = mainContainer.themeProperty
-    override var componentTheme: ComponentTheme?
+    override var componentTheme: ComponentTheme
         get() = mainContainer.componentTheme
         set(value) {
             mainContainer.componentTheme = value
         }
-    override val componentThemeProperty: Property<ComponentTheme?>
+    override val componentThemeProperty: Property<ComponentTheme>
         get() = mainContainer.componentThemeProperty
 
     init {

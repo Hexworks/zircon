@@ -171,6 +171,7 @@ public final class org/hexworks/zircon/api/ComponentDecorations {
 
 public final class org/hexworks/zircon/api/ComponentThemes {
 	public static final field INSTANCE Lorg/hexworks/zircon/api/ComponentThemes;
+	public final fun default ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public final fun neobrutalism (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public static synthetic fun neobrutalism$default (Lorg/hexworks/zircon/api/ComponentThemes;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 }
@@ -973,7 +974,7 @@ public final class org/hexworks/zircon/api/builder/component/ModalBuilderKt {
 }
 
 public abstract class org/hexworks/zircon/api/builder/component/NumberInputBuilder : org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder {
-	public fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;)V
+	public fun <init> ()V
 	protected abstract fun calculateContentSize ()Lorg/hexworks/zircon/api/data/Size;
 	public final fun getInitialValue ()I
 	public final fun getMaxValue ()I
@@ -1061,7 +1062,7 @@ public final class org/hexworks/zircon/api/builder/component/RadioButtonGroupBui
 }
 
 public abstract class org/hexworks/zircon/api/builder/component/SliderBuilder : org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder {
-	public fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;)V
+	public fun <init> ()V
 	public final fun getMaxValue ()I
 	public final fun getMinValue ()I
 	public abstract fun getNumberOfSteps ()I
@@ -1203,6 +1204,7 @@ public final class org/hexworks/zircon/api/builder/config/ZirconDefaultsBuilder 
 public final class org/hexworks/zircon/api/builder/config/ZirconDefaultsBuilderKt {
 	public static final field DEFAULT_DEBUG_MODE Z
 	public static final fun getDEFAULT_COLOR_THEME ()Lorg/hexworks/zircon/api/component/ColorTheme;
+	public static final fun getDEFAULT_COMPONENT_THEME ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public static final fun getDEFAULT_DEFAULT_TILESET ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public static final fun zirconDefaults (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
 }
@@ -2912,6 +2914,7 @@ public final class org/hexworks/zircon/api/component/VBox$DefaultImpls {
 }
 
 public abstract class org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder : org/hexworks/zircon/api/builder/Builder, org/hexworks/zircon/api/uievent/ComponentEventSource {
+	public fun <init> ()V
 	public fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Lorg/hexworks/zircon/api/component/theme/ComponentRole;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Lorg/hexworks/zircon/api/component/theme/ComponentRole;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun alignAround (Lorg/hexworks/zircon/api/component/Component;Lorg/hexworks/zircon/api/component/ComponentAlignment;)V
@@ -2988,6 +2991,7 @@ public final class org/hexworks/zircon/api/component/builder/base/BaseComponentB
 }
 
 public abstract class org/hexworks/zircon/api/component/builder/base/BaseContainerBuilder : org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder {
+	public fun <init> ()V
 	public fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Lorg/hexworks/zircon/api/component/theme/ComponentRole;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Lorg/hexworks/zircon/api/component/theme/ComponentRole;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public abstract fun calculateContentSize ()Lorg/hexworks/zircon/api/data/Size;
@@ -3005,6 +3009,7 @@ public final class org/hexworks/zircon/api/component/builder/base/ChildrenBuilde
 }
 
 public abstract class org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder : org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder {
+	public fun <init> ()V
 	public fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Ljava/lang/String;ILorg/hexworks/zircon/api/component/theme/ComponentRole;)V
 	public synthetic fun <init> (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;Ljava/lang/String;ILorg/hexworks/zircon/api/component/theme/ComponentRole;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	protected final fun getFixedTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
@@ -3460,6 +3465,7 @@ public final class org/hexworks/zircon/api/component/theme/ThemeEntry {
 	public final fun getComponentRenderer ()Lorg/hexworks/zircon/api/component/renderer/ComponentRenderer;
 	public final fun getComponentStyleSet ()Lorg/hexworks/zircon/api/component/ComponentStyleSet;
 	public final fun getDecorationRenderers ()Ljava/util/List;
+	public final fun over (Lorg/hexworks/zircon/api/component/theme/ThemeEntry;)Lorg/hexworks/zircon/api/component/theme/ThemeEntry;
 	public fun toString ()Ljava/lang/String;
 }
 

@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
@@ -18,7 +19,7 @@ import org.hexworks.zircon.internal.fragment.impl.DefaultTextAreaField
 public class TextAreaFieldBuilder : ThemedFragmentBuilder<TextAreaField> {
 
     override var position: Position = Position.ZERO
-    override var theme: ComponentTheme? = null
+    override var theme: ComponentTheme = ZirconDefaults.current.componentTheme
     public var width: Int = 40
     public var rows: Int = 4
     public var label: String = ""

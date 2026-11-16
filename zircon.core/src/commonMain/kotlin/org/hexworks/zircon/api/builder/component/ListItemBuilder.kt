@@ -6,13 +6,11 @@ import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultListItem
-import org.hexworks.zircon.internal.component.renderer.DefaultListItemRenderer
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class ListItemBuilder : ComponentWithTextBuilder<ListItem>(
     initialRole = ComponentRole.LIST_ITEM,
-    initialRenderer = DefaultListItemRenderer(),
     initialText = "",
     reservedSpace = 2
 ) {

@@ -11,20 +11,20 @@ import kotlin.test.Test
 
 class TabStripTest {
 
-    // 8 tabs of width 4 in a 30-wide bar: 28 cells of strip, 7 fit, or 5 next to one scroll button (5 wide), 4 next to two.
+    // 8 tabs of width 4 in a 28-wide bar: 28 cells of strip, 7 fit, or 5 next to one scroll button (5 wide), 4 next to two.
     private fun horizontal(count: Int = 8) = horizontalTabBar {
-        size = Size(30, 10)
+        size = Size(28, 10)
         for (i in 0 until count) {
-            tab { key = "t$i"; label = "T$i"; content = panel { preferredSize = Size(30, 7) } }
+            tab { key = "t$i"; label = "T$i"; content = panel { preferredSize = Size(28, 7) } }
         }
     } as DefaultHorizontalTabBar
 
-    // Tabs are 3 high; a 12-high bar has 10 cells of strip, so 3 tabs, or 2 next to a scroll button.
+    // Tabs are 3 high; a 10-high bar has 10 cells of strip, so 3 tabs, or 2 next to a scroll button.
     private fun vertical(count: Int = 6) = verticalTabBar {
-        size = Size(30, 12)
+        size = Size(30, 10)
         tabWidth = 8
         for (i in 0 until count) {
-            tab { key = "t$i"; label = "T$i"; content = panel { preferredSize = Size(22, 12) } }
+            tab { key = "t$i"; label = "T$i"; content = panel { preferredSize = Size(22, 10) } }
         }
     } as DefaultVerticalTabBar
 

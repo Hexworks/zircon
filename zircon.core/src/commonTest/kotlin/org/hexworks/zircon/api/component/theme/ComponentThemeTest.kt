@@ -57,11 +57,11 @@ class ComponentThemeTest {
     }
 
     @Test
-    fun switching_the_screen_theme_re_applies_and_removing_it_restores_the_original_look() {
+    fun switching_back_to_the_default_theme_restores_the_stock_look() {
         val screen = tileGrid { size = Size(40, 20) }.toScreen()
         val panel = panel { preferredSize = Size(10, 5) }
         screen.addComponent(panel)
-        val legacyStyle = panel.componentStyleSet
+        val stockStyle = panel.componentStyleSet
 
         screen.componentTheme = neobrutalism
         panel.contentSize shouldBe Size(5, 2)
@@ -69,10 +69,60 @@ class ComponentThemeTest {
         panel.componentTheme shouldBeSameInstanceAs dark
         panel.contentSize shouldBe Size(5, 2)
 
-        screen.componentTheme = null
-        panel.componentTheme shouldBe null
+        screen.componentTheme = ComponentThemes.default()
+        panel.componentTheme shouldBeSameInstanceAs ComponentThemes.default()
         panel.contentSize shouldBe Size(10, 5)
-        panel.componentStyleSet shouldBe legacyStyle
+        panel.componentStyleSet shouldBe stockStyle
+    }
+
+    @Test
+    fun the_default_theme_is_the_stock_look_and_is_always_on() {
+        val button = button { +"OK" }
+
+        button.componentTheme shouldBeSameInstanceAs ComponentThemes.default()
+        button.size shouldBe Size(4, 1)
+        button.renderToRows() shouldBe listOf("[OK]")
+    }
+
+    @Test
+    fun a_missing_aspect_falls_through_the_chain_to_the_default_theme() {
+        // A theme that only frames buttons: the renderer comes from the default theme.
+        val framed = themeOf(ThemeKey(ComponentRole.BUTTON) to themeEntry { decorations { +box() } })
+
+        val button = framed.componentFactory.button {
+            +"OK"
+            variant = Variant.PRIMARY
+        }
+
+        button.renderToRows() shouldBe listOf(
+            "┌──┐",
+            "│OK│",
+            "└──┘",
+        )
+        framed.resolveEntry(ComponentRole.BUTTON)!!.componentRenderer shouldBeSameInstanceAs
+                ComponentThemes.default().resolveEntry(ComponentRole.BUTTON)!!.componentRenderer
+    }
+
+    @Test
+    fun a_never_themed_role_resolves_to_nothing_even_in_the_default_theme() {
+        ComponentThemes.default().resolveEntry(ComponentRole.NONE, kind = ComponentRole.PANEL) shouldBe null
+        neobrutalism.resolveEntry(ComponentRole.NONE, kind = ComponentRole.PANEL) shouldBe null
+    }
+
+    @Test
+    fun a_switch_between_themes_does_not_leak_the_old_renderer() {
+        val custom: ComponentRenderer<Button> = ComponentRenderer { graphics, _ ->
+            graphics.fill(Tile.defaultTile().withCharacter('X'))
+        }
+        val crossed = themeOf(ThemeKey(ComponentRole.BUTTON) to themeEntry { componentRenderer = custom })
+        val button = crossed.componentFactory.button { +"OK" }
+        button.renderToRows() shouldBe listOf("[XX]")
+
+        // Neobrutalism says nothing about the button renderer: the default one, not `custom`.
+        button.componentTheme = neobrutalism
+        button.componentTheme = ComponentThemes.default()
+
+        button.renderToRows() shouldBe listOf("[OK]")
     }
 
     @Test
@@ -90,19 +140,26 @@ class ComponentThemeTest {
     }
 
     @Test
-    fun an_explicitly_set_theme_survives_a_parent_without_one() {
+    fun an_explicitly_set_theme_is_pinned_against_the_parent() {
         val screen = tileGrid { size = Size(40, 20) }.toScreen()
         val box = vBox {
             preferredSize = Size(20, 10)
             componentTheme = neobrutalism
         }
+        val inherited = vBox {
+            preferredSize = Size(20, 10)
+            position = Position(20, 0)
+        }
 
         screen.addComponent(box)
+        screen.addComponent(inherited)
 
         box.componentTheme shouldBeSameInstanceAs neobrutalism
-        // but a parent *with* a theme still wins
+        inherited.componentTheme shouldBeSameInstanceAs ComponentThemes.default()
+        // The screen's theme reaches what was not pinned.
         screen.componentTheme = dark
-        box.componentTheme shouldBeSameInstanceAs dark
+        box.componentTheme shouldBeSameInstanceAs neobrutalism
+        inherited.componentTheme shouldBeSameInstanceAs dark
     }
 
     @Test

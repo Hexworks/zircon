@@ -20,7 +20,7 @@ public class DefaultBadge internal constructor(
     dismissible: Boolean,
     statusIcon: Char,
     dismissIcon: Char,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : Badge {
 
     private val components = ComponentFactory { theme }

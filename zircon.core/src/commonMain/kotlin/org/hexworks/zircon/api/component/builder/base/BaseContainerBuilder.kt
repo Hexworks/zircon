@@ -4,6 +4,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 import org.hexworks.zircon.api.component.theme.ComponentRole
@@ -13,7 +14,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
  * If your component has text use [ComponentWithTextBuilder] instead.
  */
 public abstract class BaseContainerBuilder<T : Container>(
-    initialRenderer: ComponentRenderer<out T>,
+    initialRenderer: ComponentRenderer<out T> = NoOpComponentRenderer(),
     initialRole: ComponentRole = ComponentRole.NONE,
 ) : BaseComponentBuilder<T>(initialRenderer, initialRole) {
 
@@ -46,7 +47,7 @@ public abstract class BaseContainerBuilder<T : Container>(
     ) }
 
     private fun applyPendingTheme() {
-        props.componentTheme?.let { applyThemeEntry(it) }
+        applyThemeEntry(props.componentTheme)
     }
 
     private fun hasNoExplicitSize() = preferredContentSize.isSizeUnknown && preferredSize.isSizeUnknown

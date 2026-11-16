@@ -21,7 +21,7 @@ public class DefaultCard internal constructor(
     initialSubtitle: String,
     initialTitle: String,
     initialBody: String,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : Card {
 
     private val components = ComponentFactory { theme }

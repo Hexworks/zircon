@@ -28,10 +28,10 @@ public data class ZirconDefaults(
      */
     val theme: ColorTheme,
     /**
-     * The [ComponentTheme] a [org.hexworks.zircon.api.screen.Screen] starts with.
-     * `null` (the default) means none: components are drawn from the [ColorTheme] alone.
+     * The [ComponentTheme] a [org.hexworks.zircon.api.screen.Screen] and every builder start
+     * with. Default is [org.hexworks.zircon.api.ComponentThemes.default], the stock look.
      */
-    val componentTheme: ComponentTheme?,
+    val componentTheme: ComponentTheme,
     /**
      * Tells [ThemeMode.SYSTEM][org.hexworks.zircon.api.component.theme.ThemeMode.SYSTEM] whether
      * the operating system is light or dark. Default is [platformSystemThemeDetector].

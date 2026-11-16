@@ -22,7 +22,7 @@ public class DefaultProgressField internal constructor(
     range: Int,
     initialProgress: Double,
     showPercent: Boolean,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : ProgressField {
 
     private val components = ComponentFactory { theme }

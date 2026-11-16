@@ -6,7 +6,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHorizontalSlider
-import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
 
 /**
  * Builder for a horizontal [Slider]. By default, it creates a slider with
@@ -15,9 +14,7 @@ import org.hexworks.zircon.internal.component.renderer.HorizontalSliderRenderer
  * - [numberOfSteps]: `10`
  */
 @ZirconDsl
-public class HorizontalSliderBuilder : SliderBuilder<Slider>(
-    initialRenderer = HorizontalSliderRenderer()
-) {
+public class HorizontalSliderBuilder : SliderBuilder<Slider>() {
 
     override var numberOfSteps: Int = 10
         set(value) {

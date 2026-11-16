@@ -20,7 +20,7 @@ public class DefaultCheckBoxField internal constructor(
     label: String,
     description: String,
     initialSelected: Boolean,
-    theme: ComponentTheme?,
+    theme: ComponentTheme,
 ) : CheckBoxField {
 
     private val components = ComponentFactory { theme }

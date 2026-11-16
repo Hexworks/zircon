@@ -6,13 +6,11 @@ import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultTextArea
-import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class TextAreaBuilder : BaseComponentBuilder<TextArea>(
     initialRole = ComponentRole.TEXT_AREA,
-    initialRenderer = DefaultTextAreaRenderer(),
 ) {
 
     public var text: String = ""

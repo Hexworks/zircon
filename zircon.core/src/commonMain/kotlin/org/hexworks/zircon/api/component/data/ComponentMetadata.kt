@@ -14,6 +14,7 @@ import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.component.theme.PinnedAspects
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
@@ -59,16 +60,16 @@ public data class ComponentMetadata(
      */
     val orientation: Orientation = Orientation.HORIZONTAL,
     /**
-     * The [ComponentTheme] the component starts with; `null` means none.
+     * The [ComponentTheme] the component starts with.
      */
-    val componentThemeProperty: Property<ComponentTheme?> = null.toProperty(),
+    val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty(),
     /**
      * The looks the builder set explicitly, which a [ComponentTheme] leaves alone.
      */
     val pinnedAspects: PinnedAspects = PinnedAspects.NONE,
     /**
-     * `true` when the component theme was set explicitly on the builder: a parent whose
-     * theme is `null` then does not clear it on attach.
+     * `true` when the component theme was set explicitly on the builder: a parent then does
+     * not replace it on attach or when its own theme changes.
      */
     val componentThemeExplicit: Boolean = false,
 ) {
