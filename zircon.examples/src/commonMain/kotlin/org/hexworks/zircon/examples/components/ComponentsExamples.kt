@@ -1,5 +1,7 @@
 package org.hexworks.zircon.examples.components
 
+import org.hexworks.zircon.examples.themes.neobrutalismExample
+
 import org.hexworks.zircon.examples.Example
 
 val componentExamples: List<Example> = listOf(
@@ -20,6 +22,7 @@ val componentExamples: List<Example> = listOf(
     labelsExample,
     logAreaExample,
     marginExample,
+    neobrutalismExample,
     oldDataBindingExample,
     panelsExample,
     progressBarExample,

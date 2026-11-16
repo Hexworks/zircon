@@ -9,9 +9,10 @@ import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHBox
 import org.hexworks.zircon.internal.component.renderer.DefaultHBoxRenderer
 import kotlin.math.max
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
-public class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer()) {
+public class HBoxBuilder : BaseContainerBuilder<HBox>(DefaultHBoxRenderer(), ComponentRole.HBOX) {
 
     public var spacing: Int = 0
         set(value) {

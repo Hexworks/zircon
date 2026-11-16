@@ -2,6 +2,9 @@ package org.hexworks.zircon.api.config
 
 import org.hexworks.zircon.api.builder.config.ZirconDefaultsBuilder
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.SystemThemeDetector
+import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.resource.TilesetResource
 
 /**
@@ -24,6 +27,16 @@ public data class ZirconDefaults(
      * Default is [org.hexworks.zircon.api.ColorThemes.gamebookers]
      */
     val theme: ColorTheme,
+    /**
+     * The [ComponentTheme] a [org.hexworks.zircon.api.screen.Screen] starts with.
+     * `null` (the default) means none: components are drawn from the [ColorTheme] alone.
+     */
+    val componentTheme: ComponentTheme?,
+    /**
+     * Tells [ThemeMode.SYSTEM][org.hexworks.zircon.api.component.theme.ThemeMode.SYSTEM] whether
+     * the operating system is light or dark. Default is [platformSystemThemeDetector].
+     */
+    val systemThemeDetector: SystemThemeDetector,
     /**
      * Switches debug mode on or off.
      * Default is `false`.

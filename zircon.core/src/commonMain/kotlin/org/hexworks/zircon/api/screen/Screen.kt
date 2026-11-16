@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.modal.ModalFragment
 import org.hexworks.zircon.api.component.modal.ModalResult
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
+import org.hexworks.zircon.api.component.theme.ComponentFactory
 
 /**
  * A [Screen] is an in-memory representation of a [TileGrid] which can be displayed using an
@@ -27,6 +28,14 @@ public interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
      * effectively displaying them on the user's screen.
      */
     public fun display()
+
+    /**
+     * Builds components pre-configured for this screen's current [componentTheme]: the
+     * theme's renderer, decorations and colors are set on each builder before your block
+     * runs, so the size is computed for them. Without a theme the builders are the plain ones.
+     */
+    public val componentFactory: ComponentFactory
+        get() = ComponentFactory { componentTheme }
 
     /**
      * Opens a new [Modal] window on top of the [Screen]. A modal window blocks access

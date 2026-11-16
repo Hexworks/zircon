@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultTab
 import org.hexworks.zircon.api.fragment.TabData
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 
 @ZirconDsl
@@ -21,6 +22,8 @@ public class TabBuilder : FragmentBuilder<TabData>, Builder<TabData> {
     public var content: Component? = null
 
     internal var width: Int? = null
+    internal var theme: ComponentTheme? = null
+    internal var vertical: Boolean = false
 
     private val calculatedWidth: Int
         get() = label?.length?.plus(2) ?: 3
@@ -39,7 +42,9 @@ public class TabBuilder : FragmentBuilder<TabData>, Builder<TabData> {
             tab = DefaultTab(
                 key = key!!,
                 initialText = label!!,
-                width = width ?: calculatedWidth
+                width = width ?: calculatedWidth,
+                theme = theme,
+                vertical = vertical,
             ),
             content = content!!
         )

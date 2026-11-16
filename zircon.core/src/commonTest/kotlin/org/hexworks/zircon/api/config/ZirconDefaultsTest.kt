@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.builder.config.DEFAULT_COLOR_THEME
 import org.hexworks.zircon.api.builder.config.DEFAULT_DEBUG_MODE
 import org.hexworks.zircon.api.builder.config.DEFAULT_DEFAULT_TILESET
 import org.hexworks.zircon.api.builder.config.ZirconDefaultsBuilder
+import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.builder.config.zirconDefaults
 import org.hexworks.zircon.api.builder.graphics.tileGraphics
 import org.hexworks.zircon.api.config.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
@@ -31,6 +32,8 @@ class ZirconDefaultsTest {
             ZirconDefaults(
                 tileset = DEFAULT_DEFAULT_TILESET,
                 theme = DEFAULT_COLOR_THEME,
+                componentTheme = null,
+                systemThemeDetector = platformSystemThemeDetector(),
                 debugMode = DEFAULT_DEBUG_MODE,
                 debugConfig = DEFAULT_DEBUG_CONFIG,
                 shortcutsConfig = DEFAULT_SHORTCUTS_CONFIG,

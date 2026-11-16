@@ -1,63 +1,78 @@
 package org.hexworks.zircon.internal.fragment.impl
 
-import org.hexworks.zircon.api.component.Panel
-import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.component.label
-import org.hexworks.zircon.api.builder.component.panel
-import org.hexworks.zircon.api.builder.component.radioButton
 import org.hexworks.zircon.api.builder.graphics.characterTileString
 import org.hexworks.zircon.api.builder.graphics.styleSet
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.ComponentStyleSet
-import org.hexworks.zircon.api.component.builder.base.decorations
+import org.hexworks.zircon.api.component.Panel
+import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.RenderingMode.INTERACTIVE
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.component.theme.ComponentFactory
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.fragment.Tab
-import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.api.graphics.DrawWindow
+import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
+/**
+ * A tab: a radio button while unselected, a label while selected, swapped in a panel. The
+ * parts carry the tab roles so a [ComponentTheme] can draw them; without an entry for a role
+ * the 1.x look (a box around the text) is used.
+ */
 public class DefaultTab internal constructor(
     key: String,
     initialText: String,
     width: Int,
+    theme: ComponentTheme? = null,
+    vertical: Boolean = false,
 ) : Tab {
 
-    override val tabButton: RadioButton = radioButton {
+    private val components = ComponentFactory { theme }
+    private val tabRole = if (vertical) ComponentRole.TAB_VERTICAL else ComponentRole.TAB
+    private val selectedRole = if (vertical) ComponentRole.TAB_VERTICAL_SELECTED else ComponentRole.TAB_SELECTED
+
+    override val tabButton: RadioButton = components.radioButton {
+        role = tabRole
         text = initialText
         this.key = key
         preferredSize = Size(width, 3)
-        componentStyleSet = ComponentStyleSet.DEFAULT_STYLE
-        componentRenderer = ComponentRenderer { graphics, ctx ->
-            graphics.drawText(ctx.component.text, ctx.currentStyle)
-        }
-        decorations {
-            +box(renderingMode = INTERACTIVE)
+        if (theme.lacks(tabRole)) {
+            defaultComponentStyleSet(ComponentStyleSet.DEFAULT_STYLE)
+            defaultComponentRenderer(ComponentRenderer { graphics, ctx ->
+                graphics.drawText(ctx.component.text, ctx.currentStyle)
+            })
+            defaultDecorationRenderers(listOf(box(renderingMode = INTERACTIVE)))
         }
     }
 
-    private val label = label {
+    private val label = components.label {
+        role = selectedRole
         text = initialText
         preferredSize = Size(width, 3)
-        componentRenderer = ComponentRenderer { graphics, ctx ->
-            val theme = ctx.theme
-            val style = styleSet {
-                backgroundColor = theme.primaryBackgroundColor
-                foregroundColor = theme.primaryForegroundColor
-            }
-            val filler = Tile.defaultTile().withStyle(style)
-            graphics.fill(filler)
-            graphics.drawText(ctx.component.text, style, Position.OFFSET_1X1)
+        if (theme.lacks(selectedRole)) {
+            defaultComponentRenderer(ComponentRenderer { graphics, ctx ->
+                val theme = ctx.theme
+                val style = styleSet {
+                    backgroundColor = theme.primaryBackgroundColor
+                    foregroundColor = theme.primaryForegroundColor
+                }
+                val filler = Tile.defaultTile().withStyle(style)
+                graphics.fill(filler)
+                graphics.drawText(ctx.component.text, style, Position.OFFSET_1X1)
+            })
         }
     }
 
-    override val root: Panel = panel {
+    override val root: Panel = components.panel {
+        role = ComponentRole.NONE
         preferredSize = tabButton.size
-        componentRenderer = NoOpComponentRenderer()
+        defaultComponentRenderer(NoOpComponentRenderer())
     }
 
     private var currentAttachment: AttachedComponent = root.addComponent(tabButton)
@@ -92,5 +107,4 @@ public class DefaultTab internal constructor(
         )
         applyStyle(style)
     }
-
 }

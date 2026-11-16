@@ -3,10 +3,11 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public abstract class SliderBuilder<T : Slider>(
     initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer, ComponentRole.SLIDER) {
 
     public var minValue: Int = 0
         set(value) {

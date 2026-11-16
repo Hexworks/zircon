@@ -30,6 +30,7 @@ import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.internal.grid.DefaultTileGrid
 import org.hexworks.zircon.internal.grid.InternalTileGrid
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public class TileGridScreen(
     private val tileGrid: InternalTileGrid,
@@ -193,7 +194,9 @@ public class TileGridScreen(
                 size = initialSize,
                 name = "Modal Component Container",
                 tilesetProperty = initialTileset.toProperty(),
-                themeProperty = initialTheme.toProperty()
+                themeProperty = initialTheme.toProperty(),
+                componentThemeProperty = ZirconDefaults.current.componentTheme.toProperty(),
+                role = ComponentRole.ROOT,
             )
             return ModalComponentContainer(
                 metadata = metadata,

@@ -4,10 +4,7 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.behavior.extensions.width
-import org.hexworks.zircon.api.builder.component.hBox
-import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButtonGroup
-import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
@@ -21,12 +18,17 @@ import org.hexworks.zircon.api.fragment.TabBar
 import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.util.reportError
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.ComponentFactory
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 public class DefaultHorizontalTabBar internal constructor(
     size: Size,
     defaultSelected: String,
-    tabs: List<TabData>
+    tabs: List<TabData>,
+    theme: ComponentTheme? = null,
 ) : TabBar {
+    private val components = ComponentFactory { theme }
 
     private lateinit var tabBar: HBox
     private lateinit var content: Panel
@@ -48,29 +50,34 @@ public class DefaultHorizontalTabBar internal constructor(
     /** The tabs currently shown in the strip. */
     public val visibleTabs: List<Tab> get() = strip.visibleTabs
 
-    override val root: Component = vBox {
+    override val root: Component = components.vBox {
+        role = ComponentRole.NONE
         preferredSize = size
-        componentRenderer = NoOpComponentRenderer()
+        defaultComponentRenderer(NoOpComponentRenderer())
 
-        tabBar = hBox {
+        tabBar = components.hBox {
+            role = ComponentRole.TAB_BAR
             preferredSize = Size(size.width, 3)
-            decorations {
-                +margin(0, 1)
+            if (theme.lacks(ComponentRole.TAB_BAR)) {
+                defaultDecorationRenderers(listOf(margin(0, 1)))
+                defaultComponentRenderer(NoOpComponentRenderer())
             }
-            componentRenderer = NoOpComponentRenderer()
         }
 
-        content = panel {
+        content = components.panel {
+            role = ComponentRole.TAB_CONTENT
             preferredSize = size.withRelativeHeight(-3)
         }
+        childrenToAdd = listOf(tabBar, content)
 
         strip = TabStrip(
             strip = tabBar,
             tabs = order,
             horizontal = true,
-            capacity = size.width - 2,
+            capacity = tabBar.contentSize.width,
             scrollTabSize = SCROLL_TAB_WIDTH,
             sizeOf = { it.tabButton.width },
+            theme = theme,
         )
 
         group.selectedButtonProperty.onChange { (_, newValue) ->

@@ -7,9 +7,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultHeader
 import org.hexworks.zircon.internal.component.renderer.DefaultHeaderRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class HeaderBuilder : ComponentWithTextBuilder<Header>(
+    initialRole = ComponentRole.HEADER,
     initialRenderer = DefaultHeaderRenderer(),
     initialText = ""
 ) {

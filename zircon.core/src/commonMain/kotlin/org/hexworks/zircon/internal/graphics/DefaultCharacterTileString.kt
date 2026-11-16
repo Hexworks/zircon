@@ -6,8 +6,6 @@ import org.hexworks.zircon.api.behavior.extensions.moveCursorForward
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.extensions.withRelativeY
-import org.hexworks.zircon.api.data.extensions.withX
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.graphics.CharacterTileString
 import org.hexworks.zircon.api.graphics.TextWrap
@@ -32,53 +30,9 @@ public data class DefaultCharacterTileString (
         if (characterTiles.isEmpty()) return tiles.toMap()
 
         if (textWrap == TextWrap.WORD_WRAP) {
-            val wordCharacterIterator = CharacterTileIterator(charIter)
-
-            if (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext()) {
-                do {
-                    val nextWord = wordCharacterIterator.next()
-                    val wordSize = nextWord.size
-                    var spaceRemaining = cols - cursorHandler.cursorPosition.x
-
-                    //the word is bigger then 1 line when this happens we should character wrap
-                    if (wordSize > cols) {
-                        nextWord.forEach { tc: CharacterTile ->
-                            tiles[cursorHandler.cursorPosition] = tc
-                            cursorHandler.moveCursorForward()
-                        }
-                    }
-
-                    //this means we can plunk the word on our line
-                    if (spaceRemaining >= wordSize) {
-                        nextWord.forEach { tc: CharacterTile ->
-                            tiles[cursorHandler.cursorPosition] = tc
-                            cursorHandler.moveCursorForward()
-                        }
-                    } else {
-                        //this means we are at the last yLength and therefore we cannot wrap anymore. Therefore we should
-                        //stop rendering
-                        val row = cursorHandler.cursorPosition.y
-                        if (row == rows - 1) {
-                            return tiles.toMap()
-                        }
-
-                        //as our word couldn't fit on the last line lets move down a yLength
-                        cursorHandler.cursorPosition = cursorHandler.cursorPosition.withRelativeY(1).withX(0)
-                        //recalculate our space remaining
-                        spaceRemaining = cols - cursorHandler.cursorPosition.x
-
-                        if (spaceRemaining >= wordSize) {
-                            //this means we can plunk the word on our line
-                            nextWord.forEach { tc: CharacterTile ->
-                                tiles[cursorHandler.cursorPosition] = tc
-                                cursorHandler.moveCursorForward()
-                            }
-                        }
-                    }
-
-                } while (cursorIsNotAtBottomRightCorner(cursorHandler) && wordCharacterIterator.hasNext())
+            wrapWords(characterTiles, cols) { it.character }.take(rows).forEachIndexed { y, line ->
+                line.forEachIndexed { x, tile -> tiles[Position(x, y)] = tile }
             }
-
             return tiles.toMap()
         }
 

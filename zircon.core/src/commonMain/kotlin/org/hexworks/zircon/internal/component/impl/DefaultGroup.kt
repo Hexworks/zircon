@@ -11,6 +11,9 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.component.InternalGroup
 import org.hexworks.zircon.internal.extensions.disposeAll
+import org.hexworks.cobalt.databinding.api.value.NoActionOnBind
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
@@ -33,6 +36,9 @@ public class DefaultGroup<T : Component> internal constructor(
     override var isHidden: Boolean by hiddenProperty.asDelegate()
     override var theme: ColorTheme by themeProperty.asDelegate()
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
+    override val role: ComponentRole = ComponentRole.NONE
+    override val componentThemeProperty: Property<ComponentTheme?> = null.toProperty()
+    override var componentTheme: ComponentTheme? by componentThemeProperty.asDelegate()
 
     override fun addComponent(component: T): AttachedComponent {
         require(component is InternalComponent) {
@@ -44,7 +50,9 @@ public class DefaultGroup<T : Component> internal constructor(
                 component.disabledProperty.updateFrom(disabledProperty),
                 component.hiddenProperty.updateFrom(hiddenProperty),
                 component.themeProperty.updateFrom(themeProperty),
-                component.tilesetProperty.updateFrom(tilesetProperty)
+                component.tilesetProperty.updateFrom(tilesetProperty),
+                // Only when the group's theme changes: a group starts without one.
+                component.componentThemeProperty.updateFrom(componentThemeProperty, NoActionOnBind),
             )
             handle
         }
@@ -64,4 +72,4 @@ private fun ComponentBindings.remove(component: Component) {
     }
 }
 
-private typealias ComponentBindings = MutableMap<UUID, Pair<AttachedComponent, MutableList<Binding<Any>>>>
+private typealias ComponentBindings = MutableMap<UUID, Pair<AttachedComponent, MutableList<Binding<out Any?>>>>

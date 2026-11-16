@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.api.fragment.builder.ThemedFragmentBuilder
 import org.hexworks.zircon.internal.component.modal.EmptyModalResult
 
 internal fun <T : Component, B : BaseComponentBuilder<T>> buildChildFor(
@@ -13,6 +14,8 @@ internal fun <T : Component, B : BaseComponentBuilder<T>> buildChildFor(
     builder: B,
     init: B.() -> Unit
 ): T {
+    // A themed parent themes the children built in its block.
+    parent.componentTheme?.let { builder.presetTheme(it) }
     val result = builder.apply(init).build()
     parent.childrenToAdd = parent.childrenToAdd.plus(result)
     return result
@@ -23,6 +26,9 @@ internal fun <F : Fragment, B : FragmentBuilder<F>> buildFragmentFor(
     builder: B,
     init: B.() -> Unit
 ): F {
+    if (builder is ThemedFragmentBuilder<*> && builder.theme == null) {
+        builder.theme = parent.componentTheme
+    }
     val result = builder.apply(init).build()
     parent.childrenToAdd = parent.childrenToAdd.plus(result.root)
     return result

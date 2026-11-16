@@ -172,7 +172,7 @@ public class DefaultTextArea internal constructor(
     override fun mouseReleased(event: MouseEvent, phase: UIEventPhase): UIEventResponse {
         textEditor.applyTransformation(
             MoveCursorTo(
-                event.position - position + visibleOffset
+                event.position - absolutePosition - contentOffset + visibleOffset
             )
         )
         return Processed

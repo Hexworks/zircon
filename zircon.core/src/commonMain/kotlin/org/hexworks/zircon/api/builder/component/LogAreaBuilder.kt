@@ -7,9 +7,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultLogArea
 import org.hexworks.zircon.internal.component.renderer.DefaultLogAreaRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class LogAreaBuilder : BaseComponentBuilder<LogArea>(
+    initialRole = ComponentRole.LOG_AREA,
     initialRenderer = DefaultLogAreaRenderer()
 ) {
 

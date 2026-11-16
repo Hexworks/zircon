@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.behavior.ComponentThemeOverride
 
 /**
  * Represents an object that can contain gui [Component]s and also maintains
@@ -14,7 +15,7 @@ import org.hexworks.zircon.api.builder.Builder
  * @see ColorThemeOverride
  */
 //! TODO: Add a parameter to ignore theme override?
-public interface ComponentContainer : ColorThemeOverride {
+public interface ComponentContainer : ColorThemeOverride, ComponentThemeOverride {
 
     /**
      * Adds a child [Component] to this [ComponentContainer]. It can either be

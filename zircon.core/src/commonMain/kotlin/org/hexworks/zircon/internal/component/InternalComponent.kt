@@ -15,6 +15,7 @@ import org.hexworks.zircon.internal.uievent.ComponentEventAdapter
 import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 /**
  * A [InternalComponent] represents the internal API of the [Component] interface which adds
@@ -72,6 +73,12 @@ public interface InternalComponent :
      * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
      */
     public fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
+
+    /**
+     * Takes [theme] over from the parent. A `null` parent theme does not clear a theme that
+     * was set explicitly on this component.
+     */
+    public fun inheritComponentTheme(theme: ComponentTheme?)
 
     /**
      * Marks the rendered state of this component stale: the next [render] redraws it

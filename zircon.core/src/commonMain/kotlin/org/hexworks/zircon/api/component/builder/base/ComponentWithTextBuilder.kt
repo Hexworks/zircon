@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.internal.component.withNewLinesStripped
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public abstract class ComponentWithTextBuilder<T : Component>(
     initialRenderer: ComponentRenderer<out T>,
@@ -14,8 +15,9 @@ public abstract class ComponentWithTextBuilder<T : Component>(
     /**
      * The space that should be reserved for additional mandatory decorations (like a list item prefix: `- `)
      */
-    private val reservedSpace: Int = 0
-) : BaseComponentBuilder<T>(initialRenderer) {
+    private val reservedSpace: Int = 0,
+    initialRole: ComponentRole = ComponentRole.NONE,
+) : BaseComponentBuilder<T>(initialRenderer, initialRole) {
 
     public val textProperty: Property<String> = initialText.toProperty()
 

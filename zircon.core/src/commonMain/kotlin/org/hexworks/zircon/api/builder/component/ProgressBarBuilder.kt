@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
 import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 /**
  * Builder for the progress bar. By default, it creates a progress bar with a maxValue of 100 and 10 steps.
@@ -14,6 +15,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultProgressBarRendere
 @ZirconDsl
 public class ProgressBarBuilder :
     BaseComponentBuilder<ProgressBar>(
+    initialRole = ComponentRole.PROGRESS_BAR,
         initialRenderer = DefaultProgressBarRenderer()
     ) {
 

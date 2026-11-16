@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.dsl.AnyContainerBuilder
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildFragmentFor
 import org.hexworks.zircon.api.fragment.TabBar
-import org.hexworks.zircon.api.fragment.builder.FragmentBuilder
+import org.hexworks.zircon.api.fragment.builder.ThemedFragmentBuilder
 import org.hexworks.zircon.internal.fragment.impl.DefaultHorizontalTabBar
 import org.hexworks.zircon.internal.fragment.impl.TabBarBuilder
 
@@ -24,7 +24,7 @@ public class HorizontalTabBarBuilder(
     defaultSelected = defaultSelected,
     tabs = tabs,
     position = position
-), FragmentBuilder<TabBar> {
+), ThemedFragmentBuilder<TabBar> {
 
     public fun HorizontalTabBarBuilder.tab(init: TabBuilder.() -> Unit) {
         tabs = tabs + TabBuilder().apply(init)
@@ -36,12 +36,13 @@ public class HorizontalTabBarBuilder(
 
     override fun build(): TabBar {
         checkCommonProperties()
-        val finalTabs = tabs.map { it.build() }
+        val finalTabs = tabs.map { it.apply { theme = this@HorizontalTabBarBuilder.theme }.build() }
         // Tabs that do not fit are scrolled, so any number of tabs is fine.
         return DefaultHorizontalTabBar(
             size = size,
             defaultSelected = defaultSelected ?: finalTabs.first().tab.key,
-            tabs = finalTabs
+            tabs = finalTabs,
+            theme = theme,
         ).also { it.root.moveTo(position) }
     }
 }

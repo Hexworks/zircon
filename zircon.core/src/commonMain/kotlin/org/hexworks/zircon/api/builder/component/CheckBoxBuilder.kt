@@ -9,9 +9,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultCheckBox
 import org.hexworks.zircon.internal.component.renderer.DefaultCheckBoxRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class CheckBoxBuilder : ComponentWithTextBuilder<CheckBox>(
+    initialRole = ComponentRole.CHECK_BOX,
     initialRenderer = DefaultCheckBoxRenderer(),
     initialText = "",
     reservedSpace = DefaultCheckBoxRenderer.DECORATION_WIDTH

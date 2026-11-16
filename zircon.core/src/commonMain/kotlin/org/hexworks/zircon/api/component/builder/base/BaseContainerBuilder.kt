@@ -6,14 +6,16 @@ import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.isSizeUnknown
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 /**
  * This class can be used as a base class for creating component builders.
  * If your component has text use [ComponentWithTextBuilder] instead.
  */
 public abstract class BaseContainerBuilder<T : Container>(
-    initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T>(initialRenderer) {
+    initialRenderer: ComponentRenderer<out T>,
+    initialRole: ComponentRole = ComponentRole.NONE,
+) : BaseComponentBuilder<T>(initialRenderer, initialRole) {
 
     public var childrenToAdd: List<Component> = listOf()
 
@@ -22,7 +24,7 @@ public abstract class BaseContainerBuilder<T : Container>(
     private val calculatedSize: Size
         get() = calculateContentSize() + decorationRenderers.occupiedSize
 
-    override fun createMetadata(): ComponentMetadata = ComponentMetadata(
+    override fun createMetadata(): ComponentMetadata = applyPendingTheme().let { ComponentMetadata(
         position = position,
         size = if (hasNoExplicitSize()) calculatedSize else size,
         name = name,
@@ -31,8 +33,17 @@ public abstract class BaseContainerBuilder<T : Container>(
         componentStyleSetProperty = componentStyleSetProperty,
         tilesetProperty = tilesetProperty,
         hiddenProperty = hiddenProperty,
-        disabledProperty = disabledProperty
-    )
+        disabledProperty = disabledProperty,
+        activationShortcut = activationShortcut,
+        role = role,
+        componentThemeProperty = componentThemeProperty,
+        pinnedAspects = props.pinnedAspects,
+        componentThemeExplicit = props.componentThemeExplicit,
+    ) }
+
+    private fun applyPendingTheme() {
+        props.componentTheme?.let { applyThemeEntry(it) }
+    }
 
     private fun hasNoExplicitSize() = preferredContentSize.isSizeUnknown && preferredSize.isSizeUnknown
 

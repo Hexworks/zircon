@@ -37,7 +37,7 @@ public class DefaultTextAreaRenderer : ComponentRenderer<DefaultTextArea> {
             component.whenConnectedToRoot { root ->
                 root.eventBus.publish(
                     event = RequestCursorAt(
-                        position = component.position + cursorPos,
+                        position = component.absolutePosition + component.contentOffset + cursorPos,
                         emitter = component
                     ),
                     eventScope = root.eventScope

@@ -14,6 +14,9 @@ import org.hexworks.zircon.api.uievent.MouseEventType
 import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.ComponentFactory
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 /**
  * The row or column of tabs of a tab bar. Tabs that do not fit are scrolled: a `▲…` /
@@ -31,7 +34,10 @@ internal class TabStrip(
     private val capacity: Int,
     scrollTabSize: Int,
     private val sizeOf: (Tab) -> Int,
+    theme: ComponentTheme? = null,
 ) {
+    private val components = ComponentFactory { theme }
+    private val themedScroll = !theme.lacks(ComponentRole.TAB_SCROLL)
 
     private val scrollTabLength = scrollTabSize
 
@@ -135,10 +141,11 @@ internal class TabStrip(
         if (window.showAfter) attachments += strip.addComponent(after)
     }
 
-    private fun scrollTab(text: String, size: Size, onClick: () -> Unit): Button = button {
+    private fun scrollTab(text: String, size: Size, onClick: () -> Unit): Button = components.button {
+        role = ComponentRole.TAB_SCROLL
         +text
         preferredSize = size
-        decorations { +box() }
+        if (!themedScroll) defaultDecorationRenderers(listOf(box()))
         onActivated { onClick() }
     }
 }

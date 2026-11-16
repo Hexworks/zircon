@@ -4,10 +4,11 @@ import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 public abstract class NumberInputBuilder<T : NumberInput>(
     initialRenderer: ComponentRenderer<out T>
-) : BaseComponentBuilder<T>(initialRenderer) {
+) : BaseComponentBuilder<T>(initialRenderer, ComponentRole.NUMBER_INPUT) {
 
     public var initialValue: Int = 0
         set(value) {

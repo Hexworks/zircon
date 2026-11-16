@@ -12,6 +12,9 @@ import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.extensions.hasNegativeComponent
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.component.theme.PinnedAspects
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 /**
  * Contains metadata that is common to **all** [Component]s.
@@ -32,7 +35,24 @@ public data class ComponentMetadata(
      * A keyboard shortcut that activates the component from anywhere on its screen,
      * as if it was focused and the activation key was pressed. `null` means none.
      */
-    val activationShortcut: KeyboardEventMatcher? = null
+    val activationShortcut: KeyboardEventMatcher? = null,
+    /**
+     * What the component is for a [ComponentTheme]. Builders set it to the component kind.
+     */
+    val role: ComponentRole = ComponentRole.NONE,
+    /**
+     * The [ComponentTheme] the component starts with; `null` means none.
+     */
+    val componentThemeProperty: Property<ComponentTheme?> = null.toProperty(),
+    /**
+     * The looks the builder set explicitly, which a [ComponentTheme] leaves alone.
+     */
+    val pinnedAspects: PinnedAspects = PinnedAspects.NONE,
+    /**
+     * `true` when the component theme was set explicitly on the builder: a parent whose
+     * theme is `null` then does not clear it on attach.
+     */
+    val componentThemeExplicit: Boolean = false,
 ) {
 
     val tileset: TilesetResource

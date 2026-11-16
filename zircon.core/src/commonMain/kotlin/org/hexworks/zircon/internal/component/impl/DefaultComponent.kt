@@ -60,11 +60,18 @@ import org.hexworks.zircon.internal.event.ZirconEvent.RequestFocusFor
 import org.hexworks.zircon.internal.graphics.FastTileGraphics
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.internal.uievent.impl.DefaultUIEventProcessor
+import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
+import org.hexworks.zircon.api.component.renderer.ComponentRenderer
+import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
+import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.theme.PinnedAspects
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @Suppress("UNCHECKED_CAST")
 public abstract class DefaultComponent(
     metadata: ComponentMetadata,
-    private val renderer: ComponentRenderingStrategy<out Component>,
+    renderer: ComponentRenderingStrategy<out Component>,
     private val uiEventProcessor: DefaultUIEventProcessor = UIEventProcessor.createDefault(),
     override val boundsProperty: Property<Boundable> = Boundable.create(
         position = metadata.position,
@@ -86,6 +93,22 @@ public abstract class DefaultComponent(
 
     final override val id: UUID = UUID.randomUUID()
     final override val name: String = metadata.name
+    final override val role: ComponentRole = metadata.role
+
+    //#region Rendering strategy
+    /**
+     * The strategy the component was built with; restored when its component theme is removed.
+     */
+    private val originalRenderingStrategy: ComponentRenderingStrategy<out Component> = renderer
+
+    /**
+     * The strategy in effect. A [ComponentTheme] replaces it; the content area follows it.
+     */
+    private var renderingStrategy: ComponentRenderingStrategy<out Component> = renderer
+
+    private val pinnedAspects: PinnedAspects = metadata.pinnedAspects
+    private var componentThemeExplicit: Boolean = metadata.componentThemeExplicit
+    //#endregion
 
     //#region Component hierarchy and state properties
     final override val rootProperty: Property<RootContainer?> = null.toProperty()
@@ -105,13 +128,23 @@ public abstract class DefaultComponent(
     override val positionProperty: ObservableValue<Position> = boundsProperty.bindTransform(Boundable::position)
     override val bounds: Boundable by boundsProperty.asDelegate()
 
-    final override val contentOffset: Position = renderer.contentPosition
-    final override val contentSize: Size = renderer.calculateContentSize(size)
+    final override val contentOffset: Position
+        get() = renderingStrategy.contentPosition
 
-    final override val contentBoundsProperty: ObservableValue<Boundable> = boundsProperty.bindTransform { (pos) ->
-        Boundable.create(pos + contentOffset, contentSize)
+    // Clamped: a theme whose decorations do not fit leaves no content area rather than a negative one.
+    final override val contentSize: Size
+        get() = renderingStrategy.calculateContentSize(size).let { (w, h) -> Size(maxOf(0, w), maxOf(0, h)) }
+
+    private val contentBoundsInternal: Property<Boundable> =
+        Boundable.create(position + contentOffset, contentSize).toProperty()
+    final override val contentBoundsProperty: ObservableValue<Boundable>
+        get() = contentBoundsInternal
+    final override val contentBounds: Boundable
+        get() = contentBoundsInternal.value
+
+    private fun refreshContentBounds() {
+        contentBoundsInternal.value = Boundable.create(position + contentOffset, contentSize)
     }
-    final override val contentBounds: Boundable by contentBoundsProperty.asDelegate()
     //#endregion
 
     //#region Common properties
@@ -120,6 +153,14 @@ public abstract class DefaultComponent(
 
     final override val themeProperty: Property<ColorTheme> = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
+
+    final override val componentThemeProperty: Property<ComponentTheme?> = metadata.componentThemeProperty
+    final override var componentTheme: ComponentTheme?
+        get() = componentThemeProperty.value
+        set(value) {
+            componentThemeExplicit = true
+            componentThemeProperty.value = value
+        }
 
     final override val componentStyleSetProperty: Property<ComponentStyleSet> = metadata.componentStyleSetProperty
     final override var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
@@ -156,8 +197,10 @@ public abstract class DefaultComponent(
             }
         }
 
+        // A component theme owns the colors while it has an entry for this role; otherwise the
+        // color theme applies as before.
         val updateTheme: (ObservableValueChanged<ColorTheme>) -> Unit = { (_, newTheme) ->
-            if (newTheme.isColorNotUnknown) {
+            if (!hasThemeEntry && newTheme.isColorNotUnknown) {
                 componentStyleSet = convertColorTheme(newTheme)
             }
         }
@@ -171,12 +214,87 @@ public abstract class DefaultComponent(
         disabledProperty.onChange(updateState)
         themeProperty.onChange(updateTheme)
         componentStyleSetProperty.onChange(updateStyle)
+        boundsProperty.onChange { refreshContentBounds() }
+        componentThemeProperty.onChange { (_, newTheme) -> applyComponentTheme(newTheme, initial = false) }
         componentState = if (isDisabled) DISABLED else DEFAULT
 
-        if (componentStyleSet.isStyleNotUnknown and theme.isColorNotUnknown) {
+        if (!hasThemeEntry && componentStyleSet.isStyleNotUnknown and theme.isColorNotUnknown) {
             componentStyleSet = convertColorTheme(theme)
         }
+        componentTheme?.let { applyComponentTheme(it, initial = true) }
     }
+
+    //#region Component theme
+    /**
+     * `true` while the component theme has a look for this component's role.
+     */
+    private val hasThemeEntry: Boolean
+        get() = componentTheme?.entryFor(role) != null
+
+    final override fun inheritComponentTheme(theme: ComponentTheme?) {
+        if (theme == null && componentThemeExplicit) return
+        componentThemeProperty.value = theme
+    }
+
+    /**
+     * Replaces the rendering strategy and the style set with what [theme] has for [role],
+     * keeping the pinned aspects. `null` restores the strategy the component was built with
+     * and the colors of its [ColorTheme]. Decorations that do not fit into the component
+     * (no content cell would be left) are skipped; the renderer and the colors still apply.
+     * [initial] is `true` from the constructor, when there are no children to move yet.
+     */
+    private fun applyComponentTheme(theme: ComponentTheme?, initial: Boolean) {
+        val oldOffset = contentOffset
+        val entry = theme?.entryFor(role)
+        if (entry == null) {
+            // No theme, or none for this role: the look the component was built with, and
+            // the color theme's colors.
+            renderingStrategy = originalRenderingStrategy
+            if (!pinnedAspects.componentStyleSet && this.theme.isColorNotUnknown) {
+                componentStyleSet = convertColorTheme(this.theme)
+            }
+        } else {
+            run {
+                val current = renderingStrategy as? DefaultComponentRenderingStrategy<Component>
+                val renderer = if (pinnedAspects.componentRenderer) null else entry.componentRenderer
+                val decorations = if (pinnedAspects.decorationRenderers) null else entry.decorationRenderers?.takeIf { it.fits() }
+                val postProcessors = entry.componentPostProcessors
+                if (renderer != null || decorations != null || postProcessors != null) {
+                    val contentRenderer = (renderer ?: current?.componentRenderer) as? ComponentRenderer<Component>
+                    if (contentRenderer != null) {
+                        renderingStrategy = DefaultComponentRenderingStrategy(
+                            componentRenderer = contentRenderer,
+                            decorationRenderers = decorations ?: current?.decorationRenderers ?: emptyList(),
+                            componentPostProcessors = (postProcessors ?: current?.componentPostProcessors ?: emptyList())
+                                    as List<ComponentPostProcessor<Component>>,
+                        )
+                    }
+                }
+                if (!pinnedAspects.componentStyleSet) {
+                    entry.componentStyleSet?.let { componentStyleSet = it }
+                }
+            }
+        }
+        refreshContentBounds()
+        if (!initial) {
+            val delta = contentOffset - oldOffset
+            if (delta != Position.ZERO) onContentOffsetChanged(delta)
+        }
+        invalidateRender()
+    }
+
+    private fun List<ComponentDecorationRenderer>.fits(): Boolean {
+        val occupied = fold(Size.ZERO) { acc, decoration -> acc + decoration.occupiedSize }
+        val own = this@DefaultComponent.size
+        return own.width > occupied.width && own.height > occupied.height
+    }
+
+    /**
+     * Called when a theme change moved the content area by [delta]; containers move their
+     * children along so they stay inside it.
+     */
+    protected open fun onContentOffsetChanged(delta: Position) {}
+    //#endregion
 
     //#region Object overrides
     override fun toString(): String {
@@ -227,17 +345,17 @@ public abstract class DefaultComponent(
             renderHooksInstalled = true
         }
         val cached = renderedGraphics?.takeIf { it.size == size && it.tileset == tileset }
-        if (cached != null && !renderIsStale && !renderer.rendersOnEveryFrame) {
+        if (cached != null && !renderIsStale && !renderingStrategy.rendersOnEveryFrame) {
             return cached
         }
         val target = cached?.apply { clear() } ?: FastTileGraphics(initialSize = size, initialTileset = tileset)
-        renderer.asInvariant().render(this, target)
+        renderingStrategy.asInvariant().render(this, target)
         renderedGraphics = target
         renderIsStale = false
         return target
     }
 
-    override fun render(graphics: TileGraphics): Unit = renderer.asInvariant().render(this, graphics)
+    override fun render(graphics: TileGraphics): Unit = renderingStrategy.asInvariant().render(this, graphics)
 
     // Runs on the first render, when subclasses are fully constructed, so their
     // delegated properties (text, selection, scrolling) are safe to touch.

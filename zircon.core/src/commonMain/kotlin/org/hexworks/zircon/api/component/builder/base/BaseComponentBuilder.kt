@@ -32,6 +32,10 @@ import org.hexworks.zircon.internal.component.data.CommonComponentProperties
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.decoration.BoxDecorationRenderer
 import kotlin.require
+import org.hexworks.zircon.api.component.theme.ThemeEntry
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 
 /**
  * This class can be used as a base class for creating builders for [Component]s.
@@ -39,13 +43,50 @@ import kotlin.require
  */
 @Suppress("UNCHECKED_CAST")
 public abstract class BaseComponentBuilder<T : Component>(
-    initialRenderer: ComponentRenderer<out T>
+    initialRenderer: ComponentRenderer<out T>,
+    initialRole: ComponentRole = ComponentRole.NONE,
 ) : Builder<T>, ComponentEventSource {
 
     internal var props: CommonComponentProperties<T> = CommonComponentProperties(
-        componentRenderer = initialRenderer
+        componentRenderer = initialRenderer,
+        role = initialRole,
     )
         private set
+
+    /**
+     * What the resulting component is for a [ComponentTheme]. Defaults to the component kind;
+     * set it to a finer role (`BUTTON_PRIMARY`, `ALERT_INFO_TEXT`) so a theme can tell it apart.
+     */
+    public var role: ComponentRole
+        get() = props.role
+        set(value) {
+            props.role = value
+        }
+
+    /**
+     * The [ComponentTheme] of the resulting component. Setting it here pins it: a parent
+     * without a theme does not clear it on attach (a parent *with* one still wins).
+     * Prefer building through a [ComponentFactory][org.hexworks.zircon.api.component.theme.ComponentFactory],
+     * which also sizes the component for the theme's decorations.
+     */
+    public var componentTheme: ComponentTheme?
+        get() = props.componentTheme
+        set(value) {
+            props.componentThemeExplicit = true
+            props.componentTheme = value
+            value?.let { applyThemeEntry(it) }
+        }
+
+    /**
+     * Gives the builder [theme] without applying its entry yet (that happens in
+     * [createMetadata], once the user's block has run), so children built inside the block
+     * can pick the theme up from this builder.
+     */
+    internal fun presetTheme(theme: ComponentTheme?) {
+        props.componentTheme = theme
+    }
+    public val componentThemeProperty: Property<ComponentTheme?>
+        get() = props.componentThemeProperty
 
     /**
      * The name of this component. Not mandatory, but if present it will
@@ -111,6 +152,7 @@ public abstract class BaseComponentBuilder<T : Component>(
         get() = props.componentRenderer
         set(value) {
             props.componentRenderer = value
+            props.pinnedAspects = props.pinnedAspects.copy(componentRenderer = true)
         }
 
     // properties
@@ -128,6 +170,7 @@ public abstract class BaseComponentBuilder<T : Component>(
         get() = props.componentStyleSet
         set(value) {
             props.componentStyleSet = value
+            props.pinnedAspects = props.pinnedAspects.copy(componentStyleSet = true)
         }
 
     public val tilesetProperty: Property<TilesetResource>
@@ -209,7 +252,39 @@ public abstract class BaseComponentBuilder<T : Component>(
         get() = props.decorationRenderers
         set(value) {
             props.decorationRenderers = value.reversed()
+            props.pinnedAspects = props.pinnedAspects.copy(decorationRenderers = true)
         }
+
+    /**
+     * The defaults a builder ships with, as opposed to what the user sets: these do not pin
+     * the aspect, so a theme may replace them.
+     */
+    internal fun defaultDecorationRenderers(value: List<ComponentDecorationRenderer>) {
+        props.decorationRenderers = value.reversed()
+    }
+
+    internal fun defaultComponentRenderer(value: ComponentRenderer<out T>) {
+        props.componentRenderer = value
+    }
+
+    internal fun defaultComponentStyleSet(value: ComponentStyleSet) {
+        props.componentStyleSet = value
+    }
+
+    /**
+     * Pre-configures this builder from [theme]'s entry for [role] (if any): the renderer,
+     * the decorations and the style set that are not pinned. The component starts with
+     * [theme] as its component theme, not pinned, so a themed parent can still replace it.
+     */
+    internal fun applyThemeEntry(theme: ComponentTheme) {
+        props.componentTheme = theme
+        val entry: ThemeEntry = theme.entryFor(role) ?: return
+        val pins = props.pinnedAspects
+        if (!pins.componentRenderer) entry.componentRenderer?.let { props.componentRenderer = it as ComponentRenderer<out T> }
+        if (!pins.decorationRenderers) entry.decorationRenderers?.let { props.decorationRenderers = it }
+        if (!pins.componentStyleSet) entry.componentStyleSet?.let { props.componentStyleSet = it }
+        entry.componentPostProcessors?.let { props.postProcessors = it as List<ComponentPostProcessor<T>> }
+    }
 
     /**
      * The [Size] that's occupied by [decorationRenderers].
@@ -284,6 +359,8 @@ public abstract class BaseComponentBuilder<T : Component>(
     public var activationShortcut: KeyboardEventMatcher? = null
 
     protected open fun createMetadata(): ComponentMetadata {
+        // The block has run: the role is final and the user's choices are pinned.
+        props.componentTheme?.let { applyThemeEntry(it) }
         if (bindingAction != UpdateOnBind) {
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
@@ -302,7 +379,11 @@ public abstract class BaseComponentBuilder<T : Component>(
             tilesetProperty = tilesetProperty,
             activationShortcut = activationShortcut,
             hiddenProperty = hiddenProperty,
-            disabledProperty = disabledProperty
+            disabledProperty = disabledProperty,
+            role = role,
+            componentThemeProperty = componentThemeProperty,
+            pinnedAspects = props.pinnedAspects,
+            componentThemeExplicit = props.componentThemeExplicit,
         )
     }
 

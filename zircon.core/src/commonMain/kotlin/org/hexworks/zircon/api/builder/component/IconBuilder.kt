@@ -10,9 +10,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultIcon
 import org.hexworks.zircon.internal.component.renderer.DefaultIconRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class IconBuilder : BaseComponentBuilder<Icon>(
+    initialRole = ComponentRole.ICON,
     initialRenderer = DefaultIconRenderer()
 ) {
 

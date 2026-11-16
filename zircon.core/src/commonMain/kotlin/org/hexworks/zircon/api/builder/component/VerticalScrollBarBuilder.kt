@@ -9,11 +9,13 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultVerticalScrollBar
 import org.hexworks.zircon.internal.component.renderer.DefaultVerticalScrollBarRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class VerticalScrollBarBuilder(
     initialScrollable: Scrollable
 ) : BaseComponentBuilder<ScrollBar>(
+    initialRole = ComponentRole.SCROLL_BAR,
     initialRenderer = DefaultVerticalScrollBarRenderer()
 ) {
 

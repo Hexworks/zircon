@@ -7,9 +7,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
+    initialRole = ComponentRole.TOGGLE_BUTTON,
     initialRenderer = DefaultToggleButtonRenderer(),
     initialText = "",
     reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH

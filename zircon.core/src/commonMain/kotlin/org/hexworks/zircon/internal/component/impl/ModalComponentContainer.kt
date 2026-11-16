@@ -23,6 +23,7 @@ import org.hexworks.zircon.internal.component.renderer.DefaultComponentRendering
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.graphics.Renderable
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 /**
  * This [InternalComponentContainer] implements the logic of using Modal containers.
@@ -60,6 +61,13 @@ public class ModalComponentContainer(
 
     override val themeProperty: Property<ColorTheme>
         get() = mainContainer.themeProperty
+    override var componentTheme: ComponentTheme?
+        get() = mainContainer.componentTheme
+        set(value) {
+            mainContainer.componentTheme = value
+        }
+    override val componentThemeProperty: Property<ComponentTheme?>
+        get() = mainContainer.componentThemeProperty
 
     init {
         containerStack.add(mainContainer)

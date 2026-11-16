@@ -20,6 +20,7 @@ import org.hexworks.zircon.internal.component.extensions.flattenedTree
 import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentAdded
 import org.hexworks.zircon.internal.event.ZirconEvent.ComponentRemoved
+import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 
 public open class DefaultContainer(
     metadata: ComponentMetadata,
@@ -65,6 +66,11 @@ public open class DefaultContainer(
             )
         }
         return attachment
+    }
+
+    // A theme change moved the content area: the children follow it so they stay inside.
+    override fun onContentOffsetChanged(delta: Position) {
+        children.forEach { it.moveTo(it.position + delta) }
     }
 
     //? A container can't be focused by design. It is a branch node in the
@@ -141,6 +147,13 @@ public open class DefaultContainer(
                     bindingAction = component.bindingAction
                 )
                 .keepWhile(component.hasParent)
+            // Not a plain binding: a child keeps an explicitly set theme under a parent without one.
+            if (component.bindingAction == UpdateOnBind) {
+                component.inheritComponentTheme(parentContainer.componentTheme)
+            }
+            parentContainer.componentThemeProperty.onChange { (_, newTheme) ->
+                component.inheritComponentTheme(newTheme)
+            }.keepWhile(component.hasParent)
         }
 
         override fun detach(): Component {

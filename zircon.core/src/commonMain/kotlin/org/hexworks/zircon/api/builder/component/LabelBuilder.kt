@@ -7,9 +7,11 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultLabel
 import org.hexworks.zircon.internal.component.renderer.DefaultLabelRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class LabelBuilder : ComponentWithTextBuilder<Label>(
+    initialRole = ComponentRole.LABEL,
     initialRenderer = DefaultLabelRenderer(),
     initialText = ""
 ) {

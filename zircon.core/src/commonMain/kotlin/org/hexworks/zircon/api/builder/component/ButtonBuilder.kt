@@ -8,15 +8,17 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
 import org.hexworks.zircon.internal.component.impl.DefaultButton
 import org.hexworks.zircon.internal.component.renderer.DefaultButtonRenderer
+import org.hexworks.zircon.api.component.theme.ComponentRole
 
 @ZirconDsl
 public class ButtonBuilder : ComponentWithTextBuilder<Button>(
+    initialRole = ComponentRole.BUTTON,
     initialRenderer = DefaultButtonRenderer(),
     initialText = ""
 ) {
 
     init {
-        decorationRenderers = listOf(side())
+        defaultDecorationRenderers(listOf(side()))
     }
 
     override fun build(): Button {

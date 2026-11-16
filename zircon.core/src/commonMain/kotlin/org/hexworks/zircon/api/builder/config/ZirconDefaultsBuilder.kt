@@ -4,6 +4,9 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.SystemThemeDetector
+import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.config.DebugConfig
 import org.hexworks.zircon.api.config.ErrorHandler
 import org.hexworks.zircon.api.config.DebugConfig.Companion.DEFAULT_DEBUG_CONFIG
@@ -36,6 +39,17 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
      * Default is [ColorThemes.gamebookers]
      */
     public var theme: ColorTheme = DEFAULT_COLOR_THEME
+
+    /**
+     * The [ComponentTheme] a screen starts with. Default is `null`: none.
+     */
+    public var componentTheme: ComponentTheme? = null
+
+    /**
+     * Tells [ThemeMode.SYSTEM][org.hexworks.zircon.api.component.theme.ThemeMode.SYSTEM] whether
+     * the operating system is light or dark. Default is the platform's detector.
+     */
+    public var systemThemeDetector: SystemThemeDetector = platformSystemThemeDetector()
 
     /**
      * Switches debug mode on or off.
@@ -79,6 +93,8 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
     override fun build(): ZirconDefaults = ZirconDefaults(
         tileset = tileset,
         theme = theme,
+        componentTheme = componentTheme,
+        systemThemeDetector = systemThemeDetector,
         debugMode = debugMode,
         debugConfig = debugConfig,
         shortcutsConfig = shortcutsConfig,
