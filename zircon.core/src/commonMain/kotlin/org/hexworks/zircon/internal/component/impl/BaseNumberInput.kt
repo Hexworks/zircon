@@ -1,17 +1,12 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.uievent.KeyboardEvent
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
-import org.hexworks.zircon.api.builder.component.componentStyleSet
-import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
@@ -79,21 +74,6 @@ public abstract class BaseNumberInput(
     override fun decrementCurrentValue() {
         if (currentValue > minValue) {
             currentValue--
-        }
-    }
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
-        defaultStyle = styleSet {
-            foregroundColor = colorTheme.secondaryBackgroundColor
-            backgroundColor = colorTheme.secondaryForegroundColor
-        }
-        disabledStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = Color.TRANSPARENT
-        }
-        focusedStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
         }
     }
 

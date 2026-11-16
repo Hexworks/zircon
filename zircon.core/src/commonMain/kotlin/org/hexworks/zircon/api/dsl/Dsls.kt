@@ -16,6 +16,7 @@ internal fun <T : Component, B : BaseComponentBuilder<T>> buildChildFor(
 ): T {
     // The parent themes the children built in its block.
     builder.presetTheme(parent.componentTheme)
+    builder.presetPalette(parent.componentPalette)
     val result = builder.apply(init).build()
     parent.childrenToAdd = parent.childrenToAdd.plus(result)
     return result

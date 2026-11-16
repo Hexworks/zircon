@@ -3,8 +3,10 @@ package org.hexworks.zircon.api.component.theme
 import org.hexworks.zircon.api.ComponentThemes
 
 /**
- * A look for every component kind: a [ThemeEntry] (renderer, decorations, style set) per
- * [ThemeKey]. Themes are data; one generic [ComponentFactory] builds components for any theme.
+ * A look for every component kind: a [ThemeEntry] (renderer, decorations, and how the colors
+ * derive from the screen's [ComponentPalette]) per [ThemeKey]. A theme is shape only; light
+ * and dark, brand colors and the rest are the palette's, so one theme works with any palette.
+ * Themes are data; one generic [ComponentFactory] builds components for any theme.
  *
  * A theme is always in effect: [ComponentThemes.default()][org.hexworks.zircon.api.ComponentThemes.default]
  * holds the stock look, and every other theme falls back to it, key by key and aspect by
@@ -16,11 +18,6 @@ public interface ComponentTheme {
      * A unique name, for display and debugging.
      */
     public val name: String
-
-    /**
-     * [ThemeMode.LIGHT] or [ThemeMode.DARK]; a theme resolves [ThemeMode.SYSTEM] when built.
-     */
-    public val mode: ThemeMode
 
     /**
      * The look for exactly [key], or `null` when this theme has none. Use [resolveEntry] to

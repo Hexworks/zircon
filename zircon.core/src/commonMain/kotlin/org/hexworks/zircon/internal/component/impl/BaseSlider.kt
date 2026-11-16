@@ -2,16 +2,11 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.logging.api.Logger
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.cobalt.databinding.api.event.ObservableValueChanged
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.builder.component.componentStyleSet
-import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
@@ -204,26 +199,6 @@ public abstract class BaseSlider(
     // Focused and active mean the same thing for a slider (it is the one the keys move),
     // so they share a style. Hover differs from them only in the handle's colour, as it
     // does for buttons.
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
-        defaultStyle = styleSet {
-            foregroundColor = colorTheme.primaryForegroundColor
-            backgroundColor = Color.TRANSPARENT
-        }
-        highlightedStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = colorTheme.accentColor
-        }
-        val focusedAndActive = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.accentColor
-        }
-        focusedStyle = focusedAndActive
-        activeStyle = focusedAndActive
-        disabledStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = colorTheme.secondaryBackgroundColor
-        }
-    }
 
     override fun onValueChange(fn: (ObservableValueChanged<Int>) -> Unit): Subscription {
         return currentValueProperty.onChange(fn)

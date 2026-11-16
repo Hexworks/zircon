@@ -14,6 +14,8 @@ import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.extensions.isEmpty
+import org.hexworks.zircon.api.component.theme.border
+import org.hexworks.zircon.api.component.theme.selection
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -47,7 +49,6 @@ public enum class NeoShadow {
  * shadow is always ink. Disabled components lose the shadow.
  */
 public class NeoFrameDecoration(
-    private val palette: NeobrutalismPaletteProvider,
     private val shadow: NeoShadow = NeoShadow.THICK,
     private val boxType: BoxType = BoxType.HEAVY,
     private val hoverShift: Boolean = false,
@@ -65,8 +66,8 @@ public class NeoFrameDecoration(
         if (size.width < 2 || size.height < 2) return
         val state = context.component.componentState
         val style = context.currentStyle
-        val colors = palette.paletteFor(context.component)
-        val ink = colors?.ink ?: context.defaultStyle.foregroundColor
+        val palette = context.component.componentPalette
+        val ink = palette.border
         val shifted = hoverShift && hasShadow && (state == ComponentState.HIGHLIGHTED || state == ComponentState.ACTIVE)
         val boxSize = if (hasShadow) Size(size.width - 1, size.height - 1) else size
         val boxX = if (shifted) 1 else 0
@@ -74,7 +75,7 @@ public class NeoFrameDecoration(
         if (shifted) shiftContentRight(drawWindow, boxSize)
         drawWindow.fillEmptyCells(style, Boundable.create(Position(boxX + 1, 1), Size(boxSize.width - 2, boxSize.height - 2)))
         drawWindow.drawBox(boxType = boxType, style = style, position = Position(boxX, 0), size = boxSize)
-        if (divider && boxSize.height > 3) drawDivider(drawWindow, boxX, boxSize, style, colors?.accent)
+        if (divider && boxSize.height > 3) drawDivider(drawWindow, boxX, boxSize, style, palette.selection)
         if (hasShadow && !shifted && state != ComponentState.DISABLED) drawShadow(drawWindow, boxSize, ink)
     }
 
@@ -89,7 +90,7 @@ public class NeoFrameDecoration(
         }
     }
 
-    private fun drawDivider(drawWindow: DrawWindow, boxX: Int, boxSize: Size, style: StyleSet, accent: Color?) {
+    private fun drawDivider(drawWindow: DrawWindow, boxX: Int, boxSize: Size, style: StyleSet, accent: Color) {
         val y = 2
         val right = boxX + boxSize.width - 1
         drawWindow.draw(characterTile { character = boxType.connectorRight; styleSet = style }, Position(boxX, y))
@@ -97,10 +98,8 @@ public class NeoFrameDecoration(
             drawWindow.draw(characterTile { character = boxType.horizontal; styleSet = style }, Position(x, y))
         }
         drawWindow.draw(characterTile { character = boxType.connectorLeft; styleSet = style }, Position(right, y))
-        if (accent != null) {
-            drawWindow.transform { pos, tile ->
-                if (pos.y == 1 && pos.x in (boxX + 1) until right && tile is CharacterTile) tile.withBackgroundColor(accent) else tile
-            }
+        drawWindow.transform { pos, tile ->
+            if (pos.y == 1 && pos.x in (boxX + 1) until right && tile is CharacterTile) tile.withBackgroundColor(accent) else tile
         }
     }
 

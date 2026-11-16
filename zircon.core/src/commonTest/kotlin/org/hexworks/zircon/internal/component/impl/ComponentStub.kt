@@ -31,6 +31,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 class ComponentStub(
     initialPosition: Position,
@@ -76,6 +77,11 @@ class ComponentStub(
     override var componentTheme: ComponentTheme by componentThemeProperty.asDelegate()
     override fun inheritComponentTheme(theme: ComponentTheme) {
         componentTheme = theme
+    }
+    override val componentPaletteProperty: Property<ComponentPalette> = ZirconDefaults.current.componentPalette.toProperty()
+    override var componentPalette: ComponentPalette by componentPaletteProperty.asDelegate()
+    override fun inheritComponentPalette(palette: ComponentPalette) {
+        componentPalette = palette
     }
 
 
@@ -196,11 +202,6 @@ class ComponentStub(
         get() = TODO("Not yet implemented")
 
     override fun invalidateRender() {}
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-        this.theme = colorTheme
-        return componentStyleSet
-    }
 
     override fun moveTo(position: Position): Boolean {
         boundsProperty.value = bounds.withPosition(position)

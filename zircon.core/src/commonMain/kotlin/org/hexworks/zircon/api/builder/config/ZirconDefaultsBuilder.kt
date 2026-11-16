@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.builder.config
 
 import org.hexworks.zircon.api.CP437TilesetResources
@@ -16,10 +18,13 @@ import org.hexworks.zircon.api.config.ShortcutsConfig.Companion.DEFAULT_SHORTCUT
 import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 public val DEFAULT_DEFAULT_TILESET: TilesetResource = CP437TilesetResources.rogueYun16x16()
 public val DEFAULT_COLOR_THEME: ColorTheme = ColorThemes.gamebookers()
 public val DEFAULT_COMPONENT_THEME: ComponentTheme = ComponentThemes.default()
+public val DEFAULT_COMPONENT_PALETTE: ComponentPalette = DEFAULT_COLOR_THEME.toComponentPalette()
 public const val DEFAULT_DEBUG_MODE: Boolean = false
 
 /**
@@ -37,10 +42,17 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
     public var tileset: TilesetResource = DEFAULT_DEFAULT_TILESET
 
     /**
-     * The [ColorTheme] to be used when none is specified.
+     * The legacy [ColorTheme]; [componentPalette] defaults to its adaptation.
      * Default is [ColorThemes.gamebookers]
      */
+    @Deprecated("Colors come from the component palette; set `componentPalette`.")
     public var theme: ColorTheme = DEFAULT_COLOR_THEME
+
+    /**
+     * The [ComponentPalette] a screen and every builder start with. Default is [theme] adapted
+     * with `toComponentPalette()`.
+     */
+    public var componentPalette: ComponentPalette? = null
 
     /**
      * The [ComponentTheme] a screen and every builder start with. Default is
@@ -97,6 +109,7 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
         tileset = tileset,
         theme = theme,
         componentTheme = componentTheme,
+        componentPalette = componentPalette ?: theme.toComponentPalette(),
         systemThemeDetector = systemThemeDetector,
         debugMode = debugMode,
         debugConfig = debugConfig,

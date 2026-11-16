@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
@@ -24,6 +26,8 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.component.renderer.RootContainerRenderer
 import org.hexworks.zircon.internal.graphics.Renderable
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 /**
  * This [InternalComponentContainer] implements the logic of using Modal containers.
@@ -53,10 +57,18 @@ public class ModalComponentContainer(
 
     override val isActive: Property<Boolean> = mainContainer.isActive.value.toProperty()
 
+    /**
+     * The legacy color theme; changing it switches the palette to the adapted one, so
+     * `screen.theme = ColorThemes.x()` keeps recoloring the screen. Setting the theme it
+     * already has (what every `View` does on dock) leaves the palette alone, so a palette set
+     * on the screen or in `ZirconDefaults` survives docking.
+     */
     override var theme: ColorTheme
         get() = mainContainer.theme
         set(value) {
+            if (value == mainContainer.theme) return
             mainContainer.theme = value
+            mainContainer.componentPalette = value.toComponentPalette()
         }
 
     override val themeProperty: Property<ColorTheme>
@@ -68,6 +80,13 @@ public class ModalComponentContainer(
         }
     override val componentThemeProperty: Property<ComponentTheme>
         get() = mainContainer.componentThemeProperty
+    override var componentPalette: ComponentPalette
+        get() = mainContainer.componentPalette
+        set(value) {
+            mainContainer.componentPalette = value
+        }
+    override val componentPaletteProperty: Property<ComponentPalette>
+        get() = mainContainer.componentPaletteProperty
 
     init {
         containerStack.add(mainContainer)

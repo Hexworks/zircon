@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.internal.extensions.asInternal

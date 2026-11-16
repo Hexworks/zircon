@@ -11,9 +11,9 @@ import org.hexworks.zircon.api.dsl.ZirconDsl
 
 /**
  * What a [ComponentTheme] gives a [ComponentRole]: the renderer of the content, the
- * decorations around it, post processors over it, and the colors per state. A `null`
- * aspect means "whatever the next key of the lookup says", down to the default theme
- * (see [ComponentTheme.resolveEntry]).
+ * decorations around it, post processors over it, and [styles], how the colors per state
+ * derive from the screen's [ComponentPalette]. A `null` aspect means "whatever the next key
+ * of the lookup says", down to the default theme (see [ComponentTheme.resolveEntry]).
  *
  * The renderer is typed loosely because an entry is selected by role, not type. A theme is
  * responsible for handing a `BUTTON` a renderer that can draw a button.
@@ -22,7 +22,7 @@ public class ThemeEntry(
     public val componentRenderer: ComponentRenderer<out Component>? = null,
     public val decorationRenderers: List<ComponentDecorationRenderer>? = null,
     public val componentPostProcessors: List<ComponentPostProcessor<out Component>>? = null,
-    public val componentStyleSet: ComponentStyleSet? = null,
+    public val styles: ((ComponentPalette) -> ComponentStyleSet)? = null,
 ) {
     /**
      * This entry with its `null` aspects taken from [base].
@@ -31,11 +31,23 @@ public class ThemeEntry(
         componentRenderer = componentRenderer ?: base.componentRenderer,
         decorationRenderers = decorationRenderers ?: base.decorationRenderers,
         componentPostProcessors = componentPostProcessors ?: base.componentPostProcessors,
-        componentStyleSet = componentStyleSet ?: base.componentStyleSet,
+        styles = styles ?: base.styles,
     )
 
+    /**
+     * The colors of a component ([role], [variant], [part]) under [palette]: [styles] derived
+     * from it, then the palette's overrides for that slot; `null` when this entry has no
+     * styles.
+     */
+    public fun stylesFor(
+        palette: ComponentPalette,
+        role: ComponentRole,
+        variant: Variant = Variant.DEFAULT,
+        part: Part = Part.NONE,
+    ): ComponentStyleSet? = styles?.invoke(palette)?.let { palette.applyOverrides(it, role, variant, part) }
+
     override fun toString(): String =
-        "ThemeEntry(renderer=$componentRenderer, decorations=$decorationRenderers, styleSet=$componentStyleSet)"
+        "ThemeEntry(renderer=$componentRenderer, decorations=$decorationRenderers, styles=${if (styles == null) "none" else "derived"})"
 }
 
 @ZirconDsl
@@ -44,7 +56,22 @@ public class ThemeEntryBuilder : Builder<ThemeEntry> {
     public var componentRenderer: ComponentRenderer<out Component>? = null
     public var decorationRenderers: List<ComponentDecorationRenderer>? = null
     public var componentPostProcessors: List<ComponentPostProcessor<out Component>>? = null
-    public var componentStyleSet: ComponentStyleSet? = null
+    public var styles: ((ComponentPalette) -> ComponentStyleSet)? = null
+
+    /**
+     * How the colors per state derive from the palette; see [PaletteStyles] for the shared
+     * derivations.
+     */
+    public fun styles(derive: (ComponentPalette) -> ComponentStyleSet) {
+        styles = derive
+    }
+
+    /**
+     * The same colors under every palette.
+     */
+    public fun fixedStyles(styleSet: ComponentStyleSet) {
+        styles = { styleSet }
+    }
 
     /**
      * The decorations, outermost first, the same order `decorations { }` takes on a builder.
@@ -64,7 +91,7 @@ public class ThemeEntryBuilder : Builder<ThemeEntry> {
         componentRenderer = componentRenderer,
         decorationRenderers = decorationRenderers,
         componentPostProcessors = componentPostProcessors,
-        componentStyleSet = componentStyleSet,
+        styles = styles,
     )
 }
 

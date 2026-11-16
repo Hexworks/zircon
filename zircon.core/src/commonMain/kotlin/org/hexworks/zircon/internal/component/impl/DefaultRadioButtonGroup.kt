@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.extension.orElseGet

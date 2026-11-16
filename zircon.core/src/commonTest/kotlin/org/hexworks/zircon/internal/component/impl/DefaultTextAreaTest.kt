@@ -201,7 +201,6 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
 
     @Test
     fun shouldProperlyGiveFocus() {
-        target.convertColorTheme(DEFAULT_THEME)
         target.focusGiven()
 
         target.componentState shouldBe FOCUSED

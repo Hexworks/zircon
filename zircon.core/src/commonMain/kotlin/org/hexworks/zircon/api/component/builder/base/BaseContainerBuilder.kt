@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.zircon.api.component.Component
@@ -44,6 +46,8 @@ public abstract class BaseContainerBuilder<T : Container>(
         componentThemeProperty = componentThemeProperty,
         pinnedAspects = props.pinnedAspects,
         componentThemeExplicit = props.componentThemeExplicit,
+        componentPaletteProperty = componentPaletteProperty,
+        componentPaletteExplicit = props.componentPaletteExplicit,
     ) }
 
     private fun applyPendingTheme() {

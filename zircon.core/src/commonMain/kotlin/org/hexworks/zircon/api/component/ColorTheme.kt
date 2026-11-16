@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.builder.component.colorTheme
@@ -23,6 +25,7 @@ import org.hexworks.zircon.api.component.data.ComponentState
  * @see ComponentState and
  * @see ComponentStyleSet for more info
  */
+@Deprecated("The five-color theme is a legacy input format: adapt it with `toComponentPalette()` and set `componentPalette`. Removed after 2.0.")
 public interface ColorTheme {
 
     /**

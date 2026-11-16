@@ -10,7 +10,6 @@ import org.hexworks.zircon.api.behavior.extensions.moveRightBy
 import org.hexworks.zircon.api.behavior.extensions.moveUpBy
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.data.ComponentState
@@ -39,7 +38,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
     override val expectedComponentStyles: ComponentStyleSet
         get() = ComponentStyleSet.EMPTY
 
-    lateinit var appliedColorTheme: ColorTheme
 
     @BeforeTest
     override fun setUp() {
@@ -57,11 +55,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
                 componentRenderer = rendererStub
             )
         ) {
-
-            override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet {
-                appliedColorTheme = colorTheme
-                return ComponentStyleSet.EMPTY
-            }
 
             override fun acceptsFocus(): Boolean {
                 return false

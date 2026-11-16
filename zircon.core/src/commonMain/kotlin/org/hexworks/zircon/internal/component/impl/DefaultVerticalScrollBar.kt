@@ -1,14 +1,12 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.ScrollDirection
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
 import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
 import org.hexworks.zircon.api.behavior.extensions.scrollTo
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.ScrollDirection.VERTICAL
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -64,8 +62,6 @@ public class DefaultVerticalScrollBar internal constructor(
         get() = scrollable.actualSize.width.toDouble() / contentWidth
 
     override val scrollDirection: ScrollDirection = VERTICAL
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()
 
     override fun keyPressed(event: KeyboardEvent, phase: UIEventPhase): UIEventResponse = whenEnabledRespondWith {
         if (phase == UIEventPhase.TARGET) {

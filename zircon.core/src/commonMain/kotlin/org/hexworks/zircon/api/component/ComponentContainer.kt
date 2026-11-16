@@ -1,7 +1,10 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
+import org.hexworks.zircon.api.behavior.ComponentPaletteOverride
 import org.hexworks.zircon.api.behavior.ComponentThemeOverride
 
 /**
@@ -15,7 +18,7 @@ import org.hexworks.zircon.api.behavior.ComponentThemeOverride
  * @see ColorThemeOverride
  */
 //! TODO: Add a parameter to ignore theme override?
-public interface ComponentContainer : ColorThemeOverride, ComponentThemeOverride {
+public interface ComponentContainer : ColorThemeOverride, ComponentThemeOverride, ComponentPaletteOverride {
 
     /**
      * Adds a child [Component] to this [ComponentContainer]. It can either be

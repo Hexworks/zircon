@@ -81,6 +81,19 @@ Part             enum: NONE, TEXT, ICON, TITLE, BODY, DISMISS, DOT, LABEL, ROW, 
 - **An explicit theme is pinned.** `componentTheme = x` on a builder or a component keeps `x` whatever the parent's
   theme is or becomes; everything else follows the parent. With a theme always present there is no "parent without
   a theme" to tell apart, so this replaced the old rule (a themed parent wins, a null parent does not clear).
+- **Default derivations are the 1.x rules in palette terms.** `PaletteStyles`: containers are `BORDER` on `SURFACE`
+  (`BORDER_FOCUSED` when focused), headers `ON_SURFACE`, labels `TEXT_MUTED`, interactive controls the emphasis
+  color of their variant as text at rest and as the surface when hovered / focused / pressed, fields `ON_BACKGROUND`
+  on `SURFACE_SUNKEN` with the selection pair while focused, the selected tab `ON_SELECTION` on `SELECTION`. Hover
+  is still the 1.x `TEXT_MUTED` on the emphasis color; tune it for the bundled palettes in D if it reads badly.
+- **The legacy `ColorTheme` still steers colors through the screen.** `screen.theme = x` switches the screen's
+  palette to `x.toComponentPalette()` (only when `x` differs from the current theme, so a `View` docking with the
+  default theme does not undo a palette set in `ZirconDefaults`); `ZirconDefaults.componentPalette` defaults to the
+  adapted `ZirconDefaults.theme`; a builder's `colorTheme` presets (does not pin) the adapted palette. Per-component
+  color themes do nothing else any more: `convertColorTheme` is gone.
+- **Themes are singletons.** Shape has no knobs yet, so `ComponentThemes.neobrutalism()` and `default()` return
+  objects; `NeobrutalismBuilder` is gone with `mode` and `palette`. A builder comes back when a theme grows a shape
+  option.
 - **`primary` is the palette author's default, user-overridable.** `palette.withPrimary(color)` /
   `withPrimary(color, onColor)` returns a copy; the Catppuccin DSL adds `accent = MAUVE` over its named accents.
 - **Keys are an enum.** `PaletteKey` + `palette[key]`; builders expose named properties (`background = ...`) and the
@@ -110,12 +123,16 @@ it by hand (tables in the research doc, section 10).
 
 | ColorTheme | PaletteKey |
 |---|---|
-| `primaryBackground` | `BACKGROUND`; `SURFACE_SUNKEN` = shaded |
-| `secondaryBackground` | `SURFACE`; `SURFACE_RAISED` = tinted |
+| `secondaryBackground` | `BACKGROUND`; `SURFACE_SUNKEN` = shaded (the 1.x themes paint the screen with it: gamebookers grey) |
+| `primaryBackground` | `SURFACE`, `ON_PRIMARY`, `ON_ACCENT`, `ON_SECONDARY`; `SURFACE_RAISED` = tinted (the 1.x panel color: gamebookers blue) |
 | `primaryForeground` | `ON_BACKGROUND`, `ON_SURFACE`, `ON_SURFACE_RAISED`, `ON_SELECTION` |
 | `secondaryForeground` | `TEXT_MUTED`, `BORDER`; `TEXT_DISABLED` = toned |
-| `accent` | `PRIMARY`, `ACCENT`, `BORDER_FOCUSED`; `ON_PRIMARY` / `ON_ACCENT` = `primaryBackground`; `SECONDARY` = desaturated; `SELECTION` = blended 40% toward `primaryBackground` |
-| (none) | `INFO` / `SUCCESS` / `WARNING` / `ERROR` = fixed blue / green / yellow / red, `ON_*` = `primaryBackground` |
+| `accent` | `PRIMARY`, `ACCENT`, `BORDER_FOCUSED`; `SECONDARY` = desaturated; `SELECTION` = blended 40% toward `secondaryBackground` |
+| (none) | `INFO` / `SUCCESS` / `WARNING` / `ERROR` = fixed blue / green / yellow / red, `ON_*` = `secondaryBackground` |
+
+The grill table had `primaryBackground -> BACKGROUND`; session B swapped the two after reading `DefaultRootContainer`
+(screen = `secondaryBackgroundColor`) and `toContainerStyle` (panels = `primaryBackgroundColor`), so the 77 themes
+keep their screen and panel colors where they were.
 
 ### Role split mapping
 
@@ -201,3 +218,12 @@ TextArea/ScrollBar) come after D.
   `ComponentFactory`, `ThemedFragmentBuilder`; `DefaultComponent` lost `hasThemeEntry` / `originalRenderingStrategy`;
   the fragments' `lacks(...)` branches are gone (the tab look is `DefaultTabRenderer`). An explicit theme is pinned
   against the parent. Colors still come from `ColorTheme` when the resolved entry has no style set. Next: B.
+- 2026-11-16: **B done.** `PaletteKey` (27), `ComponentPalette` (+ `componentPalette { }` builder deriving missing
+  keys from `background` / `onBackground` / `primary`, `overrides`, `withPrimary`, `applyOverrides`), `PaletteStyles`,
+  `ThemeEntry.styles: (ComponentPalette) -> ComponentStyleSet` (+ `stylesFor`), `ColorTheme.toComponentPalette()`,
+  `Palettes.neobrutalism(mode)`, `ComponentPaletteOverride` on components, containers and the screen, propagation
+  and pinning like the theme, `ZirconDefaults.componentPalette`, `ComponentRenderContext.palette`.
+  `ComponentTheme.mode`, `NeobrutalismPalette`, `NeobrutalismBuilder`, `convertColorTheme` removed; `ColorTheme`,
+  `ColorThemes`, `ColorThemeOverride`, `ZirconDefaults.theme`, builders' `colorTheme` deprecated. The Neobrutalism
+  example's Light / Dark / System buttons switch the palette. Watch: input fields are now sunken wells with the
+  selection colors while focused (1.x inverted them); check the examples app by eye. Next: D.

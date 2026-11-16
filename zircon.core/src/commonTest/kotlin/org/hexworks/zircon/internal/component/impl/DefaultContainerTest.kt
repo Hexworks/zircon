@@ -4,7 +4,6 @@ import org.hexworks.zircon.internal.extensions.asInternalComponent
 import org.hexworks.zircon.internal.extensions.asInternal
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
@@ -270,11 +269,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
         handle.detach()
         removalHappened shouldBe true
-    }
-
-    @Test
-    fun shouldReturnUnknownStylesWhenThemeApplied() {
-        target.convertColorTheme(DEFAULT_THEME) shouldBeSameInstanceAs ComponentStyleSet.UNKNOWN
     }
 
     @Test

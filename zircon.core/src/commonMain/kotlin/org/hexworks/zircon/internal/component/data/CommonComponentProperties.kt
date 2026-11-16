@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.data
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -22,6 +24,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 /**
  * Contains all the common data for component builders.
@@ -43,6 +46,8 @@ public data class CommonComponentProperties<T : Component>(
     var pinnedAspects: PinnedAspects = PinnedAspects.NONE,
     var componentThemeExplicit: Boolean = false,
     val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty(),
+    var componentPaletteExplicit: Boolean = false,
+    val componentPaletteProperty: Property<ComponentPalette> = ZirconDefaults.current.componentPalette.toProperty(),
     // can be changed runtime
     val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
@@ -52,6 +57,7 @@ public data class CommonComponentProperties<T : Component>(
 ) {
     var theme: ColorTheme by themeProperty.asDelegate()
     var componentTheme: ComponentTheme by componentThemeProperty.asDelegate()
+    var componentPalette: ComponentPalette by componentPaletteProperty.asDelegate()
     var componentStyleSet: ComponentStyleSet by componentStyleSetProperty.asDelegate()
     var tileset: TilesetResource by tilesetProperty.asDelegate()
     var isHidden: Boolean by hiddenProperty.asDelegate()

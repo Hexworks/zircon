@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.behavior.Boundable
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderContext
 import org.hexworks.zircon.internal.component.theme.neobrutalism.NeoFrameDecoration.Companion.fillEmptyCells
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
+import org.hexworks.zircon.api.component.theme.border
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.DrawWindow
@@ -14,16 +15,13 @@ import org.hexworks.zircon.api.graphics.DrawWindow
  * The link button's 4px bar: a `▂` row under the text. On hover the bar grows to the whole
  * button in HyperUI, so here the row fills with the (inverted) highlight background.
  */
-public class NeoUnderlineDecoration(
-    private val palette: NeobrutalismPaletteProvider,
-) : ComponentDecorationRenderer {
+public class NeoUnderlineDecoration : ComponentDecorationRenderer {
 
     override val offset: Position = Position.ZERO
     override val occupiedSize: Size = Size(0, 1)
 
     override fun render(drawWindow: DrawWindow, context: ComponentDecorationRenderContext) {
         val style = context.currentStyle
-        val colors = palette.paletteFor(context.component)
         val y = drawWindow.size.height - 1
         val hovered = context.component.componentState == ComponentState.HIGHLIGHTED ||
                 context.component.componentState == ComponentState.ACTIVE
@@ -32,7 +30,7 @@ public class NeoUnderlineDecoration(
         } else {
             characterTile {
                 character = '▂'
-                styleSet = style.withForegroundColor(colors?.ink ?: style.foregroundColor)
+                styleSet = style.withForegroundColor(context.component.componentPalette.border)
             }
         }
         drawWindow.fillEmptyCells(style, Boundable.create(Position.ZERO, Size(drawWindow.size.width, y)))

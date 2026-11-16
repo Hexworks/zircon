@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -41,6 +43,8 @@ import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
+import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 /**
  * This class can be used as a base class for creating builders for [Component]s.
@@ -142,6 +146,30 @@ public abstract class BaseComponentBuilder<T : Component>(
         get() = props.componentThemeProperty
 
     /**
+     * The [ComponentPalette] of the resulting component. Setting it here pins it: the parent's
+     * palette does not replace it on attach or when it changes. Not setting it leaves the
+     * component following its parent.
+     */
+    public var componentPalette: ComponentPalette
+        get() = props.componentPalette
+        set(value) {
+            props.componentPaletteExplicit = true
+            props.componentPalette = value
+            applyThemeEntry(props.componentTheme)
+        }
+
+    /**
+     * Gives the builder [palette] without pinning it, the way a parent builder passes its
+     * palette on.
+     */
+    internal fun presetPalette(palette: ComponentPalette) {
+        props.componentPalette = palette
+        applyThemeEntry(props.componentTheme)
+    }
+    public val componentPaletteProperty: Property<ComponentPalette>
+        get() = props.componentPaletteProperty
+
+    /**
      * The name of this component. Not mandatory, but if present it will
      * be used for debug purposes.
      */
@@ -209,12 +237,20 @@ public abstract class BaseComponentBuilder<T : Component>(
         }
 
     // properties
+    @Deprecated("Colors come from the component palette; set `componentPalette`, or adapt a color theme with `toComponentPalette()`.")
     public val colorThemeProperty: Property<ColorTheme>
         get() = props.themeProperty
+
+    /**
+     * The legacy five-color theme. Setting it also presets the palette adapted from it, so a
+     * component built standalone gets those colors; a parent's palette still wins on attach.
+     */
+    @Deprecated("Colors come from the component palette; set `componentPalette`, or adapt a color theme with `toComponentPalette()`.")
     public var colorTheme: ColorTheme
         get() = props.theme
         set(value) {
             props.theme = value
+            if (value.isColorNotUnknown) presetPalette(value.toComponentPalette())
         }
 
     public val componentStyleSetProperty: Property<ComponentStyleSet>
@@ -335,7 +371,7 @@ public abstract class BaseComponentBuilder<T : Component>(
         val pins = props.pinnedAspects
         if (!pins.componentRenderer) entry.componentRenderer?.let { props.componentRenderer = it as ComponentRenderer<out T> }
         if (!pins.decorationRenderers) entry.decorationRenderers?.let { props.decorationRenderers = it }
-        if (!pins.componentStyleSet) entry.componentStyleSet?.let { props.componentStyleSet = it }
+        if (!pins.componentStyleSet) entry.stylesFor(props.componentPalette, role, variant, part)?.let { props.componentStyleSet = it }
         entry.componentPostProcessors?.let { props.postProcessors = it as List<ComponentPostProcessor<T>> }
     }
 
@@ -441,6 +477,8 @@ public abstract class BaseComponentBuilder<T : Component>(
             componentThemeProperty = componentThemeProperty,
             pinnedAspects = props.pinnedAspects,
             componentThemeExplicit = props.componentThemeExplicit,
+            componentPaletteProperty = componentPaletteProperty,
+            componentPaletteExplicit = props.componentPaletteExplicit,
         )
     }
 

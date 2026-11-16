@@ -1,11 +1,9 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState
 import org.hexworks.zircon.api.uievent.UIEventResponse
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.NOT_SELECTED
 import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.PRESSED
@@ -80,7 +78,5 @@ public class DefaultRadioButton internal constructor(
         state = if (isSelected) SELECTED else NOT_SELECTED
         super.focusTaken()
     }
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toInteractiveStyle()
 
 }

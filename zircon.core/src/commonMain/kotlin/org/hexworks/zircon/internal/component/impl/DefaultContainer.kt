@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.behavior.extensions.withPosition
@@ -5,9 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.zircon.api.component.AttachedComponent
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
@@ -80,7 +80,6 @@ public open class DefaultContainer(
     override fun focusTaken(): UIEventResponse = Pass
 
     //! TODO: why is this UNKNOWN?
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = ComponentStyleSet.UNKNOWN
 
     private fun checkIfCanAdd(component: Component): Pair<InternalComponent, Position> {
         require(component is InternalComponent) {
@@ -153,6 +152,12 @@ public open class DefaultContainer(
             }
             parentContainer.componentThemeProperty.onChange { (_, newTheme) ->
                 component.inheritComponentTheme(newTheme)
+            }.keepWhile(component.hasParent)
+            if (component.bindingAction == UpdateOnBind) {
+                component.inheritComponentPalette(parentContainer.componentPalette)
+            }
+            parentContainer.componentPaletteProperty.onChange { (_, newPalette) ->
+                component.inheritComponentPalette(newPalette)
             }.keepWhile(component.hasParent)
         }
 

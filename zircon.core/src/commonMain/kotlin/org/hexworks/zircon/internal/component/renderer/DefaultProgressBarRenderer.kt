@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.internal.component.impl.DefaultProgressBar
+import org.hexworks.zircon.api.component.theme.onPrimary
 
 public class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> {
 
@@ -28,7 +29,7 @@ public class DefaultProgressBarRenderer : ComponentRenderer<DefaultProgressBar> 
         }
 
         if (context.component.displayPercentValueOfProgress) {
-            val style = invertedStyleSet.withForegroundColor(context.theme.primaryBackgroundColor)
+            val style = invertedStyleSet.withForegroundColor(context.palette.onPrimary)
             val percentValue = progressBarState.currentProgressInPercent.toString().padStart(3)
             val text = "$percentValue%"
             val start = drawWindow.width / 2 - 2

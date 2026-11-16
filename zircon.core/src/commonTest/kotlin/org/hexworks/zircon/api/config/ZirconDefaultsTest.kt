@@ -17,6 +17,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import org.hexworks.zircon.api.builder.config.DEFAULT_COMPONENT_PALETTE
 
 class ZirconDefaultsTest {
 
@@ -34,6 +35,7 @@ class ZirconDefaultsTest {
                 tileset = DEFAULT_DEFAULT_TILESET,
                 theme = DEFAULT_COLOR_THEME,
                 componentTheme = DEFAULT_COMPONENT_THEME,
+                componentPalette = DEFAULT_COMPONENT_PALETTE,
                 systemThemeDetector = platformSystemThemeDetector(),
                 debugMode = DEFAULT_DEBUG_MODE,
                 debugConfig = DEFAULT_DEBUG_CONFIG,

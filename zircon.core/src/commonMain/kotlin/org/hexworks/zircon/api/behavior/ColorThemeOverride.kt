@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.behavior
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -8,6 +10,7 @@ import org.hexworks.zircon.internal.behavior.impl.DefaultColorThemeOverride
 /**
  * Represents an object that has a [ColorTheme] that can be changed.
  */
+@Deprecated("Colors come from the component palette: see `ComponentPaletteOverride`. Setting `theme` on a screen still switches its palette.")
 public interface ColorThemeOverride : HasColorTheme {
 
     /**

@@ -1,6 +1,5 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
@@ -8,11 +7,7 @@ import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
 import org.hexworks.zircon.api.behavior.extensions.scrollOneLeft
 import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
 import org.hexworks.zircon.api.behavior.extensions.scrollRightBy
-import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -91,31 +86,6 @@ public class DefaultTextArea internal constructor(
     }
 
     public fun getTileAtOrNull(position: Position): CharacterTile? = textEditor.getTileAtOrNull(position)
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
-        defaultStyle = styleSet {
-            foregroundColor = colorTheme.secondaryBackgroundColor
-            backgroundColor = colorTheme.secondaryForegroundColor
-        }
-        disabledStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = Color.TRANSPARENT
-        }
-        // 📙 Note that the following 3 are the same because otherwise the component
-        // would react to hover making it flicker when it is already focused.
-        focusedStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
-        }
-        highlightedStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
-        }
-        activeStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
-        }
-    }
 
     override fun focusGiven(): UIEventResponse = whenEnabled {
         refreshCursorAndScroll(KeyCode.UNKNOWN)

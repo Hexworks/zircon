@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.behavior.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.extensions
 
 import org.hexworks.zircon.api.builder.component.ColorThemeBuilder

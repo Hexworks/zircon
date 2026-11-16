@@ -2,8 +2,6 @@ package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -23,7 +21,5 @@ public class DefaultIcon internal constructor(
     override val renderInputs: List<ObservableValue<*>> get() = listOf(iconProperty)
 
     override fun acceptsFocus(): Boolean = false
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = ComponentStyleSet.EMPTY
 
 }

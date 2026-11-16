@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.component.data
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -18,6 +20,7 @@ import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 /**
  * Contains metadata that is common to **all** [Component]s.
@@ -63,6 +66,15 @@ public data class ComponentMetadata(
      * The [ComponentTheme] the component starts with.
      */
     val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty(),
+    /**
+     * The [ComponentPalette] the component starts with.
+     */
+    val componentPaletteProperty: Property<ComponentPalette> = ZirconDefaults.current.componentPalette.toProperty(),
+    /**
+     * `true` when the component palette was set explicitly on the builder: a parent then does
+     * not replace it on attach or when its own palette changes.
+     */
+    val componentPaletteExplicit: Boolean = false,
     /**
      * The looks the builder set explicitly, which a [ComponentTheme] leaves alone.
      */

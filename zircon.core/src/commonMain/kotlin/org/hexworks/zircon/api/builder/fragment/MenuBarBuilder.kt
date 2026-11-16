@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.events.api.CallbackResult

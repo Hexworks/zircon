@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.component.theme
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.button
@@ -27,8 +26,9 @@ import kotlin.test.Test
 
 class ComponentThemeTest {
 
-    private val neobrutalism = ComponentThemes.neobrutalism { mode = ThemeMode.LIGHT }
-    private val dark = ComponentThemes.neobrutalism { mode = ThemeMode.DARK }
+    private val neobrutalism = ComponentThemes.neobrutalism()
+    /** A second theme with a shape of its own, to switch to and from. */
+    private val boxed = themeOf(ThemeKey(ComponentRole.PANEL) to themeEntry { decorations { +box() } })
 
     @Test
     fun factory_seeds_the_builder_so_the_size_includes_the_theme_decorations() {
@@ -65,9 +65,9 @@ class ComponentThemeTest {
 
         screen.componentTheme = neobrutalism
         panel.contentSize shouldBe Size(5, 2)
-        screen.componentTheme = dark
-        panel.componentTheme shouldBeSameInstanceAs dark
-        panel.contentSize shouldBe Size(5, 2)
+        screen.componentTheme = boxed
+        panel.componentTheme shouldBeSameInstanceAs boxed
+        panel.contentSize shouldBe Size(8, 3)
 
         screen.componentTheme = ComponentThemes.default()
         panel.componentTheme shouldBeSameInstanceAs ComponentThemes.default()
@@ -136,7 +136,7 @@ class ComponentThemeTest {
         button.size shouldBe plainSize
         // A 1 row button has no room for a 3 row frame: the side decoration stays.
         button.contentSize shouldBe plainContent
-        button.componentStyleSet shouldBe neobrutalism.resolveEntry(ComponentRole.BUTTON)!!.componentStyleSet
+        button.componentStyleSet shouldBe neobrutalism.resolveEntry(ComponentRole.BUTTON)!!.stylesFor(button.componentPalette, ComponentRole.BUTTON)
     }
 
     @Test
@@ -157,9 +157,9 @@ class ComponentThemeTest {
         box.componentTheme shouldBeSameInstanceAs neobrutalism
         inherited.componentTheme shouldBeSameInstanceAs ComponentThemes.default()
         // The screen's theme reaches what was not pinned.
-        screen.componentTheme = dark
+        screen.componentTheme = boxed
         box.componentTheme shouldBeSameInstanceAs neobrutalism
-        inherited.componentTheme shouldBeSameInstanceAs dark
+        inherited.componentTheme shouldBeSameInstanceAs boxed
     }
 
     @Test
@@ -178,19 +178,6 @@ class ComponentThemeTest {
     }
 
     @Test
-    fun the_color_theme_is_ignored_while_a_component_theme_is_present() {
-        val screen = tileGrid { size = Size(40, 20) }.toScreen()
-        screen.componentTheme = neobrutalism
-        val button = screen.componentFactory.button { +"OK" }
-        screen.addComponent(button)
-        val themed = button.componentStyleSet
-
-        screen.theme = ColorThemes.afterglow()
-
-        button.componentStyleSet shouldBeSameInstanceAs themed
-    }
-
-    @Test
     fun a_pinned_style_set_is_kept_under_a_theme() {
         val mine = componentStyleSet {
             defaultStyle = styleSet { foregroundColor = Color.create(255, 0, 0) }
@@ -201,7 +188,7 @@ class ComponentThemeTest {
         }
 
         button.componentStyleSet shouldBeSameInstanceAs mine
-        button.componentTheme = dark
+        button.componentTheme = ComponentThemes.default()
         button.componentStyleSet shouldBeSameInstanceAs mine
         button.componentTheme shouldNotBe neobrutalism
     }
@@ -270,7 +257,6 @@ class ComponentThemeTest {
     private fun themeOf(vararg entries: Pair<ThemeKey, ThemeEntry>): ComponentTheme = object : ComponentTheme {
         private val map = entries.toMap()
         override val name: String = "test"
-        override val mode: ThemeMode = ThemeMode.LIGHT
         override fun entryFor(key: ThemeKey): ThemeEntry? = map[key]
     }
 }

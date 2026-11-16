@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.config
 
 import org.hexworks.zircon.api.builder.config.ZirconDefaultsBuilder
@@ -6,6 +8,7 @@ import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.SystemThemeDetector
 import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.resource.TilesetResource
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 /**
  * Process-wide defaults: what Zircon uses when a builder is not told otherwise.
@@ -23,15 +26,21 @@ public data class ZirconDefaults(
      */
     val tileset: TilesetResource,
     /**
-     * The [ColorTheme] to be used when none is specified.
-     * Default is [org.hexworks.zircon.api.ColorThemes.gamebookers]
+     * The legacy [ColorTheme] to be used when none is specified; the default [componentPalette]
+     * is adapted from it. Default is [org.hexworks.zircon.api.ColorThemes.gamebookers]
      */
+    @Deprecated("Colors come from the component palette; set `componentPalette`.")
     val theme: ColorTheme,
     /**
      * The [ComponentTheme] a [org.hexworks.zircon.api.screen.Screen] and every builder start
      * with. Default is [org.hexworks.zircon.api.ComponentThemes.default], the stock look.
      */
     val componentTheme: ComponentTheme,
+    /**
+     * The [ComponentPalette] a [org.hexworks.zircon.api.screen.Screen] and every builder start
+     * with. Default is [theme] adapted (`toComponentPalette()`).
+     */
+    val componentPalette: ComponentPalette,
     /**
      * Tells [ThemeMode.SYSTEM][org.hexworks.zircon.api.component.theme.ThemeMode.SYSTEM] whether
      * the operating system is light or dark. Default is [platformSystemThemeDetector].

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.zircon.api.config.ZirconDefaults
@@ -196,6 +198,7 @@ public class TileGridScreen(
                 tilesetProperty = initialTileset.toProperty(),
                 themeProperty = initialTheme.toProperty(),
                 componentThemeProperty = ZirconDefaults.current.componentTheme.toProperty(),
+                componentPaletteProperty = ZirconDefaults.current.componentPalette.toProperty(),
                 role = ComponentRole.ROOT,
             )
             return ModalComponentContainer(

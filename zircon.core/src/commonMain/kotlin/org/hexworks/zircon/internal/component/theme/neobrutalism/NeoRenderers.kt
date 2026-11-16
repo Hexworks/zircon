@@ -14,6 +14,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.data.Position
+import org.hexworks.zircon.api.component.theme.onSelection
+import org.hexworks.zircon.api.component.theme.selection
+import org.hexworks.zircon.api.component.theme.surface
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.graphics.StyleSet
@@ -56,7 +59,7 @@ public class NeoCheckBoxRenderer : ComponentRenderer<CheckBox> {
         val checked = component.isSelected
         val boxStyle = if (checked) style.withForegroundColor(style.backgroundColor).withBackgroundColor(style.foregroundColor) else style
         val checkedStyle = if (checked && style.backgroundColor.isTransparent) {
-            style.withForegroundColor(context.theme.primaryBackgroundColor).withBackgroundColor(style.foregroundColor)
+            style.withForegroundColor(context.palette.surface).withBackgroundColor(style.foregroundColor)
         } else boxStyle
         drawWindow.put(if (checked) '✓' else '☐', checkedStyle, 0, 0)
         component.text.take(maxOf(0, drawWindow.size.width - GAP)).forEachIndexed { i, c ->
@@ -97,7 +100,7 @@ public class NeoProgressBarRenderer : ComponentRenderer<ProgressBar> {
  * the content in the palette's accent, its corners joining the bar's line (`┛ ┗` under a
  * horizontal tab, `┛` above and `┓` below a vertical one).
  */
-public class NeoTabRenderer(private val palettes: NeobrutalismPaletteProvider) : ComponentRenderer<Component> {
+public class NeoTabRenderer : ComponentRenderer<Component> {
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<Component>) {
         val component = context.component
         val vertical = component.orientation == Orientation.VERTICAL
@@ -105,8 +108,8 @@ public class NeoTabRenderer(private val palettes: NeobrutalismPaletteProvider) :
         val text = (component as? TextOverride)?.text ?: ""
         val (w, h) = drawWindow.size
         if (selected) {
-            val palette = palettes.paletteFor(component)
-            val style = palette?.let { styleSet { foregroundColor = it.ink; backgroundColor = it.accent } } ?: context.currentStyle
+            val palette = component.componentPalette
+            val style = styleSet { foregroundColor = palette.onSelection; backgroundColor = palette.selection }
             drawWindow.fillWith(style)
             if (w < 2 || h < 3) return
             val box = BoxType.HEAVY

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.property.Property
@@ -18,6 +20,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 public class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
@@ -46,6 +49,8 @@ public class DefaultGroup<T : Component> internal constructor(
     override val orientation: Orientation = Orientation.HORIZONTAL
     override val componentThemeProperty: Property<ComponentTheme> = ZirconDefaults.current.componentTheme.toProperty()
     override var componentTheme: ComponentTheme by componentThemeProperty.asDelegate()
+    override val componentPaletteProperty: Property<ComponentPalette> = ZirconDefaults.current.componentPalette.toProperty()
+    override var componentPalette: ComponentPalette by componentPaletteProperty.asDelegate()
 
     override fun addComponent(component: T): AttachedComponent {
         require(component is InternalComponent) {

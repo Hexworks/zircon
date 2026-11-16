@@ -1,7 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.logging.api.Logger
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.behavior.extensions.height
@@ -9,7 +8,6 @@ import org.hexworks.zircon.api.behavior.extensions.moveUpBy
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.component.AttachedComponent
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.LogArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -91,8 +89,6 @@ public class DefaultLogArea internal constructor(
             element.theme = theme
         }
     }
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toContainerStyle()
 
     public companion object {
         public val LOGGER: Logger = LoggerFactory.getLogger(LogArea::class)

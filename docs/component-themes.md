@@ -18,7 +18,7 @@ The decisions below come from the grill on 2026-11-14. The first theme is Neobru
 
 ```
 ComponentTheme  (name, mode, entryFor(role): ThemeEntry?, componentFactory)
-   └── ThemeEntry  (componentRenderer, decorationRenderers, postProcessors, componentStyleSet)
+   └── ThemeEntry  (componentRenderer, decorationRenderers, postProcessors, componentStyleSet)  *(changes: styles(palette))*
 ComponentRole   enum: BUTTON, BUTTON_PRIMARY, ..., ALERT_PANEL, ALERT_TEXT, ...
 ThemeMode       enum: LIGHT, DARK, SYSTEM
 ```
@@ -68,7 +68,8 @@ and `Part`, and `ThemeMode` is resolved when picking a palette.
 
 ```kt
 val screen = tileGrid.toScreen()
-screen.componentTheme = ComponentThemes.neobrutalism { mode = ThemeMode.SYSTEM }
+screen.componentTheme = ComponentThemes.neobrutalism()
+screen.componentPalette = Palettes.neobrutalism(mode = ThemeMode.SYSTEM)
 
 val components = screen.componentFactory
 
@@ -81,8 +82,8 @@ val alert = components.alert {
     text = "Changes saved"
 }
 
-// later
-screen.componentTheme = ComponentThemes.neobrutalism { mode = ThemeMode.LIGHT }
+// later: same shape, other colors
+screen.componentPalette = Palettes.neobrutalism(mode = ThemeMode.LIGHT)
 ```
 
 `componentFactory` reads the screen's current theme, runs your block, then applies the theme's entry for the builder's

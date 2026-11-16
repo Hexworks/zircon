@@ -4,9 +4,7 @@ import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.internal.component.impl.RootContainer
@@ -16,6 +14,7 @@ import org.hexworks.zircon.internal.uievent.KeyboardEventAdapter
 import org.hexworks.zircon.internal.uievent.MouseEventAdapter
 import org.hexworks.zircon.internal.uievent.UIEventProcessor
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 /**
  * A [InternalComponent] represents the internal API of the [Component] interface which adds
@@ -70,14 +69,14 @@ public interface InternalComponent :
     override var componentState: ComponentState
 
     /**
-     * Converts the given [ColorTheme] to the equivalent [ComponentStyleSet] representation.
-     */
-    public fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet
-
-    /**
      * Takes [theme] over from the parent, unless this component's theme was set explicitly.
      */
     public fun inheritComponentTheme(theme: ComponentTheme)
+
+    /**
+     * Takes [palette] over from the parent, unless this component's palette was set explicitly.
+     */
+    public fun inheritComponentPalette(palette: ComponentPalette)
 
     /**
      * Marks the rendered state of this component stale: the next [render] redraws it

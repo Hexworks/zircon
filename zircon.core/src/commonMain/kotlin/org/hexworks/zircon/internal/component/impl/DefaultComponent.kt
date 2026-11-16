@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -29,7 +31,6 @@ import org.hexworks.zircon.api.component.data.ComponentState.DEFAULT
 import org.hexworks.zircon.api.component.data.ComponentState.DISABLED
 import org.hexworks.zircon.api.component.data.ComponentState.FOCUSED
 import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
-import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
 import org.hexworks.zircon.api.component.extensions.isStyleNotUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.component.renderer.extensions.asInvariant
@@ -70,6 +71,7 @@ import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 
 @Suppress("UNCHECKED_CAST")
 public abstract class DefaultComponent(
@@ -111,6 +113,7 @@ public abstract class DefaultComponent(
 
     private val pinnedAspects: PinnedAspects = metadata.pinnedAspects
     private var componentThemeExplicit: Boolean = metadata.componentThemeExplicit
+    private var componentPaletteExplicit: Boolean = metadata.componentPaletteExplicit
     //#endregion
 
     //#region Component hierarchy and state properties
@@ -157,6 +160,14 @@ public abstract class DefaultComponent(
     final override val themeProperty: Property<ColorTheme> = metadata.themeProperty
     final override var theme: ColorTheme by themeProperty.asDelegate()
 
+    final override val componentPaletteProperty: Property<ComponentPalette> = metadata.componentPaletteProperty
+    final override var componentPalette: ComponentPalette
+        get() = componentPaletteProperty.value
+        set(value) {
+            componentPaletteExplicit = true
+            componentPaletteProperty.value = value
+        }
+
     final override val componentThemeProperty: Property<ComponentTheme> = metadata.componentThemeProperty
     final override var componentTheme: ComponentTheme
         get() = componentThemeProperty.value
@@ -200,14 +211,6 @@ public abstract class DefaultComponent(
             }
         }
 
-        // A component theme owns the colors while its entry for this component has a style
-        // set (the default theme has none); otherwise the color theme applies as before.
-        val updateTheme: (ObservableValueChanged<ColorTheme>) -> Unit = { (_, newTheme) ->
-            if (!themeOwnsColors && newTheme.isColorNotUnknown) {
-                componentStyleSet = convertColorTheme(newTheme)
-            }
-        }
-
         val updateStyle: (ObservableValueChanged<ComponentStyleSet>) -> Unit = { (_, newStyle) ->
             if (newStyle.isStyleNotUnknown) {
                 componentStyleSet = newStyle
@@ -215,34 +218,45 @@ public abstract class DefaultComponent(
         }
 
         disabledProperty.onChange(updateState)
-        themeProperty.onChange(updateTheme)
         componentStyleSetProperty.onChange(updateStyle)
         boundsProperty.onChange { refreshContentBounds() }
         componentThemeProperty.onChange { (_, newTheme) -> applyComponentTheme(newTheme, initial = false) }
+        componentPaletteProperty.onChange { applyPalette() }
         componentState = if (isDisabled) DISABLED else DEFAULT
 
         applyComponentTheme(componentTheme, initial = true)
     }
 
     //#region Component theme
-    /**
-     * `true` while the component theme colors this component (its entry has a style set).
-     */
-    private val themeOwnsColors: Boolean
-        get() = componentTheme.resolveEntry(role, variant, part, kind)?.componentStyleSet != null
-
     final override fun inheritComponentTheme(theme: ComponentTheme) {
         if (componentThemeExplicit) return
         componentThemeProperty.value = theme
     }
 
+    final override fun inheritComponentPalette(palette: ComponentPalette) {
+        if (componentPaletteExplicit) return
+        componentPaletteProperty.value = palette
+    }
+
+    /**
+     * Recolors the component from the current theme's derivation and the current palette,
+     * unless its style set is pinned.
+     */
+    private fun applyPalette() {
+        if (pinnedAspects.componentStyleSet) return
+        componentTheme.resolveEntry(role, variant, part, kind)
+            ?.stylesFor(componentPalette, role, variant, part)
+            ?.let { componentStyleSet = it }
+        invalidateRender()
+    }
+
     /**
      * Replaces the rendering strategy and the style set with what [theme] resolves for this
-     * component (its own entries, then the default theme's), keeping the pinned aspects. An
-     * entry without colors leaves them to the [ColorTheme]. Decorations that do not fit into
-     * the component (no content cell would be left) are skipped; the renderer and the colors
-     * still apply. [initial] is `true` from the constructor, when there are no children to
-     * move yet.
+     * component (its own entries, then the default theme's), keeping the pinned aspects; the
+     * colors are the entry's derivation from the current palette. Decorations that do not fit
+     * into the component (no content cell would be left) are skipped; the renderer and the
+     * colors still apply. [initial] is `true` from the constructor, when there are no children
+     * to move yet.
      */
     private fun applyComponentTheme(theme: ComponentTheme, initial: Boolean) {
         val oldOffset = contentOffset
@@ -265,11 +279,7 @@ public abstract class DefaultComponent(
             }
         }
         if (!pinnedAspects.componentStyleSet) {
-            val styles = entry?.componentStyleSet
-            when {
-                styles != null -> componentStyleSet = styles
-                this.theme.isColorNotUnknown -> componentStyleSet = convertColorTheme(this.theme)
-            }
+            entry?.stylesFor(componentPalette, role, variant, part)?.let { componentStyleSet = it }
         }
         refreshContentBounds()
         if (!initial) {

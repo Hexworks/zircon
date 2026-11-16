@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.builder.Builder

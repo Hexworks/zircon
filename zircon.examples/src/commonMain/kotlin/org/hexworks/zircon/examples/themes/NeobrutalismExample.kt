@@ -28,20 +28,23 @@ import org.hexworks.zircon.api.uievent.ComponentEventType
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleContext
 import org.hexworks.zircon.examples.ExampleView
+import org.hexworks.zircon.api.Palettes
 
 /**
  * Every Neobrutalism component, built through the theme's component factory, with buttons
- * that switch the subtree between the light, dark and system variants in place.
+ * that switch the subtree between the light, dark and system palettes in place: the shape
+ * stays, only the colors change.
  */
 public val neobrutalismExample: Example = Example("Neobrutalism") { context ->
-    val initial = ComponentThemes.neobrutalism { mode = ThemeMode.LIGHT }
+    val theme = ComponentThemes.neobrutalism()
     // Set here, not inherited: the examples app around this one keeps its own look.
     val root: VBox = vBox {
         preferredSize = context.contentSize
-        componentTheme = initial
+        componentTheme = theme
+        componentPalette = Palettes.neobrutalism(ThemeMode.LIGHT)
     }
-    root.addComponent(buildContent(context, initial) { mode ->
-        root.componentTheme = ComponentThemes.neobrutalism { this.mode = mode }
+    root.addComponent(buildContent(context, theme) { mode ->
+        root.componentPalette = Palettes.neobrutalism(mode)
     })
     ExampleView(root)
 }

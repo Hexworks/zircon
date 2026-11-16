@@ -1,8 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.behavior.TextOverride
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -23,7 +21,5 @@ public class DefaultParagraph internal constructor(
     override fun focusGiven(): UIEventResponse = Pass
 
     override fun focusTaken(): UIEventResponse = Pass
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toSecondaryContentStyle()
 
 }

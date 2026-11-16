@@ -1,8 +1,11 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 
+@Deprecated("Color themes are a legacy input format: adapt one with `toComponentPalette()`, or use `Palettes`. Removed after 2.0.")
 public object ColorThemes {
 
     /**

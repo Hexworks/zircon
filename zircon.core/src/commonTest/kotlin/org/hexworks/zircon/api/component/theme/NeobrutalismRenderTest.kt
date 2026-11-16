@@ -12,7 +12,7 @@ import kotlin.test.Test
 
 class NeobrutalismRenderTest {
 
-    private val theme = ComponentThemes.neobrutalism { mode = ThemeMode.LIGHT }
+    private val theme = ComponentThemes.neobrutalism()
     private val factory = theme.componentFactory
 
     @Test

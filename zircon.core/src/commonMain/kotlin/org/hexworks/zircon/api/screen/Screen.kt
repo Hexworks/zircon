@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.api.screen
 
 import org.hexworks.zircon.api.behavior.ColorThemeOverride

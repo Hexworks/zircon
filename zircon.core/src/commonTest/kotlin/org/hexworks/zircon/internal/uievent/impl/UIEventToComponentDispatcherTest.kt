@@ -37,6 +37,9 @@ import org.hexworks.zircon.internal.event.ZirconScope
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import org.hexworks.zircon.api.ComponentThemes
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 /**
  * Mouse capture: the component that got the press keeps getting the drags and the release,
@@ -311,7 +314,8 @@ class UIEventToComponentDispatcherTest {
 
     @Test
     fun aSliderUsesTheSameStyleForFocusedAndActive() {
-        val styles = (slider as InternalComponent).convertColorTheme(ColorThemeResource.CYBERPUNK.getTheme())
+        val styles = ComponentThemes.default().resolveEntry(ComponentRole.SLIDER)!!
+            .stylesFor(ColorThemeResource.CYBERPUNK.getTheme().toComponentPalette(), ComponentRole.SLIDER)!!
 
         styles.fetchStyleFor(ComponentState.FOCUSED) shouldBe styles.fetchStyleFor(ComponentState.ACTIVE)
         styles.fetchStyleFor(ComponentState.FOCUSED) shouldNotBe styles.fetchStyleFor(ComponentState.DEFAULT)

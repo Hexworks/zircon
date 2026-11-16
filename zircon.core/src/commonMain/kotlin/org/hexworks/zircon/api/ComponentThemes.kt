@@ -1,7 +1,7 @@
 package org.hexworks.zircon.api
 
 import org.hexworks.zircon.api.component.theme.ComponentTheme
-import org.hexworks.zircon.api.component.theme.NeobrutalismBuilder
+import org.hexworks.zircon.internal.component.theme.neobrutalism.NeobrutalismTheme
 import org.hexworks.zircon.internal.component.theme.DefaultComponentTheme
 
 /**
@@ -18,10 +18,10 @@ public object ComponentThemes {
     public fun default(): ComponentTheme = DefaultComponentTheme
 
     /**
-     * Neobrutalism: heavy borders, hard offset shadows, flat fills and one accent, after
-     * HyperUI's collection. Needs a tileset with the Unicode block elements (every Nerd Font
-     * and CP437 tileset has them).
+     * Neobrutalism: heavy borders, hard offset shadows, flat fills, after HyperUI's
+     * collection. Shape only: pair it with `Palettes.neobrutalism(mode)` for HyperUI's colors,
+     * or any other palette. Needs a tileset with the heavy box drawing and block element
+     * glyphs (a TrueType or Nerd Font tileset; CP437 sheets lack them).
      */
-    public fun neobrutalism(init: NeobrutalismBuilder.() -> Unit = {}): ComponentTheme =
-        NeobrutalismBuilder().apply(init).build()
+    public fun neobrutalism(): ComponentTheme = NeobrutalismTheme
 }

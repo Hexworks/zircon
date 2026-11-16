@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.internal.extensions.asInternalComponent
@@ -5,14 +7,10 @@ import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.collection.ObservableList
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.uievent.UIEventResponse
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import kotlinx.collections.immutable.persistentListOf
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.events.api.EventBus
-import org.hexworks.zircon.api.builder.component.componentStyleSet
-import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -87,12 +85,6 @@ public class DefaultRootContainer(
     override fun focusTaken(): UIEventResponse = Processed
 
     //! TODO: clarify why we do this
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
-        defaultStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = colorTheme.secondaryBackgroundColor
-        }
-    }
 
     override fun calculatePathTo(component: InternalComponent): List<InternalComponent> {
         return componentTree.filter { it.containsBoundable(component) }

@@ -3,11 +3,6 @@ package org.hexworks.zircon.internal.component.impl
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
-import org.hexworks.zircon.api.builder.component.componentStyleSet
-import org.hexworks.zircon.api.builder.graphics.styleSet
-import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.Input
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -58,24 +53,6 @@ public class DefaultInput internal constructor(
             if (cursorIndex > newText.length) cursorIndex = newText.length
             scrollIntoView()
         }
-    }
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = componentStyleSet {
-        defaultStyle = styleSet {
-            foregroundColor = colorTheme.secondaryBackgroundColor
-            backgroundColor = colorTheme.secondaryForegroundColor
-        }
-        disabledStyle = styleSet {
-            foregroundColor = colorTheme.secondaryForegroundColor
-            backgroundColor = Color.TRANSPARENT
-        }
-        // The same three, so the field does not flicker on hover while focused.
-        focusedStyle = styleSet {
-            foregroundColor = colorTheme.primaryBackgroundColor
-            backgroundColor = colorTheme.primaryForegroundColor
-        }
-        highlightedStyle = focusedStyle
-        activeStyle = focusedStyle
     }
 
     override fun focusGiven(): UIEventResponse = whenEnabled {

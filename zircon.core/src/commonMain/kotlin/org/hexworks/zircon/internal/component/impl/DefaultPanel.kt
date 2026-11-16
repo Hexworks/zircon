@@ -1,8 +1,6 @@
 package org.hexworks.zircon.internal.component.impl
 
-import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.behavior.TitleOverride
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
@@ -15,7 +13,5 @@ public open class DefaultPanel internal constructor(
     metadata = componentMetadata,
     renderer = renderingStrategy
 ), TitleOverride by TitleOverride.create(initialTitle) {
-
-    override fun convertColorTheme(colorTheme: ColorTheme): ComponentStyleSet = colorTheme.toContainerStyle()
 
 }

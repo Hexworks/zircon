@@ -14,12 +14,14 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.graphics.StyleSet
+import org.hexworks.zircon.api.component.theme.onSelection
+import org.hexworks.zircon.api.component.theme.selection
 
 /**
  * The stock tab of the default theme, the 1.x look: an unselected tab (a `Selectable`) is
  * its text in a single-line box drawn in the component's current style; the selected one (a
- * label, so not `Selectable`) is a flat block in the color theme's primary colors with the
- * text where the boxed text sits, so the two line up.
+ * label, so not `Selectable`) is a flat block in the palette's selection colors with the text
+ * where the boxed text sits, so the two line up.
  */
 internal class DefaultTabRenderer : ComponentRenderer<Component> {
 
@@ -28,10 +30,10 @@ internal class DefaultTabRenderer : ComponentRenderer<Component> {
         val text = (component as? TextOverride)?.text ?: ""
         val selected = (component as? Selectable)?.isSelected ?: true
         if (selected) {
-            val theme = context.theme
+            val palette = context.palette
             val style = styleSet {
-                backgroundColor = theme.primaryBackgroundColor
-                foregroundColor = theme.primaryForegroundColor
+                backgroundColor = palette.selection
+                foregroundColor = palette.onSelection
             }
             drawWindow.fill(Tile.defaultTile().withStyle(style))
             drawWindow.drawText(text, style, drawWindow.size, Position.OFFSET_1X1)
