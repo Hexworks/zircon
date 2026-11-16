@@ -46,9 +46,27 @@ be assembled without packing a sprite sheet by hand.
 
 ## More component themes
 
-Component themes landed with Neobrutalism (`docs/component-themes.md`). Next: a Solarized component
-theme with the accent variants the colour themes already have, and a Nerd Font tileset bundled with
-the examples so the heavy box drawing and block glyphs the themes use render out of the box.
+Component themes landed with Neobrutalism (`docs/component-themes.md`); palettes split out of them
+(`docs/component-palettes.md`). Next: a Solarized palette, and a Nerd Font tileset bundled with the
+examples so the heavy box drawing and block glyphs the themes use render out of the box.
+
+## Component state flags and ARIA vocabulary
+
+Components identify themselves to a theme by `role` + `variant` + `part`. Interaction state is the
+single `ComponentState` (hover, active, focus, disabled). Data states (selected, checked, pressed,
+expanded, invalid, current) are read by renderers directly today. Planned shape: a `StateFlag` set
+derived from component properties that themes can consult when deriving colors (an invalid input
+gets `error` colors without the renderer knowing), and ARIA role names (`switch`, `tablist`,
+`tabpanel`, `spinbutton`, `dialog`) for `ComponentRole`, so a web or Compose renderer can expose an
+accessibility tree from the same data. Deferred until palettes land; see the 2026-11-16 grill.
+
+## Palette import and terminal following
+
+- `Palettes.fromBase16(scheme)`: map the 16 base16 slots to `PaletteKey`s (research doc, section 10,
+  open question 5) and get tinted-theming's hundreds of schemes for free.
+- A palette made of ANSI indices for the terminal renderer, so the app recolors when the terminal
+  theme changes the way mc does (`default` fg/bg, slots 0-15). Needs indexed colors in the SGR
+  encoder; the alternative is an `OSC 10/11` query at startup with a timeout, which tmux never answers.
 
 ## Clipboard
 

@@ -3,6 +3,10 @@
 Follow-up sessions after component themes ([component-themes.md](component-themes.md)) landed on 2026-11-14. Each item
 is one session. Do them in order; 1 touches the public API the most and the theme's `CheckBox` roles depend on it.
 
+**Order change (2026-11-16):** the four palette sessions in [component-palettes.md](component-palettes.md) (role split,
+default theme, palette, bundled palettes) run *before* these. After them `ComponentRole` holds kinds only and
+`Variant` / `Part` exist, so the role notes below read as `role` + `variant` + `part`.
+
 ## Context to load first
 
 - `docs/component-themes.md`: the theme model. Every component has a `ComponentRole`; themes map roles to

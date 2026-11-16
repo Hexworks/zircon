@@ -10,6 +10,10 @@ Component themes let a theme set, for every `Component`:
 The decisions below come from the grill on 2026-11-14. The first theme is Neobrutalism, see
 [neo-brutalism.md](neo-brutalism.md).
 
+> **Superseded in part (2026-11-16).** Colors move out of the theme into a separate `ComponentPalette`, roles split into
+> `role` + `variant` + `part`, `mode` moves to the palette, and a default theme is always active. The plan is in
+> [component-palettes.md](component-palettes.md); the bullets below marked *(changes)* describe the state after it lands.
+
 ## Model
 
 ```
@@ -19,9 +23,14 @@ ComponentRole   enum: BUTTON, BUTTON_PRIMARY, ..., ALERT_PANEL, ALERT_TEXT, ...
 ThemeMode       enum: LIGHT, DARK, SYSTEM
 ```
 
+*(changes)* After [component-palettes.md](component-palettes.md): `ComponentTheme(name, entryFor(role, variant, part))`,
+`ThemeEntry(..., styles: (ComponentPalette) -> ComponentStyleSet)`, `ComponentRole` holds kinds only next to `Variant`
+and `Part`, and `ThemeMode` is resolved when picking a palette.
+
 - **Themes are data.** A theme is a map from `ComponentRole` to a `ThemeEntry` plus a palette. There is no per-theme
   builder factory implementation; one generic `ComponentFactory` serves every theme.
-- **Roles, not types.** Every component carries a `ComponentRole`. Builders default it to the component kind (`BUTTON`,
+- **Roles, not types.** *(changes: `BUTTON_PRIMARY` becomes `BUTTON` + `Variant.PRIMARY`, `ALERT_TEXT` becomes
+  `ALERT` + `Part.TEXT`.)* Every component carries a `ComponentRole`. Builders default it to the component kind (`BUTTON`,
   `LABEL`, `PANEL`...). Composite fragments set finer roles on their parts (`ALERT_TEXT`, `BADGE_DISMISS`...), so the
   theme can style the label inside an alert differently from a plain label. Roles are **semantic** so they port between
   themes: `BUTTON`, `BUTTON_PRIMARY`, `BUTTON_SECONDARY`, `BUTTON_LINK` rather than "underlined" or "double border".
@@ -32,7 +41,8 @@ ThemeMode       enum: LIGHT, DARK, SYSTEM
   means the legacy, un-themed path). `TileGrid` is untouched.
 - **ComponentTheme wins over ColorTheme.** When a component has a component theme (own or propagated) its style set
   comes from the theme and `ColorTheme` changes are ignored. Without a component theme nothing changes, so the two
-  co-exist until `ColorTheme` is sunset.
+  co-exist until `ColorTheme` is sunset. *(changes: colors come from `screen.componentPalette`; `ColorTheme` is
+  adapted into a palette and deprecated.)*
 - **Switching keeps layout.** A component's outer size is fixed when it is built. On a theme switch the rendering
   strategy is replaced and `contentOffset` / `contentSize` are recomputed from the new decorations (clamped at zero);
   a container moves its children along with its content offset. Nothing else moves. Decorations that would leave no
@@ -40,12 +50,15 @@ ThemeMode       enum: LIGHT, DARK, SYSTEM
   apply. Size components for the heaviest theme you plan to use, or build them through the factory.
 - **No entry, no change.** A role the theme has no entry for keeps the look it was built with and follows the
   `ColorTheme` as before, so layout-only containers (`ComponentRole.NONE`) and custom components stay as they are.
+  *(changes: a missing entry falls back to `ComponentThemes.default()`, which holds the stock look.)*
 - **Explicit beats theme.** Setting `componentRenderer`, `decorationRenderers` or `componentStyleSet` on a builder pins
   that aspect: the theme fills in the aspects you did not touch and leaves pinned ones alone on every switch.
 - **Variants are theme-specific.** Core knows `name` and `mode` only. Each theme's DSL adds its own knobs
   (`neobrutalism { mode = DARK }`, later `solarized { mode = DARK; accent = CYAN }`). A generic `Variant` abstraction
-  waits until a second theme needs one.
-- **`ThemeMode.SYSTEM`** is resolved by `SystemThemeDetector`, an `expect`/`actual` utility in core: JVM asks the OS
+  waits until a second theme needs one. *(changes: reversed. `Variant` is a closed core enum because it selects
+  palette keys; theme knobs shrink to shape options, color knobs live on palettes.)*
+- **`ThemeMode.SYSTEM`** *(changes: resolved when picking a palette, `Palettes.catppuccin(mode = SYSTEM)`)* is
+  resolved by `SystemThemeDetector`, an `expect`/`actual` utility in core: JVM asks the OS
   (macOS `defaults read -g AppleInterfaceStyle`, Linux `gsettings`/portal, Windows registry), wasmJs asks
   `prefers-color-scheme`, native targets do the same per OS. Unknown resolves to `DARK`.
 
@@ -94,7 +107,8 @@ CP437 sheets have only `▌ ▀ █`, so use a TrueType or Nerd Font tileset.
 - `ComponentFactory` is one class in core. Composite fragments (`Alert`, `Badge`, `Card`, `Window`, `InputField`,
   `LabeledProgressBar`, `TextAreaField`) are generic `Fragment`s in core built from roles; themes only supply looks.
 - Neobrutalism lives in core: `org.hexworks.zircon.api.component.theme` (interfaces, `ComponentThemes`) and
-  `org.hexworks.zircon.internal.component.theme.neobrutalism` (renderers).
+  `org.hexworks.zircon.internal.component.theme.neobrutalism` (renderers). *(changes: `NeobrutalismPalette` becomes
+  two `ComponentPalette`s under `Palettes`; the theme keeps shape only.)*
 
 ## Component Refactoring
 
