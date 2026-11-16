@@ -11,6 +11,7 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer.Re
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -21,9 +22,10 @@ import org.hexworks.zircon.api.graphics.StyleSet
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 
 /**
- * A tab: a radio button while unselected, a label while selected, swapped in a panel. The
- * parts carry the tab roles so a [ComponentTheme] can draw them; without an entry for a role
- * the 1.x look (a box around the text) is used.
+ * A tab: a radio button while unselected, a label while selected, swapped in a panel. Both
+ * carry the `TAB` role and the bar's orientation so a [ComponentTheme] can draw them (a theme
+ * renderer tells them apart by `Selectable`); without an entry the 1.x look (a box around the
+ * text) is used.
  */
 public class DefaultTab internal constructor(
     key: String,
@@ -34,15 +36,15 @@ public class DefaultTab internal constructor(
 ) : Tab {
 
     private val components = ComponentFactory { theme }
-    private val tabRole = if (vertical) ComponentRole.TAB_VERTICAL else ComponentRole.TAB
-    private val selectedRole = if (vertical) ComponentRole.TAB_VERTICAL_SELECTED else ComponentRole.TAB_SELECTED
+    private val tabOrientation = if (vertical) Orientation.VERTICAL else Orientation.HORIZONTAL
 
     override val tabButton: RadioButton = components.radioButton {
-        role = tabRole
+        role = ComponentRole.TAB
+        orientation = tabOrientation
         text = initialText
         this.key = key
         preferredSize = Size(width, 3)
-        if (theme.lacks(tabRole)) {
+        if (theme.lacks(ComponentRole.TAB, kind = ComponentRole.RADIO_BUTTON)) {
             defaultComponentStyleSet(ComponentStyleSet.DEFAULT_STYLE)
             defaultComponentRenderer(ComponentRenderer { graphics, ctx ->
                 graphics.drawText(ctx.component.text, ctx.currentStyle)
@@ -52,10 +54,11 @@ public class DefaultTab internal constructor(
     }
 
     private val label = components.label {
-        role = selectedRole
+        role = ComponentRole.TAB
+        orientation = tabOrientation
         text = initialText
         preferredSize = Size(width, 3)
-        if (theme.lacks(selectedRole)) {
+        if (theme.lacks(ComponentRole.TAB, kind = ComponentRole.LABEL)) {
             defaultComponentRenderer(ComponentRenderer { graphics, ctx ->
                 val theme = ctx.theme
                 val style = styleSet {

@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.uievent.Pass
 import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 
@@ -37,7 +38,7 @@ internal class TabStrip(
     theme: ComponentTheme? = null,
 ) {
     private val components = ComponentFactory { theme }
-    private val themedScroll = !theme.lacks(ComponentRole.TAB_SCROLL)
+    private val themedScroll = !theme.lacks(ComponentRole.TAB_BAR, part = Part.SCROLL, kind = ComponentRole.BUTTON)
 
     private val scrollTabLength = scrollTabSize
 
@@ -142,7 +143,8 @@ internal class TabStrip(
     }
 
     private fun scrollTab(text: String, size: Size, onClick: () -> Unit): Button = components.button {
-        role = ComponentRole.TAB_SCROLL
+        role = ComponentRole.TAB_BAR
+        part = Part.SCROLL
         +text
         preferredSize = size
         if (!themedScroll) defaultDecorationRenderers(listOf(box()))

@@ -1,5 +1,9 @@
 package org.hexworks.zircon.internal.component.theme.neobrutalism
 
+import org.hexworks.zircon.api.component.theme.Variant.*
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.theme.ThemeKey
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.builder.component.componentStyleSet
@@ -99,7 +103,6 @@ public class NeobrutalismTheme(
         activeStyle = styleSet { foregroundColor = palette.paper; backgroundColor = palette.ink }
         disabledStyle = styleSet { foregroundColor = palette.muted; backgroundColor = palette.paper }
     }
-    private val selectedTab = flat(palette.ink, palette.accent)
 
     private fun alert(background: Color, foreground: Color) = ThemeEntry(
         decorationRenderers = framed(NeoShadow.THICK),
@@ -111,106 +114,94 @@ public class NeobrutalismTheme(
         componentStyleSet = flat(foreground, background),
     )
 
-    private val entries: Map<ComponentRole, ThemeEntry> = mapOf(
-        ROOT to ThemeEntry(componentStyleSet = surface),
-        MODAL to ThemeEntry(decorationRenderers = framed(NeoShadow.FULL), componentStyleSet = surface),
-        PANEL to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = surface),
-        HBOX to ThemeEntry(componentStyleSet = surface),
-        VBOX to ThemeEntry(componentStyleSet = surface),
+    private fun key(role: ComponentRole, variant: Variant = Variant.DEFAULT, part: Part = Part.NONE) = ThemeKey(role, variant, part)
 
-        BUTTON to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK, hoverShift = true), componentStyleSet = interactive),
-        BUTTON_SECONDARY to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = interactive),
-        BUTTON_PRIMARY to ThemeEntry(
+    private val entries: Map<ThemeKey, ThemeEntry> = mapOf(
+        key(ROOT) to ThemeEntry(componentStyleSet = surface),
+        key(MODAL) to ThemeEntry(decorationRenderers = framed(NeoShadow.FULL), componentStyleSet = surface),
+        key(PANEL) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = surface),
+        key(HBOX) to ThemeEntry(componentStyleSet = surface),
+        key(VBOX) to ThemeEntry(componentStyleSet = surface),
+        key(BUTTON) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK, hoverShift = true), componentStyleSet = interactive),
+        key(BUTTON, SECONDARY) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = interactive),
+        key(BUTTON, PRIMARY) to ThemeEntry(
             decorationRenderers = listOf(NeoDoubleFrameDecoration(palettes), margin(0, 1)),
             componentStyleSet = interactive,
         ),
-        BUTTON_LINK to ThemeEntry(
+        key(BUTTON, LINK) to ThemeEntry(
             decorationRenderers = listOf(NeoUnderlineDecoration(palettes), margin(0, 1)),
             componentStyleSet = link,
         ),
-
-        CHECK_BOX to ThemeEntry(componentRenderer = NeoCheckBoxRenderer(), decorationRenderers = emptyList(), componentStyleSet = interactiveOnSurface),
-        RADIO_BUTTON to ThemeEntry(componentStyleSet = interactiveOnSurface),
-        TOGGLE_BUTTON to ThemeEntry(componentStyleSet = interactiveOnSurface),
-
-        HEADER to ThemeEntry(componentStyleSet = text),
-        LABEL to ThemeEntry(componentStyleSet = text),
-        PARAGRAPH to ThemeEntry(componentStyleSet = text),
-        LIST_ITEM to ThemeEntry(componentStyleSet = text),
-        ICON to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = text),
-
-        INPUT to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = field),
-        NUMBER_INPUT to ThemeEntry(componentStyleSet = field),
-        TEXT_AREA to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = field),
-        SLIDER to ThemeEntry(componentStyleSet = interactiveOnSurface),
-        SCROLL_BAR to ThemeEntry(componentStyleSet = interactiveOnSurface),
-        LOG_AREA to ThemeEntry(componentStyleSet = text),
-        PROGRESS_BAR to ThemeEntry(
+        key(CHECK_BOX) to ThemeEntry(componentRenderer = NeoCheckBoxRenderer(), decorationRenderers = emptyList(), componentStyleSet = interactiveOnSurface),
+        key(RADIO_BUTTON) to ThemeEntry(componentStyleSet = interactiveOnSurface),
+        key(TOGGLE_BUTTON) to ThemeEntry(componentStyleSet = interactiveOnSurface),
+        key(HEADER) to ThemeEntry(componentStyleSet = text),
+        key(LABEL) to ThemeEntry(componentStyleSet = text),
+        key(PARAGRAPH) to ThemeEntry(componentStyleSet = text),
+        key(LIST_ITEM) to ThemeEntry(componentStyleSet = text),
+        key(ICON) to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = text),
+        key(INPUT) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = field),
+        key(NUMBER_INPUT) to ThemeEntry(componentStyleSet = field),
+        key(TEXT_AREA) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = field),
+        key(SLIDER) to ThemeEntry(componentStyleSet = interactiveOnSurface),
+        key(SCROLL_BAR) to ThemeEntry(componentStyleSet = interactiveOnSurface),
+        key(LOG_AREA) to ThemeEntry(componentStyleSet = text),
+        key(PROGRESS_BAR) to ThemeEntry(
             componentRenderer = NeoProgressBarRenderer(),
             decorationRenderers = framed(NeoShadow.THIN),
             componentStyleSet = flat(palette.ink, palette.paper),
         ),
-
-        ALERT_INFO to alert(palette.infoBackground, palette.infoText),
-        ALERT_SUCCESS to alert(palette.successBackground, palette.successText),
-        ALERT_ERROR to alert(palette.errorBackground, palette.errorText),
-        ALERT_INFO_TEXT to alertText(palette.infoBackground, palette.infoText),
-        ALERT_SUCCESS_TEXT to alertText(palette.successBackground, palette.successText),
-        ALERT_ERROR_TEXT to alertText(palette.errorBackground, palette.errorText),
-
-        BADGE to ThemeEntry(decorationRenderers = framed(NeoShadow.THIN), componentStyleSet = surface),
-        BADGE_TEXT to ThemeEntry(componentStyleSet = text),
-        BADGE_DOT_SUCCESS to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = flat(palette.successDot, transparent)),
-        BADGE_DOT_ERROR to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = flat(palette.errorDot, transparent)),
-        BADGE_DISMISS to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = inverted),
-
-        CARD to ThemeEntry(
+        key(ALERT, INFO) to alert(palette.infoBackground, palette.infoText),
+        key(ALERT, SUCCESS) to alert(palette.successBackground, palette.successText),
+        key(ALERT, ERROR) to alert(palette.errorBackground, palette.errorText),
+        key(ALERT, INFO, Part.TEXT) to alertText(palette.infoBackground, palette.infoText),
+        key(ALERT, SUCCESS, Part.TEXT) to alertText(palette.successBackground, palette.successText),
+        key(ALERT, ERROR, Part.TEXT) to alertText(palette.errorBackground, palette.errorText),
+        key(ALERT, INFO, Part.ICON) to alertText(palette.infoBackground, palette.infoText),
+        key(ALERT, SUCCESS, Part.ICON) to alertText(palette.successBackground, palette.successText),
+        key(ALERT, ERROR, Part.ICON) to alertText(palette.errorBackground, palette.errorText),
+        key(BADGE) to ThemeEntry(decorationRenderers = framed(NeoShadow.THIN), componentStyleSet = surface),
+        key(BADGE, part = Part.TEXT) to ThemeEntry(componentStyleSet = text),
+        key(BADGE, SUCCESS, Part.DOT) to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = flat(palette.successDot, transparent)),
+        key(BADGE, ERROR, Part.DOT) to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = flat(palette.errorDot, transparent)),
+        key(BADGE, part = Part.DISMISS) to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = inverted),
+        key(CARD) to ThemeEntry(
             decorationRenderers = listOf(NeoFrameDecoration(palettes, NeoShadow.THICK), margin(1, 1)),
             componentStyleSet = surface,
         ),
-        CARD_META to ThemeEntry(componentStyleSet = surface),
-        CARD_ICON to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = text),
-        CARD_SUBTITLE to ThemeEntry(componentStyleSet = mutedText),
-        CARD_TITLE to ThemeEntry(componentStyleSet = text),
-        CARD_BODY to ThemeEntry(componentStyleSet = text),
-
-        WINDOW to ThemeEntry(decorationRenderers = framed(NeoShadow.FULL, divider = true), componentStyleSet = surface),
-        WINDOW_TITLE_BAR to ThemeEntry(componentStyleSet = flat(palette.ink, palette.accent)),
-        WINDOW_TITLE to ThemeEntry(componentStyleSet = text),
-        WINDOW_CONTROLS to ThemeEntry(componentStyleSet = text),
-        WINDOW_HEADER to ThemeEntry(componentStyleSet = text),
-        WINDOW_BODY to ThemeEntry(componentStyleSet = text),
-
-        CHECK_BOX_FIELD to ThemeEntry(componentStyleSet = surface),
-        CHECK_BOX_DESCRIPTION to ThemeEntry(componentStyleSet = text),
-
-        INPUT_FIELD to ThemeEntry(componentStyleSet = surface),
-        INPUT_FIELD_LABEL to ThemeEntry(componentStyleSet = text),
-        INPUT_FIELD_ROW to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = surface),
-        INPUT_FIELD_INPUT to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = field),
-        INPUT_FIELD_ICON to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = inverted),
-        INPUT_FIELD_BUTTON to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = accentBar),
-
-        PROGRESS_FIELD to ThemeEntry(componentStyleSet = surface),
-        PROGRESS_FIELD_HEADER to ThemeEntry(componentStyleSet = surface),
-        PROGRESS_FIELD_LABEL to ThemeEntry(componentStyleSet = text),
-        PROGRESS_FIELD_VALUE to ThemeEntry(componentStyleSet = text),
-
-        TEXT_AREA_FIELD to ThemeEntry(componentStyleSet = surface),
-        TEXT_AREA_FIELD_LABEL to ThemeEntry(componentStyleSet = text),
-        TEXT_AREA_FIELD_ACTIONS to ThemeEntry(componentStyleSet = surface),
-
-        TAB_BAR to ThemeEntry(componentRenderer = NeoTabBarRenderer(vertical = false), decorationRenderers = emptyList(), componentStyleSet = surface),
-        TAB_CONTENT to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = surface),
-        TAB to ThemeEntry(componentRenderer = NeoTabRenderer(vertical = false), decorationRenderers = emptyList(), componentStyleSet = tab),
-        TAB_SELECTED to ThemeEntry(componentRenderer = NeoSelectedTabRenderer(vertical = false), decorationRenderers = emptyList(), componentStyleSet = selectedTab),
-        TAB_SCROLL to ThemeEntry(decorationRenderers = listOf(box(BoxType.HEAVY, renderingMode = INTERACTIVE)), componentStyleSet = interactive),
-        TAB_BAR_VERTICAL to ThemeEntry(componentRenderer = NeoTabBarRenderer(vertical = true), decorationRenderers = emptyList(), componentStyleSet = surface),
-        TAB_VERTICAL to ThemeEntry(componentRenderer = NeoTabRenderer(vertical = true), decorationRenderers = emptyList(), componentStyleSet = tab),
-        TAB_VERTICAL_SELECTED to ThemeEntry(componentRenderer = NeoSelectedTabRenderer(vertical = true), decorationRenderers = emptyList(), componentStyleSet = selectedTab),
+        key(CARD, part = Part.META) to ThemeEntry(componentStyleSet = surface),
+        key(CARD, part = Part.ICON) to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = text),
+        key(CARD, part = Part.SUBTITLE) to ThemeEntry(componentStyleSet = mutedText),
+        key(CARD, part = Part.TITLE) to ThemeEntry(componentStyleSet = text),
+        key(CARD, part = Part.BODY) to ThemeEntry(componentStyleSet = text),
+        key(WINDOW) to ThemeEntry(decorationRenderers = framed(NeoShadow.FULL, divider = true), componentStyleSet = surface),
+        key(WINDOW, part = Part.TITLE_BAR) to ThemeEntry(componentStyleSet = flat(palette.ink, palette.accent)),
+        key(WINDOW, part = Part.TITLE) to ThemeEntry(componentStyleSet = text),
+        key(WINDOW, part = Part.CONTROLS) to ThemeEntry(componentStyleSet = text),
+        key(WINDOW, part = Part.HEADER) to ThemeEntry(componentStyleSet = text),
+        key(WINDOW, part = Part.BODY) to ThemeEntry(componentStyleSet = text),
+        key(CHECK_BOX_FIELD) to ThemeEntry(componentStyleSet = surface),
+        key(CHECK_BOX_FIELD, part = Part.DESCRIPTION) to ThemeEntry(componentStyleSet = text),
+        key(INPUT_FIELD) to ThemeEntry(componentStyleSet = surface),
+        key(INPUT_FIELD, part = Part.LABEL) to ThemeEntry(componentStyleSet = text),
+        key(INPUT_FIELD, part = Part.ROW) to ThemeEntry(decorationRenderers = framed(NeoShadow.THICK), componentStyleSet = surface),
+        key(INPUT_FIELD, part = Part.INPUT) to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = field),
+        key(INPUT_FIELD, part = Part.ICON) to ThemeEntry(componentRenderer = NeoContentRenderer(), componentStyleSet = inverted),
+        key(INPUT_FIELD, part = Part.BUTTON) to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = accentBar),
+        key(PROGRESS_FIELD) to ThemeEntry(componentStyleSet = surface),
+        key(PROGRESS_FIELD, part = Part.HEADER) to ThemeEntry(componentStyleSet = surface),
+        key(PROGRESS_FIELD, part = Part.LABEL) to ThemeEntry(componentStyleSet = text),
+        key(PROGRESS_FIELD, part = Part.VALUE) to ThemeEntry(componentStyleSet = text),
+        key(TEXT_AREA_FIELD) to ThemeEntry(componentStyleSet = surface),
+        key(TEXT_AREA_FIELD, part = Part.LABEL) to ThemeEntry(componentStyleSet = text),
+        key(TEXT_AREA_FIELD, part = Part.ACTIONS) to ThemeEntry(componentStyleSet = surface),
+        key(TAB_BAR) to ThemeEntry(componentRenderer = NeoTabBarRenderer(), decorationRenderers = emptyList(), componentStyleSet = surface),
+        key(TAB_BAR, part = Part.CONTENT) to ThemeEntry(decorationRenderers = emptyList(), componentStyleSet = surface),
+        key(TAB_BAR, part = Part.SCROLL) to ThemeEntry(decorationRenderers = listOf(box(BoxType.HEAVY, renderingMode = INTERACTIVE)), componentStyleSet = interactive),
+        key(TAB) to ThemeEntry(componentRenderer = NeoTabRenderer(palettes), decorationRenderers = emptyList(), componentStyleSet = tab),
     )
 
-    override fun entryFor(role: ComponentRole): ThemeEntry? = entries[role]
+    override fun entryFor(key: ThemeKey): ThemeEntry? = entries[key]
 
     override fun toString(): String = name
 }

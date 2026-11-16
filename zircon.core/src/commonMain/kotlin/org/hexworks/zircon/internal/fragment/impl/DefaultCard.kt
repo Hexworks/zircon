@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Card
@@ -52,7 +53,8 @@ public class DefaultCard internal constructor(
         var subtitleWidth = inner
         if (icon != null) {
             metaParts += components.icon {
-                role = ComponentRole.CARD_ICON
+                role = ComponentRole.CARD
+            part = Part.ICON
                 iconTile = characterTile {
                     character = icon
                     styleSet = StyleSet.defaultStyle()
@@ -61,26 +63,30 @@ public class DefaultCard internal constructor(
             subtitleWidth -= 2
         }
         subtitleLabel = components.label {
-            role = ComponentRole.CARD_SUBTITLE
+            role = ComponentRole.CARD
+            part = Part.SUBTITLE
             preferredSize = Size(subtitleWidth, 1)
             +initialSubtitle
         }
         metaParts += subtitleLabel
         val meta = components.hBox {
-            role = ComponentRole.CARD_META
+            role = ComponentRole.CARD
+            part = Part.META
             spacing = 1
             preferredContentSize = Size(inner, 1)
             childrenToAdd = metaParts
         }
         val titleLines = linesFor(initialTitle, inner)
         titleParagraph = components.paragraph {
-            role = ComponentRole.CARD_TITLE
+            role = ComponentRole.CARD
+            part = Part.TITLE
             preferredSize = Size(inner, titleLines)
             +initialTitle
         }
         val bodyLines = linesFor(initialBody, inner)
         bodyParagraph = components.paragraph {
-            role = ComponentRole.CARD_BODY
+            role = ComponentRole.CARD
+            part = Part.BODY
             preferredSize = Size(inner, bodyLines)
             +initialBody
         }

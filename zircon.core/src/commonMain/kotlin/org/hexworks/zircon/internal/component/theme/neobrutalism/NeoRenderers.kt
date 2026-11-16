@@ -1,5 +1,8 @@
 package org.hexworks.zircon.internal.component.theme.neobrutalism
 
+import org.hexworks.zircon.api.builder.graphics.styleSet
+import org.hexworks.zircon.api.component.data.Orientation
+import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.CheckBox
@@ -86,71 +89,70 @@ public class NeoProgressBarRenderer : ComponentRenderer<ProgressBar> {
 }
 
 /**
- * An unselected tab: the label on the middle row, the bar's line on the bottom row (or the
- * right column when [vertical]). Hovered, every cell inverts.
+ * A tab, read from the component: selected when it is not a `Selectable` (the label a
+ * selected tab turns into) or a selected one, vertical when its [Orientation] says so.
+ *
+ * Unselected: the label on the middle row and the bar's line along the bottom row (or the
+ * right column when vertical); hovered, every cell inverts. Selected: a heavy box open towards
+ * the content in the palette's accent, its corners joining the bar's line (`┛ ┗` under a
+ * horizontal tab, `┛` above and `┓` below a vertical one).
  */
-public class NeoTabRenderer(private val vertical: Boolean) : ComponentRenderer<Component> {
+public class NeoTabRenderer(private val palettes: NeobrutalismPaletteProvider) : ComponentRenderer<Component> {
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<Component>) {
         val component = context.component
-        val style = context.currentStyle
-        drawWindow.fillWith(style)
+        val vertical = component.orientation == Orientation.VERTICAL
+        val selected = (component as? Selectable)?.isSelected ?: true
         val text = (component as? TextOverride)?.text ?: ""
         val (w, h) = drawWindow.size
-        drawCentered(drawWindow, text, style, w, 1, lastColumnFree = vertical)
-        if (vertical) {
-            for (y in 0 until h) drawWindow.put(BoxType.HEAVY.vertical, style, w - 1, y)
+        if (selected) {
+            val palette = palettes.paletteFor(component)
+            val style = palette?.let { styleSet { foregroundColor = it.ink; backgroundColor = it.accent } } ?: context.currentStyle
+            drawWindow.fillWith(style)
+            if (w < 2 || h < 3) return
+            val box = BoxType.HEAVY
+            if (vertical) {
+                // ┏━━━┛ / ┃ text  / ┗━━━┓ : the right column carries the bar's line.
+                drawWindow.put(box.topLeft, style, 0, 0)
+                for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, 0)
+                drawWindow.put(box.bottomRight, style, w - 1, 0)
+                drawWindow.put(box.vertical, style, 0, 1)
+                drawWindow.put(box.bottomLeft, style, 0, h - 1)
+                for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, h - 1)
+                drawWindow.put(box.topRight, style, w - 1, h - 1)
+                drawCentered(drawWindow, text, style, w, 1, lastColumnFree = true)
+            } else {
+                drawWindow.put(box.topLeft, style, 0, 0)
+                for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, 0)
+                drawWindow.put(box.topRight, style, w - 1, 0)
+                drawWindow.put(box.vertical, style, 0, 1)
+                drawWindow.put(box.vertical, style, w - 1, 1)
+                drawWindow.put(box.bottomRight, style, 0, h - 1)
+                drawWindow.put(box.bottomLeft, style, w - 1, h - 1)
+                drawCentered(drawWindow, text, style, w, 1, lastColumnFree = false)
+            }
         } else {
-            for (x in 0 until w) drawWindow.put(BoxType.HEAVY.horizontal, style, x, h - 1)
-        }
-    }
-}
-
-/**
- * The selected tab: a heavy box open towards the content, its corners joining the bar's line
- * (`┛ ┗` under a horizontal tab, `┛` above and `┓` below a vertical one).
- */
-public class NeoSelectedTabRenderer(private val vertical: Boolean) : ComponentRenderer<Component> {
-    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<Component>) {
-        val component = context.component
-        val style = context.currentStyle
-        drawWindow.fillWith(style)
-        val text = (component as? TextOverride)?.text ?: ""
-        val (w, h) = drawWindow.size
-        if (w < 2 || h < 3) return
-        val box = BoxType.HEAVY
-        if (vertical) {
-            // ┏━━━┛ / ┃ text  / ┗━━━┓ : the right column carries the bar's line.
-            drawWindow.put(box.topLeft, style, 0, 0)
-            for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, 0)
-            drawWindow.put(box.bottomRight, style, w - 1, 0)
-            drawWindow.put(box.vertical, style, 0, 1)
-            drawWindow.put(box.bottomLeft, style, 0, h - 1)
-            for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, h - 1)
-            drawWindow.put(box.topRight, style, w - 1, h - 1)
-            drawCentered(drawWindow, text, style, w, 1, lastColumnFree = true)
-        } else {
-            drawWindow.put(box.topLeft, style, 0, 0)
-            for (x in 1 until w - 1) drawWindow.put(box.horizontal, style, x, 0)
-            drawWindow.put(box.topRight, style, w - 1, 0)
-            drawWindow.put(box.vertical, style, 0, 1)
-            drawWindow.put(box.vertical, style, w - 1, 1)
-            drawWindow.put(box.bottomRight, style, 0, h - 1)
-            drawWindow.put(box.bottomLeft, style, w - 1, h - 1)
-            drawCentered(drawWindow, text, style, w, 1, lastColumnFree = false)
+            val style = context.currentStyle
+            drawWindow.fillWith(style)
+            drawCentered(drawWindow, text, style, w, 1, lastColumnFree = vertical)
+            if (vertical) {
+                for (y in 0 until h) drawWindow.put(BoxType.HEAVY.vertical, style, w - 1, y)
+            } else {
+                for (x in 0 until w) drawWindow.put(BoxType.HEAVY.horizontal, style, x, h - 1)
+            }
         }
     }
 }
 
 /**
  * The strip of a tab bar: the line the tabs sit on, along the bottom row (or the right column
- * when [vertical]). Tabs draw over it with their own joints.
+ * when the strip's [Orientation] is vertical). Tabs draw over it with their own joints.
  */
-public class NeoTabBarRenderer(private val vertical: Boolean) : ComponentRenderer<Component> {
+public class NeoTabBarRenderer : ComponentRenderer<Component> {
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<Component>) {
         val style = context.currentStyle
         drawWindow.fillWith(style)
         val (w, h) = drawWindow.size
-        if (vertical) {
+        if (context.component.orientation == Orientation.VERTICAL) {
             for (y in 0 until h) drawWindow.put(BoxType.HEAVY.vertical, style, w - 1, y)
         } else {
             for (x in 0 until w) drawWindow.put(BoxType.HEAVY.horizontal, style, x, h - 1)

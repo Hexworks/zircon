@@ -85,8 +85,15 @@ public class ComponentFactory(
      * own role when omitted), for component kinds this factory has no function for. Call it
      * after setting what you set: the theme fills in what is not pinned.
      */
-    public fun <T : Component, B : BaseComponentBuilder<T>> configure(builder: B, role: ComponentRole = builder.role): B {
+    public fun <T : Component, B : BaseComponentBuilder<T>> configure(
+        builder: B,
+        role: ComponentRole = builder.role,
+        variant: Variant = builder.variant,
+        part: Part = builder.part,
+    ): B {
         builder.role = role
+        builder.variant = variant
+        builder.part = part
         theme?.let { builder.applyThemeEntry(it) }
         return builder
     }

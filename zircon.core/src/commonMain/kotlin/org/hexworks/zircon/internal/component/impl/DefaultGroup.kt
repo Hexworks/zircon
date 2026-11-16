@@ -14,6 +14,9 @@ import org.hexworks.zircon.internal.extensions.disposeAll
 import org.hexworks.cobalt.databinding.api.value.NoActionOnBind
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.data.Orientation
 
 public class DefaultGroup<T : Component> internal constructor(
     initialIsDisabled: Boolean,
@@ -37,6 +40,9 @@ public class DefaultGroup<T : Component> internal constructor(
     override var theme: ColorTheme by themeProperty.asDelegate()
     override var tileset: TilesetResource by tilesetProperty.asDelegate()
     override val role: ComponentRole = ComponentRole.NONE
+    override val variant: Variant = Variant.DEFAULT
+    override val part: Part = Part.NONE
+    override val orientation: Orientation = Orientation.HORIZONTAL
     override val componentThemeProperty: Property<ComponentTheme?> = null.toProperty()
     override var componentTheme: ComponentTheme? by componentThemeProperty.asDelegate()
 

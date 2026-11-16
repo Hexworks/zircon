@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
@@ -12,6 +13,10 @@ import org.hexworks.zircon.internal.component.renderer.DefaultVerticalNumberInpu
 public class VerticalNumberInputBuilder : NumberInputBuilder<NumberInput>(
     initialRenderer = DefaultVerticalNumberInputRenderer()
 ) {
+
+    init {
+        orientation = Orientation.VERTICAL
+    }
 
     override fun calculateContentSize(): Size {
         val length = this.maxValue.toString().length + 1

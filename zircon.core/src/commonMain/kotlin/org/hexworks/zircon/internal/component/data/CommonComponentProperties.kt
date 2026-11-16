@@ -18,6 +18,9 @@ import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.api.component.theme.PinnedAspects
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.data.Orientation
 
 /**
  * Contains all the common data for component builders.
@@ -31,7 +34,11 @@ public data class CommonComponentProperties<T : Component>(
     var componentRenderer: ComponentRenderer<out T> = NoOpComponentRenderer(),
     var postProcessors: List<ComponentPostProcessor<T>> = listOf(),
     var bindingAction: BindingAction = UpdateOnBind,
+    val kind: ComponentRole = ComponentRole.NONE,
     var role: ComponentRole = ComponentRole.NONE,
+    var variant: Variant = Variant.DEFAULT,
+    var part: Part = Part.NONE,
+    var orientation: Orientation = Orientation.HORIZONTAL,
     var pinnedAspects: PinnedAspects = PinnedAspects.NONE,
     var componentThemeExplicit: Boolean = false,
     val componentThemeProperty: Property<ComponentTheme?> = null.toProperty(),

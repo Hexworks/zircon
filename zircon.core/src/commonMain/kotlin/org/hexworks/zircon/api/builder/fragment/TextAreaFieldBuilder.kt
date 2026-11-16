@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
@@ -26,10 +26,10 @@ public class TextAreaFieldBuilder : ThemedFragmentBuilder<TextAreaField> {
     internal val actions = mutableListOf<Action>()
 
     /**
-     * Adds a button under the text area.
+     * Adds a button under the text area; [variant] is its weight (`PRIMARY` for the main action).
      */
-    public fun action(text: String, role: ComponentRole = ComponentRole.BUTTON_SECONDARY, onActivated: () -> Unit = {}) {
-        actions += Action(text, role, onActivated)
+    public fun action(text: String, variant: Variant = Variant.SECONDARY, onActivated: () -> Unit = {}) {
+        actions += Action(text, variant, onActivated)
     }
 
     override fun build(): TextAreaField {
@@ -45,7 +45,7 @@ public class TextAreaFieldBuilder : ThemedFragmentBuilder<TextAreaField> {
         ).also { it.root.moveTo(position) }
     }
 
-    internal class Action(val text: String, val role: ComponentRole, val onActivated: () -> Unit)
+    internal class Action(val text: String, val variant: Variant, val onActivated: () -> Unit)
 }
 
 public fun textAreaField(init: TextAreaFieldBuilder.() -> Unit): TextAreaField = TextAreaFieldBuilder().apply(init).build()

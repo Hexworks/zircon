@@ -1,6 +1,6 @@
 package org.hexworks.zircon.api.builder.fragment
 
-import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.dsl.AnyContainerBuilder
@@ -29,7 +29,11 @@ public class InputFieldBuilder : ThemedFragmentBuilder<InputField> {
      * The text of the button at the right end; `null` for none.
      */
     public var button: String? = null
-    public var buttonRole: ComponentRole = ComponentRole.INPUT_FIELD_BUTTON
+
+    /**
+     * The weight of that button; `PRIMARY` for the main action of the view.
+     */
+    public var buttonVariant: Variant = Variant.DEFAULT
     public var onButtonActivated: () -> Unit = {}
 
     override fun build(): InputField {
@@ -41,7 +45,7 @@ public class InputFieldBuilder : ThemedFragmentBuilder<InputField> {
             maxLength = maxLength,
             icon = icon,
             buttonText = button,
-            buttonRole = buttonRole,
+            buttonVariant = buttonVariant,
             onButtonActivated = onButtonActivated,
             theme = theme,
         ).also { it.root.moveTo(position) }

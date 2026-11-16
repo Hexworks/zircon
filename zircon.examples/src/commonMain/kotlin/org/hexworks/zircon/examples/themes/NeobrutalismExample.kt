@@ -17,6 +17,8 @@ import org.hexworks.zircon.api.builder.fragment.window
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.data.Size
@@ -56,7 +58,7 @@ private fun buildContent(context: ExampleContext, theme: ComponentTheme, switchT
         ThemeMode.entries.forEach { mode ->
             button {
                 +mode.name.lowercase().replaceFirstChar { it.uppercase() }
-                role = ComponentRole.BUTTON_SECONDARY
+                variant = Variant.SECONDARY
                 processComponentEvents(ComponentEventType.ACTIVATED) { switchTo(mode) }
             }
         }
@@ -79,8 +81,8 @@ private fun buildContent(context: ExampleContext, theme: ComponentTheme, switchT
             preferredContentSize = Size(column, 4)
             spacing = 1
             button { +"Click" }
-            button { +"Save"; role = ComponentRole.BUTTON_PRIMARY }
-            button { +"More"; role = ComponentRole.BUTTON_LINK }
+            button { +"Save"; variant = Variant.PRIMARY }
+            button { +"More"; variant = Variant.LINK }
         }
         checkBoxField {
             this.width = column
@@ -110,7 +112,7 @@ private fun buildContent(context: ExampleContext, theme: ComponentTheme, switchT
             rows = 2
             label = "Notes"
             action("Clear")
-            action("Save", ComponentRole.BUTTON_PRIMARY)
+            action("Save", Variant.PRIMARY)
         }
     }
     val right = components.vBox {
@@ -142,7 +144,8 @@ private fun buildContent(context: ExampleContext, theme: ComponentTheme, switchT
 
 private fun tabContent(components: org.hexworks.zircon.api.component.theme.ComponentFactory, width: Int, text: String): Component =
     components.panel {
-        role = ComponentRole.TAB_CONTENT
+        role = ComponentRole.TAB_BAR
+        part = Part.CONTENT
         preferredSize = Size(width, 4)
         label { +text }
     }

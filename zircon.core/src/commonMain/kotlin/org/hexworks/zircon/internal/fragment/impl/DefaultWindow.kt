@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.Window
@@ -47,29 +48,34 @@ public class DefaultWindow internal constructor(
         val inner = maxOf(5, width - boxBuilder.decorationsSize.width)
         val controlsWidth = controls.length
         titleLabel = components.label {
-            role = ComponentRole.WINDOW_TITLE
+            role = ComponentRole.WINDOW
+            part = Part.TITLE
             preferredSize = Size(maxOf(1, inner - controlsWidth - 1), 1)
             +initialTitle
         }
         val controlsLabel = components.label {
-            role = ComponentRole.WINDOW_CONTROLS
+            role = ComponentRole.WINDOW
+            part = Part.CONTROLS
             preferredSize = Size(controlsWidth, 1)
             +controls
         }
         val titleBar = components.hBox {
-            role = ComponentRole.WINDOW_TITLE_BAR
+            role = ComponentRole.WINDOW
+            part = Part.TITLE_BAR
             spacing = 1
             preferredContentSize = Size(inner, 1)
             childrenToAdd = listOf(titleLabel, controlsLabel)
         }
         headerLabel = components.label {
-            role = ComponentRole.WINDOW_HEADER
+            role = ComponentRole.WINDOW
+            part = Part.HEADER
             preferredSize = Size(inner, 1)
             +initialHeader
         }
         val bodyLines = linesFor(initialBody, inner)
         bodyParagraph = components.paragraph {
-            role = ComponentRole.WINDOW_BODY
+            role = ComponentRole.WINDOW
+            part = Part.BODY
             preferredSize = Size(inner, bodyLines)
             +initialBody
         }

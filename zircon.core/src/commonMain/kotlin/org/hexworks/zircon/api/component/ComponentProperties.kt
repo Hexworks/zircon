@@ -4,7 +4,10 @@ import org.hexworks.zircon.api.behavior.CanBeDisabled
 import org.hexworks.zircon.api.behavior.CanBeHidden
 import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.behavior.TilesetOverride
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.behavior.ComponentThemeOverride
 
 /**
@@ -18,4 +21,19 @@ public interface ComponentProperties : CanBeDisabled, CanBeHidden, ColorThemeOve
      * What this component is for a [org.hexworks.zircon.api.component.theme.ComponentTheme].
      */
     public val role: ComponentRole
+
+    /**
+     * The semantic weight within [role].
+     */
+    public val variant: Variant
+
+    /**
+     * Which piece of a composite this component is; [Part.NONE] for a standalone one.
+     */
+    public val part: Part
+
+    /**
+     * Which way this component runs.
+     */
+    public val orientation: Orientation
 }

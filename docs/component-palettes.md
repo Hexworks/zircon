@@ -59,12 +59,18 @@ Part             enum: NONE, TEXT, ICON, TITLE, BODY, DISMISS, DOT, LABEL, ROW, 
   (`BUTTON_PRIMARY`), composite part (`ALERT_TEXT`) and state (`TAB_SELECTED`). It becomes `role` (kind) + `variant` +
   `part`, all closed core enums so they port between themes. `variant` is what picks palette keys
   (`WARNING -> warning / onWarning`). State stays out: a selected tab is `role = TAB` and the renderer reads
-  `isSelected`, colored from `selection / onSelection`; a vertical tab bar is `role = TAB_BAR` and the renderer reads the
-  orientation. ARIA-style state flags and ARIA role names are deferred (ROADMAP).
-- **Lookup fallback: part, then variant, never role.** `(role, variant, part)` -> `(role, variant, NONE)` ->
-  `(role, DEFAULT, part)` -> `(role, DEFAULT, NONE)`, first in the theme, then the same chain in the default theme.
-  The *variant* still reaches the derivation even when the entry is a fallback, so a `BUTTON PRIMARY` without its own
-  entry gets the default button shape in primary colors.
+  `isSelected` (a selected tab is a `Label`, not `Selectable`, so "not selectable" reads as selected), colored from
+  `selection / onSelection`; a vertical tab bar is `role = TAB_BAR` and the renderer reads the new
+  `ComponentProperties.orientation` (`Orientation.HORIZONTAL / VERTICAL`, set by the vertical builders and the tab
+  fragments). ARIA-style state flags and ARIA role names are deferred (ROADMAP).
+- **Lookup fallback: default variant, then the component kind.** Every component also carries its `kind`, what the
+  builder made (`LABEL` for a card title), fixed by the builder. `(role, variant, part)` -> `(role, DEFAULT, part)` ->
+  `(kind, variant)` -> `(kind, DEFAULT)`, first in the theme, then the same chain in the default theme. A part never
+  falls back to its composite's own entry (that would give the title the card's frame); it falls back to being a plain
+  label. `ComponentRole.NONE` has no fallbacks: it means never themed, whatever the kind. The *variant* still reaches
+  the derivation even when the entry is a fallback, so a `BUTTON PRIMARY` without its own entry gets the default
+  button shape in primary colors. (The grill said "part, then variant, never role"; session C found the part -> NONE
+  step hands children their container's decorations and replaced it with the kind step.)
 - **`primary` is the palette author's default, user-overridable.** `palette.withPrimary(color)` /
   `withPrimary(color, onColor)` returns a copy; the Catppuccin DSL adds `accent = MAUVE` over its named accents.
 - **Keys are an enum.** `PaletteKey` + `palette[key]`; builders expose named properties (`background = ...`) and the
@@ -118,7 +124,7 @@ it by hand (tables in the research doc, section 10).
 | `TAB_SELECTED`, `TAB_VERTICAL`, `TAB_VERTICAL_SELECTED`, `TAB_BAR_VERTICAL` | gone: `TAB` / `TAB_BAR`; renderer reads `isSelected` and orientation |
 
 Watch out: a theme that wants *different decorations* per tab-bar orientation cannot express it through entries any
-more; the decoration reads the orientation. Accepted; revisit if a theme needs it.
+more; the decoration reads `component.orientation`. Accepted; revisit if a theme needs it.
 
 ## Sessions
 
@@ -130,7 +136,8 @@ TextArea/ScrollBar) come after D.
 
 - `ComponentRole` reduced to kinds; new `Variant`, `Part` enums; `ThemeKey(role, variant, part)` internal.
 - `ComponentMetadata` / `CommonComponentProperties` / builders / `ComponentProperties` get `variant`, `part`.
-- `ComponentTheme.entryFor(role, variant, part)` with the fallback chain (shared helper used by every theme).
+- `ComponentTheme.entryFor(key)` exact + `resolveEntry(role, variant, part, kind)` with the fallback chain (default
+  method, so every theme shares it).
 - Fragments set `variant` / `part` on their parts; `AlertKind`, `BadgeStatus` map to variants.
 - Tabs: drop the selected / vertical roles; `NeoTabRenderer` and `NeoTabBarRenderer` read `isSelected` / orientation.
 - Neobrutalism entry map rewritten on triples; `ComponentFactory.configure` passes variant / part.
@@ -169,4 +176,8 @@ TextArea/ScrollBar) come after D.
 
 ## Status
 
-Planned 2026-11-16. Nothing implemented yet.
+- 2026-11-16: planned.
+- 2026-11-16: **C done.** `ComponentRole` holds kinds, `Variant` / `Part` / `ThemeKey` / `Orientation` added,
+  `ComponentTheme.entryFor(key)` is exact and `resolveEntry(role, variant, part, kind)` walks the fallbacks, fragments
+  and tab bars set variant / part / orientation, Neobrutalism keyed by `ThemeKey` with one `NeoTabRenderer`.
+  `InputFieldBuilder.buttonRole` -> `buttonVariant`, `TextAreaFieldBuilder.action(text, variant)`. Next: A.

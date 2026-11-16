@@ -15,6 +15,8 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.component.theme.PinnedAspects
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
 
 /**
  * Contains metadata that is common to **all** [Component]s.
@@ -37,9 +39,25 @@ public data class ComponentMetadata(
      */
     val activationShortcut: KeyboardEventMatcher? = null,
     /**
-     * What the component is for a [ComponentTheme]. Builders set it to the component kind.
+     * What the component is for a [ComponentTheme]: the kind, or the composite it is a part of.
      */
     val role: ComponentRole = ComponentRole.NONE,
+    /**
+     * The component kind the builder made; the last fallback of a theme lookup.
+     */
+    val kind: ComponentRole = role,
+    /**
+     * The semantic weight within [role].
+     */
+    val variant: Variant = Variant.DEFAULT,
+    /**
+     * Which piece of a composite the component is.
+     */
+    val part: Part = Part.NONE,
+    /**
+     * Which way the component runs.
+     */
+    val orientation: Orientation = Orientation.HORIZONTAL,
     /**
      * The [ComponentTheme] the component starts with; `null` means none.
      */

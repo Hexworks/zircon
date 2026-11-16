@@ -35,6 +35,9 @@ import kotlin.require
 import org.hexworks.zircon.api.component.theme.ThemeEntry
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 
 /**
@@ -49,18 +52,53 @@ public abstract class BaseComponentBuilder<T : Component>(
 
     internal var props: CommonComponentProperties<T> = CommonComponentProperties(
         componentRenderer = initialRenderer,
+        kind = initialRole,
         role = initialRole,
     )
         private set
 
     /**
+     * The component kind this builder makes (`LABEL`), the last fallback of a theme lookup.
+     */
+    internal val kind: ComponentRole
+        get() = props.kind
+
+    /**
      * What the resulting component is for a [ComponentTheme]. Defaults to the component kind;
-     * set it to a finer role (`BUTTON_PRIMARY`, `ALERT_INFO_TEXT`) so a theme can tell it apart.
+     * a fragment sets it to the composite (`CARD`) and says which [part] the component is.
      */
     public var role: ComponentRole
         get() = props.role
         set(value) {
             props.role = value
+        }
+
+    /**
+     * The semantic weight within [role] (`PRIMARY`, `WARNING`); a theme may give each variant
+     * its own look, and a palette its own colors.
+     */
+    public var variant: Variant
+        get() = props.variant
+        set(value) {
+            props.variant = value
+        }
+
+    /**
+     * Which piece of a composite the component is (`TITLE`); [Part.NONE] for a standalone one.
+     */
+    public var part: Part
+        get() = props.part
+        set(value) {
+            props.part = value
+        }
+
+    /**
+     * Which way the component runs; theme renderers read it.
+     */
+    public var orientation: Orientation
+        get() = props.orientation
+        set(value) {
+            props.orientation = value
         }
 
     /**
@@ -278,7 +316,7 @@ public abstract class BaseComponentBuilder<T : Component>(
      */
     internal fun applyThemeEntry(theme: ComponentTheme) {
         props.componentTheme = theme
-        val entry: ThemeEntry = theme.entryFor(role) ?: return
+        val entry: ThemeEntry = theme.resolveEntry(role, variant, part, kind) ?: return
         val pins = props.pinnedAspects
         if (!pins.componentRenderer) entry.componentRenderer?.let { props.componentRenderer = it as ComponentRenderer<out T> }
         if (!pins.decorationRenderers) entry.decorationRenderers?.let { props.decorationRenderers = it }
@@ -380,7 +418,11 @@ public abstract class BaseComponentBuilder<T : Component>(
             activationShortcut = activationShortcut,
             hiddenProperty = hiddenProperty,
             disabledProperty = disabledProperty,
+            kind = kind,
             role = role,
+            variant = variant,
+            part = part,
+            orientation = orientation,
             componentThemeProperty = componentThemeProperty,
             pinnedAspects = props.pinnedAspects,
             componentThemeExplicit = props.componentThemeExplicit,

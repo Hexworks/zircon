@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.util.reportError
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 
@@ -58,14 +59,15 @@ public class DefaultHorizontalTabBar internal constructor(
         tabBar = components.hBox {
             role = ComponentRole.TAB_BAR
             preferredSize = Size(size.width, 3)
-            if (theme.lacks(ComponentRole.TAB_BAR)) {
+            if (theme.lacks(ComponentRole.TAB_BAR, kind = ComponentRole.HBOX)) {
                 defaultDecorationRenderers(listOf(margin(0, 1)))
                 defaultComponentRenderer(NoOpComponentRenderer())
             }
         }
 
         content = components.panel {
-            role = ComponentRole.TAB_CONTENT
+            role = ComponentRole.TAB_BAR
+            part = Part.CONTENT
             preferredSize = size.withRelativeHeight(-3)
         }
         childrenToAdd = listOf(tabBar, content)

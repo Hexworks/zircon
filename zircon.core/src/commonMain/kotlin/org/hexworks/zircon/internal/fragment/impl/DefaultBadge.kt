@@ -6,6 +6,8 @@ import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Label
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.fragment.Badge
 import org.hexworks.zircon.api.fragment.BadgeStatus
@@ -39,7 +41,9 @@ public class DefaultBadge internal constructor(
         val parts = mutableListOf<Component>()
         if (status != BadgeStatus.NONE) {
             parts += components.icon {
-                role = if (status == BadgeStatus.SUCCESS) ComponentRole.BADGE_DOT_SUCCESS else ComponentRole.BADGE_DOT_ERROR
+                role = ComponentRole.BADGE
+                variant = if (status == BadgeStatus.SUCCESS) Variant.SUCCESS else Variant.ERROR
+                part = Part.DOT
                 iconTile = characterTile {
                     character = statusIcon
                     styleSet = StyleSet.defaultStyle()
@@ -47,13 +51,15 @@ public class DefaultBadge internal constructor(
             }
         }
         label = components.label {
-            role = ComponentRole.BADGE_TEXT
+            role = ComponentRole.BADGE
+            part = Part.TEXT
             +initialText
         }
         parts += label
         if (dismissible) {
             parts += components.button {
-                role = ComponentRole.BADGE_DISMISS
+                role = ComponentRole.BADGE
+                part = Part.DISMISS
                 +dismissIcon.toString()
                 processComponentEvents(ComponentEventType.ACTIVATED) { dismiss() }
             }

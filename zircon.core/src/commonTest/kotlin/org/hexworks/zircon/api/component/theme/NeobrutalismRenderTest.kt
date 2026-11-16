@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.component.theme
 
+import org.hexworks.zircon.api.component.theme.Variant
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.hexworks.zircon.api.ComponentThemes
@@ -43,7 +44,7 @@ class NeobrutalismRenderTest {
     fun a_secondary_button_keeps_its_shadow_when_hovered() {
         val button = factory.button {
             +"OK"
-            role = ComponentRole.BUTTON_SECONDARY
+            variant = Variant.SECONDARY
         }
         (button as InternalComponent).componentState = ComponentState.HIGHLIGHTED
 
@@ -54,7 +55,7 @@ class NeobrutalismRenderTest {
     fun a_primary_button_has_a_double_border_and_no_shadow() {
         val button = factory.button {
             +"Save"
-            role = ComponentRole.BUTTON_PRIMARY
+            variant = Variant.PRIMARY
         }
 
         button.renderToRows() shouldContainExactly listOf(
@@ -68,7 +69,7 @@ class NeobrutalismRenderTest {
     fun a_link_button_is_underlined() {
         val button = factory.button {
             +"More"
-            role = ComponentRole.BUTTON_LINK
+            variant = Variant.LINK
         }
 
         button.renderToRows() shouldContainExactly listOf(

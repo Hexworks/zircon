@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Size
@@ -17,6 +18,10 @@ import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
 @ZirconDsl
 public class VerticalSliderBuilder :
     SliderBuilder<Slider>(VerticalSliderRenderer()) {
+
+    init {
+        orientation = Orientation.VERTICAL
+    }
 
     override var numberOfSteps: Int = 10
         set(value) {

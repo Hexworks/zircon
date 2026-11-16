@@ -67,6 +67,9 @@ import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.theme.PinnedAspects
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.data.Orientation
 
 @Suppress("UNCHECKED_CAST")
 public abstract class DefaultComponent(
@@ -94,6 +97,10 @@ public abstract class DefaultComponent(
     final override val id: UUID = UUID.randomUUID()
     final override val name: String = metadata.name
     final override val role: ComponentRole = metadata.role
+    final override val variant: Variant = metadata.variant
+    final override val part: Part = metadata.part
+    final override val orientation: Orientation = metadata.orientation
+    private val kind: ComponentRole = metadata.kind
 
     //#region Rendering strategy
     /**
@@ -229,7 +236,7 @@ public abstract class DefaultComponent(
      * `true` while the component theme has a look for this component's role.
      */
     private val hasThemeEntry: Boolean
-        get() = componentTheme?.entryFor(role) != null
+        get() = componentTheme?.resolveEntry(role, variant, part, kind) != null
 
     final override fun inheritComponentTheme(theme: ComponentTheme?) {
         if (theme == null && componentThemeExplicit) return
@@ -245,7 +252,7 @@ public abstract class DefaultComponent(
      */
     private fun applyComponentTheme(theme: ComponentTheme?, initial: Boolean) {
         val oldOffset = contentOffset
-        val entry = theme?.entryFor(role)
+        val entry = theme?.resolveEntry(role, variant, part, kind)
         if (entry == null) {
             // No theme, or none for this role: the look the component was built with, and
             // the color theme's colors.

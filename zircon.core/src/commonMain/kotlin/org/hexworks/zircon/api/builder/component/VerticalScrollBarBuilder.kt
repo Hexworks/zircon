@@ -1,5 +1,6 @@
 package org.hexworks.zircon.api.builder.component
 
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.component.ScrollBar
@@ -18,6 +19,10 @@ public class VerticalScrollBarBuilder(
     initialRole = ComponentRole.SCROLL_BAR,
     initialRenderer = DefaultVerticalScrollBarRenderer()
 ) {
+
+    init {
+        orientation = Orientation.VERTICAL
+    }
 
     public var scrollable: Scrollable = initialScrollable
 

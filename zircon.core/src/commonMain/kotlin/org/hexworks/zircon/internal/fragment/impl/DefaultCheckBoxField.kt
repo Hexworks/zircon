@@ -7,6 +7,7 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -40,7 +41,8 @@ public class DefaultCheckBoxField internal constructor(
             val textWidth = inner - INDENT
             val lines = linesFor(description, textWidth)
             parts += components.paragraph {
-                role = ComponentRole.CHECK_BOX_DESCRIPTION
+                role = ComponentRole.CHECK_BOX_FIELD
+                part = Part.DESCRIPTION
                 preferredSize = Size(textWidth, lines)
                 position = Position(INDENT, 0)
                 +description

@@ -19,6 +19,8 @@ import org.hexworks.zircon.api.fragment.TabData
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.util.reportError
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 
@@ -55,16 +57,18 @@ public class DefaultVerticalTabBar internal constructor(
         defaultComponentRenderer(NoOpComponentRenderer())
 
         tabBar = components.vBox {
-            role = ComponentRole.TAB_BAR_VERTICAL
+            role = ComponentRole.TAB_BAR
+            orientation = Orientation.VERTICAL
             preferredSize = Size(tabWidth, size.height)
-            if (theme.lacks(ComponentRole.TAB_BAR_VERTICAL)) {
+            if (theme.lacks(ComponentRole.TAB_BAR, kind = ComponentRole.VBOX)) {
                 defaultDecorationRenderers(listOf(margin(1, 0)))
                 defaultComponentRenderer(NoOpComponentRenderer())
             }
         }
 
         content = components.panel {
-            role = ComponentRole.TAB_CONTENT
+            role = ComponentRole.TAB_BAR
+            part = Part.CONTENT
             preferredSize = size.withRelativeWidth(-tabWidth)
         }
         childrenToAdd = listOf(tabBar, content)

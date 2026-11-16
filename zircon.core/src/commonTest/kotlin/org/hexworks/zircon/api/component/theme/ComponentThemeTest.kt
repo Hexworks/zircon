@@ -5,7 +5,9 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentThemes
+import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.button
+import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.vBox
@@ -84,7 +86,7 @@ class ComponentThemeTest {
         button.size shouldBe plainSize
         // A 1 row button has no room for a 3 row frame: the side decoration stays.
         button.contentSize shouldBe plainContent
-        button.componentStyleSet shouldBe neobrutalism.entryFor(ComponentRole.BUTTON)!!.componentStyleSet
+        button.componentStyleSet shouldBe neobrutalism.resolveEntry(ComponentRole.BUTTON)!!.componentStyleSet
     }
 
     @Test
@@ -159,6 +161,60 @@ class ComponentThemeTest {
 
         box.contentSize shouldBe Size(10, 5)
         box.componentStyleSet shouldBeSameInstanceAs style
+    }
+
+    @Test
+    fun a_variant_without_an_entry_falls_back_to_the_default_variant() {
+        val theme = themeOf(ThemeKey(ComponentRole.BUTTON) to themeEntry { decorations { +box() } })
+
+        val button = theme.componentFactory.button {
+            +"OK"
+            variant = Variant.PRIMARY
+        }
+
+        button.size shouldBe Size(4, 3)
+        button.contentSize shouldBe Size(2, 1)
+    }
+
+    @Test
+    fun a_part_without_an_entry_falls_back_to_the_component_kind_not_to_its_composite() {
+        val framedCard = themeOf(ThemeKey(ComponentRole.CARD) to themeEntry { decorations { +box() } })
+        val boldLabels = themeOf(ThemeKey(ComponentRole.LABEL) to themeEntry { decorations { +box() } })
+
+        val cardTitle = framedCard.componentFactory.label {
+            +"Title"
+            role = ComponentRole.CARD
+            part = Part.TITLE
+        }
+        val plainTitle = boldLabels.componentFactory.label {
+            +"Title"
+            role = ComponentRole.CARD
+            part = Part.TITLE
+        }
+
+        // The card's frame is the card's, not its title's.
+        cardTitle.size shouldBe Size(5, 1)
+        // A card title is a label when the theme says nothing about card titles.
+        plainTitle.size shouldBe Size(7, 3)
+    }
+
+    @Test
+    fun the_fallback_order_is_default_variant_then_kind() {
+        ThemeKey(ComponentRole.CARD, Variant.WARNING, Part.TITLE).fallbacks(kind = ComponentRole.LABEL) shouldBe listOf(
+            ThemeKey(ComponentRole.CARD, Variant.WARNING, Part.TITLE),
+            ThemeKey(ComponentRole.CARD, Variant.DEFAULT, Part.TITLE),
+            ThemeKey(ComponentRole.LABEL, Variant.WARNING),
+            ThemeKey(ComponentRole.LABEL),
+        )
+        ThemeKey(ComponentRole.BUTTON).fallbacks() shouldBe listOf(ThemeKey(ComponentRole.BUTTON))
+        ThemeKey(ComponentRole.NONE).fallbacks(kind = ComponentRole.PANEL) shouldBe emptyList()
+    }
+
+    private fun themeOf(vararg entries: Pair<ThemeKey, ThemeEntry>): ComponentTheme = object : ComponentTheme {
+        private val map = entries.toMap()
+        override val name: String = "test"
+        override val mode: ThemeMode = ThemeMode.LIGHT
+        override fun entryFor(key: ThemeKey): ThemeEntry? = map[key]
     }
 }
 

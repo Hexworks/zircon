@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.ProgressBar
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.ProgressField
@@ -46,14 +47,16 @@ public class DefaultProgressField internal constructor(
         progressBar.progress = initialProgress
         val percentWidth = if (showPercent) PERCENT_WIDTH else 0
         labelComponent = components.label {
-            role = ComponentRole.PROGRESS_FIELD_LABEL
+            role = ComponentRole.PROGRESS_FIELD
+            part = Part.LABEL
             preferredSize = Size(maxOf(1, progressBar.width - percentWidth - 1), 1)
             +label
         }
         val headerParts = mutableListOf<Component>(labelComponent)
         if (showPercent) {
             headerParts += components.label {
-                role = ComponentRole.PROGRESS_FIELD_VALUE
+                role = ComponentRole.PROGRESS_FIELD
+            part = Part.VALUE
                 preferredSize = Size(percentWidth, 1)
                 textProperty.updateFrom(progressBar.progressProperty, UpdateOnBind) { progress ->
                     val percent = ((progress.coerceIn(0.0, range.toDouble()) / range) * 100).roundToInt()
@@ -62,7 +65,8 @@ public class DefaultProgressField internal constructor(
             }
         }
         val header = components.hBox {
-            role = ComponentRole.PROGRESS_FIELD_HEADER
+            role = ComponentRole.PROGRESS_FIELD
+            part = Part.HEADER
             spacing = 1
             preferredContentSize = Size(progressBar.width, 1)
             childrenToAdd = headerParts

@@ -28,6 +28,9 @@ import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
+import org.hexworks.zircon.api.component.data.Orientation
 
 class ComponentStub(
     initialPosition: Position,
@@ -66,6 +69,9 @@ class ComponentStub(
     override var theme: ColorTheme by themeProperty.asDelegate()
 
     override val role: ComponentRole = ComponentRole.NONE
+    override val variant: Variant = Variant.DEFAULT
+    override val part: Part = Part.NONE
+    override val orientation: Orientation = Orientation.HORIZONTAL
     override val componentThemeProperty: Property<ComponentTheme?> = null.toProperty()
     override var componentTheme: ComponentTheme? by componentThemeProperty.asDelegate()
     override fun inheritComponentTheme(theme: ComponentTheme?) {

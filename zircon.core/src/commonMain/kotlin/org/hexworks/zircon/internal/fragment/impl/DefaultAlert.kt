@@ -7,6 +7,8 @@ import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
+import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -33,20 +35,24 @@ public class DefaultAlert internal constructor(
         }
 
     init {
-        val panelBuilder = components.configure(PanelBuilder(), PANEL_ROLES.getValue(kind))
+        val variant = VARIANTS.getValue(kind)
+        val panelBuilder = components.configure(PanelBuilder(), ComponentRole.ALERT, variant)
         val inner = maxOf(3, width - panelBuilder.decorationsSize.width)
         val textWidth = inner - 2
         val lines = linesFor(initialText, textWidth)
-        val textRole = TEXT_ROLES.getValue(kind)
         val iconComponent = components.icon {
-            role = textRole
+            role = ComponentRole.ALERT
+            this.variant = variant
+            part = Part.ICON
             iconTile = characterTile {
                 character = icon
                 styleSet = StyleSet.defaultStyle()
             }
         }
         paragraph = components.paragraph {
-            role = textRole
+            role = ComponentRole.ALERT
+            this.variant = variant
+            part = Part.TEXT
             preferredSize = Size(textWidth, lines)
             position = Position(2, 0)
             +initialText
@@ -58,15 +64,10 @@ public class DefaultAlert internal constructor(
     }
 
     private companion object {
-        val PANEL_ROLES = mapOf(
-            AlertKind.INFO to ComponentRole.ALERT_INFO,
-            AlertKind.SUCCESS to ComponentRole.ALERT_SUCCESS,
-            AlertKind.ERROR to ComponentRole.ALERT_ERROR,
-        )
-        val TEXT_ROLES = mapOf(
-            AlertKind.INFO to ComponentRole.ALERT_INFO_TEXT,
-            AlertKind.SUCCESS to ComponentRole.ALERT_SUCCESS_TEXT,
-            AlertKind.ERROR to ComponentRole.ALERT_ERROR_TEXT,
+        val VARIANTS = mapOf(
+            AlertKind.INFO to Variant.INFO,
+            AlertKind.SUCCESS to Variant.SUCCESS,
+            AlertKind.ERROR to Variant.ERROR,
         )
     }
 }

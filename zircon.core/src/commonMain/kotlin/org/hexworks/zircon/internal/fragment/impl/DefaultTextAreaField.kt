@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -39,13 +40,14 @@ public class DefaultTextAreaField internal constructor(
         }.build()
         val outerWidth = textArea.width
         val labelComponent = components.label {
-            role = ComponentRole.TEXT_AREA_FIELD_LABEL
+            role = ComponentRole.TEXT_AREA_FIELD
+            part = Part.LABEL
             preferredSize = Size(outerWidth, 1)
             +label
         }
         this.actions = actions.map { action ->
             components.button {
-                role = action.role
+                variant = action.variant
                 +action.text
                 processComponentEvents(ComponentEventType.ACTIVATED) { action.onActivated() }
             }
@@ -56,7 +58,8 @@ public class DefaultTextAreaField internal constructor(
             val actionsWidth = this.actions.sumOf { it.width } + this.actions.size - 1
             val actionsHeight = this.actions.maxOf { it.height }
             parts += components.hBox {
-                role = ComponentRole.TEXT_AREA_FIELD_ACTIONS
+                role = ComponentRole.TEXT_AREA_FIELD
+                part = Part.ACTIONS
                 spacing = 1
                 preferredContentSize = Size(actionsWidth, actionsHeight)
                 position = Position(maxOf(0, outerWidth - actionsWidth), 0)
