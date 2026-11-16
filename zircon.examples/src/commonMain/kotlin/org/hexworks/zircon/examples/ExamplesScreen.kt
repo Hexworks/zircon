@@ -18,7 +18,10 @@ import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.builder.grid.DEFAULT_TILESET
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.color.Color
-import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.error
+import org.hexworks.zircon.api.component.theme.primary
+import org.hexworks.zircon.api.component.theme.surface
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.config.ErrorHandler
@@ -51,7 +54,7 @@ class ExamplesScreen(
      * The cell size the user picked. Changing it is the one selection that cannot be
      * applied to a running grid: the number of cells that fit the window changes with it, so
      * the launcher builds a new screen (passing this one as `previous` to keep the rest of
-     * the selection). Tileset and theme changes within the same cell size are applied in
+     * the selection). Tileset and palette changes within the same cell size are applied in
      * place.
      */
     val tileSizeProperty: ObservableValue<Size>,
@@ -65,8 +68,8 @@ class ExamplesScreen(
     val onFrame: () -> Unit,
     /** The tileset the grid and its components draw with; carried over to a rebuilt screen. */
     internal val tilesetProperty: Property<TilesetResource>,
-    /** The colour theme; carried over to a rebuilt screen. */
-    internal val themeProperty: Property<ColorTheme>,
+    /** The palette; carried over to a rebuilt screen. */
+    internal val paletteProperty: Property<ComponentPalette>,
     /** The groups the app shows (with `isTerminal`, only those with a text-only example). */
     @ExamplesTestApi val packages: List<ExampleGroup>,
     /** Groups across the top, the selected group's examples down the left. */
@@ -87,16 +90,16 @@ fun gridSizeFor(tileSize: Size, widthPx: Int, heightPx: Int): Size = Size(
 )
 
 /**
- * Builds the examples app into a grid of [size]: tile size, tileset and theme selectors on
- * top (only the theme in a terminal), then a matrix tab bar with the groups as horizontal
+ * Builds the examples app into a grid of [size]: tile size, tileset and palette selectors on
+ * top (only the palette in a terminal), then a matrix tab bar with the groups as horizontal
  * tabs and the selected group's examples as vertical tabs, an fps counter in the corner
  * and the latest contained error in the bottom row. Examples are built the first time
  * they are shown.
  *
- * Picking a theme or a tileset of the same cell size applies at once. Picking another
+ * Picking a palette or a tileset of the same cell size applies at once. Picking another
  * cell size only updates [ExamplesScreen.tileSizeProperty]; the launcher then builds a
  * new screen with the previous one as [previous], which starts from the previous one's
- * tile size, tileset, theme and selected example. With [isTerminal] the examples that
+ * tile size, tileset, palette and selected example. With [isTerminal] the examples that
  * need graphical tiles and the tileset selectors are left out. [startAt] names the
  * example to show first; it wins over [previous].
  */
@@ -123,21 +126,21 @@ suspend fun examplesScreen(
     // change the first tileset of the new size is used.
     val tileSize = previous?.tileSizeProperty?.value ?: DEFAULT_TILESET.size
     val initialTileset = previous?.tilesetProperty?.value?.takeIf { it.size == tileSize } ?: tilesetsFor(tileSize).first()
-    val initialTheme = previous?.themeProperty?.value ?: DEFAULT_THEME
+    val initialPalette = previous?.paletteProperty?.value ?: DEFAULT_PALETTE
 
     val grid = tileGrid {
         this.size = size
         tileset = initialTileset
     }
     val screen = grid.toScreen()
-    screen.theme = initialTheme
+    screen.componentPalette = initialPalette
     val assets = loadAssets(grid.tileset)
 
     val tileSizeProperty = tileSize.toProperty()
     val tilesetProperty = initialTileset.toProperty()
-    val themeProperty = initialTheme.toProperty()
+    val paletteProperty = initialPalette.toProperty()
 
-    themeProperty.onChange { (_, changed) -> screen.theme = changed }
+    paletteProperty.onChange { (_, changed) -> screen.componentPalette = changed }
     // A screen's tileset and its component tree's are separate: `Screen.tileset` is the
     // grid's (the base layer and the cursor), the components follow their root container.
     // The root is only reachable through the screen implementation, so this reaches in.
@@ -176,13 +179,15 @@ suspend fun examplesScreen(
                 }
             }
         }
+        // Colors only: every demo keeps its shape, so switching here is safe. Component themes
+        // (shape) are picked on the themes page, whose components are sized for them.
         hBox {
             spacing = 1
-            label { +"Theme" }
+            label { +"Palette" }
             selector {
                 width = SELECTOR_WIDTH
-                valueList = THEMES
-                selectedProperty = themeProperty
+                valueList = PALETTES
+                selectedProperty = paletteProperty
                 toStringMethod = { it.name }
             }
         }
@@ -282,7 +287,7 @@ suspend fun examplesScreen(
                 characterTile {
                     character = char
                     withStyleSet {
-                        foregroundColor = screen.theme.accentColor
+                        foregroundColor = screen.componentPalette.primary
                         backgroundColor = Color.TRANSPARENT
                     }
                 },
@@ -308,8 +313,8 @@ suspend fun examplesScreen(
                 characterTile {
                     character = char
                     withStyleSet {
-                        foregroundColor = screen.theme.accentColor
-                        backgroundColor = screen.theme.primaryBackgroundColor
+                        foregroundColor = screen.componentPalette.error
+                        backgroundColor = screen.componentPalette.surface
                     }
                 },
                 Position(x, 0)
@@ -334,7 +339,7 @@ suspend fun examplesScreen(
             shownKey?.let { views[it]?.onFrame?.invoke() }
         },
         tilesetProperty = tilesetProperty,
-        themeProperty = themeProperty,
+        paletteProperty = paletteProperty,
         packages = packages,
         tabBar = tabBar,
         buildFailures = buildFailures,

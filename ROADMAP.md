@@ -47,8 +47,11 @@ be assembled without packing a sprite sheet by hand.
 ## More component themes
 
 Component themes landed with Neobrutalism (`docs/component-themes.md`); palettes split out of them
-(`docs/component-palettes.md`). Next: a Solarized palette, and a Nerd Font tileset bundled with the
-examples so the heavy box drawing and block glyphs the themes use render out of the box.
+(`docs/component-palettes.md`), with Catppuccin, Tokyo Night and Kanagawa bundled. Next: a Solarized
+palette; palette builders that expose each project's native color names (`catppuccin { flavor = MOCHA;
+surface = SURFACE1 }`) once a palette needs more than the accent knob; tuning the default theme's hover
+(`TEXT_MUTED` on the emphasis color, the 1.x rule) for the bundled palettes; and a Nerd Font tileset
+bundled with the examples so the heavy box drawing and block glyphs the themes use render out of the box.
 
 ## Component state flags and ARIA vocabulary
 

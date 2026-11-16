@@ -19,6 +19,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleView
+import org.hexworks.zircon.api.component.theme.primary
 
 /**
  * A table of people with a selectable row and a panel that edits the selected person;
@@ -36,7 +37,7 @@ public val tableExample: Example = Example("Table") { context ->
 
         selectedRowRenderer = ComponentRenderer { tileGraphics, ctx ->
             tileGraphics.fill(Tile.defaultTile())
-            tileGraphics.applyStyle(ctx.currentStyle.withBackgroundColor(ctx.theme.accentColor))
+            tileGraphics.applyStyle(ctx.currentStyle.withBackgroundColor(ctx.palette.primary))
         }
 
         textColumn {

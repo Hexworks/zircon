@@ -186,8 +186,19 @@ public final class org/hexworks/zircon/api/ImageDictionaryTilesetResources {
 
 public final class org/hexworks/zircon/api/Palettes {
 	public static final field INSTANCE Lorg/hexworks/zircon/api/Palettes;
+	public final fun all ()Ljava/util/List;
+	public final fun catppuccin (Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun catppuccin (Lorg/hexworks/zircon/api/component/theme/ThemeMode;Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun catppuccin$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun catppuccin$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun kanagawa (Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun kanagawa (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun kanagawa$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun neobrutalism (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public static synthetic fun neobrutalism$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun tokyoNight (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun tokyoNight (Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun tokyoNight$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 }
 
 public final class org/hexworks/zircon/api/REXPaintResourcesKt {
@@ -3274,6 +3285,37 @@ public final class org/hexworks/zircon/api/component/renderer/extensions/Compone
 	public static final fun asInvariant (Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;)Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;
 }
 
+public final class org/hexworks/zircon/api/component/theme/CatppuccinAccent : java/lang/Enum {
+	public static final field BLUE Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field FLAMINGO Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field GREEN Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field LAVENDER Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field MAROON Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field MAUVE Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field PEACH Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field PINK Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field RED Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field ROSEWATER Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field SAPPHIRE Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field SKY Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field TEAL Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static final field YELLOW Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+	public static fun values ()[Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;
+}
+
+public final class org/hexworks/zircon/api/component/theme/CatppuccinFlavor : java/lang/Enum {
+	public static final field FRAPPE Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+	public static final field LATTE Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+	public static final field MACCHIATO Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+	public static final field MOCHA Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun isDark ()Z
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+	public static fun values ()[Lorg/hexworks/zircon/api/component/theme/CatppuccinFlavor;
+}
+
 public final class org/hexworks/zircon/api/component/theme/ColorThemeAdapterKt {
 	public static final fun toComponentPalette (Lorg/hexworks/zircon/api/component/ColorTheme;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 }
@@ -3502,6 +3544,16 @@ public final class org/hexworks/zircon/api/component/theme/ComponentTheme$Defaul
 	public static synthetic fun resolveEntry$default (Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentRole;Lorg/hexworks/zircon/api/component/theme/Variant;Lorg/hexworks/zircon/api/component/theme/Part;Lorg/hexworks/zircon/api/component/theme/ComponentRole;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ThemeEntry;
 }
 
+public final class org/hexworks/zircon/api/component/theme/KanagawaVariant : java/lang/Enum {
+	public static final field DRAGON Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;
+	public static final field LOTUS Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;
+	public static final field WAVE Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun isDark ()Z
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;
+	public static fun values ()[Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;
+}
+
 public final class org/hexworks/zircon/api/component/theme/PaletteKey : java/lang/Enum {
 	public static final field ACCENT Lorg/hexworks/zircon/api/component/theme/PaletteKey;
 	public static final field BACKGROUND Lorg/hexworks/zircon/api/component/theme/PaletteKey;
@@ -3694,6 +3746,17 @@ public final class org/hexworks/zircon/api/component/theme/ThemeMode : java/lang
 	public final fun resolve ()Lorg/hexworks/zircon/api/component/theme/ThemeMode;
 	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/ThemeMode;
 	public static fun values ()[Lorg/hexworks/zircon/api/component/theme/ThemeMode;
+}
+
+public final class org/hexworks/zircon/api/component/theme/TokyoNightStyle : java/lang/Enum {
+	public static final field DAY Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
+	public static final field MOON Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
+	public static final field NIGHT Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
+	public static final field STORM Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun isDark ()Z
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
+	public static fun values ()[Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;
 }
 
 public final class org/hexworks/zircon/api/component/theme/Variant : java/lang/Enum {

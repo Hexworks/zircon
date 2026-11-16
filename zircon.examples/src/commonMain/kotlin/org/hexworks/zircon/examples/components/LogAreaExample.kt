@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleView
+import org.hexworks.zircon.api.component.theme.surface
 
 /** A log area: plain rows, a typing effect, inline components and a styled paragraph. */
 public val logAreaExample: Example = Example("Log area") { context ->
@@ -44,7 +45,7 @@ public val logAreaExample: Example = Example("Log area") { context ->
         componentStyleSet = componentStyleSet {
             defaultStyle = styleSet {
                 foregroundColor = DefaultAnsiPalette[ANSIColor.YELLOW]
-                backgroundColor = context.screen.theme.primaryBackgroundColor
+                backgroundColor = context.screen.componentPalette.surface
             }
         }
     })

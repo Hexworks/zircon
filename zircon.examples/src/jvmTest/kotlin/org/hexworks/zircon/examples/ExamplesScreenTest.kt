@@ -44,12 +44,12 @@ class ExamplesScreenTest {
         val first = runBlocking { examplesScreen(MIN_SIZE) }
         first.tabBar.selectedHorizontalKey = "dialogs"
         first.tabBar.selectedVerticalKey = "Nested modals"
-        first.themeProperty.value = THEMES.first { it.name == "Tron" }
+        first.paletteProperty.value = PALETTES.first { it.name == "Tron" }
         first.tilesetProperty.value = tilesetsFor(Size(16, 16)).first { it.title == "VGA 8×16" || it.title == "Zilk 16×16" }
         val second = runBlocking { examplesScreen(MIN_SIZE, previous = first) }
         second.tabBar.selectedHorizontalKey shouldBe "dialogs"
         second.tabBar.selectedVerticalKey shouldBe "Nested modals"
-        second.themeProperty.value.name shouldBe "Tron"
+        second.paletteProperty.value.name shouldBe "Tron"
         second.grid.tileset.title shouldBe "Zilk 16×16"
         second.grid.tileset shouldBe second.tilesetProperty.value
     }

@@ -33,13 +33,13 @@ public val dialogExample: Example = Example("Dialog") { context ->
             }
             panel.addComponent(panel {
                 preferredSize = Size(23, 13)
-                colorTheme = screen.theme
+                componentPalette = screen.componentPalette
             })
             val modal = modal {
                 centeredDialog = true
                 preferredSize = screen.size
                 // A modal has no parent, so it needs its own theme and tileset.
-                colorTheme = screen.theme
+                componentPalette = screen.componentPalette
                 tileset = screen.tileset
                 contentComponent = panel
             }
@@ -72,7 +72,7 @@ private fun openModal(screen: Screen, level: Int) {
     val modal = modal {
         contentComponent = modalPanel
         preferredSize = screen.size
-        colorTheme = screen.theme
+        componentPalette = screen.componentPalette
         tileset = screen.tileset
         darkenPercent = .1
         centeredDialog = true

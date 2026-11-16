@@ -227,3 +227,12 @@ TextArea/ScrollBar) come after D.
   `ColorThemes`, `ColorThemeOverride`, `ZirconDefaults.theme`, builders' `colorTheme` deprecated. The Neobrutalism
   example's Light / Dark / System buttons switch the palette. Watch: input fields are now sunken wells with the
   selection colors while focused (1.x inverted them); check the examples app by eye. Next: D.
+- 2026-11-16: **D done.** `Palettes.catppuccin(flavor, accent)` (4 flavors, 14 accents), `tokyoNight(style)` (4),
+  `kanagawa(variant)` (3), each with a `(mode: ThemeMode)` overload picking the light / dark member, and
+  `Palettes.all()`; hex values from the primary sources (`palette.json` v1.8.0, tokyonight `colors/*.lua` with `day`
+  from the generated helix extra, kanagawa `colors.lua` / `themes.lua`), mapping per project style guide in
+  `BundledPalettes`. The examples header's "Theme" selector became "Palette": the 13 bundled palettes, then the 77
+  colour themes adapted; `ExamplesScreen.themeProperty` -> `paletteProperty`. Dialog modals pin
+  `screen.componentPalette`. Not done: builders exposing each project's native color names (`accent = MAUVE` is
+  there as the Catppuccin accent enum; a full named-color DSL waits for a need, see ROADMAP). Palette plan complete;
+  next are the refactors in `component-refactoring-handover.md`.

@@ -7,6 +7,9 @@ import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.entries as CP437_TILESETS
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource.entries as TTF_FONTS
+import org.hexworks.zircon.api.Palettes
+import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 /**
  * The cell sizes the app offers, taken from the bundled CP437 sheets. Bigger cells than
@@ -18,10 +21,17 @@ val TILE_SIZES: List<Size> = CP437_TILESETS
     .distinct()
     .sortedWith(compareBy({ it.height }, { it.width }))
 
-/** Every built-in colour theme. */
+/** Every built-in colour theme, the legacy format. */
+@Suppress("DEPRECATION")
 val THEMES: List<ColorTheme> = ColorThemeResource.ALL_THEMES
 
-val DEFAULT_THEME: ColorTheme = ColorThemes.nord()
+/**
+ * Every palette the app offers: the bundled ones first, then the colour themes adapted.
+ */
+val PALETTES: List<ComponentPalette> = Palettes.all() + THEMES.map { it.toComponentPalette() }
+
+@Suppress("DEPRECATION")
+val DEFAULT_PALETTE: ComponentPalette = ColorThemes.nord().toComponentPalette()
 
 /**
  * Every bundled tileset with cells of [size]: the CP437 sheets of that size and the
