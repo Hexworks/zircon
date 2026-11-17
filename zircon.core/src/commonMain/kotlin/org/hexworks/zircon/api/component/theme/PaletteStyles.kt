@@ -46,19 +46,43 @@ public object PaletteStyles {
     }
 
     /**
-     * Something clickable, in the emphasis colors of [variant]: the color as text at rest,
-     * the color as the surface while hovered, focused or pressed.
+     * Something clickable, in the emphasis colors of [variant]: the color as text at rest, its
+     * `ON_*` text on the color while focused, on a [hovered] wash of it while hovered and on a
+     * [pressed] deepening of it while pressed. The three filled states keep the same text
+     * color, so they all read; the background tells them apart.
      */
     public fun interactive(variant: Variant = Variant.DEFAULT): (ComponentPalette) -> ComponentStyleSet = { palette ->
         val (color, onColor) = palette.emphasisColors(variant)
         componentStyleSet {
             defaultStyle = styleSet { foregroundColor = color; backgroundColor = Color.TRANSPARENT }
-            highlightedStyle = styleSet { foregroundColor = palette.textMuted; backgroundColor = color }
+            highlightedStyle = styleSet { foregroundColor = onColor; backgroundColor = palette.hovered(color) }
             focusedStyle = styleSet { foregroundColor = onColor; backgroundColor = color }
-            activeStyle = styleSet { foregroundColor = palette.onBackground; backgroundColor = color }
+            activeStyle = styleSet { foregroundColor = onColor; backgroundColor = pressed(color, onColor) }
             disabledStyle = styleSet { foregroundColor = palette.textDisabled; backgroundColor = Color.TRANSPARENT }
         }
     }
+
+    /**
+     * [color] as a hover surface: washed [HOVER_WASH] of the way toward [PaletteKey.SURFACE], so
+     * it sits between the resting and the focused look.
+     */
+    public fun ComponentPalette.hovered(color: Color): Color = color.blend(surface, HOVER_WASH)
+
+    /**
+     * [color] as a pressed surface: pushed [PRESS_INK] of the way away from [onColor], the text
+     * drawn on it (toward white under dark text, toward black under light text), so the press
+     * is visibly stronger than focus and the text contrasts more, not less.
+     */
+    public fun pressed(color: Color, onColor: Color): Color = color.blend(if (onColor.isDark) WHITE else BLACK, PRESS_INK)
+
+    /** How far a hovered surface blends toward the surface. */
+    public const val HOVER_WASH: Double = 0.3
+
+    /** How far a pressed surface blends away from its text color. */
+    public const val PRESS_INK: Double = 0.5
+
+    private val WHITE: Color = Color.create(255, 255, 255)
+    private val BLACK: Color = Color.create(0, 0, 0)
 
     /**
      * An input field: a sunken well at rest, the selection colors while focused. Hovered and

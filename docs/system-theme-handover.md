@@ -126,4 +126,8 @@ public fun Screen.followSystemPalette(fallback: (ThemeMode) -> ComponentPalette)
   `PaletteChoice.System` (`Catalog.kt`, with `paletteFamilyOf`), `ExamplesScreen.paletteProperty` is now the screen's own
   palette property and `paletteChoiceProperty` what the selector shows; `ExampleContext.followSystemPalette(family)` is
   what the Neobrutalism page's System button calls. `onTerminalColors` stays.
-- Session 2: not started.
+- Session 2: **done 2026-11-17.** Solarized and Gruvbox picked (Nord, Dracula, Rosé Pine, Everforest left to the
+  roadmap). Tuning was done from a WCAG contrast table over every bundled palette and seven real terminal palettes
+  plus offscreen renders of the examples (a throwaway harness in `zircon.compose` jvmTest, deleted); the findings and
+  the fixes are in the Status of `docs/component-palettes.md` and in the trail learning. What remains by eye in a
+  real terminal: `Palettes.fromAnsi` on the user's own themes, the Neobrutalism pages with a TrueType tileset.

@@ -112,11 +112,15 @@ public final class org/hexworks/zircon/api/Palettes {
 	public static synthetic fun catppuccin$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;Lorg/hexworks/zircon/api/component/theme/CatppuccinAccent;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun fromAnsi (Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Ljava/util/List;Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public static synthetic fun fromAnsi$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun gruvbox (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun gruvbox$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun kanagawa (Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun kanagawa (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public static synthetic fun kanagawa$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/KanagawaVariant;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun neobrutalism (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public static synthetic fun neobrutalism$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun solarized (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun solarized$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/ThemeMode;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun tokyoNight (Lorg/hexworks/zircon/api/component/theme/ThemeMode;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun tokyoNight (Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public static synthetic fun tokyoNight$default (Lorg/hexworks/zircon/api/Palettes;Lorg/hexworks/zircon/api/component/theme/TokyoNightStyle;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
@@ -3384,7 +3388,9 @@ public final class org/hexworks/zircon/api/component/theme/PaletteKey : java/lan
 }
 
 public final class org/hexworks/zircon/api/component/theme/PaletteStyles {
+	public static final field HOVER_WASH D
 	public static final field INSTANCE Lorg/hexworks/zircon/api/component/theme/PaletteStyles;
+	public static final field PRESS_INK D
 	public final fun flat (Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
 	public static synthetic fun flat$default (Lorg/hexworks/zircon/api/component/theme/PaletteStyles;Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
 	public final fun getBackground ()Lkotlin/jvm/functions/Function1;
@@ -3392,8 +3398,10 @@ public final class org/hexworks/zircon/api/component/theme/PaletteStyles {
 	public final fun getRaised ()Lkotlin/jvm/functions/Function1;
 	public final fun getSelection ()Lkotlin/jvm/functions/Function1;
 	public final fun getSurface ()Lkotlin/jvm/functions/Function1;
+	public final fun hovered (Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/color/Color;
 	public final fun interactive (Lorg/hexworks/zircon/api/component/theme/Variant;)Lkotlin/jvm/functions/Function1;
 	public static synthetic fun interactive$default (Lorg/hexworks/zircon/api/component/theme/PaletteStyles;Lorg/hexworks/zircon/api/component/theme/Variant;ILjava/lang/Object;)Lkotlin/jvm/functions/Function1;
+	public final fun pressed (Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;)Lorg/hexworks/zircon/api/color/Color;
 	public final fun status (Lorg/hexworks/zircon/api/component/theme/Variant;)Lkotlin/jvm/functions/Function1;
 	public final fun text (Lorg/hexworks/zircon/api/component/theme/PaletteKey;)Lkotlin/jvm/functions/Function1;
 	public static synthetic fun text$default (Lorg/hexworks/zircon/api/component/theme/PaletteStyles;Lorg/hexworks/zircon/api/component/theme/PaletteKey;ILjava/lang/Object;)Lkotlin/jvm/functions/Function1;

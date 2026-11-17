@@ -74,13 +74,29 @@ public object Palettes {
         kanagawa(if (mode.resolve() == ThemeMode.DARK) KanagawaVariant.WAVE else KanagawaVariant.LOTUS)
 
     /**
+     * [Solarized](https://ethanschoonover.com/solarized), dark for [ThemeMode.DARK] (the default),
+     * light for [ThemeMode.LIGHT].
+     */
+    public fun solarized(mode: ThemeMode = ThemeMode.DARK): ComponentPalette =
+        BundledPalettes.solarized(dark = mode.resolve() == ThemeMode.DARK)
+
+    /**
+     * [Gruvbox](https://github.com/morhetz/gruvbox) at medium contrast, dark for [ThemeMode.DARK]
+     * (the default), light for [ThemeMode.LIGHT].
+     */
+    public fun gruvbox(mode: ThemeMode = ThemeMode.DARK): ComponentPalette =
+        BundledPalettes.gruvbox(dark = mode.resolve() == ThemeMode.DARK)
+
+    /**
      * Every bundled palette, for a picker: the Catppuccin flavors, the Tokyo Night styles, the
-     * Kanagawa variants and the two Neobrutalism ones.
+     * Kanagawa variants, Solarized and Gruvbox in both modes and the two Neobrutalism ones.
      */
     public fun all(): List<ComponentPalette> =
         CatppuccinFlavor.entries.map { catppuccin(it) } +
                 TokyoNightStyle.entries.map { tokyoNight(it) } +
                 KanagawaVariant.entries.map { kanagawa(it) } +
+                listOf(solarized(ThemeMode.DARK), solarized(ThemeMode.LIGHT)) +
+                listOf(gruvbox(ThemeMode.DARK), gruvbox(ThemeMode.LIGHT)) +
                 listOf(neobrutalism(ThemeMode.LIGHT), neobrutalism(ThemeMode.DARK))
 
     /**

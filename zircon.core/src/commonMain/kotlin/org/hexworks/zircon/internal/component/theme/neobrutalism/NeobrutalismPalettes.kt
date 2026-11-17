@@ -8,7 +8,8 @@ import org.hexworks.zircon.api.component.theme.componentPalette
  * HyperUI's Neobrutalism colors (Tailwind names in the comments) as [ComponentPalette]s. Ink
  * is every `ON_*` and the border, paper is every surface; the yellow is the primary (the
  * double border gap, the search button) and its paler shade the accent (hover, the selected
- * tab); the dark variant swaps ink and paper and uses amber.
+ * tab); the dark variant swaps ink and paper and uses amber (with the paper, not the ink, as
+ * the text on the primary: the only pair of the two that reads).
  */
 internal object NeobrutalismPalettes {
 
@@ -24,8 +25,8 @@ internal object NeobrutalismPalettes {
         surfaceRaised = paper
         onSurfaceRaised = ink
         surfaceSunken = paper
-        textMuted = Color.fromString("#9ca3af") // gray-400
-        textDisabled = Color.fromString("#9ca3af")
+        textMuted = Color.fromString("#6b7280") // gray-500: gray-400 is 2.5:1 on white
+        textDisabled = Color.fromString("#9ca3af") // gray-400
         border = ink
         borderFocused = ink
         primary = Color.fromString("#fde047") // yellow-300
@@ -63,7 +64,7 @@ internal object NeobrutalismPalettes {
         border = ink
         borderFocused = ink
         primary = Color.fromString("#ca8a04") // yellow-600
-        onPrimary = ink
+        onPrimary = paper // the white ink is 2.9:1 on yellow-600, the dark paper 7.6:1
         secondary = paper
         onSecondary = ink
         accent = Color.fromString("#a16207") // yellow-700

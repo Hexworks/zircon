@@ -16,6 +16,7 @@ import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.PaletteKey
 import org.hexworks.zircon.api.component.theme.PaletteStyles
+import org.hexworks.zircon.api.component.theme.PaletteStyles.hovered
 import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.theme.onBackground
 import org.hexworks.zircon.api.component.theme.onPrimary
@@ -78,7 +79,7 @@ internal object DefaultComponentTheme : ComponentTheme {
         val held = styleSet { foregroundColor = palette.onPrimary; backgroundColor = palette.primary }
         componentStyleSet {
             defaultStyle = styleSet { foregroundColor = palette.onBackground; backgroundColor = Color.TRANSPARENT }
-            highlightedStyle = styleSet { foregroundColor = palette.textMuted; backgroundColor = palette.primary }
+            highlightedStyle = styleSet { foregroundColor = palette.onPrimary; backgroundColor = palette.hovered(palette.primary) }
             focusedStyle = held
             activeStyle = held
             disabledStyle = styleSet { foregroundColor = palette.textDisabled; backgroundColor = palette.surface }

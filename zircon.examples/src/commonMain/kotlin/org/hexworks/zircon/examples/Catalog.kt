@@ -46,12 +46,14 @@ val PALETTE_CHOICES: List<PaletteChoice> = listOf(PaletteChoice.System) + PALETT
 
 /**
  * The light / dark pair [palette] belongs to (Catppuccin Latte / Mocha, Tokyo Night Day /
- * Night, Kanagawa Lotus / Wave, Neobrutalism light / dark), what [PaletteChoice.System] shows
+ * Night, Kanagawa Lotus / Wave, Solarized, Gruvbox, Neobrutalism light / dark), what [PaletteChoice.System] shows
  * where the host has no colors of its own. Catppuccin for anything else.
  */
 fun paletteFamilyOf(palette: ComponentPalette): (ThemeMode) -> ComponentPalette = when {
     palette.name.startsWith("Tokyo Night") -> { mode -> Palettes.tokyoNight(mode) }
     palette.name.startsWith("Kanagawa") -> { mode -> Palettes.kanagawa(mode) }
+    palette.name.startsWith("Solarized") -> { mode -> Palettes.solarized(mode) }
+    palette.name.startsWith("Gruvbox") -> { mode -> Palettes.gruvbox(mode) }
     palette.name.startsWith("Neobrutalism") -> { mode -> Palettes.neobrutalism(mode) }
     else -> { mode -> Palettes.catppuccin(mode) }
 }

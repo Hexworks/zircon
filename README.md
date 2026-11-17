@@ -218,7 +218,8 @@ grid.draw(line(Position(0, 0), Position(20, 10)).toTileGraphics(wallTile, tilese
 Buttons, toggle buttons, check boxes, radio buttons, labels, headers, paragraphs, text
 areas, number inputs, sliders, scroll bars, progress bars, panels, `hBox`/`vBox` layouts,
 log areas, modals, plus fragments such as tab bars, menu bars, tables and selectors. All
-components are themeable (`Palettes` bundles Catppuccin, Tokyo Night, Kanagawa and Neobrutalism, `ComponentThemes` the shapes) and decorated with boxes, shadows
+components are themeable (`Palettes` bundles Catppuccin, Tokyo Night, Kanagawa, Solarized, Gruvbox and
+Neobrutalism, `ComponentThemes` the shapes) and decorated with boxes, shadows
 and borders. Tab bars scroll when their tabs do not fit: a `…` button at either end
 appears while there are tabs beyond it, the mouse wheel scrolls too, and selecting a tab
 scrolls it into view.
@@ -306,7 +307,7 @@ ZIRCON_EXAMPLES_FILES=zircon.examples/resources/files \
 The examples app is itself built from Zircon components: the packages of the 1.x example
 suite (animations, components, dialogs, fragments, game, modifiers, other, input+layers)
 are horizontal tabs, the examples of each package are vertical tabs, and selectors on top
-switch the palette (Catppuccin, Tokyo Night, Kanagawa, Neobrutalism and the 1.x colour themes),
+switch the palette (the bundled ones, or `System` to follow the terminal's colors or the desktop's light / dark setting),
 the component theme (the stock look or Neobrutalism, app-wide; the heavy frames want a
 TrueType tileset) and, outside the terminal, the tileset (the grid is rebuilt at the new cell
 size). It needs at least 100x40 cells. Examples that draw graphical tiles are left

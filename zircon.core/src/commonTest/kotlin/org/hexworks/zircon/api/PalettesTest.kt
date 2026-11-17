@@ -21,8 +21,8 @@ class PalettesTest {
     fun every_bundled_palette_has_every_key_and_a_dark_flag_that_matches_its_background() {
         val all = Palettes.all()
 
-        all shouldHaveSize 13
-        all.map { it.name }.distinct() shouldHaveSize 13
+        all shouldHaveSize 17
+        all.map { it.name }.distinct() shouldHaveSize 17
         all.forEach { palette ->
             PaletteKey.entries.forEach { key -> palette[key] shouldNotBe null }
             palette.isDark shouldBe palette.background.isDark
@@ -37,6 +37,19 @@ class PalettesTest {
         Palettes.tokyoNight(ThemeMode.DARK) shouldBe Palettes.tokyoNight(TokyoNightStyle.NIGHT)
         Palettes.kanagawa(ThemeMode.LIGHT) shouldBe Palettes.kanagawa(KanagawaVariant.LOTUS)
         Palettes.kanagawa(ThemeMode.DARK) shouldBe Palettes.kanagawa(KanagawaVariant.WAVE)
+        Palettes.solarized(ThemeMode.LIGHT).isDark shouldBe false
+        Palettes.solarized(ThemeMode.DARK).isDark shouldBe true
+        Palettes.gruvbox(ThemeMode.LIGHT).isDark shouldBe false
+        Palettes.gruvbox(ThemeMode.DARK).isDark shouldBe true
+    }
+
+    @Test
+    fun solarized_and_gruvbox_use_their_canonical_backgrounds() {
+        Palettes.solarized(ThemeMode.DARK).background shouldBe Color.fromString("#002b36")
+        Palettes.solarized(ThemeMode.LIGHT).background shouldBe Color.fromString("#fdf6e3")
+        Palettes.solarized().primary shouldBe Color.fromString("#268bd2")
+        Palettes.gruvbox(ThemeMode.DARK).background shouldBe Color.fromString("#282828")
+        Palettes.gruvbox(ThemeMode.LIGHT).background shouldBe Color.fromString("#fbf1c7")
     }
 
     @Test

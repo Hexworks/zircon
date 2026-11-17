@@ -4,14 +4,15 @@ import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.color.extensions.interpolateTo
 import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.component.theme.componentPalette
-import kotlin.math.pow
 
 /**
  * Builds a [ComponentPalette] from what a terminal has: its default foreground and
  * background and the 16 ANSI slots. Surfaces are steps from the background towards the
  * foreground (a terminal UI is flat), the semantic colors come from the slots (blue is the
- * primary, cyan the accent, green / yellow / red / cyan the statuses), and every `ON_*`
- * color is whichever of foreground and background contrasts with its surface.
+ * primary, magenta the secondary, cyan the accent, cyan / green / yellow / red the statuses;
+ * the bright slot stands in when the normal one is too close to the background), and every
+ * `ON_*` color is whichever of foreground and background contrasts more with its surface,
+ * or black / white when neither reads (Solarized's foreground on its own blue).
  */
 internal object AnsiPalettes {
 
@@ -29,12 +30,25 @@ internal object AnsiPalettes {
         val dark = background.luminance() < 0.5
         val towardsForeground = background.interpolateTo(foreground)
         fun step(ratio: Double): Color = towardsForeground.getColorAtRatio(ratio)
-        val darkest = if (dark) background else foreground
-        val lightest = if (dark) foreground else background
-        fun on(surface: Color): Color = if (surface.luminance() > 0.4) darkest else lightest
+        fun on(surface: Color): Color {
+            val own = listOf(background, foreground).maxBy { contrast(it, surface) }
+            if (contrast(own, surface) >= READABLE) return own
+            return listOf(BLACK_INK, WHITE_INK).maxBy { contrast(it, surface) }
+        }
+        // A slot that barely shows on the background (xterm's blue on black, a theme whose
+        // normal colors are dim) gives way to its bright twin when that one shows better.
+        fun slot(index: Int): Color =
+            ansi[index].takeIf { contrast(it, background) >= READABLE }
+                ?: listOf(ansi[index], ansi[index + 8]).maxBy { contrast(it, background) }
         // Bright black is the usual "comment" grey; when it is too close to the background
         // (some themes make it the background itself) a step towards the foreground stands in.
-        val muted = ansi[BRIGHT_BLACK].takeIf { contrast(it, background) > 1.6 } ?: step(0.55)
+        val muted = ansi[BRIGHT_BLACK].takeIf { contrast(it, background) >= MUTED_READABLE } ?: step(0.55)
+        val blue = slot(BLUE)
+        val magenta = slot(MAGENTA)
+        val cyan = slot(CYAN)
+        val green = slot(GREEN)
+        val yellow = slot(YELLOW)
+        val red = slot(RED)
         return componentPalette {
             this.name = name
             isDark = dark
@@ -48,39 +62,31 @@ internal object AnsiPalettes {
             textMuted = muted
             textDisabled = step(0.35)
             border = muted
-            borderFocused = ansi[BLUE]
-            primary = ansi[BLUE]
-            onPrimary = on(ansi[BLUE])
-            secondary = step(0.15)
-            onSecondary = foreground
-            accent = ansi[CYAN]
-            onAccent = on(ansi[CYAN])
+            borderFocused = blue
+            primary = blue
+            onPrimary = on(blue)
+            secondary = magenta
+            onSecondary = on(magenta)
+            accent = cyan
+            onAccent = on(cyan)
             selection = step(0.22)
             onSelection = foreground
-            info = ansi[CYAN]
-            onInfo = on(ansi[CYAN])
-            success = ansi[GREEN]
-            onSuccess = on(ansi[GREEN])
-            warning = ansi[YELLOW]
-            onWarning = on(ansi[YELLOW])
-            error = ansi[RED]
-            onError = on(ansi[RED])
+            info = cyan
+            onInfo = on(cyan)
+            success = green
+            onSuccess = on(green)
+            warning = yellow
+            onWarning = on(yellow)
+            error = red
+            onError = on(red)
         }
     }
 
-    /** WCAG relative luminance, 0 for black and 1 for white. */
-    fun Color.luminance(): Double {
-        fun channel(value: Int): Double {
-            val c = value / 255.0
-            return if (c <= 0.03928) c / 12.92 else ((c + 0.055) / 1.055).pow(2.4)
-        }
-        return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue)
-    }
+    /** The contrast a text or accent color needs against its surface to count as readable. */
+    private const val READABLE = 3.0
 
-    /** WCAG contrast ratio, 1 for equal colors and 21 for black on white. */
-    fun contrast(a: Color, b: Color): Double {
-        val la = a.luminance()
-        val lb = b.luminance()
-        return (maxOf(la, lb) + 0.05) / (minOf(la, lb) + 0.05)
-    }
+    /** Muted text may be fainter, but not invisible. */
+    private const val MUTED_READABLE = 2.5
+    private val BLACK_INK = Color.create(0, 0, 0)
+    private val WHITE_INK = Color.create(255, 255, 255)
 }

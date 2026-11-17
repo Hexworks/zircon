@@ -85,7 +85,10 @@ Part             enum: NONE, TEXT, ICON, TITLE, BODY, DISMISS, DOT, LABEL, ROW, 
   (`BORDER_FOCUSED` when focused), headers `ON_SURFACE`, labels `TEXT_MUTED`, interactive controls the emphasis
   color of their variant as text at rest and as the surface when hovered / focused / pressed, fields `ON_BACKGROUND`
   on `SURFACE_SUNKEN` with the selection pair while focused, the selected tab `ON_SELECTION` on `SELECTION`. Hover
-  is still the 1.x `TEXT_MUTED` on the emphasis color; tune it for the bundled palettes in D if it reads badly.
+  was the 1.x `TEXT_MUTED` on the emphasis color, which read at 1:1 on every bundled palette; since 2026-11-17 the
+  three filled states keep the `ON_*` text and differ by background: a wash toward `SURFACE` when hovered
+  (`PaletteStyles.hovered`), the color itself when focused, the color pushed away from its text when pressed
+  (`PaletteStyles.pressed`).
 - **The legacy `ColorTheme` still steers colors through the screen.** `screen.theme = x` switches the screen's
   palette to `x.toComponentPalette()` (only when `x` differs from the current theme, so a `View` docking with the
   default theme does not undo a palette set in `ZirconDefaults`); `ZirconDefaults.componentPalette` defaults to the
@@ -249,3 +252,12 @@ browsers write it, `ZirconDefaults.systemThemeDetector` is the fallback `refresh
 { mode -> ... }` (and `ZirconDefaults.followSystemPalette`) keeps a screen on the host palette or the fallback pair until
 the palette is set explicitly. The examples' selector has a `System` entry; `SystemPaletteFollower` and
 `useTerminalPalette` are gone. See `docs/system-theme-handover.md`.
+
+**Status (2026-11-17): Solarized, Gruvbox and the color tuning.** `Palettes.solarized(mode)` and `Palettes.gruvbox(mode)`
+(17 bundled palettes). The default theme's hover / pressed derivations were rewritten (above); `Palettes.fromAnsi` picks
+each `ON_*` by contrast (black / white ink when neither terminal default reads), falls back to a bright slot when the
+normal one is too close to the background, takes magenta as the secondary and a step instead of a bright black under
+2.5:1; every bundled family picks the text on each accent by contrast; Tokyo Night Day's raised step and Neobrutalism's
+muted / on-primary were corrected; Tokyo Night's and Kanagawa's selections were lifted off the tab bar surface.
+`PaletteContrastTest` holds the floors. Open: light-mode accents as text (Latte peach, Lotus yellow, 1.7-1.9:1) and
+Catppuccin's / Solarized's faint borders and muted text are the projects' own choices and were left.
