@@ -79,6 +79,14 @@ public interface InternalComponent :
     public fun inheritComponentPalette(palette: ComponentPalette)
 
     /**
+     * Moves the component by [delta] without the parent-bounds check of [moveTo]: a theme
+     * switch that moves the parent's content area moves its children along even when they no
+     * longer fit (they were sized for another theme), so that the switch back lands them
+     * where they started.
+     */
+    public fun shiftBy(delta: Position)
+
+    /**
      * Marks the rendered state of this component stale: the next [render] redraws it
      * instead of returning the cached result. Called for every observable the renderer
      * reads and whenever the component handles a UI event; call it from a custom

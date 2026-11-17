@@ -2,7 +2,6 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.builder.component.hBox
@@ -14,7 +13,6 @@ import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.RadioButtonGroup
-import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.MatrixTabBar
@@ -22,6 +20,8 @@ import org.hexworks.zircon.api.fragment.MatrixTabBar.Orientation
 import org.hexworks.zircon.api.fragment.Tab
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.util.reportError
+import org.hexworks.zircon.api.component.theme.ComponentRole
+import org.hexworks.zircon.api.component.theme.Part
 
 /**
  * The horizontal strip runs along the top, right of the vertical strip, and the vertical strip
@@ -66,23 +66,30 @@ public class DefaultMatrixTabBar internal constructor(
     internal fun horizontalTab(key: String): Tab = horizontalLookup.getValue(key)
     internal fun verticalTab(key: String): Tab = verticalLookup.getValue(key)
 
+    // Roles as in the single tab bars: the root is layout only, the strips are `TAB_BAR` with
+    // their orientation, the content is the bar's content part. Nothing is pinned, so a theme
+    // replaces the strips' look; like the single bars, the strips are flush with the bar's edge.
     override val root: Component = panel {
+        role = ComponentRole.NONE
         preferredSize = size
-        componentRenderer = NoOpComponentRenderer()
+        defaultComponentRenderer(NoOpComponentRenderer())
 
         horizontalBox = hBox {
+            role = ComponentRole.TAB_BAR
             position = Position(tabWidth, 0)
             preferredSize = Size(size.width - tabWidth, STRIP_HEIGHT)
-            decorations { +margin(0, 1) }
-            componentRenderer = NoOpComponentRenderer()
+            defaultComponentRenderer(NoOpComponentRenderer())
         }
         verticalBox = vBox {
+            role = ComponentRole.TAB_BAR
+            orientation = org.hexworks.zircon.api.component.data.Orientation.VERTICAL
             position = Position(0, STRIP_HEIGHT)
             preferredSize = Size(tabWidth, size.height - STRIP_HEIGHT)
-            decorations { +margin(1, 0) }
-            componentRenderer = NoOpComponentRenderer()
+            defaultComponentRenderer(NoOpComponentRenderer())
         }
         content = panel {
+            role = ComponentRole.TAB_BAR
+            part = Part.CONTENT
             position = Position(tabWidth, STRIP_HEIGHT)
             preferredSize = Size(size.width - tabWidth, size.height - STRIP_HEIGHT)
         }
@@ -106,7 +113,7 @@ public class DefaultMatrixTabBar internal constructor(
             strip = horizontalBox,
             tabs = if (primary == Orientation.HORIZONTAL) horizontalTabs else secondaryTabsFor(defaultVertical),
             horizontal = true,
-            capacity = size.width - tabWidth - 2,
+            capacity = size.width - tabWidth,
             scrollTabSize = SCROLL_TAB_WIDTH,
             sizeOf = { it.tabButton.width },
         )
@@ -114,7 +121,7 @@ public class DefaultMatrixTabBar internal constructor(
             strip = verticalBox,
             tabs = if (primary == Orientation.VERTICAL) verticalTabs else secondaryTabsFor(defaultHorizontal),
             horizontal = false,
-            capacity = size.height - STRIP_HEIGHT - 2,
+            capacity = size.height - STRIP_HEIGHT,
             scrollTabSize = STRIP_HEIGHT,
             sizeOf = { it.tabButton.height },
         )

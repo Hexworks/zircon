@@ -58520,6 +58520,7 @@ public abstract interface class org/hexworks/zircon/internal/component/InternalC
 	public abstract fun setComponentState (Lorg/hexworks/zircon/api/component/data/ComponentState;)V
 	public abstract fun setParent (Lorg/hexworks/zircon/internal/component/InternalContainer;)V
 	public abstract fun setRoot (Lorg/hexworks/zircon/internal/component/impl/RootContainer;)V
+	public abstract fun shiftBy (Lorg/hexworks/zircon/api/data/Position;)V
 }
 
 public final class org/hexworks/zircon/internal/component/InternalComponent$DefaultImpls {
@@ -58953,6 +58954,7 @@ public abstract class org/hexworks/zircon/internal/component/impl/DefaultCompone
 	public final fun setRoot (Lorg/hexworks/zircon/internal/component/impl/RootContainer;)V
 	public final fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
 	public fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public fun shiftBy (Lorg/hexworks/zircon/api/data/Position;)V
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -59041,6 +59043,7 @@ public class org/hexworks/zircon/internal/component/impl/DefaultContainer : org/
 	public final fun getChildren ()Lorg/hexworks/cobalt/databinding/api/collection/ObservableList;
 	public final fun moveTo (Lorg/hexworks/zircon/api/data/Position;)Z
 	protected fun onContentOffsetChanged (Lorg/hexworks/zircon/api/data/Position;)V
+	public final fun shiftBy (Lorg/hexworks/zircon/api/data/Position;)V
 }
 
 public final class org/hexworks/zircon/internal/component/impl/DefaultGroup : org/hexworks/zircon/internal/component/InternalGroup {

@@ -1,5 +1,6 @@
 package org.hexworks.zircon.examples
 
+import org.hexworks.zircon.internal.component.InternalComponent
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import org.hexworks.zircon.api.component.Component
@@ -13,6 +14,8 @@ import org.hexworks.zircon.api.resource.ResourceLoader
 import org.hexworks.zircon.api.resource.Resources
 import java.io.File
 import kotlin.test.Test
+import io.kotest.matchers.shouldNotBe
+import org.hexworks.zircon.internal.fragment.impl.DefaultMatrixTabBar
 
 @OptIn(ExamplesTestApi::class)
 class ExamplesScreenTest {
@@ -100,5 +103,61 @@ class ExamplesScreenTest {
             }
         }
         shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+    }
+
+    @Test
+    fun everyExampleSurvivesTheNeobrutalismThemeAndBackInTheSmallestGrid() {
+        val shown = runBlocking { examplesScreen(MIN_SIZE) }
+        // Show everything under the stock theme, then switch the shape app-wide and back:
+        // every built component is re-themed in place, none may throw or fail to build.
+        EXAMPLE_GROUPS.forEach { pkg ->
+            shown.tabBar.selectedHorizontalKey = pkg.name
+            pkg.examples.forEach { example -> shown.tabBar.selectedVerticalKey = example.name }
+        }
+        COMPONENT_THEMES.forEach { theme ->
+            shown.themeProperty.value = theme
+            EXAMPLE_GROUPS.forEach { pkg ->
+                shown.tabBar.selectedHorizontalKey = pkg.name
+                pkg.examples.forEach { example ->
+                    shown.tabBar.selectedVerticalKey = example.name
+                    // The content panel must keep taking the demos under the heavy frames.
+                    (shown.tabBar as DefaultMatrixTabBar).shownContent shouldNotBe null
+                    ((shown.tabBar as DefaultMatrixTabBar).shownContent as InternalComponent).hasParent.value shouldBe true
+                    shown.onFrame()
+                    (shown.grid as InternalTileGrid).renderables.forEach { it.render() }
+                }
+            }
+        }
+        shown.themeProperty.value = COMPONENT_THEMES.first()
+        shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+        shown.runtimeErrors.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+    }
+
+    @Test
+    fun anExampleFirstOpenedUnderTheNeobrutalismThemeFitsAndSitsAtTheContentOrigin() {
+        val shown = runBlocking { examplesScreen(MIN_SIZE) }
+        val tabBar = shown.tabBar as DefaultMatrixTabBar
+        // The demos are built on first visit: switch the shape before visiting anything, then
+        // walk every cell under Neobrutalism, the default and Neobrutalism again.
+        val themes = COMPONENT_THEMES.drop(1) + COMPONENT_THEMES.first() + COMPONENT_THEMES.drop(1)
+        themes.forEach { theme ->
+            shown.themeProperty.value = theme
+            EXAMPLE_GROUPS.forEach { pkg ->
+                shown.tabBar.selectedHorizontalKey = pkg.name
+                pkg.examples.forEach { example ->
+                    shown.tabBar.selectedVerticalKey = example.name
+                    val placeholder = tabBar.shownContent as InternalComponent
+                    placeholder.hasParent.value shouldBe true
+                    // The placeholder is layout only: the example root fills it from its origin.
+                    val root = (placeholder as org.hexworks.zircon.api.component.Container).children.single()
+                    root.position shouldBe placeholder.position
+                    root.size shouldBe placeholder.size
+                    shown.onFrame()
+                    (shown.grid as InternalTileGrid).renderables.forEach { it.render() }
+                }
+            }
+        }
+        shown.buildFailures.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
+        shown.runtimeErrors.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
     }
 }

@@ -209,6 +209,10 @@ class ComponentStub(
         return true
     }
 
+    override fun shiftBy(delta: Position) {
+        moveTo(position + delta)
+    }
+
     override fun acceptsFocus(): Boolean {
         error("not implemented")
     }

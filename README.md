@@ -296,8 +296,10 @@ ZIRCON_EXAMPLES_FILES=zircon.examples/resources/files \
 The examples app is itself built from Zircon components: the packages of the 1.x example
 suite (animations, components, dialogs, fragments, game, modifiers, other, input+layers)
 are horizontal tabs, the examples of each package are vertical tabs, and selectors on top
-switch the palette (Catppuccin, Tokyo Night, Kanagawa, Neobrutalism and the 1.x colour themes;
-and, outside the terminal, the tileset: the grid is rebuilt at the new cell size). It needs at least 100x40 cells. Examples that draw graphical tiles are left
+switch the palette (Catppuccin, Tokyo Night, Kanagawa, Neobrutalism and the 1.x colour themes),
+the component theme (the stock look or Neobrutalism, app-wide; the heavy frames want a
+TrueType tileset) and, outside the terminal, the tileset (the grid is rebuilt at the new cell
+size). It needs at least 100x40 cells. Examples that draw graphical tiles are left
 out in the terminal; on exit the frame rate and the time per frame are printed. Pass an
 example name to start on it (`... Benchmark`).
 

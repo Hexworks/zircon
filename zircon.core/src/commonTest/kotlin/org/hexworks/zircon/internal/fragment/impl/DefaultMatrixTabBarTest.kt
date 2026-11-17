@@ -43,8 +43,8 @@ class DefaultMatrixTabBarTest {
     @Test
     fun stripsLieAroundTheContent() {
         val target = tabBar()
-        target.horizontalTab("a").root.position shouldBe Position(11, 0)
-        target.verticalTab("x").root.position shouldBe Position(0, 4)
+        target.horizontalTab("a").root.position shouldBe Position(10, 0)
+        target.verticalTab("x").root.position shouldBe Position(0, 3)
         view("a", "x").position shouldBe Position(10, 3)
     }
 

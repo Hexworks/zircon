@@ -37,14 +37,19 @@ public open class DefaultContainer(
 
     final override fun moveTo(position: Position): Boolean {
         val diff = position - this.position
-        super.moveTo(position)
-        //? You might think that this will fail as the container was already moved and might
-        //? intersect with its children, but the bounds check only happens when the component
-        //? is attached, so this will move the children back into "the safe zone"
-        children.forEach {
-            it.moveTo(it.position + diff)
-        }
+        if (!super.moveTo(position)) return false
+        // The children follow unchecked: the container's own move was checked against its
+        // parent, and a child that overflows it (sized for another theme) must still come
+        // along, or it would drift from the container on every detach and reattach.
+        children.forEach { it.shiftBy(diff) }
         return true
+    }
+
+    // A shifted container takes its children along, as a moved one does.
+    final override fun shiftBy(delta: Position) {
+        if (delta == Position.ZERO) return
+        super.shiftBy(delta)
+        children.forEach { it.shiftBy(delta) }
     }
 
     override fun addComponent(component: Component): InternalAttachedComponent {
@@ -70,7 +75,9 @@ public open class DefaultContainer(
 
     // A theme change moved the content area: the children follow it so they stay inside.
     override fun onContentOffsetChanged(delta: Position) {
-        children.forEach { it.moveTo(it.position + delta) }
+        // Unchecked: a child sized for the previous theme may not fit the new content area; it
+        // still has to move, or the switch back would leave it one offset off.
+        children.forEach { it.shiftBy(delta) }
     }
 
     //? A container can't be focused by design. It is a branch node in the

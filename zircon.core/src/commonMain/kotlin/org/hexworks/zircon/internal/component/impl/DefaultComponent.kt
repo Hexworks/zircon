@@ -395,6 +395,10 @@ public abstract class DefaultComponent(
         return true
     }
 
+    override fun shiftBy(delta: Position) {
+        if (delta != Position.ZERO) movable.moveTo(position + delta)
+    }
+
     //#region Component state and events
     override fun resetState() {
         clearFocus()

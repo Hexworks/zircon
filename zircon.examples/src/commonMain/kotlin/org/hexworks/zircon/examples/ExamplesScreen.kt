@@ -6,13 +6,13 @@ import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.margin
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.header
-import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.fragment.matrixTabBar
+import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.builder.fragment.selector
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.builder.grid.DEFAULT_TILESET
@@ -41,6 +41,7 @@ import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.internal.component.renderer.NoOpComponentRenderer
 import org.hexworks.zircon.internal.screen.TileGridScreen
 import kotlin.time.TimeSource
+import org.hexworks.zircon.api.component.theme.ComponentTheme
 
 
 /**
@@ -70,6 +71,8 @@ class ExamplesScreen(
     internal val tilesetProperty: Property<TilesetResource>,
     /** The palette; carried over to a rebuilt screen. */
     internal val paletteProperty: Property<ComponentPalette>,
+    /** The component theme (shape); carried over to a rebuilt screen. */
+    internal val themeProperty: Property<ComponentTheme>,
     /** The groups the app shows (with `isTerminal`, only those with a text-only example). */
     @ExamplesTestApi val packages: List<ExampleGroup>,
     /** Groups across the top, the selected group's examples down the left. */
@@ -90,8 +93,8 @@ fun gridSizeFor(tileSize: Size, widthPx: Int, heightPx: Int): Size = Size(
 )
 
 /**
- * Builds the examples app into a grid of [size]: tile size, tileset and palette selectors on
- * top (only the palette in a terminal), then a matrix tab bar with the groups as horizontal
+ * Builds the examples app into a grid of [size]: tile size, tileset, palette and component
+ * theme selectors on top (only palette and theme in a terminal), then a matrix tab bar with the groups as horizontal
  * tabs and the selected group's examples as vertical tabs, an fps counter in the corner
  * and the latest contained error in the bottom row. Examples are built the first time
  * they are shown.
@@ -127,6 +130,7 @@ suspend fun examplesScreen(
     val tileSize = previous?.tileSizeProperty?.value ?: DEFAULT_TILESET.size
     val initialTileset = previous?.tilesetProperty?.value?.takeIf { it.size == tileSize } ?: tilesetsFor(tileSize).first()
     val initialPalette = previous?.paletteProperty?.value ?: DEFAULT_PALETTE
+    val initialTheme = previous?.themeProperty?.value ?: COMPONENT_THEMES.first()
 
     val grid = tileGrid {
         this.size = size
@@ -134,13 +138,17 @@ suspend fun examplesScreen(
     }
     val screen = grid.toScreen()
     screen.componentPalette = initialPalette
+    screen.componentTheme = initialTheme
     val assets = loadAssets(grid.tileset)
 
     val tileSizeProperty = tileSize.toProperty()
     val tilesetProperty = initialTileset.toProperty()
     val paletteProperty = initialPalette.toProperty()
 
+    val themeProperty = initialTheme.toProperty()
+
     paletteProperty.onChange { (_, changed) -> screen.componentPalette = changed }
+    themeProperty.onChange { (_, changed) -> screen.componentTheme = changed }
     // A screen's tileset and its component tree's are separate: `Screen.tileset` is the
     // grid's (the base layer and the cursor), the components follow their root container.
     // The root is only reachable through the screen implementation, so this reaches in.
@@ -150,46 +158,41 @@ suspend fun examplesScreen(
         root.tileset = changed
     }
 
-    // Header: selectors. The selectors share the properties above, so a pick lands there.
+    // Header: selectors, no labels (the values say what they are, and four labelled selectors
+    // do not fit the minimum width). The selectors share the properties above, so a pick lands
+    // there.
     val header = hBox {
         preferredSize = Size(size.width, HEADER_HEIGHT)
         componentRenderer = NoOpComponentRenderer()
         decorations { +margin(1, 1) }
         spacing = 2
         if (isTerminal.not()) {
-            hBox {
-                spacing = 1
-                label { +"Tile size" }
-                selector {
-                    width = TILE_SIZE_SELECTOR_WIDTH
-                    valueList = TILE_SIZES
-                    selectedProperty = tileSizeProperty
-                    toStringMethod = { "${it.width}x${it.height}" }
-                }
+            selector {
+                width = TILE_SIZE_SELECTOR_WIDTH
+                valueList = TILE_SIZES
+                selectedProperty = tileSizeProperty
+                toStringMethod = { "${it.width}x${it.height}" }
             }
-
-            hBox {
-                spacing = 1
-                label { +"Tileset" }
-                selector {
-                    width = SELECTOR_WIDTH
-                    valueList = tilesetsFor(tileSize)
-                    selectedProperty = tilesetProperty
-                    toStringMethod = { it.title }
-                }
-            }
-        }
-        // Colors only: every demo keeps its shape, so switching here is safe. Component themes
-        // (shape) are picked on the themes page, whose components are sized for them.
-        hBox {
-            spacing = 1
-            label { +"Palette" }
             selector {
                 width = SELECTOR_WIDTH
-                valueList = PALETTES
-                selectedProperty = paletteProperty
-                toStringMethod = { it.name }
+                valueList = tilesetsFor(tileSize)
+                selectedProperty = tilesetProperty
+                toStringMethod = { it.title }
             }
+        }
+        selector {
+            width = SELECTOR_WIDTH
+            valueList = PALETTES
+            selectedProperty = paletteProperty
+            toStringMethod = { it.name }
+        }
+        // The shape, app-wide. Components keep their size on a switch; decorations that would
+        // leave no content are skipped, so the header and the tabs survive the heavy frames.
+        selector {
+            width = THEME_SELECTOR_WIDTH
+            valueList = COMPONENT_THEMES
+            selectedProperty = themeProperty
+            toStringMethod = { it.name }
         }
     }
     screen.addComponent(header)
@@ -198,7 +201,7 @@ suspend fun examplesScreen(
     val bodySize = Size(size.width, size.height - HEADER_HEIGHT)
     // Named apart from the builders' own `contentSize`, which would shadow it inside their lambdas.
     val exampleContentSize = Size(size.width - EXAMPLE_TAB_WIDTH, bodySize.height - 3)
-    val context = ExampleContext(screen, exampleContentSize, assets)
+    val context = ExampleContext(screen, exampleContentSize, assets, paletteProperty)
 
     val views = HashMap<Pair<String, String>, ExampleView>()
     val placeholders = HashMap<Pair<String, String>, Panel>()
@@ -213,14 +216,15 @@ suspend fun examplesScreen(
         val (pkg, name) = key
         val example = packages.first { it.name == pkg }.examples.first { it.name == name }
         val view = views.getOrPut(key) {
-            // A broken example must not take the app (or the tab bar's subscription) down.
-            val built = try {
-                example.build(context)
+            // A broken example must not take the app (or the tab bar's subscription) down,
+            // whether it fails to build or to fit its placeholder.
+            val placeholder = placeholders.getValue(key)
+            try {
+                example.build(context).also { placeholder.addComponent(it.content) }
             } catch (e: Exception) {
                 buildFailures += "$pkg / $name" to e
-                ExampleView(failurePanel(exampleContentSize, e))
+                ExampleView(failurePanel(exampleContentSize, e)).also { placeholder.addComponent(it.content) }
             }
-            built.also { placeholders.getValue(key).addComponent(it.content) }
         }
         shownLayers = view.layers.map { screen.addLayer(it) }
         view.onShown()
@@ -250,7 +254,8 @@ suspend fun examplesScreen(
         }
         packages.forEach { pkg ->
             pkg.examples.forEach { example ->
-                val placeholder = panel { preferredSize = exampleContentSize }
+                // Layout only: a themed panel would frame the example and shrink its room.
+                val placeholder = panel { role = ComponentRole.NONE; preferredSize = exampleContentSize }
                 placeholders[pkg.name to example.name] = placeholder
                 view {
                     horizontal = pkg.name
@@ -340,6 +345,7 @@ suspend fun examplesScreen(
         },
         tilesetProperty = tilesetProperty,
         paletteProperty = paletteProperty,
+        themeProperty = themeProperty,
         packages = packages,
         tabBar = tabBar,
         buildFailures = buildFailures,
@@ -388,4 +394,5 @@ val MIN_SIZE: Size = Size(100, 40)
 private const val HEADER_HEIGHT = 3
 private const val SELECTOR_WIDTH = 26
 private const val TILE_SIZE_SELECTOR_WIDTH = 9
+private const val THEME_SELECTOR_WIDTH = 16
 private const val FPS_WIDTH = 8

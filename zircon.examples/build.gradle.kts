@@ -13,6 +13,8 @@ kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_17
         }
+        // The screen tests build every example several times over; the 512m default runs out.
+        testRuns["test"].executionTask.configure { maxHeapSize = "1g" }
     }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {

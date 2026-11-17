@@ -20,12 +20,12 @@ public class MatrixTabBuilder {
     public var key: String? = null
     public var label: String? = null
 
-    internal fun build(width: Int?): Tab {
+    internal fun build(width: Int?, vertical: Boolean = false): Tab {
         val key = key
         val label = label
         require(key != null && key.isNotBlank()) { "A tab must have a non-blank key." }
         require(label != null) { "A tab must have a label" }
-        return DefaultTab(key = key, initialText = label, width = width ?: (label.length + 2))
+        return DefaultTab(key = key, initialText = label, width = width ?: (label.length + 2), vertical = vertical)
     }
 }
 
@@ -91,7 +91,7 @@ public class MatrixTabBarBuilder : FragmentBuilder<MatrixTabBar> {
         require(views.isNotEmpty()) { "A matrix tab bar must have at least 1 view" }
 
         val hTabs = horizontalTabs.map { it.build(width = null) }
-        val vTabs = verticalTabs.map { it.build(width = tabWidth) }
+        val vTabs = verticalTabs.map { it.build(width = tabWidth, vertical = true) }
         val hKeys = hTabs.map { it.key }
         val vKeys = vTabs.map { it.key }
         require(hKeys.toSet().size == hKeys.size) { "A matrix tab bar can't have duplicate horizontal keys." }

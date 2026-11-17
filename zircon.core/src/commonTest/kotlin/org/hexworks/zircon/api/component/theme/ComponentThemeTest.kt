@@ -76,6 +76,49 @@ class ComponentThemeTest {
     }
 
     @Test
+    fun a_child_that_no_longer_fits_under_a_theme_still_moves_with_the_content_and_back() {
+        val screen = tileGrid { size = Size(40, 20) }.toScreen()
+        val outer = panel { preferredSize = Size(10, 5) }
+        val inner = panel { preferredSize = Size(10, 5) }
+        outer.addComponent(inner)
+        screen.addComponent(outer)
+
+        screen.componentTheme = boxed
+        // The frame moved the content area by one; the child follows although it overflows now.
+        inner.position shouldBe Position(1, 1)
+        screen.componentTheme = ComponentThemes.default()
+        inner.position shouldBe Position(0, 0)
+    }
+
+    @Test
+    fun an_overflowing_child_follows_its_container_when_it_is_detached_and_reattached() {
+        val screen = tileGrid { size = Size(40, 20) }.toScreen()
+        val holder = vBox { preferredSize = Size(20, 10); position = Position(3, 2) }
+        val outer = panel { preferredSize = Size(10, 5) }
+        val inner = panel { preferredSize = Size(10, 5) }
+        val label = label { +"hi" }
+        inner.addComponent(label)
+        outer.addComponent(inner)
+        val attached = holder.addComponent(outer)
+        screen.addComponent(holder)
+
+        screen.componentTheme = boxed
+        inner.position shouldBe Position(4, 3)
+        label.position shouldBe Position(5, 4)
+        // Detaching resets the outer panel to its original position and reattaching moves it
+        // back: the overflowing child and its own children come along both ways instead of
+        // staying behind.
+        attached.detach()
+        outer.position shouldBe Position(0, 0)
+        inner.position shouldBe Position(1, 1)
+        label.position shouldBe Position(2, 2)
+        holder.addComponent(outer)
+        outer.position shouldBe Position(3, 2)
+        inner.position shouldBe Position(4, 3)
+        label.position shouldBe Position(5, 4)
+    }
+
+    @Test
     fun the_default_theme_is_the_stock_look_and_is_always_on() {
         val button = button { +"OK" }
 
