@@ -171,11 +171,15 @@ macOS (`linuxX64`, `linuxArm64`, `macosX64`, `macosArm64`) with no JVM.
 
 What to expect:
 
-- **Terminals.** It needs truecolor and the
+- **Terminals.** It wants truecolor and the
   [kitty keyboard protocol](https://sw.kovidgoyal.net/kitty/keyboard-protocol/): foot,
   ghostty, kitty, WezTerm and Alacritty 0.13+ all qualify; the shell does not matter.
-  A terminal that does not answer the protocol query fails fast with a message. In tmux
-  use 3.4+ with `set -g extended-keys on` and a truecolor `terminal-overrides`.
+  A terminal that does not answer the protocol query (tmux, screen, xterm, editor
+  terminals) runs with its legacy keys instead: presses only (a release is synthesized
+  after each), no repeats, Esc and Alt+key alike, Ctrl+I / Ctrl+M / Ctrl+H as Tab / Enter /
+  Backspace. A warning is printed on exit; `runTerminal(requireKittyKeyboard = true)` fails
+  fast instead. In tmux set a truecolor `terminal-overrides` (`,*:Tc`) or colors are
+  downsampled, and `set -g extended-keys on` for modified keys.
 - **Colors.** The terminal's own colors (default foreground and background, the 16 ANSI
   slots) are read at startup and whenever the terminal switches its theme, and become the
   system palette: `screen.followSystemPalette { Palettes.catppuccin(it) }` adopts them (the
@@ -186,8 +190,8 @@ What to expect:
 - **Text only.** CP437 and TrueType tilesets render as glyphs, the tileset's pixel size is
   ignored, and graphical tilesets fail on first render. Characters a terminal would draw
   two cells wide become `�`.
-- **Input.** Key presses and releases with modifiers, mouse moves, clicks, drags and the
-  wheel all arrive as the usual Zircon events. Ctrl+C quits by default; pass
+- **Input.** Key presses and releases with modifiers (presses only on legacy keys), mouse
+  moves, clicks, drags and the wheel all arrive as the usual Zircon events. Ctrl+C quits by default; pass
   `quitKeys = emptySet()` to handle it yourself.
 - **Output.** Only changed cells are written, every frame is one synchronized update, and
   an unchanged frame writes nothing.

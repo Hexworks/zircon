@@ -57,8 +57,8 @@ public final class org/hexworks/zircon/terminal/CellBuffer$Companion {
 
 public final class org/hexworks/zircon/terminal/RunTerminalKt {
 	public static final fun getCTRL_C ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
-	public static final fun runTerminal (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lorg/hexworks/zircon/terminal/Tty;)Lorg/hexworks/zircon/terminal/TerminalSession;
-	public static synthetic fun runTerminal$default (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lorg/hexworks/zircon/terminal/Tty;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalSession;
+	public static final fun runTerminal (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ZLorg/hexworks/zircon/terminal/Tty;)Lorg/hexworks/zircon/terminal/TerminalSession;
+	public static synthetic fun runTerminal$default (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ZLorg/hexworks/zircon/terminal/Tty;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalSession;
 }
 
 public final class org/hexworks/zircon/terminal/SttyTtyKt {
@@ -109,11 +109,12 @@ public final class org/hexworks/zircon/terminal/TerminalSession {
 	public static final field COLOR_POLL_MS D
 	public static final field HANDSHAKE_TIMEOUT_MS I
 	public static final field KITTY_FLAGS I
-	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;)V
-	public synthetic fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;Z)V
+	public synthetic fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getBytesWritten ()J
 	public final fun getEncodeMillis ()D
 	public final fun getFramesRendered ()J
+	public final fun getHasKittyKeyboard ()Z
 	public final fun getRenderMillis ()D
 	public final fun getTerminalColors ()Lorg/hexworks/zircon/terminal/TerminalColors;
 	public final fun getWriteMillis ()D
@@ -163,7 +164,9 @@ public final class org/hexworks/zircon/terminal/input/InputParser {
 	public fun <init> (Lkotlin/jvm/functions/Function2;)V
 	public final fun feed ([BI)Ljava/util/List;
 	public static synthetic fun feed$default (Lorg/hexworks/zircon/terminal/input/InputParser;[BIILjava/lang/Object;)Ljava/util/List;
+	public final fun getLegacyKeys ()Z
 	public final fun getReplyListener ()Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;
+	public final fun setLegacyKeys (Z)V
 	public final fun setReplyListener (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;)V
 }
 

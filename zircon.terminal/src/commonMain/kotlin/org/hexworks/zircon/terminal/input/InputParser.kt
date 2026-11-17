@@ -14,9 +14,22 @@ import org.hexworks.zircon.api.uievent.UIEvent
  * codes, with event types and associated text) and SGR mouse reporting are on. Bytes are
  * fed as they arrive; an incomplete sequence waits for the rest.
  *
+ * The legacy encodings (plain bytes, `CSI ~`, `CSI A`, `SS3`, `ESC` + key for Alt) are read
+ * too, so a terminal without the protocol still delivers its keys; with [legacyKeys] on,
+ * every press is followed by the release the terminal never sends.
+ *
  * Mouse coordinates arrive as terminal cells; [toGrid] maps them into the grid.
  */
 public class InputParser(private val toGrid: (column: Int, row: Int) -> Position) {
+
+    /**
+     * `true` when the terminal did not take the kitty keyboard protocol: it reports presses
+     * only, so a `KEY_RELEASED` is synthesized right after each `KEY_PRESSED` (the focus
+     * shortcuts and number inputs act on the release). Nothing else changes: the terminal
+     * sends no repeat or release events, Esc and Alt+key look alike, and Ctrl+I / Ctrl+M /
+     * Ctrl+H arrive as Tab / Enter / Backspace.
+     */
+    public var legacyKeys: Boolean = false
 
     /** Terminal replies that are not input: the kitty flags answer and the DA1 answer. */
     public interface ReplyListener {
@@ -136,6 +149,11 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
             params.startsWith("?") || params.startsWith(">") || intermediates.isNotEmpty() -> Unit
             final == 'u' -> kittyKey(params, events)
             final == '~' -> tildeKey(params, events)
+            // Shift+Tab in the legacy encoding (with the protocol it is `CSI 9;2u`).
+            final == 'Z' -> {
+                val (mods, type) = modsAndType(params.split(';').getOrNull(1))
+                events.addKey(type, KeyCode.TAB, "", mods or MOD_SHIFT)
+            }
             final in "ABCDEFHPQS" -> {
                 val fields = params.split(';')
                 val (mods, type) = modsAndType(fields.getOrNull(1))
@@ -309,6 +327,9 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
         add(event)
         if (type == KeyboardEventType.KEY_PRESSED && key.isNotEmpty() && !event.ctrlDown && !event.altDown) {
             add(event.copy(type = KeyboardEventType.KEY_TYPED))
+        }
+        if (legacyKeys && type == KeyboardEventType.KEY_PRESSED) {
+            add(event.copy(type = KeyboardEventType.KEY_RELEASED))
         }
     }
 

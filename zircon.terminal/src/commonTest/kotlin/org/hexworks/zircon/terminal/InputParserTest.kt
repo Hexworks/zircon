@@ -123,6 +123,45 @@ class InputParserTest {
     }
 
     @Test
+    fun shiftTabInTheLegacyEncoding() {
+        parse("\u001b[Z") shouldContainExactly listOf(KeyboardEvent(KEY_PRESSED, KeyCode.TAB, "", shiftDown = true))
+    }
+
+    @Test
+    fun legacyKeysSynthesizeTheReleaseAfterEveryPress() {
+        parser.legacyKeys = true
+        parse("a") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.KEY_A, "a"),
+            KeyboardEvent(KEY_TYPED, KeyCode.KEY_A, "a"),
+            KeyboardEvent(KEY_RELEASED, KeyCode.KEY_A, "a"),
+        )
+        parse("\t") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.TAB, "\t"),
+            KeyboardEvent(KEY_TYPED, KeyCode.TAB, "\t"),
+            KeyboardEvent(KEY_RELEASED, KeyCode.TAB, "\t"),
+        )
+        parse("\u001b[Z") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.TAB, "", shiftDown = true),
+            KeyboardEvent(KEY_RELEASED, KeyCode.TAB, "", shiftDown = true),
+        )
+        parse("\u001b[1;5C") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.RIGHT, "", ctrlDown = true),
+            KeyboardEvent(KEY_RELEASED, KeyCode.RIGHT, "", ctrlDown = true),
+        )
+        parse("\u001bx") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.KEY_X, "x", altDown = true),
+            KeyboardEvent(KEY_RELEASED, KeyCode.KEY_X, "x", altDown = true),
+        )
+        // tmux with extended-keys forwards modified keys in the CSI u form: same treatment.
+        parse("\u001b[99;5u") shouldContainExactly listOf(
+            KeyboardEvent(KEY_PRESSED, KeyCode.KEY_C, "", ctrlDown = true),
+            KeyboardEvent(KEY_RELEASED, KeyCode.KEY_C, "", ctrlDown = true),
+        )
+        // Mouse is untouched.
+        parse("\u001b[<0;5;3M") shouldContainExactly listOf(MouseEvent(MOUSE_PRESSED, 1, Position(4, 2)))
+    }
+
+    @Test
     fun legacyAndPastedBytes() {
         parse("\r") shouldContainExactly listOf(
             KeyboardEvent(KEY_PRESSED, KeyCode.ENTER, "\n"),

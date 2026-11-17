@@ -11,7 +11,9 @@ process runs in, on the JVM or as a native Linux/macOS binary. See the
 - `AnsiEncoder` diffs the buffer against the previous frame and writes only changed cells,
   with one SGR per colour change, cursor moves only across gaps, and the whole frame inside
   a synchronized update (`CSI ?2026h` … `CSI ?2026l`). An unchanged frame writes nothing.
-- `InputParser` turns kitty keyboard protocol and SGR mouse sequences into Zircon events.
+- `InputParser` turns kitty keyboard protocol and SGR mouse sequences into Zircon events;
+  the legacy key encodings are read too, and on a terminal without the protocol
+  (`legacyKeys`) a release is synthesized after every press.
 - `Tty` is the device: POSIX termios/`poll` on native, `stty` plus `sun.misc.Signal` on the
   JVM. `TerminalSession` owns the loop and restores the terminal on every exit path.
 
@@ -25,7 +27,7 @@ Run `make demo-terminal` in each of foot, ghostty, Alacritty, kitty and WezTerm,
 
 - [ ] The tab bar, header and buttons of the Components demo look like the desktop demos
       (colours, box drawing, no stray characters).
-- [ ] Tab (focus), Enter/Space (activate), Esc and arrow keys work; a held key repeats.
+- [ ] Tab / Shift+Tab (focus), Space (activate), Esc and arrow keys work; a held key repeats.
 - [ ] Mouse: hovering highlights a button, clicking activates it, the wheel scrolls a list,
       dragging reports where it goes.
 - [ ] Switching tabs with the mouse rebuilds the grid without garbage left behind.
@@ -37,7 +39,9 @@ Run `make demo-terminal` in each of foot, ghostty, Alacritty, kitty and WezTerm,
 - [ ] Ctrl+C exits, the shell prompt is intact (echo, line editing, cursor visible), and
       the fps line was printed.
 - [ ] `kill -TERM <pid>` from another terminal exits just as cleanly.
-- [ ] A terminal without the kitty protocol (e.g. plain `xterm`) prints the "does not
-      support the kitty keyboard protocol" message and leaves the shell intact.
+- [ ] A terminal without the kitty protocol (`xterm`, or the demo inside tmux) runs: Tab and
+      Shift+Tab move the focus, Enter activates, the mouse works, and on exit the "running
+      with legacy keys" warning and `legacy keys` in the fps line are printed, shell intact.
+      `requireKittyKeyboard = true` there prints the "does not support" message instead.
 - [ ] The palette selector starts on `Terminal` in the terminal's own colors; switching the
       terminal's theme (light/dark) recolors the demo within two seconds.

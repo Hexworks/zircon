@@ -26,13 +26,19 @@ public val CTRL_C: KeyboardEventMatcher =
  * runTerminal(grid)
  * ```
  *
- * Needs a terminal with truecolor and the kitty keyboard protocol (foot, ghostty, kitty,
- * wezterm, alacritty 0.13+); fails with a message when the terminal does not answer the
- * protocol query. The grid keeps its size: it is centred in the terminal, and a banner
- * replaces it while the terminal is too small. In raw mode Ctrl+C is a key like any other,
- * so pass an empty [quitKeys] to handle it yourself. [beforeFrame] runs before every
- * render, on the loop's thread. Returns the finished [TerminalSession] with its frame
- * statistics.
+ * Wants a terminal with truecolor and the kitty keyboard protocol (foot, ghostty, kitty,
+ * wezterm, alacritty 0.13+). One that does not answer the protocol query (tmux, screen,
+ * xterm, the terminals of editors) still runs, with its legacy key encoding: presses only
+ * (a release is synthesized after each one), no repeats, Esc and Alt+key alike, Ctrl+I /
+ * Ctrl+M / Ctrl+H as Tab / Enter / Backspace, modifiers only on the keys the encoding has
+ * them for. A warning is logged, and [TerminalSession.hasKittyKeyboard] tells which path is
+ * on. Pass [requireKittyKeyboard] to fail with a message instead, for an app that needs
+ * key releases or chords.
+ *
+ * The grid keeps its size: it is centred in the terminal, and a banner replaces it while
+ * the terminal is too small. In raw mode Ctrl+C is a key like any other, so pass an empty
+ * [quitKeys] to handle it yourself. [beforeFrame] runs before every render, on the loop's
+ * thread. Returns the finished [TerminalSession] with its frame statistics.
  *
  * The terminal's own colors are read at startup (`OSC 10`, `OSC 11`, `OSC 4`) and
  * [onTerminalColors] gets them, on the loop's thread, before the first frame and again
@@ -54,8 +60,10 @@ public fun runTerminal(
     quitKeys: Set<KeyboardEventMatcher> = setOf(CTRL_C),
     beforeFrame: () -> Unit = {},
     onTerminalColors: (TerminalColors) -> Unit = {},
+    requireKittyKeyboard: Boolean = false,
     tty: Tty = systemTty(),
-): TerminalSession = TerminalSession(tileGrid, targetFps, quitKeys, beforeFrame, tty, onTerminalColors).also { it.run() }
+): TerminalSession =
+    TerminalSession(tileGrid, targetFps, quitKeys, beforeFrame, tty, onTerminalColors, requireKittyKeyboard).also { it.run() }
 
 /**
  * One run of the loop. Kept separate from [runTerminal] so tests can drive it with a fake
@@ -68,7 +76,9 @@ public class TerminalSession(
     private val beforeFrame: () -> Unit,
     private val tty: Tty,
     private val onTerminalColors: (TerminalColors) -> Unit = {},
+    private val requireKittyKeyboard: Boolean = false,
 ) {
+    private val logger = LoggerFactory.getLogger(this::class)
     private val grid = tileGrid as InternalTileGrid
     private val renderer = TerminalRenderer(tileGrid)
     private val frame = CellBuffer(tileGrid.size.width, tileGrid.size.height)
@@ -87,6 +97,13 @@ public class TerminalSession(
     private val ansi = arrayOfNulls<Color>(16)
     private var colorsQueried = false
     private var lastBackgroundPoll = 0.0
+
+    /**
+     * `true` when the terminal took the kitty keyboard protocol; `false` while it runs on the
+     * legacy key encoding (see [runTerminal]). Known once [run] passed the handshake.
+     */
+    public val hasKittyKeyboard: Boolean
+        get() = kittyFlags != null
 
     /** The colors the terminal reported last, `null` when it never answered. */
     public var terminalColors: TerminalColors? = null
@@ -182,9 +199,20 @@ public class TerminalSession(
             if (n < 0) break
             if (n > 0) parser.feed(input, n).forEach { renderer.enqueue(it) }
         }
-        check(kittyFlags != null) {
-            "This terminal does not support the kitty keyboard protocol, which the Zircon terminal " +
-                "renderer needs. Use foot, ghostty, kitty, wezterm or alacritty 0.13+ (in tmux: 3.4+)."
+        if (kittyFlags == null) {
+            check(!requireKittyKeyboard) {
+                "This terminal does not support the kitty keyboard protocol, which this application " +
+                    "needs. Use foot, ghostty, kitty, wezterm or alacritty 0.13+, outside tmux and screen."
+            }
+            // tmux, screen, xterm, editor terminals: keep going on the legacy key encoding. The
+            // protocol push below still goes out: tmux (extended-keys on) forwards modified
+            // keys in the CSI u form on seeing it, and every other terminal ignores it.
+            parser.legacyKeys = true
+            logger.warn {
+                "This terminal does not answer the kitty keyboard protocol query; running with legacy " +
+                    "keys (no key releases or repeats from the terminal, Esc and Alt+key alike). " +
+                    "foot, ghostty, kitty, wezterm and alacritty 0.13+ outside tmux give the full input."
+            }
         }
     }
 

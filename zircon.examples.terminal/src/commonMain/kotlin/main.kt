@@ -40,7 +40,8 @@ fun main(args: Array<String>) {
                 "render ${(session.renderMillis / frames * 100).toInt() / 100.0} ms/frame, " +
                 "encode ${(session.encodeMillis / frames * 100).toInt() / 100.0} ms/frame, " +
                 "write ${(session.writeMillis / frames * 100).toInt() / 100.0} ms/frame, " +
-                "${session.bytesWritten / frames} bytes/frame"
+                "${session.bytesWritten / frames} bytes/frame" +
+                if (session.hasKittyKeyboard) "" else ", legacy keys"
         )
     }
 }

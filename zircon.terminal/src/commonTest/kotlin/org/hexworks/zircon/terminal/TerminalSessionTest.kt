@@ -27,7 +27,16 @@ class TerminalSessionTest {
         tty: FakeTty,
         grid: org.hexworks.zircon.api.grid.TileGrid = grid(),
         onTerminalColors: (TerminalColors) -> Unit = {},
-    ) = TerminalSession(grid, targetFps = 1000, quitKeys = setOf(CTRL_C), beforeFrame = {}, tty = tty, onTerminalColors = onTerminalColors)
+        requireKittyKeyboard: Boolean = false,
+    ) = TerminalSession(
+        grid,
+        targetFps = 1000,
+        quitKeys = setOf(CTRL_C),
+        beforeFrame = {},
+        tty = tty,
+        onTerminalColors = onTerminalColors,
+        requireKittyKeyboard = requireKittyKeyboard,
+    )
 
     private fun colorReplies(background: String, foreground: String = "cdd6f4"): String =
         "\u001b]10;rgb:${foreground.substring(0, 2)}/${foreground.substring(2, 4)}/${foreground.substring(4)}\u001b\\" +
@@ -35,12 +44,37 @@ class TerminalSessionTest {
             "\u001b]4;4;rgb:89/b4/fa\u001b\\"
 
     @Test
-    fun failsFastWithoutTheKittyProtocolAndRestoresTheTerminal() {
+    fun runsOnLegacyKeysWithoutTheKittyProtocolAndWarnsOnceTheTerminalIsRestored() {
+        // DA1 without a flags reply (tmux, xterm), then a legacy Ctrl+C byte.
+        val tty = FakeTty(reads = listOf(bytes("\u001b[?62c"), bytes("\u0003")))
+        val session = session(tty)
+        session.run()
+        session.hasKittyKeyboard shouldBe false
+        session.framesRendered shouldBe 1L
+        tty.closed shouldBe true
+        tty.outputText shouldContain "␛[?u␛[c"
+        tty.outputText shouldContain "␛[?1049h"
+        tty.errorText shouldContain "[WARN]"
+        tty.errorText shouldContain "legacy keys"
+    }
+
+    @Test
+    fun failsFastWithoutTheKittyProtocolWhenTheApplicationRequiresIt() {
         val tty = FakeTty(reads = listOf(bytes("\u001b[?62c")))
-        val error = shouldThrow<IllegalStateException> { session(tty).run() }
+        val error = shouldThrow<IllegalStateException> { session(tty, requireKittyKeyboard = true).run() }
         error.message!! shouldContain "kitty keyboard protocol"
         tty.closed shouldBe true
         tty.outputText shouldContain "␛[?u␛[c"
+        tty.outputText shouldNotContain "␛[?1049h"
+    }
+
+    @Test
+    fun aTerminalWithTheKittyProtocolGetsNoWarning() {
+        val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c"), bytes("\u001b[99;5u")))
+        val session = session(tty)
+        session.run()
+        session.hasKittyKeyboard shouldBe true
+        tty.errorText shouldBe ""
     }
 
     @Test
@@ -113,7 +147,7 @@ class TerminalSessionTest {
                 bytes("\u001b[99;5u"),
             )
         )
-        val session = session(tty) { seen += it }
+        val session = session(tty, onTerminalColors = { seen += it })
         session.run()
 
         seen.map { it.background } shouldBe listOf(
@@ -142,7 +176,7 @@ class TerminalSessionTest {
     fun aTerminalThatDoesNotAnswerTheColorQueriesReportsNothing() {
         val seen = ArrayList<TerminalColors>()
         val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c"), bytes("\u001b[99;5u")))
-        val session = session(tty) { seen += it }
+        val session = session(tty, onTerminalColors = { seen += it })
         session.run()
         seen shouldBe emptyList()
         session.terminalColors shouldBe null
