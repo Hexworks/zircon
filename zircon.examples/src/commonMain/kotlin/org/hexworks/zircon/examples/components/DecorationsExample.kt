@@ -9,7 +9,7 @@ import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.horizontalSlider
 import org.hexworks.zircon.api.builder.component.progressBar
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.toggleButton
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.VBox
@@ -69,7 +69,7 @@ private fun addDecorated(box: VBox, renderingMode: RenderingMode) {
         key = "b"
     }
     box.addComponent(b)
-    radioButtonGroup { radioButtons = listOf(a, b) }
+    selectorGroup { members = listOf(a, b) }
     box.addComponent(horizontalSlider {
         minValue = 1
         maxValue = 100

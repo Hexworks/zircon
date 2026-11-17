@@ -1,44 +1,32 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.ToggleButton
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
-import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
-import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
-import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.internal.component.renderer.DefaultToggleButtonRenderer
 
+/**
+ * Builds a toggle button: a [BinarySelector] with the `TOGGLE_BUTTON` role that can be unselected.
+ */
 @ZirconDsl
-public class ToggleButtonBuilder : ComponentWithTextBuilder<ToggleButton>(
+public class ToggleButtonBuilder : BinarySelectorBuilder(
     initialRole = ComponentRole.TOGGLE_BUTTON,
-    initialText = "",
-    reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH
-) {
-
-    // TODO: pass property?
-    public var isSelected: Boolean = false
-
-    override fun build(): ToggleButton {
-        return DefaultToggleButton(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            textProperty = fixedTextProperty,
-            initialSelected = isSelected,
-        ).attachListeners()
-    }
-}
+    reservedSpace = DefaultToggleButtonRenderer.DECORATION_WIDTH,
+    allowUnselect = true,
+)
 
 /**
- * Creates a new [ToggleButton] using the component builder DSL and returns it.
+ * Creates a new toggle button using the component builder DSL and returns it.
  */
-public fun toggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
+public fun toggleButton(init: ToggleButtonBuilder.() -> Unit): BinarySelector =
     ToggleButtonBuilder().apply(init).build()
 
 /**
- * Creates a new [ToggleButton] using the component builder DSL, adds it to the
- * receiver [BaseContainerBuilder] it and returns the [ToggleButton].
+ * Creates a new toggle button using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns it.
  */
 public fun <T : BaseContainerBuilder<*>> T.toggleButton(
     init: ToggleButtonBuilder.() -> Unit
-): ToggleButton = buildChildFor(this, ToggleButtonBuilder(), init)
+): BinarySelector = buildChildFor(this, ToggleButtonBuilder(), init)

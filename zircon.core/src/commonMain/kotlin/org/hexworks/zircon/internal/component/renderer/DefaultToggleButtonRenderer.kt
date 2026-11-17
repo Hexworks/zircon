@@ -12,12 +12,12 @@ import org.hexworks.zircon.api.data.Tile
 import org.hexworks.zircon.api.graphics.Symbols.SINGLE_LINE_HORIZONTAL
 import org.hexworks.zircon.api.graphics.Symbols.TRIPLE_BAR
 import org.hexworks.zircon.api.graphics.DrawWindow
-import org.hexworks.zircon.internal.component.impl.DefaultToggleButton
+import org.hexworks.zircon.api.component.BinarySelector
 import kotlin.math.max
 
-public class DefaultToggleButtonRenderer : ComponentRenderer<DefaultToggleButton> {
+public class DefaultToggleButtonRenderer : ComponentRenderer<BinarySelector> {
 
-    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultToggleButton>) {
+    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<BinarySelector>) {
         val text = context.component.text
         val maxTextLength = max(0, drawWindow.size.width - DECORATION_WIDTH)
         val clearedText = if (text.length > maxTextLength) {

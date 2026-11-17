@@ -33,11 +33,23 @@ Collapse `CheckBox`, `RadioButton`, `ToggleButton` into one component.
   fails when no key is set and none can be derived.
 - Migration: keep the old interfaces as typealiases or thin subtypes for one release if cheap, else document the break.
 
+**Status (2026-11-17): done.** `BinarySelector` (`allowUnselect`, `isPressed`, `labelAlignment`), `DefaultBinarySelector`,
+`ExclusiveSelectionGroup<T>` + `selectorGroup { }` / `exclusiveSelectionGroup { }`, `Selectable.key` (derived from the text
+with `Selectable.keyFrom`, building fails without text and key). `CheckBox` / `RadioButton` / `ToggleButton` /
+`RadioButtonGroup` / `RadioButtonGroupBuilder` are deprecated typealiases; `selectedButton`, `radioButtons` and
+`radioButtonGroup { }` are deprecated extensions. Breaks: the `CheckBoxState` / `RadioButtonState` enums are gone
+(renderers read `isPressed` + `isSelected`), and the toggle button now commits on release and cancels when released
+outside, like the other two.
+
 ## 2. HBox / VBox dedupe
 
 `DefaultHBox` and `DefaultVBox` are copies that differ in `addComponent` and `reorganizeComponents`. Extract a shared
 `DefaultLinearBox` (or similar) parameterized by axis. Internal only, no public API change. Check the examples that
 reorganize on detach still pass.
+
+**Status (2026-11-17): done.** `DefaultLinearBox(axis: Orientation)` holds the layout (`filled` extent, `remainingSpace`,
+`closeGapOf` on detach, reset on `detachAllComponents`); `DefaultHBox` / `DefaultVBox` are thin subclasses.
+`DefaultLinearBoxTest` runs every case on both axes.
 
 ## 3. TextArea and ScrollBar fixes
 
@@ -46,6 +58,15 @@ reorganize on detach still pass.
   Write failing tests first (scroll on overflow, type at end of line, backspace across a wrapped line).
 - `ScrollBar`: same class of offset problems. Audit `DefaultVerticalScrollBar` against decorations.
 - The new single-line `Input` component shares the text editor; a fix in one likely applies to the other.
+
+**Status (2026-11-17): done.** Tests first (`TextAreaScrollingTest`, `DefaultVerticalScrollBarTest`), then: the text
+area's `visibleSize` is its `contentSize` (a frame no longer hides the cursor at the end of a line); one
+`scrollCursorIntoView` keeps the cursor visible after any move, click or new text (deleting while scrolled right keeps
+the cursor at the edge); backspace at the start of a line joins it onto the previous one instead of dropping it.
+The scroll bar's builder sizes the content (decorations add to it), a click maps the bar's rows onto the whole scroll
+range, and the thumb spans the visible share and travels the bar (it was computed from the bar's height and hidden at
+the top). `Input` does not share the editor; it was already measuring against its content size.
+`DefaultTextAreaTest` is still `@Ignore`d (its assertions are TODO stubs).
 
 ## Rules that held during the theme session
 

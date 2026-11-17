@@ -1,10 +1,7 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.Selectable
-import org.hexworks.zircon.api.behavior.TextOverride
-
 /**
- * A [ToggleButton] is an [Component] that's [Selectable] and will
- * visually display its [Selectable.isSelected] state.
+ * A toggle button is a [BinarySelector] with the `TOGGLE_BUTTON` role that can be unselected.
  */
-public interface ToggleButton : Component, Selectable, TextOverride
+@Deprecated("CheckBox, RadioButton and ToggleButton are one BinarySelector since 2.0.", ReplaceWith("BinarySelector"))
+public typealias ToggleButton = BinarySelector

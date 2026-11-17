@@ -15,6 +15,7 @@ import org.hexworks.zircon.api.data.extensions.withY
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
 import org.hexworks.zircon.api.uievent.*
 import org.hexworks.zircon.api.util.isNavigationKey
+import kotlin.math.roundToInt
 
 public class DefaultVerticalScrollBar internal constructor(
     componentMetadata: ComponentMetadata,
@@ -102,12 +103,13 @@ public class DefaultVerticalScrollBar internal constructor(
      * The cursor may be outside the bar: the dispatcher keeps delivering drags here after
      * it left, so the ratio is clamped to the bar's ends.
      */
+    /** The bar's content rows map onto the whole scroll range: first row start, last row end. */
     private fun scrollToMouse(event: MouseEvent) {
         val y = event.position.minus(position + contentOffset).y
-        val percent = (y.toDouble() / contentSize.height).coerceIn(0.0, 1.0)
-        val offset = scrollable.visibleOffset
-        val height = scrollable.actualSize.height
-        scrollable.scrollTo(offset.withY(height.times(percent).toInt()))
+        val rows = contentSize.height - 1
+        val percent = if (rows <= 0) 0.0 else (y.toDouble() / rows).coerceIn(0.0, 1.0)
+        val maxOffset = maxOf(0, scrollable.actualSize.height - scrollable.visibleSize.height)
+        scrollable.scrollTo(scrollable.visibleOffset.withY((maxOffset * percent).roundToInt()))
     }
 
 }

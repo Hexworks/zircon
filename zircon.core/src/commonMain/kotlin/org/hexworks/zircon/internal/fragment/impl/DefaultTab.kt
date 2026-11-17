@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Panel
-import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.theme.ComponentFactory
 import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.component.data.Orientation
@@ -30,7 +30,7 @@ public class DefaultTab internal constructor(
     private val components = ComponentFactory { theme }
     private val tabOrientation = if (vertical) Orientation.VERTICAL else Orientation.HORIZONTAL
 
-    override val tabButton: RadioButton = components.radioButton {
+    override val tabButton: BinarySelector = components.radioButton {
         role = ComponentRole.TAB
         orientation = tabOrientation
         text = initialText

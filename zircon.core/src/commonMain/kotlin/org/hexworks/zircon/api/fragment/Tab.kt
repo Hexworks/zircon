@@ -3,7 +3,7 @@ package org.hexworks.zircon.api.fragment
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.Fragment
-import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.BinarySelector
 
 /**
  * A Tab contains a [Selectable] button, that is bound to a block of content (a [Container]
@@ -14,7 +14,7 @@ import org.hexworks.zircon.api.component.RadioButton
 
 public interface Tab : Fragment {
 
-    public val tabButton: RadioButton
+    public val tabButton: BinarySelector
 
     public var isSelected: Boolean
         get() = tabButton.isSelected

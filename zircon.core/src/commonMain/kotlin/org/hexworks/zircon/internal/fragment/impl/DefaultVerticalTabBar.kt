@@ -3,7 +3,7 @@ package org.hexworks.zircon.internal.fragment.impl
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.extensions.height
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Panel
@@ -36,7 +36,7 @@ public class DefaultVerticalTabBar internal constructor(
     private lateinit var strip: TabStrip
 
     private var currentContent: AttachedComponent? = null
-    private val group = radioButtonGroup { }
+    private val group = selectorGroup { }
 
     private val order = tabs.map { it.tab }
     private val lookup = tabs.associate { (tab, content) ->
@@ -77,7 +77,7 @@ public class DefaultVerticalTabBar internal constructor(
             theme = theme,
         )
 
-        group.selectedButtonProperty.onChange { (_, newValue) ->
+        group.selectedProperty.onChange { (_, newValue) ->
             newValue?.let { button ->
                 val data = lookup[button.key] ?: return@let
                 currentContent?.detach()?.moveTo(Position.ZERO)

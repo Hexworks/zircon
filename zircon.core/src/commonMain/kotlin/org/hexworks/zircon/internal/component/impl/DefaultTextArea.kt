@@ -1,18 +1,16 @@
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.data.Size
-import org.hexworks.zircon.api.behavior.Scrollable
-import org.hexworks.zircon.api.behavior.extensions.scrollLeftBy
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.behavior.extensions.scrollOneDown
-import org.hexworks.zircon.api.behavior.extensions.scrollOneLeft
 import org.hexworks.zircon.api.behavior.extensions.scrollOneUp
-import org.hexworks.zircon.api.behavior.extensions.scrollRightBy
+import org.hexworks.zircon.api.behavior.extensions.scrollTo
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.component.TextArea
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.renderer.ComponentRenderingStrategy
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.api.data.extensions.withY
 import org.hexworks.zircon.api.data.CharacterTile
 import org.hexworks.zircon.api.extensions.whenEnabled
 import org.hexworks.zircon.api.extensions.whenEnabledRespondWith
@@ -50,7 +48,6 @@ public class DefaultTextArea internal constructor(
     componentMetadata: ComponentMetadata,
     renderingStrategy: ComponentRenderingStrategy<TextArea>
 ) : TextArea,
-    Scrollable by Scrollable.create(componentMetadata.size, componentMetadata.size),
     DefaultComponent(
         metadata = componentMetadata,
         renderer = renderingStrategy
@@ -61,34 +58,37 @@ public class DefaultTextArea internal constructor(
     public val editorState: EditorState
         get() = textEditor.state
 
+    // The scrollable part: the visible area is the content area (inside the decorations), so
+    // it follows a theme that adds or removes a frame; the actual size grows with the text.
+    override val visibleSize: Size
+        get() = contentSize
+    override val actualSizeProperty: Property<Size> = contentSize.toProperty()
+    override var actualSize: Size by actualSizeProperty.asDelegate()
+    override val visibleOffsetProperty: Property<Position> = Position.ZERO.toProperty()
+    override var visibleOffset: Position by visibleOffsetProperty.asDelegate()
+
     override var text: String
         get() = textEditor.text
         set(value) {
             textEditor = TextEditor.fromText(value)
-            invalidateRender()
+            textChanged()
         }
 
     override var textTiles: List<List<CharacterTile>>
         get() = textEditor.tiles
         set(value) {
             textEditor = TextEditor.fromTiles(value)
-            invalidateRender()
+            textChanged()
         }
 
     init {
         resizeIfNecessary()
-        actualSizeProperty.onChange { (_, newValue) ->
-            val lastOkIndex = newValue.height - 1;
-            if (lastOkIndex < visibleOffset.y) {
-                visibleOffset = visibleOffset.withY(lastOkIndex)
-            }
-        }
     }
 
     public fun getTileAtOrNull(position: Position): CharacterTile? = textEditor.getTileAtOrNull(position)
 
     override fun focusGiven(): UIEventResponse = whenEnabled {
-        refreshCursorAndScroll(KeyCode.UNKNOWN)
+        scrollCursorIntoView()
         super.focusGiven()
     }
 
@@ -133,7 +133,7 @@ public class DefaultTextArea internal constructor(
                     }
                 }
                 resizeIfNecessary()
-                refreshCursorAndScroll(event.code)
+                scrollCursorIntoView(deleting = event.code == KeyCode.BACKSPACE || event.code == KeyCode.DELETE)
                 Processed
             }
         } else Pass
@@ -145,6 +145,7 @@ public class DefaultTextArea internal constructor(
                 event.position - absolutePosition - contentOffset + visibleOffset
             )
         )
+        scrollCursorIntoView()
         return Processed
     }
 
@@ -158,6 +159,12 @@ public class DefaultTextArea internal constructor(
         return PreventDefault
     }
 
+    private fun textChanged() {
+        resizeIfNecessary()
+        scrollCursorIntoView()
+        invalidateRender()
+    }
+
     private fun resizeIfNecessary() {
         val (visibleWidth, visibleHeight) = visibleSize
         val (editorWidth, editorHeight) = textEditor.size
@@ -165,46 +172,26 @@ public class DefaultTextArea internal constructor(
     }
 
     /**
-     * When editing the contents it is possible that the editor cursor goes out of bounds relative
-     * to the bounds of the actual text box. In this case we need to scroll in the appropriate
-     * direction and also fix the position at which we'll draw the visible cursor
+     * Scrolls so the editor cursor is inside the visible area, wherever it went (a key moves
+     * it one cell, a click or a new text any distance). While [deleting] and scrolled to the
+     * right the view follows the shrinking line so the cursor stays at the right edge.
      */
-    private fun refreshCursorAndScroll(code: KeyCode) = whenConnectedToRoot { _ ->
-        val cursorPosCandidate = textEditor.cursor - visibleOffset
-
-        val deleting = code == KeyCode.BACKSPACE
-        val wentTooFarRight = cursorPosCandidate.x >= visibleSize.width
-        val wentTooFarLeft = cursorPosCandidate.x < 0
-        val wentTooFarUp = cursorPosCandidate.y == -1
-        val wentTooFarDown = cursorPosCandidate.y == visibleSize.height
-        val hasXOffset = visibleOffset.x > 0
-
-        when {
-            // 📕 == === SPECIAL CASE === ==
-            // we've just deleted a character, but we're still scrolled to the right,
-            // so we just scroll back and move the cursor right to keep the cursor at the edge
-            // while deleting
-            deleting && hasXOffset -> {
-                scrollOneLeft()
-            }
-            // 📘 horizontal cases
-            wentTooFarRight -> {
-                val diff = cursorPosCandidate.x - visibleSize.width
-                scrollRightBy(diff + 1)
-            }
-
-            wentTooFarLeft -> {
-                val overflow = abs(cursorPosCandidate.x)
-                scrollLeftBy(overflow)
-            }
-            // 📘 vertical cases
-            wentTooFarUp -> {
-                scrollOneUp()
-            }
-
-            wentTooFarDown -> {
-                scrollOneDown()
-            }
+    private fun scrollCursorIntoView(deleting: Boolean = false) {
+        val (width, height) = visibleSize
+        if (width <= 0 || height <= 0) return
+        val cursor = textEditor.cursor
+        var (x, y) = visibleOffset
+        x = when {
+            deleting && x > 0 -> cursor.x - width + 1
+            cursor.x < x -> cursor.x
+            cursor.x >= x + width -> cursor.x - width + 1
+            else -> x
         }
+        y = when {
+            cursor.y < y -> cursor.y
+            cursor.y >= y + height -> cursor.y - height + 1
+            else -> y
+        }
+        scrollTo(Position(x, y))
     }
 }

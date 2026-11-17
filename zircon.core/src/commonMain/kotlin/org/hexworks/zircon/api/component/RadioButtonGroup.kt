@@ -1,27 +1,14 @@
 package org.hexworks.zircon.api.component
 
-import org.hexworks.cobalt.databinding.api.property.Property
-
-
 /**
- * A [RadioButtonGroup] is a specialization of a [Group] that will enforce
- * that only one [RadioButton] is selected in it at all times.
+ * A group that keeps exactly one radio button selected.
  */
-public interface RadioButtonGroup : Group<RadioButton> {
+@Deprecated("RadioButtonGroup is an ExclusiveSelectionGroup since 2.0.", ReplaceWith("ExclusiveSelectionGroup<BinarySelector>"))
+public typealias RadioButtonGroup = ExclusiveSelectionGroup<BinarySelector>
 
-
-    public val hasSelection: Boolean
-        get() = selectedButton != null
-
-    /**
-     * The selected button. Will have `null` value if there is no selection.
-     */
-    public var selectedButton: RadioButton?
-
-    /**
-     * The selected button wrapped in a [Property]. Will have the value
-     * of `null` if there is no selection
-     */
-    public val selectedButtonProperty: Property<RadioButton?>
-
-}
+@Deprecated("Use selected.", ReplaceWith("selected"))
+public var <T> ExclusiveSelectionGroup<T>.selectedButton: T? where T : Component, T : org.hexworks.zircon.api.behavior.Selectable
+    get() = selected
+    set(value) {
+        selected = value
+    }

@@ -63,7 +63,7 @@ public interface ColorTheme {
 
     /**
      * Creates a [ComponentStyleSet] which is intended to be used as a default
-     * for interactive components (eg: [Button]s, [ToggleButton]s and so on).
+     * for interactive components (eg: [Button]s, [BinarySelector]s and so on).
      */
     public fun toInteractiveStyle(): ComponentStyleSet = componentStyleSet {
         defaultStyle = styleSet {

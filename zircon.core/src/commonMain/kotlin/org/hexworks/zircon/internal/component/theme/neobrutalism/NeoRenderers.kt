@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.builder.data.characterTile
-import org.hexworks.zircon.api.component.CheckBox
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Icon
 import org.hexworks.zircon.api.component.ProgressBar
@@ -51,8 +51,8 @@ public class NeoContentRenderer : ComponentRenderer<Component> {
 /**
  * `☐  Label`, and an inverted `✓` cell when checked. One cell, no shadow.
  */
-public class NeoCheckBoxRenderer : ComponentRenderer<CheckBox> {
-    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<CheckBox>) {
+public class NeoCheckBoxRenderer : ComponentRenderer<BinarySelector> {
+    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<BinarySelector>) {
         val component = context.component
         val style = context.currentStyle
         drawWindow.fillWith(style)

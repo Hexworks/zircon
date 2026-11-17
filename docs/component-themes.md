@@ -121,7 +121,7 @@ Role based dispatch needs none of the refactors below, so they ship separately. 
 [component-refactoring-handover.md](component-refactoring-handover.md):
 
 1. `CheckBox`, `RadioButton`, `ToggleButton` → one `BinarySelector`; `RadioButtonGroup` → `ExclusiveSelectionGroup`;
-   `Selectable` gets a `key`
+   `Selectable` gets a `key` *(done 2026-11-17)*
 2. `HBox` / `VBox` dedupe
 3. `TextArea` and `ScrollBar` fixes
 

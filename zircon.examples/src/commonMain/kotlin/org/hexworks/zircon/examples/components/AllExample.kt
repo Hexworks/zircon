@@ -15,7 +15,7 @@ import org.hexworks.zircon.api.builder.component.listItem
 import org.hexworks.zircon.api.builder.component.paragraph
 import org.hexworks.zircon.api.builder.component.progressBar
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.textArea
 import org.hexworks.zircon.api.builder.component.toggleButton
 import org.hexworks.zircon.api.builder.component.vBox
@@ -116,8 +116,8 @@ public val allExample: Example = Example("All") { context ->
                         val b = radioButton { +"Go to the bar"; key = "b" }
                         val c = radioButton { +"Visit a friend"; key = "c" }
                         val d = radioButton { +"Count all the clouds"; key = "d" }
-                        radioButtonGroup {
-                            radioButtons = listOf(a, b, c, d)
+                        selectorGroup {
+                            members = listOf(a, b, c, d)
                         }
                     }
                 }

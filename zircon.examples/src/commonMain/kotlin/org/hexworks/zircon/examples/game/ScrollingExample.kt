@@ -5,7 +5,7 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.data.block
 import org.hexworks.zircon.api.builder.data.characterTile
@@ -65,13 +65,13 @@ public val scrollingExample: Example = Example("Scrolling") { context ->
         +"Top Down Oblique"
         key = ProjectionMode.TOP_DOWN_OBLIQUE_FRONT.name
     }
-    val projectionsGroup = radioButtonGroup { }.apply {
+    val projectionsGroup = selectorGroup { }.apply {
         addComponent(topDown)
         addComponent(topDownOblique)
     }
     projections.addComponent(topDown)
     projections.addComponent(topDownOblique)
-    val projectionProperty = projectionsGroup.selectedButtonProperty.bindTransform { button ->
+    val projectionProperty = projectionsGroup.selectedProperty.bindTransform { button ->
         ProjectionMode.entries.firstOrNull { it.name == button?.key } ?: ProjectionMode.TOP_DOWN
     }
 

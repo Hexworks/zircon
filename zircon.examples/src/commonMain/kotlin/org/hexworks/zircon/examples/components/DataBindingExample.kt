@@ -6,7 +6,7 @@ import org.hexworks.zircon.api.builder.component.checkBox
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Size
@@ -46,10 +46,10 @@ public val dataBindingExample: Example = Example("Data binding") { context ->
                 val r1 = radioButton { +"Two"; key = "Two" }
                 val r2 = radioButton { +"Three"; key = "Three" }
                 val label = label { preferredSize = Size(10, 1) }
-                radioButtonGroup {
-                    radioButtons = listOf(r0, r1, r2)
+                selectorGroup {
+                    members = listOf(r0, r1, r2)
                 }.apply {
-                    label.textProperty.updateFrom(selectedButtonProperty.bindTransform { it?.text ?: "" })
+                    label.textProperty.updateFrom(selectedProperty.bindTransform { it?.text ?: "" })
                 }
             }
         })

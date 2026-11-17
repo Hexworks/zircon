@@ -8,8 +8,6 @@ import org.hexworks.zircon.api.CP437TilesetResources
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.checkBox
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.component.CheckBox.CheckBoxState
-import org.hexworks.zircon.api.component.RadioButton.RadioButtonState
 import org.hexworks.zircon.api.builder.component.horizontalSlider
 import org.hexworks.zircon.api.builder.component.verticalSlider
 import org.hexworks.zircon.api.component.ComponentStyleSet
@@ -328,13 +326,13 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun aPressedCheckBoxKeepsShowingThePendingStateWhileTheCursorIsOutside() {
         press(CHECK_BOX_POSITION)
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+        checkBox.isPressed shouldBe true
 
         drag(CHECK_BOX_POSITION.withRelativeY(3))
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+        checkBox.isPressed shouldBe true
 
         drag(CHECK_BOX_POSITION.withRelativeX(1))
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+        checkBox.isPressed shouldBe true
     }
 
     @Test
@@ -343,7 +341,7 @@ class UIEventToComponentDispatcherTest {
         release(CHECK_BOX_POSITION)
 
         checkBox.isSelected shouldBe true
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKED
+        checkBox.isPressed shouldBe false
     }
 
     @Test
@@ -354,7 +352,7 @@ class UIEventToComponentDispatcherTest {
         release(CHECK_BOX_POSITION.withRelativeY(3))
 
         checkBox.isSelected shouldBe false
-        checkBox.checkBoxState shouldBe CheckBoxState.UNCHECKED
+        checkBox.isPressed shouldBe false
     }
 
     @Test
@@ -375,10 +373,10 @@ class UIEventToComponentDispatcherTest {
         press(CHECK_BOX_POSITION)
         drag(CHECK_BOX_POSITION.withRelativeY(3))
 
-        checkBox.checkBoxState shouldBe CheckBoxState.UNCHECKING
+        checkBox.isPressed shouldBe true
         release(CHECK_BOX_POSITION.withRelativeY(3))
         checkBox.isSelected shouldBe true
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKED
+        checkBox.isPressed shouldBe false
     }
 
     @Test
@@ -387,7 +385,7 @@ class UIEventToComponentDispatcherTest {
         checkBox.state shouldBe ComponentState.FOCUSED
 
         key(KeyCode.SPACE)
-        checkBox.checkBoxState shouldBe CheckBoxState.CHECKING
+        checkBox.isPressed shouldBe true
 
         keyUp(KeyCode.SPACE)
         checkBox.isSelected shouldBe true
@@ -396,15 +394,15 @@ class UIEventToComponentDispatcherTest {
     @Test
     fun aPressedRadioButtonShowsPressedUntilTheRelease() {
         press(RADIO_POSITION)
-        radio.state shouldBe RadioButtonState.PRESSED
+        radio.isPressed shouldBe true
         radio.isSelected shouldBe false
 
         drag(RADIO_POSITION.withRelativeY(3))
-        radio.state shouldBe RadioButtonState.PRESSED
+        radio.isPressed shouldBe true
 
         drag(RADIO_POSITION.withRelativeX(1))
         release(RADIO_POSITION.withRelativeX(1))
-        radio.state shouldBe RadioButtonState.SELECTED
+        radio.isPressed shouldBe false
         radio.isSelected shouldBe true
     }
 
@@ -416,7 +414,7 @@ class UIEventToComponentDispatcherTest {
         release(RADIO_POSITION.withRelativeY(3))
 
         radio.isSelected shouldBe false
-        radio.state shouldBe RadioButtonState.NOT_SELECTED
+        radio.isPressed shouldBe false
     }
 
     private val InternalComponent.state get() = componentState

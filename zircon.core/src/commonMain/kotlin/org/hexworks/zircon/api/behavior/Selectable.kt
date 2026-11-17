@@ -19,13 +19,39 @@ public interface Selectable {
      */
     public val selectedProperty: Property<Boolean>
 
+    /**
+     * Tells this [Selectable] apart from the others in a group, like an
+     * [org.hexworks.zircon.api.component.ExclusiveSelectionGroup]. Unique within a group.
+     */
+    public val key: String
+
     public companion object {
 
         /**
          * Creates a new [Selectable] with the default [initialSelected] value of `false`.
          */
-        public fun create(initialSelected: Boolean = false): Selectable = create(initialSelected.toProperty())
+        public fun create(initialSelected: Boolean = false, key: String = ""): Selectable =
+            create(initialSelected.toProperty(), key)
 
-        public fun create(selectedProperty: Property<Boolean>): Selectable = DefaultSelectable(selectedProperty)
+        public fun create(selectedProperty: Property<Boolean>, key: String = ""): Selectable =
+            DefaultSelectable(selectedProperty, key)
+
+        /**
+         * The key a [Selectable] gets from its text when none is set: the text lower cased,
+         * runs of anything but letters and digits turned into one `-`, e.g. `Go to the bar`
+         * becomes `go-to-the-bar`. Empty when the text has no letters or digits.
+         */
+        public fun keyFrom(text: String): String = buildString {
+            var dash = false
+            for (c in text.lowercase()) {
+                if (c.isLetterOrDigit()) {
+                    append(c)
+                    dash = false
+                } else if (!dash && isNotEmpty()) {
+                    append('-')
+                    dash = true
+                }
+            }
+        }.trimEnd('-')
     }
 }

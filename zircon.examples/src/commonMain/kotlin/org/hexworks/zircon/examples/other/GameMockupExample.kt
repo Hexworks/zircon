@@ -5,7 +5,7 @@ import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
@@ -78,7 +78,7 @@ public val gameMockupExample: Example = Example("Game mockup") { context ->
         decorations { +box(BoxType.LEFT_RIGHT_DOUBLE, "D I F F I C U L T Y") }
     }
     val difficultyBox = vBox { preferredSize = difficultyPanel.size - Size(2, 2) }
-    val difficultyGroup = radioButtonGroup { }
+    val difficultyGroup = selectorGroup { }
     listOf("TINGLE", "ANXIETY", "HORROR").forEach { diff ->
         val btn = radioButton { +diff; key = diff }
         difficultyBox.addComponent(btn)

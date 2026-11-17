@@ -6,13 +6,14 @@ import org.hexworks.zircon.api.behavior.extensions.height
 import org.hexworks.zircon.api.behavior.extensions.width
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.panel
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.AttachedComponent
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Container
 import org.hexworks.zircon.api.component.Panel
-import org.hexworks.zircon.api.component.RadioButtonGroup
+import org.hexworks.zircon.api.component.BinarySelector
+import org.hexworks.zircon.api.component.ExclusiveSelectionGroup
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.fragment.MatrixTabBar
@@ -126,10 +127,10 @@ public class DefaultMatrixTabBar internal constructor(
             sizeOf = { it.tabButton.height },
         )
 
-        horizontalGroup.selectedButtonProperty.onChange { (_, button) ->
+        horizontalGroup.selectedProperty.onChange { (_, button) ->
             if (button != null) selectedHorizontalKeyProperty.value = button.key
         }
-        verticalGroup.selectedButtonProperty.onChange { (_, button) ->
+        verticalGroup.selectedProperty.onChange { (_, button) ->
             if (button != null) selectedVerticalKeyProperty.value = button.key
         }
 
@@ -177,7 +178,7 @@ public class DefaultMatrixTabBar internal constructor(
         showView()
     }
 
-    private fun groupOf(tabs: List<Tab>): RadioButtonGroup = radioButtonGroup { }.apply {
+    private fun groupOf(tabs: List<Tab>): ExclusiveSelectionGroup<BinarySelector> = selectorGroup { }.apply {
         tabs.forEach { addComponent(it.tabButton) }
     }
 

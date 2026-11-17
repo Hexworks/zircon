@@ -1,46 +1,33 @@
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.component.RadioButton
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
-import org.hexworks.zircon.api.component.builder.base.ComponentWithTextBuilder
+import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.api.dsl.ZirconDsl
 import org.hexworks.zircon.api.dsl.buildChildFor
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
-import org.hexworks.zircon.api.component.theme.ComponentRole
 import org.hexworks.zircon.internal.component.renderer.DefaultRadioButtonRenderer
 
+/**
+ * Builds a radio button: a [BinarySelector] with the `RADIO_BUTTON` role that is only
+ * unselected by its [org.hexworks.zircon.api.component.ExclusiveSelectionGroup].
+ */
 @ZirconDsl
-public class RadioButtonBuilder : ComponentWithTextBuilder<RadioButton>(
+public class RadioButtonBuilder : BinarySelectorBuilder(
     initialRole = ComponentRole.RADIO_BUTTON,
-    initialText = "",
-    reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH
-) {
-
-    public var key: String = ""
-
-    override fun build(): RadioButton {
-        require(key.isNotBlank()) {
-            "Can't create a Radio Button without a key."
-        }
-        return DefaultRadioButton(
-            componentMetadata = createMetadata(),
-            renderingStrategy = createRenderingStrategy(),
-            initialText = text,
-            key = key,
-        ).attachListeners()
-    }
-}
+    reservedSpace = DefaultRadioButtonRenderer.DECORATION_WIDTH,
+    allowUnselect = false,
+)
 
 /**
- * Creates a new [RadioButton] using the component builder DSL and returns it.
+ * Creates a new radio button using the component builder DSL and returns it.
  */
-public fun radioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
+public fun radioButton(init: RadioButtonBuilder.() -> Unit): BinarySelector =
     RadioButtonBuilder().apply(init).build()
 
 /**
- * Creates a new [RadioButton] using the component builder DSL, adds it to the
- * receiver [BaseContainerBuilder] it and returns the [RadioButton].
+ * Creates a new radio button using the component builder DSL, adds it to the
+ * receiver [BaseContainerBuilder] it and returns it.
  */
 public fun <T : BaseContainerBuilder<*>> T.radioButton(
     init: RadioButtonBuilder.() -> Unit
-): RadioButton = buildChildFor(this, RadioButtonBuilder(), init)
+): BinarySelector = buildChildFor(this, RadioButtonBuilder(), init)

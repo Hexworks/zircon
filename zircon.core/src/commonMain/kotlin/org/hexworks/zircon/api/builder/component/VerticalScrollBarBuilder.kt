@@ -2,6 +2,7 @@ package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.data.extensions.isSizeUnknown
 import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.component.ScrollBar
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
@@ -25,8 +26,10 @@ public class VerticalScrollBarBuilder(
     public var scrollable: Scrollable = initialScrollable
 
     override fun build(): ScrollBar {
-        val visibleSize = scrollable.visibleSize
-        preferredSize = Size(1, visibleSize.height)
+        // One cell wide and as tall as the scrollable's visible area, plus the decorations.
+        if (preferredSize.isSizeUnknown && preferredContentSize.isSizeUnknown) {
+            preferredContentSize = Size(1, scrollable.visibleSize.height)
+        }
         return DefaultVerticalScrollBar(
             componentMetadata = createMetadata(),
             renderingStrategy = createRenderingStrategy(),

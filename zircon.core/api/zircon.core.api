@@ -586,15 +586,18 @@ public abstract interface class org/hexworks/zircon/api/behavior/Scrollable3D {
 
 public abstract interface class org/hexworks/zircon/api/behavior/Selectable {
 	public static final field Companion Lorg/hexworks/zircon/api/behavior/Selectable$Companion;
+	public abstract fun getKey ()Ljava/lang/String;
 	public abstract fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public abstract fun isSelected ()Z
 	public abstract fun setSelected (Z)V
 }
 
 public final class org/hexworks/zircon/api/behavior/Selectable$Companion {
-	public final fun create (Lorg/hexworks/cobalt/databinding/api/property/Property;)Lorg/hexworks/zircon/api/behavior/Selectable;
-	public final fun create (Z)Lorg/hexworks/zircon/api/behavior/Selectable;
-	public static synthetic fun create$default (Lorg/hexworks/zircon/api/behavior/Selectable$Companion;ZILjava/lang/Object;)Lorg/hexworks/zircon/api/behavior/Selectable;
+	public final fun create (Lorg/hexworks/cobalt/databinding/api/property/Property;Ljava/lang/String;)Lorg/hexworks/zircon/api/behavior/Selectable;
+	public final fun create (ZLjava/lang/String;)Lorg/hexworks/zircon/api/behavior/Selectable;
+	public static synthetic fun create$default (Lorg/hexworks/zircon/api/behavior/Selectable$Companion;Lorg/hexworks/cobalt/databinding/api/property/Property;Ljava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/behavior/Selectable;
+	public static synthetic fun create$default (Lorg/hexworks/zircon/api/behavior/Selectable$Companion;ZLjava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/behavior/Selectable;
+	public final fun keyFrom (Ljava/lang/String;)Ljava/lang/String;
 }
 
 public abstract interface class org/hexworks/zircon/api/behavior/TextOverride : org/hexworks/zircon/api/behavior/HasText {
@@ -766,6 +769,20 @@ public final class org/hexworks/zircon/api/builder/animation/AnimationFrameBuild
 	public static final fun animationFrame (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/animation/AnimationFrame;
 }
 
+public class org/hexworks/zircon/api/builder/component/BinarySelectorBuilder : org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder {
+	public fun <init> (Lorg/hexworks/zircon/api/component/theme/ComponentRole;IZ)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lorg/hexworks/zircon/api/component/BinarySelector;
+	public final fun getAllowUnselect ()Z
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+	public final fun isSelected ()Z
+	public final fun setAllowUnselect (Z)V
+	public final fun setKey (Ljava/lang/String;)V
+	public final fun setLabelAlignment (Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;)V
+	public final fun setSelected (Z)V
+}
+
 public final class org/hexworks/zircon/api/builder/component/ButtonBuilder : org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder {
 	public fun <init> ()V
 	public synthetic fun build ()Ljava/lang/Object;
@@ -777,17 +794,13 @@ public final class org/hexworks/zircon/api/builder/component/ButtonBuilderKt {
 	public static final fun button (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/Button;
 }
 
-public final class org/hexworks/zircon/api/builder/component/CheckBoxBuilder : org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder {
+public final class org/hexworks/zircon/api/builder/component/CheckBoxBuilder : org/hexworks/zircon/api/builder/component/BinarySelectorBuilder {
 	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/component/CheckBox;
-	public final fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-	public final fun setLabelAlignment (Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;)V
 }
 
 public final class org/hexworks/zircon/api/builder/component/CheckBoxBuilderKt {
-	public static final fun checkBox (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/CheckBox;
-	public static final fun checkBox (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/CheckBox;
+	public static final fun checkBox (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
+	public static final fun checkBox (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 }
 
 public final class org/hexworks/zircon/api/builder/component/ColorThemeBuilder : org/hexworks/zircon/api/builder/Builder {
@@ -830,6 +843,27 @@ public final class org/hexworks/zircon/api/builder/component/ComponentStyleSetBu
 
 public final class org/hexworks/zircon/api/builder/component/ComponentStyleSetBuilderKt {
 	public static final fun componentStyleSet (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ComponentStyleSet;
+}
+
+public class org/hexworks/zircon/api/builder/component/ExclusiveSelectionGroupBuilder : org/hexworks/zircon/api/builder/Builder {
+	public fun <init> ()V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;
+	public final fun getMembers ()Ljava/util/List;
+	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
+	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public final fun isDisabled ()Z
+	public final fun isHidden ()Z
+	public final fun setDisabled (Z)V
+	public final fun setHidden (Z)V
+	public final fun setMembers (Ljava/util/List;)V
+	public final fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
+	public final fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+}
+
+public final class org/hexworks/zircon/api/builder/component/ExclusiveSelectionGroupBuilderKt {
+	public static final fun exclusiveSelectionGroup (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;
+	public static final fun selectorGroup (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;
 }
 
 public final class org/hexworks/zircon/api/builder/component/GroupBuilder : org/hexworks/zircon/api/builder/Builder {
@@ -1050,37 +1084,19 @@ public final class org/hexworks/zircon/api/builder/component/ProgressBarBuilderK
 	public static final fun progressBar (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ProgressBar;
 }
 
-public final class org/hexworks/zircon/api/builder/component/RadioButtonBuilder : org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder {
+public final class org/hexworks/zircon/api/builder/component/RadioButtonBuilder : org/hexworks/zircon/api/builder/component/BinarySelectorBuilder {
 	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/component/RadioButton;
-	public final fun getKey ()Ljava/lang/String;
-	public final fun setKey (Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/api/builder/component/RadioButtonBuilderKt {
-	public static final fun radioButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/RadioButton;
-	public static final fun radioButton (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/RadioButton;
-}
-
-public final class org/hexworks/zircon/api/builder/component/RadioButtonGroupBuilder : org/hexworks/zircon/api/builder/Builder {
-	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/component/RadioButtonGroup;
-	public final fun getRadioButtons ()Ljava/util/List;
-	public final fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
-	public final fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun isDisabled ()Z
-	public final fun isHidden ()Z
-	public final fun setDisabled (Z)V
-	public final fun setHidden (Z)V
-	public final fun setRadioButtons (Ljava/util/List;)V
-	public final fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
-	public final fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public static final fun radioButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
+	public static final fun radioButton (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 }
 
 public final class org/hexworks/zircon/api/builder/component/RadioButtonGroupBuilderKt {
-	public static final fun radioButtonGroup (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/RadioButtonGroup;
+	public static final fun getRadioButtons (Lorg/hexworks/zircon/api/builder/component/ExclusiveSelectionGroupBuilder;)Ljava/util/List;
+	public static final fun radioButtonGroup (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;
+	public static final fun setRadioButtons (Lorg/hexworks/zircon/api/builder/component/ExclusiveSelectionGroupBuilder;Ljava/util/List;)V
 }
 
 public abstract class org/hexworks/zircon/api/builder/component/SliderBuilder : org/hexworks/zircon/api/component/builder/base/BaseComponentBuilder {
@@ -1106,17 +1122,13 @@ public final class org/hexworks/zircon/api/builder/component/TextAreaBuilderKt {
 	public static final fun textArea (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/TextArea;
 }
 
-public final class org/hexworks/zircon/api/builder/component/ToggleButtonBuilder : org/hexworks/zircon/api/component/builder/base/ComponentWithTextBuilder {
+public final class org/hexworks/zircon/api/builder/component/ToggleButtonBuilder : org/hexworks/zircon/api/builder/component/BinarySelectorBuilder {
 	public fun <init> ()V
-	public synthetic fun build ()Ljava/lang/Object;
-	public fun build ()Lorg/hexworks/zircon/api/component/ToggleButton;
-	public final fun isSelected ()Z
-	public final fun setSelected (Z)V
 }
 
 public final class org/hexworks/zircon/api/builder/component/ToggleButtonBuilderKt {
-	public static final fun toggleButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ToggleButton;
-	public static final fun toggleButton (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ToggleButton;
+	public static final fun toggleButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
+	public static final fun toggleButton (Lorg/hexworks/zircon/api/component/builder/base/BaseContainerBuilder;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 }
 
 public final class org/hexworks/zircon/api/builder/component/VBoxBuilder : org/hexworks/zircon/api/component/builder/base/BaseContainerBuilder {
@@ -2350,6 +2362,35 @@ public final class org/hexworks/zircon/api/component/AttachedComponent$DefaultIm
 	public static fun plus (Lorg/hexworks/zircon/api/component/AttachedComponent;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
 }
 
+public abstract interface class org/hexworks/zircon/api/component/BinarySelector : org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Component {
+	public abstract fun getAllowUnselect ()Z
+	public abstract fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+	public abstract fun isPressed ()Z
+}
+
+public final class org/hexworks/zircon/api/component/BinarySelector$DefaultImpls {
+	public static fun component1 (Lorg/hexworks/zircon/api/component/BinarySelector;)Lorg/hexworks/zircon/api/data/Position;
+	public static fun component2 (Lorg/hexworks/zircon/api/component/BinarySelector;)Lorg/hexworks/zircon/api/data/Size;
+	public static fun containsBoundable (Lorg/hexworks/zircon/api/component/BinarySelector;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
+	public static fun containsPosition (Lorg/hexworks/zircon/api/component/BinarySelector;Lorg/hexworks/zircon/api/data/Position;)Z
+	public static fun getCurrentStyle (Lorg/hexworks/zircon/api/component/BinarySelector;)Lorg/hexworks/zircon/api/graphics/StyleSet;
+	public static fun intersects (Lorg/hexworks/zircon/api/component/BinarySelector;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
+	public static fun minus (Lorg/hexworks/zircon/api/component/BinarySelector;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
+	public static fun onActivated (Lorg/hexworks/zircon/api/component/BinarySelector;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
+	public static fun onDeactivated (Lorg/hexworks/zircon/api/component/BinarySelector;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
+	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/BinarySelector;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
+	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/BinarySelector;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
+	public static fun plus (Lorg/hexworks/zircon/api/component/BinarySelector;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
+}
+
+public final class org/hexworks/zircon/api/component/BinarySelector$LabelAlignment : java/lang/Enum {
+	public static final field LEFT Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+	public static final field RIGHT Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+	public static fun values ()[Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
+}
+
 public abstract interface class org/hexworks/zircon/api/component/Button : org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Component {
 }
 
@@ -2366,44 +2407,6 @@ public final class org/hexworks/zircon/api/component/Button$DefaultImpls {
 	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/Button;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/Button;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun plus (Lorg/hexworks/zircon/api/component/Button;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-}
-
-public abstract interface class org/hexworks/zircon/api/component/CheckBox : org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Component {
-	public abstract fun getCheckBoxState ()Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public abstract fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-}
-
-public final class org/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment : java/lang/Enum {
-	public static final field LEFT Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-	public static final field RIGHT Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-	public static fun values ()[Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
-}
-
-public final class org/hexworks/zircon/api/component/CheckBox$CheckBoxState : java/lang/Enum {
-	public static final field CHECKED Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public static final field CHECKING Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public static final field UNCHECKED Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public static final field UNCHECKING Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public static fun values ()[Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-}
-
-public final class org/hexworks/zircon/api/component/CheckBox$DefaultImpls {
-	public static fun component1 (Lorg/hexworks/zircon/api/component/CheckBox;)Lorg/hexworks/zircon/api/data/Position;
-	public static fun component2 (Lorg/hexworks/zircon/api/component/CheckBox;)Lorg/hexworks/zircon/api/data/Size;
-	public static fun containsBoundable (Lorg/hexworks/zircon/api/component/CheckBox;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun containsPosition (Lorg/hexworks/zircon/api/component/CheckBox;Lorg/hexworks/zircon/api/data/Position;)Z
-	public static fun getCurrentStyle (Lorg/hexworks/zircon/api/component/CheckBox;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public static fun intersects (Lorg/hexworks/zircon/api/component/CheckBox;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun minus (Lorg/hexworks/zircon/api/component/CheckBox;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-	public static fun onActivated (Lorg/hexworks/zircon/api/component/CheckBox;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onDeactivated (Lorg/hexworks/zircon/api/component/CheckBox;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/CheckBox;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/CheckBox;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun plus (Lorg/hexworks/zircon/api/component/CheckBox;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
 }
 
 public abstract interface class org/hexworks/zircon/api/component/ColorTheme {
@@ -2531,6 +2534,17 @@ public final class org/hexworks/zircon/api/component/Container$DefaultImpls {
 	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/Container;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/Container;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun plus (Lorg/hexworks/zircon/api/component/Container;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
+}
+
+public abstract interface class org/hexworks/zircon/api/component/ExclusiveSelectionGroup : org/hexworks/zircon/api/component/Group {
+	public fun getHasSelection ()Z
+	public abstract fun getSelected ()Lorg/hexworks/zircon/api/component/Component;
+	public abstract fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public abstract fun setSelected (Lorg/hexworks/zircon/api/component/Component;)V
+}
+
+public final class org/hexworks/zircon/api/component/ExclusiveSelectionGroup$DefaultImpls {
+	public static fun getHasSelection (Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;)Z
 }
 
 public abstract interface class org/hexworks/zircon/api/component/Fragment {
@@ -2779,44 +2793,9 @@ public final class org/hexworks/zircon/api/component/ProgressBar$DefaultImpls {
 	public static fun plus (Lorg/hexworks/zircon/api/component/ProgressBar;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
 }
 
-public abstract interface class org/hexworks/zircon/api/component/RadioButton : org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Component {
-	public abstract fun getKey ()Ljava/lang/String;
-	public abstract fun getState ()Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-}
-
-public final class org/hexworks/zircon/api/component/RadioButton$DefaultImpls {
-	public static fun component1 (Lorg/hexworks/zircon/api/component/RadioButton;)Lorg/hexworks/zircon/api/data/Position;
-	public static fun component2 (Lorg/hexworks/zircon/api/component/RadioButton;)Lorg/hexworks/zircon/api/data/Size;
-	public static fun containsBoundable (Lorg/hexworks/zircon/api/component/RadioButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun containsPosition (Lorg/hexworks/zircon/api/component/RadioButton;Lorg/hexworks/zircon/api/data/Position;)Z
-	public static fun getCurrentStyle (Lorg/hexworks/zircon/api/component/RadioButton;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public static fun intersects (Lorg/hexworks/zircon/api/component/RadioButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun minus (Lorg/hexworks/zircon/api/component/RadioButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-	public static fun onActivated (Lorg/hexworks/zircon/api/component/RadioButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onDeactivated (Lorg/hexworks/zircon/api/component/RadioButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/RadioButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/RadioButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun plus (Lorg/hexworks/zircon/api/component/RadioButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-}
-
-public final class org/hexworks/zircon/api/component/RadioButton$RadioButtonState : java/lang/Enum {
-	public static final field NOT_SELECTED Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-	public static final field PRESSED Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-	public static final field SELECTED Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-	public static fun values ()[Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-}
-
-public abstract interface class org/hexworks/zircon/api/component/RadioButtonGroup : org/hexworks/zircon/api/component/Group {
-	public fun getHasSelection ()Z
-	public abstract fun getSelectedButton ()Lorg/hexworks/zircon/api/component/RadioButton;
-	public abstract fun getSelectedButtonProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public abstract fun setSelectedButton (Lorg/hexworks/zircon/api/component/RadioButton;)V
-}
-
-public final class org/hexworks/zircon/api/component/RadioButtonGroup$DefaultImpls {
-	public static fun getHasSelection (Lorg/hexworks/zircon/api/component/RadioButtonGroup;)Z
+public final class org/hexworks/zircon/api/component/RadioButtonGroupKt {
+	public static final fun getSelectedButton (Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;)Lorg/hexworks/zircon/api/component/Component;
+	public static final fun setSelectedButton (Lorg/hexworks/zircon/api/component/ExclusiveSelectionGroup;Lorg/hexworks/zircon/api/component/Component;)V
 }
 
 public abstract interface class org/hexworks/zircon/api/component/ScrollBar : org/hexworks/zircon/api/component/Component {
@@ -2899,24 +2878,6 @@ public final class org/hexworks/zircon/api/component/TextArea$DefaultImpls {
 	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/TextArea;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/TextArea;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static fun plus (Lorg/hexworks/zircon/api/component/TextArea;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-}
-
-public abstract interface class org/hexworks/zircon/api/component/ToggleButton : org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Component {
-}
-
-public final class org/hexworks/zircon/api/component/ToggleButton$DefaultImpls {
-	public static fun component1 (Lorg/hexworks/zircon/api/component/ToggleButton;)Lorg/hexworks/zircon/api/data/Position;
-	public static fun component2 (Lorg/hexworks/zircon/api/component/ToggleButton;)Lorg/hexworks/zircon/api/data/Size;
-	public static fun containsBoundable (Lorg/hexworks/zircon/api/component/ToggleButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun containsPosition (Lorg/hexworks/zircon/api/component/ToggleButton;Lorg/hexworks/zircon/api/data/Position;)Z
-	public static fun getCurrentStyle (Lorg/hexworks/zircon/api/component/ToggleButton;)Lorg/hexworks/zircon/api/graphics/StyleSet;
-	public static fun intersects (Lorg/hexworks/zircon/api/component/ToggleButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Z
-	public static fun minus (Lorg/hexworks/zircon/api/component/ToggleButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
-	public static fun onActivated (Lorg/hexworks/zircon/api/component/ToggleButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onDeactivated (Lorg/hexworks/zircon/api/component/ToggleButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusGiven (Lorg/hexworks/zircon/api/component/ToggleButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun onFocusTaken (Lorg/hexworks/zircon/api/component/ToggleButton;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
-	public static fun plus (Lorg/hexworks/zircon/api/component/ToggleButton;Lorg/hexworks/zircon/api/behavior/Boundable;)Lorg/hexworks/zircon/api/behavior/Boundable;
 }
 
 public abstract interface class org/hexworks/zircon/api/component/VBox : org/hexworks/zircon/api/behavior/TitleOverride, org/hexworks/zircon/api/component/Container {
@@ -3326,7 +3287,7 @@ public final class org/hexworks/zircon/api/component/theme/ComponentFactory {
 	public final fun badge (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/Badge;
 	public final fun button (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/Button;
 	public final fun card (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/Card;
-	public final fun checkBox (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/CheckBox;
+	public final fun checkBox (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 	public final fun checkBoxField (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/CheckBoxField;
 	public final fun configure (Lorg/hexworks/zircon/api/component/builder/base/BaseComponentBuilder;Lorg/hexworks/zircon/api/component/theme/ComponentRole;Lorg/hexworks/zircon/api/component/theme/Variant;Lorg/hexworks/zircon/api/component/theme/Part;)Lorg/hexworks/zircon/api/component/builder/base/BaseComponentBuilder;
 	public static synthetic fun configure$default (Lorg/hexworks/zircon/api/component/theme/ComponentFactory;Lorg/hexworks/zircon/api/component/builder/base/BaseComponentBuilder;Lorg/hexworks/zircon/api/component/theme/ComponentRole;Lorg/hexworks/zircon/api/component/theme/Variant;Lorg/hexworks/zircon/api/component/theme/Part;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/builder/base/BaseComponentBuilder;
@@ -3346,10 +3307,10 @@ public final class org/hexworks/zircon/api/component/theme/ComponentFactory {
 	public final fun paragraph (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/Paragraph;
 	public final fun progressBar (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ProgressBar;
 	public final fun progressField (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/ProgressField;
-	public final fun radioButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/RadioButton;
+	public final fun radioButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 	public final fun textArea (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/TextArea;
 	public final fun textAreaField (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/fragment/TextAreaField;
-	public final fun toggleButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/ToggleButton;
+	public final fun toggleButton (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/BinarySelector;
 	public final fun vBox (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/VBox;
 	public final fun verticalNumberInput (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/NumberInput;
 	public final fun verticalSlider (Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/component/Slider;
@@ -4364,7 +4325,7 @@ public abstract interface class org/hexworks/zircon/api/fragment/Card : org/hexw
 }
 
 public abstract interface class org/hexworks/zircon/api/fragment/CheckBoxField : org/hexworks/zircon/api/component/Fragment {
-	public abstract fun getCheckBox ()Lorg/hexworks/zircon/api/component/CheckBox;
+	public abstract fun getCheckBox ()Lorg/hexworks/zircon/api/component/BinarySelector;
 	public fun isSelected ()Z
 	public fun setSelected (Z)V
 }
@@ -4441,7 +4402,7 @@ public abstract interface class org/hexworks/zircon/api/fragment/Selector : org/
 
 public abstract interface class org/hexworks/zircon/api/fragment/Tab : org/hexworks/zircon/api/component/Fragment {
 	public fun getKey ()Ljava/lang/String;
-	public abstract fun getTabButton ()Lorg/hexworks/zircon/api/component/RadioButton;
+	public abstract fun getTabButton ()Lorg/hexworks/zircon/api/component/BinarySelector;
 	public fun isSelected ()Z
 	public fun setSelected (Z)V
 }
@@ -58434,7 +58395,9 @@ public final class org/hexworks/zircon/internal/behavior/impl/DefaultScrollable3
 }
 
 public final class org/hexworks/zircon/internal/behavior/impl/DefaultSelectable : org/hexworks/zircon/api/behavior/Selectable {
-	public fun <init> (Lorg/hexworks/cobalt/databinding/api/property/Property;)V
+	public fun <init> (Lorg/hexworks/cobalt/databinding/api/property/Property;Ljava/lang/String;)V
+	public synthetic fun <init> (Lorg/hexworks/cobalt/databinding/api/property/Property;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getKey ()Ljava/lang/String;
 	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun isSelected ()Z
 	public fun setSelected (Z)V
@@ -58790,25 +58753,27 @@ public final class org/hexworks/zircon/internal/component/impl/BaseSlider$Compan
 	public final fun getLOGGER ()Lorg/hexworks/cobalt/logging/api/Logger;
 }
 
-public final class org/hexworks/zircon/internal/component/impl/DefaultButton : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Button {
-	public fun getText ()Ljava/lang/String;
-	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun setText (Ljava/lang/String;)V
-}
-
-public final class org/hexworks/zircon/internal/component/impl/DefaultCheckBox : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/CheckBox {
+public final class org/hexworks/zircon/internal/component/impl/DefaultBinarySelector : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/BinarySelector {
 	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun deactivated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun focusTaken ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun getCheckBoxState ()Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxState;
-	public fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/CheckBox$CheckBoxAlignment;
+	public fun getAllowUnselect ()Z
+	public fun getKey ()Ljava/lang/String;
+	public fun getLabelAlignment ()Lorg/hexworks/zircon/api/component/BinarySelector$LabelAlignment;
 	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun getText ()Ljava/lang/String;
 	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun isPressed ()Z
 	public fun isSelected ()Z
 	public fun mouseEntered (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun mouseExited (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun setSelected (Z)V
+	public fun setText (Ljava/lang/String;)V
+}
+
+public final class org/hexworks/zircon/internal/component/impl/DefaultButton : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Button {
+	public fun getText ()Ljava/lang/String;
+	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun setText (Ljava/lang/String;)V
 }
 
@@ -59046,6 +59011,39 @@ public class org/hexworks/zircon/internal/component/impl/DefaultContainer : org/
 	public final fun shiftBy (Lorg/hexworks/zircon/api/data/Position;)V
 }
 
+public final class org/hexworks/zircon/internal/component/impl/DefaultExclusiveSelectionGroup : org/hexworks/zircon/api/component/ExclusiveSelectionGroup, org/hexworks/zircon/internal/component/InternalGroup {
+	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
+	public fun addComponents ([Lorg/hexworks/zircon/api/component/Component;)Ljava/util/List;
+	public fun getComponentPalette ()Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public fun getComponentPaletteProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getComponentTheme ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
+	public fun getComponentThemeProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getDisabledProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getHasSelection ()Z
+	public fun getHiddenProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getName ()Ljava/lang/String;
+	public fun getOrientation ()Lorg/hexworks/zircon/api/component/data/Orientation;
+	public fun getPart ()Lorg/hexworks/zircon/api/component/theme/Part;
+	public fun getRole ()Lorg/hexworks/zircon/api/component/theme/ComponentRole;
+	public fun getSelected ()Lorg/hexworks/zircon/api/component/Component;
+	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
+	public fun getThemeProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
+	public fun getTilesetProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun getVariant ()Lorg/hexworks/zircon/api/component/theme/Variant;
+	public fun isDisabled ()Z
+	public fun isHidden ()Z
+	public fun removeComponent (Lorg/hexworks/zircon/api/component/Component;)V
+	public fun setComponentPalette (Lorg/hexworks/zircon/api/component/theme/ComponentPalette;)V
+	public fun setComponentTheme (Lorg/hexworks/zircon/api/component/theme/ComponentTheme;)V
+	public fun setDisabled (Z)V
+	public fun setHidden (Z)V
+	public fun setSelected (Lorg/hexworks/zircon/api/component/Component;)V
+	public fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
+	public fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+}
+
 public final class org/hexworks/zircon/internal/component/impl/DefaultGroup : org/hexworks/zircon/internal/component/InternalGroup {
 	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
 	public fun addComponents ([Lorg/hexworks/zircon/api/component/Component;)Ljava/util/List;
@@ -59075,15 +59073,8 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultGroup : or
 	public fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
 }
 
-public class org/hexworks/zircon/internal/component/impl/DefaultHBox : org/hexworks/zircon/internal/component/impl/DefaultContainer, org/hexworks/zircon/api/behavior/TitleOverride, org/hexworks/zircon/api/component/HBox {
+public class org/hexworks/zircon/internal/component/impl/DefaultHBox : org/hexworks/zircon/internal/component/impl/DefaultLinearBox, org/hexworks/zircon/api/component/HBox {
 	public fun <init> (Lorg/hexworks/zircon/api/component/data/ComponentMetadata;Ljava/lang/String;ILorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;)V
-	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
-	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/internal/component/InternalAttachedComponent;
-	public fun detachAllComponents ()Ljava/util/List;
-	public fun getRemainingSpace ()I
-	public fun getTitle ()Ljava/lang/String;
-	public fun getTitleProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun setTitle (Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/internal/component/impl/DefaultHeader : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/Header {
@@ -59134,6 +59125,16 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultLabel : or
 	public fun getText ()Ljava/lang/String;
 	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
 	public fun setText (Ljava/lang/String;)V
+}
+
+public abstract class org/hexworks/zircon/internal/component/impl/DefaultLinearBox : org/hexworks/zircon/internal/component/impl/DefaultContainer, org/hexworks/zircon/api/behavior/TitleOverride {
+	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
+	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/internal/component/InternalAttachedComponent;
+	public fun detachAllComponents ()Ljava/util/List;
+	public final fun getRemainingSpace ()I
+	public fun getTitle ()Ljava/lang/String;
+	public fun getTitleProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
+	public fun setTitle (Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/internal/component/impl/DefaultListItem : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/ListItem {
@@ -59201,59 +59202,6 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultProgressBa
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class org/hexworks/zircon/internal/component/impl/DefaultRadioButton : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/RadioButton {
-	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun deactivated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun focusTaken ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun getKey ()Ljava/lang/String;
-	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getState ()Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;
-	public fun getText ()Ljava/lang/String;
-	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun isSelected ()Z
-	public fun mouseEntered (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun mouseExited (Lorg/hexworks/zircon/api/uievent/MouseEvent;Lorg/hexworks/zircon/api/uievent/UIEventPhase;)Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun setSelected (Z)V
-	public fun setState (Lorg/hexworks/zircon/api/component/RadioButton$RadioButtonState;)V
-	public fun setText (Ljava/lang/String;)V
-}
-
-public final class org/hexworks/zircon/internal/component/impl/DefaultRadioButtonGroup : org/hexworks/zircon/api/component/RadioButtonGroup, org/hexworks/zircon/internal/component/InternalGroup {
-	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
-	public fun addComponent (Lorg/hexworks/zircon/api/component/RadioButton;)Lorg/hexworks/zircon/api/component/AttachedComponent;
-	public synthetic fun addComponents ([Lorg/hexworks/zircon/api/component/Component;)Ljava/util/List;
-	public fun addComponents ([Lorg/hexworks/zircon/api/component/RadioButton;)Ljava/util/List;
-	public fun getComponentPalette ()Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
-	public fun getComponentPaletteProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getComponentTheme ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
-	public fun getComponentThemeProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getDisabledProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getHasSelection ()Z
-	public fun getHiddenProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getName ()Ljava/lang/String;
-	public fun getOrientation ()Lorg/hexworks/zircon/api/component/data/Orientation;
-	public fun getPart ()Lorg/hexworks/zircon/api/component/theme/Part;
-	public fun getRole ()Lorg/hexworks/zircon/api/component/theme/ComponentRole;
-	public fun getSelectedButton ()Lorg/hexworks/zircon/api/component/RadioButton;
-	public fun getSelectedButtonProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getTheme ()Lorg/hexworks/zircon/api/component/ColorTheme;
-	public fun getThemeProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getTileset ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public fun getTilesetProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getVariant ()Lorg/hexworks/zircon/api/component/theme/Variant;
-	public fun isDisabled ()Z
-	public fun isHidden ()Z
-	public fun removeComponent (Lorg/hexworks/zircon/api/component/Component;)V
-	public fun setComponentPalette (Lorg/hexworks/zircon/api/component/theme/ComponentPalette;)V
-	public fun setComponentTheme (Lorg/hexworks/zircon/api/component/theme/ComponentTheme;)V
-	public fun setDisabled (Z)V
-	public fun setHidden (Z)V
-	public fun setSelectedButton (Lorg/hexworks/zircon/api/component/RadioButton;)V
-	public fun setSelectedButtonProperty (Lorg/hexworks/cobalt/databinding/api/property/Property;)V
-	public fun setTheme (Lorg/hexworks/zircon/api/component/ColorTheme;)V
-	public fun setTileset (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
-}
-
 public final class org/hexworks/zircon/internal/component/impl/DefaultRootContainer : org/hexworks/zircon/internal/component/impl/DefaultContainer, org/hexworks/zircon/internal/component/impl/RootContainer {
 	public fun <init> (Lorg/hexworks/zircon/api/component/data/ComponentMetadata;Lorg/hexworks/cobalt/events/api/EventBus;Lorg/hexworks/zircon/internal/event/ZirconScope;Lorg/hexworks/zircon/api/component/renderer/ComponentRenderingStrategy;)V
 	public fun acceptsFocus ()Z
@@ -59270,7 +59218,7 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultRootContai
 	public fun isAttached ()Z
 }
 
-public final class org/hexworks/zircon/internal/component/impl/DefaultTextArea : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Scrollable, org/hexworks/zircon/api/component/TextArea {
+public final class org/hexworks/zircon/internal/component/impl/DefaultTextArea : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/component/TextArea {
 	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun deactivated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
 	public fun focusGiven ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
@@ -59294,24 +59242,7 @@ public final class org/hexworks/zircon/internal/component/impl/DefaultTextArea :
 	public fun setVisibleOffset (Lorg/hexworks/zircon/api/data/Position;)V
 }
 
-public final class org/hexworks/zircon/internal/component/impl/DefaultToggleButton : org/hexworks/zircon/internal/component/impl/DefaultComponent, org/hexworks/zircon/api/behavior/Selectable, org/hexworks/zircon/api/behavior/TextOverride, org/hexworks/zircon/api/component/ToggleButton {
-	public fun activated ()Lorg/hexworks/zircon/api/uievent/UIEventResponse;
-	public fun getSelectedProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun getText ()Ljava/lang/String;
-	public fun getTextProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun isSelected ()Z
-	public fun setSelected (Z)V
-	public fun setText (Ljava/lang/String;)V
-}
-
-public final class org/hexworks/zircon/internal/component/impl/DefaultVBox : org/hexworks/zircon/internal/component/impl/DefaultContainer, org/hexworks/zircon/api/behavior/TitleOverride, org/hexworks/zircon/api/component/VBox {
-	public synthetic fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/api/component/AttachedComponent;
-	public fun addComponent (Lorg/hexworks/zircon/api/component/Component;)Lorg/hexworks/zircon/internal/component/InternalAttachedComponent;
-	public fun detachAllComponents ()Ljava/util/List;
-	public fun getRemainingSpace ()I
-	public fun getTitle ()Ljava/lang/String;
-	public fun getTitleProperty ()Lorg/hexworks/cobalt/databinding/api/property/Property;
-	public fun setTitle (Ljava/lang/String;)V
+public final class org/hexworks/zircon/internal/component/impl/DefaultVBox : org/hexworks/zircon/internal/component/impl/DefaultLinearBox, org/hexworks/zircon/api/component/VBox {
 }
 
 public final class org/hexworks/zircon/internal/component/impl/DefaultVerticalNumberInput : org/hexworks/zircon/internal/component/impl/BaseNumberInput {
@@ -60324,7 +60255,7 @@ public final class org/hexworks/zircon/internal/fragment/impl/DefaultCard : org/
 
 public final class org/hexworks/zircon/internal/fragment/impl/DefaultCheckBoxField : org/hexworks/zircon/api/fragment/CheckBoxField {
 	public static final field INDENT I
-	public fun getCheckBox ()Lorg/hexworks/zircon/api/component/CheckBox;
+	public fun getCheckBox ()Lorg/hexworks/zircon/api/component/BinarySelector;
 	public synthetic fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/VBox;
 	public fun isSelected ()Z
@@ -60395,7 +60326,7 @@ public final class org/hexworks/zircon/internal/fragment/impl/DefaultTab : org/h
 	public fun getKey ()Ljava/lang/String;
 	public synthetic fun getRoot ()Lorg/hexworks/zircon/api/component/Component;
 	public fun getRoot ()Lorg/hexworks/zircon/api/component/Panel;
-	public fun getTabButton ()Lorg/hexworks/zircon/api/component/RadioButton;
+	public fun getTabButton ()Lorg/hexworks/zircon/api/component/BinarySelector;
 	public fun isSelected ()Z
 	public fun setSelected (Z)V
 }

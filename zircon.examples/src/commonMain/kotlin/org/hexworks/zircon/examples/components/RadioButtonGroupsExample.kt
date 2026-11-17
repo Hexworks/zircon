@@ -3,7 +3,7 @@ package org.hexworks.zircon.examples.components
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.radioButton
-import org.hexworks.zircon.api.builder.component.radioButtonGroup
+import org.hexworks.zircon.api.builder.component.selectorGroup
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.extensions.addComponents
@@ -25,8 +25,8 @@ public val radioButtonGroupsExample: Example = Example("Radio groups") { context
         preferredSize = Size(20, 15)
         decorations { +box() }
     }
-    val group0 = radioButtonGroup { }
-    val group1 = radioButtonGroup { }
+    val group0 = selectorGroup { }
+    val group1 = selectorGroup { }
     val btn0 = radioButton { key = "0"; +"Button 0" }
     val btn1 = radioButton { key = "1"; +"Button 1" }
     val btn2 = radioButton { key = "2"; +"Button 2" }

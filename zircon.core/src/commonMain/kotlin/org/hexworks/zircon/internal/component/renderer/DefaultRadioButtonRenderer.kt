@@ -1,20 +1,19 @@
 package org.hexworks.zircon.internal.component.renderer
 
-import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.NOT_SELECTED
-import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.PRESSED
-import org.hexworks.zircon.api.component.RadioButton.RadioButtonState.SELECTED
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.renderer.ComponentRenderContext
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
 import org.hexworks.zircon.api.graphics.DrawWindow
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButton
 import kotlin.math.max
 
-@Suppress("DuplicatedCode")
-public class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> {
+/**
+ * `< >` / `<O>`, and `<o>` while the press is pending, before the label.
+ */
+public class DefaultRadioButtonRenderer : ComponentRenderer<BinarySelector> {
 
-    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultRadioButton>) {
-        val state = context.component.state
-        val text = context.component.text
+    override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<BinarySelector>) {
+        val component = context.component
+        val text = component.text
         val maxTextLength = max(0, drawWindow.size.width - DECORATION_WIDTH)
         val clearedText = if (text.length > maxTextLength) {
             text.substring(0, max(0, maxTextLength - 3)).plus(ELLIPSIS)
@@ -22,7 +21,7 @@ public class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> 
             text
         }
         drawWindow.fillWithText(
-            text = "${STATES.getValue(state)} $clearedText",
+            text = "${markFor(component)} $clearedText",
             style = context.currentStyle
         )
     }
@@ -34,10 +33,10 @@ public class DefaultRadioButtonRenderer : ComponentRenderer<DefaultRadioButton> 
         private const val NOT_SELECTED_BUTTON = "< >"
         public const val DECORATION_WIDTH: Int = NOT_SELECTED_BUTTON.length + 1
 
-        private val STATES = mapOf(
-            Pair(PRESSED, PRESSED_BUTTON),
-            Pair(SELECTED, SELECTED_BUTTON),
-            Pair(NOT_SELECTED, NOT_SELECTED_BUTTON)
-        )
+        internal fun markFor(selector: BinarySelector): String = when {
+            selector.isPressed -> PRESSED_BUTTON
+            selector.isSelected -> SELECTED_BUTTON
+            else -> NOT_SELECTED_BUTTON
+        }
     }
 }

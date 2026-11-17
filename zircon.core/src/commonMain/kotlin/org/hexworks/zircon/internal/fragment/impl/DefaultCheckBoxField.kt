@@ -2,7 +2,7 @@ package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.internal.graphics.linesFor
 import org.hexworks.zircon.api.builder.component.VBoxBuilder
-import org.hexworks.zircon.api.component.CheckBox
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.theme.ComponentFactory
@@ -24,7 +24,7 @@ public class DefaultCheckBoxField internal constructor(
 ) : CheckBoxField {
 
     private val components = ComponentFactory { theme }
-    override val checkBox: CheckBox
+    override val checkBox: BinarySelector
     override val root: VBox
 
     init {

@@ -15,13 +15,17 @@ public object DeleteBeforeCursor : Transformation {
             // we can't delete back if we're at (0, 0)
             cursor.isAtTopLeft -> editorState
             // but if we're at the start of a row (it is empty), then we need to delete it
+            // Backspace at the start of a line joins it onto the previous one; the cursor
+            // lands where the two met.
             cursor.isAtTheStartOfNotTheFirstRow -> {
-                val newY = y - 1;
+                val newY = y - 1
+                val previous = editorState.lineAt(newY)
                 editorState.copy(
                     lines = lines.toMutableList().apply {
                         removeAt(y)
+                        set(newY, Line.create(previous.cells + line.cells))
                     }.toList(),
-                    cursor = Position(editorState.lineAt(newY).lastIndex, newY)
+                    cursor = Position(previous.lastIndex, newY)
                 )
             }
             // we know we're not at the start of any row, so we can just delete the previous char

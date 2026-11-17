@@ -2,9 +2,7 @@ package org.hexworks.zircon.internal.component.renderer
 
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.data.Position
-import org.hexworks.zircon.internal.util.isOdd
-import org.hexworks.zircon.internal.util.toIntCeil
-import org.hexworks.zircon.internal.util.toIntFloor
+import kotlin.math.roundToInt
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.builder.graphics.tileImage
@@ -20,32 +18,11 @@ import org.hexworks.zircon.api.component.theme.textMuted
 public class DefaultVerticalScrollBarRenderer internal constructor() : ComponentRenderer<DefaultVerticalScrollBar> {
 
     override fun render(drawWindow: DrawWindow, context: ComponentRenderContext<DefaultVerticalScrollBar>) {
-        // 📘 Note that we know that a vertical scroll bar will have a width of `1` so we don't check it
-
         val (component, _, style) = context
         val palette = context.palette
-        val contentHeight = component.contentHeight
-        val scrollY = component.scrollY
-
-        // 📘 this is the total height of the content and the viewport
-        // it is possible that we're viewing beyond the actual content
-        // for example when deleting text and only seeing white space
-        // in most of the editor box
-        val totalHeight = component.actualHeight + contentHeight - scrollY
-
-        val contentRatio = component.contentRatioY
-        val scrollPercent = scrollY.toDouble().div(totalHeight)
-        // btn has to be at least 1 in size
-        val buttonHeight = maxOf(
-            contentHeight
-                .toDouble()
-                .div(contentRatio).toIntCeil(), 1
-        )
-        val scrollPos = minOf(contentHeight.times(scrollPercent).toIntCeil(), contentHeight - buttonHeight)
-
-        val needsScrollButton = scrollY > 0
-
-
+        val barHeight = drawWindow.size.height
+        val visible = component.scrollable.visibleSize.height
+        val actual = component.actualHeight
         val barTile = characterTile {
             +Symbols.SINGLE_LINE_VERTICAL
             withStyleSet {
@@ -53,34 +30,24 @@ public class DefaultVerticalScrollBarRenderer internal constructor() : Component
                 backgroundColor = palette.background
             }
         }
-
         drawWindow.fill(barTile)
-
-        if (needsScrollButton) {
-            val button = tileImage {
-                size = Size(1, buttonHeight)
-                withFiller {
-                    +' '
-                    styleSet = style
-                }
-
-                tiles = mapOf(Position(0, buttonHeight / 2) to characterTile {
-                    +Symbols.TRIPLE_BAR
-                    styleSet = style
-                })
+        if (actual <= visible || barHeight <= 0) return
+        // The thumb spans the visible share of the content and travels the rest of the bar.
+        val thumbHeight = (barHeight * visible / actual).coerceIn(1, barHeight)
+        val maxOffset = actual - visible
+        val thumbPos = (component.scrollY.toDouble() / maxOffset * (barHeight - thumbHeight)).roundToInt()
+        val thumb = tileImage {
+            size = Size(1, thumbHeight)
+            withFiller {
+                +' '
+                styleSet = style
             }
-
-            drawWindow.draw(button, Position(0, scrollPos))
+            tiles = mapOf(Position(0, thumbHeight / 2) to characterTile {
+                +Symbols.TRIPLE_BAR
+                styleSet = style
+            })
         }
+        drawWindow.draw(thumb, Position(0, thumbPos))
     }
 }
 
-private fun Double.toButtonHeight(): Int {
-    val down = toIntFloor()
-    val up = toIntCeil()
-    return if (down == up) {
-        if (down.isOdd) down else down - 1
-    } else {
-        if (down.isOdd) down else up
-    }
-}

@@ -5,6 +5,8 @@ import org.hexworks.zircon.api.behavior.Selectable
 
 public class DefaultSelectable(
     override val selectedProperty: Property<Boolean>,
+    override val key: String = "",
 ) : Selectable {
+
     override var isSelected: Boolean by selectedProperty.asDelegate()
 }

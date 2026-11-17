@@ -30,8 +30,8 @@ import org.hexworks.zircon.api.builder.fragment.ProgressFieldBuilder
 import org.hexworks.zircon.api.builder.fragment.TextAreaFieldBuilder
 import org.hexworks.zircon.api.builder.fragment.VerticalTabBarBuilder
 import org.hexworks.zircon.api.builder.fragment.WindowBuilder
+import org.hexworks.zircon.api.component.BinarySelector
 import org.hexworks.zircon.api.component.Button
-import org.hexworks.zircon.api.component.CheckBox
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.HBox
 import org.hexworks.zircon.api.component.Header
@@ -44,10 +44,8 @@ import org.hexworks.zircon.api.component.NumberInput
 import org.hexworks.zircon.api.component.Panel
 import org.hexworks.zircon.api.component.Paragraph
 import org.hexworks.zircon.api.component.ProgressBar
-import org.hexworks.zircon.api.component.RadioButton
 import org.hexworks.zircon.api.component.Slider
 import org.hexworks.zircon.api.component.TextArea
-import org.hexworks.zircon.api.component.ToggleButton
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.fragment.Alert
@@ -112,10 +110,10 @@ public class ComponentFactory(
     // Components
 
     public fun button(init: ButtonBuilder.() -> Unit): Button = build(ButtonBuilder(), init)
-    public fun checkBox(init: CheckBoxBuilder.() -> Unit): CheckBox = build(CheckBoxBuilder(), init)
-    public fun radioButton(init: RadioButtonBuilder.() -> Unit): RadioButton =
+    public fun checkBox(init: CheckBoxBuilder.() -> Unit): BinarySelector = build(CheckBoxBuilder(), init)
+    public fun radioButton(init: RadioButtonBuilder.() -> Unit): BinarySelector =
         build(RadioButtonBuilder(), init)
-    public fun toggleButton(init: ToggleButtonBuilder.() -> Unit): ToggleButton =
+    public fun toggleButton(init: ToggleButtonBuilder.() -> Unit): BinarySelector =
         build(ToggleButtonBuilder(), init)
     public fun header(init: HeaderBuilder.() -> Unit): Header = build(HeaderBuilder(), init)
     public fun label(init: LabelBuilder.() -> Unit): Label = build(LabelBuilder(), init)

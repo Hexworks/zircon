@@ -2,36 +2,22 @@
 
 package org.hexworks.zircon.api.builder.component
 
-import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.ColorTheme
-import org.hexworks.zircon.api.component.RadioButton
-import org.hexworks.zircon.api.component.RadioButtonGroup
-import org.hexworks.zircon.api.dsl.ZirconDsl
-import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.component.impl.DefaultRadioButtonGroup
-import org.hexworks.zircon.api.config.ZirconDefaults
+import org.hexworks.zircon.api.component.BinarySelector
+import org.hexworks.zircon.api.component.ExclusiveSelectionGroup
 
-@ZirconDsl
-public class RadioButtonGroupBuilder : Builder<RadioButtonGroup> {
+@Deprecated("Use ExclusiveSelectionGroupBuilder.", ReplaceWith("ExclusiveSelectionGroupBuilder<BinarySelector>"))
+public typealias RadioButtonGroupBuilder = ExclusiveSelectionGroupBuilder<BinarySelector>
 
-    public var isDisabled: Boolean = false
-    public var isHidden: Boolean = false
-    public var theme: ColorTheme = ZirconDefaults.current.theme
-    public var tileset: TilesetResource = ZirconDefaults.current.tileset
-    public var radioButtons: List<RadioButton> = listOf()
-
-    override fun build(): RadioButtonGroup = DefaultRadioButtonGroup(
-        initialIsDisabled = isDisabled,
-        initialIsHidden = isHidden,
-        initialTheme = theme,
-        initialTileset = tileset
-    ).apply {
-        addComponents(*radioButtons.toTypedArray())
+@Deprecated("Use members.", ReplaceWith("members"))
+public var ExclusiveSelectionGroupBuilder<BinarySelector>.radioButtons: List<BinarySelector>
+    get() = members
+    set(value) {
+        members = value
     }
-}
 
 /**
- * Creates a new [RadioButtonGroup] using the component builder DSL and returns it.
+ * Creates a new group that keeps one radio button selected.
  */
-public fun radioButtonGroup(init: RadioButtonGroupBuilder.() -> Unit): RadioButtonGroup =
-    RadioButtonGroupBuilder().apply(init).build()
+@Deprecated("Use selectorGroup { }.", ReplaceWith("selectorGroup(init)"))
+public fun radioButtonGroup(init: ExclusiveSelectionGroupBuilder<BinarySelector>.() -> Unit): ExclusiveSelectionGroup<BinarySelector> =
+    selectorGroup(init)
