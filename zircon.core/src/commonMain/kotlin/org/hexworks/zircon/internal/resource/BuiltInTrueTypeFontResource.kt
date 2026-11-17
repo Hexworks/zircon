@@ -21,7 +21,6 @@ public enum class BuiltInTrueTypeFontResource(
      */
     AMSTRAD("amstrad", "Amstrad", { it }),
     AMSTRAD_NARROW("amstrad_2y", "Amstrad Narrow", { it.div(2) }),
-    ATT("att", "ATT", { it }),
     ATT_NARROW("att_2y", "ATT Narrow", { it.div(2) }),
     IBM_BIOS("ibm_bios", "IBM Bios", { it }),
     IBM_BIOS_NARROW("ibm_bios_2y", "IBM Bios Narrow", { it.div(2) }),
@@ -31,8 +30,7 @@ public enum class BuiltInTrueTypeFontResource(
     KAYPRO_NARROW("kaypro_2y", "Kaypro Narrow", { it.div(2) }),
     TANDY("tandy", "Tandy", { it }),
     TANDY_NARROW("tandy_2y", "Tandy Narrow", { it.div(2) }),
-    VTECH("vtech", "VTech", { it }),
-    VTECH_NARROW("vtech", "VTech Narrow", { it.div(2) });
+    VTECH("vtech", "VTech", { it });
 
     public fun toTilesetResource(height: Int): TilesetResource = TrueTypeTilesetResource(
         path = "$FONTS_DIR/$fileName.$FONTS_EXT",

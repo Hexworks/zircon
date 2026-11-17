@@ -27,7 +27,6 @@ public val trueTypeFontExample: Example = Example("TrueType") { context ->
         "Tandy" to TrueTypeFontResources.tandy(16),
         "Kaypro" to TrueTypeFontResources.kaypro(16),
         "VTech" to TrueTypeFontResources.vtech(16),
-        "AT&T" to TrueTypeFontResources.att(16),
     )
     val lineSize = Size(context.contentSize.width - 4, 2)
     val layers = fonts.mapIndexed { index, (name, font) ->

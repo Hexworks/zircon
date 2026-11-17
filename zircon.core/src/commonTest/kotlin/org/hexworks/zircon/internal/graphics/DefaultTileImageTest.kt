@@ -173,11 +173,11 @@ class DefaultTileImageTest {
         val FILLER_TILE_A = defaultTile().withCharacter('a')
         val NEW_TILE_B = defaultTile().withCharacter('b')
 
-        val TILESET_CHEEPICUS = CP437TilesetResources.cheepicus16x16()
+        val TILESET_WANDERLUST = CP437TilesetResources.wanderlust16x16()
         val SIZE_3X3 = Size(3, 3)
         val IMAGE_3X3 = DefaultTileImage(
             size = SIZE_3X3,
-            tileset = TILESET_CHEEPICUS,
+            tileset = TILESET_WANDERLUST,
             initialTiles = mapOf(
                 Position(0, 0) to FILLER_TILE_A,
                 Position(1, 0) to FILLER_TILE_A,

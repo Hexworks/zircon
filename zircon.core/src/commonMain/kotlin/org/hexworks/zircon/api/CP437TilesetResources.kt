@@ -65,34 +65,6 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun cheepicus14x14(): TilesetResource = CHEEPICUS_14X14
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun cheepicus15x15(): TilesetResource = CHEEPICUS_15X15
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun cheepicus16x16(): TilesetResource = CHEEPICUS_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun cla18x18(): TilesetResource = CLA_18X18
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
     public fun cooz16x16(): TilesetResource = COOZ_16X16
 
     /**
@@ -101,13 +73,6 @@ public object CP437TilesetResources {
      * with the permission from the authors
      */
     public fun curses24x24(): TilesetResource = CURSES_24X24
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun fnord16x16(): TilesetResource = FNORD_16X16
 
     /**
      * This tileset is from the Dwarf Fortress Tileset Repository:
@@ -135,20 +100,6 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun jolly12x12(): TilesetResource = JOLLY_12X12
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun kelora16x16(): TilesetResource = KELORA_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
     public fun kenran16x16(): TilesetResource = KENRAN_16X16
 
     /**
@@ -170,13 +121,6 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun mdCurses16x16(): TilesetResource = MD_CURSES_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
     public fun mkv12x12(): TilesetResource = MKV_12X12
 
     /**
@@ -184,21 +128,7 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun msGothic16x16(): TilesetResource = MS_GOTHIC_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
     public fun nagidal24x24(): TilesetResource = NAGIDAL_24X24
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun oreslam20x20(): TilesetResource = ORESLAM_20X20
 
     /**
      * This tileset is from the Dwarf Fortress Tileset Repository:
@@ -213,20 +143,6 @@ public object CP437TilesetResources {
      * with the permission from the authors
      */
     public fun rogueYun16x16(): TilesetResource = ROGUE_YUN_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun runeset16x16(): TilesetResource = RUNESET_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun runeset24x24(): TilesetResource = RUNESET_24X24
 
     /**
      * This tileset is from the Dwarf Fortress Tileset Repository:
@@ -268,13 +184,6 @@ public object CP437TilesetResources {
      * http://dwarffortresswiki.org/Tileset_repository
      * with the permission from the authors
      */
-    public fun teeto18x18(): TilesetResource = TEETO_18X18
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
     public fun tyr16x16(): TilesetResource = TYR_16X16
 
     /**
@@ -297,13 +206,6 @@ public object CP437TilesetResources {
      * with the permission from the authors
      */
     public fun wanderlust16x16(): TilesetResource = WANDERLUST_16X16
-
-    /**
-     * This tileset is from the Dwarf Fortress Tileset Repository:
-     * http://dwarffortresswiki.org/Tileset_repository
-     * with the permission from the authors
-     */
-    public fun yayo13x13(): TilesetResource = YAYO_13X13
 
     /**
      * This tileset is from the Dwarf Fortress Tileset Repository:

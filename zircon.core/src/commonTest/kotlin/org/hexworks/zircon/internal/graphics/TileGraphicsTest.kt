@@ -216,7 +216,7 @@ abstract class TileGraphicsTest {
     private fun pos(x: Int, y: Int) = Position(x, y)
 
     companion object {
-        val TILESET = CP437TilesetResources.jolly12x12()
+        val TILESET = CP437TilesetResources.mkv12x12()
         val FILLED_POS = Position(1, 2)
         val SIZE_OF_3X3 = Size(3, 3)
         val FILLER: CharacterTile = characterTile {

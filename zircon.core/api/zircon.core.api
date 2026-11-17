@@ -14,26 +14,16 @@ public final class org/hexworks/zircon/api/CP437TilesetResources {
 	public final fun bisasam16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun bisasam20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun bisasam24x24 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun cheepicus14x14 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun cheepicus15x15 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun cheepicus16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun cla18x18 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun cooz16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun curses24x24 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun fnord16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun guybrush16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun hack64x64 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun haowan18x18 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun jolly12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun kelora16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun kenran16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun lordNightmare8X16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun markX16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun mdCurses16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun mkv12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun msGothic16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun nagidal24x24 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun oreslam20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun raving16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun rexPaint10x10 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun rexPaint12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -43,19 +33,15 @@ public final class org/hexworks/zircon/api/CP437TilesetResources {
 	public final fun rexPaint20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun rexPaint8x8 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun rogueYun16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun runeset16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun runeset24x24 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun runeset32x32 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun sb16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun sirHenry32x32 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun taffer20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun talryth15x15 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun teeto18x18 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun tyr16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun vga8X16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun vidumec12x12 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun wanderlust16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun yayo13x13 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun yayo16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun yobbo20x20 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun zaratustra16x16 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -144,7 +130,6 @@ public final class org/hexworks/zircon/api/TrueTypeFontResources {
 	public static final field INSTANCE Lorg/hexworks/zircon/api/TrueTypeFontResources;
 	public final fun amstrad (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun amstradNarrow (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun att (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun attWide (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun ibmBios (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun ibmBiosNarrow (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
@@ -155,7 +140,6 @@ public final class org/hexworks/zircon/api/TrueTypeFontResources {
 	public final fun tandy (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun tandyNarrow (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun vtech (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
-	public final fun vtechNarrow (I)Lorg/hexworks/zircon/api/resource/TilesetResource;
 }
 
 public abstract interface class org/hexworks/zircon/api/animation/Animation : org/hexworks/zircon/api/behavior/Identifiable {
@@ -60621,26 +60605,16 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 	public static final field BISASAM_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field BISASAM_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field BISASAM_24X24 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field CHEEPICUS_14X14 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field CHEEPICUS_15X15 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field CHEEPICUS_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field CLA_18X18 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field COOZ_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field CURSES_24X24 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field FNORD_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field GUYBRUSH_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field HACK_64X64 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field HAOWAN_18X18 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field JOLLY_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field KELORA_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field KENRAN_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field LORD_NIGHTMARE_8X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field MARK_X_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field MD_CURSES_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field MKV_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field MS_GOTHIC_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field NAGIDAL_24X24 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field ORESLAM_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field RAVING_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field REX_PAINT_10X10 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field REX_PAINT_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
@@ -60650,19 +60624,15 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 	public static final field REX_PAINT_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field REX_PAINT_8X8 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field ROGUE_YUN_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field RUNESET_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field RUNESET_24X24 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field RUNESET_32X32 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field SB_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field SIR_HENRY_32X32 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field TAFFER_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field TALRYTH_15X15 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field TEETO_18X18 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field TYR_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field VGA_8X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field VIDUMEC_12X12 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field WANDERLUST_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
-	public static final field YAYO_13X13 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field YAYO_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field YOBBO_20X20 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
 	public static final field ZARATUSTRA_16X16 Lorg/hexworks/zircon/internal/resource/BuiltInCP437TilesetResource;
@@ -60688,7 +60658,6 @@ public final class org/hexworks/zircon/internal/resource/BuiltInCP437TilesetReso
 public final class org/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource : java/lang/Enum, org/hexworks/zircon/api/behavior/HasTitle {
 	public static final field AMSTRAD Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field AMSTRAD_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
-	public static final field ATT Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field ATT_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field Companion Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource$Companion;
 	public static final field FONTS_DIR Ljava/lang/String;
@@ -60702,7 +60671,6 @@ public final class org/hexworks/zircon/internal/resource/BuiltInTrueTypeFontReso
 	public static final field TANDY Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field TANDY_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static final field VTECH Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
-	public static final field VTECH_NARROW Lorg/hexworks/zircon/internal/resource/BuiltInTrueTypeFontResource;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public fun getTitle ()Ljava/lang/String;
 	public final fun toTilesetResource (I)Lorg/hexworks/zircon/api/resource/TilesetResource;

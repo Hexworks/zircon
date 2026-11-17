@@ -74,20 +74,8 @@ public object TrueTypeFontResources {
      * This font is from the Oldschool PC font pack
      * https://int10h.org/oldschool-pc-fonts/
      */
-    public fun vtechNarrow(height: Int): TilesetResource = BuiltInTrueTypeFontResource.VTECH_NARROW.toTilesetResource(height)
-
-    /**
-     * This font is from the Oldschool PC font pack
-     * https://int10h.org/oldschool-pc-fonts/
-     */
     public fun ibmPs2Narrow(height: Int): TilesetResource =
         BuiltInTrueTypeFontResource.IBM_PS2_NARROW.toTilesetResource(height)
-
-    /**
-     * This font is from the Oldschool PC font pack
-     * https://int10h.org/oldschool-pc-fonts/
-     */
-    public fun att(height: Int): TilesetResource = BuiltInTrueTypeFontResource.ATT.toTilesetResource(height)
 
     /**
      * This font is from the Oldschool PC font pack

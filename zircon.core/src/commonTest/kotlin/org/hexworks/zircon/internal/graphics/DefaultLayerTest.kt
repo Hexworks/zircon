@@ -86,7 +86,7 @@ class DefaultLayerTest {
     }
 
     companion object {
-        private val TILESET = CP437TilesetResources.cla18x18()
+        private val TILESET = CP437TilesetResources.haowan18x18()
         val CHAR = characterTile { +'x' }
         val SIZE = Size(10, 10)
         val EMPTY_TILE_IMAGE = tileGraphics {
