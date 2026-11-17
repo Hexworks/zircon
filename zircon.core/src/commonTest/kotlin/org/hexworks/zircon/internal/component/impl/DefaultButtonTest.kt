@@ -33,29 +33,6 @@ class DefaultButtonTest : FocusableComponentImplementationTest<DefaultButton>() 
     override lateinit var target: DefaultButton
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.accentColor
-                backgroundColor = Color.TRANSPARENT
-            }
-            highlightedStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.primaryBackgroundColor
-                backgroundColor = DEFAULT_THEME.accentColor
-            }
-            focusedStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryBackgroundColor
-                backgroundColor = DEFAULT_THEME.accentColor
-            }
-            activeStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = DEFAULT_THEME.accentColor
-            }
-            disabledStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

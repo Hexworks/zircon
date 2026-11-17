@@ -1,5 +1,7 @@
 package org.hexworks.zircon.examples.other
 
+import org.hexworks.zircon.api.component.theme.surface
+import org.hexworks.zircon.api.component.theme.onSurface
 import org.hexworks.zircon.api.TrueTypeFontResources
 import org.hexworks.zircon.api.builder.graphics.characterTileString
 import org.hexworks.zircon.api.builder.graphics.layer
@@ -18,7 +20,7 @@ import org.hexworks.zircon.examples.ExampleView
  * cell their glyphs fill, which is what the font pack's originals look like.
  */
 public val trueTypeFontExample: Example = Example("TrueType") { context ->
-    val theme = context.screen.theme
+    val palette = context.screen.componentPalette
     val fonts = listOf(
         "IBM BIOS" to TrueTypeFontResources.ibmBios(16),
         "Amstrad" to TrueTypeFontResources.amstrad(16),
@@ -38,8 +40,8 @@ public val trueTypeFontExample: Example = Example("TrueType") { context ->
                 text = "$name: this is written with a true type font..."
                 size = lineSize
                 withStyleSet {
-                    foregroundColor = theme.primaryForegroundColor
-                    backgroundColor = theme.primaryBackgroundColor
+                    foregroundColor = palette.onSurface
+                    backgroundColor = palette.surface
                 }
             })
         }

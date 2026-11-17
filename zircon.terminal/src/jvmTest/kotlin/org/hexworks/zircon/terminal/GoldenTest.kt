@@ -1,6 +1,6 @@
 package org.hexworks.zircon.terminal
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.vBox
@@ -27,7 +27,7 @@ class GoldenTest {
             tileset = CP437TilesetResources.wanderlust16x16()
         }
         val screen = grid.toScreen()
-        screen.theme = ColorThemes.arc()
+        screen.componentPalette = Palettes.catppuccin()
         val box = vBox { preferredSize = Size(24, 6) }
         screen.addComponent(box)
         box.addComponent(header { +"Terminal" })

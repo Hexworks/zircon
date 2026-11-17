@@ -1,6 +1,6 @@
 package org.hexworks.zircon.examples.modifiers
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.theme.primary
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.modifier.FadeIn
 import org.hexworks.zircon.examples.Example
@@ -9,7 +9,7 @@ import org.hexworks.zircon.examples.ExampleView
 /** Text fading in from black, in a few and in many steps. Restarts when shown again. */
 public val fadeInExample: Example = Example("Fade in") { context ->
     val layer = context.contentLayer()
-    val color = ColorThemes.nord().accentColor
+    val color = context.screen.componentPalette.primary
     ExampleView(
         content = context.emptyContent(),
         layers = listOf(layer),

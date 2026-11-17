@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -8,7 +6,6 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.builder.component.group
 import org.hexworks.zircon.api.component.AttachedComponent
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ExclusiveSelectionGroup
 import org.hexworks.zircon.api.resource.TilesetResource
@@ -18,12 +15,10 @@ import org.hexworks.zircon.internal.component.InternalGroup
 public class DefaultExclusiveSelectionGroup<T> internal constructor(
     initialIsDisabled: Boolean,
     initialIsHidden: Boolean,
-    initialTheme: ColorTheme,
     initialTileset: TilesetResource,
     private val groupDelegate: InternalGroup<T> = group<T> {
         isDisabled = initialIsDisabled
         isHidden = initialIsHidden
-        theme = initialTheme
         tileset = initialTileset
     } as InternalGroup<T>
 ) : InternalGroup<T> by groupDelegate, ExclusiveSelectionGroup<T> where T : Component, T : Selectable {

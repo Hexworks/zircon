@@ -25,7 +25,6 @@ import org.hexworks.zircon.examples.tilesetsFor
  */
 public val multiTileExample: Example = Example("Multi tile") { context ->
     val screenTileset = context.screen.tileset
-    val theme = context.screen.theme
     val root = panel {
         preferredSize = context.contentSize
         tileset = screenTileset
@@ -38,7 +37,6 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
         +fonts[0].title
         position = Position(1, 1)
         tileset = fonts[0]
-        colorTheme = theme
         bindingAction = NoActionOnBind
     })
 
@@ -46,7 +44,6 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
         +fonts[1].title
         position = Position(1, 3)
         tileset = fonts[1]
-        colorTheme = theme
         bindingAction = NoActionOnBind
     })
 
@@ -55,7 +52,6 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
         position = Position(1, 5)
         preferredSize = Size(22, 2)
         tileset = fonts[2]
-        colorTheme = theme
         bindingAction = NoActionOnBind
     })
 
@@ -64,13 +60,11 @@ public val multiTileExample: Example = Example("Multi tile") { context ->
         preferredSize = Size(22, 3)
         decorations { +box(title = fonts[3].title) }
         tileset = fonts[3]
-        colorTheme = theme
         bindingAction = NoActionOnBind
     }
     container.addComponent(label {
         +fonts[4].title
         tileset = fonts[4]
-        colorTheme = theme
         bindingAction = NoActionOnBind
     })
     root.addComponent(container)

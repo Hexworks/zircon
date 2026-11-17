@@ -1,7 +1,10 @@
 package org.hexworks.zircon.examples.components
 
+import org.hexworks.zircon.api.component.theme.TokyoNightStyle
+import org.hexworks.zircon.api.component.theme.KanagawaVariant
+import org.hexworks.zircon.api.component.theme.CatppuccinFlavor
+import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentAlignments.alignmentWithin
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.button
@@ -27,24 +30,23 @@ public val groupsExample: Example = Example("Groups") { context ->
         preferredSize = Size(15, 10)
         position = Position(6, 5)
         decorations { +box(title = "Left Panel") }
-        colorTheme = ColorThemes.adriftInDreams()
+        componentPalette = Palettes.catppuccin(CatppuccinFlavor.LATTE)
         tileset = CP437TilesetResources.aduDhabi16x16()
     }
     val rightPanel = panel {
         preferredSize = Size(15, 10)
         position = Position(18, 0).relativeToRightOf(leftPanel)
         decorations { +box(title = "Right Panel") }
-        colorTheme = ColorThemes.afterTheHeist()
+        componentPalette = Palettes.kanagawa(KanagawaVariant.DRAGON)
         tileset = CP437TilesetResources.cooz16x16()
     }
     val group = group<Component> {
-        theme = ColorThemes.amigaOs()
         tileset = CP437TilesetResources.rexPaint16x16()
     }
     val groupButton = button {
         +"Add Panels to Group"
         alignment = alignmentWithin(root, ComponentAlignment.BOTTOM_CENTER)
-        colorTheme = ColorThemes.cyberpunk()
+        componentPalette = Palettes.tokyoNight(TokyoNightStyle.STORM)
     }.apply {
         onActivated { group.addComponents(leftPanel, rightPanel) }
     }

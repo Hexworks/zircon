@@ -236,3 +236,9 @@ TextArea/ScrollBar) come after D.
   `screen.componentPalette`. Not done: builders exposing each project's native color names (`accent = MAUVE` is
   there as the Catppuccin accent enum; a full named-color DSL waits for a need, see ROADMAP). Palette plan complete;
   next are the refactors in `component-refactoring-handover.md`.
+
+**Status (2026-11-17): `ColorTheme` is gone.** `ColorTheme`, `ColorThemes`, `ColorThemeResource`, the adapter, the
+builders' `colorTheme`, `ZirconDefaults.theme`, `screen.theme`, `Group.theme`, `View.theme` and
+`ComponentRenderContext.theme` are removed; colors come only from `ComponentPalette` (default
+`Palettes.catppuccin()`). The 77 legacy five-color themes are not bundled any more; new palettes and the
+color fine-tuning are a session of their own.

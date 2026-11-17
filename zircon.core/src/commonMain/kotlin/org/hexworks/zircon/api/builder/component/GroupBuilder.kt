@@ -1,9 +1,6 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.builder.Builder
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Group
 import org.hexworks.zircon.api.dsl.ZirconDsl
@@ -16,14 +13,12 @@ public class GroupBuilder<T : Component> : Builder<Group<T>> {
 
     public var isDisabled: Boolean = false
     public var isHidden: Boolean = false
-    public var theme: ColorTheme = ZirconDefaults.current.theme
     public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var name: String = ""
 
     override fun build(): Group<T> = DefaultGroup(
         initialIsDisabled = isDisabled,
         initialIsHidden = isHidden,
-        initialTheme = theme,
         initialTileset = tileset,
         name = name
     )

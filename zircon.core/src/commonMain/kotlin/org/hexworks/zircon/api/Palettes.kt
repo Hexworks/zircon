@@ -1,11 +1,13 @@
 package org.hexworks.zircon.api
 
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.theme.CatppuccinAccent
 import org.hexworks.zircon.api.component.theme.CatppuccinFlavor
 import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.component.theme.KanagawaVariant
 import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.component.theme.TokyoNightStyle
+import org.hexworks.zircon.internal.component.theme.AnsiPalettes
 import org.hexworks.zircon.internal.component.theme.BundledPalettes
 import org.hexworks.zircon.internal.component.theme.neobrutalism.NeobrutalismPalettes
 
@@ -18,6 +20,19 @@ import org.hexworks.zircon.internal.component.theme.neobrutalism.NeobrutalismPal
  * `docs/research/semantic-component-palettes.md`.
  */
 public object Palettes {
+
+    /**
+     * A palette from a terminal's colors: its default [foreground] and [background] and the
+     * 16 [ansi] slots in SGR order (black, red, green, yellow, blue, magenta, cyan, white,
+     * then their bright versions). Light or dark follows the background. The terminal
+     * renderer reads these from the terminal and rebuilds the palette when they change.
+     */
+    public fun fromAnsi(
+        foreground: Color,
+        background: Color,
+        ansi: List<Color>,
+        name: String = "Terminal",
+    ): ComponentPalette = AnsiPalettes.fromAnsi(foreground, background, ansi, name)
 
     /**
      * [Catppuccin](https://catppuccin.com) in one of its four flavors, with the chosen

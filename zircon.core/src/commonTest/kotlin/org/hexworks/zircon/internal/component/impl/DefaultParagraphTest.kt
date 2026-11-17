@@ -26,13 +26,6 @@ class DefaultParagraphTest : ComponentImplementationTest<DefaultParagraph>() {
     override lateinit var target: DefaultParagraph
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

@@ -24,13 +24,6 @@ class DefaultListItemTest : ComponentImplementationTest<DefaultListItem>() {
     override lateinit var target: DefaultListItem
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

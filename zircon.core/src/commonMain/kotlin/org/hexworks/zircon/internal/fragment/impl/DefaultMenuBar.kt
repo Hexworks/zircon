@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.internal.fragment.impl
 
 import org.hexworks.zircon.internal.extensions.asInternal
@@ -16,7 +14,6 @@ import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.hBox
 import org.hexworks.zircon.api.builder.component.modal
 import org.hexworks.zircon.api.builder.component.vBox
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -34,7 +31,6 @@ public class DefaultMenuBar<T : Any> internal constructor(
     position: Position,
     width: Int,
     spacing: Int,
-    theme: ColorTheme,
     tileset: TilesetResource,
     menuElements: List<DropdownMenu<T>>,
 ) : MenuBar<T> {
@@ -42,7 +38,6 @@ public class DefaultMenuBar<T : Any> internal constructor(
     override val root: HBox = hBox {
         this.position = position
         this.preferredContentSize = Size(width, 1)
-        this.colorTheme = theme
         this.tileset = tileset
         this.spacing = spacing
     }
@@ -77,7 +72,7 @@ public class DefaultMenuBar<T : Any> internal constructor(
                     centeredDialog = false
                     contentComponent = menuItems
                     preferredSize = screen.size
-                    colorTheme = theme
+                    componentPalette = screen.componentPalette
                     this.tileset = tileset
                     darkenPercent = 0.0
                 }
@@ -106,7 +101,6 @@ public class DefaultMenuBar<T : Any> internal constructor(
                 children.forEach { menuItem ->
                     menuItems.addComponent(button {
                         +menuItem.label
-                        colorTheme = theme
                         decorations {
                             +noDecoration()
                         }

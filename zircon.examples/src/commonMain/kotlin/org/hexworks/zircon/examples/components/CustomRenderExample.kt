@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples.components
 
+import org.hexworks.zircon.api.builder.component.componentStyleSet
 import org.hexworks.zircon.api.ComponentDecorations.box
-import org.hexworks.zircon.api.builder.component.colorTheme
 import org.hexworks.zircon.api.builder.component.label
 import org.hexworks.zircon.api.builder.component.logArea
 import org.hexworks.zircon.api.builder.graphics.styleSet
@@ -35,12 +35,11 @@ public val customRenderExample: Example = Example("Custom render") { context ->
         logArea.addInlineRow(listOf(label { +"This is a " }, colored, label { +" Label." }))
         val leftLabel = label {
             +"Nightmare"
-            colorTheme = colorTheme {
-                accentColor = DefaultAnsiPalette[ANSIColor.BRIGHT_YELLOW]
-                primaryForegroundColor = DefaultAnsiPalette[ANSIColor.RED]
-                primaryBackgroundColor = DefaultAnsiPalette[ANSIColor.GREEN]
-                secondaryForegroundColor = DefaultAnsiPalette[ANSIColor.BLUE]
-                secondaryBackgroundColor = DefaultAnsiPalette[ANSIColor.CYAN]
+            componentStyleSet = componentStyleSet {
+                defaultStyle = styleSet {
+                    foregroundColor = DefaultAnsiPalette[ANSIColor.RED]
+                    backgroundColor = DefaultAnsiPalette[ANSIColor.GREEN]
+                }
             }
         }
         logArea.addRow(leftLabel, applyTheme = false)

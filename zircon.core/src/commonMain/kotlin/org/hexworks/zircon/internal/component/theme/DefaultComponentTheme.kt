@@ -56,7 +56,7 @@ import org.hexworks.zircon.internal.component.renderer.VerticalSliderRenderer
  * The stock look: the renderer, decorations and color derivation every component kind is
  * built with when no theme says otherwise, and the look every other theme falls back to. It
  * has an entry for every kind (so a theme need not repeat a renderer it does not change) and
- * the tab bar parts. The derivations are the ones 1.x computed from its `ColorTheme`, in
+ * the tab bar parts. The derivations are the ones 1.x computed from its five-color theme, in
  * palette terms: containers are the border color on the surface, labels are muted text,
  * buttons are the primary color at rest and the primary surface when hovered, fields are
  * sunken wells.

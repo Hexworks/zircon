@@ -42,7 +42,7 @@ and `Part`, and `ThemeMode` is resolved when picking a palette.
   `ComponentThemes.default()`, the stock look.)*
 - **ComponentTheme wins over ColorTheme.** When a component has a component theme (own or propagated) its style set
   comes from the theme and `ColorTheme` changes are ignored. Without a component theme nothing changes, so the two
-  co-exist until `ColorTheme` is sunset. *(changes: colors come from `screen.componentPalette`; `ColorTheme` is
+  co-exist until `ColorTheme` is sunset. *(2026-11-17: `ColorTheme` removed, see component-palettes.md.)* *(changes: colors come from `screen.componentPalette`; `ColorTheme` is
   adapted into a palette and deprecated.)*
 - **Switching keeps layout.** A component's outer size is fixed when it is built. On a theme switch the rendering
   strategy is replaced and `contentOffset` / `contentSize` are recomputed from the new decorations (clamped at zero);

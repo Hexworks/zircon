@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component.data
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -7,7 +5,6 @@ import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.data.Position
@@ -32,7 +29,6 @@ public data class ComponentMetadata(
     val name: String = "",
     val bindingAction: BindingAction = UpdateOnBind,
     // properties
-    val themeProperty: Property<ColorTheme> = ColorTheme.UNKNOWN.toProperty(),
     val componentStyleSetProperty: Property<ComponentStyleSet> = ComponentStyleSet.UNKNOWN.toProperty(),
     val tilesetProperty: Property<TilesetResource> = TilesetResource.unknown().toProperty(),
     val hiddenProperty: Property<Boolean> = false.toProperty(),
@@ -91,9 +87,6 @@ public data class ComponentMetadata(
 
     val componentStyleSet: ComponentStyleSet
         get() = componentStyleSetProperty.value
-
-    val theme: ColorTheme
-        get() = themeProperty.value
 
     val isHidden: Boolean
         get() = hiddenProperty.value

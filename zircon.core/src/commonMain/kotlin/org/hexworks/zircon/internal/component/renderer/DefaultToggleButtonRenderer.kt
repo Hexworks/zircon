@@ -13,6 +13,9 @@ import org.hexworks.zircon.api.graphics.Symbols.SINGLE_LINE_HORIZONTAL
 import org.hexworks.zircon.api.graphics.Symbols.TRIPLE_BAR
 import org.hexworks.zircon.api.graphics.DrawWindow
 import org.hexworks.zircon.api.component.BinarySelector
+import org.hexworks.zircon.api.component.theme.onSurface
+import org.hexworks.zircon.api.component.theme.primary
+import org.hexworks.zircon.api.component.theme.textMuted
 import kotlin.math.max
 
 public class DefaultToggleButtonRenderer : ComponentRenderer<BinarySelector> {
@@ -31,13 +34,13 @@ public class DefaultToggleButtonRenderer : ComponentRenderer<BinarySelector> {
         )
 
         val isToggled = context.component.isSelected
-        val theme = context.component.theme
+        val palette = context.palette
         val toggledBackground = Color.TRANSPARENT
         val untoggledBackground = Color.TRANSPARENT
         val bar = characterTile {
             character = SINGLE_LINE_HORIZONTAL
             withStyleSet {
-                foregroundColor = theme.secondaryForegroundColor
+                foregroundColor = palette.textMuted
                 backgroundColor = if (isToggled) toggledBackground else untoggledBackground
             }
         }
@@ -47,7 +50,7 @@ public class DefaultToggleButtonRenderer : ComponentRenderer<BinarySelector> {
                 tile = characterTile {
                     character = TRIPLE_BAR
                     withStyleSet {
-                        foregroundColor = theme.accentColor
+                        foregroundColor = palette.primary
                         backgroundColor = toggledBackground
                     }
                 },
@@ -58,7 +61,7 @@ public class DefaultToggleButtonRenderer : ComponentRenderer<BinarySelector> {
                 tile = characterTile {
                     character = TRIPLE_BAR
                     withStyleSet {
-                        foregroundColor = theme.primaryForegroundColor
+                        foregroundColor = palette.onSurface
                         backgroundColor = untoggledBackground
                     }
                 },

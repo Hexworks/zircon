@@ -42,7 +42,6 @@ class ScrollingLogAreaIntegrationTest : ComponentIntegrationTestBase(size = Size
     override fun buildScreenContent(screen: Screen) {
 
         screen.display()
-        screen.theme = theme
 
         val logArea = logArea {
             preferredSize = Size(58, 23)

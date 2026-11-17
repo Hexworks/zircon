@@ -1,5 +1,7 @@
 package org.hexworks.zircon.examples.other
 
+import org.hexworks.zircon.api.component.theme.surface
+import org.hexworks.zircon.api.component.theme.onSurface
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
@@ -28,7 +30,7 @@ public val typingExample: Example = Example("Typing") { context ->
         size = area
         offset = origin
     }
-    val theme = screen.theme
+    val palette = screen.componentPalette
     var cursor = Position.ZERO
     fun syncCursor() {
         screen.cursorPosition = origin + cursor
@@ -37,8 +39,8 @@ public val typingExample: Example = Example("Typing") { context ->
         page.draw(characterTile {
             character = char
             withStyleSet {
-                foregroundColor = theme.primaryForegroundColor
-                backgroundColor = theme.primaryBackgroundColor
+                foregroundColor = palette.onSurface
+                backgroundColor = palette.surface
             }
         }, cursor)
     }

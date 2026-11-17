@@ -8,6 +8,8 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.internal.grid.InternalTileGrid
+import org.hexworks.zircon.api.Palettes
+import org.hexworks.zircon.api.component.theme.KanagawaVariant
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.Resource
 import org.hexworks.zircon.api.resource.ResourceLoader
@@ -47,13 +49,14 @@ class ExamplesScreenTest {
         val first = runBlocking { examplesScreen(MIN_SIZE) }
         first.tabBar.selectedHorizontalKey = "dialogs"
         first.tabBar.selectedVerticalKey = "Nested modals"
-        first.paletteProperty.value = PALETTES.first { it.name == "Tron" }
-        first.tilesetProperty.value = tilesetsFor(Size(16, 16)).first { it.title == "VGA 8×16" || it.title == "Zilk 16×16" }
+        val dragon = Palettes.kanagawa(KanagawaVariant.DRAGON)
+        first.paletteProperty.value = dragon
+        first.tilesetProperty.value = tilesetsFor(Size(16, 16)).first { it.title == "VGA 8x16" || it.title == "Zilk 16x16" }
         val second = runBlocking { examplesScreen(MIN_SIZE, previous = first) }
         second.tabBar.selectedHorizontalKey shouldBe "dialogs"
         second.tabBar.selectedVerticalKey shouldBe "Nested modals"
-        second.paletteProperty.value.name shouldBe "Tron"
-        second.grid.tileset.title shouldBe "Zilk 16×16"
+        second.paletteProperty.value.name shouldBe dragon.name
+        second.grid.tileset.title shouldBe "Zilk 16x16"
         second.grid.tileset shouldBe second.tilesetProperty.value
     }
 
@@ -76,7 +79,7 @@ class ExamplesScreenTest {
     @Test
     fun aTilesetChangeReachesTheGridAndTheComponents() {
         val shown = runBlocking { examplesScreen(MIN_SIZE) }
-        val zilk = tilesetsFor(Size(16, 16)).first { it.title == "Zilk 16×16" }
+        val zilk = tilesetsFor(Size(16, 16)).first { it.title == "Zilk 16x16" }
         shown.tilesetProperty.value = zilk
         shown.grid.tileset shouldBe zilk
         // The displayed screen delegates the grid's renderables to its own: the components among them must follow.

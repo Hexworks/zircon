@@ -27,13 +27,6 @@ class DefaultHeaderTest : ComponentImplementationTest<DefaultHeader>() {
     override lateinit var target: DefaultHeader
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.primaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

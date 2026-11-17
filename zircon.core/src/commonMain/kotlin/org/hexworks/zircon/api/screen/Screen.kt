@@ -1,8 +1,5 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.screen
 
-import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentContainer
 import org.hexworks.zircon.api.component.modal.Modal
@@ -23,7 +20,7 @@ import org.hexworks.zircon.api.component.theme.ComponentFactory
  * [Screen]s also implement the [ComponentContainer] interface which means that if you want
  * to use [Component]s you'll have to use [Screen]s.
  */
-public interface Screen : ComponentContainer, ColorThemeOverride, TileGrid {
+public interface Screen : ComponentContainer, TileGrid {
 
     /**
      * Moves the contents of this [Screen] to the underlying [TileGrid],

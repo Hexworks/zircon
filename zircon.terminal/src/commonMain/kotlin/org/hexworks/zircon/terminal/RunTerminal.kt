@@ -1,6 +1,7 @@
 package org.hexworks.zircon.terminal
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -31,6 +32,12 @@ public val CTRL_C: KeyboardEventMatcher =
  * render, on the loop's thread. Returns the finished [TerminalSession] with its frame
  * statistics.
  *
+ * The terminal's own colors are read at startup (`OSC 10`, `OSC 11`, `OSC 4`) and
+ * [onTerminalColors] gets them, on the loop's thread, before the first frame and again
+ * whenever they change: the terminal announces a theme switch (mode 2031) or the background
+ * answers differently to a poll every two seconds. Build a palette from them with
+ * [TerminalColors.toComponentPalette]. A terminal that does not answer (tmux) never calls it.
+ *
  * Log statements written while the grid is on screen would scribble over it, so when the
  * application installed no [LoggerFactory.sink] of its own they are held back and printed
  * to the error stream once the terminal is restored. An application that did install one
@@ -41,8 +48,9 @@ public fun runTerminal(
     targetFps: Int = 60,
     quitKeys: Set<KeyboardEventMatcher> = setOf(CTRL_C),
     beforeFrame: () -> Unit = {},
+    onTerminalColors: (TerminalColors) -> Unit = {},
     tty: Tty = systemTty(),
-): TerminalSession = TerminalSession(tileGrid, targetFps, quitKeys, beforeFrame, tty).also { it.run() }
+): TerminalSession = TerminalSession(tileGrid, targetFps, quitKeys, beforeFrame, tty, onTerminalColors).also { it.run() }
 
 /**
  * One run of the loop. Kept separate from [runTerminal] so tests can drive it with a fake
@@ -54,6 +62,7 @@ public class TerminalSession(
     private val quitKeys: Set<KeyboardEventMatcher>,
     private val beforeFrame: () -> Unit,
     private val tty: Tty,
+    private val onTerminalColors: (TerminalColors) -> Unit = {},
 ) {
     private val grid = tileGrid as InternalTileGrid
     private val renderer = TerminalRenderer(tileGrid)
@@ -66,6 +75,17 @@ public class TerminalSession(
     private var kittyFlags: Int? = null
     private var deviceAttributesSeen = false
     private var stop = false
+
+    // The color replies of the query in flight; published when the DA reply that closes it arrives.
+    private var foreground: Color? = null
+    private var background: Color? = null
+    private val ansi = arrayOfNulls<Color>(16)
+    private var colorsQueried = false
+    private var lastBackgroundPoll = 0.0
+
+    /** The colors the terminal reported last, `null` when it never answered. */
+    public var terminalColors: TerminalColors? = null
+        private set
 
     /** Frames rendered so far; the benchmark launcher reads it. */
     public var framesRendered: Long = 0
@@ -131,9 +151,24 @@ public class TerminalSession(
 
             override fun onDeviceAttributes() {
                 deviceAttributesSeen = true
+                if (colorsQueried) publishColors()
+            }
+
+            override fun onColor(code: Int, index: Int, color: Color) {
+                when (code) {
+                    10 -> foreground = color
+                    11 -> if (colorsQueried) background = color
+                    else terminalColors?.let { known -> if (color != known.background) queryColors() }
+                    4 -> if (index in 0..15) ansi[index] = color
+                }
+            }
+
+            override fun onColorScheme(dark: Boolean) {
+                queryColors()
             }
         }
-        write("${AnsiEncoder.CSI}?u${AnsiEncoder.CSI}c")
+        write(colorQueries() + "${AnsiEncoder.CSI}?u${AnsiEncoder.CSI}c")
+        colorsQueried = true
         val started = TimeSource.Monotonic.markNow()
         while (!deviceAttributesSeen) {
             val remaining = HANDSHAKE_TIMEOUT_MS - started.elapsedNow().inWholeMilliseconds.toInt()
@@ -151,13 +186,14 @@ public class TerminalSession(
     private fun enterModes() {
         // Alt screen, hidden cursor, all keys as escape codes with event types and text,
         // SGR mouse with motion.
-        write("${AnsiEncoder.CSI}?1049h${AnsiEncoder.CSI}?25l${AnsiEncoder.CSI}>${KITTY_FLAGS}u${AnsiEncoder.CSI}?1003h${AnsiEncoder.CSI}?1006h")
+        // ... and color scheme change reports (mode 2031).
+        write("${AnsiEncoder.CSI}?1049h${AnsiEncoder.CSI}?25l${AnsiEncoder.CSI}>${KITTY_FLAGS}u${AnsiEncoder.CSI}?1003h${AnsiEncoder.CSI}?1006h${AnsiEncoder.CSI}?2031h")
         val size = tty.size()
         encoder.resize(size.width, size.height)
     }
 
     private fun leaveModes() {
-        write("${AnsiEncoder.CSI}?1003l${AnsiEncoder.CSI}?1006l${AnsiEncoder.CSI}<u${AnsiEncoder.CSI}0m${AnsiEncoder.CSI}?25h${AnsiEncoder.CSI}?1049l")
+        write("${AnsiEncoder.CSI}?2031l${AnsiEncoder.CSI}?1003l${AnsiEncoder.CSI}?1006l${AnsiEncoder.CSI}<u${AnsiEncoder.CSI}0m${AnsiEncoder.CSI}?25h${AnsiEncoder.CSI}?1049l")
     }
 
     private fun loop() {
@@ -170,6 +206,12 @@ public class TerminalSession(
                 encoder.resize(size.width, size.height)
             }
             val now = clock.elapsedNow().inWholeMicroseconds / 1000.0
+            if (now - lastBackgroundPoll >= COLOR_POLL_MS) {
+                // Terminals without mode 2031 never announce a theme switch: ask for the
+                // background now and then, and re-read everything when it changed.
+                lastBackgroundPoll = now
+                if (!colorsQueried) write("${AnsiEncoder.OSC}11;?${AnsiEncoder.ST}")
+            }
             val wait = (nextFrameAt - now).toInt()
             if (wait > 0) {
                 val n = tty.read(input, wait)
@@ -218,6 +260,34 @@ public class TerminalSession(
         framesRendered++
     }
 
+    /** Asks for every color again; the DA reply at the end tells when all answers are in. */
+    private fun queryColors() {
+        if (colorsQueried) return
+        colorsQueried = true
+        write(colorQueries() + "${AnsiEncoder.CSI}c")
+    }
+
+    private fun colorQueries(): String = buildString {
+        append(AnsiEncoder.OSC).append("10;?").append(AnsiEncoder.ST)
+        append(AnsiEncoder.OSC).append("11;?").append(AnsiEncoder.ST)
+        for (i in 0 until 16) append(AnsiEncoder.OSC).append("4;").append(i).append(";?").append(AnsiEncoder.ST)
+    }
+
+    private fun publishColors() {
+        colorsQueried = false
+        val fg = foreground
+        val bg = background
+        foreground = null
+        background = null
+        val slots = List(16) { i -> ansi[i] ?: TerminalColors.DEFAULT_ANSI[i] }
+        ansi.fill(null)
+        if (fg == null || bg == null) return
+        val colors = TerminalColors(fg, bg, slots)
+        if (colors == terminalColors) return
+        terminalColors = colors
+        onTerminalColors(colors)
+    }
+
     private fun write(text: String) {
         val bytes = text.encodeToByteArray()
         tty.write(bytes, bytes.size)
@@ -228,5 +298,6 @@ public class TerminalSession(
         // + associated text (16)
         const val KITTY_FLAGS = 31
         const val HANDSHAKE_TIMEOUT_MS = 2000
+        const val COLOR_POLL_MS = 2000.0
     }
 }

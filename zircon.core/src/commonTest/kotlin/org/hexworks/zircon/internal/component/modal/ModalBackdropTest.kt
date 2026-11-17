@@ -119,7 +119,6 @@ class ModalBackdropTest {
             }
             preferredSize = size
             this.position = position
-            colorTheme = theme
             tileset = this@openTestModal.tileset
             this.darkenPercent = darkenPercent
         }

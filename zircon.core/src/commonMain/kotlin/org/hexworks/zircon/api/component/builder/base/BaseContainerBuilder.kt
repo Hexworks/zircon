@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.zircon.api.component.Component
@@ -32,7 +30,6 @@ public abstract class BaseContainerBuilder<T : Container>(
         size = if (hasNoExplicitSize()) calculatedSize else size,
         name = name,
         bindingAction = bindingAction,
-        themeProperty = colorThemeProperty,
         componentStyleSetProperty = componentStyleSetProperty,
         tilesetProperty = tilesetProperty,
         hiddenProperty = hiddenProperty,

@@ -1,6 +1,6 @@
 package org.hexworks.zircon.examples.modifiers
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.theme.primary
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.modifier.Delay
 import org.hexworks.zircon.examples.Example
@@ -14,7 +14,7 @@ public val delayExample: Example = Example("Delay") { context ->
         layers = listOf(layer),
         onShown = {
             layer.clear()
-            layer.drawText("This text is typed like on a typewriter", Position(1, 1), ColorThemes.nord().accentColor) { index ->
+            layer.drawText("This text is typed like on a typewriter", Position(1, 1), context.screen.componentPalette.primary) { index ->
                 Delay(250L + index * 250L)
             }
         },

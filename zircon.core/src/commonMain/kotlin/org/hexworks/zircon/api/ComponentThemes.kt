@@ -12,7 +12,7 @@ public object ComponentThemes {
     /**
      * The stock look: what every builder starts from and what every other theme falls back
      * to, key by key. It has no colors of its own; those come from the
-     * [ColorTheme][org.hexworks.zircon.api.component.ColorTheme]. Set it on a screen to
+     * [ComponentPalette][org.hexworks.zircon.api.component.theme.ComponentPalette]. Set it on a screen to
      * undo another theme.
      */
     public fun default(): ComponentTheme = DefaultComponentTheme

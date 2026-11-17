@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.zircon.api.config.ZirconDefaults
@@ -10,7 +8,6 @@ import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.events.api.simpleSubscribeTo
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.cobalt.events.api.EventBus
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.data.ComponentMetadata
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
@@ -40,7 +37,6 @@ public class TileGridScreen(
         buildComponentContainer(
             initialSize = tileGrid.size,
             initialTileset = tileGrid.tileset,
-            initialTheme = ZirconDefaults.current.theme,
             eventBus = tileGrid.eventBus,
             eventScope = tileGrid.eventScope,
         ),
@@ -187,7 +183,6 @@ public class TileGridScreen(
         private fun buildComponentContainer(
             initialSize: Size,
             initialTileset: TilesetResource,
-            initialTheme: ColorTheme,
             eventBus: EventBus,
             eventScope: ZirconScope,
         ): ModalComponentContainer {
@@ -196,7 +191,6 @@ public class TileGridScreen(
                 size = initialSize,
                 name = "Modal Component Container",
                 tilesetProperty = initialTileset.toProperty(),
-                themeProperty = initialTheme.toProperty(),
                 componentThemeProperty = ZirconDefaults.current.componentTheme.toProperty(),
                 componentPaletteProperty = ZirconDefaults.current.componentPalette.toProperty(),
                 role = ComponentRole.ROOT,

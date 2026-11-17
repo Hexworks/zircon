@@ -1,9 +1,5 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.view
 
-import org.hexworks.zircon.api.behavior.ColorThemeOverride
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.Fragment
 import org.hexworks.zircon.api.grid.TileGrid
@@ -29,13 +25,11 @@ import org.hexworks.zircon.api.view.base.BaseView
  * - the [View] that's being [dock]ed is displayed on the [Screen]
  *
  * Whenever you create a [View] you have to extend [BaseView] and supply a [TileGrid]
- * and a [ColorTheme]. For an example that uses best practices take a look at the included
- * sample or a full example in the `zircon.jvm.examples` project.
+ * (and optionally a [org.hexworks.zircon.api.component.theme.ComponentPalette]).
  *
  * @see TileGrid
- * @see ColorTheme
  */
-public interface View : ColorThemeOverride {
+public interface View {
 
     /**
      * The [Screen] that's used to display the contents of this [View].

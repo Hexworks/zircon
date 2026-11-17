@@ -67,9 +67,29 @@ accessibility tree from the same data. Deferred until palettes land; see the 202
 
 - `Palettes.fromBase16(scheme)`: map the 16 base16 slots to `PaletteKey`s (research doc, section 10,
   open question 5) and get tinted-theming's hundreds of schemes for free.
-- A palette made of ANSI indices for the terminal renderer, so the app recolors when the terminal
-  theme changes the way mc does (`default` fg/bg, slots 0-15). Needs indexed colors in the SGR
-  encoder; the alternative is an `OSC 10/11` query at startup with a timeout, which tmux never answers.
+- *(done 2026-11-17)* The terminal renderer reads the terminal's colors (`OSC 10/11/4`) at startup
+  and on theme switches (mode 2031, plus a background poll) and hands them to the app;
+  `Palettes.fromAnsi` turns them into a palette, the examples show it as `Terminal`. tmux never
+  answers, so there the app keeps its bundled palette. Indexed ANSI output (the mc way) stays out:
+  truecolor only. (mc works inside tmux because it never asks: it emits SGR 30-37/90-97 and
+  `default`, tmux passes the indices through and the outer terminal paints them in its current
+  palette. Our queries stop at tmux, which answers for itself at best and forwards neither the
+  OSC replies nor the mode 2031 reports of the terminal behind it.)
+- **"System" as a palette mode, not a palette.** `ThemeMode.SYSTEM` stays the app's wish; the one-shot
+  `SystemThemeDetector.detect()` behind it is replaced by a live core object `SystemTheme` with two
+  properties: `mode: Property<ThemeMode>` (resolved light/dark) and `palette: Property<ComponentPalette?>`
+  (the host's exact colors, `null` when it has none). `ThemeMode.resolve()` reads `mode`; the detector
+  becomes the initial/fallback source. Sources write the properties: terminal (`runTerminal`, from the
+  OSC colors above, mode from the background), Compose (`isSystemInDarkTheme()` in `TileGridView`, live),
+  web (`matchMedia('(prefers-color-scheme: dark)')` change listener), plain JVM/native (renderer tick
+  re-samples the detector every ~2 s). OS accent extraction (macOS `AppleAccentColor`, Windows registry,
+  GNOME 47) can later fill `palette` on the desktop. Consumer: `screen.followSystemPalette { mode ->
+  Palettes.x(mode) }` binds `componentPalette = palette ?: fallback(mode)` and re-runs on either change;
+  an explicit `screen.componentPalette = x` ends the follow, like a pinned palette ends inheritance;
+  `ZirconDefaults { followSystemPalette = … }` for the first screen. Deletes the Neobrutalism page's
+  hand-rolled poller and the terminal launcher's `useTerminalPalette` glue; the examples' palette
+  selector gets a real `System` entry. Order: core object + `resolve()` → terminal source → Compose/web
+  sources → `followSystemPalette` → examples.
 
 ## Clipboard
 

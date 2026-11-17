@@ -1,10 +1,7 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component
 
 import org.hexworks.zircon.api.behavior.CanBeDisabled
 import org.hexworks.zircon.api.behavior.CanBeHidden
-import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.behavior.TilesetOverride
 import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.theme.ComponentRole
@@ -17,7 +14,7 @@ import org.hexworks.zircon.api.behavior.ComponentThemeOverride
  * This interface contains all the common *properties* that a UI [Component]
  * can have.
  */
-public interface ComponentProperties : CanBeDisabled, CanBeHidden, ColorThemeOverride, ComponentThemeOverride, ComponentPaletteOverride, TilesetOverride {
+public interface ComponentProperties : CanBeDisabled, CanBeHidden, ComponentThemeOverride, ComponentPaletteOverride, TilesetOverride {
     public val name: String
 
     /**

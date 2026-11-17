@@ -12,7 +12,9 @@ session (or person) can continue without re-deriving decisions. Decisions were m
   (all 12 targets). **Still to do by hand:** push cobalt and cut a GitHub release so the
   `Publish` workflow uploads it to Maven Central (needs the signing/Central secrets).
 - Next step: the M7 smoke checklist (`zircon.terminal/README.md`), then the manual release steps under M6, then 2.1 planning (Android, image dictionary tilesets,
-  theming, the RadioBox/CheckBox click bugs from the old TODO once reproduced in the desktop demos).
+  the rest of `ROADMAP.md`). Component themes, palettes and the component refactors landed 2026-11-14..17 (`docs/component-themes.md`,
+  `docs/component-palettes.md`, `docs/component-refactoring-handover.md`); check box / radio / toggle are one `BinarySelector` that commits
+  on release and cancels when released outside, so the old click bugs need a by-hand check in the desktop demo before M3's box is ticked.
 - `prototype/` stays in the repo as the reference for M4 and is deleted when M4 lands.
 - Branch: `master` (no feature branches)
 

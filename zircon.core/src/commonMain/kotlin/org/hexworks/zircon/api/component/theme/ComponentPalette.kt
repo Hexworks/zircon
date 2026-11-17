@@ -15,9 +15,8 @@ import org.hexworks.zircon.api.graphics.StyleSet
  * [ComponentStyleSet] per component through its [ThemeEntry.styles]. Theme and palette switch
  * independently, so one shape works with any color scheme.
  *
- * Build one with [componentPalette][org.hexworks.zircon.api.component.theme.componentPalette],
+ * Build one with [componentPalette][org.hexworks.zircon.api.component.theme.componentPalette] or pick a bundled one from [org.hexworks.zircon.api.Palettes].
  * take a bundled one from [Palettes][org.hexworks.zircon.api.Palettes], or adapt a legacy
- * [ColorTheme][org.hexworks.zircon.api.component.ColorTheme] with `toComponentPalette()`.
  */
 public interface ComponentPalette {
 

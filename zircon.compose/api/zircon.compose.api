@@ -140,6 +140,19 @@ public final class org/hexworks/zircon/compose/tileset/GraphicalTileset : org/he
 	public fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class org/hexworks/zircon/compose/tileset/PlaceholderTileset : org/hexworks/zircon/compose/tileset/ComposeTileset {
+	public static final field $stable I
+	public static final field Companion Lorg/hexworks/zircon/compose/tileset/PlaceholderTileset$Companion;
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
+	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Lorg/hexworks/zircon/compose/FrameData;Lorg/hexworks/zircon/api/data/Position;)V
+	public fun load (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/hexworks/zircon/compose/tileset/PlaceholderTileset$Companion {
+	public final fun getMISSING_TILE_COLOR ()Lorg/hexworks/zircon/api/color/Color;
+}
+
 public final class org/hexworks/zircon/compose/tileset/TilesetRegistry : org/hexworks/zircon/api/tileset/TilesetLoader {
 	public static final field $stable I
 	public static final field Companion Lorg/hexworks/zircon/compose/tileset/TilesetRegistry$Companion;
@@ -160,6 +173,7 @@ public final class org/hexworks/zircon/compose/tileset/TrueTypeTileset : org/hex
 	public static final field $stable I
 	public static final field COLUMNS I
 	public static final field FONT_SIZE_RATIO F
+	public static final field PROBE_TEXT Ljava/lang/String;
 	public static final field ROWS I
 	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;)V
 	public synthetic fun drawTile (Lorg/hexworks/zircon/api/data/Tile;Ljava/lang/Object;Lorg/hexworks/zircon/api/data/Position;)V

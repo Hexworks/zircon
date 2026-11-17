@@ -1,9 +1,6 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.view.base
 
-import org.hexworks.zircon.api.behavior.ColorThemeOverride
-import org.hexworks.zircon.api.component.ColorTheme
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.screen.Screen
@@ -12,13 +9,13 @@ import org.hexworks.zircon.api.config.ZirconDefaults
 
 public abstract class BaseView(
     private val tileGrid: TileGrid,
-    final override var theme: ColorTheme = ZirconDefaults.current.theme
-) : View, ColorThemeOverride by ColorThemeOverride.create(theme) {
+    palette: ComponentPalette = ZirconDefaults.current.componentPalette,
+) : View {
 
     final override val screen: Screen = tileGrid.toScreen()
 
     init {
-        screen.theme = theme
+        screen.componentPalette = palette
     }
 
     final override fun replaceWith(view: View) {

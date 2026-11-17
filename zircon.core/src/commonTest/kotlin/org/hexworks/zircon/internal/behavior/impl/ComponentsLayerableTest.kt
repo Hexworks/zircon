@@ -4,7 +4,6 @@ import org.hexworks.zircon.internal.extensions.asInternal
 import org.hexworks.cobalt.databinding.api.extension.toProperty
 import org.hexworks.cobalt.events.api.EventBus
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.builder.graphics.layer
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -40,7 +39,6 @@ class ComponentsLayerableTest {
                 size = SIZE_4X2,
                 tilesetProperty = CP437TilesetResources.bisasam16x16().toProperty(),
                 componentStyleSetProperty = ComponentStyleSet.DEFAULT_STYLE.toProperty(),
-                themeProperty = ColorThemes.adriftInDreams().toProperty()
             ),
             renderingStrategy = DefaultComponentRenderingStrategy(
                 decorationRenderers = listOf(),

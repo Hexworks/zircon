@@ -68,7 +68,6 @@ class ModalComponentContainerTest {
         val modal = modal {
             contentComponent = content
             preferredSize = this@openModalWithCloseButtonAt.size
-            colorTheme = theme
             tileset = this@openModalWithCloseButtonAt.tileset
         }
         content.addComponent(button {

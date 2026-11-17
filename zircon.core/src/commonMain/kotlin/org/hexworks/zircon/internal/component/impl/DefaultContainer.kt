@@ -141,12 +141,6 @@ public open class DefaultContainer(
                     bindingAction = component.bindingAction
                 )
                 .keepWhile(component.hasParent)
-            component.themeProperty
-                .updateFrom(
-                    observable = parentContainer.themeProperty,
-                    bindingAction = component.bindingAction
-                )
-                .keepWhile(component.hasParent)
             component.tilesetProperty
                 .updateFrom(
                     observable = parentContainer.tilesetProperty,

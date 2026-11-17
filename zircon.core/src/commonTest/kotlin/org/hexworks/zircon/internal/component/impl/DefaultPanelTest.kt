@@ -24,13 +24,6 @@ class DefaultPanelTest : ComponentImplementationTest<DefaultPanel>() {
     override lateinit var target: DefaultPanel
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = DEFAULT_THEME.primaryBackgroundColor
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

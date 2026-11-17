@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.resource.Resources
 import org.hexworks.zircon.examples.MIN_SIZE
 import org.hexworks.zircon.examples.EXAMPLE_GROUPS
 import org.hexworks.zircon.examples.examplesScreen
+import org.hexworks.zircon.examples.useTerminalPalette
 import org.hexworks.zircon.terminal.runTerminal
 import org.hexworks.zircon.terminal.systemTty
 import kotlin.time.TimeSource
@@ -29,7 +30,12 @@ fun main(args: Array<String>) {
     val shown = runBlocking { examplesScreen(size, isTerminal = true, startAt = startAt) }
     val started = TimeSource.Monotonic.markNow()
     // Errors Zircon contained are logged; runTerminal prints the log once the terminal is restored.
-    val session = runTerminal(shown.grid, beforeFrame = shown.onFrame)
+    // The terminal's own colors become the "Terminal" palette, kept up to date on theme switches.
+    val session = runTerminal(
+        shown.grid,
+        beforeFrame = shown.onFrame,
+        onTerminalColors = { colors -> shown.useTerminalPalette(colors.toComponentPalette()) },
+    )
     val seconds = started.elapsedNow().inWholeMilliseconds / 1000.0
     val frames = session.framesRendered
     if (seconds > 0 && frames > 0) {

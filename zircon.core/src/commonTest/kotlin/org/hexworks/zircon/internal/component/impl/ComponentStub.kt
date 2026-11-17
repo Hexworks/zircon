@@ -14,7 +14,6 @@ import org.hexworks.cobalt.databinding.api.value.BindingAction
 import org.hexworks.cobalt.databinding.api.value.UpdateOnBind
 import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.zircon.api.behavior.Boundable
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentState
 import org.hexworks.zircon.api.data.Position
@@ -65,9 +64,6 @@ class ComponentStub(
 
     override val disabledProperty: Property<Boolean> = false.toProperty()
     override var isDisabled: Boolean by disabledProperty.asDelegate()
-
-    override val themeProperty: Property<ColorTheme> = ZirconDefaults.current.theme.toProperty()
-    override var theme: ColorTheme by themeProperty.asDelegate()
 
     override val role: ComponentRole = ComponentRole.NONE
     override val variant: Variant = Variant.DEFAULT

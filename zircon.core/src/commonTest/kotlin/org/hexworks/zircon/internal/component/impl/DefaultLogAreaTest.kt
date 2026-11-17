@@ -33,21 +33,6 @@ class DefaultLogAreaTest : ComponentImplementationTest<DefaultLogArea>() {
     override lateinit var target: DefaultLogArea
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = DEFAULT_THEME.primaryBackgroundColor
-            }
-            disabledStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = DEFAULT_THEME.secondaryBackgroundColor
-            }
-            focusedStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.primaryBackgroundColor
-                backgroundColor = DEFAULT_THEME.primaryForegroundColor
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

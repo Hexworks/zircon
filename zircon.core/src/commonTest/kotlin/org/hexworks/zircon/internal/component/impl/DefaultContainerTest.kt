@@ -33,9 +33,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
 
     override lateinit var target: DefaultContainer
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSet.EMPTY
-
     private val badTileset = BuiltInCP437TilesetResource.WANDERLUST_16X16
 
     @BeforeTest
@@ -62,7 +59,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
             size = Size(40, 25)
             tileset = TILESET_REX_PAINT_20X20
         }.asInternal()
-
 
         val screen = grid.toScreen()
 
@@ -128,7 +124,6 @@ class DefaultContainerTest : CommonComponentTest<DefaultContainer>() {
             size = Size(40, 25)
             tileset = TILESET_REX_PAINT_20X20
         }.asInternal()
-
 
         val screen = grid.toScreen()
 

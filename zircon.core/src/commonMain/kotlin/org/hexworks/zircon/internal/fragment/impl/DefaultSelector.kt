@@ -27,7 +27,8 @@ public class DefaultSelector<T : Any> internal constructor(
 
     override val values: List<T> by valuesProperty.asDelegate()
 
-    private val indexProperty = values.indexOf(selectedProperty.value).toProperty()
+    private val indexProperty = values.indexOf(selectedProperty.value).coerceAtLeast(0).toProperty()
+    private val labelProperty = "".toProperty()
 
     override val selected: T
         get() = selectedProperty.value
@@ -39,7 +40,18 @@ public class DefaultSelector<T : Any> internal constructor(
 
     init {
         selectedProperty.updateFrom(indexProperty) { values[it] }
+        // The arrows move the index; a selection made elsewhere (code, another control) and
+        // a changed value list move it too, so the label always names the selected value.
+        selectedProperty.onChange { (_, selected) -> indexOf(selected)?.let { indexProperty.value = it } }
+        valuesProperty.onChange {
+            indexOf(selectedProperty.value)?.let { indexProperty.value = it }
+            labelProperty.value = fetchLabelBy(indexProperty.value)
+        }
+        indexProperty.onChange { (_, index) -> labelProperty.value = fetchLabelBy(index) }
+        labelProperty.value = fetchLabelBy(indexProperty.value)
     }
+
+    private fun indexOf(value: T): Int? = values.indexOf(value).takeIf { it >= 0 }
 
     override val root: HBox = hBox {
         preferredSize = Size(width, 1)
@@ -60,8 +72,7 @@ public class DefaultSelector<T : Any> internal constructor(
                     +noDecoration()
                 }
                 preferredSize = labelSize
-                +fetchLabelBy(0)
-                textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
+                textProperty.updateFrom(labelProperty)
                 onActivated {
                     showNextValue()
                 }
@@ -69,8 +80,7 @@ public class DefaultSelector<T : Any> internal constructor(
         } else {
             label {
                 preferredSize = labelSize
-                +fetchLabelBy(0)
-                textProperty.updateFrom(indexProperty) { i -> fetchLabelBy(i) }
+                textProperty.updateFrom(labelProperty)
             }
         }
 
@@ -107,7 +117,7 @@ public class DefaultSelector<T : Any> internal constructor(
         setValue(prevIndex)
     }
 
-    private fun fetchLabelBy(index: Int) = toStringMethod.invoke(values[index]).centered()
+    private fun fetchLabelBy(index: Int) = values.getOrNull(index)?.let { toStringMethod.invoke(it).centered() } ?: ""
 
     private fun String.centered(): String {
         val maxWidth = labelSize.width

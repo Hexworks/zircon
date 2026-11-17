@@ -1,6 +1,6 @@
 package org.hexworks.zircon.examples.modifiers
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.theme.primary
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.modifier.FadeInOut
 import org.hexworks.zircon.examples.Example
@@ -14,7 +14,7 @@ public val fadeInOutExample: Example = Example("Fade in+out") { context ->
         layers = listOf(layer),
         onShown = {
             layer.clear()
-            layer.drawText("This text fades in and then after a few seconds out", Position(1, 1), ColorThemes.nord().accentColor) {
+            layer.drawText("This text fades in and then after a few seconds out", Position(1, 1), context.screen.componentPalette.primary) {
                 FadeInOut()
             }
         },

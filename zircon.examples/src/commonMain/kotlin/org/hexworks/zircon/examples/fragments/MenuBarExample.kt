@@ -30,7 +30,6 @@ public val menuBarExample: Example = Example("Menu bar") { context ->
 
     val menu = menuBar<String> {
         this.screen = screen
-        theme = screen.theme
         tileset = screen.tileset
         width = size.width
 

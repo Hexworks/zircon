@@ -35,9 +35,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
     override lateinit var target: DefaultComponent
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = ComponentStyleSet.EMPTY
-
 
     @BeforeTest
     override fun setUp() {
@@ -183,7 +180,6 @@ class DefaultComponentTest : CommonComponentTest<DefaultComponent>() {
 
         target.componentState shouldBe ComponentState.FOCUSED
     }
-
 
     @Test
     fun shouldProperlyCalculateAbsolutePositionWithDeeplyNestedComponents() {

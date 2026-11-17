@@ -39,3 +39,5 @@ Run `make demo-terminal` in each of foot, ghostty, Alacritty, kitty and WezTerm,
 - [ ] `kill -TERM <pid>` from another terminal exits just as cleanly.
 - [ ] A terminal without the kitty protocol (e.g. plain `xterm`) prints the "does not
       support the kitty keyboard protocol" message and leaves the shell intact.
+- [ ] The palette selector starts on `Terminal` in the terminal's own colors; switching the
+      terminal's theme (light/dark) recolors the demo within two seconds.

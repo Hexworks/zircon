@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.internal.component.impl
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -21,7 +19,6 @@ import org.hexworks.zircon.api.behavior.Scrollable
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.behavior.TextOverride
 import org.hexworks.zircon.api.behavior.TitleOverride
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ComponentStyleSet
 import org.hexworks.zircon.api.component.data.ComponentMetadata
@@ -156,9 +153,6 @@ public abstract class DefaultComponent(
     //#region Common properties
     final override val componentStateProperty: Property<ComponentState> = DEFAULT.toProperty()
     final override var componentState: ComponentState by componentStateProperty.asDelegate()
-
-    final override val themeProperty: Property<ColorTheme> = metadata.themeProperty
-    final override var theme: ColorTheme by themeProperty.asDelegate()
 
     final override val componentPaletteProperty: Property<ComponentPalette> = metadata.componentPaletteProperty
     final override var componentPalette: ComponentPalette
@@ -367,7 +361,7 @@ public abstract class DefaultComponent(
     // delegated properties (text, selection, scrolling) are safe to touch.
     private fun installRenderHooks() {
         val inputs = mutableListOf<ObservableValue<*>>(
-            componentStateProperty, themeProperty, componentStyleSetProperty, tilesetProperty,
+            componentStateProperty, componentStyleSetProperty, tilesetProperty,
             hiddenProperty, disabledProperty, hasFocusProperty, boundsProperty,
         )
         if (this is TextOverride) inputs += textProperty

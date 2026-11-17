@@ -23,32 +23,18 @@ import org.hexworks.zircon.api.graphics.extensions.toDrawWindow
 import org.hexworks.zircon.internal.component.renderer.DefaultComponentRenderingStrategy
 import org.hexworks.zircon.internal.component.renderer.DefaultTextAreaRenderer
 import kotlin.test.BeforeTest
-import kotlin.test.Ignore
+import org.hexworks.zircon.api.uievent.MouseEvent
+import org.hexworks.zircon.api.uievent.MouseEventType
+import org.hexworks.zircon.api.uievent.Processed
+import org.hexworks.zircon.api.component.data.ComponentState.HIGHLIGHTED
 import kotlin.test.Test
 
-// TODO: fixme
-@Ignore
 @Suppress("UNCHECKED_CAST", "unused")
 class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea>() {
 
     override lateinit var target: DefaultTextArea
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryBackgroundColor
-                backgroundColor = DEFAULT_THEME.secondaryForegroundColor
-            }
-            disabledStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-            focusedStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.primaryBackgroundColor
-                backgroundColor = DEFAULT_THEME.primaryForegroundColor
-            }
-        }
 
     @BeforeTest
     override fun setUp() {
@@ -95,8 +81,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
             phase = TARGET
         )
 
-        // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(1, 0))
+        target.editorState.cursor shouldBe Position(1, 0)
     }
 
     @Test
@@ -128,8 +113,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
             phase = TARGET
         )
 
-        // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(1, 0))
+        target.editorState.cursor shouldBe Position(1, 0)
     }
 
     @Test
@@ -145,8 +129,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
             phase = TARGET
         )
 
-        // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(0, 1))
+        target.editorState.cursor shouldBe Position(0, 1)
     }
 
     @Test
@@ -157,8 +140,7 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         target.keyPressed(DOWN, TARGET)
         target.keyPressed(UP, TARGET)
 
-        // TODO:
-//        assertThat(target.textBuffer().cursor.position).isEqualTo(Position(0, 1))
+        target.editorState.cursor shouldBe Position(0, 1)
     }
 
     @Test
@@ -220,6 +202,46 @@ class DefaultTextAreaTest : FocusableComponentImplementationTest<DefaultTextArea
         val character = drawWindow.getTileAtOrNull(Position.ZERO)
 
         character?.asCharacterTileOrNull()?.character shouldBe UPDATE_TEXT
+    }
+
+    // A text area swallows the activation key (it types) and keeps the focus look on a
+    // release: the generic state transitions below do not apply to it.
+
+    @Test
+    override fun When_a_focused_component_is_activated_Then_it_becomes_active() {
+        target.focusGiven()
+        target.activated() shouldBe Processed
+        target.componentState shouldBe FOCUSED
+    }
+
+    @Test
+    override fun When_a_highlighted_component_without_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.ZERO), TARGET)
+        target.activated() shouldBe Processed
+        target.componentState shouldBe HIGHLIGHTED
+    }
+
+    @Test
+    override fun When_a_highlighted_component_with_focus_is_activated_Then_it_becomes_active() {
+        target.mouseEntered(MouseEvent(MouseEventType.MOUSE_ENTERED, 1, Position.ZERO), TARGET)
+        target.focusGiven()
+        target.activated() shouldBe Processed
+        target.componentState shouldBe HIGHLIGHTED
+    }
+
+    @Test
+    override fun When_the_mouse_is_released_on_a_focused_component_Then_it_becomes_highlighted() {
+        target.focusGiven()
+        target.mouseReleased(MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.ZERO), TARGET)
+        target.componentState shouldBe FOCUSED
+    }
+
+    @Test
+    override fun When_the_mouse_is_released_on_an_active_component_Then_it_becomes_highlighted() {
+        target.focusGiven()
+        target.activated()
+        target.mouseReleased(MouseEvent(MouseEventType.MOUSE_RELEASED, 1, Position.ZERO), TARGET)
+        target.componentState shouldBe FOCUSED
     }
 
     private fun initializeMultiLineTextArea(): DefaultTextArea {

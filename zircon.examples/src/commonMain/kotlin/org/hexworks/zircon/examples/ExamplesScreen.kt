@@ -1,6 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.cobalt.databinding.api.collection.ListProperty
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.margin
@@ -71,6 +72,8 @@ class ExamplesScreen(
     internal val tilesetProperty: Property<TilesetResource>,
     /** The palette; carried over to a rebuilt screen. */
     internal val paletteProperty: Property<ComponentPalette>,
+    /** The palettes the selector offers; a terminal's own palette is put first. */
+    internal val palettesProperty: ListProperty<ComponentPalette>,
     /** The component theme (shape); carried over to a rebuilt screen. */
     internal val themeProperty: Property<ComponentTheme>,
     /** The groups the app shows (with `isTerminal`, only those with a text-only example). */
@@ -82,6 +85,17 @@ class ExamplesScreen(
     /** Errors Zircon contained while running, as source to the error; the latest shows in the footer. */
     @ExamplesTestApi val runtimeErrors: List<Pair<String, Throwable>>,
 )
+
+/**
+ * Shows [palette] as the terminal's own, replacing the one shown before (same name) or adding
+ * it in front of the bundled ones, and switches to it. The terminal launcher calls this with
+ * the colors the terminal reports, at startup and whenever its theme changes.
+ */
+fun ExamplesScreen.useTerminalPalette(palette: ComponentPalette) {
+    val index = palettesProperty.indexOfFirst { it.name == palette.name }
+    if (index >= 0) palettesProperty.set(index, palette) else palettesProperty.add(0, palette)
+    paletteProperty.value = palette
+}
 
 /**
  * The grid size that fills [widthPx] x [heightPx] with cells of [tileSize], at least
@@ -144,6 +158,7 @@ suspend fun examplesScreen(
     val tileSizeProperty = tileSize.toProperty()
     val tilesetProperty = initialTileset.toProperty()
     val paletteProperty = initialPalette.toProperty()
+    val palettesProperty = (previous?.palettesProperty?.value ?: PALETTES).toProperty()
 
     val themeProperty = initialTheme.toProperty()
 
@@ -182,7 +197,7 @@ suspend fun examplesScreen(
         }
         selector {
             width = SELECTOR_WIDTH
-            valueList = PALETTES
+            valuesProperty = palettesProperty
             selectedProperty = paletteProperty
             toStringMethod = { it.name }
         }
@@ -326,12 +341,12 @@ suspend fun examplesScreen(
             )
         }
     }
-    // Process-wide, like a logger: chained so a handler the launcher installed still runs.
-    val previousHandler = ZirconDefaults.current.onError
-    ZirconDefaults.current = ZirconDefaults.current.copy(onError = ErrorHandler { source, error ->
+    // Process-wide, like a logger: one installed handler forwards to the screen shown now, so
+    // a rebuilt screen replaces the old one instead of chaining onto it (which kept every
+    // screen ever built alive through the global defaults).
+    ExamplesErrorHandler.install(ErrorHandler { source, error ->
         runtimeErrors += source to error
         showError(source, error)
-        previousHandler.onError(source, error)
     })
 
     screen.display()
@@ -345,6 +360,7 @@ suspend fun examplesScreen(
         },
         tilesetProperty = tilesetProperty,
         paletteProperty = paletteProperty,
+        palettesProperty = palettesProperty,
         themeProperty = themeProperty,
         packages = packages,
         tabBar = tabBar,
@@ -390,6 +406,30 @@ private class FpsCounter {
 
 /** The smallest grid the app lays out in. */
 val MIN_SIZE: Size = Size(100, 40)
+
+/**
+ * The one [ErrorHandler] the examples put into [ZirconDefaults]: it forwards to the handler of
+ * the current screen and then to whatever the launcher had installed before.
+ */
+private object ExamplesErrorHandler : ErrorHandler {
+    private var installed = false
+    private var launcherHandler: ErrorHandler = ErrorHandler { _, _ -> }
+    private var current: ErrorHandler? = null
+
+    fun install(handler: ErrorHandler) {
+        if (!installed) {
+            launcherHandler = ZirconDefaults.current.onError
+            ZirconDefaults.current = ZirconDefaults.current.copy(onError = this)
+            installed = true
+        }
+        current = handler
+    }
+
+    override fun onError(source: String, error: Throwable) {
+        current?.onError(source, error)
+        launcherHandler.onError(source, error)
+    }
+}
 
 private const val HEADER_HEIGHT = 3
 private const val SELECTOR_WIDTH = 26

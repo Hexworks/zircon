@@ -1,7 +1,7 @@
 package org.hexworks.zircon.compose
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
@@ -33,7 +33,7 @@ class GoldenRenderTest {
             tileset = CP437TilesetResources.wanderlust16x16()
         }
         val screen = grid.toScreen()
-        screen.theme = ColorThemes.arc()
+        screen.componentPalette = Palettes.catppuccin()
         val content = vBox {
             preferredSize = Size(40, 12)
             decorations {

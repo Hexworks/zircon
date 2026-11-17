@@ -1,6 +1,6 @@
 package org.hexworks.zircon.examples.modifiers
 
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.component.theme.primary
 import org.hexworks.zircon.api.builder.data.characterTile
 import org.hexworks.zircon.api.builder.data.withStyleSet
 import org.hexworks.zircon.api.color.ANSIColor
@@ -23,7 +23,7 @@ import kotlin.random.Random
  */
 public val modifiersExample: Example = Example("Modifiers") { context ->
     val layer = context.contentLayer()
-    val labelColor = ColorThemes.nord().accentColor
+    val labelColor = context.screen.componentPalette.primary
 
     fun redraw() {
         layer.clear()

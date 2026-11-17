@@ -1,5 +1,6 @@
 package org.hexworks.zircon.terminal.input
 
+import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -21,6 +22,15 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
     public interface ReplyListener {
         public fun onKittyKeyboardFlags(flags: Int) {}
         public fun onDeviceAttributes() {}
+
+        /**
+         * An `OSC 10` (foreground, [index] -1), `OSC 11` (background, [index] -1) or
+         * `OSC 4` (slot [index]) color reply.
+         */
+        public fun onColor(code: Int, index: Int, color: Color) {}
+
+        /** The terminal switched its color scheme (`CSI ? 997 ; 1|2 n`, mode 2031). */
+        public fun onColorScheme(dark: Boolean) {}
     }
 
     public var replyListener: ReplyListener? = null
@@ -58,6 +68,7 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
             return 1
         }
         val second = input[start + 1].toInt() and 0xFF
+        if (second == ']'.code) return parseOsc(input, start)
         if (second != '['.code) {
             // ESC + something: Alt-modified legacy key; deliver the key with alt.
             if (second == 'O'.code) {
@@ -82,9 +93,44 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
         return i - start + 1
     }
 
+    /**
+     * `OSC ... BEL` or `OSC ... ESC \`: the only ones a terminal sends us are the color
+     * replies, everything else is dropped. Returns 0 while the terminator is still to come.
+     */
+    private fun parseOsc(input: ByteArray, start: Int): Int {
+        var i = start + 2
+        while (i < input.size) {
+            val b = input[i].toInt() and 0xFF
+            if (b == 0x07) return oscDone(input, start + 2, i, i + 1 - start)
+            if (b == 0x1B) {
+                if (i + 1 >= input.size) return 0
+                return oscDone(input, start + 2, i, i + 2 - start)
+            }
+            i++
+        }
+        // No terminator yet: wait, unless this is clearly not a reply.
+        return if (input.size - start > MAX_OSC_LENGTH) input.size - start else 0
+    }
+
+    private fun oscDone(input: ByteArray, from: Int, to: Int, consumed: Int): Int {
+        val fields = input.decodeToString(from, to).split(';')
+        val code = fields.getOrNull(0)?.toIntOrNull()
+        when (code) {
+            10, 11 -> fields.getOrNull(1)?.let(::parseColorSpec)?.let { replyListener?.onColor(code, -1, it) }
+            4 -> {
+                val index = fields.getOrNull(1)?.toIntOrNull()
+                val color = fields.getOrNull(2)?.let(::parseColorSpec)
+                if (index != null && color != null) replyListener?.onColor(code, index, color)
+            }
+        }
+        return consumed
+    }
+
     private fun handleCsi(params: String, intermediates: String, final: Char, events: MutableList<UIEvent>) {
         when {
             params.startsWith("<") && (final == 'M' || final == 'm') -> mouse(params.substring(1), final == 'M', events)
+            params.startsWith("?997;") && final == 'n' ->
+                replyListener?.onColorScheme(dark = params.substring(5).toIntOrNull() == 1)
             params.startsWith("?") && final == 'u' -> replyListener?.onKittyKeyboardFlags(params.substring(1).toIntOrNull() ?: 0)
             params.startsWith("?") && final == 'c' -> replyListener?.onDeviceAttributes()
             params.startsWith("?") || params.startsWith(">") || intermediates.isNotEmpty() -> Unit
@@ -276,6 +322,26 @@ public class InputParser(private val toGrid: (column: Int, row: Int) -> Position
 
     public companion object {
         private val EMPTY = ByteArray(0)
+        private const val MAX_OSC_LENGTH = 4096
+
+        /**
+         * `rgb:rr/gg/bb` with 1 to 4 hex digits per channel (X11 style, what terminals
+         * answer with) or `#rrggbb`; `null` for anything else.
+         */
+        public fun parseColorSpec(spec: String): Color? {
+            val text = spec.trim()
+            if (text.startsWith("#") && text.length == 7) return runCatching { Color.fromString(text) }.getOrNull()
+            if (!text.startsWith("rgb:")) return null
+            val parts = text.substring(4).split('/')
+            if (parts.size != 3) return null
+            val channels = parts.map { part ->
+                val value = part.toIntOrNull(16) ?: return null
+                val max = (1 shl (4 * part.length)) - 1
+                if (part.isEmpty() || part.length > 4) return null
+                (value * 255 + max / 2) / max
+            }
+            return Color.create(channels[0], channels[1], channels[2])
+        }
         public const val MOD_SHIFT: Int = 1
         public const val MOD_ALT: Int = 2
         public const val MOD_CTRL: Int = 4

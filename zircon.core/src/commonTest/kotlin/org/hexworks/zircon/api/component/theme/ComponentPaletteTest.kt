@@ -1,11 +1,8 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component.theme
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
-import org.hexworks.zircon.api.ColorThemes
 import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.builder.component.button
@@ -20,23 +17,6 @@ import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class ComponentPaletteTest {
-
-    private val gamebookers = ColorThemes.gamebookers()
-
-    @Test
-    fun a_color_theme_adapts_to_a_palette_with_the_screen_color_as_the_background() {
-        val palette = gamebookers.toComponentPalette()
-
-        palette.name shouldBe "Gamebookers"
-        palette.isDark shouldBe true
-        palette.background shouldBe gamebookers.secondaryBackgroundColor
-        palette.surface shouldBe gamebookers.primaryBackgroundColor
-        palette.onBackground shouldBe gamebookers.primaryForegroundColor
-        palette.textMuted shouldBe gamebookers.secondaryForegroundColor
-        palette.border shouldBe gamebookers.secondaryForegroundColor
-        palette.primary shouldBe gamebookers.accentColor
-        palette.onPrimary shouldBe gamebookers.primaryBackgroundColor
-    }
 
     @Test
     fun a_palette_needs_three_colors_and_derives_the_rest() {
@@ -119,19 +99,6 @@ class ComponentPaletteTest {
 
         pinned.componentPalette shouldBeSameInstanceAs Palettes.neobrutalism(ThemeMode.DARK)
         following.componentPalette shouldBeSameInstanceAs Palettes.neobrutalism(ThemeMode.LIGHT)
-    }
-
-    @Test
-    fun setting_the_legacy_color_theme_on_a_screen_switches_its_palette() {
-        val screen = tileGrid { size = Size(40, 20) }.toScreen()
-        val button = button { +"OK" }
-        screen.addComponent(button)
-
-        screen.theme = ColorThemes.afterglow()
-
-        screen.componentPalette shouldBe ColorThemes.afterglow().toComponentPalette()
-        button.componentStyleSet.fetchStyleFor(ComponentState.DEFAULT).foregroundColor shouldBe
-                ColorThemes.afterglow().accentColor
     }
 
     @Test

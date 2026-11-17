@@ -28,13 +28,6 @@ class DefaultProgressBarTest : ComponentImplementationTest<DefaultProgressBar>()
     override lateinit var target: DefaultProgressBar
     override lateinit var drawWindow: DrawWindow
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = Color.TRANSPARENT
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

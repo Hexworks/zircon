@@ -1,8 +1,7 @@
 package org.hexworks.zircon.api.config
 
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.builder.config.DEFAULT_COLOR_THEME
+import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.builder.config.DEFAULT_COMPONENT_THEME
 import org.hexworks.zircon.api.builder.config.DEFAULT_DEBUG_MODE
 import org.hexworks.zircon.api.builder.config.DEFAULT_DEFAULT_TILESET
@@ -33,7 +32,6 @@ class ZirconDefaultsTest {
         assertEquals(
             ZirconDefaults(
                 tileset = DEFAULT_DEFAULT_TILESET,
-                theme = DEFAULT_COLOR_THEME,
                 componentTheme = DEFAULT_COMPONENT_THEME,
                 componentPalette = DEFAULT_COMPONENT_PALETTE,
                 systemThemeDetector = platformSystemThemeDetector(),
@@ -50,13 +48,13 @@ class ZirconDefaultsTest {
     fun when_installed_then_builders_pick_the_new_defaults_up() {
         val installed = zirconDefaults {
             tileset = CP437TilesetResources.aduDhabi16x16()
-            theme = ColorThemes.arc()
+            componentPalette = Palettes.tokyoNight()
             debugMode = true
             debug { relaxBoundsCheck = true }
         }
 
         assertEquals(installed, ZirconDefaults.current)
-        assertEquals(ColorThemes.arc(), ZirconDefaults.current.theme)
+        assertEquals(Palettes.tokyoNight(), ZirconDefaults.current.componentPalette)
         assertEquals(CP437TilesetResources.aduDhabi16x16(), tileGraphics { }.tileset)
     }
 

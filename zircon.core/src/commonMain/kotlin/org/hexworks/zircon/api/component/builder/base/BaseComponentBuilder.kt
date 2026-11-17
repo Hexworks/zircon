@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component.builder.base
 
 import org.hexworks.zircon.api.uievent.KeyboardEventMatcher
@@ -16,7 +14,6 @@ import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.*
 import org.hexworks.zircon.api.component.data.ComponentMetadata
-import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
 import org.hexworks.zircon.api.component.extensions.isStyleNotUnknown
 import org.hexworks.zircon.api.component.renderer.ComponentDecorationRenderer
 import org.hexworks.zircon.api.component.renderer.ComponentRenderer
@@ -44,7 +41,6 @@ import org.hexworks.zircon.api.component.theme.Variant
 import org.hexworks.zircon.api.component.data.Orientation
 import org.hexworks.zircon.api.component.renderer.ComponentPostProcessor
 import org.hexworks.zircon.api.component.theme.ComponentPalette
-import org.hexworks.zircon.api.component.theme.toComponentPalette
 
 /**
  * This class can be used as a base class for creating builders for [Component]s.
@@ -237,22 +233,6 @@ public abstract class BaseComponentBuilder<T : Component>(
         }
 
     // properties
-    @Deprecated("Colors come from the component palette; set `componentPalette`, or adapt a color theme with `toComponentPalette()`.")
-    public val colorThemeProperty: Property<ColorTheme>
-        get() = props.themeProperty
-
-    /**
-     * The legacy five-color theme. Setting it also presets the palette adapted from it, so a
-     * component built standalone gets those colors; a parent's palette still wins on attach.
-     */
-    @Deprecated("Colors come from the component palette; set `componentPalette`, or adapt a color theme with `toComponentPalette()`.")
-    public var colorTheme: ColorTheme
-        get() = props.theme
-        set(value) {
-            props.theme = value
-            if (value.isColorNotUnknown) presetPalette(value.toComponentPalette())
-        }
-
     public val componentStyleSetProperty: Property<ComponentStyleSet>
         get() = props.componentStyleSetProperty
     public var componentStyleSet: ComponentStyleSet
@@ -454,16 +434,12 @@ public abstract class BaseComponentBuilder<T : Component>(
             require(tileset.isNotUnknown) {
                 "When not updating on attach a component must have its own tileset."
             }
-            require(colorTheme.isColorNotUnknown || componentStyleSet.isStyleNotUnknown) {
-                "When not updating on attach a component must either have its own theme or component style set"
-            }
         }
         return ComponentMetadata(
             position = position,
             size = size,
             name = name,
             bindingAction = bindingAction,
-            themeProperty = colorThemeProperty,
             componentStyleSetProperty = componentStyleSetProperty,
             tilesetProperty = tilesetProperty,
             activationShortcut = activationShortcut,

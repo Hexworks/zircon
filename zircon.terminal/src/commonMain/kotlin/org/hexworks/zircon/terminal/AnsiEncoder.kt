@@ -192,6 +192,10 @@ public class AnsiEncoder(private val gridWidth: Int, private val gridHeight: Int
     public companion object {
         public const val ESC: String = "\u001b"
         public const val CSI: String = "\u001b["
+
+        public const val OSC: String = "\u001b]"
+
+        public const val ST: String = "\u001b\\"
         public const val SYNC_START: String = "\u001b[?2026h"
         public const val SYNC_END: String = "\u001b[?2026l"
     }

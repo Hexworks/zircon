@@ -35,13 +35,6 @@ class RootContainerTest : ComponentImplementationTest<RootContainer>() {
     override lateinit var drawWindow: DrawWindow
 
 
-    override val expectedComponentStyles: ComponentStyleSet
-        get() = componentStyleSet {
-            defaultStyle = styleSet {
-                foregroundColor = DEFAULT_THEME.secondaryForegroundColor
-                backgroundColor = DEFAULT_THEME.secondaryBackgroundColor
-            }
-        }
 
     @BeforeTest
     override fun setUp() {

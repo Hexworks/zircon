@@ -2,6 +2,8 @@ public final class org/hexworks/zircon/terminal/AnsiEncoder {
 	public static final field CSI Ljava/lang/String;
 	public static final field Companion Lorg/hexworks/zircon/terminal/AnsiEncoder$Companion;
 	public static final field ESC Ljava/lang/String;
+	public static final field OSC Ljava/lang/String;
+	public static final field ST Ljava/lang/String;
 	public static final field SYNC_END Ljava/lang/String;
 	public static final field SYNC_START Ljava/lang/String;
 	public fun <init> (II)V
@@ -55,8 +57,8 @@ public final class org/hexworks/zircon/terminal/CellBuffer$Companion {
 
 public final class org/hexworks/zircon/terminal/RunTerminalKt {
 	public static final fun getCTRL_C ()Lorg/hexworks/zircon/api/uievent/KeyboardEventMatcher;
-	public static final fun runTerminal (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;)Lorg/hexworks/zircon/terminal/TerminalSession;
-	public static synthetic fun runTerminal$default (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalSession;
+	public static final fun runTerminal (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lorg/hexworks/zircon/terminal/Tty;)Lorg/hexworks/zircon/terminal/TerminalSession;
+	public static synthetic fun runTerminal$default (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lorg/hexworks/zircon/terminal/Tty;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalSession;
 }
 
 public final class org/hexworks/zircon/terminal/SttyTtyKt {
@@ -71,6 +73,29 @@ public final class org/hexworks/zircon/terminal/TerminalCharacters {
 	public final fun isZeroWidth (I)Z
 }
 
+public final class org/hexworks/zircon/terminal/TerminalColors {
+	public static final field Companion Lorg/hexworks/zircon/terminal/TerminalColors$Companion;
+	public fun <init> (Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Ljava/util/List;)V
+	public final fun component1 ()Lorg/hexworks/zircon/api/color/Color;
+	public final fun component2 ()Lorg/hexworks/zircon/api/color/Color;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Ljava/util/List;)Lorg/hexworks/zircon/terminal/TerminalColors;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/terminal/TerminalColors;Lorg/hexworks/zircon/api/color/Color;Lorg/hexworks/zircon/api/color/Color;Ljava/util/List;ILjava/lang/Object;)Lorg/hexworks/zircon/terminal/TerminalColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnsi ()Ljava/util/List;
+	public final fun getBackground ()Lorg/hexworks/zircon/api/color/Color;
+	public final fun getForeground ()Lorg/hexworks/zircon/api/color/Color;
+	public fun hashCode ()I
+	public final fun isDark ()Z
+	public final fun toComponentPalette (Ljava/lang/String;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public static synthetic fun toComponentPalette$default (Lorg/hexworks/zircon/terminal/TerminalColors;Ljava/lang/String;ILjava/lang/Object;)Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/hexworks/zircon/terminal/TerminalColors$Companion {
+	public final fun getDEFAULT_ANSI ()Ljava/util/List;
+}
+
 public final class org/hexworks/zircon/terminal/TerminalRenderer : org/hexworks/zircon/internal/renderer/impl/BaseRenderer {
 	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;)V
 	public synthetic fun create ()Ljava/lang/Object;
@@ -81,13 +106,16 @@ public final class org/hexworks/zircon/terminal/TerminalRenderer : org/hexworks/
 }
 
 public final class org/hexworks/zircon/terminal/TerminalSession {
+	public static final field COLOR_POLL_MS D
 	public static final field HANDSHAKE_TIMEOUT_MS I
 	public static final field KITTY_FLAGS I
-	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;)V
+	public fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lorg/hexworks/zircon/api/grid/TileGrid;ILjava/util/Set;Lkotlin/jvm/functions/Function0;Lorg/hexworks/zircon/terminal/Tty;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getBytesWritten ()J
 	public final fun getEncodeMillis ()D
 	public final fun getFramesRendered ()J
 	public final fun getRenderMillis ()D
+	public final fun getTerminalColors ()Lorg/hexworks/zircon/terminal/TerminalColors;
 	public final fun getWriteMillis ()D
 	public final fun run ()V
 }
@@ -122,6 +150,7 @@ public abstract interface class org/hexworks/zircon/terminal/Tty {
 	public abstract fun size ()Lorg/hexworks/zircon/api/data/Size;
 	public abstract fun takeResize ()Z
 	public abstract fun write ([BI)V
+	public abstract fun writeError (Ljava/lang/String;)V
 }
 
 public final class org/hexworks/zircon/terminal/input/InputParser {
@@ -139,14 +168,19 @@ public final class org/hexworks/zircon/terminal/input/InputParser {
 }
 
 public final class org/hexworks/zircon/terminal/input/InputParser$Companion {
+	public final fun parseColorSpec (Ljava/lang/String;)Lorg/hexworks/zircon/api/color/Color;
 }
 
 public abstract interface class org/hexworks/zircon/terminal/input/InputParser$ReplyListener {
+	public fun onColor (IILorg/hexworks/zircon/api/color/Color;)V
+	public fun onColorScheme (Z)V
 	public fun onDeviceAttributes ()V
 	public fun onKittyKeyboardFlags (I)V
 }
 
 public final class org/hexworks/zircon/terminal/input/InputParser$ReplyListener$DefaultImpls {
+	public static fun onColor (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;IILorg/hexworks/zircon/api/color/Color;)V
+	public static fun onColorScheme (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;Z)V
 	public static fun onDeviceAttributes (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;)V
 	public static fun onKittyKeyboardFlags (Lorg/hexworks/zircon/terminal/input/InputParser$ReplyListener;I)V
 }

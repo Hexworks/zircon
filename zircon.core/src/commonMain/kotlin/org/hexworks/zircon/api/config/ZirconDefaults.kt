@@ -1,9 +1,6 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.config
 
 import org.hexworks.zircon.api.builder.config.ZirconDefaultsBuilder
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.SystemThemeDetector
 import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
@@ -16,7 +13,7 @@ import org.hexworks.zircon.api.component.theme.ComponentPalette
  * `zirconDefaults { ... }` before building anything that should pick it up.
  *
  * These are **not** per-grid settings. A component attached to a grid inherits that grid's
- * tileset and theme from its parent; the defaults only apply to things built standalone
+ * tileset, theme and palette from its parent; the defaults only apply to things built standalone
  * (graphics, layers, REXPaint imports, views) and to the debug and shortcut switches.
  */
 public data class ZirconDefaults(
@@ -26,19 +23,13 @@ public data class ZirconDefaults(
      */
     val tileset: TilesetResource,
     /**
-     * The legacy [ColorTheme] to be used when none is specified; the default [componentPalette]
-     * is adapted from it. Default is [org.hexworks.zircon.api.ColorThemes.gamebookers]
-     */
-    @Deprecated("Colors come from the component palette; set `componentPalette`.")
-    val theme: ColorTheme,
-    /**
      * The [ComponentTheme] a [org.hexworks.zircon.api.screen.Screen] and every builder start
      * with. Default is [org.hexworks.zircon.api.ComponentThemes.default], the stock look.
      */
     val componentTheme: ComponentTheme,
     /**
      * The [ComponentPalette] a [org.hexworks.zircon.api.screen.Screen] and every builder start
-     * with. Default is [theme] adapted (`toComponentPalette()`).
+     * with. Default is [org.hexworks.zircon.api.Palettes.catppuccin] (Mocha).
      */
     val componentPalette: ComponentPalette,
     /**

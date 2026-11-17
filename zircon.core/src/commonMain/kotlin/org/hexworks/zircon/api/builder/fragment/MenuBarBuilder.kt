@@ -1,9 +1,6 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.builder.fragment
 
 import org.hexworks.cobalt.events.api.CallbackResult
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
@@ -27,7 +24,6 @@ public class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
 
     public var screen: Screen? = null
     public var menuElements: List<DropdownMenu<T>> = listOf()
-    public var theme: ColorTheme = ZirconDefaults.current.theme
     public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var width: Int = -1
     public var spacing: Int = 1
@@ -48,7 +44,6 @@ public class MenuBarBuilder<T : Any> : FragmentBuilder<MenuBar<T>> {
             screen = screen ?: error("Cannot build a MenuBar without a Screen"),
             position = position,
             spacing = spacing,
-            theme = theme,
             tileset = tileset,
             menuElements = menuElements,
             width = finalWidth,

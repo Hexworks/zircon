@@ -86,7 +86,7 @@ public class DefaultLogArea internal constructor(
         element.moveTo(Position(0, currentHeight))
         logElements.add(addComponent(element))
         if (applyTheme) {
-            element.theme = theme
+            element.componentPalette = componentPalette
         }
     }
 

@@ -1,5 +1,7 @@
 package org.hexworks.zircon.examples.fragments
 
+import org.hexworks.zircon.examples.PALETTES
+import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.ComponentAlignments.alignmentWithin
 import org.hexworks.zircon.api.ComponentDecorations.box
 import org.hexworks.zircon.api.builder.component.hBox
@@ -7,7 +9,6 @@ import org.hexworks.zircon.api.builder.component.logArea
 import org.hexworks.zircon.api.builder.component.panel
 import org.hexworks.zircon.api.builder.component.vBox
 import org.hexworks.zircon.api.builder.fragment.selector
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.ComponentAlignment
 import org.hexworks.zircon.api.component.builder.base.decorations
 import org.hexworks.zircon.api.component.extensions.addParagraph
@@ -15,7 +16,6 @@ import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.graphics.BoxType
 import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleView
-import org.hexworks.zircon.examples.THEMES
 
 /**
  * Selectors cycle through a list of values with two arrow buttons: centred or left-aligned
@@ -63,15 +63,15 @@ public val selectorExample: Example = Example("Selector") { context ->
         valueList = listOf("Long", "values", "get", "truncated and that's it")
     }.root)
 
-    // Picking a theme here re-themes the whole screen.
-    fragmentsList.addComponent(selector<ColorTheme> {
+    // Picking a palette here recolors the whole screen.
+    fragmentsList.addComponent(selector<ComponentPalette> {
         this.width = width
-        valueList = THEMES
-        defaultSelected = screen.theme
+        valueList = PALETTES
+        defaultSelected = PALETTES.firstOrNull { it.name == screen.componentPalette.name } ?: PALETTES.first()
         toStringMethod = { it.name }
     }.apply {
         selectedProperty.onChange { (oldValue, newValue) ->
-            screen.theme = newValue
+            screen.componentPalette = newValue
             logArea.addParagraph("Changed value from ${oldValue.name} to ${newValue.name}")
         }
     }.root)

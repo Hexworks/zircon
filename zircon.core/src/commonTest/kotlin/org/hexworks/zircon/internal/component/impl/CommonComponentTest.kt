@@ -16,19 +16,16 @@ import org.hexworks.zircon.api.uievent.Processed
 import org.hexworks.zircon.api.uievent.UIEventPhase.TARGET
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 import kotlin.test.Test
 
 @Suppress("PropertyName")
 abstract class CommonComponentTest<T : InternalComponent> {
 
     abstract val target: T
-    abstract val expectedComponentStyles: ComponentStyleSet
 
     lateinit var componentStub: ComponentStub
     lateinit var rendererStub: ComponentRendererStub<T>
 
-    val DEFAULT_THEME = ColorThemeResource.CYBERPUNK.getTheme()
     val POSITION_2_3 = Position(2, 3)
     val POSITION_1_1 = Position(1, 1)
     val SIZE_3_4 = Size(3, 4)

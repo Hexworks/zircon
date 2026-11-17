@@ -86,7 +86,7 @@ needs no plugin.
 
 ```kotlin
 import org.hexworks.zircon.api.CP437TilesetResources
-import org.hexworks.zircon.api.ColorThemes
+import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.builder.component.button
 import org.hexworks.zircon.api.builder.component.header
 import org.hexworks.zircon.api.builder.component.vBox
@@ -103,7 +103,7 @@ fun main() {
         tileset = CP437TilesetResources.wanderlust16x16()
     }
     val screen = grid.toScreen()
-    screen.theme = ColorThemes.arc()
+    screen.componentPalette = Palettes.catppuccin()
 
     val panel = vBox { preferredSize = Size(60, 30) }
     screen.addComponent(panel)
@@ -171,6 +171,10 @@ What to expect:
   ghostty, kitty, WezTerm and Alacritty 0.13+ all qualify; the shell does not matter.
   A terminal that does not answer the protocol query fails fast with a message. In tmux
   use 3.4+ with `set -g extended-keys on` and a truecolor `terminal-overrides`.
+- **Colors.** The terminal's own colors (default foreground and background, the 16 ANSI
+  slots) are read at startup and whenever the terminal switches its theme; pass
+  `onTerminalColors = { screen.componentPalette = it.toComponentPalette() }` to follow it.
+  tmux never answers the queries, so there the palette you set stays.
 - **Size.** The grid keeps the size you built it with; it is centred in the terminal and
   a "terminal too small" banner replaces it while the window is smaller than the grid.
 - **Text only.** CP437 and TrueType tilesets render as glyphs, the tileset's pixel size is
@@ -208,7 +212,7 @@ grid.draw(line(Position(0, 0), Position(20, 10)).toTileGraphics(wallTile, tilese
 Buttons, toggle buttons, check boxes, radio buttons, labels, headers, paragraphs, text
 areas, number inputs, sliders, scroll bars, progress bars, panels, `hBox`/`vBox` layouts,
 log areas, modals, plus fragments such as tab bars, menu bars, tables and selectors. All
-components are themeable (`ColorThemes` ships dozens) and decorated with boxes, shadows
+components are themeable (`Palettes` bundles Catppuccin, Tokyo Night, Kanagawa and Neobrutalism, `ComponentThemes` the shapes) and decorated with boxes, shadows
 and borders. Tab bars scroll when their tabs do not fit: a `…` button at either end
 appears while there are tabs beyond it, the mouse wheel scrolls too, and selecting a tab
 scrolls it into view.

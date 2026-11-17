@@ -1,24 +1,20 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.component
 
-import org.hexworks.zircon.api.behavior.ColorThemeOverride
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.behavior.ComponentPaletteOverride
 import org.hexworks.zircon.api.behavior.ComponentThemeOverride
 
 /**
- * Represents an object that can contain gui [Component]s and also maintains
- * a [theme] property that's synchronized between its child [Component]s.
- * Note that a [ComponentContainer] won't enforce consistency: the child
- * themes can be changed individually, but they will be overwritten whenever
- * the [ComponentContainer]'s theme changes.
+ * Represents an object that can contain gui [Component]s and also maintains the
+ * [componentTheme] and [componentPalette] its child [Component]s follow.
+ * Note that a [ComponentContainer] won't enforce consistency: a child set explicitly
+ * keeps its own, the rest are overwritten whenever the [ComponentContainer]'s change.
  *
  * @see Component
- * @see ColorThemeOverride
+ * @see ComponentThemeOverride
+ * @see ComponentPaletteOverride
  */
-//! TODO: Add a parameter to ignore theme override?
-public interface ComponentContainer : ColorThemeOverride, ComponentThemeOverride, ComponentPaletteOverride {
+public interface ComponentContainer : ComponentThemeOverride, ComponentPaletteOverride {
 
     /**
      * Adds a child [Component] to this [ComponentContainer]. It can either be

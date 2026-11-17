@@ -21,8 +21,16 @@ class TerminalSessionTest {
         tileset = loadCP437TilesetResource(8, 8, "x.png", ResourceType.PROJECT, title = "x")
     }
 
-    private fun session(tty: FakeTty, grid: org.hexworks.zircon.api.grid.TileGrid = grid()) =
-        TerminalSession(grid, targetFps = 1000, quitKeys = setOf(CTRL_C), beforeFrame = {}, tty = tty)
+    private fun session(
+        tty: FakeTty,
+        grid: org.hexworks.zircon.api.grid.TileGrid = grid(),
+        onTerminalColors: (TerminalColors) -> Unit = {},
+    ) = TerminalSession(grid, targetFps = 1000, quitKeys = setOf(CTRL_C), beforeFrame = {}, tty = tty, onTerminalColors = onTerminalColors)
+
+    private fun colorReplies(background: String, foreground: String = "cdd6f4"): String =
+        "\u001b]10;rgb:${foreground.substring(0, 2)}/${foreground.substring(2, 4)}/${foreground.substring(4)}\u001b\\" +
+            "\u001b]11;rgb:${background.substring(0, 2)}/${background.substring(2, 4)}/${background.substring(4)}\u001b\\" +
+            "\u001b]4;4;rgb:89/b4/fa\u001b\\"
 
     @Test
     fun failsFastWithoutTheKittyProtocolAndRestoresTheTerminal() {
@@ -30,7 +38,7 @@ class TerminalSessionTest {
         val error = shouldThrow<IllegalStateException> { session(tty).run() }
         error.message!! shouldContain "kitty keyboard protocol"
         tty.closed shouldBe true
-        tty.outputText shouldStartWith "␛[?u␛[c"
+        tty.outputText shouldContain "␛[?u␛[c"
     }
 
     @Test
@@ -90,5 +98,46 @@ class TerminalSessionTest {
         val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c")), idleReads = 2)
         session(tty).run()
         tty.closed shouldBe true
+    }
+
+    @Test
+    fun readsTheTerminalColorsAtStartupAndAgainWhenTheSchemeChanges() {
+        val seen = ArrayList<TerminalColors>()
+        val tty = FakeTty(
+            reads = listOf(
+                bytes(colorReplies("1e1e2e") + "\u001b[?31u\u001b[?62c"),
+                bytes("\u001b[?997;2n"),
+                bytes(colorReplies("ffffff", "202020") + "\u001b[?62c"),
+                bytes("\u001b[99;5u"),
+            )
+        )
+        val session = session(tty) { seen += it }
+        session.run()
+
+        seen.map { it.background } shouldBe listOf(
+            org.hexworks.zircon.api.color.Color.fromString("#1e1e2e"),
+            org.hexworks.zircon.api.color.Color.fromString("#ffffff"),
+        )
+        seen[0].isDark shouldBe true
+        seen[1].isDark shouldBe false
+        seen[0].ansi[4] shouldBe org.hexworks.zircon.api.color.Color.fromString("#89b4fa")
+        seen[0].ansi[1] shouldBe TerminalColors.DEFAULT_ANSI[1]
+        session.terminalColors shouldBe seen[1]
+        val text = tty.outputText
+        text shouldStartWith "␛]10;?␛\\␛]11;?␛\\␛]4;0;?"
+        text shouldContain "␛[?2031h"
+        text shouldEndWith "␛[?2031l␛[?1003l␛[?1006l␛[<u␛[0m␛[?25h␛[?1049l"
+        // The notification made the session ask for everything again.
+        Regex("␛]10;\\?").findAll(text).count() shouldBe 2
+    }
+
+    @Test
+    fun aTerminalThatDoesNotAnswerTheColorQueriesReportsNothing() {
+        val seen = ArrayList<TerminalColors>()
+        val tty = FakeTty(reads = listOf(bytes("\u001b[?31u\u001b[?62c"), bytes("\u001b[99;5u")))
+        val session = session(tty) { seen += it }
+        session.run()
+        seen shouldBe emptyList()
+        session.terminalColors shouldBe null
     }
 }

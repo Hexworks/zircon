@@ -1,15 +1,11 @@
 package org.hexworks.zircon.examples
 
-import org.hexworks.zircon.api.ColorThemes
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.resource.TilesetResource
-import org.hexworks.zircon.internal.resource.ColorThemeResource
 import org.hexworks.zircon.internal.resource.BuiltInCP437TilesetResource.entries as CP437_TILESETS
 import org.hexworks.zircon.internal.resource.BuiltInTrueTypeFontResource.entries as TTF_FONTS
 import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.component.theme.ComponentPalette
-import org.hexworks.zircon.api.component.theme.toComponentPalette
 import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 
@@ -23,17 +19,10 @@ val TILE_SIZES: List<Size> = CP437_TILESETS
     .distinct()
     .sortedWith(compareBy({ it.height }, { it.width }))
 
-/** Every built-in colour theme, the legacy format. */
-@Suppress("DEPRECATION")
-val THEMES: List<ColorTheme> = ColorThemeResource.ALL_THEMES
+/** Every palette the app offers: the bundled ones. */
+val PALETTES: List<ComponentPalette> = Palettes.all()
 
-/**
- * Every palette the app offers: the bundled ones first, then the colour themes adapted.
- */
-val PALETTES: List<ComponentPalette> = Palettes.all() + THEMES.map { it.toComponentPalette() }
-
-@Suppress("DEPRECATION")
-val DEFAULT_PALETTE: ComponentPalette = ColorThemes.nord().toComponentPalette()
+val DEFAULT_PALETTE: ComponentPalette = Palettes.catppuccin()
 
 /** The component themes (shapes) the app offers; the stock look first. */
 val COMPONENT_THEMES: List<ComponentTheme> = listOf(ComponentThemes.default(), ComponentThemes.neobrutalism())

@@ -3,7 +3,6 @@ package org.hexworks.zircon.api.builder.component
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.builder.base.BaseComponentBuilder
 import org.hexworks.zircon.api.component.builder.base.BaseContainerBuilder
-import org.hexworks.zircon.api.component.extensions.isColorNotUnknown
 import org.hexworks.zircon.api.component.extensions.isStyleNotUnknown
 import org.hexworks.zircon.api.component.modal.Modal
 import org.hexworks.zircon.api.component.modal.ModalResult
@@ -36,9 +35,6 @@ public class ModalBuilder<T : ModalResult> :
         val modalBounds = size.toBoundable()
         require(tileset.isNotUnknown) {
             "Since a Modal has no parent it must have its own tileset"
-        }
-        require(colorTheme.isColorNotUnknown || componentStyleSet.isStyleNotUnknown) {
-            "Since a Modal has no parent it must have its own color theme or component style set"
         }
         require(size.isSizeNotUnknown) {
             "Can't build a modal without knowing the size of the parent."

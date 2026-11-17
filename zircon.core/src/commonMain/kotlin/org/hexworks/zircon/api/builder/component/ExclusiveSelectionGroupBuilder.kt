@@ -1,11 +1,8 @@
-@file:Suppress("DEPRECATION")
-
 package org.hexworks.zircon.api.builder.component
 
 import org.hexworks.zircon.api.behavior.Selectable
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.BinarySelector
-import org.hexworks.zircon.api.component.ColorTheme
 import org.hexworks.zircon.api.component.Component
 import org.hexworks.zircon.api.component.ExclusiveSelectionGroup
 import org.hexworks.zircon.api.config.ZirconDefaults
@@ -22,14 +19,12 @@ public open class ExclusiveSelectionGroupBuilder<T> : Builder<ExclusiveSelection
 
     public var isDisabled: Boolean = false
     public var isHidden: Boolean = false
-    public var theme: ColorTheme = ZirconDefaults.current.theme
     public var tileset: TilesetResource = ZirconDefaults.current.tileset
     public var members: List<T> = listOf()
 
     override fun build(): ExclusiveSelectionGroup<T> = DefaultExclusiveSelectionGroup<T>(
         initialIsDisabled = isDisabled,
         initialIsHidden = isHidden,
-        initialTheme = theme,
         initialTileset = tileset
     ).apply {
         members.forEach { addComponent(it) }
