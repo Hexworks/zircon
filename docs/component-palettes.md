@@ -242,3 +242,10 @@ builders' `colorTheme`, `ZirconDefaults.theme`, `screen.theme`, `Group.theme`, `
 `ComponentRenderContext.theme` are removed; colors come only from `ComponentPalette` (default
 `Palettes.catppuccin()`). The 77 legacy five-color themes are not bundled any more; new palettes and the
 color fine-tuning are a session of their own.
+
+**Status (2026-11-17): `SystemTheme`.** `ThemeMode.SYSTEM` resolves through the live `SystemTheme` object
+(`modeProperty`, `paletteProperty`, `update`, `refresh`, `reset`); the terminal renderer, `TileGridView` and the
+browsers write it, `ZirconDefaults.systemThemeDetector` is the fallback `refresh()` samples. `Screen.followSystemPalette
+{ mode -> ... }` (and `ZirconDefaults.followSystemPalette`) keeps a screen on the host palette or the fallback pair until
+the palette is set explicitly. The examples' selector has a `System` entry; `SystemPaletteFollower` and
+`useTerminalPalette` are gone. See `docs/system-theme-handover.md`.

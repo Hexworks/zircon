@@ -18,17 +18,26 @@ class ThemeModeTest {
     @AfterTest
     fun tearDown() {
         ZirconDefaults.current = original
+        SystemTheme.reset()
     }
 
     @Test
-    fun system_resolves_through_the_detector() {
+    fun system_resolves_to_what_the_detector_reported_last() {
         ZirconDefaults.current = original.copy(systemThemeDetector = SystemThemeDetector.fixed(ThemeMode.LIGHT))
+        SystemTheme.refresh()
+        ThemeMode.SYSTEM.resolve() shouldBe ThemeMode.LIGHT
+    }
+
+    @Test
+    fun system_resolves_to_what_a_host_pushed() {
+        SystemTheme.update(mode = ThemeMode.LIGHT)
         ThemeMode.SYSTEM.resolve() shouldBe ThemeMode.LIGHT
     }
 
     @Test
     fun system_falls_back_to_dark_when_the_detector_does_not_know() {
         ZirconDefaults.current = original.copy(systemThemeDetector = SystemThemeDetector.NONE)
+        SystemTheme.refresh()
         ThemeMode.SYSTEM.resolve() shouldBe ThemeMode.DARK
     }
 

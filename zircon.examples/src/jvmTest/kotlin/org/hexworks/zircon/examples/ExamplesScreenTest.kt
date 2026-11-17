@@ -18,6 +18,12 @@ import java.io.File
 import kotlin.test.Test
 import io.kotest.matchers.shouldNotBe
 import org.hexworks.zircon.internal.fragment.impl.DefaultMatrixTabBar
+import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.component.theme.SystemTheme
+import org.hexworks.zircon.api.component.theme.SystemThemeDetector
+import org.hexworks.zircon.api.component.theme.ThemeMode
+import org.hexworks.zircon.api.config.ZirconDefaults
+import kotlin.test.AfterTest
 
 @OptIn(ExamplesTestApi::class)
 class ExamplesScreenTest {
@@ -27,6 +33,82 @@ class ExamplesScreenTest {
         Resources.loader = ResourceLoader { resource: Resource ->
             File("resources/files/" + resource.path.trimStart('/')).readBytes()
         }
+    }
+
+    private val originalDefaults = ZirconDefaults.current
+
+    @AfterTest
+    fun tearDown() {
+        ZirconDefaults.current = originalDefaults
+        SystemTheme.reset()
+    }
+
+    private fun detectorReports(mode: ThemeMode) {
+        ZirconDefaults.current = originalDefaults.copy(systemThemeDetector = SystemThemeDetector.fixed(mode))
+        SystemTheme.refresh()
+    }
+
+    @Test
+    fun selectingSystemShowsTheFamilyOfTheLastPaletteInTheDesktopsMode() {
+        detectorReports(ThemeMode.LIGHT)
+        val shown = runBlocking { examplesScreen(MIN_SIZE) }
+        shown.paletteChoiceProperty.value shouldBe PaletteChoice.Fixed(DEFAULT_PALETTE)
+        shown.paletteChoiceProperty.value = PaletteChoice.System
+        shown.paletteProperty.value.name shouldBe Palettes.catppuccin(ThemeMode.LIGHT).name
+        detectorReports(ThemeMode.DARK)
+        shown.paletteProperty.value.name shouldBe Palettes.catppuccin(ThemeMode.DARK).name
+        // Still following: the selector keeps saying System.
+        shown.paletteChoiceProperty.value shouldBe PaletteChoice.System
+    }
+
+    @Test
+    fun aHostPaletteWinsWhileFollowing() {
+        detectorReports(ThemeMode.DARK)
+        val shown = runBlocking { examplesScreen(MIN_SIZE, isTerminal = true) }
+        // A terminal starts on System.
+        shown.paletteChoiceProperty.value shouldBe PaletteChoice.System
+        val terminal = Palettes.fromAnsi(Color.fromString("#ffffff"), Color.fromString("#000000"), TerminalColors16)
+        SystemTheme.update(mode = ThemeMode.DARK, palette = terminal)
+        shown.paletteProperty.value shouldBe terminal
+        shown.paletteChoiceProperty.value shouldBe PaletteChoice.System
+    }
+
+    @Test
+    fun selectingAPaletteStopsFollowing() {
+        detectorReports(ThemeMode.DARK)
+        val shown = runBlocking { examplesScreen(MIN_SIZE) }
+        shown.paletteChoiceProperty.value = PaletteChoice.System
+        val dragon = Palettes.kanagawa(KanagawaVariant.DRAGON)
+        shown.paletteChoiceProperty.value = PaletteChoice.Fixed(dragon)
+        shown.paletteProperty.value shouldBe dragon
+        detectorReports(ThemeMode.LIGHT)
+        shown.paletteProperty.value shouldBe dragon
+        // System again follows the family picked last: Kanagawa.
+        shown.paletteChoiceProperty.value = PaletteChoice.System
+        shown.paletteProperty.value.name shouldBe Palettes.kanagawa(ThemeMode.LIGHT).name
+    }
+
+    @Test
+    fun aPaletteSetByAnExampleShowsInTheSelectorAndStopsFollowing() {
+        detectorReports(ThemeMode.DARK)
+        val shown = runBlocking { examplesScreen(MIN_SIZE) }
+        shown.paletteChoiceProperty.value = PaletteChoice.System
+        val neo = Palettes.neobrutalism(ThemeMode.LIGHT)
+        shown.paletteProperty.value = neo
+        shown.paletteChoiceProperty.value shouldBe PaletteChoice.Fixed(neo)
+        detectorReports(ThemeMode.LIGHT)
+        shown.paletteProperty.value shouldBe neo
+    }
+
+    @Test
+    fun aRebuiltScreenKeepsFollowing() {
+        detectorReports(ThemeMode.DARK)
+        val first = runBlocking { examplesScreen(MIN_SIZE) }
+        first.paletteChoiceProperty.value = PaletteChoice.System
+        val second = runBlocking { examplesScreen(MIN_SIZE, previous = first) }
+        second.paletteChoiceProperty.value shouldBe PaletteChoice.System
+        detectorReports(ThemeMode.LIGHT)
+        second.paletteProperty.value.name shouldBe Palettes.catppuccin(ThemeMode.LIGHT).name
     }
 
     @Test
@@ -164,3 +246,6 @@ class ExamplesScreenTest {
         shown.runtimeErrors.map { (name, error) -> "$name: ${error.message}" } shouldBe emptyList()
     }
 }
+
+/** Sixteen flat grey slots: enough for a palette the tests can tell apart from the bundled ones. */
+private val TerminalColors16: List<Color> = List(16) { Color.create(it * 16, it * 16, it * 16) }

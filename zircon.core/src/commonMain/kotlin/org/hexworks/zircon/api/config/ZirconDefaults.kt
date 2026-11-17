@@ -3,6 +3,7 @@ package org.hexworks.zircon.api.config
 import org.hexworks.zircon.api.builder.config.ZirconDefaultsBuilder
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.SystemThemeDetector
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.resource.TilesetResource
 import org.hexworks.zircon.api.component.theme.ComponentPalette
@@ -59,6 +60,13 @@ public data class ZirconDefaults(
      * @see ErrorHandler
      */
     val onError: ErrorHandler,
+    /**
+     * When set, every new [org.hexworks.zircon.api.screen.Screen] follows the host's palette
+     * from the start (`screen.followSystemPalette(followSystemPalette)`): the host's own colors
+     * when it reports them, else this light / dark pair. Default is `null`, the screen starts
+     * on [componentPalette].
+     */
+    val followSystemPalette: ((ThemeMode) -> ComponentPalette)? = null,
 ) {
 
     /**

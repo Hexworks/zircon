@@ -1,7 +1,7 @@
 package org.hexworks.zircon.examples
 
 import org.hexworks.cobalt.databinding.api.extension.toProperty
-import org.hexworks.cobalt.databinding.api.collection.ListProperty
+import org.hexworks.cobalt.events.api.Subscription
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.cobalt.databinding.api.value.ObservableValue
 import org.hexworks.zircon.api.ComponentDecorations.margin
@@ -20,6 +20,8 @@ import org.hexworks.zircon.api.builder.grid.DEFAULT_TILESET
 import org.hexworks.zircon.api.builder.grid.tileGrid
 import org.hexworks.zircon.api.color.Color
 import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.SystemTheme
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.component.theme.error
 import org.hexworks.zircon.api.component.theme.primary
 import org.hexworks.zircon.api.component.theme.surface
@@ -29,6 +31,7 @@ import org.hexworks.zircon.api.config.ErrorHandler
 import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.data.Position
 import org.hexworks.zircon.api.data.Size
+import org.hexworks.zircon.api.extensions.followSystemPalette
 import org.hexworks.zircon.api.extensions.toScreen
 import org.hexworks.zircon.api.fragment.MatrixTabBar
 import org.hexworks.zircon.api.graphics.LayerHandle
@@ -70,10 +73,10 @@ class ExamplesScreen(
     val onFrame: () -> Unit,
     /** The tileset the grid and its components draw with; carried over to a rebuilt screen. */
     internal val tilesetProperty: Property<TilesetResource>,
-    /** The palette; carried over to a rebuilt screen. */
+    /** The palette in effect, the screen's own; setting it is picking that palette. */
     internal val paletteProperty: Property<ComponentPalette>,
-    /** The palettes the selector offers; a terminal's own palette is put first. */
-    internal val palettesProperty: ListProperty<ComponentPalette>,
+    /** What the palette selector shows: `System` or a bundled palette; carried over to a rebuilt screen. */
+    internal val paletteChoiceProperty: Property<PaletteChoice>,
     /** The component theme (shape); carried over to a rebuilt screen. */
     internal val themeProperty: Property<ComponentTheme>,
     /** The groups the app shows (with `isTerminal`, only those with a text-only example). */
@@ -85,17 +88,6 @@ class ExamplesScreen(
     /** Errors Zircon contained while running, as source to the error; the latest shows in the footer. */
     @ExamplesTestApi val runtimeErrors: List<Pair<String, Throwable>>,
 )
-
-/**
- * Shows [palette] as the terminal's own, replacing the one shown before (same name) or adding
- * it in front of the bundled ones, and switches to it. The terminal launcher calls this with
- * the colors the terminal reports, at startup and whenever its theme changes.
- */
-fun ExamplesScreen.useTerminalPalette(palette: ComponentPalette) {
-    val index = palettesProperty.indexOfFirst { it.name == palette.name }
-    if (index >= 0) palettesProperty.set(index, palette) else palettesProperty.add(0, palette)
-    paletteProperty.value = palette
-}
 
 /**
  * The grid size that fills [widthPx] x [heightPx] with cells of [tileSize], at least
@@ -113,7 +105,10 @@ fun gridSizeFor(tileSize: Size, widthPx: Int, heightPx: Int): Size = Size(
  * and the latest contained error in the bottom row. Examples are built the first time
  * they are shown.
  *
- * Picking a palette or a tileset of the same cell size applies at once. Picking another
+ * Picking a palette or a tileset of the same cell size applies at once. The palette
+ * selector's `System` entry follows the host (`Screen.followSystemPalette`): the terminal's
+ * own colors, or on the desktop the light / dark member of the family picked last; in a
+ * terminal the app starts on it. Picking another
  * cell size only updates [ExamplesScreen.tileSizeProperty]; the launcher then builds a
  * new screen with the previous one as [previous], which starts from the previous one's
  * tile size, tileset, palette and selected example. With [isTerminal] the examples that
@@ -144,6 +139,8 @@ suspend fun examplesScreen(
     val tileSize = previous?.tileSizeProperty?.value ?: DEFAULT_TILESET.size
     val initialTileset = previous?.tilesetProperty?.value?.takeIf { it.size == tileSize } ?: tilesetsFor(tileSize).first()
     val initialPalette = previous?.paletteProperty?.value ?: DEFAULT_PALETTE
+    val initialChoice = previous?.paletteChoiceProperty?.value
+        ?: if (isTerminal) PaletteChoice.System else PaletteChoice.Fixed(initialPalette)
     val initialTheme = previous?.themeProperty?.value ?: COMPONENT_THEMES.first()
 
     val grid = tileGrid {
@@ -157,12 +154,38 @@ suspend fun examplesScreen(
 
     val tileSizeProperty = tileSize.toProperty()
     val tilesetProperty = initialTileset.toProperty()
-    val paletteProperty = initialPalette.toProperty()
-    val palettesProperty = (previous?.palettesProperty?.value ?: PALETTES).toProperty()
-
+    val paletteProperty = screen.componentPaletteProperty
+    val paletteChoiceProperty = initialChoice.toProperty()
     val themeProperty = initialTheme.toProperty()
 
-    paletteProperty.onChange { (_, changed) -> screen.componentPalette = changed }
+    // The palette: a concrete pick is set on the screen; `System` follows the host with the
+    // family of the palette picked last (the terminal's own colors win where it has them).
+    // A palette set from elsewhere (an example's own switch) ends the follow and shows in the
+    // selector; the follow's own writes keep `System` selected.
+    var family = paletteFamilyOf(initialPalette)
+    var follow: Subscription? = null
+    fun followSystem(newFamily: (ThemeMode) -> ComponentPalette) {
+        family = newFamily
+        follow?.dispose()
+        follow = screen.followSystemPalette(newFamily)
+        paletteChoiceProperty.value = PaletteChoice.System
+    }
+    fun systemPaletteName(): String = (SystemTheme.palette ?: family(SystemTheme.mode)).name
+    paletteChoiceProperty.onChange { (_, choice) ->
+        when (choice) {
+            PaletteChoice.System -> if (follow?.disposed != false) followSystem(family)
+            is PaletteChoice.Fixed -> {
+                family = paletteFamilyOf(choice.palette)
+                screen.componentPalette = choice.palette
+            }
+        }
+    }
+    paletteProperty.onChange { (_, changed) ->
+        if (paletteChoiceProperty.value == PaletteChoice.System && changed.name == systemPaletteName()) return@onChange
+        family = paletteFamilyOf(changed)
+        paletteChoiceProperty.value = PaletteChoice.Fixed(changed)
+    }
+    if (initialChoice == PaletteChoice.System) followSystem(family)
     themeProperty.onChange { (_, changed) -> screen.componentTheme = changed }
     // A screen's tileset and its component tree's are separate: `Screen.tileset` is the
     // grid's (the base layer and the cursor), the components follow their root container.
@@ -197,8 +220,8 @@ suspend fun examplesScreen(
         }
         selector {
             width = SELECTOR_WIDTH
-            valuesProperty = palettesProperty
-            selectedProperty = paletteProperty
+            valueList = PALETTE_CHOICES
+            selectedProperty = paletteChoiceProperty
             toStringMethod = { it.name }
         }
         // The shape, app-wide. Components keep their size on a switch; decorations that would
@@ -216,7 +239,7 @@ suspend fun examplesScreen(
     val bodySize = Size(size.width, size.height - HEADER_HEIGHT)
     // Named apart from the builders' own `contentSize`, which would shadow it inside their lambdas.
     val exampleContentSize = Size(size.width - EXAMPLE_TAB_WIDTH, bodySize.height - 3)
-    val context = ExampleContext(screen, exampleContentSize, assets, paletteProperty)
+    val context = ExampleContext(screen, exampleContentSize, assets, paletteProperty, ::followSystem)
 
     val views = HashMap<Pair<String, String>, ExampleView>()
     val placeholders = HashMap<Pair<String, String>, Panel>()
@@ -360,7 +383,7 @@ suspend fun examplesScreen(
         },
         tilesetProperty = tilesetProperty,
         paletteProperty = paletteProperty,
-        palettesProperty = palettesProperty,
+        paletteChoiceProperty = paletteChoiceProperty,
         themeProperty = themeProperty,
         packages = packages,
         tabBar = tabBar,

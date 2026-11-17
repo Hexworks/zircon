@@ -75,7 +75,8 @@ accessibility tree from the same data. Deferred until palettes land; see the 202
   `default`, tmux passes the indices through and the outer terminal paints them in its current
   palette. Our queries stop at tmux, which answers for itself at best and forwards neither the
   OSC replies nor the mode 2031 reports of the terminal behind it.)
-- **"System" as a palette mode, not a palette.** `ThemeMode.SYSTEM` stays the app's wish; the one-shot
+- *(done 2026-11-17, `SystemTheme` + `Screen.followSystemPalette`; OS accent extraction still open)*
+  **"System" as a palette mode, not a palette.** `ThemeMode.SYSTEM` stays the app's wish; the one-shot
   `SystemThemeDetector.detect()` behind it is replaced by a live core object `SystemTheme` with two
   properties: `mode: Property<ThemeMode>` (resolved light/dark) and `palette: Property<ComponentPalette?>`
   (the host's exact colors, `null` when it has none). `ThemeMode.resolve()` reads `mode`; the detector

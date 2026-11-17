@@ -6,6 +6,7 @@ import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.builder.Builder
 import org.hexworks.zircon.api.component.theme.ComponentTheme
 import org.hexworks.zircon.api.component.theme.SystemThemeDetector
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.component.theme.platformSystemThemeDetector
 import org.hexworks.zircon.api.config.DebugConfig
 import org.hexworks.zircon.api.config.ErrorHandler
@@ -81,6 +82,13 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
     public var onError: ErrorHandler = ErrorHandler.NONE
 
     /**
+     * When set, every new screen follows the host's palette from the start, see
+     * `Screen.followSystemPalette`: the host's own colors when it reports them (a terminal),
+     * else this light / dark pair, `{ Palettes.catppuccin(it) }` say. Default is `null`.
+     */
+    public var followSystemPalette: ((ThemeMode) -> ComponentPalette)? = null
+
+    /**
      * Configures [debugConfig] with the builder DSL.
      */
     public fun debug(init: DebugConfigBuilder.() -> Unit) {
@@ -103,6 +111,7 @@ public class ZirconDefaultsBuilder : Builder<ZirconDefaults> {
         debugConfig = debugConfig,
         shortcutsConfig = shortcutsConfig,
         onError = onError,
+        followSystemPalette = followSystemPalette,
     )
 }
 

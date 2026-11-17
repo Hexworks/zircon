@@ -8,7 +8,7 @@ private object BrowserSystemThemeDetector : SystemThemeDetector {
     } else null
 }
 
-private fun hasMatchMedia(): Boolean =
+internal fun hasMatchMedia(): Boolean =
     js("typeof window !== 'undefined' && typeof window.matchMedia === 'function'")
 
 private fun prefersDark(): Boolean =

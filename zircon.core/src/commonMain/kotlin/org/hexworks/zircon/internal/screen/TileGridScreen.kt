@@ -1,6 +1,7 @@
 package org.hexworks.zircon.internal.screen
 
 import org.hexworks.zircon.api.config.ZirconDefaults
+import org.hexworks.zircon.api.extensions.followSystemPalette
 import org.hexworks.zircon.internal.component.InternalComponent
 import org.hexworks.cobalt.core.api.UUID
 import org.hexworks.cobalt.databinding.api.extension.toProperty
@@ -86,6 +87,7 @@ public class TileGridScreen(
                 deactivate()
             }
         }.disposeWhen(closedProperty)
+        ZirconDefaults.current.followSystemPalette?.let { followSystemPalette(it) }
     }
 
 

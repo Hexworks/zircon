@@ -117,5 +117,13 @@ public fun Screen.followSystemPalette(fallback: (ThemeMode) -> ComponentPalette)
 
 ## Status
 
-- Session 1: not started.
+- Session 1: **done 2026-11-17.** As designed, with these deviations: `SystemTheme.modeProperty` / `paletteProperty` are
+  read-only `ObservableValue`s (only `update` writes them; `mode` / `palette` are value shortcuts); `reset()` was added
+  (forget the host palette and re-sample, for a renderer shutting down and for tests); the Compose source trusts
+  `isSystemInDarkTheme()` only where Skiko knows the theme (macOS, Windows, browser) and on the Linux desktop samples
+  the detector off the UI thread every 2 s instead (`zircon.compose/.../SystemThemeSource.kt`); the terminal session
+  calls `SystemTheme.refresh()` on its 2 s poll while the terminal has never answered (tmux). The examples' `System` is
+  `PaletteChoice.System` (`Catalog.kt`, with `paletteFamilyOf`), `ExamplesScreen.paletteProperty` is now the screen's own
+  palette property and `paletteChoiceProperty` what the selector shows; `ExampleContext.followSystemPalette(family)` is
+  what the Neobrutalism page's System button calls. `onTerminalColors` stays.
 - Session 2: not started.

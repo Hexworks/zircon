@@ -29,20 +29,14 @@ import org.hexworks.zircon.examples.Example
 import org.hexworks.zircon.examples.ExampleContext
 import org.hexworks.zircon.examples.ExampleView
 import org.hexworks.zircon.api.Palettes
-import org.hexworks.cobalt.databinding.api.property.Property
-import org.hexworks.zircon.api.component.theme.ComponentPalette
-import org.hexworks.zircon.api.config.ZirconDefaults
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource
 
 /**
  * Every Neobrutalism component, built through the theme's component factory. The shape is
  * pinned to this subtree; the colors are the app's palette (the header selector), so any
  * bundled palette can be tried on it. The Light / Dark buttons switch the app to HyperUI's
- * Neobrutalism palette of that mode; System picks it after the desktop theme and keeps
- * following while the example is shown (the detector is asked every [POLL]), until another
- * palette is picked.
+ * Neobrutalism palette of that mode; System is the header selector's `System` with the
+ * Neobrutalism pair as the family: the host's own colors where it has them, else light or
+ * dark after the desktop setting, until another palette is picked.
  */
 public val neobrutalismExample: Example = Example("Neobrutalism") { context ->
     val theme = ComponentThemes.neobrutalism()
@@ -50,63 +44,15 @@ public val neobrutalismExample: Example = Example("Neobrutalism") { context ->
         preferredSize = context.contentSize
         componentTheme = theme
     }
-    val follower = SystemPaletteFollower(context.palette) { Palettes.neobrutalism(it) }
     root.addComponent(buildContent(context, theme) { mode ->
         if (mode == ThemeMode.SYSTEM) {
-            follower.start()
+            context.followSystemPalette { Palettes.neobrutalism(it) }
         } else {
-            follower.stop()
             context.palette.value = Palettes.neobrutalism(mode)
         }
     })
-    ExampleView(root, onFrame = follower::tick, onHidden = follower::stop)
+    ExampleView(root)
 }
-
-/**
- * Keeps [palette] on `paletteFor(detected mode)` while following: [tick] asks the
- * [SystemThemeDetector][org.hexworks.zircon.api.component.theme.SystemThemeDetector] at most
- * once per [POLL] and applies a change; it stops by itself when the palette was changed by
- * someone else (the header selector, a Light / Dark button). A terminal has nothing to ask,
- * so there the detector answers `null` and the dark palette is used.
- */
-private class SystemPaletteFollower(
-    private val palette: Property<ComponentPalette>,
-    private val paletteFor: (ThemeMode) -> ComponentPalette,
-) {
-    private var following = false
-    private var applied: ComponentPalette? = null
-    private var lastPoll: TimeMark? = null
-
-    fun start() {
-        following = true
-        lastPoll = null
-        tick()
-    }
-
-    fun stop() {
-        following = false
-        applied = null
-    }
-
-    fun tick() {
-        if (!following) return
-        if (applied != null && palette.value != applied) {
-            stop()
-            return
-        }
-        val last = lastPoll
-        if (last != null && last.elapsedNow() < POLL) return
-        lastPoll = TimeSource.Monotonic.markNow()
-        val detected = ZirconDefaults.current.systemThemeDetector.detect() ?: ThemeMode.DARK
-        val next = paletteFor(detected)
-        if (next != applied) {
-            applied = next
-            palette.value = next
-        }
-    }
-}
-
-private val POLL = 2.seconds
 
 private fun buildContent(context: ExampleContext, theme: ComponentTheme, switchTo: (ThemeMode) -> Unit): Component {
     val components = theme.componentFactory

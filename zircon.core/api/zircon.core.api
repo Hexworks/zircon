@@ -1099,6 +1099,7 @@ public final class org/hexworks/zircon/api/builder/config/ZirconDefaultsBuilder 
 	public final fun getComponentTheme ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public final fun getDebugConfig ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun getDebugMode ()Z
+	public final fun getFollowSystemPalette ()Lkotlin/jvm/functions/Function1;
 	public final fun getOnError ()Lorg/hexworks/zircon/api/config/ErrorHandler;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
 	public final fun getSystemThemeDetector ()Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;
@@ -1107,6 +1108,7 @@ public final class org/hexworks/zircon/api/builder/config/ZirconDefaultsBuilder 
 	public final fun setComponentTheme (Lorg/hexworks/zircon/api/component/theme/ComponentTheme;)V
 	public final fun setDebugConfig (Lorg/hexworks/zircon/api/config/DebugConfig;)V
 	public final fun setDebugMode (Z)V
+	public final fun setFollowSystemPalette (Lkotlin/jvm/functions/Function1;)V
 	public final fun setOnError (Lorg/hexworks/zircon/api/config/ErrorHandler;)V
 	public final fun setShortcutsConfig (Lorg/hexworks/zircon/api/config/ShortcutsConfig;)V
 	public final fun setSystemThemeDetector (Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;)V
@@ -3464,6 +3466,18 @@ public final class org/hexworks/zircon/api/component/theme/StyleOverrideKey {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class org/hexworks/zircon/api/component/theme/SystemTheme {
+	public static final field INSTANCE Lorg/hexworks/zircon/api/component/theme/SystemTheme;
+	public final fun getMode ()Lorg/hexworks/zircon/api/component/theme/ThemeMode;
+	public final fun getModeProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
+	public final fun getPalette ()Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
+	public final fun getPaletteProperty ()Lorg/hexworks/cobalt/databinding/api/value/ObservableValue;
+	public final fun refresh ()V
+	public final fun reset ()V
+	public final fun update (Lorg/hexworks/zircon/api/component/theme/ThemeMode;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;)V
+	public static synthetic fun update$default (Lorg/hexworks/zircon/api/component/theme/SystemTheme;Lorg/hexworks/zircon/api/component/theme/ThemeMode;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;ILjava/lang/Object;)V
+}
+
 public abstract interface class org/hexworks/zircon/api/component/theme/SystemThemeDetector {
 	public static final field Companion Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector$Companion;
 	public abstract fun detect ()Lorg/hexworks/zircon/api/component/theme/ThemeMode;
@@ -3600,7 +3614,8 @@ public final class org/hexworks/zircon/api/config/ShortcutsConfig$Companion {
 
 public final class org/hexworks/zircon/api/config/ZirconDefaults {
 	public static final field Companion Lorg/hexworks/zircon/api/config/ZirconDefaults$Companion;
-	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;)V
+	public fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lorg/hexworks/zircon/api/resource/TilesetResource;
 	public final fun component2 ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public final fun component3 ()Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
@@ -3609,13 +3624,15 @@ public final class org/hexworks/zircon/api/config/ZirconDefaults {
 	public final fun component6 ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun component7 ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
 	public final fun component8 ()Lorg/hexworks/zircon/api/config/ErrorHandler;
-	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
-	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/config/ZirconDefaults;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;ILjava/lang/Object;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
+	public final fun component9 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
+	public static synthetic fun copy$default (Lorg/hexworks/zircon/api/config/ZirconDefaults;Lorg/hexworks/zircon/api/resource/TilesetResource;Lorg/hexworks/zircon/api/component/theme/ComponentTheme;Lorg/hexworks/zircon/api/component/theme/ComponentPalette;Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;ZLorg/hexworks/zircon/api/config/DebugConfig;Lorg/hexworks/zircon/api/config/ShortcutsConfig;Lorg/hexworks/zircon/api/config/ErrorHandler;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/hexworks/zircon/api/config/ZirconDefaults;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getComponentPalette ()Lorg/hexworks/zircon/api/component/theme/ComponentPalette;
 	public final fun getComponentTheme ()Lorg/hexworks/zircon/api/component/theme/ComponentTheme;
 	public final fun getDebugConfig ()Lorg/hexworks/zircon/api/config/DebugConfig;
 	public final fun getDebugMode ()Z
+	public final fun getFollowSystemPalette ()Lkotlin/jvm/functions/Function1;
 	public final fun getOnError ()Lorg/hexworks/zircon/api/config/ErrorHandler;
 	public final fun getShortcutsConfig ()Lorg/hexworks/zircon/api/config/ShortcutsConfig;
 	public final fun getSystemThemeDetector ()Lorg/hexworks/zircon/api/component/theme/SystemThemeDetector;
@@ -4079,6 +4096,7 @@ public final class org/hexworks/zircon/api/extensions/LayerExtensionsKt {
 }
 
 public final class org/hexworks/zircon/api/extensions/ScreenExtensionsKt {
+	public static final fun followSystemPalette (Lorg/hexworks/zircon/api/screen/Screen;Lkotlin/jvm/functions/Function1;)Lorg/hexworks/cobalt/events/api/Subscription;
 	public static final fun useComponentBuilder (Lorg/hexworks/zircon/api/screen/Screen;Lkotlin/jvm/functions/Function1;)V
 }
 

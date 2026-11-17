@@ -2,6 +2,8 @@ package org.hexworks.zircon.terminal
 
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.color.Color
+import org.hexworks.zircon.api.component.theme.SystemTheme
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.uievent.KeyCode
 import org.hexworks.zircon.api.uievent.KeyboardEvent
@@ -36,7 +38,10 @@ public val CTRL_C: KeyboardEventMatcher =
  * [onTerminalColors] gets them, on the loop's thread, before the first frame and again
  * whenever they change: the terminal announces a theme switch (mode 2031) or the background
  * answers differently to a poll every two seconds. Build a palette from them with
- * [TerminalColors.toComponentPalette]. A terminal that does not answer (tmux) never calls it.
+ * [TerminalColors.toComponentPalette]. The same colors become the system palette
+ * (`SystemTheme.palette`), so a screen that calls `followSystemPalette` adopts them without
+ * this callback. A terminal that does not answer (tmux) never calls it; there the desktop
+ * setting decides light / dark (`SystemTheme.mode`, re-sampled every two seconds).
  *
  * Log statements written while the grid is on screen would scribble over it, so when the
  * application installed no [LoggerFactory.sink] of its own they are held back and printed
@@ -211,6 +216,9 @@ public class TerminalSession(
                 // background now and then, and re-read everything when it changed.
                 lastBackgroundPoll = now
                 if (!colorsQueried) write("${AnsiEncoder.OSC}11;?${AnsiEncoder.ST}")
+                // A terminal that never answered (tmux) leaves the desktop setting as the
+                // only source of light / dark; sample it at the same pace.
+                if (terminalColors == null) SystemTheme.refresh()
             }
             val wait = (nextFrameAt - now).toInt()
             if (wait > 0) {
@@ -285,6 +293,12 @@ public class TerminalSession(
         val colors = TerminalColors(fg, bg, slots)
         if (colors == terminalColors) return
         terminalColors = colors
+        // The terminal is the host: its colors become the system palette every screen that
+        // follows it adopts (`screen.followSystemPalette`), and its background the mode.
+        SystemTheme.update(
+            mode = if (colors.isDark) ThemeMode.DARK else ThemeMode.LIGHT,
+            palette = colors.toComponentPalette(),
+        )
         onTerminalColors(colors)
     }
 

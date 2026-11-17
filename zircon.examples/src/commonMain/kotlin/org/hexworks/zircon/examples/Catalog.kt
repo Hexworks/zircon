@@ -8,6 +8,7 @@ import org.hexworks.zircon.api.Palettes
 import org.hexworks.zircon.api.component.theme.ComponentPalette
 import org.hexworks.zircon.api.ComponentThemes
 import org.hexworks.zircon.api.component.theme.ComponentTheme
+import org.hexworks.zircon.api.component.theme.ThemeMode
 
 /**
  * The cell sizes the app offers, taken from the bundled CP437 sheets. Bigger cells than
@@ -23,6 +24,37 @@ val TILE_SIZES: List<Size> = CP437_TILESETS
 val PALETTES: List<ComponentPalette> = Palettes.all()
 
 val DEFAULT_PALETTE: ComponentPalette = Palettes.catppuccin()
+
+/**
+ * What the palette selector offers: [System], the host's palette (the terminal's own colors,
+ * or the light / dark member of the last picked family after the desktop setting), then every
+ * bundled palette as a [Fixed] pick.
+ */
+sealed interface PaletteChoice {
+    val name: String
+
+    object System : PaletteChoice {
+        override val name: String = "System"
+    }
+
+    data class Fixed(val palette: ComponentPalette) : PaletteChoice {
+        override val name: String get() = palette.name
+    }
+}
+
+val PALETTE_CHOICES: List<PaletteChoice> = listOf(PaletteChoice.System) + PALETTES.map { PaletteChoice.Fixed(it) }
+
+/**
+ * The light / dark pair [palette] belongs to (Catppuccin Latte / Mocha, Tokyo Night Day /
+ * Night, Kanagawa Lotus / Wave, Neobrutalism light / dark), what [PaletteChoice.System] shows
+ * where the host has no colors of its own. Catppuccin for anything else.
+ */
+fun paletteFamilyOf(palette: ComponentPalette): (ThemeMode) -> ComponentPalette = when {
+    palette.name.startsWith("Tokyo Night") -> { mode -> Palettes.tokyoNight(mode) }
+    palette.name.startsWith("Kanagawa") -> { mode -> Palettes.kanagawa(mode) }
+    palette.name.startsWith("Neobrutalism") -> { mode -> Palettes.neobrutalism(mode) }
+    else -> { mode -> Palettes.catppuccin(mode) }
+}
 
 /** The component themes (shapes) the app offers; the stock look first. */
 val COMPONENT_THEMES: List<ComponentTheme> = listOf(ComponentThemes.default(), ComponentThemes.neobrutalism())

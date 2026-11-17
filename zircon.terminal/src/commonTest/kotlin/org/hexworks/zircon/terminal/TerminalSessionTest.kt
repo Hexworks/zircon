@@ -9,6 +9,8 @@ import io.kotest.matchers.string.shouldStartWith
 import org.hexworks.cobalt.logging.api.LogSink
 import org.hexworks.cobalt.logging.api.LoggerFactory
 import org.hexworks.zircon.api.builder.grid.tileGrid
+import org.hexworks.zircon.api.component.theme.SystemTheme
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.data.Size
 import org.hexworks.zircon.api.loadCP437TilesetResource
 import org.hexworks.zircon.api.resource.ResourceType
@@ -123,6 +125,11 @@ class TerminalSessionTest {
         seen[0].ansi[4] shouldBe org.hexworks.zircon.api.color.Color.fromString("#89b4fa")
         seen[0].ansi[1] shouldBe TerminalColors.DEFAULT_ANSI[1]
         session.terminalColors shouldBe seen[1]
+        // The terminal's colors are the system palette, its background the system mode.
+        SystemTheme.palette?.name shouldBe "Terminal"
+        SystemTheme.palette?.isDark shouldBe false
+        SystemTheme.mode shouldBe ThemeMode.LIGHT
+        SystemTheme.reset()
         val text = tty.outputText
         text shouldStartWith "␛]10;?␛\\␛]11;?␛\\␛]4;0;?"
         text shouldContain "␛[?2031h"

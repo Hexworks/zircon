@@ -120,6 +120,11 @@ fun main() {
 }
 ```
 
+To follow the desktop's light / dark setting instead of pinning a palette, write
+`screen.followSystemPalette { Palettes.catppuccin(it) }`: the screen switches between Latte
+and Mocha as the setting changes (`ZirconDefaults { followSystemPalette = { Palettes.catppuccin(it) } }`
+does it for every screen). Setting `componentPalette` again ends the follow.
+
 Inside a container lambda the same names add children, so the panel above could also be
 written as
 
@@ -172,9 +177,10 @@ What to expect:
   A terminal that does not answer the protocol query fails fast with a message. In tmux
   use 3.4+ with `set -g extended-keys on` and a truecolor `terminal-overrides`.
 - **Colors.** The terminal's own colors (default foreground and background, the 16 ANSI
-  slots) are read at startup and whenever the terminal switches its theme; pass
-  `onTerminalColors = { screen.componentPalette = it.toComponentPalette() }` to follow it.
-  tmux never answers the queries, so there the palette you set stays.
+  slots) are read at startup and whenever the terminal switches its theme, and become the
+  system palette: `screen.followSystemPalette { Palettes.catppuccin(it) }` adopts them (the
+  same call that follows the desktop setting on Compose). tmux never answers the queries,
+  so there the follow shows the fallback in the desktop's light / dark.
 - **Size.** The grid keeps the size you built it with; it is centred in the terminal and
   a "terminal too small" banner replaces it while the window is smaller than the grid.
 - **Text only.** CP437 and TrueType tilesets render as glyphs, the tileset's pixel size is

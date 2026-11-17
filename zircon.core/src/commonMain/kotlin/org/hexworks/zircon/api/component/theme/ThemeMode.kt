@@ -1,11 +1,9 @@
 package org.hexworks.zircon.api.component.theme
 
-import org.hexworks.zircon.api.config.ZirconDefaults
-
 /**
  * The light / dark variant of a [ComponentPalette], for palettes that come in both
- * (`Palettes.neobrutalism(mode)`). [SYSTEM] follows the operating system (or the browser) and
- * falls back to [DARK] when the platform cannot tell.
+ * (`Palettes.neobrutalism(mode)`). [SYSTEM] is the app's wish to follow the host: what the
+ * host wants right now is [SystemTheme.mode], [DARK] when nothing can tell.
  */
 public enum class ThemeMode {
     LIGHT,
@@ -13,11 +11,12 @@ public enum class ThemeMode {
     SYSTEM;
 
     /**
-     * [LIGHT] or [DARK]: this mode, or for [SYSTEM] what [ZirconDefaults.systemThemeDetector]
-     * reports (and [DARK] when it reports nothing).
+     * [LIGHT] or [DARK]: this mode, or for [SYSTEM] the host's current [SystemTheme.mode]. A
+     * one-shot answer: to stay in step with the host, observe [SystemTheme.modeProperty] or use
+     * `screen.followSystemPalette`.
      */
     public fun resolve(): ThemeMode = when (this) {
-        SYSTEM -> ZirconDefaults.current.systemThemeDetector.detect() ?: DARK
+        SYSTEM -> SystemTheme.mode
         else -> this
     }
 }

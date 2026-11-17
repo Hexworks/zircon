@@ -2,6 +2,7 @@ package org.hexworks.zircon.compose
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +20,9 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
+import kotlinx.coroutines.delay
+import org.hexworks.zircon.api.component.theme.SystemTheme
+import org.hexworks.zircon.api.component.theme.ThemeMode
 import org.hexworks.zircon.api.config.ZirconDefaults
 import org.hexworks.zircon.api.grid.TileGrid
 import org.hexworks.zircon.api.tileset.TilesetFactory
@@ -35,6 +39,9 @@ import org.hexworks.zircon.internal.grid.InternalTileGrid
  * built-in CP437, TrueType and graphical ones.
  * @param beforeFrame called on every frame right before the grid is rendered, on the UI
  * thread; a convenient place for game logic that must stay in step with rendering.
+ *
+ * While it is in the tree the host's light / dark setting is published as `SystemTheme.mode`,
+ * so a screen that calls `followSystemPalette` switches palettes with the desktop.
  */
 @Composable
 public fun TileGridView(
@@ -57,6 +64,23 @@ public fun TileGridView(
         onDispose {
             renderer.close()
             shader.close()
+        }
+    }
+
+    // Compose is the host here: what it knows about light / dark becomes the system mode a
+    // screen that calls `followSystemPalette` adopts. Where Compose cannot tell (Linux
+    // desktop) Zircon's own detector is sampled every couple of seconds instead.
+    val systemInDarkTheme = isSystemInDarkTheme()
+    LaunchedEffect(systemInDarkTheme) {
+        if (hostReportsSystemTheme()) {
+            SystemTheme.update(mode = if (systemInDarkTheme) ThemeMode.DARK else ThemeMode.LIGHT)
+        }
+    }
+    LaunchedEffect(Unit) {
+        if (hostReportsSystemTheme()) return@LaunchedEffect
+        while (true) {
+            SystemTheme.update(mode = detectSystemTheme() ?: ThemeMode.DARK)
+            delay(SYSTEM_THEME_POLL_MS)
         }
     }
 

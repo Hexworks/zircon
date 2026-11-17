@@ -9,6 +9,7 @@ import org.hexworks.zircon.api.resource.REXPaintResource
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.component.theme.ComponentPalette
+import org.hexworks.zircon.api.component.theme.ThemeMode
 
 /**
  * One example of the examples app. [build] runs the first time the example is shown and
@@ -30,15 +31,18 @@ class ExampleGroup(
 
 /**
  * Where an example draws: the [screen] it lives on and the [contentSize] of its area.
- * [assets] holds the data files every launcher preloads. [palette] is the app's palette, the
- * one the header selector shows: an example that offers its own palette switch sets it here,
- * so the selector and every other example follow.
+ * [assets] holds the data files every launcher preloads. [palette] is the app's palette (the
+ * screen's): an example that offers its own palette switch sets it here, so the header
+ * selector and every other example follow. [followSystemPalette] is the selector's `System`
+ * entry with a family of the example's choice: the host's own colors when it has them, else
+ * that family's light / dark member after the desktop setting, until a palette is set.
  */
 class ExampleContext(
     val screen: Screen,
     val contentSize: Size,
     val assets: Assets,
     val palette: Property<ComponentPalette>,
+    val followSystemPalette: (family: (ThemeMode) -> ComponentPalette) -> Unit,
 ) {
     /** An empty panel of the content size, for examples that draw with layers instead. */
     fun emptyContent(): Component = panel { preferredSize = this@ExampleContext.contentSize }
